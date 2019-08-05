@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>Phenix.WebApplication</RootNamespace>
+    <PackageId>Phenix.WebApplication</PackageId>
+    <AssemblyName>Phenix.WebApplication</AssemblyName>
+    <DefineConstants>TRACE;ORA</DefineConstants>
+    <RootNamespace>Phenix.WebApplication</RootNamespace>
+    <Version>7.1.1</Version>
+    <Authors>ming</Authors>
+    <Description>Phenix Framework for .NET Core</Description>
+    <Copyright>Copyright © 2007, 2019 Phenixヾ Studio</Copyright>
+    <Product>Phenix.WebApplication</Product>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\Bin_ORA\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\Bin_ORA\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.31" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Phenix.Core">
+      <HintPath>..\..\Bin_ORA\netcoreapp2.1\Phenix.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
