@@ -39,7 +39,7 @@ var phAjax = (function($) {
         } catch (e) {
             result = $.cookie(BASE_URL_COOKIE_NAME);
         }
-        return typeof result != "undefined" && result != null ? result : 'http://localhost:8088';
+        return typeof result != "undefined" && result != null ? result : 'http://localhost:5000';
     };
     var setBaseUrl = function(value) {
         try {
