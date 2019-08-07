@@ -37,3 +37,7 @@
 2，在Phenix.Extensions目录里，提供WebAPI框架客户端（JS）源码，见Phenix.WebApplication.Client.Ajax目录，对应有测试网页见Phenix.WebApplication.Client.Test目录
 
 
+20190807
+1，Phenix.WebApplication可部署在KestrelServer+Docker环境中
+2，提供'Phenix.WebApplication.部署方法.doc'文档供参考，见'\Phenix.Extensions\Phenix.WebApplication'目录
+
