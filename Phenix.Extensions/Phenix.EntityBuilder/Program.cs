@@ -45,6 +45,9 @@ namespace Phenix.EntityBuilder
                 }
 
             Console.WriteLine();
+            Console.WriteLine("如需Class名称取自被整理的表名(如果第4位是“_”则剔去其及之前的字符)，请设置Phenix.Core.Data.Schema.Table.ClassNameByTrimTableName属性，默认是{0}；", Phenix.Core.Data.Schema.Table.ClassNameByTrimTableName);
+            Console.WriteLine("如需Class名称取自被整理的视图名(如果第4位是“_”则剔去其及之前的字符, 如果倒数第2位是“_”则剔去其及之后的字符)，请设置Phenix.Core.Data.Schema.View.ClassNameByTrimViewName属性，默认是{0}；", Phenix.Core.Data.Schema.View.ClassNameByTrimViewName);
+            Console.WriteLine();
             string baseDirectory = Path.Combine(AppRun.BaseDirectory, DateTime.Now.ToString("yyyyMMddHHmm"));
             Console.WriteLine("生成的实体类文件将存放在目录：{0}", baseDirectory);
             Console.WriteLine("你可以根据开发需要，摘取文件到自己的项目工程目录中。");

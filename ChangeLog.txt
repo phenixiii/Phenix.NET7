@@ -41,3 +41,10 @@
 1，Phenix.WebApplication可部署在KestrelServer+Docker环境中
 2，提供'Phenix.WebApplication.部署方法.doc'文档供参考，见'\Phenix.Extensions\Phenix.WebApplication'目录
 
+
+20190809
+1，提供Phenix.Core.Data.Schema.Table配置项ClassNameByTrimTableName，可根据自己Build Entity的需要，规定ClassName属性的取值是否取自被整理的表名(如果第4位是"_"则剔去其及之前的字符)，默认是false
+2，提供Phenix.Core.Data.Schema.View配置项ClassNameByTrimViewName，可根据自己Build Entity的需要，规定ClassName属性的取值是否取自被整理的视图名(如果第4位是"_"则剔去其及之前的字符, 如果倒数第2位是"_"则剔去其及之后的字符)，默认是false
+3，Phenix.Core.Data.Database和Phenix.Core.Data.Common.DbCommandHelper的调用存储过程函数ExecuteStoredProc的返回值改为IDictionary<string, object>类型，为存储过程的调用结果集"参数名-参数值"
+
+

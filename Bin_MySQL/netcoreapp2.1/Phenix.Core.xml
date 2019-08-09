@@ -828,41 +828,49 @@
             <summary>
             执行 DbCommand
             </summary>
+            <returns>执行记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteNonQuery(System.Data.Common.DbConnection,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             执行 DbCommand
             </summary>
+            <returns>执行记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteNonQuery(System.Data.Common.DbTransaction,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             执行 DbCommand
             </summary>
+            <returns>执行记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteStoredProc(System.Data.Common.DbConnection,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             执行存储过程
             </summary>
+            <returns>结果集(参数名-参数值)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteStoredProc(System.Data.Common.DbTransaction,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             执行存储过程
             </summary>
+            <returns>结果集(参数名-参数值)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteScalar(System.Data.Common.DbCommand,System.Nullable{System.Boolean})">
             <summary>
             执行查询，并返回查询所返回的结果集中第一行的第一列
             </summary>
+            <returns>返回值</returns>
         </member>
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteScalar(System.Data.Common.DbConnection,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             执行查询，并返回查询所返回的结果集中第一行的第一列
             </summary>
+            <returns>返回值</returns>
         </member>
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteScalar(System.Data.Common.DbTransaction,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             执行查询，并返回查询所返回的结果集中第一行的第一列
             </summary>
+            <returns>返回值</returns>
         </member>
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteReader(System.Data.Common.DbCommand,System.Nullable{System.Boolean})">
             <summary>
@@ -935,6 +943,7 @@
             <summary>
             打包 DbCommand 信息
             </summary>
+            <returns>XML格式内容</returns>
         </member>
         <member name="T:Phenix.Core.Data.Common.DbConnectionHelper">
             <summary>
@@ -2385,16 +2394,19 @@
             <summary>
             执行DbCommand
             </summary>
+            <returns>执行记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Database.ExecuteStoredProc(System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             执行存储过程
             </summary>
+            <returns>结果集(参数名-参数值)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Database.ExecuteScalar(System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             执行查询，并返回查询所返回的结果集中第一行的第一列
             </summary>
+            <returns>返回值</returns>
         </member>
         <member name="M:Phenix.Core.Data.Database.CreateDataReader(System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
@@ -2519,11 +2531,23 @@
             </summary>
             <param name="detailForeignKeyPropertyLambda">含从类虚/实外键属性的 lambda 表达式</param>
         </member>
+        <member name="M:Phenix.Core.Data.Expressions.CriteriaExpression.Exists``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            Exists
+            </summary>
+            <param name="detailCriteriaLambda">从类条件表达式</param>
+        </member>
         <member name="M:Phenix.Core.Data.Expressions.CriteriaExpression.NotExists``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
             <summary>
             NotExists
             </summary>
             <param name="detailForeignKeyPropertyLambda">含从类虚/实外键属性的 lambda 表达式</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Expressions.CriteriaExpression.NotExists``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            NotExists
+            </summary>
+            <param name="detailCriteriaLambda">从类条件表达式</param>
         </member>
         <member name="P:Phenix.Core.Data.Expressions.CriteriaExpression.OwnerType">
             <summary>
@@ -4834,11 +4858,12 @@
             </summary>
             <param name="tableName">表名</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Standards.GetPascalCasingByTableName(System.String)">
+        <member name="M:Phenix.Core.Data.Schema.Standards.GetPascalCasingByTableName(System.String,System.Boolean)">
             <summary>
             取PascalCasing名
             </summary>
             <param name="tableName">表名</param>
+            <param name="trim">整理</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Standards.GetPrefixByTableName(System.String)">
             <summary>
@@ -4855,11 +4880,12 @@
             </summary>
             <param name="viewName">视图名</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Standards.GetPascalCasingByViewName(System.String)">
+        <member name="M:Phenix.Core.Data.Schema.Standards.GetPascalCasingByViewName(System.String,System.Boolean)">
             <summary>
             取PascalCasing名
             </summary>
             <param name="viewName">视图名</param>
+            <param name="trim">整理</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Standards.GetPrefixByViewName(System.String)">
             <summary>
@@ -4876,11 +4902,12 @@
             </summary>
             <param name="columnName">字段名</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Standards.GetPascalCasingByColumnName(System.String)">
+        <member name="M:Phenix.Core.Data.Schema.Standards.GetPascalCasingByColumnName(System.String,System.Boolean)">
             <summary>
             取PascalCasing名
             </summary>
             <param name="columnName">字段名</param>
+            <param name="trim">整理</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Standards.GetFieldNameByPropertyName(System.String)">
             <summary>
@@ -4897,6 +4924,12 @@
         <member name="T:Phenix.Core.Data.Schema.Table">
             <summary>
             表
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Schema.Table.ClassNameByTrimTableName">
+            <summary>
+            类名是否取自被整理的表名(如果第4位是"_"则剔去其及之前的字符)
+            缺省为 false
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Schema.Table.Owner">
@@ -4931,7 +4964,7 @@
         </member>
         <member name="P:Phenix.Core.Data.Schema.Table.Prefix">
             <summary>
-            类名
+            前缀
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Table.IsPrimaryKey(System.String)">
@@ -4959,6 +4992,12 @@
             视图
             </summary>
         </member>
+        <member name="P:Phenix.Core.Data.Schema.View.ClassNameByTrimViewName">
+            <summary>
+            类名是否取自被整理的视图名(如果第4位是"_"则剔去其及之前的字符, 如果倒数第2位是"_"则剔去其及之后的字符)
+            缺省为 false
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Data.Schema.View.ViewText">
             <summary>
             ViewText
@@ -4976,7 +5015,7 @@
         </member>
         <member name="P:Phenix.Core.Data.Schema.View.Prefix">
             <summary>
-            类名
+            前缀
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Schema.View.FindTable(System.String)">

@@ -24,14 +24,12 @@ namespace Demo
             Console.WriteLine();
 
             Console.WriteLine("不管是继承 EntityBase 还是直接操作 Database，持久化引擎都要求你在设计表结构和实体类时，遵循以下编写规范：");
-            Console.WriteLine("1，表名，如带前缀，字符数为4个且第4个字符是“_”，映射到类名时会自动剔除掉，比如表“PH7_Teams”映射的类名为“Teams”；");
-            Console.WriteLine("2，视图名，如带前缀，规则同表名，如带后缀，字符数为2个且倒数第2个字符是“_”，映射到类名时会自动剔除掉，比如视图“PH7_Teams_V”映射的类名为“Teams”；");
-            Console.WriteLine("3，如果实体类即能映射到视图，也能映射到表，优先映射到视图，比如表“PH7_Teams”、视图“PH7_Teams_V”，类“Teams”映射的是视图“PH7_Teams_V”，不是表“PH7_Teams”；");
-            Console.WriteLine("4，实体类命名法为Pascal，不管是表还是视图，它们名称里的下划线，都在映射时会自动剔除掉，比如“TPT_PROJECT_INFO”表名映射的是“ProjectInfo”类名；");
-            Console.WriteLine("5，实体类的属性名也是Pascal规则；");
-            Console.WriteLine("6，实体类的字段命名法是加“_”前缀的camel规则名，比如“_projectName”；");
-            Console.WriteLine("7，表/视图的字段名/别名，如带前缀，字符数为3个且第3个字符是“_”，映射到类的属性/字段时会自动剔除掉，比如字段“PI_PROJECT_NAME”映射到类的属性名是“ProjectName”/字段名是“_projectName”；");
-            Console.WriteLine("8，表/视图的字段名/别名，命名时如不出于以下目的，请避免使用如下后缀，它们是持久层引擎的保留字：");
+            Console.WriteLine("1，实体类命名法为Pascal，不管是表还是视图，它们名称里的下划线，都在映射时会自动剔除掉，比如“TPT_PROJECT_INFO”表名映射的是“TptProjectInfo”类名（例外：“PH7_”前缀会被忽略）；");
+            Console.WriteLine("   你可以设置Phenix.Core.Data.Schema.Table配置项ClassNameByTrimTableName，规定ClassName属性的取值是否取自被整理的表名(如果第4位是“_”则剔去其及之前的字符)，默认是{0}；", Phenix.Core.Data.Schema.Table.ClassNameByTrimTableName);
+            Console.WriteLine("   你可以设置Phenix.Core.Data.Schema.View配置项ClassNameByTrimViewName，规定ClassName属性的取值是否取自被整理的视图名(如果第4位是“_”则剔去其及之前的字符, 如果倒数第2位是“_”则剔去其及之后的字符)，默认是{0}；", Phenix.Core.Data.Schema.View.ClassNameByTrimViewName);
+            Console.WriteLine("2，实体类的属性名也是Pascal规则；字段命名法是加“_”前缀的camel规则名，比如“_projectName”；");
+            Console.WriteLine("   表/视图的字段名/别名，如带前缀，字符数为3个且第3个字符是“_”，映射到类的属性/字段时会自动剔除掉，比如字段“PI_PROJECT_NAME”映射到类的属性名是“ProjectName”/字段名是“_projectName”；");
+            Console.WriteLine("   表/视图的字段名/别名，命名时如不出于以下目的，请避免使用如下后缀，它们是持久层引擎的保留字：");
             Console.WriteLine("   “_ID”且是长整型15位以上精度：主键/外键，每张表都应该有且仅一个长整型15位以上精度的主键字段，外键分物理外键（组合关系）和虚拟外键（聚合关系），命名尽可能与主键相呼应；");
             Console.WriteLine("   “_FG”且是整型2位/1位精度：枚举/布尔，映射到类的属性/字段时会被自动剔除掉，比如字段“PI_PROJECT_TYPE_FG”映射到类的属性名是“ProjectType”/字段名是“_projectType”，类型应该是 ProjectType 枚举；");
             Console.WriteLine("   “_ORIGINATOR”且是字符串/长整型15位以上精度：新增记录时自动填充Identity.CurrentIdentity.User.Name/Id；");

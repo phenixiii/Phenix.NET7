@@ -101,7 +101,7 @@ namespace Demo
         {
             Initialize();
 
-            return Select(Ascending(p => p.Name));
+            return Select(CriteriaExpression.Where<Position>(p => p.Id == 1).NotExists<User>(p => p.PositionId),Ascending(p => p.Name));
         }
 
         /// <summary>
