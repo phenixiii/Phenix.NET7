@@ -136,7 +136,7 @@ namespace Demo
                         else
                             allSubTeams.Add(item);
                     if (result == null)
-                        throw new ArgumentException(String.Format("未检索到 ID 为 {0} 的顶层团体资料!", rootId), nameof(rootId));
+                        throw new ArgumentException(String.Format("未检索到ID为 {0} 的顶层团体资料", rootId), nameof(rootId));
                     return new Teams(result.Id, result.Name, result.RootId, result.ParentId, allSubTeams, resetHoursLater == 0 ? (DateTime?) null : DateTime.Now.AddHours(resetHoursLater));
                 },
                 value => value == null || resetHoursLater < 0 || resetHoursLater > 0 && (!value._invalidTime.HasValue || value._invalidTime < DateTime.Now));
@@ -248,11 +248,11 @@ namespace Demo
             set
             {
                 if (value == null)
-                    throw new ArgumentNullException(nameof(value), "不允许空挂父层团体!");
+                    throw new ArgumentNullException(nameof(value), "不允许空挂父层团体");
                 if (value._rootId != _rootId)
-                    throw new ArgumentException("仅允许在同一顶层团体下切挂!", nameof(value));
+                    throw new ArgumentException("仅允许在同一顶层团体下切挂", nameof(value));
                 if (IsSubTeams(value))
-                    throw new ArgumentException("不允许挂在自己下层的团体下!", nameof(value));
+                    throw new ArgumentException("不允许挂在自己下层的团体下", nameof(value));
 
                 Teams oldValue = _parent;
                 if (UpdateProperty(p => p.Id, SetProperty(p => p.ParentId, value.Id)) == 1)
@@ -371,7 +371,7 @@ namespace Demo
         public void Delete()
         {
             if (DeleteRecord(CriteriaExpression.Where<Teams>(p => p.Id == Id).NotExists<User>(p => p.TeamsId)) == 0)
-                throw new InvalidOperationException(String.Format("未能删除 {0} 团体, 可能已被用在了用户管理上", Name));
+                throw new InvalidOperationException(String.Format("未能删除团体({0}), 可能已被用在了用户管理上", Name));
 
             _root._allSubTeams.Remove(this);
             if (_parent != null)
@@ -416,7 +416,7 @@ CREATE TABLE PH7_Teams (
             if (executeAction == ExecuteAction.Delete)
             {
                 if (SubTeams.Count > 0)
-                    return new ValidationResult(String.Format("不允许删除中层团体 {0}!", Name));
+                    return new ValidationResult(String.Format("不允许删除中层团体({0})", Name));
             }
 
             return null;

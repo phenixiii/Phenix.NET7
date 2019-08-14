@@ -3,7 +3,6 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
 using Phenix.Core.Data.Model;
@@ -189,7 +188,6 @@ namespace Demo
             {
                 if (UpdateProperty(p => p.Id, SetProperty(p => p.Phone, value)) == 1)
                 {
-                    _phone = value;
                     Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
                     _cache.Remove(Id);
                 }
@@ -365,7 +363,7 @@ namespace Demo
             set
             {
                 if (value == null)
-                    throw new ArgumentNullException(nameof(value), "不允许空挂所属团体!");
+                    throw new ArgumentNullException(nameof(value), "不允许空挂所属团体");
 
                 if (UpdateProperty(p => p.Id,
                         SetProperty(p => p.RootTeamsId, value.RootId),
@@ -405,7 +403,7 @@ namespace Demo
             set
             {
                 if (value == null)
-                    throw new ArgumentNullException(nameof(value), "不允许空挂担任岗位!");
+                    throw new ArgumentNullException(nameof(value), "不允许空挂担任岗位");
 
                 if (UpdateProperty(p => p.Id, SetProperty(p => p.PositionId, value.Id)) == 1)
                 {

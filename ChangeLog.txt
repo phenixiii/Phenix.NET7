@@ -14,9 +14,9 @@
 
 
 20190711
-1，发布轻量级的持久化引擎，入口为Database类，用法参考如下：
+1，发布轻量级的持久化引擎，入口为Phenix.Core.Data.Database类，用法参考如下：
          IList<Teams> teamsList = Database.Default.MetaData.FindSheet<Teams>().SelectRecord<Teams>(p => p.Id == 559064445621642);
-2，提供EntityBase<T>实体基类，封装持久化引擎、动态刷新等基础设施功能，代码可简化为：
+2，提供Phenix.Core.Data.Model.EntityBase<T>实体基类，封装持久化引擎、动态刷新等基础设施功能，代码可简化为：
          IList<Teams> teamsList = Team.SelectRecord(p => p.Id == 559064445621642);
       示例见Demo.Phenix.Core.Data.Model.EntityBase
 3，持久化引擎支持在实体属性上打System.ComponentModel.DataAnnotations.ValidationAttribute派生标签，提交对象/属性时会自动完成属性的有效性验证（验证失败抛出ValidationException）
@@ -45,6 +45,12 @@
 20190809
 1，提供Phenix.Core.Data.Schema.Table配置项ClassNameByTrimTableName，可根据自己Build Entity的需要，规定ClassName属性的取值是否取自被整理的表名(如果第4位是"_"则剔去其及之前的字符)，默认是false
 2，提供Phenix.Core.Data.Schema.View配置项ClassNameByTrimViewName，可根据自己Build Entity的需要，规定ClassName属性的取值是否取自被整理的视图名(如果第4位是"_"则剔去其及之前的字符, 如果倒数第2位是"_"则剔去其及之后的字符)，默认是false
-3，Phenix.Core.Data.Database和Phenix.Core.Data.Common.DbCommandHelper的调用存储过程函数ExecuteStoredProc的返回值改为IDictionary<string, object>类型，为存储过程的调用结果集"参数名-参数值"
 
+
+20190813
+1，Phenix.Core.Data.Database和Phenix.Core.Data.Common.DbCommandHelper的调用存储过程函数ExecuteStoredProc，返回值改为IDictionary<string, object>类型，为存储过程的调用结果集"参数名-参数值"，如需转换为JSON格式请调用Phenix.Core.Reflection.Utilities.JsonSerialize(result)
+2，提供动态实体类Phenix.Core.Data.Model.DynamicEntity，以便操作IDictionary<string, object>格式的"属性名-属性值"记录数据，如需传入JSON格式请先调用Phenix.Core.Reflection.Utilities.JsonDeserialize<IDictionary<string, object>>(propertyValues)、Phenix.Core.Reflection.Utilities.JsonDeserialize<IList<IDictionary<string, object>>>(propertyValues)进行转换
+3，增补Phenix.Core.Data.Schema.Table和Phenix.Core.Data.Schema.View的增删改函数，以便操作IDictionary<string, object>格式的"属性名-属性值"记录数据，如需传入JSON格式数据请先调用Phenix.Core.Reflection.Utilities.JsonDeserialize<IDictionary<string, object>>(propertyValues)进行转换
+4，增补Phenix.Core.Data.Schema.Table、Phenix.Core.Data.Schema.View、Phenix.Core.Data.Model.EntityBase<T>的查询函数，可返回JSON格式的查询结果
+5，提供示例Demo.Phenix.Core.Data.Model.DynamicEntity
 

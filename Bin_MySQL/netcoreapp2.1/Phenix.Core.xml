@@ -2482,7 +2482,7 @@
             条件表达式
             </summary>
             <param name="entity">实体</param>
-            <param name="memberLambda">含类属性/字段的 lambda 表达式</param>
+            <param name="memberLambda">含类属性/类字段的 lambda 表达式</param>
         </member>
         <member name="M:Phenix.Core.Data.Expressions.CriteriaExpression.Where``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
             <summary>
@@ -2775,12 +2775,12 @@
         </member>
         <member name="P:Phenix.Core.Data.Expressions.OperationExpression.MemberInfo">
             <summary>
-            类属性/字段
+            类属性/类字段
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Expressions.OperationExpression.MemberType">
             <summary>
-            类属性/字段类型
+            类属性/类字段类型
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Expressions.OperationExpression.LeftOperation">
@@ -3006,6 +3006,122 @@
             </summary>
             <param name="key">键</param>
             <param name="initialValue">初值</param>
+        </member>
+        <member name="T:Phenix.Core.Data.Model.DynamicEntity">
+            <summary>
+            动态实体
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.Fetch(Phenix.Core.Data.Schema.Sheet)">
+            <summary>
+            构建动态实体
+            </summary>
+            <param name="selfSheet">操作单子</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.Fetch(System.Collections.Generic.IDictionary{System.String,System.Object},Phenix.Core.Data.Schema.Sheet)">
+            <summary>
+            构建动态实体
+            </summary>
+            <param name="propertyValues">"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
+            <param name="selfSheet">操作单子</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.FetchList(System.Collections.Generic.IList{System.Collections.Generic.IDictionary{System.String,System.Object}},Phenix.Core.Data.Schema.Sheet)">
+            <summary>
+            构建动态实体集合
+            </summary>
+            <param name="propertyValues">"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
+            <param name="selfSheet">操作单子</param>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.DynamicEntity.PropertyNames">
+            <summary>
+            属性名集合
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.DynamicEntity.SelfSheet">
+            <summary>
+            操作单子
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.TrySetMember(System.Dynamic.SetMemberBinder,System.Object)">
+            <summary>
+            设置属性值
+            </summary>
+            <param name="binder">动态设置属性操作</param>
+            <param name="value">值</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.TryGetMember(System.Dynamic.GetMemberBinder,System.Object@)">
+            <summary>
+            获取属性值
+            </summary>
+            <param name="binder">动态获取属性操作</param>
+            <param name="result">值</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.GetEnumerator">
+            <summary>
+            返回循环访问的枚举数
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.InsertRecord">
+            <summary>
+            新增记录(仅提交第一个属性映射的表)
+            </summary>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.InsertRecord(System.Data.Common.DbConnection)">
+            <summary>
+            新增记录(仅提交第一个属性映射的表)
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.InsertRecord(System.Data.Common.DbTransaction)">
+            <summary>
+            新增记录(仅提交第一个属性映射的表)
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.UpdateRecord">
+            <summary>
+            更新记录(仅提交第一个属性映射的表)
+            </summary>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.UpdateRecord(System.Data.Common.DbConnection)">
+            <summary>
+            更新记录(仅提交第一个属性映射的表)
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.UpdateRecord(System.Data.Common.DbTransaction)">
+            <summary>
+            更新记录(仅提交第一个属性映射的表)
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.DeleteRecord">
+            <summary>
+            删除记录(仅提交第一个属性映射的表)
+            </summary>
+            <returns>删除记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.DeleteRecord(System.Data.Common.DbConnection)">
+            <summary>
+            删除记录(仅提交第一个属性映射的表)
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <returns>删除记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.DeleteRecord(System.Data.Common.DbTransaction)">
+            <summary>
+            删除记录(仅提交第一个属性映射的表)
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <returns>删除记录数</returns>
         </member>
         <member name="T:Phenix.Core.Data.Model.EntityBase`1">
             <summary>
@@ -3255,6 +3371,13 @@
             </summary>
             <param name="orderBys">排序队列</param>
         </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
             <summary>
             获取记录
@@ -3268,6 +3391,14 @@
             获取记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
@@ -3286,6 +3417,14 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
             <summary>
             获取记录
@@ -3300,6 +3439,14 @@
             获取记录
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(System.Data.Common.DbConnection,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(System.Data.Common.DbConnection,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
@@ -3317,6 +3464,15 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
@@ -3337,6 +3493,15 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
             <summary>
             获取记录
@@ -3354,6 +3519,14 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="orderBys">排序队列</param>
         </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(System.Data.Common.DbTransaction,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(System.Data.Common.DbTransaction,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
             <summary>
             获取记录
@@ -3369,6 +3542,15 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
@@ -3389,7 +3571,241 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Select(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbConnection,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbConnection,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbTransaction,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbTransaction,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SelectRecord(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
             <summary>
             获取记录
             </summary>
@@ -3852,6 +4268,19 @@
             参数名
             </summary>
         </member>
+        <member name="P:Phenix.Core.Data.Schema.Column.IsValidFunc">
+            <summary>
+            判断值是否有效的函数
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Column.Validate(System.Object,System.String,System.String)">
+            <summary>
+            核对值的有效性
+            </summary>
+            <param name="value">值</param>
+            <param name="memberName">类属性名/类字段名</param>
+            <param name="description">Description</param>
+        </member>
         <member name="T:Phenix.Core.Data.Schema.Field">
             <summary>
             数据映射字段信息
@@ -4036,7 +4465,7 @@
             <summary>
             检索单子字段
             </summary>
-            <param name="memberLambda">含类属性/字段的 lambda 表达式</param>
+            <param name="memberLambda">含类属性/类字段的 lambda 表达式</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表字段</returns>
         </member>
@@ -4044,7 +4473,7 @@
             <summary>
             检索单子字段
             </summary>
-            <param name="memberInfo">类属性/字段</param>
+            <param name="memberInfo">类属性/类字段</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>视单子</returns>
         </member>
@@ -4075,7 +4504,7 @@
             <summary>
             检索表字段
             </summary>
-            <param name="memberLambda">含类属性/字段的 lambda 表达式</param>
+            <param name="memberLambda">含类属性/类字段的 lambda 表达式</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表字段</returns>
         </member>
@@ -4083,7 +4512,7 @@
             <summary>
             检索表字段
             </summary>
-            <param name="memberInfo">类属性/字段</param>
+            <param name="memberInfo">类属性/类字段</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表字段</returns>
         </member>
@@ -4258,6 +4687,11 @@
             前缀
             </summary>
         </member>
+        <member name="P:Phenix.Core.Data.Schema.Sheet.IsValidFunc">
+            <summary>
+            判断实体/属性值队列/"属性名-属性值"键值队列是否有效的函数
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.GetFields(System.Type)">
             <summary>
             获取数据映射类字段
@@ -4280,7 +4714,7 @@
             <summary>
             检索字段
             </summary>
-            <param name="memberLambda">含类属性/字段的 lambda 表达式</param>
+            <param name="memberLambda">含类属性/类字段的 lambda 表达式</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>字段</returns>
         </member>
@@ -4288,7 +4722,7 @@
             <summary>
             检索字段
             </summary>
-            <param name="memberInfo">类属性/字段</param>
+            <param name="memberInfo">类属性/类字段</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>字段</returns>
         </member>
@@ -4296,7 +4730,7 @@
             <summary>
             检索字段
             </summary>
-            <param name="memberInfo">类属性/字段</param>
+            <param name="memberInfo">类属性/类字段</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>字段</returns>
         </member>
@@ -4304,9 +4738,30 @@
             <summary>
             检索字段
             </summary>
-            <param name="columnName">字段名</param>
+            <param name="name">字段名/类属性名/类字段名</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>字段</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.Validate``1(``0,Phenix.Core.Data.ExecuteAction)">
+            <summary>
+            核对有效性
+            </summary>
+            <param name="entity">实体</param>
+            <param name="executeAction">执行动作</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.Validate(Phenix.Core.Data.Expressions.PropertyValue[],Phenix.Core.Data.ExecuteAction)">
+            <summary>
+            核对有效性
+            </summary>
+            <param name="propertyValues">属性值队列</param>
+            <param name="executeAction">执行动作</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.Validate(System.Collections.Generic.IDictionary{System.String,System.Object},Phenix.Core.Data.ExecuteAction)">
+            <summary>
+            核对有效性
+            </summary>
+            <param name="propertyValues">"属性名-属性值"键值队列</param>
+            <param name="executeAction">执行动作</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.InsertEntity``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
             <summary>
@@ -4355,6 +4810,29 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="propertyValues">待更新属性值队列</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.InsertRecord(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            新增记录
+            </summary>
+            <param name="propertyValues">待更新"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.InsertRecord(System.Data.Common.DbConnection,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            新增记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="propertyValues">待更新"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.InsertRecord(System.Data.Common.DbTransaction,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            新增记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="propertyValues">待更新"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
@@ -4435,6 +4913,29 @@
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            更新记录
+            </summary>
+            <param name="propertyValues">待更新"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord(System.Data.Common.DbConnection,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            更新记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="propertyValues">待更新"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord(System.Data.Common.DbTransaction,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            更新记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="propertyValues">待更新"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
+            <returns>更新记录数</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.DeleteEntity``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
             <summary>
             删除记录
@@ -4507,10 +5008,265 @@
             <param name="criteriaExpression">条件表达式</param>
             <returns>删除记录数</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.DeleteRecord(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            删除记录
+            </summary>
+            <param name="criteriaPropertyValues">条件"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
+            <returns>删除记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.DeleteRecord(System.Data.Common.DbConnection,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            删除记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaPropertyValues">条件"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
+            <returns>删除记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.DeleteRecord(System.Data.Common.DbTransaction,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            删除记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaPropertyValues">条件"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
+            <returns>删除记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="pageNo">页码(1..N, 0为不分页)</param>
+            <param name="pageSize">每页条数</param>
+            <param name="orderBys">排序队列</param>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.OrderBy[])">
             <summary>
             获取记录
             </summary>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
@@ -4526,6 +5282,14 @@
             获取记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
@@ -4544,6 +5308,14 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
             <summary>
             获取记录
@@ -4558,6 +5330,14 @@
             获取记录
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
@@ -4575,6 +5355,15 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
@@ -4595,6 +5384,15 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
             <summary>
             获取记录
@@ -4610,6 +5408,14 @@
             获取记录
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
@@ -4629,6 +5435,15 @@
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
+            <param name="orderBys">排序队列</param>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
             <summary>
             获取记录
@@ -4645,6 +5460,15 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
@@ -5099,17 +5923,22 @@
             表示验证请求结果的容器
             </summary>
         </member>
+        <member name="M:Phenix.Core.Data.Validity.ValidationResult.#ctor(System.String)">
+            <summary>
+            表示验证请求结果的容器
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Data.Validity.ValidationResult.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String},System.Object)">
             <summary>
             表示验证请求结果的容器
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Validity.ValidationResult.#ctor(Phenix.Core.Data.Validity.ValidationResult)">
+        <member name="M:Phenix.Core.Data.Validity.ValidationResult.#ctor(System.Collections.Generic.IEnumerable{System.String},System.Object,System.String)">
             <summary>
             表示验证请求结果的容器
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Validity.ValidationResult.#ctor(System.String)">
+        <member name="M:Phenix.Core.Data.Validity.ValidationResult.#ctor(Phenix.Core.Data.Validity.ValidationResult)">
             <summary>
             表示验证请求结果的容器
             </summary>
@@ -5601,9 +6430,19 @@
             重置所有缓存
             </summary>
         </member>
+        <member name="F:Phenix.Core.Net.ControllerRole._id">
+            <summary>
+            ID
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Net.ControllerRole.Id">
             <summary>
             ID
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.ControllerRole._controllerName">
+            <summary>
+            Controller全名
             </summary>
         </member>
         <member name="P:Phenix.Core.Net.ControllerRole.ControllerName">
@@ -5611,9 +6450,21 @@
             Controller全名
             </summary>
         </member>
+        <member name="F:Phenix.Core.Net.ControllerRole._actionName">
+            <summary>
+            Action名
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Net.ControllerRole.ActionName">
             <summary>
             Action名
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.ControllerRole._roles">
+            <summary>
+            角色清单
+            多个角色用‘|’分隔，互相为 or 关系
+            多组角色个用‘,’分隔，互相为 and 关系
             </summary>
         </member>
         <member name="P:Phenix.Core.Net.ControllerRole.Roles">
@@ -5987,13 +6838,13 @@
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.GetMemberInfo(System.Linq.Expressions.LambdaExpression,System.Boolean)">
             <summary>
-            检索类属性/字段的信息
+            检索类属性/类字段的信息
             </summary>
-            <param name="memberLambda">含类属性/字段的 lambda 表达式</param>
+            <param name="memberLambda">含类属性/类字段的 lambda 表达式</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <exception cref="T:System.ArgumentNullException">lambda</exception>
             <exception cref="T:System.ArgumentException">不存在成员访问</exception>
-            <returns>类属性/字段</returns>
+            <returns>类属性/类字段</returns>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.GetMethodInfo(System.Linq.Expressions.LambdaExpression,System.Boolean)">
             <summary>
@@ -6850,14 +7701,29 @@
             重置所有缓存
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.Position._id">
+            <summary>
+            ID
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.Position.Id">
             <summary>
             ID
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.Position._name">
+            <summary>
+            名称
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.Position.Name">
             <summary>
             名称
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Position._roles">
+            <summary>
+            角色清单
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.Position.Roles">
@@ -6941,14 +7807,29 @@
             默认8小时自动重置一次
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.Teams._id">
+            <summary>
+            ID
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.Teams.Id">
             <summary>
             ID
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.Teams._name">
+            <summary>
+            名称
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.Teams.Name">
             <summary>
             名称
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Teams._rootId">
+            <summary>
+            顶层团体ID
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.Teams.RootId">
@@ -6959,6 +7840,11 @@
         <member name="P:Phenix.Core.Security.Teams.Root">
             <summary>
             顶层团体
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Teams._parentId">
+            <summary>
+            父层团体ID
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.Teams.ParentId">
@@ -7093,9 +7979,19 @@
             缺省为 10(分钟>=3)
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User._id">
+            <summary>
+            ID
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User.Id">
             <summary>
             ID
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User._name">
+            <summary>
+            登录名
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.Name">
@@ -7103,9 +7999,19 @@
             登录名
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User._phone">
+            <summary>
+            手机
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User.Phone">
             <summary>
             手机
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User._eMail">
+            <summary>
+            邮箱
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.EMail">
@@ -7113,9 +8019,19 @@
             邮箱
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User._regAlias">
+            <summary>
+            注册昵称
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User.RegAlias">
             <summary>
             注册昵称
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User._regTime">
+            <summary>
+            注册时间
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.RegTime">
@@ -7123,9 +8039,20 @@
             注册时间
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User._password">
+            <summary>
+            登录口令(散列值)
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User.Password">
             <summary>
             登录口令(散列值)
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User._dynamicPassword">
+            <summary>
+            动态口令(散列值)
+            为空时用登录口令
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.DynamicPassword">
@@ -7134,9 +8061,19 @@
             为空时用登录口令
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User._dynamicPasswordCreateTime">
+            <summary>
+            动态口令生成时间
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User.DynamicPasswordCreateTime">
             <summary>
             动态口令生成时间
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User._requestAddress">
+            <summary>
+            服务请求方IP地址
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.RequestAddress">
@@ -7144,14 +8081,29 @@
             服务请求方IP地址
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User._requestFailureCount">
+            <summary>
+            服务请求失败次数
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User.RequestFailureCount">
             <summary>
             服务请求失败次数
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User._requestFailureTime">
+            <summary>
+            服务请求失败时间
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User.RequestFailureTime">
             <summary>
             服务请求失败时间
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User._rootTeamsId">
+            <summary>
+            所属顶层团体ID
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.RootTeamsId">
@@ -7164,6 +8116,11 @@
             顶层团体
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User._teamsId">
+            <summary>
+            所属团体ID
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User.TeamsId">
             <summary>
             所属团体ID
@@ -7172,6 +8129,11 @@
         <member name="P:Phenix.Core.Security.User.Teams">
             <summary>
             所属团体
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User._positionId">
+            <summary>
+            担任岗位ID
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.PositionId">
@@ -7214,9 +8176,19 @@
             是否管理员
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User._locked">
+            <summary>
+            是否锁定
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User.Locked">
             <summary>
             是否锁定
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User._lockedTime">
+            <summary>
+            锁定时间
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.LockedTime">
@@ -7224,9 +8196,19 @@
             锁定时间
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User._disabled">
+            <summary>
+            是否注销
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User.Disabled">
             <summary>
             是否注销
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User._disabledTime">
+            <summary>
+            注销时间
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.DisabledTime">

@@ -132,7 +132,7 @@ namespace {3}
     {{
         private {5}()
         {{
-            //used to fetch object, do not add code
+            // used to fetch object, do not add code
         }}
 
         [Newtonsoft.Json.JsonConstructor]
@@ -165,10 +165,10 @@ namespace {3}
         public {0} {3}
         {{
             get {{ return {1}; }}
-            {4}set {{ {1} = value; }}
+            set {{ {1} = value; }}
         }}
 ",
-                    kvp.Value.FieldTypeName, kvp.Value.FieldName, kvp.Value.Description, kvp.Value.PropertyName, kvp.Value.IsWatermarkColumn ? "private " : null));
+                    kvp.Value.FieldTypeName, kvp.Value.FieldName, kvp.Value.Description, kvp.Value.PropertyName));
             }
 
             code.Append(@"
