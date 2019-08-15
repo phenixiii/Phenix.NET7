@@ -9,7 +9,7 @@ namespace Phenix.WebApplication.Controllers.Security
     /// 用户自己控制器
     /// </summary>
     [EnableCors]
-    [Route("/api/security/Myself")]
+    [Route("/api/security/myself")]
     [ApiController]
     public sealed class MyselfController : Phenix.Core.Net.ControllerBase
     {
