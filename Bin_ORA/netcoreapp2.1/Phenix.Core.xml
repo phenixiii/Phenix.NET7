@@ -9,17 +9,6 @@
             应用系统执行
             </summary>
         </member>
-        <member name="P:Phenix.Core.AppRun.Paused">
-            <summary>
-            暂停
-            缺省为 false
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.AppRun.PauseReason">
-            <summary>
-            暂停原因
-            </summary>
-        </member>
         <member name="P:Phenix.Core.AppRun.DesignMode">
             <summary>
             处于设计模式
@@ -44,26 +33,6 @@
         <member name="P:Phenix.Core.AppRun.TempDirectory">
             <summary>
             临时目录
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.AppRun.Start">
-            <summary>
-            开始
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.AppRun.Pause(System.String)">
-            <summary>
-            暂停
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.AppRun.Activate">
-            <summary>
-            激活
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.AppRun.CheckActive">
-            <summary>
-            检查活动
             </summary>
         </member>
         <member name="M:Phenix.Core.AppRun.FindException``1(System.Exception)">
@@ -766,7 +735,7 @@
         </member>
         <member name="M:Phenix.Core.Data.Common.DataReader.SelectRecord">
             <summary>
-            获取记录(属性名依照数据源的JSON格式)
+            获取记录(属性名为数据源的表/视图的字段名/别名的JSON格式)
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Common.DataReader.CreateParameter(System.String,System.Object,System.Nullable{System.Int32})">
@@ -1637,11 +1606,12 @@
             缺省数据库入口
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Database.Fetch(System.String)">
+        <member name="M:Phenix.Core.Data.Database.Fetch(System.String,System.Boolean)">
             <summary>
             获取数据库入口
             </summary>
             <param name="dataSourceKey">数据源键</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>数据库入口</returns>
         </member>
         <member name="M:Phenix.Core.Data.Database.RegisterDefault(System.String,System.String,System.String,System.String,System.Boolean,System.Int32,System.Int32,System.Int32)">
@@ -3020,12 +2990,27 @@
             64位增量
             </summary> 
         </member>
+        <member name="P:Phenix.Core.Data.Increment.Database">
+            <summary>
+            数据库入口
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Increment.HttpClient">
+            <summary>
+            Database为空时用HttpClient连服务端
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Data.Increment.GetNext(System.String,System.Int64)">
             <summary>
             取下一个
             </summary>
             <param name="key">键</param>
             <param name="initialValue">初值</param>
+        </member>
+        <member name="T:Phenix.Core.Data.Model.BusinessBase`1">
+            <summary>
+            业务基类
+            </summary>
         </member>
         <member name="T:Phenix.Core.Data.Model.DynamicEntity">
             <summary>
@@ -5908,6 +5893,16 @@
             缺省为 3(>=3)
             </summary>
         </member>
+        <member name="P:Phenix.Core.Data.Sequence.Database">
+            <summary>
+            数据库入口
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Sequence.HttpClient">
+            <summary>
+            Database为空时用HttpClient连服务端
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Data.Sequence.Value">
             <summary>
             值
@@ -6150,7 +6145,7 @@
             事件资料
             </summary>
         </member>
-        <member name="M:Phenix.Core.Log.EventInfo.#ctor(System.Int64,System.DateTime,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Phenix.Core.Log.EventInfo.#ctor(System.Int64,System.DateTime,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             初始化
             </summary>
@@ -6162,6 +6157,7 @@
             <param name="exceptionName">错误名</param>
             <param name="exceptionMessage">错误消息</param>
             <param name="user">用户</param>
+            <param name="address">IP地址</param>
         </member>
         <member name="P:Phenix.Core.Log.EventInfo.Id">
             <summary>
@@ -6203,6 +6199,11 @@
             用户
             </summary>
         </member>
+        <member name="P:Phenix.Core.Log.EventInfo.Address">
+            <summary>
+            IP地址
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Log.EventLog">
             <summary>
             事件日志
@@ -6219,6 +6220,22 @@
             存储目录
             </summary>
         </member>
+        <member name="P:Phenix.Core.Log.EventLog.Database">
+            <summary>
+            数据库入口
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Log.EventLog.UploadBaseAddress">
+            <summary>
+            用HttpClient上传到服务端的地址(null代表HttpClient.Default)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Log.EventLog.UploadValidityMinutes">
+            <summary>
+            用HttpClient上传到服务端的有效周期
+            缺省为 3(分钟>=3)
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Log.EventLog.Save(System.String,System.Exception)">
             <summary>
             保存错误日志
@@ -6233,6 +6250,12 @@
             <param name="method">函数的信息</param>
             <param name="message">消息</param>
             <param name="error">错误</param>
+        </member>
+        <member name="M:Phenix.Core.Log.EventLog.Save(Phenix.Core.Log.EventInfo)">
+            <summary>
+            保存对象日志
+            </summary>
+            <param name="info">事件资料</param>
         </member>
         <member name="M:Phenix.Core.Log.EventLog.SaveLocal(System.String,System.String)">
             <summary>
@@ -6277,6 +6300,16 @@
             缺省为 12(>=3)
             </summary>
         </member>
+        <member name="P:Phenix.Core.Message.UserMessage.Database">
+            <summary>
+            数据库入口
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Message.UserMessage.HttpClient">
+            <summary>
+            Database为空时用HttpClient连服务端
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Message.UserMessage.Send(System.String,System.String)">
             <summary>
             发送
@@ -6292,6 +6325,12 @@
             <param name="sender">发送用户</param>
             <param name="receiver">接收用户</param>
             <param name="content">消息内容</param>
+        </member>
+        <member name="M:Phenix.Core.Message.UserMessage.Send(Phenix.Core.Message.UserMessageInfo)">
+            <summary>
+            保存对象日志
+            </summary>
+            <param name="info">事件资料</param>
         </member>
         <member name="M:Phenix.Core.Message.UserMessage.Receive(System.String)">
             <summary>
@@ -6381,11 +6420,32 @@
             访问授权过滤器
             </summary>
         </member>
+        <member name="P:Phenix.Core.Net.AuthorizationFilter.Paused">
+            <summary>
+            暂停
+            缺省为 false
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.AuthorizationFilter.PauseReason">
+            <summary>
+            暂停原因
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Net.AuthorizationFilter.OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)">
             <summary>
             处理访问授权
             </summary>
             <param name="context">上下文</param>
+        </member>
+        <member name="M:Phenix.Core.Net.AuthorizationFilter.Pause(System.String)">
+            <summary>
+            暂停
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.AuthorizationFilter.Activate">
+            <summary>
+            激活
+            </summary>
         </member>
         <member name="T:Phenix.Core.Net.ControllerBase">
             <summary>
@@ -6539,28 +6599,28 @@
             取远端IP地址
             前置条件：在Startup里应配置和使用转接头中间件（代理服务器和负载均衡器）
             </summary>
-            <param name="request">上下文</param>
+            <param name="request">HttpRequest</param>
             <returns>远端IP地址</returns>
         </member>
         <member name="M:Phenix.Core.Net.HttpRequestExtension.GetAcceptLanguage(Microsoft.AspNetCore.Http.HttpRequest)">
             <summary>
             取区域性名称
             </summary>
-            <param name="request">上下文</param>
+            <param name="request">HttpRequest</param>
             <returns>区域性名称</returns>
         </member>
         <member name="M:Phenix.Core.Net.HttpRequestExtension.ReadBody(Microsoft.AspNetCore.Http.HttpRequest)">
             <summary>
             取报文主体
             </summary>
-            <param name="request">上下文</param>
+            <param name="request">HttpRequest</param>
             <returns>报文主体</returns>
         </member>
         <member name="M:Phenix.Core.Net.HttpRequestExtension.ReadBodyAsString(Microsoft.AspNetCore.Http.HttpRequest)">
             <summary>
             取报文主体
             </summary>
-            <param name="request">上下文</param>
+            <param name="request">HttpRequest</param>
             <returns>报文主体</returns>
         </member>
         <member name="T:Phenix.Core.Net.HttpResponseExtension">
@@ -6572,8 +6632,277 @@
             <summary>
             打包错误消息
             </summary>
-            <param name="response">上下文</param>
+            <param name="response">HttpResponse</param>
             <param name="error">错误消息</param>
+        </member>
+        <member name="T:Phenix.Core.Net.Http.HttpClient">
+            <summary>
+            服务端入口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.New">
+            <summary>
+            新增服务端入口
+            </summary>
+            <returns>服务端入口</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.New(System.Uri)">
+            <summary>
+            新增服务端入口
+            </summary>
+            <param name="baseAddress">服务地址(null代表"http://localhost:5000")</param>
+            <returns>服务端入口</returns>
+        </member>
+        <member name="P:Phenix.Core.Net.Http.HttpClient.Default">
+            <summary>
+            缺省服务端入口
+            缺省为构造过的第一个HttpClient对象
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Http.HttpClient.Identity">
+            <summary>
+            用户身份
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Http.HttpClient.UploadingCount">
+            <summary>
+            上传中报文数量
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Dispose(System.Boolean)">
+            <summary>
+            释放
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Upload(System.Int64,System.String,System.String,System.Action{System.Int64,System.Boolean})">
+            <summary>
+            上传报文
+            </summary>
+            <param name="id">ID</param>
+            <param name="path">资源路径(含查询条件)("/api/log/event-log")</param>
+            <param name="data">传到服务端的数据</param>
+            <param name="respond">反馈成功与否(ID,成功与否)</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Upload(System.Int64,System.String,System.String,System.Int32,System.Action{System.Int64,System.Boolean})">
+            <summary>
+            上传报文
+            </summary>
+            <param name="id">ID</param>
+            <param name="path">资源路径(含查询条件)("/api/log/event-log")</param>
+            <param name="data">传到服务端的数据</param>
+            <param name="validityMinutes">有效周期(分钟)</param>
+            <param name="respond">反馈成功与否(ID,成功与否)</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.NotUpload(System.Int64)">
+            <summary>
+            不上传报文
+            </summary>
+            <param name="id">ID</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CheckInAsync(System.String,System.String,System.String,System.String)">
+            <summary>
+            登记/注册(获取动态口令)
+            </summary>
+            <param name="name">名称</param>
+            <param name="phone">手机</param>
+            <param name="eMail">邮箱</param>
+            <param name="regAlias">注册昵称</param>
+            <returns>提示信息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CheckIn(System.String,System.String,System.String,System.String)">
+            <summary>
+            登记/注册(获取动态口令)
+            </summary>
+            <param name="name">名称</param>
+            <param name="phone">手机</param>
+            <param name="eMail">邮箱</param>
+            <param name="regAlias">注册昵称</param>
+            <returns>提示信息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.LogonAsync(System.String,System.String,System.String)">
+            <summary>
+            登录
+            </summary>
+            <param name="name">名称</param>
+            <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
+            <param name="tag">tag</param>
+            <returns>提示信息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Logon(System.String,System.String,System.String)">
+            <summary>
+            登录
+            </summary>
+            <param name="name">名称</param>
+            <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
+            <param name="tag">tag</param>
+            <returns>提示信息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.ChangePasswordAsync(System.String)">
+            <summary>
+            修改登录口令
+            </summary>
+            <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
+            <returns>提示信息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.ChangePassword(System.String)">
+            <summary>
+            修改登录口令
+            </summary>
+            <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
+            <returns>提示信息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,Phenix.Core.Net.Http.QueryValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径("/api/security/myself")</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Net.Http.QueryValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径("/api/security/myself")</param>
+            <param name="data">传到服务端的数据</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,Phenix.Core.Net.Http.QueryValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径("/api/security/myself")</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Net.Http.QueryValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径("/api/security/myself")</param>
+            <param name="data">传到服务端的数据</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync(System.Net.Http.HttpMethod,System.String,Phenix.Core.Net.Http.QueryValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径("/api/security/myself")</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Net.Http.QueryValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径("/api/security/myself")</param>
+            <param name="data">传到服务端的数据</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Call(System.Net.Http.HttpMethod,System.String,Phenix.Core.Net.Http.QueryValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径("/api/security/myself")</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Call(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Net.Http.QueryValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径("/api/security/myself")</param>
+            <param name="data">传到服务端的数据</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="P:Phenix.Core.Net.Http.HttpClientHandler.Owner">
+            <summary>
+            所属服务端入口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClientHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
+            <summary>
+            SendAsync
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Net.Http.HttpResponseMessageExtension">
+            <summary>
+            HttpResponseMessage扩展
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpResponseMessageExtension.ThrowIfFailedAsync(System.Net.Http.HttpResponseMessage)">
+            <summary>
+            如果调用失败就抛出异常
+            </summary>
+            <param name="message">HttpResponseMessage</param>
+        </member>
+        <member name="T:Phenix.Core.Net.Http.OfflineCache">
+            <summary>
+            脱机缓存
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Http.OfflineCache.FilePath">
+            <summary>
+            数据库文件路径
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Http.OfflineCache.ConnectionString">
+            <summary>
+            数据库连接串
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Http.OfflineCache.UploadingCount">
+            <summary>
+            上传中报文数量
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Http.OfflineCache.UploadSuspending">
+            <summary>
+            是否暂停上传
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.OfflineCache.Upload(System.String,System.String,System.Object,System.Int32)">
+            <summary>
+            上传报文
+            </summary>
+            <param name="baseAddress">上传地址(null代表HttpClient.Default)</param>
+            <param name="path">资源路径(含查询条件)("/api/log/event-log")</param>
+            <param name="data">传到服务端的数据</param>
+            <param name="validityMinutes">有效周期(分钟)</param>
+        </member>
+        <member name="T:Phenix.Core.Net.Http.QueryValue">
+            <summary>
+            查询条件值
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.QueryValue.Input(System.String,System.Object)">
+            <summary>
+            输入查询
+            </summary>
+            <param name="name">名称</param>
+            <param name="value">值</param>
+        </member>
+        <member name="P:Phenix.Core.Net.Http.QueryValue.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Http.QueryValue.Value">
+            <summary>
+            值
+            </summary>
         </member>
         <member name="T:Phenix.Core.Net.NetConfig">
             <summary>
@@ -6593,6 +6922,31 @@
         <member name="F:Phenix.Core.Net.NetConfig.SecurityGatePath">
             <summary>
             /api/Security/Gate
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.NetConfig.SecurityMyselfPath">
+            <summary>
+            /api/security/myself
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.NetConfig.DataSequencePath">
+            <summary>
+            /api/data/sequence
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.NetConfig.DataIncrementPath">
+            <summary>
+            /api/data/increment
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.NetConfig.LogEventLogPath">
+            <summary>
+            /api/log/event-log
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.NetConfig.MessageUserMessagePath">
+            <summary>
+            /api/message/user-message
             </summary>
         </member>
         <member name="P:Phenix.Core.Net.NetConfig.LocalAddress">
@@ -7654,7 +8008,7 @@
             核对登录有效性
             </summary>
             <param name="userName">登录名</param>
-            <param name="timestamp">时间戳</param>
+            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
             <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
             <param name="requestAddress">服务请求方IP地址</param>
             <param name="cultureName">区域性名称</param>
@@ -8279,7 +8633,7 @@
             <summary>
             核对有效性
             </summary>
-            <param name="timestamp">时间戳</param>
+            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
             <param name="throwIfNotConform">如果为 true, 服务请求超时会抛出OvertimeRequestException异常而不是返回false</param>
             <returns>是否正确</returns>
         </member>
@@ -8297,7 +8651,7 @@
             <summary>
             核对登录有效性
             </summary>
-            <param name="timestamp">时间戳</param>
+            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
             <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
             <param name="requestAddress">服务请求方IP地址</param>
             <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>

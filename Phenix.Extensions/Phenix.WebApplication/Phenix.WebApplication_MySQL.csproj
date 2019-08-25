@@ -44,4 +44,10 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Phenix.WebApplication.部署方法.doc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

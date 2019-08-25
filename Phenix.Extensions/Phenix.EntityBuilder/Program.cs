@@ -98,8 +98,8 @@ namespace Phenix.EntityBuilder
                 Directory.CreateDirectory(directory);
             string filePath = Path.Combine(directory, sheet.ClassName + ".cs");
 
-            StringBuilder code = new StringBuilder("using System;");
-            code.Append(String.Format(@"
+            StringBuilder codeBuilder = new StringBuilder("using System;");
+            codeBuilder.Append(String.Format(@"
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Common;
@@ -141,22 +141,22 @@ namespace {3}
 
 
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
-                code.Append(String.Format("{0} {1}, ", kvp.Value.FieldTypeName, kvp.Value.ParameterName));
-            code[code.Length - 2] = ')';
+                codeBuilder.Append(String.Format("{0} {1}, ", kvp.Value.FieldTypeName, kvp.Value.ParameterName));
+            codeBuilder[codeBuilder.Length - 2] = ')';
 
-            code.Append(@"
+            codeBuilder.Append(@"
         {");
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
-                code.Append(String.Format(@"
+                codeBuilder.Append(String.Format(@"
             {0} = {1};",
                     kvp.Value.FieldName, kvp.Value.ParameterName));
-            code.Append(@"
+            codeBuilder.Append(@"
         }
 ");
 
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
             {
-                code.Append(String.Format(@"
+                codeBuilder.Append(String.Format(@"
         private {0} {1};
         /// <summary>
         /// {2}
@@ -171,14 +171,14 @@ namespace {3}
                     kvp.Value.FieldTypeName, kvp.Value.FieldName, kvp.Value.Description, kvp.Value.PropertyName));
             }
 
-            code.Append(@"
+            codeBuilder.Append(@"
     }
 }
 ");
 
             using (StreamWriter writer = File.CreateText(filePath))
             {
-                writer.Write(code.ToString());
+                writer.Write(codeBuilder.ToString());
                 writer.Flush();
             }
 

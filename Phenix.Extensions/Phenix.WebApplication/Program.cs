@@ -11,6 +11,8 @@ namespace Phenix.WebApplication
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
+
+            AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) => { Phenix.Core.Log.EventLog.SaveLocal("An unhandled exception occurred in the current domain", (Exception) eventArgs.ExceptionObject); };
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

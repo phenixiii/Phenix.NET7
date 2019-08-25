@@ -47,7 +47,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.WebApplication_ORA",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phenix.WebApplication.Client.Ajax", "Phenix.WebApplication.Client.Ajax", "{993D0E28-8F04-4EFA-B5EE-7E93D53AB4EE}"
 	ProjectSection(SolutionItems) = preProject
-		Phenix.Extensions\Phenix.WebApplication.Client.Ajax\phenix.extensions.js = Phenix.Extensions\Phenix.WebApplication.Client.Ajax\phenix.extensions.js
 		Phenix.Extensions\Phenix.WebApplication.Client.Ajax\phenix.js = Phenix.Extensions\Phenix.WebApplication.Client.Ajax\phenix.js
 	EndProjectSection
 EndProject
@@ -72,6 +71,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Data.Model.DynamicEntity", "Demo_ORA\Demo.Phenix.Core.Data.Model.DynamicEntity\Demo.Phenix.Core.Data.Model.DynamicEntity.csproj", "{E92D064B-DC09-4AC6-81D7-65066F88124B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Data.Model.DynamicEntity", "Demo_MySQL\Demo.Phenix.Core.Data.Model.DynamicEntity\Demo.Phenix.Core.Data.Model.DynamicEntity.csproj", "{9FCFD0CC-FFCF-4228-8E59-FFB5640A29B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Net.Http.OfflineCache", "Demo_ORA\Demo.Phenix.Core.Net.Http.OfflineCache\Demo.Phenix.Core.Net.Http.OfflineCache.csproj", "{F79485CC-3595-4FB6-9091-1CE674ED6B10}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Net.Http.OfflineCache", "Demo_MySQL\Demo.Phenix.Core.Net.Http.OfflineCache\Demo.Phenix.Core.Net.Http.OfflineCache.csproj", "{EB3BE5CD-D212-467B-BDF9-B62BEF2351B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -183,6 +186,14 @@ Global
 		{9FCFD0CC-FFCF-4228-8E59-FFB5640A29B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FCFD0CC-FFCF-4228-8E59-FFB5640A29B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FCFD0CC-FFCF-4228-8E59-FFB5640A29B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F79485CC-3595-4FB6-9091-1CE674ED6B10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F79485CC-3595-4FB6-9091-1CE674ED6B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F79485CC-3595-4FB6-9091-1CE674ED6B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F79485CC-3595-4FB6-9091-1CE674ED6B10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB3BE5CD-D212-467B-BDF9-B62BEF2351B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB3BE5CD-D212-467B-BDF9-B62BEF2351B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB3BE5CD-D212-467B-BDF9-B62BEF2351B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB3BE5CD-D212-467B-BDF9-B62BEF2351B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -214,6 +225,8 @@ Global
 		{0A03F9C1-FC0D-43DA-89AE-5FE5B77D802B} = {1140EBB7-3D04-4936-B893-FC46D34B8D01}
 		{E92D064B-DC09-4AC6-81D7-65066F88124B} = {1140EBB7-3D04-4936-B893-FC46D34B8D01}
 		{9FCFD0CC-FFCF-4228-8E59-FFB5640A29B0} = {B7AA29AA-B690-4002-8703-AC8C7DD37E2C}
+		{F79485CC-3595-4FB6-9091-1CE674ED6B10} = {1140EBB7-3D04-4936-B893-FC46D34B8D01}
+		{EB3BE5CD-D212-467B-BDF9-B62BEF2351B6} = {B7AA29AA-B690-4002-8703-AC8C7DD37E2C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9C8CF59-EE51-4301-9EAC-22750A624DD2}

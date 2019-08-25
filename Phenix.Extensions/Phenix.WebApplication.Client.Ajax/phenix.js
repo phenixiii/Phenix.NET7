@@ -1,10 +1,4 @@
 ﻿/*
-    v7.1
-    2019-07-17 配套 Phenix.Core.Net.AuthenticationMiddleware、Phenix.Core.Net.AuthorizationFilter 提供基本的系统入口功能
-               使用方法见 Phenix.WebApplication_MySQL/ORA 工程及 Phenix.WebApplication.Client.Test 目录下的示例代码
- */
-
-/*
     Phenix Framework for .NET Core
     Copyright © 2007, 2019 Phenixヾ Studio All rights reserved.
 
@@ -20,33 +14,34 @@
     <script type="text/javascript" src="../Phenix.WebApplication.Client.Ajax/jquery.cookie.js"></script>
     <script type="text/javascript" src="../Phenix.WebApplication.Client.Ajax/phenix.js"></script>
 
+    使用方法参考 Phenix.WebApplication.Client.Test 目录下的示例代码
  */
 ;
 $.support.cors = true;
 
 var phAjax = (function($) {
-    var BASE_URL_COOKIE_NAME = "P-BU";
+    var BASE_ADDRESS_COOKIE_NAME = "P-BA";
     var USER_NAME_COOKIE_NAME = "P-UN";
     var USER_KEY_COOKIE_NAME = "P-UK";
 
     var METHOD_OVERRIDE_HEADER_NAME = "X-HTTP-Method-Override";
     var AUTHORIZATION_HEADER_NAME = "Phenix-Authorization";
 
-    var getBaseUrl = function() {
+    var getBaseAddress = function() {
         var result;
         try {
-            result = window.localStorage.getItem(BASE_URL_COOKIE_NAME);
+            result = window.localStorage.getItem(BASE_ADDRESS_COOKIE_NAME);
         } catch (e) {
-            result = $.cookie(BASE_URL_COOKIE_NAME);
+            result = $.cookie(BASE_ADDRESS_COOKIE_NAME);
         }
         return typeof result != "undefined" && result != null ? result : 'http://localhost:5000';
     };
-    var setBaseUrl = function(value) {
+    var setBaseAddress = function(value) {
         try {
-            window.localStorage.removeItem(BASE_URL_COOKIE_NAME);
-            window.localStorage.setItem(BASE_URL_COOKIE_NAME, value);
+            window.localStorage.removeItem(BASE_ADDRESS_COOKIE_NAME);
+            window.localStorage.setItem(BASE_ADDRESS_COOKIE_NAME, value);
         } catch (e) {
-            $.cookie(BASE_URL_COOKIE_NAME, value, { path: '/' });
+            $.cookie(BASE_ADDRESS_COOKIE_NAME, value, { path: '/' });
         }
     };
 
@@ -98,9 +93,9 @@ var phAjax = (function($) {
         XMLHttpRequest.setRequestHeader(METHOD_OVERRIDE_HEADER_NAME, "DELETE");
     };
 
-    //身份验证Header格式: Phenix-Authorization=[登录名],[时间戳(10位长随机字符串+IOS格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密的时间戳)]
+    //身份验证Header格式: Phenix-Authorization=[登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密的时间戳)]
     var formatComplexAuthorizationHeader = function(XMLHttpRequest, userName, userKey) {
-        var timestamp = phUtils.random(10) + new Date().toISOString();
+        var timestamp = phUtils.random(9) + new Date().toISOString();
         XMLHttpRequest.setRequestHeader(AUTHORIZATION_HEADER_NAME, encodeURIComponent(userName) + "," + timestamp + "," + phUtils.encrypt(timestamp, userKey));
     };
 
@@ -109,8 +104,8 @@ var phAjax = (function($) {
     };
 
     return {
-        get baseUrl() {
-            return getBaseUrl();
+        get baseAddress() {
+            return getBaseAddress();
         },
 
         get userName() {
@@ -128,8 +123,8 @@ var phAjax = (function($) {
         // 登记/注册(获取动态口令)
         checkIn: function(options) {
             var defaults = {
-                baseUrl: getBaseUrl(),
-                userName: "ADMIN", //登录名(未注册则自动注册)
+                baseAddress: getBaseAddress(), //"http://localhost:5000"
+                name: "ADMIN", //登录名(未注册则自动注册)
                 phone: null, //手机(注册用可为空)
                 eMail: null, //邮箱(注册用可为空)
                 regAlias: null, //注册昵称(注册用可为空)
@@ -139,8 +134,8 @@ var phAjax = (function($) {
             options = $.extend(defaults, options);
             $.ajax({
                 type: "GET",
-                url: options.baseUrl + "/api/security/gate" +
-                    "?userName=" + encodeURIComponent(options.userName) +
+                url: options.baseAddress + "/api/security/gate" +
+                    "?name=" + encodeURIComponent(options.name) +
                     "&phone=" + options.phone +
                     "&eMail=" + options.eMail +
                     "&regAlias=" + encodeURIComponent(options.regAlias),
@@ -152,8 +147,8 @@ var phAjax = (function($) {
                 data: null,
                 complete: function(XMLHttpRequest, textStatus) {
                     if (XMLHttpRequest.status == 200) {
-                        setBaseUrl(options.baseUrl);
-                        setUserName(options.userName);
+                        setBaseAddress(options.baseAddress);
+                        setUserName(options.name);
                     } else {
                         if (typeof options.onError == "function")
                             options.onError(XMLHttpRequest, textStatus, new Error(XMLHttpRequest.responseText));
@@ -167,8 +162,8 @@ var phAjax = (function($) {
         // 登录
         logon: function(options) {
             var defaults = {
-                baseUrl: getBaseUrl(),
-                userName: "ADMIN", //登录名
+                baseAddress: getBaseAddress(), //"http://localhost:5000"
+                name: "ADMIN", //登录名
                 password: "ADMIN", //登录口令/动态口令
                 tag: new Date().toISOString(), //捎带数据(默认是客户端当前时间)
                 onComplete: null, //调用完整的回调函数, 参数(XMLHttpRequest, textStatus)
@@ -178,20 +173,20 @@ var phAjax = (function($) {
             var userKey = CryptoJS.MD5(options.password).toString().toUpperCase();
             $.ajax({
                 type: "POST",
-                url: options.baseUrl + "/api/security/gate",
+                url: options.baseAddress + "/api/security/gate",
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 cache: false,
                 crossDomain: true,
                 timeout: 3000,
                 beforeSend: function(XMLHttpRequest) {
-                    formatComplexAuthorizationHeader(XMLHttpRequest, options.userName, userKey);
+                    formatComplexAuthorizationHeader(XMLHttpRequest, options.name, userKey);
                 },
                 data: phUtils.encrypt(options.tag, userKey),
                 complete: function(XMLHttpRequest, textStatus) {
                     if (XMLHttpRequest.status == 200) {
-                        setBaseUrl(options.baseUrl);
-                        setUserName(options.userName);
+                        setBaseAddress(options.baseAddress);
+                        setUserName(options.name);
                         setUserKey(userKey);
                     } else {
                         if (typeof options.onError == "function")
@@ -206,9 +201,7 @@ var phAjax = (function($) {
         // 获取自己资料
         getMyself: function(onSuccess, onError) {
             phAjax.call({
-                type: "GET",
-                uri: "/api/security/Myself",
-                data: null,
+                path: "/api/security/myself",
                 onSuccess: function(result) {
                     if (typeof onSuccess == "function")
                         onSuccess(result);
@@ -226,9 +219,9 @@ var phAjax = (function($) {
         changePassword: function(newPassword, onSuccess, onError) {
             phAjax.call({
                 type: "PATCH",
-                uri: "/api/security/Myself",
+                path: "/api/security/myself",
                 data: phAjax.encrypt(newPassword),
-                onSuccess: function (result) {
+                onSuccess: function(result) {
                     setUserKey(CryptoJS.MD5(newPassword).toString().toUpperCase());
                     if (typeof onSuccess == "function")
                         onSuccess(result);
@@ -242,11 +235,46 @@ var phAjax = (function($) {
             });
         },
 
+        // 获取64位序号
+        getSequence: function(onSuccess, onError) {
+            phAjax.call({
+                path: "/api/data/sequence",
+                onSuccess: function(result) {
+                    if (typeof onSuccess == "function")
+                        onSuccess(result);
+                },
+                onError: function(XMLHttpRequest, textStatus) {
+                    if (XMLHttpRequest.status != 200) {
+                        if (typeof onError == "function")
+                            onError(XMLHttpRequest, textStatus, new Error(XMLHttpRequest.responseText));
+                    }
+                },
+            });
+        },
+
+        // 获取64位增量值
+        getIncrement: function (key, initialValue, onSuccess, onError) {
+            phAjax.call({
+                path: "/api/data/increment?key=" + encodeURIComponent(key) + "&initialValue=" + initialValue,
+                onSuccess: function(result) {
+                    if (typeof onSuccess == "function")
+                        onSuccess(result);
+                },
+                onError: function(XMLHttpRequest, textStatus) {
+                    if (XMLHttpRequest.status != 200) {
+                        if (typeof onError == "function")
+                            onError(XMLHttpRequest, textStatus, new Error(XMLHttpRequest.responseText));
+                    }
+                },
+            });
+        },
+
+        // 呼叫
         call: function(options) {
             var defaults = {
                 anonymity: false, //是否匿名访问
                 type: "GET", //请求方法(GET/POST/PUT/PATCH/DELETE)
-                uri: null,
+                path: null, //"/api/security/myself"
                 data: null,
                 cache: false, //默认不缓存
                 timeout: 30000, //默认超时30秒
@@ -259,7 +287,7 @@ var phAjax = (function($) {
                 options.data = JSON.stringify(options.data);
             $.ajax({
                 type: (options.type == "PUT" || options.type == "PATCH" || options.type == "DELETE") ? "POST" : options.type,
-                url: phAjax.baseUrl + options.uri,
+                url: phAjax.baseAddress + options.path,
                 dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 cache: options.cache,
@@ -281,7 +309,7 @@ var phAjax = (function($) {
                         options.onSuccess(result);
                 },
                 complete: function(XMLHttpRequest, textStatus) {
-                    if (XMLHttpRequest.status != 200) {
+                    if (XMLHttpRequest.status >= 203) {
                         if (typeof options.onError == "function")
                             options.onError(XMLHttpRequest, textStatus, new Error(XMLHttpRequest.responseText));
                     }

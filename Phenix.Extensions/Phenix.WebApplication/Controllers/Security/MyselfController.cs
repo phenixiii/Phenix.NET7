@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Phenix.Core.Net;
 using Phenix.Core.Security;
 
 namespace Phenix.WebApplication.Controllers.Security
@@ -9,12 +10,10 @@ namespace Phenix.WebApplication.Controllers.Security
     /// 用户自己控制器
     /// </summary>
     [EnableCors]
-    [Route("/api/security/myself")]
+    [Route(NetConfig.SecurityMyselfPath)]
     [ApiController]
     public sealed class MyselfController : Phenix.Core.Net.ControllerBase
     {
-        #region 方法
-
         // GET: /api/security/myself
         // phAjax.getMyself()
         /// <summary>
@@ -39,7 +38,5 @@ namespace Phenix.WebApplication.Controllers.Security
         {
             return User.Identity.User.ChangePassword(DecryptBody());
         }
-
-        #endregion
     }
 }

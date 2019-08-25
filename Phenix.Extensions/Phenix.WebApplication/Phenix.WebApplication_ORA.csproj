@@ -7,13 +7,13 @@
     <AssemblyName>Phenix.WebApplication</AssemblyName>
     <DefineConstants>TRACE;ORA</DefineConstants>
     <RootNamespace>Phenix.WebApplication</RootNamespace>
-    <Version>7.1.3</Version>
+    <Version>7.2.1</Version>
     <Authors>ming</Authors>
     <Description>Phenix Framework for .NET Core</Description>
     <Copyright>Copyright © 2007, 2019 Phenixヾ Studio</Copyright>
     <Product>Phenix.WebApplication</Product>
-    <AssemblyVersion>7.1.3.0815</AssemblyVersion>
-    <FileVersion>7.1.3.0815</FileVersion>
+    <AssemblyVersion>7.2.1.0823</AssemblyVersion>
+    <FileVersion>7.2.1.0823</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -42,6 +42,12 @@
     <Reference Include="Phenix.Core">
       <HintPath>..\..\Bin_ORA\netcoreapp2.1\Phenix.Core.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Phenix.WebApplication.部署方法.doc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

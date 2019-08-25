@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
@@ -42,15 +43,14 @@ namespace Demo
             Console.WriteLine();
 
             Console.WriteLine("演示存储到数据库的方法 Save()");
-            EventInfo info = EventLog.Save(message);
+            EventLog.Save(message);
             Console.WriteLine("仅传了 string message 参数，还可以传 Exception、string extension 参数。");
             Console.WriteLine("日志保存在 PH7_EventLog 表里：");
             using (DataReader reader = Database.Default.CreateDataReader(@"
-select EL_ID, EL_Time, EL_ClassName, EL_MethodName, EL_Message, EL_ExceptionName, EL_ExceptionMessage, EL_User, EL_Address
+select *
 from PH7_EventLog
-where EL_ID = ?EL_ID"))
+order by EL_ID desc", CommandBehavior.SingleRow))
             {
-                reader.CreateParameter("EL_ID", info.Id);
                 while (reader.Read())
                 {
                     for (int i = 0; i < reader.FieldCount; i++)

@@ -16,23 +16,21 @@ namespace Phenix.WebApplication.Controllers.Security
     [ApiController]
     public sealed class GateController : Phenix.Core.Net.ControllerBase
     {
-        #region 方法
-
-        // GET: /api/security/gate?userName="林冲"&phone="13966666666"&eMail="13966666666@139.com"&regAlias="豹子头"
+        // GET: /api/security/gate?name=林冲&phone=13966666666&eMail=13966666666@139.com&regAlias=豹子头
         // phAjax.checkIn()
         /// <summary>
         /// 登记/注册(获取动态口令)
         /// </summary>
-        /// <param name="userName">登录名(未注册则自动注册)</param>
+        /// <param name="name">登录名(未注册则自动注册)</param>
         /// <param name="phone">手机(注册用可为空)</param>
         /// <param name="eMail">邮箱(注册用可为空)</param>
         /// <param name="regAlias">注册昵称(注册用可为空)</param>
         /// <returns>返回信息</returns>
         [AllowAnonymous]
         [HttpGet]
-        public string CheckIn(string userName, string phone, string eMail, string regAlias)
+        public string CheckIn(string name, string phone, string eMail, string regAlias)
         {
-            User result = Phenix.Core.Security.User.Fetch(userName);
+            User result = Phenix.Core.Security.User.Fetch(name);
             if (result != null)
             {
                 string dynamicPassword = result.ApplyDynamicPassword(Request.GetRemoteAddress());
@@ -46,7 +44,7 @@ namespace Phenix.WebApplication.Controllers.Security
             {
                 string password;
                 string dynamicPassword;
-                result = Phenix.Core.Security.User.New(userName, phone, eMail, regAlias, Request.GetRemoteAddress(), out password, out dynamicPassword);
+                result = Phenix.Core.Security.User.New(name, phone, eMail, regAlias, Request.GetRemoteAddress(), out password, out dynamicPassword);
                 /*
                  * 以下代码，将初始登录口令 password 和动态口令 dynamicPassword 保存到日志中，供你自己测试用
                  * 生产环境下，请替换这段代码，改成通过第三方渠道（邮箱或短信）推送给到用户
@@ -93,7 +91,5 @@ namespace Phenix.WebApplication.Controllers.Security
              */
             return User.Identity.User;
         }
-
-        #endregion
     }
 }

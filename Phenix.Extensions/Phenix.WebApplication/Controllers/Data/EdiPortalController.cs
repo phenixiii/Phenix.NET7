@@ -32,8 +32,8 @@ namespace Phenix.WebApplication.Controllers.Data
      * 一个控制器匹配N个路由，响应对不同资源的请求
      * 以下[Route]仅为示例，生产环境下请根据需要覆写它们，或者采取在运行期动态添加路由的办法
      */
-    [Route("/api/edi/weather")]
-    [Route("/api/edi/vessel")]
+    [Route("/api/data/edi/weather")]
+    [Route("/api/data/edi/vessel")]
     [ApiController]
     public class EdiPortalController : Phenix.Core.Net.ControllerBase
     {
@@ -64,11 +64,11 @@ namespace Phenix.WebApplication.Controllers.Data
             {
                 /*
                  * 本示例将 Path 转译为待读取的表名
-                 * 比如将"/api/edi/weather"转译为"edi_weather"
-                 * 比如将"/api/edi/vessel"转译为"edi_vessel"
+                 * 比如将"/api/data/edi/weather"转译为"edi_weather"
+                 * 比如将"/api/data/edi/vessel"转译为"edi_vessel"
                  * 生产环境下可自己制定一套规则进行转译
                 */
-                return Request.Path.Value.Substring(0, 5).Replace('/', '_');
+                return Request.Path.Value.Substring(0, 10).Replace('/', '_');
             }
         }
 
@@ -90,11 +90,11 @@ namespace Phenix.WebApplication.Controllers.Data
             {
                 /*
                  * 本示例将 Path 转译为存储过程名
-                 * 比如将"/api/edi/weather"转译为"edi.weather"
-                 * 比如将"/api/edi/vessel"转译为"edi.vessel"
+                 * 比如将"/api/data/edi/weather"转译为"edi.weather"
+                 * 比如将"/api/data/edi/vessel"转译为"edi.vessel"
                  * 生产环境下可自己制定一套规则进行转译
                  */
-                return Request.Path.Value.Substring(0, 5).Replace('/', '.');
+                return Request.Path.Value.Substring(0, 10).Replace('/', '.');
             }
         }
 #endif
@@ -108,11 +108,11 @@ namespace Phenix.WebApplication.Controllers.Data
             {
                 /*
                  * 本示例将 Path 转译为待写入的表名
-                 * 比如将"/api/edi/weather"转译为"edi_weather"
-                 * 比如将"/api/edi/vessel"转译为"edi_vessel"
+                 * 比如将"/api/data/edi/weather"转译为"edi_weather"
+                 * 比如将"/api/data/edi/vessel"转译为"edi_vessel"
                  * 生产环境下可自己制定一套规则进行转译
                 */
-                return Request.Path.Value.Substring(0, 5).Replace('/', '_');
+                return Request.Path.Value.Substring(0, 10).Replace('/', '_');
             }
         }
 
