@@ -45,7 +45,7 @@ namespace Demo
                 try
                 {
                     Console.WriteLine("取到‘{0}’用户的动态口令：{1}。", userName, httpClient.CheckIn(userName));
-                    Console.Write("请依照以上提示，找到动态口令并在此输入（按回车完成）：");
+                    Console.Write("请依照以上提示，找到动态口令并在此输入（如果是第一次CheckIn，给到的登录口令也是可以用的，输入完成后按回车确认）：");
                     string dynamicPassword = Console.ReadLine() ?? String.Empty;
                     httpClient.Logon(userName, dynamicPassword.Trim());
                     Console.WriteLine("登录成功：{0}", Identity.CurrentIdentity.IsAuthenticated ? "ok" : "error");
@@ -57,6 +57,7 @@ namespace Demo
                     Console.WriteLine("登录失败，需重试：{0}", AppRun.GetErrorMessage(ex));
                     Console.WriteLine();
                 }
+            Console.WriteLine("如果客户端是自动运行的程序，需要CheckIn一个固定用户，将CheckIn时获得的登录口令写死在程序里（或其他手段保存和取用）。");
             Console.WriteLine("请按任意键继续");
             Console.ReadKey();
             Console.WriteLine();
