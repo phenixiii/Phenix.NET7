@@ -68,3 +68,7 @@
 6，增补Phenix.Core.Log.EventLog将日志上传到服务端的功能，仅当所在进程里未曾注册过任何数据库连接时，才会利用OfflineCache尝试向其属性UploadBaseAddress所指向的服务提交日志，服务端应该实现EventLogController控制器，见Phenix.WebApplication_ORA/MySQL工程
 
 
+20190829
+1，提供'Phenix.WebApplication.用EventLogController归集系统日志.pptx'文档供参考，见'\Phenix.Extensions\Phenix.WebApplication'目录
+2，提供Phenix.Core.Data.Model.UndoableBase<T>可撤销编辑的实体基类，为实体对象的编辑操作提供单级回滚的功能，示例见Demo.Phenix.Core.Data.Model.UndoableBase
+
