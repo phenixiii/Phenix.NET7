@@ -4,6 +4,7 @@ using System.Data.SQLite;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
@@ -108,6 +109,19 @@ namespace Demo
             Console.ReadKey();
             Console.WriteLine();
 
+            Console.WriteLine("启动 3 个线程分别保存 10 条日志...");
+            Task[] tasks = new[]
+            {
+                Task.Run(() => SaveEventLog(1)),
+                Task.Run(() => SaveEventLog(2)),
+                Task.Run(() => SaveEventLog(3)),
+            };
+            Task.WaitAll(tasks);
+            Console.WriteLine("线程运行结束。");
+            Console.WriteLine("请按任意键继续");
+            Console.ReadKey();
+            Console.WriteLine();
+
             Console.WriteLine("注册缺省数据库连接");
             Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
             Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
@@ -124,6 +138,12 @@ namespace Demo
 
             Console.Write("请按回车键结束演示");
             Console.ReadLine();
+        }
+
+        static void SaveEventLog(int index)
+        {
+            for (int i = 0; i < 10; i++)
+                EventLog.Save(String.Format("{0}-{1}:{2}", index, i, Sequence.Value));
         }
 
         private static void ShowFirstCache()
@@ -153,7 +173,7 @@ order by OC_ID desc";
             using (DataReader reader = Database.Default.CreateDataReader(@"
 select *
 from PH7_EventLog
-order by EL_ID desc", CommandBehavior.SingleRow))
+order by EL_ID desc"))
             {
                 while (reader.Read())
                 {

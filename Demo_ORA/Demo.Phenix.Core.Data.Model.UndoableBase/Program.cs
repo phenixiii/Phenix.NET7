@@ -27,7 +27,8 @@ namespace Demo
             Console.WriteLine("   字段映射的是“_ORIGINATE_TEAMS”且是字符串/长整型15位以上精度：初始化为Identity.CurrentIdentity.User.RootTeams.Name/Id，可用于SaaS模式下的系统开发，对不同团体的数据进行切片；");
             Console.WriteLine("   字段映射的是“_UPDATER”：且是字符串/长整型15位以上精度：初始化为Identity.CurrentIdentity.User.Name/Id；");
             Console.WriteLine("   字段映射的是“_UPDATE_TIME”且是DateTime：初始化为当前时间；");
-            Console.WriteLine("以上后两个字段，在 IsSelfDirty 属性为 true 时也会被自动初始化一次。");
+            Console.WriteLine("   字段映射的是“_TIMESTAMP”且是长整型15位以上精度：初始化为Sequence.Value；");
+            Console.WriteLine("以上后3个字段，在 IsSelfDirty 属性为 true 时也会被自动初始化一次。");
             Console.WriteLine("新增一个实体对象，应该调用工厂函数New()而不是直接 new 一个对象，因为工厂函数里会自动将 IsNew 属性设置为 true（当然，你也可以 new 一个对象出来后手动赋值 IsNew 为 true）。");
             Console.WriteLine("实体对象的 IsSelfDirty、IsNew 和 IsSelfDeleted 属性之间是没有逻辑联动的，可以有不同的组合状态，所以在 Save 时：");
             Console.WriteLine("   当 IsNew 为 true 且 IsSelfDeleted 为 false 时，才会按照新增实体的逻辑进行持久化；");

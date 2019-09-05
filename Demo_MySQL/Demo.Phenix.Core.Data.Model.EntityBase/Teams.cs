@@ -190,7 +190,7 @@ namespace Demo
             get { return _name; }
             set
             {
-                if (UpdateProperty(p => p.Id, SetProperty(p => p.Name, value)) == 1)
+                if (Update(p => p.Id, SetProperty(p => p.Name, value)) == 1)
                 {
                     Task.Run(() => _root.SaveRenovateLog(p => p.Id, ExecuteAction.Update));
                     _rootCache.Remove(_root.Id);
@@ -255,7 +255,7 @@ namespace Demo
                     throw new ArgumentException("不允许挂在自己下层的团体下", nameof(value));
 
                 Teams oldValue = _parent;
-                if (UpdateProperty(p => p.Id, SetProperty(p => p.ParentId, value.Id)) == 1)
+                if (Update(p => p.Id, SetProperty(p => p.ParentId, value.Id)) == 1)
                 {
                     _parent = value;
                     value._subTeams = null;

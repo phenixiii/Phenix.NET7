@@ -30,13 +30,14 @@ namespace Demo
             Console.WriteLine("2，实体类的属性名也是Pascal规则；字段命名法是加“_”前缀的camel规则名，比如“_projectName”；");
             Console.WriteLine("   表/视图的字段名/别名，如带前缀，字符数为3个且第3个字符是“_”，映射到类的属性/字段时会自动剔除掉，比如字段“PI_PROJECT_NAME”映射到类的属性名是“ProjectName”/字段名是“_projectName”；");
             Console.WriteLine("   表/视图的字段名/别名，命名时如不出于以下目的，请避免使用如下后缀，它们是持久层引擎的保留字：");
-            Console.WriteLine("   “_ID”且是长整型15位以上精度：主键/外键，每张表都应该有且仅一个长整型15位以上精度的主键字段，外键分物理外键（组合关系）和虚拟外键（聚合关系），命名尽可能与主键相呼应；");
-            Console.WriteLine("   “_FG”且是整型2位/1位精度：枚举/布尔，映射到类的属性/字段时会被自动剔除掉，比如字段“PI_PROJECT_TYPE_FG”映射到类的属性名是“ProjectType”/字段名是“_projectType”，类型应该是 ProjectType 枚举；");
+            Console.WriteLine("   “_ID”且是长整型15位以上精度：主键/外键，新增记录时自动填充Sequence.Value；每张表都应该有且仅一个长整型15位以上精度的主键字段，外键分物理外键（组合关系）和虚拟外键（聚合关系），命名尽可能与主键相呼应；");
+            Console.WriteLine("   “_FG”且是整型2位/1位精度：枚举/布尔，映射到类的属性/字段时会被自动剔除掉后缀，比如字段“PI_PROJECT_TYPE_FG”映射到类的属性名是“ProjectType”/字段名是“_projectType”，类型应该是 ProjectType 枚举；");
             Console.WriteLine("   “_ORIGINATOR”且是字符串/长整型15位以上精度：新增记录时自动填充Identity.CurrentIdentity.User.Name/Id；");
             Console.WriteLine("   “_ORIGINATE_TIME”且是DateTime：新增记录时自动填充当前时间；");
             Console.WriteLine("   “_ORIGINATE_TEAMS”且是字符串/长整型15位以上精度：新增记录时自动填充Identity.CurrentIdentity.User.RootTeams.Name/Id，可用于SaaS模式下的系统开发，对不同团体的数据进行切片；");
             Console.WriteLine("   “_UPDATER”：且是字符串/长整型15位以上精度：更新记录时自动填充Identity.CurrentIdentity.User.Name/Id；");
             Console.WriteLine("   “_UPDATE_TIME”且是DateTime：更新记录时自动填充当前时间；");
+            Console.WriteLine("   “_TIMESTAMP”且是长整型15位以上精度：时间戳，更新记录时自动填充Sequence.Value；时间戳可用于乐观锁模式下的数据更新，保证在分布式架构下新数据不会被脏数据覆盖（会抛出Phenix.Core.Data.Validity.OutdatedDataException）；");
             Console.WriteLine("以上是全部的编写规范。");
             Console.WriteLine("请按任意键继续");
             Console.ReadKey();

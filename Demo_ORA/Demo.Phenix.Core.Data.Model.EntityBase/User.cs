@@ -186,7 +186,7 @@ namespace Demo
             get { return _phone; }
             set
             {
-                if (UpdateProperty(p => p.Id, SetProperty(p => p.Phone, value)) == 1)
+                if (Update(p => p.Id, SetProperty(p => p.Phone, value)) == 1)
                 {
                     Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
                     _cache.Remove(Id);
@@ -205,7 +205,7 @@ namespace Demo
             get { return _eMail; }
             set
             {
-                if (UpdateProperty(p => p.Id, SetProperty(p => p.EMail, value)) == 1)
+                if (Update(p => p.Id, SetProperty(p => p.EMail, value)) == 1)
                 {
                     Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
                     _cache.Remove(Id);
@@ -223,7 +223,7 @@ namespace Demo
             get { return _regAlias; }
             set
             {
-                if (UpdateProperty(p => p.Id, SetProperty(p => p.RegAlias, value)) == 1)
+                if (Update(p => p.Id, SetProperty(p => p.RegAlias, value)) == 1)
                 {
                     Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
                     _cache.Remove(Id);
@@ -365,7 +365,7 @@ namespace Demo
                 if (value == null)
                     throw new ArgumentNullException(nameof(value), "不允许空挂所属团体");
 
-                if (UpdateProperty(p => p.Id,
+                if (Update(p => p.Id,
                         SetProperty(p => p.RootTeamsId, value.RootId),
                         SetProperty(p => p.TeamsId, value.Id)) == 1)
                 {
@@ -405,7 +405,7 @@ namespace Demo
                 if (value == null)
                     throw new ArgumentNullException(nameof(value), "不允许空挂担任岗位");
 
-                if (UpdateProperty(p => p.Id, SetProperty(p => p.PositionId, value.Id)) == 1)
+                if (Update(p => p.Id, SetProperty(p => p.PositionId, value.Id)) == 1)
                 {
                     _position = value;
                     Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
@@ -433,7 +433,7 @@ namespace Demo
             get { return _locked; }
             set
             {
-                if (UpdateProperty(p => p.Id,
+                if (Update(p => p.Id,
                         SetProperty(p => p.Locked, value),
                         SetProperty(p => p.LockedTime, DateTime.Now)) == 1)
                 {
@@ -463,7 +463,7 @@ namespace Demo
             get { return _disabled; }
             set
             {
-                if (UpdateProperty(p => p.Id,
+                if (Update(p => p.Id,
                         SetProperty(p => p.Disabled, value),
                         SetProperty(p => p.DisabledTime, DateTime.Now)) == 1)
                 {

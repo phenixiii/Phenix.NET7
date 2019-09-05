@@ -19,9 +19,10 @@ namespace Demo
         }
         
         [Newtonsoft.Json.JsonConstructor]
-        private Position(bool? isNew, bool? isSelfDirty, bool? isSelfDeleted,
+        private Position(bool? isNew, bool? isSelfDeleted, bool? isSelfDirty,
+            IDictionary<string, object> oldPropertyValues, IDictionary<string, bool?> dirtyPropertyNames,
             long id, string name, IList<string> roles)
-            : base(isNew, isSelfDirty, isSelfDeleted)
+            : base(isNew, isSelfDeleted, isSelfDirty, oldPropertyValues, dirtyPropertyNames)
         {
             _id = id;
             _name = name;

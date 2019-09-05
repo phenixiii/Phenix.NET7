@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.1": {
-      "Phenix.Core/7.2.2": {
+      "Phenix.Core/7.2.3": {
         "dependencies": {
           "Microsoft.AspNetCore.Http.Abstractions": "2.1.1",
           "Microsoft.AspNetCore.Mvc.ViewFeatures": "2.1.1",
@@ -911,7 +911,7 @@
     }
   },
   "libraries": {
-    "Phenix.Core/7.2.2": {
+    "Phenix.Core/7.2.3": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

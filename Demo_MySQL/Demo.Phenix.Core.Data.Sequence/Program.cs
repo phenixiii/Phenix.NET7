@@ -42,7 +42,8 @@ namespace Demo
             Console.ReadLine();
         }
 
-        private static readonly SynchronizedSortedDictionary<long, int> _sequenceValues = new SynchronizedSortedDictionary<long, int>();
+        static readonly SynchronizedSortedDictionary<long, int> _sequenceValues = new SynchronizedSortedDictionary<long, int>();
+
         static void FetchSequence(int index)
         {
             for (int i = 0; i < 10; i++)

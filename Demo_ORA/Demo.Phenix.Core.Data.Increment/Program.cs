@@ -44,7 +44,8 @@ namespace Demo
             Console.ReadLine();
         }
 
-        private static readonly SynchronizedSortedDictionary<string, int> _sequenceValues = new SynchronizedSortedDictionary<string, int> ();
+        static readonly SynchronizedSortedDictionary<string, int> _sequenceValues = new SynchronizedSortedDictionary<string, int> ();
+
         static void FetchIncrement(int index)
         {
             Task[] tasks = new[]

@@ -95,6 +95,14 @@
             <param name="behavior">CommandBehavior</param>
             <param name="needSaveLog">是否保存日志</param>
         </member>
+        <member name="M:Phenix.Core.Data.Common.DataReader.#ctor(System.Data.Common.DbConnection,System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            初始化
+            </summary>
+            <param name="connection">DbConnection</param>
+            <param name="sql">SQL 语句</param>
+            <param name="paramValues">参数值</param>
+        </member>
         <member name="M:Phenix.Core.Data.Common.DataReader.#ctor(System.Data.Common.DbConnection,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             初始化
@@ -102,6 +110,15 @@
             <param name="connection">DbConnection</param>
             <param name="sql">SQL 语句</param>
             <param name="needSaveLog">是否保存日志</param>
+            <param name="paramValues">参数值</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.DataReader.#ctor(System.Data.Common.DbConnection,System.String,System.Data.CommandBehavior,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            初始化
+            </summary>
+            <param name="connection">DbConnection</param>
+            <param name="sql">SQL 语句</param>
+            <param name="behavior">CommandBehavior</param>
             <param name="paramValues">参数值</param>
         </member>
         <member name="M:Phenix.Core.Data.Common.DataReader.#ctor(System.Data.Common.DbConnection,System.String,System.Data.CommandBehavior,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
@@ -114,6 +131,14 @@
             <param name="needSaveLog">是否保存日志</param>
             <param name="paramValues">参数值</param>
         </member>
+        <member name="M:Phenix.Core.Data.Common.DataReader.#ctor(System.Data.Common.DbTransaction,System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            初始化
+            </summary>
+            <param name="transaction">DbTransaction</param>
+            <param name="sql">SQL 语句</param>
+            <param name="paramValues">参数值</param>
+        </member>
         <member name="M:Phenix.Core.Data.Common.DataReader.#ctor(System.Data.Common.DbTransaction,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             初始化
@@ -121,6 +146,15 @@
             <param name="transaction">DbTransaction</param>
             <param name="sql">SQL 语句</param>
             <param name="needSaveLog">是否保存日志</param>
+            <param name="paramValues">参数值</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.DataReader.#ctor(System.Data.Common.DbTransaction,System.String,System.Data.CommandBehavior,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            初始化
+            </summary>
+            <param name="transaction">DbTransaction</param>
+            <param name="sql">SQL 语句</param>
+            <param name="behavior">CommandBehavior</param>
             <param name="paramValues">参数值</param>
         </member>
         <member name="M:Phenix.Core.Data.Common.DataReader.#ctor(System.Data.Common.DbTransaction,System.String,System.Data.CommandBehavior,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
@@ -738,6 +772,16 @@
             获取记录(属性名为数据源的表/视图的字段名/别名的JSON格式)
             </summary>
         </member>
+        <member name="M:Phenix.Core.Data.Common.DataReader.CreateParameter(System.Object)">
+            <summary>
+            构建 DbParameter
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.DataReader.CreateParameter(System.Nullable{System.Int32},System.Object)">
+            <summary>
+            构建 DbParameter
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Data.Common.DataReader.CreateParameter(System.String,System.Object,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
@@ -804,7 +848,19 @@
             </summary>
             <returns>执行记录数</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteNonQuery(System.Data.Common.DbConnection,System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            执行 DbCommand
+            </summary>
+            <returns>执行记录数</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteNonQuery(System.Data.Common.DbConnection,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            执行 DbCommand
+            </summary>
+            <returns>执行记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteNonQuery(System.Data.Common.DbTransaction,System.String,Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             执行 DbCommand
             </summary>
@@ -816,7 +872,19 @@
             </summary>
             <returns>执行记录数</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteStoredProc(System.Data.Common.DbConnection,System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            执行存储过程
+            </summary>
+            <returns>结果集(参数名-参数值)</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteStoredProc(System.Data.Common.DbConnection,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            执行存储过程
+            </summary>
+            <returns>结果集(参数名-参数值)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteStoredProc(System.Data.Common.DbTransaction,System.String,Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             执行存储过程
             </summary>
@@ -834,7 +902,19 @@
             </summary>
             <returns>返回值</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteScalar(System.Data.Common.DbConnection,System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            执行查询，并返回查询所返回的结果集中第一行的第一列
+            </summary>
+            <returns>返回值</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteScalar(System.Data.Common.DbConnection,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            执行查询，并返回查询所返回的结果集中第一行的第一列
+            </summary>
+            <returns>返回值</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteScalar(System.Data.Common.DbTransaction,System.String,Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             执行查询，并返回查询所返回的结果集中第一行的第一列
             </summary>
@@ -856,7 +936,17 @@
             执行查询
             </summary>
         </member>
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteReader(System.Data.Common.DbConnection,System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            执行查询
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteReader(System.Data.Common.DbConnection,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            执行查询
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteReader(System.Data.Common.DbConnection,System.String,System.Data.CommandBehavior,Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             执行查询
             </summary>
@@ -866,7 +956,17 @@
             执行查询
             </summary>
         </member>
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteReader(System.Data.Common.DbTransaction,System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            执行查询
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteReader(System.Data.Common.DbTransaction,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            执行查询
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteReader(System.Data.Common.DbTransaction,System.String,System.Data.CommandBehavior,Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             执行查询
             </summary>
@@ -883,7 +983,17 @@
             <param name="command">DbCommand</param>
             <param name="needSaveLog">是否记录日志</param>
         </member>
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.FillDataSet(System.Data.Common.DbConnection,System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            填充 DataSet
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.FillDataSet(System.Data.Common.DbConnection,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            填充 DataSet
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.FillDataSet(System.Data.Common.DbTransaction,System.String,Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             填充 DataSet
             </summary>
@@ -891,6 +1001,16 @@
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.FillDataSet(System.Data.Common.DbTransaction,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             填充 DataSet
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.Object)">
+            <summary>
+            构建 DbParameter
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.Nullable{System.Int32},System.Object)">
+            <summary>
+            构建 DbParameter
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,System.Nullable{System.Int32})">
@@ -2380,11 +2500,23 @@
             <param name="in11">in参数11</param>
             <param name="in12">in参数12</param>
         </member>
+        <member name="M:Phenix.Core.Data.Database.ExecuteNonQuery(System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            执行DbCommand
+            </summary>
+            <returns>执行记录数</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Database.ExecuteNonQuery(System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             执行DbCommand
             </summary>
             <returns>执行记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.ExecuteStoredProc(System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            执行存储过程
+            </summary>
+            <returns>结果集(参数名-参数值)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Database.ExecuteStoredProc(System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
@@ -2392,13 +2524,29 @@
             </summary>
             <returns>结果集(参数名-参数值)</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Database.ExecuteScalar(System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            执行查询，并返回查询所返回的结果集中第一行的第一列
+            </summary>
+            <returns>返回值</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Database.ExecuteScalar(System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             执行查询，并返回查询所返回的结果集中第一行的第一列
             </summary>
             <returns>返回值</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Database.CreateDataReader(System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            构建 DataReader
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Data.Database.CreateDataReader(System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            构建 DataReader
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.CreateDataReader(System.String,System.Data.CommandBehavior,Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             构建 DataReader
             </summary>
@@ -2406,6 +2554,11 @@
         <member name="M:Phenix.Core.Data.Database.CreateDataReader(System.String,System.Data.CommandBehavior,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             构建 DataReader
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.FillDataSet(System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            填充 DataSet
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Database.FillDataSet(System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
@@ -3104,27 +3257,34 @@
             克隆
             </summary>
         </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FillReservedFields(System.Boolean,System.Boolean)">
+            <summary>
+            填充保留字段
+            </summary>
+            <param name="isWatermarkColumn">是否仅在insert时被提交</param>
+            <param name="overwritingOnUpdate">是否要在Update时被覆盖</param>
+        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Insert(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
             <summary>
-            新增记录
+            新增记录(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Insert(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
             <summary>
-            新增记录
+            新增记录(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Insert(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
             <summary>
-            新增记录
+            新增记录(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.SetProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
@@ -3132,7 +3292,7 @@
             设置属性值
             </summary>
             <param name="propertyLambda">含类属性的 lambda 表达式</param>
-            <param name="valueLambda">值 lambda 表达式</param>
+            <param name="newValueLambda">新值 lambda 表达式</param>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.SetProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Object)">
             <summary>
@@ -3141,105 +3301,108 @@
             <param name="propertyLambda">含类属性的 lambda 表达式</param>
             <param name="newValue">新值</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},Phenix.Core.Data.Schema.PropertyValue[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update(Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            更新属性
+            更新记录(仅提交第一个属性映射的表记录)
             </summary>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
-            <param name="propertyValues">待更新属性值队列</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
             <returns>更新记录数</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Schema.PropertyValue[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update(System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            更新属性
+            更新记录(仅提交第一个属性映射的表记录)
             </summary>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
             <returns>更新记录数</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateProperty(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.PropertyValue[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            更新属性
+            更新记录(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
             <returns>更新记录数</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateProperty(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},Phenix.Core.Data.Schema.PropertyValue[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            更新属性
+            更新记录(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
-            <param name="propertyValues">待更新属性值队列</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
             <returns>更新记录数</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateProperty(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Schema.PropertyValue[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update(System.Data.Common.DbConnection,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            更新属性
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列</param>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateProperty(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.PropertyValue[])">
-            <summary>
-            更新属性
+            更新记录(仅提交第一个属性映射的表记录)
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
             <returns>更新记录数</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateProperty(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},Phenix.Core.Data.Schema.PropertyValue[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update(System.Data.Common.DbConnection,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            更新属性
+            更新记录(仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录(如未指定主键属性则仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录(如未指定主键属性则仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update(System.Data.Common.DbTransaction,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录(仅提交第一个属性映射的表记录)
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
-            <param name="propertyValues">待更新属性值队列</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
             <returns>更新记录数</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateProperty(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Schema.PropertyValue[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update(System.Data.Common.DbTransaction,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            更新属性
+            更新记录(仅提交第一个属性映射的表记录)
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
             <returns>更新记录数</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateProperty(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.PropertyValue[])">
-            <summary>
-            更新属性
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列</param>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
-            <summary>
-            更新记录
-            </summary>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
-            <summary>
-            更新记录
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
             更新记录
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateRecord(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3250,11 +3413,29 @@
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateRecord(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>更新记录数</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateRecord(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
             更新记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateRecord(Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -3267,12 +3448,32 @@
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateRecord(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>更新记录数</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateRecord(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
             更新记录
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateRecord(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -3285,6 +3486,16 @@
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateRecord(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>更新记录数</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateRecord(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
             更新记录
@@ -3294,11 +3505,21 @@
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateRecord(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>更新记录数</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Delete(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
             <summary>
             删除记录
             </summary>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
             <returns>删除记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Delete(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
@@ -3306,7 +3527,7 @@
             删除记录
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
             <returns>删除记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Delete(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
@@ -3314,7 +3535,7 @@
             删除记录
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
             <returns>删除记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.DeleteRecord(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
@@ -4062,6 +4283,36 @@
             支持编辑回滚
             </summary>
         </member>
+        <member name="P:Phenix.Core.Data.Model.ISupportUndo.IsFetched">
+            <summary>
+            离线状态
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.ISupportUndo.IsSelfDirty">
+            <summary>
+            更新状态
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.ISupportUndo.IsNew">
+            <summary>
+            新增状态
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.ISupportUndo.IsSelfDeleted">
+            <summary>
+            删除状态
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.ISupportUndo.OldPropertyValues">
+            <summary>
+            旧属性值
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.ISupportUndo.DirtyPropertyNames">
+            <summary>
+            脏属性值
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Data.Model.ISupportUndo.BeginEdit">
             <summary>
             启动编辑
@@ -4090,7 +4341,7 @@
             for CreateInstance
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.#ctor(System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
+        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.#ctor(System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IDictionary{System.String,System.Nullable{System.Boolean}})">
             <summary>
             for Newtonsoft.Json.JsonConstructor
             </summary>
@@ -4112,11 +4363,6 @@
             离线状态
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Model.UndoableBase`1.IsSelfDirty">
-            <summary>
-            更新状态
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Data.Model.UndoableBase`1.IsNew">
             <summary>
             新增状态
@@ -4127,56 +4373,25 @@
             删除状态
             </summary>
         </member>
+        <member name="P:Phenix.Core.Data.Model.UndoableBase`1.IsSelfDirty">
+            <summary>
+            更新状态
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.UndoableBase`1.OldPropertyValues">
+            <summary>
+            旧属性值
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.UndoableBase`1.DirtyPropertyNames">
+            <summary>
+            脏属性名
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Data.Model.UndoableBase`1.MarkFetched">
             <summary>
             MarkFetched
             </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.GetOldValue(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
-            <summary>
-            取旧值
-            </summary>
-            <param name="propertyLambda">含类属性的 lambda 表达式</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.SetDirty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Nullable{System.Boolean})">
-            <summary>
-            设置脏属性
-            </summary>
-            <param name="propertyLambda">含类属性的 lambda 表达式</param>
-            <param name="isDirty">是否脏数据(null代表仅基于新旧值的判断)</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.SetDirty(System.String,System.Nullable{System.Boolean})">
-            <summary>
-            设置脏属性
-            </summary>
-            <param name="propertyName">属性名</param>
-            <param name="isDirty">是否脏数据(null代表仅基于新旧值的判断)</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.IsDirty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
-            <summary>
-            是否脏属性
-            </summary>
-            <param name="propertyLambda">含类属性的 lambda 表达式</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.IsDirty(System.String)">
-            <summary>
-            是否脏属性
-            </summary>
-            <param name="propertyName">属性名</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.SetDirtyValue(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Object)">
-            <summary>
-            设置脏属性值
-            </summary>
-            <param name="propertyLambda">含类属性的 lambda 表达式</param>
-            <param name="value">值</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.SetDirtyValue(System.String,System.Object)">
-            <summary>
-            设置脏属性值
-            </summary>
-            <param name="propertyName">属性名</param>
-            <param name="value">值</param>
         </member>
         <member name="M:Phenix.Core.Data.Model.UndoableBase`1.BeginEdit">
             <summary>
@@ -4196,25 +4411,79 @@
             将原始状态更新到当前状态
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.Save(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.GetOldValue(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            取旧值
+            </summary>
+            <param name="propertyLambda">含类属性的 lambda 表达式</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.IsDirty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            是否脏属性(null代表仅基于新旧值的判断)
+            </summary>
+            <param name="propertyLambda">含类属性的 lambda 表达式</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.SetDirty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Nullable{System.Boolean})">
+            <summary>
+            设置脏属性
+            </summary>
+            <param name="propertyLambda">含类属性的 lambda 表达式</param>
+            <param name="isDirty">是否脏数据(null代表仅基于新旧值的判断)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.SetDirtyValue(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Object)">
+            <summary>
+            设置脏属性值
+            </summary>
+            <param name="propertyLambda">含类属性的 lambda 表达式</param>
+            <param name="newValue">新属性值</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.GetDirtyPropertyValues">
+            <summary>
+            提取脏属性值
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.Save(System.Boolean)">
+            <summary>
+            保存
+            </summary>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.Save(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Boolean)">
             <summary>
             提交对象
             </summary>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.Save(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.Save(System.Data.Common.DbConnection,System.Boolean)">
             <summary>
             保存
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.Save(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.Save(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Boolean)">
+            <summary>
+            保存
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.Save(System.Data.Common.DbTransaction,System.Boolean)">
             <summary>
             保存
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.Save(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Boolean)">
+            <summary>
+            保存
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
         </member>
         <member name="T:Phenix.Core.Data.Renovator">
             <summary>
@@ -4412,6 +4681,11 @@
             是否"更新时间"字段（字段类型需是DateTime，更新记录时自动填充当前时间）
             </summary>
         </member>
+        <member name="P:Phenix.Core.Data.Schema.Column.IsTimestampColumn">
+            <summary>
+            是否"时间戳"字段（字段类型需是长整型15位以上精度，更新记录时自动填充Sequence.Value）
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Data.Schema.Column.IsWatermarkColumn">
             <summary>
             是否仅在insert时被提交
@@ -4460,14 +4734,14 @@
             所属类
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Schema.Field.OwnerSheet">
-            <summary>
-            所属单子
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Data.Schema.Field.FieldInfo">
             <summary>
             字段信息
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Schema.Field.OwnerSheet">
+            <summary>
+            所属单子
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Schema.Field.Column">
@@ -4496,44 +4770,19 @@
             </summary>
             <param name="obj">对象</param>
         </member>
+        <member name="M:Phenix.Core.Data.Schema.Field.Set``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            设置值
+            </summary>
+            <param name="entity">实体</param>
+            <param name="valueLambda">值 lambda 表达式</param>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.Field.Set``1(``0,System.Object)">
             <summary>
             设置值
             </summary>
             <param name="entity">实体</param>
-            <param name="value">值</param>
-        </member>
-        <member name="T:Phenix.Core.Data.Schema.FieldValue">
-            <summary>
-            字段值
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.FieldValue.#ctor(Phenix.Core.Data.Schema.Field,System.Object)">
-            <summary>
-            字段值
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Schema.FieldValue.Field">
-            <summary>
-            数据映射字段信息
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Schema.FieldValue.Value">
-            <summary>
-            值
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Schema.FieldValue.IsDirty">
-            <summary>
-            是否脏数据
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.FieldValue.IsDirtyValue``1(``0,System.Object@)">
-            <summary>
-            是否脏数据
-            </summary>
-            <param name="entity">实体</param>
-            <param name="differed">当前值(null代表无差异)</param>
+            <param name="value">值/OperationExpression</param>
         </member>
         <member name="T:Phenix.Core.Data.Schema.ForeignKey">
             <summary>
@@ -4717,15 +4966,6 @@
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表字段</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.FindTableColumn(System.String,System.String,System.Boolean)">
-            <summary>
-            检索表字段
-            </summary>
-            <param name="tableName">表名</param>
-            <param name="columnName">字段名</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
-            <returns>表字段</returns>
-        </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindView``1(System.Boolean)">
             <summary>
             检索视图
@@ -4749,15 +4989,6 @@
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>视图</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.FindViewColumn(System.String,System.String,System.Boolean)">
-            <summary>
-            检索视图字段
-            </summary>
-            <param name="viewName">视图名</param>
-            <param name="columnName">字段名</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
-            <returns>视图字段</returns>
-        </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.ExtractViewTables(System.String)">
             <summary>
             提取视图中表队列
@@ -4775,14 +5006,14 @@
             所属类
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Schema.Property.OwnerSheet">
-            <summary>
-            所属单子
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Data.Schema.Property.PropertyInfo">
             <summary>
             属性信息
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Schema.Property.OwnerSheet">
+            <summary>
+            所属单子
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Schema.Property.Column">
@@ -4823,12 +5054,19 @@
             </summary>
             <param name="obj">对象</param>
         </member>
+        <member name="M:Phenix.Core.Data.Schema.Property.Set``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            设置值
+            </summary>
+            <param name="entity">实体</param>
+            <param name="valueLambda">值 lambda 表达式</param>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.Property.Set``1(``0,System.Object)">
             <summary>
             设置值
             </summary>
             <param name="entity">实体</param>
-            <param name="value">值</param>
+            <param name="value">值/OperationExpression</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Property.Validate(System.Object)">
             <summary>
@@ -4848,41 +5086,35 @@
             属性值
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.PropertyValue.#ctor(Phenix.Core.Data.Schema.Property,System.Object)">
-            <summary>
-            属性值
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.PropertyValue.Set``1(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+        <member name="M:Phenix.Core.Data.Schema.PropertyValue.Set``1(Phenix.Core.Data.Schema.Sheet,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
             <summary>
             设置属性值
             </summary>
             <param name="sheet">单子</param>
+            <param name="entity">实体</param>
             <param name="propertyLambda">含类属性的 lambda 表达式</param>
-            <param name="valueLambda">值 lambda 表达式</param>
+            <param name="newValueLambda">新值 lambda 表达式</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.PropertyValue.Set``1(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Object)">
+        <member name="M:Phenix.Core.Data.Schema.PropertyValue.Set``1(Phenix.Core.Data.Schema.Sheet,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Object)">
             <summary>
             设置属性值
             </summary>
             <param name="sheet">单子</param>
+            <param name="entity">实体</param>
             <param name="propertyLambda">含类属性的 lambda 表达式</param>
-            <param name="value">值</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.PropertyValue.Set(Phenix.Core.Data.Schema.Sheet,System.Reflection.PropertyInfo,System.Object)">
-            <summary>
-            设置属性值
-            </summary>
-            <param name="sheet">单子</param>
-            <param name="propertyInfo">PropertyInfo</param>
-            <param name="value">值</param>
+            <param name="newValue">新值/OperationExpression</param>
         </member>
         <member name="P:Phenix.Core.Data.Schema.PropertyValue.Property">
             <summary>
             数据映射属性信息
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Schema.PropertyValue.Value">
+        <member name="P:Phenix.Core.Data.Schema.PropertyValue.OldValue">
+            <summary>
+            旧值
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Schema.PropertyValue.NewValue">
             <summary>
             值/OperationExpression
             </summary>
@@ -4922,6 +5154,11 @@
             字段清单
             </summary>
         </member>
+        <member name="P:Phenix.Core.Data.Schema.Sheet.PrimaryKeyColumns">
+            <summary>
+            主键字段清单
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Data.Schema.Sheet.ClassName">
             <summary>
             类名
@@ -4945,24 +5182,19 @@
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.GetFields(System.Type,System.Boolean,System.Boolean)">
             <summary>
-            获取数据映射类字段
+            获取数据映射类字段(均映射的是遍历类时遇到的第一个符合条件的表)
             </summary>
             <param name="entityType">实体类</param>
             <param name="isWatermarkColumn">是否仅在insert时被提交</param>
             <param name="overwritingOnUpdate">是否要在Update时被覆盖</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.GetField(System.Type,System.String)">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.GetField(System.Type,System.String,System.Boolean)">
             <summary>
             获取数据映射类字段
             </summary>
             <param name="entityType">实体类</param>
             <param name="fieldName">字段名</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.GetField(System.Reflection.FieldInfo)">
-            <summary>
-            获取数据映射类字段
-            </summary>
-            <param name="fieldInfo">FieldInfo</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.GetProperties(System.Type)">
             <summary>
@@ -4970,24 +5202,26 @@
             </summary>
             <param name="entityType">实体类</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.GetProperty(System.Type,System.String)">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.GetProperties(System.Type,Phenix.Core.Data.Schema.Sheet)">
+            <summary>
+            获取数据映射类属性
+            </summary>
+            <param name="entityType">实体类</param>
+            <param name="targetTable">所属表</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.GetProperty(System.Type,System.String,System.Boolean)">
             <summary>
             获取数据映射类属性
             </summary>
             <param name="entityType">实体类</param>
             <param name="propertyName">属性名</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.GetProperty(System.Reflection.PropertyInfo)">
-            <summary>
-            获取数据映射类属性
-            </summary>
-            <param name="propertyInfo">PropertyInfo</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.FindPrimaryKeyTableColumn``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.GetPrimaryKeyProperty``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean)">
             <summary>
             检索主键表字段
             </summary>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>字段</returns>
         </member>
@@ -5007,6 +5241,14 @@
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>字段</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.FindTableColumn(System.String,System.Boolean)">
+            <summary>
+            检索字段
+            </summary>
+            <param name="binderName">字段名/类属性名/类字段名</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <returns>字段</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.FindColumn(System.Reflection.MemberInfo,System.Boolean)">
             <summary>
             检索字段
@@ -5019,9 +5261,21 @@
             <summary>
             检索字段
             </summary>
-            <param name="name">字段名/类属性名/类字段名</param>
+            <param name="binderName">字段名/类属性名/类字段名</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>字段</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.GetColumns(System.Boolean,System.Boolean)">
+            <summary>
+            获取字段清单
+            </summary>
+            <param name="isWatermarkColumn">是否仅在insert时被提交</param>
+            <param name="overwritingOnUpdate">是否要在Update时被覆盖</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.GetTimestampColumns">
+            <summary>
+            获取"时间戳"字段清单
+            </summary>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.Validate``1(``0,Phenix.Core.Data.ExecuteAction)">
             <summary>
@@ -5044,40 +5298,6 @@
             <param name="propertyValues">"属性名-属性值"键值队列</param>
             <param name="executeAction">执行动作</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.GetFieldValues``1(``0)">
-            <summary>
-            提取字段值
-            </summary>
-            <param name="entity">实体</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SetFieldValues``1(``0,Phenix.Core.Data.Schema.FieldValue[])">
-            <summary>
-            设置字段值
-            </summary>
-            <param name="entity">实体</param>
-            <param name="fieldValues">字段值</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SetFieldValues``1(``0,Phenix.Core.Data.Schema.PropertyValue[])">
-            <summary>
-            设置字段值
-            </summary>
-            <param name="entity">实体</param>
-            <param name="propertyValue">属性值</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SetProperty``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
-            <summary>
-            设置属性值
-            </summary>
-            <param name="propertyLambda">含类属性的 lambda 表达式</param>
-            <param name="valueLambda">值 lambda 表达式</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SetProperty``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Object)">
-            <summary>
-            设置属性值
-            </summary>
-            <param name="propertyLambda">含类属性的 lambda 表达式</param>
-            <param name="newValue">新值</param>
-        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.FillReservedFields``1(``0,System.Boolean,System.Boolean)">
             <summary>
             填充保留字段
@@ -5088,40 +5308,40 @@
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.InsertEntity``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
             <summary>
-            新增记录
+            新增记录(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
             <param name="entity">实体</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.InsertEntity``1(System.Data.Common.DbConnection,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
             <summary>
-            新增记录
+            新增记录(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
-            <param name="primaryKeyMemberLambda">>含类主键属性/字段的 lambda 表达式</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.InsertEntity``1(System.Data.Common.DbTransaction,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
             <summary>
-            新增记录
+            新增记录(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.InsertRecord(Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            新增记录
+            新增记录(仅提交第一个属性映射的表记录)
             </summary>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.InsertRecord(System.Data.Common.DbConnection,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            新增记录
+            新增记录(仅提交第一个属性映射的表记录)
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="propertyValues">待更新属性值队列</param>
@@ -5129,7 +5349,7 @@
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.InsertRecord(System.Data.Common.DbTransaction,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            新增记录
+            新增记录(仅提交第一个属性映射的表记录)
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="propertyValues">待更新属性值队列</param>
@@ -5137,14 +5357,14 @@
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.InsertRecord(System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
-            新增记录
+            新增记录(仅提交第一个属性映射的表记录)
             </summary>
             <param name="propertyValues">待更新"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.InsertRecord(System.Data.Common.DbConnection,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
-            新增记录
+            新增记录(仅提交第一个属性映射的表记录)
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="propertyValues">待更新"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
@@ -5152,36 +5372,142 @@
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.InsertRecord(System.Data.Common.DbTransaction,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
-            新增记录
+            新增记录(仅提交第一个属性映射的表记录)
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="propertyValues">待更新"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
             <returns>更新记录数</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SetProperty``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
             <summary>
-            更新记录
+            设置属性值
             </summary>
             <param name="entity">实体</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="propertyLambda">含类属性的 lambda 表达式</param>
+            <param name="newValueLambda">新值 lambda 表达式</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SetProperty``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Object)">
+            <summary>
+            设置属性值
+            </summary>
+            <param name="entity">实体</param>
+            <param name="propertyLambda">含类属性的 lambda 表达式</param>
+            <param name="newValue">新值</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录(仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="entity">实体</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
             <returns>更新记录数</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            更新记录
+            更新记录(仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="entity">实体</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录(如未指定主键属性则仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="entity">实体</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录(如未指定主键属性则仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="entity">实体</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录(仅提交第一个属性映射的表记录)
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
             <returns>更新记录数</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            更新记录
+            更新记录(仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="entity">实体</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录(仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="entity">实体</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录(如未指定主键属性则仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="entity">实体</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录(仅提交第一个属性映射的表记录)
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录(仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="entity">实体</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录(如未指定主键属性则仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="entity">实体</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录(如未指定主键属性则仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="entity">实体</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5192,11 +5518,29 @@
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>更新记录数</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
             更新记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord(Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -5209,12 +5553,32 @@
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>更新记录数</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
             更新记录
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -5227,12 +5591,32 @@
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>更新记录数</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
             更新记录
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -5264,7 +5648,7 @@
             删除记录
             </summary>
             <param name="entity">实体</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
             <returns>删除记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.DeleteEntity``1(System.Data.Common.DbConnection,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
@@ -5273,7 +5657,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
             <returns>删除记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.DeleteEntity``1(System.Data.Common.DbTransaction,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
@@ -5282,7 +5666,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
-            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表遍历类遇到的第一个主键属性)</param>
             <returns>删除记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.DeleteRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
@@ -5976,6 +6360,11 @@
             缺省"更新时间"的 ColumnName
             </summary>
         </member>
+        <member name="P:Phenix.Core.Data.Schema.Standards.DefaultTimestampColumnName">
+            <summary>
+            缺省"时间戳"的 ColumnName
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.Standards.IsDefaultKeyColumnName(System.String)">
             <summary>
             是否缺省"主键/外键"的 ColumnName（字段类型需是长整型15位以上精度）
@@ -6009,6 +6398,11 @@
         <member name="M:Phenix.Core.Data.Schema.Standards.IsDefaultUpdateTimeColumnName(System.String)">
             <summary>
             是否缺省"更新时间"的 ColumnName（字段类型需是DateTime）
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Standards.IsDefaultTimestampColumnName(System.String)">
+            <summary>
+            是否缺省"时间戳"的 ColumnName（字段类型需是长整型15位以上精度）
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Standards.TrimTableName(System.String)">
@@ -6213,8 +6607,14 @@
         </member>
         <member name="P:Phenix.Core.Data.Sequence.ClearMarkerDeferMonths">
             <summary>
-            清理几个月前的 Marker
+            清理几个月前的Marker(仅当直连Database时有效)
             缺省为 3(>=3)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Sequence.PreLoadPoolSize">
+            <summary>
+            预加载池大小(仅当用HttpClient连服务端下载时有效)
+            缺省为 10(>=10)
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Sequence.Database">
@@ -6224,7 +6624,7 @@
         </member>
         <member name="P:Phenix.Core.Data.Sequence.HttpClient">
             <summary>
-            Database为空时用HttpClient连服务端
+            Database为空时用HttpClient连服务端下载
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Sequence.Value">
@@ -6245,27 +6645,47 @@
             <param name="executeAction">执行动作</param>
             <returns>包含失败的验证信息</returns>
         </member>
-        <member name="T:Phenix.Core.Data.Validity.UniqueValidationException">
+        <member name="T:Phenix.Core.Data.Validity.OutdatedDataException">
+            <summary>
+            数据过时异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Validity.OutdatedDataException.#ctor">
+            <summary>
+            数据过时异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Validity.OutdatedDataException.#ctor(System.String,System.Exception)">
+            <summary>
+            数据过时异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Validity.OutdatedDataException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            序列化
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Data.Validity.UniqueConstraintException">
             <summary>
             唯一约束异常
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Validity.UniqueValidationException.#ctor">
+        <member name="M:Phenix.Core.Data.Validity.UniqueConstraintException.#ctor">
             <summary>
             唯一约束异常
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Validity.UniqueValidationException.#ctor(System.String,System.Exception)">
+        <member name="M:Phenix.Core.Data.Validity.UniqueConstraintException.#ctor(System.String,System.Exception)">
             <summary>
             唯一约束异常
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Validity.UniqueValidationException.#ctor(System.String,System.String,System.Object)">
+        <member name="M:Phenix.Core.Data.Validity.UniqueConstraintException.#ctor(System.String,System.String,System.Object)">
             <summary>
             唯一约束异常
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Validity.UniqueValidationException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+        <member name="M:Phenix.Core.Data.Validity.UniqueConstraintException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
             <summary>
             序列化
             </summary>
@@ -7398,12 +7818,27 @@
             <param name="baseTypes">基础类型、Interface</param>
             <returns>类型队列</returns>
         </member>
+        <member name="M:Phenix.Core.Reflection.Utilities.LoadExportedSubclassTypesFromBaseDirectory(System.Type[])">
+            <summary>
+            从基础目录中加载派生类型
+            </summary>
+            <param name="baseTypes">基础类型、Interface</param>
+            <returns>类型队列</returns>
+        </member>
         <member name="M:Phenix.Core.Reflection.Utilities.LoadExportedSubclassTypesFromBaseDirectory(System.Boolean,System.Type[])">
             <summary>
             从基础目录中加载派生类型
             </summary>
             <param name="baseTypes">基础类型、Interface</param>
             <param name="includeAbstract">是否包括抽象类型</param>
+            <returns>类型队列</returns>
+        </member>
+        <member name="M:Phenix.Core.Reflection.Utilities.LoadExportedSubclassTypes(System.String,System.Type[])">
+            <summary>
+            加载派生类型
+            </summary>
+            <param name="fileName">程序集文件名</param>
+            <param name="baseTypes">基础类型、Interface</param>
             <returns>类型队列</returns>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.LoadExportedSubclassTypes(System.String,System.Boolean,System.Type[])">
@@ -8616,6 +9051,13 @@
             用户资料
             </summary>
         </member>
+        <member name="M:Phenix.Core.Security.User.BuildPassword(System.String)">
+            <summary>
+            构建登录口令
+            </summary>
+            <param name="name">名称</param>
+            <returns>登录口令</returns>
+        </member>
         <member name="M:Phenix.Core.Security.User.New(System.String,System.String,System.String,System.String,System.String,System.String@,System.String@)">
             <summary>
             新增用户资料
@@ -8969,6 +9411,15 @@
             </summary>
             <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
             <param name="throwIfNotConform">如果为 true, 服务请求超时会抛出OvertimeRequestException异常而不是返回false</param>
+            <returns>是否正确</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.User.IsValid(System.String,System.String,System.Boolean)">
+            <summary>
+            核对有效性
+            </summary>
+            <param name="timestamp">时间戳</param>
+            <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
+            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
             <returns>是否正确</returns>
         </member>
         <member name="M:Phenix.Core.Security.User.IsValid(System.String,System.String,System.String,System.Boolean)">
@@ -10011,6 +10462,11 @@
             返回位于集合开始处的对象但不将其移除
             </summary>
         </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedQueue`1.TryPeek(`0@)">
+            <summary>
+            返回位于集合开始处的对象但不将其移除
+            </summary>
+        </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedQueue`1.Enqueue(`0)">
             <summary>
             将对象添加到集合的结尾处
@@ -10018,6 +10474,11 @@
             <param name="item">要添加到集合中的对象. 对于引用类型, 该值可以为 null</param>
         </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedQueue`1.Dequeue">
+            <summary>
+            移除并返回位于集合开始处的对象
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedQueue`1.TryDequeue(`0@)">
             <summary>
             移除并返回位于集合开始处的对象
             </summary>

@@ -135,7 +135,7 @@ namespace Demo
             get { return _name; }
             set
             {
-                if (UpdateProperty(p => p.Id, SetProperty(p => p.Name, value)) == 1)
+                if (Update(p => p.Id, SetProperty(p => p.Name, value)) == 1)
                 {
                     Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
                     _cache.Remove(Id);
@@ -153,7 +153,7 @@ namespace Demo
             get { return _roles; }
             set
             {
-                if (UpdateProperty(p => p.Id, SetProperty(p => p.Roles, value)) == 1)
+                if (Update(p => p.Id, SetProperty(p => p.Roles, value)) == 1)
                 {
                     Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
                     _cache.Remove(Id);
