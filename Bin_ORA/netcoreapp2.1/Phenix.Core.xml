@@ -1823,9 +1823,9 @@
             动态刷新
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Database.HistoryCount">
+        <member name="P:Phenix.Core.Data.Database.SubDatabases">
             <summary>
-            历史库数
+            分库(序号1-N与主库(序号0)一起均衡存取数据)
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Database.ClearCache">
@@ -1840,30 +1840,29 @@
             <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
             <returns>元数据</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Database.AddHistory(Phenix.Core.Data.Database[])">
+        <member name="M:Phenix.Core.Data.Database.RegisterSubDatabase(Phenix.Core.Data.Database[])">
             <summary>
-            添加历史库入口
+            注册分库入口
             </summary>
-            <param name="databases">历史库入口队列(排列顺序将会被用于拆分键索引)</param>
+            <param name="databases">分库入口队列(依序对应分库序号1-N(主库序号为0))</param>
         </member>
-        <member name="M:Phenix.Core.Data.Database.GetHistory(System.Int32,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Database.GetDatabase(System.Int32,System.Boolean)">
             <summary>
-            获取历史库入口
+            获取数据库入口
             </summary>
-            <param name="index">序号(按调用 AddHistory 函数时添加历史库入口队列的顺序)</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException/ArgumentOutOfRangeException; 如果为 false, 则在找不到信息时返回 null</param>
-            <exception cref="T:System.InvalidOperationException">不存在历史库数据源</exception>
-            <exception cref="T:System.ArgumentOutOfRangeException">搜索不到历史库数据源</exception>
+            <param name="index">序号(0为主库/1-N为RegisterSubDatabase注册的分库顺序)</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
         </member>
-        <member name="M:Phenix.Core.Data.Database.GetHistory(System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Database.GetDatabase(System.Object)">
             <summary>
-            获取历史库入口
+            获取数据库入口
             </summary>
-            <param name="splitKey">拆分键(被 Hash 为 index)</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException/ArgumentOutOfRangeException; 如果为 false, 则在找不到信息时返回 null</param>
-            <exception cref="T:System.ArgumentNullException">splitKey</exception>
-            <exception cref="T:System.InvalidOperationException">不存在历史库数据源</exception>
-            <exception cref="T:System.ArgumentOutOfRangeException">搜索不到历史库数据源</exception>
+            <param name="routeKey">路由键(Hash为index, 0为主库/1-N为RegisterSubDatabase注册的分库顺序)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.GetDatabase">
+            <summary>
+            获取数据库入口
+            </summary>
         </member>
         <member name="M:Phenix.Core.Data.Database.GetConnection">
             <summary>
@@ -3232,19 +3231,14 @@
             实体基类
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Model.EntityBase`1.DefaultDatabase">
+        <member name="P:Phenix.Core.Data.Model.EntityBase`1.Database">
             <summary>
-            缺省数据库入口
+            数据库入口
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Model.EntityBase`1.DefaultSheet">
+        <member name="P:Phenix.Core.Data.Model.EntityBase`1.Sheet">
             <summary>
-            缺省单子
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.EntityBase`1.SheetProvider">
-            <summary>
-            Sheet提供者
+            单子
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Model.EntityBase`1.SelfSheet">
@@ -4520,7 +4514,7 @@
             <param name="tableName">表名</param>
             <param name="asyncAction">异步动作(表名,表主键值,执行时间,执行动作)</param>
         </member>
-        <member name="M:Phenix.Core.Data.Renovator.SaveRenovateLog``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},Phenix.Core.Data.ExecuteAction)">
+        <member name="M:Phenix.Core.Data.Renovator.Save``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},Phenix.Core.Data.ExecuteAction)">
             <summary>
             保存表记录更新日志
             </summary>
@@ -4528,7 +4522,7 @@
             <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
             <param name="executeAction">执行动作</param>
         </member>
-        <member name="M:Phenix.Core.Data.Renovator.SaveRenovateLog``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},Phenix.Core.Data.ExecuteAction,System.DateTime)">
+        <member name="M:Phenix.Core.Data.Renovator.Save``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},Phenix.Core.Data.ExecuteAction,System.DateTime)">
             <summary>
             保存表记录更新日志
             </summary>
@@ -4537,7 +4531,7 @@
             <param name="executeAction">执行动作</param>
             <param name="executeTime">执行时间</param>
         </member>
-        <member name="M:Phenix.Core.Data.Renovator.SaveRenovateLog(System.String,System.Int64,Phenix.Core.Data.ExecuteAction)">
+        <member name="M:Phenix.Core.Data.Renovator.Save(System.String,System.Int64,Phenix.Core.Data.ExecuteAction)">
             <summary>
             保存表记录更新日志
             </summary>
@@ -4545,7 +4539,7 @@
             <param name="primaryKeyValue">表主键值</param>
             <param name="executeAction">执行动作</param>
         </member>
-        <member name="M:Phenix.Core.Data.Renovator.SaveRenovateLog(System.String,System.Int64,Phenix.Core.Data.ExecuteAction,System.DateTime)">
+        <member name="M:Phenix.Core.Data.Renovator.Save(System.String,System.Int64,Phenix.Core.Data.ExecuteAction,System.DateTime)">
             <summary>
             保存表记录更新日志
             </summary>
@@ -4668,7 +4662,7 @@
         </member>
         <member name="P:Phenix.Core.Data.Schema.Column.IsOriginateTeamsColumn">
             <summary>
-            是否"制单团体"字段（字段类型需是字符串/长整型15位以上精度，新增记录时自动填充Identity.CurrentIdentity.User.RootTeams.Name/Id）
+            是否"制单团体"字段（字段类型需是字符串/长整型15位以上精度，新增记录时自动填充Identity.CurrentIdentity.User.RootTeams.Name/Id，增删改查记录时自动对分库路由、对单库切片）
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Schema.Column.IsUpdaterColumn">
@@ -4901,7 +4895,7 @@
             检索单子
             </summary>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
-            <returns>视单子</returns>
+            <returns>单子</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheet(System.Type,System.Boolean)">
             <summary>
@@ -4909,7 +4903,7 @@
             </summary>
             <param name="entityType">实体类</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
-            <returns>视单子</returns>
+            <returns>单子</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheetColumn``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean)">
             <summary>
@@ -5159,6 +5153,11 @@
             主键字段清单
             </summary>
         </member>
+        <member name="P:Phenix.Core.Data.Schema.Sheet.OriginateTeamsColumns">
+            <summary>
+            "制单团体"字段清单
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Data.Schema.Sheet.ClassName">
             <summary>
             类名
@@ -5167,6 +5166,11 @@
         <member name="P:Phenix.Core.Data.Schema.Sheet.Prefix">
             <summary>
             前缀
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Schema.Sheet.SubSheets">
+            <summary>
+            分库单子(序号1-N与主库(序号0)单子一起均衡存取数据)
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Schema.Sheet.IsValidFunc">
@@ -5195,12 +5199,6 @@
             <param name="entityType">实体类</param>
             <param name="fieldName">字段名</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.GetProperties(System.Type)">
-            <summary>
-            获取数据映射类属性
-            </summary>
-            <param name="entityType">实体类</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.GetProperties(System.Type,Phenix.Core.Data.Schema.Sheet)">
             <summary>
@@ -5272,9 +5270,32 @@
             <param name="isWatermarkColumn">是否仅在insert时被提交</param>
             <param name="overwritingOnUpdate">是否要在Update时被覆盖</param>
         </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.GetOriginateTeamsColumns">
+            <summary>
+            获取"制单团体"字段清单
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.GetTimestampColumns">
             <summary>
             获取"时间戳"字段清单
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.GetSheet(System.Int32,System.Boolean)">
+            <summary>
+            获取实际操作的单子
+            </summary>
+            <param name="index">序号(0为主库/1-N为Database.RegisterSubDatabase注册的分库顺序)</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.GetSheet(System.Object)">
+            <summary>
+            获取实际操作的单子
+            </summary>
+            <param name="routeKey">路由键(Hash为index, 0为主库/1-N为Database.RegisterSubDatabase注册的分库顺序)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.GetSheet">
+            <summary>
+            获取实际操作的单子
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.Validate``1(``0,Phenix.Core.Data.ExecuteAction)">
@@ -6301,30 +6322,6 @@
             未知值"*"
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Schema.Standards.YearMonthPattern">
-            <summary>
-            短日期值的格式模式"yyyy-MM"
-            该模式与"d"格式模式关联
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Schema.Standards.ShortDatePattern">
-            <summary>
-            短日期值的格式模式"yyyy-MM-dd"
-            该模式与"d"格式模式关联
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Schema.Standards.FullDateTimePattern">
-            <summary>
-            短日期值的格式模式"yyyy-MM-dd HH:mm:ss"
-            该模式与"d"格式模式关联
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Schema.Standards.LongTimePattern">
-            <summary>
-            长时间值的格式模式"HH:mm:ss"
-            该模式与"T"格式模式关联
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Data.Schema.Standards.DefaultKeyColumnName">
             <summary>
             缺省"主键/外键"的 ColumnName
@@ -6348,6 +6345,11 @@
         <member name="P:Phenix.Core.Data.Schema.Standards.DefaultOriginateTeamsColumnName">
             <summary>
             缺省"制单团体"的 ColumnName
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Schema.Standards.DefaultWatermarkColumnName">
+            <summary>
+            缺省"仅在insert时被提交"的 ColumnName
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Schema.Standards.DefaultUpdaterColumnName">
@@ -6388,6 +6390,11 @@
         <member name="M:Phenix.Core.Data.Schema.Standards.IsDefaultOriginateTeamsColumnName(System.String)">
             <summary>
             是否缺省"制单团体"的 ColumnName（字段类型需是字符串/长整型15位以上精度）
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Standards.IsDefaultWatermarkColumnName(System.String)">
+            <summary>
+            是否缺省"仅在insert时被提交"的 ColumnName
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Standards.IsDefaultUpdaterColumnName(System.String)">
@@ -7418,16 +7425,16 @@
             释放
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Upload(System.Int64,System.String,System.String,System.Action{System.Int64,System.Boolean})">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Upload(System.Int64,System.String,System.String,System.Action{System.Int64,System.Nullable{System.Boolean},System.Exception})">
             <summary>
             上传报文
             </summary>
             <param name="id">ID</param>
             <param name="path">资源路径(含查询条件)("/api/log/event-log")</param>
             <param name="data">传到服务端的数据</param>
-            <param name="respond">反馈成功与否(ID,成功与否)</param>
+            <param name="complete">结束(ID,成功与否(null代表已过期))</param>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Upload(System.Int64,System.String,System.String,System.Int32,System.Action{System.Int64,System.Boolean})">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Upload(System.Int64,System.String,System.String,System.Int32,System.Action{System.Int64,System.Nullable{System.Boolean},System.Exception})">
             <summary>
             上传报文
             </summary>
@@ -7435,13 +7442,7 @@
             <param name="path">资源路径(含查询条件)("/api/log/event-log")</param>
             <param name="data">传到服务端的数据</param>
             <param name="validityMinutes">有效周期(分钟)</param>
-            <param name="respond">反馈成功与否(ID,成功与否)</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.NotUpload(System.Int64)">
-            <summary>
-            不上传报文
-            </summary>
-            <param name="id">ID</param>
+            <param name="complete">结束(ID,成功与否(null代表已过期))</param>
         </member>
         <member name="M:Phenix.Core.Net.Http.HttpClient.CheckInAsync(System.String,System.String,System.String,System.String)">
             <summary>

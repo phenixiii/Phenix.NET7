@@ -72,6 +72,7 @@ namespace Demo
                 if (File.Exists(OfflineCache.FilePath))
                     break;
                 Console.WriteLine("{0} 目录下未发现 {1} 文件，请从 Bin_ORA 或 Bin_MySQL 目录里拷贝进同名文件，完成后按任意键继续", AppRun.BaseDirectory, OfflineCache.FilePath);
+                System.Diagnostics.Process.Start("explorer.exe", AppRun.BaseDirectory);
                 Console.ReadKey();
                 Console.WriteLine();
             }

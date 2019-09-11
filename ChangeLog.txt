@@ -74,5 +74,15 @@
 
 
 20190905
-1，增补Phenix.Core.Data.Model.EntityBase<T>功能具备乐观锁机制，Update()和UpdateRecord()函数提供checkTimestamp参数(默认true)，只要映射的表字段以'_TIMESTAMP'后缀命名，保证在分布式架构下新数据不会被脏数据覆盖（会抛出Phenix.Core.Data.Validity.OutdatedDataException）
-2，增补Phenix.Core.Data.Model.UndoableBase<T>功能具备乐观锁机制，Save()函数提供checkTimestamp参数(默认true)，只要映射的表字段以'_TIMESTAMP'后缀命名，保证在分布式架构下新数据不会被脏数据覆盖（会抛出Phenix.Core.Data.Validity.OutdatedDataException）
+1，约定时间戳字段以'_TIMESTAMP'后缀命名
+2，增补Phenix.Core.Data.Model.EntityBase<T>功能具备乐观锁机制，Update()和UpdateRecord()函数提供checkTimestamp参数(默认true)，保证在分布式架构下新数据不会被脏数据覆盖（会抛出Phenix.Core.Data.Validity.OutdatedDataException）
+3，增补Phenix.Core.Data.Model.UndoableBase<T>功能具备乐观锁机制，Save()函数提供checkTimestamp参数(默认true)，保证在分布式架构下新数据不会被脏数据覆盖（会抛出Phenix.Core.Data.Validity.OutdatedDataException）
+
+
+20190911
+1，除了主键（后缀'_ID'）、制单人（后缀'_ORIGINATOR'）、制单时间（后缀'_ORIGINATE_TIME'）、制单团体（后缀'_ORIGINATE_TEAMS'）等水印字段外，约定系统自定义的水印字段用后缀'_WM'进行标识，以便在新增记录以后的历次修改中，这些字段都不会再被改动（即使编辑过实体对象也不会被持久化）
+2，仅允许用户增删改查操作自己所在团队的记录，当前用户的所属团队Identity.CurrentIdentity.User.Name/Id会被作为查询的过滤条件（即单库切片），前提是聚合根对应的表结构务必含制单团体（后缀'_ORIGINATE_TEAMS'）字段）
+3，如果系统在Phenix.Core.Data.Database对象上用RegisterSubDatabase()函数注册过分库（顺序为1-N），当前用户在增删改查操作时会被自动路由到其中一个库上，路由算法是当前用户的所属团队Identity.CurrentIdentity.User.Id哈希值的N+1余数，分库路由顺序为主库0、分库1-N，相当于其所属团队的所有用户都在这个库上进行操作
+
+
+

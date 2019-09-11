@@ -190,10 +190,10 @@ namespace Demo
 
         private static void InitializeTable()
         {
-            if (DefaultSheet == null)
+            if (Sheet == null)
             {
-                DefaultDatabase.Execute(InitializeTable);
-                DefaultDatabase.ClearCache();
+                Database.Execute(InitializeTable);
+                Database.ClearCache();
             }
         }
 

@@ -208,18 +208,11 @@ namespace Phenix.WebApplication.Controllers.Data
         {
             /*
              * 传入参数为报文体的"属性名-属性值"键值队列
+             * 根据传入的键值对，用属性名匹配到表字段写入属性值
              * 接收报文时，先一股脑收下，然后再异步一个个处理它们（所以完全可以保存原始结构的报文）
              * 异步处理报文（本示例是已被写入的表记录）时，如果需要反馈消息给到发送方，也是通过异步方式
              */
-            Database.Execute(Receive, Utilities.JsonDeserialize<IDictionary<string, object>>(Request.ReadBodyAsString()));
-        }
-
-        private void Receive(DbConnection connection, IDictionary<string, object> propertyValues)
-        {
-            /*
-             * 根据传入的属性名（即 propertyValues 的 Key）匹配到对应的表字段，然后将传入的属性值（即 propertyValues 的 Value）内容写入到该字段
-             */
-            WriteTable.InsertRecord(propertyValues);
+            WriteTable.InsertRecord(Utilities.JsonDeserialize<IDictionary<string, object>>(Request.ReadBodyAsString()));
         }
 
         #endregion
