@@ -17,7 +17,7 @@ namespace Demo
             Console.WriteLine("Database.Default.MetaData.FindSheet<User>().DeleteRecord<User>(p => p.Id == user.Id)");
             Console.WriteLine("虽然看不到冗长的 ADO.NET 代码，可读性强，但还是比较繁琐，容易写错（拷贝/黏贴时最容易出错）。");
             Console.WriteLine("继承 EntityBase 类的话，只需：");
-            Console.WriteLine("user.DeleteRecord(p => p.Id)");
+            Console.WriteLine("user.DeleteSelf()");
             Console.WriteLine("虽对实体类代码有一定侵入性，但编码效率高，不易出错。");
             Console.WriteLine("请按任意键继续");
             Console.ReadKey();

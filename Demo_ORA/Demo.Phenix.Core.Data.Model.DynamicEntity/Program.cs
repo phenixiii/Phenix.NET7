@@ -40,7 +40,7 @@ namespace Demo
             long positionId = Sequence.Value;
 
             Position position = new Position(positionId, "企业组织架构管理员", "组织架构管理,岗位管理,组员管理");
-            position.Insert(p => p.Id);
+            position.InsertSelf();
             Console.WriteLine("先准备一条演示用的岗位记录：{0}", Utilities.JsonSerialize(position));
             string positionsJson = positionsSheet.SelectRecord<Position>(p => p.Id == positionId);
             Console.WriteLine("获取刚保存的岗位记录，不构建实体对象，直接返回的是JSON格式字符串：{0}", positionsJson);

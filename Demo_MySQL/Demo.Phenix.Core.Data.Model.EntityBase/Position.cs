@@ -67,7 +67,7 @@ namespace Demo
             Initialize();
 
             Position result = new Position(Sequence.Value, name, roles);
-            result.Insert(p => p.Id);
+            result.InsertSelf();
             _cache.Add(result.Id, result);
             return result;
         }
@@ -136,7 +136,7 @@ namespace Demo
             get { return _name; }
             set
             {
-                if (Update(p => p.Id, SetProperty(p => p.Name, value)) == 1)
+                if (UpdateSelf(SetProperty(p => p.Name, value)) == 1)
                 {
                     Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
                     _cache.Remove(Id);
@@ -154,7 +154,7 @@ namespace Demo
             get { return _roles; }
             set
             {
-                if (Update(p => p.Id, SetProperty(p => p.Roles, value)) == 1)
+                if (UpdateSelf(SetProperty(p => p.Roles, value)) == 1)
                 {
                     Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
                     _cache.Remove(Id);

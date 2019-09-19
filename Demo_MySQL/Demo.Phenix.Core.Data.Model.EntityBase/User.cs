@@ -106,7 +106,7 @@ namespace Demo
                 requestAddress, 0, null,
                 null, null, null,
                 false, null, false, null, null);
-            result.Insert(p => p.Id);
+            result.InsertSelf();
             _cache.Add(result.Id, result);
             return result;
         }
@@ -187,7 +187,7 @@ namespace Demo
             get { return _phone; }
             set
             {
-                if (Update(p => p.Id, SetProperty(p => p.Phone, value)) == 1)
+                if (UpdateSelf(SetProperty(p => p.Phone, value)) == 1)
                 {
                     Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
                     _cache.Remove(Id);
@@ -206,7 +206,7 @@ namespace Demo
             get { return _eMail; }
             set
             {
-                if (Update(p => p.Id, SetProperty(p => p.EMail, value)) == 1)
+                if (UpdateSelf(SetProperty(p => p.EMail, value)) == 1)
                 {
                     Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
                     _cache.Remove(Id);
@@ -224,7 +224,7 @@ namespace Demo
             get { return _regAlias; }
             set
             {
-                if (Update(p => p.Id, SetProperty(p => p.RegAlias, value)) == 1)
+                if (UpdateSelf(SetProperty(p => p.RegAlias, value)) == 1)
                 {
                     Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
                     _cache.Remove(Id);
@@ -366,8 +366,7 @@ namespace Demo
                 if (value == null)
                     throw new ArgumentNullException(nameof(value), "不允许空挂所属团体");
 
-                if (Update(p => p.Id,
-                        SetProperty(p => p.RootTeamsId, value.RootId),
+                if (UpdateSelf(SetProperty(p => p.RootTeamsId, value.RootId),
                         SetProperty(p => p.TeamsId, value.Id)) == 1)
                 {
                     _rootTeams = value.Root;
@@ -406,7 +405,7 @@ namespace Demo
                 if (value == null)
                     throw new ArgumentNullException(nameof(value), "不允许空挂担任岗位");
 
-                if (Update(p => p.Id, SetProperty(p => p.PositionId, value.Id)) == 1)
+                if (UpdateSelf(SetProperty(p => p.PositionId, value.Id)) == 1)
                 {
                     _position = value;
                     Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
@@ -434,8 +433,7 @@ namespace Demo
             get { return _locked; }
             set
             {
-                if (Update(p => p.Id,
-                        SetProperty(p => p.Locked, value),
+                if (UpdateSelf(SetProperty(p => p.Locked, value),
                         SetProperty(p => p.LockedTime, DateTime.Now)) == 1)
                 {
                     Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
@@ -464,8 +462,7 @@ namespace Demo
             get { return _disabled; }
             set
             {
-                if (Update(p => p.Id,
-                        SetProperty(p => p.Disabled, value),
+                if (UpdateSelf(SetProperty(p => p.Disabled, value),
                         SetProperty(p => p.DisabledTime, DateTime.Now)) == 1)
                 {
                     Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));

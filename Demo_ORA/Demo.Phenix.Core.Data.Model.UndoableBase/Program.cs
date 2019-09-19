@@ -63,7 +63,7 @@ namespace Demo
             Console.WriteLine("新增实体对象的状态：IsNew = {0}，IsSelfDirty = {1}，IsSelfDeleted = {2}，IsFetched = {3}，{4}",
                 position.IsNew, position.IsSelfDirty, position.IsSelfDeleted, position.IsFetched,
                 position.IsNew && !position.IsSelfDirty && !position.IsSelfDeleted && !position.IsFetched ? "ok" : "error");
-            position.Save(p => p.Id);
+            position.SaveSelf();
             Console.WriteLine("调用Save()函数提交后的状态：IsNew = {0}，IsSelfDirty = {1}，IsSelfDeleted = {2}，IsFetched = {3}，{4}",
                 position.IsNew, position.IsSelfDirty, position.IsSelfDeleted, position.IsFetched,
                 !position.IsNew && !position.IsSelfDirty && !position.IsSelfDeleted && position.IsFetched ? "ok" : "error");
@@ -104,7 +104,7 @@ namespace Demo
             roles.RemoveAt(2);
             position.Roles = roles;
             Console.WriteLine("赋值 Roles 属性为 '{0}'，旧值为 '{1}'", Utilities.JsonSerialize(position.Roles), Utilities.JsonSerialize(position.GetOldValue(p => p.Roles)));
-            position.Save(p => p.Id);
+            position.SaveSelf();
             Console.WriteLine("调用Save()后的状态：IsNew = {0}，IsSelfDirty = {1}，IsSelfDeleted = {2}，IsFetched = {3}，{4}",
                 position.IsNew, position.IsSelfDirty, position.IsSelfDeleted, position.IsFetched,
                 !position.IsNew && !position.IsSelfDirty && !position.IsSelfDeleted && position.IsFetched ? "ok" : "error");
@@ -116,7 +116,7 @@ namespace Demo
             Console.WriteLine("将 IsSelfDeleted 属性赋值为 true 后的状态：IsNew = {0}，IsSelfDirty = {1}，IsSelfDeleted = {2}，IsFetched = {3}，{4}",
                 position.IsNew, position.IsSelfDirty, position.IsSelfDeleted, position.IsFetched,
                 !position.IsNew && !position.IsSelfDirty && position.IsSelfDeleted && !position.IsFetched ? "ok" : "error");
-            position.Save(p => p.Id);
+            position.SaveSelf();
             Console.WriteLine("调用Save()后的状态：IsNew = {0}，IsSelfDirty = {1}，IsSelfDeleted = {2}，IsFetched = {3}，{4}",
                 position.IsNew, position.IsSelfDirty, position.IsSelfDeleted, position.IsFetched,
                 !position.IsNew && !position.IsSelfDirty && position.IsSelfDeleted && !position.IsFetched ? "ok" : "error");

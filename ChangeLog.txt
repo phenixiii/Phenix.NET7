@@ -85,4 +85,7 @@
 3，如果系统在Phenix.Core.Data.Database对象上用RegisterSubDatabase()函数注册过分库（顺序为1-N），当前用户在增删改查操作时会被自动路由到其中一个库上，路由算法是当前用户的所属团队Identity.CurrentIdentity.User.Id哈希值的N+1余数，分库路由顺序为主库0、分库1-N，相当于其所属团队的所有用户都在这个库上进行操作
 
 
+20190919
+1，提供Phenix.Core.Data.Model.BusinessBase<T>可操作聚合树的业务基类，为聚合根对象的整颗聚合树提供编辑操作和持久化的功能
+2，一旦为聚合树中某个节点的业务对象打上删除标记（IsSelfDeleted=true），调用SaveDepth()函数持久化时，只要数据库中存在物理外键，将会对它及其下的所有从业务对象的记录做级联删除
 

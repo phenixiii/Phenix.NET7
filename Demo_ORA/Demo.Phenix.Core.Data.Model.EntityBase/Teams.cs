@@ -100,7 +100,7 @@ namespace Demo
             Teams result = parent != null
                 ? new Teams(id, name, parent)
                 : new Teams(id, name, id, 0, null);
-            result.Insert(p => p.Id);
+            result.InsertSelf();
             if (parent != null)
             {
                 parent._root._allSubTeams.Add(result);
@@ -189,7 +189,7 @@ namespace Demo
             get { return _name; }
             set
             {
-                if (Update(p => p.Id, SetProperty(p => p.Name, value)) == 1)
+                if (UpdateSelf(SetProperty(p => p.Name, value)) == 1)
                 {
                     Task.Run(() => _root.SaveRenovateLog(p => p.Id, ExecuteAction.Update));
                     _rootCache.Remove(_root.Id);
@@ -254,7 +254,7 @@ namespace Demo
                     throw new ArgumentException("不允许挂在自己下层的团体下", nameof(value));
 
                 Teams oldValue = _parent;
-                if (Update(p => p.Id, SetProperty(p => p.ParentId, value.Id)) == 1)
+                if (UpdateSelf(SetProperty(p => p.ParentId, value.Id)) == 1)
                 {
                     _parent = value;
                     value._subTeams = null;
