@@ -11,6 +11,10 @@
   "profiles": {
     "UseKestrel": {
       "commandName": "Project"
+    },
+    "Azure Dev Spaces": {
+      "commandName": "AzureDevSpaces",
+      "launchBrowser": true
     }
   }
 }

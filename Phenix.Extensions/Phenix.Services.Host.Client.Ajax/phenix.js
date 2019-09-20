@@ -2,19 +2,19 @@
     Phenix Framework for .NET Core
     Copyright © 2007, 2019 Phenixヾ Studio All rights reserved.
 
-    <script type="text/javascript" src="../Phenix.WebApplication.Client.Ajax/CryptoJS/core-min.js"></script>
-    <script type="text/javascript" src="../Phenix.WebApplication.Client.Ajax/CryptoJS/enc-base64-min.js"></script>
-    <script type="text/javascript" src="../Phenix.WebApplication.Client.Ajax/CryptoJS/cipher-core-min.js"></script>
-    <script type="text/javascript" src="../Phenix.WebApplication.Client.Ajax/CryptoJS/aes-min.js"></script>
-    <script type="text/javascript" src="../Phenix.WebApplication.Client.Ajax/CryptoJS/md5-min.js"></script>
-    <script type="text/javascript" src="../Phenix.WebApplication.Client.Ajax/base64-binary.js"></script>
-    <script type="text/javascript" src="../Phenix.WebApplication.Client.Ajax/json2.js"></script>
-    <script type="text/javascript" src="../Phenix.WebApplication.Client.Ajax/jquery.min.js"></script> --v3.2.1
-    <script type="text/javascript" src="../Phenix.WebApplication.Client.Ajax/jquery.signalR.min.js"></script> --v2.3.0
-    <script type="text/javascript" src="../Phenix.WebApplication.Client.Ajax/jquery.cookie.js"></script>
-    <script type="text/javascript" src="../Phenix.WebApplication.Client.Ajax/phenix.js"></script>
+    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/CryptoJS/core-min.js"></script>
+    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/CryptoJS/enc-base64-min.js"></script>
+    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/CryptoJS/cipher-core-min.js"></script>
+    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/CryptoJS/aes-min.js"></script>
+    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/CryptoJS/md5-min.js"></script>
+    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/base64-binary.js"></script>
+    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/json2.js"></script>
+    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/jquery.min.js"></script> --v3.2.1
+    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/jquery.signalR.min.js"></script> --v2.3.0
+    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/phenix.js"></script>
 
-    使用方法参考 Phenix.WebApplication.Client.Test 目录下的示例代码
+    使用方法参考 Phenix.Services.Host.Client.Test 目录下的示例代码
  */
 ;
 $.support.cors = true;

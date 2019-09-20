@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.IO;
+using System.Reflection;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Phenix.WebApplication
+namespace Phenix.Services.Host
 {
     public class Startup
     {
@@ -75,7 +78,25 @@ namespace Phenix.WebApplication
                      */
                     options.Filters.Add<Phenix.Core.Net.AuthorizationFilter>();
                 })
+                .ConfigureApplicationPartManager(options =>
+                {
+                    /*
+                     * 装配静态加载（引用模式）的程序集里的 Controller
+                     */
+                    options.ApplicationParts.Add(new AssemblyPart(typeof(Phenix.Core.AppRun).Assembly));
+                    /*
+                     * 装配动态加载（插件模式）的程序集里的 Controller
+                     * 约定全都存放在当前程序的基础目录下，且统一命名为"*.Plugin.dll"后缀
+                     */
+                    foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
+                        options.ApplicationParts.Add(new AssemblyPart(Assembly.LoadFrom(fileName)));
+                })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            /*
+             * 配置SignalR策略
+             */
+            services.AddSignalR();
 
             /*
              * 配置转接头中间件（代理服务器和负载均衡器）
@@ -94,12 +115,12 @@ namespace Phenix.WebApplication
             }
 
             /*
-             * 使用CORS中间件响应跨域请求，策略见 services.AddCors 限制条件
+             * 使用CORS中间件响应跨域请求，策略见 ConfigureServices 函数里的 services.AddCors() 限制条件
              */
             app.UseCors();
 
             /*
-             * 使用转接头中间件（代理服务器和负载均衡器），策略见 services.Configure<ForwardedHeadersOptions> 以适应部署环境
+             * 使用转接头中间件（代理服务器和负载均衡器），策略见 ConfigureServices 函数里的 services.Configure<ForwardedHeadersOptions>() 以适应部署环境
              */
             app.UseForwardedHeaders();
 
@@ -133,6 +154,11 @@ namespace Phenix.WebApplication
              * 系统Admin管理员的登录名是‘ADMIN’，初始登录口令也是‘ADMIN’（注意是大写），在系统部署到生产环境正式上线前，你应该用‘ADMIN’登录一次系统，把口令的复杂度修改成达标的
              */
             app.UseMiddleware<Phenix.Core.Net.AuthenticationMiddleware>();
+
+            //app.UseSignalR(routes =>
+            //{
+            //    routes.MapHub<ChatHub>("/chatHub");
+            //});
 
             /*
              * 必要的话，请注册第三方客户端IP限流控制中间件

@@ -1,0 +1,1 @@
+docker build -t phenix.services.host:v1.0 .

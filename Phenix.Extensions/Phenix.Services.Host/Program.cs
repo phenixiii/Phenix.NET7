@@ -4,7 +4,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 
-namespace Phenix.WebApplication
+namespace Phenix.Services.Host
 {
     public class Program
     {

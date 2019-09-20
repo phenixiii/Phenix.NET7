@@ -31,8 +31,8 @@ namespace Demo
 
             Console.WriteLine("本演示借用了 Phenix.Core.Log.EventLog 类。");
             Console.WriteLine("EventLog 在保存日志时，如果所在进程里未曾注册过任何数据库连接，就会用 OfflineCache 尝试上传给到其属性 BaseAddress 所指定的服务端。");
-            Console.WriteLine("服务端应该提供‘{0}’路径的控制器，比如 Phenix.WebApplication 工程里就实现了的 EventLogController 控制器。", NetConfig.LogEventLogPath);
-            Console.WriteLine("在接下来的演示之前，请启动 Phenix.WebApplication_MySQL/ORA 程序。");
+            Console.WriteLine("服务端应该提供‘{0}’路径的控制器，比如 Phenix.Services.Host 工程里就加载了 Phenix.Core.dll 里的 EventLogController 控制器。", NetConfig.LogEventLogPath);
+            Console.WriteLine("在接下来的演示之前，请启动 Phenix.Services.Host_MySQL/ORA 程序。");
             Console.WriteLine("准备好之后，请按任意键继续");
             Console.ReadKey();
             Console.WriteLine();
@@ -126,7 +126,7 @@ namespace Demo
             Console.WriteLine("注册缺省数据库连接");
             Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
             Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
-            Console.WriteLine("请确认连接的是否是与 Phenix.WebApplication 同一个库？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
+            Console.WriteLine("请确认连接的是否是与 Phenix.Services.Host 同一个库？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
             Console.WriteLine("否则按任意键继续");
             Console.ReadKey();
             Console.WriteLine();

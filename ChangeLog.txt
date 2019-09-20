@@ -89,3 +89,11 @@
 1，提供Phenix.Core.Data.Model.BusinessBase<T>可操作聚合树的业务基类，为聚合根对象的整颗聚合树提供编辑操作和持久化的功能
 2，一旦为聚合树中某个节点的业务对象打上删除标记（IsSelfDeleted=true），调用SaveDepth()函数持久化时，只要数据库中存在物理外键，将会对它及其下的所有从业务对象的记录做级联删除
 
+
+20190920
+1，Phenix.WebApplication工程更名为Phenix.Services.Host，仅作为WebAPI服务的容器实现了系统运行的配置功能
+2，规定将WebAPI服务的Controller代码编写在各自的工程里，程序集的命名以"*.Plugin.dll"作为后缀，默认会被Phenix.Services.Host自动加载并装配到ApplicationParts中
+3，发布Phenix.Services.Host时，可自动将Docker相关的文件写入到Publish目录中，方便部署
+
+
+

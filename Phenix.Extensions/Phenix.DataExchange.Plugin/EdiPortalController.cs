@@ -1,23 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 #if MySQL
-using MySql.Data.MySqlClient;
 #endif
 #if ORA
 using Oracle.ManagedDataAccess.Client;
 #endif
 using Phenix.Core.Data;
-using Phenix.Core.Data.Common;
 using Phenix.Core.Data.Schema;
 using Phenix.Core.Net;
 using Phenix.Core.Reflection;
 
-namespace Phenix.WebApplication.Controllers.Data
+namespace Phenix.DataExchange.Plugin
 {
     /// <summary>
     /// EDI数据门户控制器

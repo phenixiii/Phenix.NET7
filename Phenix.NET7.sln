@@ -41,19 +41,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.EntityBuilder_MySQL"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.EntityBuilder_ORA", "Phenix.Extensions\Phenix.EntityBuilder\Phenix.EntityBuilder_ORA.csproj", "{FAE2EB32-B9A8-4AB2-AFBD-128A13615FCD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.WebApplication_MySQL", "Phenix.Extensions\Phenix.WebApplication\Phenix.WebApplication_MySQL.csproj", "{C445CE24-4C46-4E7A-ADD2-D7B3A9B1C2CB}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.WebApplication_ORA", "Phenix.Extensions\Phenix.WebApplication\Phenix.WebApplication_ORA.csproj", "{1B1245BE-78AE-4831-828F-48E273988980}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phenix.WebApplication.Client.Ajax", "Phenix.WebApplication.Client.Ajax", "{993D0E28-8F04-4EFA-B5EE-7E93D53AB4EE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phenix.Services.Host.Client.Ajax", "Phenix.Services.Host.Client.Ajax", "{993D0E28-8F04-4EFA-B5EE-7E93D53AB4EE}"
 	ProjectSection(SolutionItems) = preProject
-		Phenix.Extensions\Phenix.WebApplication.Client.Ajax\phenix.js = Phenix.Extensions\Phenix.WebApplication.Client.Ajax\phenix.js
+		Phenix.Extensions\Phenix.Services.Host.Client.Ajax\phenix.js = Phenix.Extensions\Phenix.Services.Host.Client.Ajax\phenix.js
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phenix.WebApplication.Client.Test", "Phenix.WebApplication.Client.Test", "{4BDC9DAF-A107-4A50-AB4C-6392C49C09A0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phenix.Services.Host.Client.Test", "Phenix.Services.Host.Client.Test", "{4BDC9DAF-A107-4A50-AB4C-6392C49C09A0}"
 	ProjectSection(SolutionItems) = preProject
-		Phenix.Extensions\Phenix.WebApplication.Client.Test\Gate.html = Phenix.Extensions\Phenix.WebApplication.Client.Test\Gate.html
-		Phenix.Extensions\Phenix.WebApplication.Client.Test\Myself.html = Phenix.Extensions\Phenix.WebApplication.Client.Test\Myself.html
+		Phenix.Extensions\Phenix.Services.Host.Client.Test\Gate.html = Phenix.Extensions\Phenix.Services.Host.Client.Test\Gate.html
+		Phenix.Extensions\Phenix.Services.Host.Client.Test\Myself.html = Phenix.Extensions\Phenix.Services.Host.Client.Test\Myself.html
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Security.Position", "Demo_MySQL\Demo.Phenix.Core.Security.Position\Demo.Phenix.Core.Security.Position.csproj", "{72E41202-791D-46CA-B0CC-770A721D8C8E}"
@@ -79,6 +75,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Data.Model.UndoableBase", "Demo_ORA\Demo.Phenix.Core.Data.Model.UndoableBase\Demo.Phenix.Core.Data.Model.UndoableBase.csproj", "{5E915D8D-4B72-4146-92C4-722AA4FF5702}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Data.Model.UndoableBase", "Demo_MySQL\Demo.Phenix.Core.Data.Model.UndoableBase\Demo.Phenix.Core.Data.Model.UndoableBase.csproj", "{2214965C-3E71-4C1E-AA36-055EC4F6C632}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Host_MySQL", "Phenix.Extensions\Phenix.Services.Host\Phenix.Services.Host_MySQL.csproj", "{A6D6F035-A063-4409-8415-F856027E80A3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Host_ORA", "Phenix.Extensions\Phenix.Services.Host\Phenix.Services.Host_ORA.csproj", "{BAB2EC6B-D7B0-4602-81A7-C3B4CB1FD195}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.DataExchange.Plugin_MySQL", "Phenix.Extensions\Phenix.DataExchange.Plugin\Phenix.DataExchange.Plugin_MySQL.csproj", "{B8533416-4FB6-4892-84FA-545D2DC201D0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.DataExchange.Plugin_ORA", "Phenix.Extensions\Phenix.DataExchange.Plugin\Phenix.DataExchange.Plugin_ORA.csproj", "{171F80D5-2495-45FF-9A41-10B41A96640D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -150,14 +154,6 @@ Global
 		{FAE2EB32-B9A8-4AB2-AFBD-128A13615FCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAE2EB32-B9A8-4AB2-AFBD-128A13615FCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAE2EB32-B9A8-4AB2-AFBD-128A13615FCD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C445CE24-4C46-4E7A-ADD2-D7B3A9B1C2CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C445CE24-4C46-4E7A-ADD2-D7B3A9B1C2CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C445CE24-4C46-4E7A-ADD2-D7B3A9B1C2CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C445CE24-4C46-4E7A-ADD2-D7B3A9B1C2CB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1B1245BE-78AE-4831-828F-48E273988980}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1B1245BE-78AE-4831-828F-48E273988980}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1B1245BE-78AE-4831-828F-48E273988980}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1B1245BE-78AE-4831-828F-48E273988980}.Release|Any CPU.Build.0 = Release|Any CPU
 		{72E41202-791D-46CA-B0CC-770A721D8C8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{72E41202-791D-46CA-B0CC-770A721D8C8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72E41202-791D-46CA-B0CC-770A721D8C8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -206,6 +202,22 @@ Global
 		{2214965C-3E71-4C1E-AA36-055EC4F6C632}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2214965C-3E71-4C1E-AA36-055EC4F6C632}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2214965C-3E71-4C1E-AA36-055EC4F6C632}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6D6F035-A063-4409-8415-F856027E80A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6D6F035-A063-4409-8415-F856027E80A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6D6F035-A063-4409-8415-F856027E80A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6D6F035-A063-4409-8415-F856027E80A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAB2EC6B-D7B0-4602-81A7-C3B4CB1FD195}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAB2EC6B-D7B0-4602-81A7-C3B4CB1FD195}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAB2EC6B-D7B0-4602-81A7-C3B4CB1FD195}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAB2EC6B-D7B0-4602-81A7-C3B4CB1FD195}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8533416-4FB6-4892-84FA-545D2DC201D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8533416-4FB6-4892-84FA-545D2DC201D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8533416-4FB6-4892-84FA-545D2DC201D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8533416-4FB6-4892-84FA-545D2DC201D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{171F80D5-2495-45FF-9A41-10B41A96640D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{171F80D5-2495-45FF-9A41-10B41A96640D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{171F80D5-2495-45FF-9A41-10B41A96640D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{171F80D5-2495-45FF-9A41-10B41A96640D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -225,8 +237,6 @@ Global
 		{A116D721-86ED-42E3-92B9-0F7F4C3D8FAB} = {1140EBB7-3D04-4936-B893-FC46D34B8D01}
 		{9D53C566-17CC-439F-BF90-B4DA3764395D} = {5C41758F-32B5-4B95-A055-C5364A037050}
 		{FAE2EB32-B9A8-4AB2-AFBD-128A13615FCD} = {5C41758F-32B5-4B95-A055-C5364A037050}
-		{C445CE24-4C46-4E7A-ADD2-D7B3A9B1C2CB} = {5C41758F-32B5-4B95-A055-C5364A037050}
-		{1B1245BE-78AE-4831-828F-48E273988980} = {5C41758F-32B5-4B95-A055-C5364A037050}
 		{993D0E28-8F04-4EFA-B5EE-7E93D53AB4EE} = {5C41758F-32B5-4B95-A055-C5364A037050}
 		{4BDC9DAF-A107-4A50-AB4C-6392C49C09A0} = {5C41758F-32B5-4B95-A055-C5364A037050}
 		{72E41202-791D-46CA-B0CC-770A721D8C8E} = {B7AA29AA-B690-4002-8703-AC8C7DD37E2C}
@@ -241,6 +251,10 @@ Global
 		{EB3BE5CD-D212-467B-BDF9-B62BEF2351B6} = {B7AA29AA-B690-4002-8703-AC8C7DD37E2C}
 		{5E915D8D-4B72-4146-92C4-722AA4FF5702} = {1140EBB7-3D04-4936-B893-FC46D34B8D01}
 		{2214965C-3E71-4C1E-AA36-055EC4F6C632} = {B7AA29AA-B690-4002-8703-AC8C7DD37E2C}
+		{A6D6F035-A063-4409-8415-F856027E80A3} = {5C41758F-32B5-4B95-A055-C5364A037050}
+		{BAB2EC6B-D7B0-4602-81A7-C3B4CB1FD195} = {5C41758F-32B5-4B95-A055-C5364A037050}
+		{B8533416-4FB6-4892-84FA-545D2DC201D0} = {5C41758F-32B5-4B95-A055-C5364A037050}
+		{171F80D5-2495-45FF-9A41-10B41A96640D} = {5C41758F-32B5-4B95-A055-C5364A037050}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9C8CF59-EE51-4301-9EAC-22750A624DD2}

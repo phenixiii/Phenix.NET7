@@ -769,7 +769,7 @@
         </member>
         <member name="M:Phenix.Core.Data.Common.DataReader.SelectRecord">
             <summary>
-            获取记录(属性名为数据源的表/视图的字段名/别名的JSON格式)
+            获取记录(JSON格式(属性名为数据源的表/视图的字段名/别名))
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Common.DataReader.CreateParameter(System.Object)">
@@ -6054,7 +6054,7 @@
             <summary>
             获取记录
             </summary>
-            <param name="dataReader">DataReader</param>
+            <param name="reader">DataReader</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.OrderBy[])">
             <summary>
@@ -6283,9 +6283,9 @@
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord(Phenix.Core.Data.Common.DataReader,System.Boolean)">
             <summary>
-            获取记录(JSON格式)
+            获取记录(JSON格式(仅返回匹配上本字段清单的属性值))
             </summary>
-            <param name="dataReader">DataReader</param>
+            <param name="reader">DataReader</param>
             <param name="first">是否返回第一条记录</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.RecordCount``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
@@ -7376,6 +7376,96 @@
             失效时间
             </summary>
         </member>
+        <member name="T:Phenix.Core.Net.Controllers.EventLogController">
+            <summary>
+            事件日志控制器
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Controllers.EventLogController.Post">
+            <summary>
+            保存
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Phenix.Core.Net.Controllers.GateController" -->
+        <member name="M:Phenix.Core.Net.Controllers.GateController.CheckIn(System.String,System.String,System.String,System.String)">
+            <summary>
+            登记/注册(获取动态口令)
+            </summary>
+            <param name="name">登录名(未注册则自动注册)</param>
+            <param name="phone">手机(注册用可为空)</param>
+            <param name="eMail">邮箱(注册用可为空)</param>
+            <param name="regAlias">注册昵称(注册用可为空)</param>
+            <returns>返回信息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Controllers.GateController.Logon">
+            <summary>
+            登录
+            </summary>
+            <returns>当前登录用户资料</returns>
+        </member>
+        <member name="T:Phenix.Core.Net.Controllers.IncrementController">
+            <summary>
+            64位增量
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Controllers.IncrementController.Get(System.String,System.Int64)">
+            <summary>
+            获取64位增量值
+            </summary>
+            <param name="key">键</param>
+            <param name="initialValue">初值</param>
+            <returns>下一个值</returns>
+        </member>
+        <member name="T:Phenix.Core.Net.Controllers.MyselfController">
+            <summary>
+            用户自己控制器
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Controllers.MyselfController.Get">
+            <summary>
+            获取自己资料
+            </summary>
+            <returns>自己资料</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Controllers.MyselfController.ChangePassword">
+            <summary>
+            修改登录口令
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Net.Controllers.SequenceController">
+            <summary>
+            64位序号
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Controllers.SequenceController.Get">
+            <summary>
+            获取64位序号
+            </summary>
+            <returns>64位序号</returns>
+        </member>
+        <member name="T:Phenix.Core.Net.Controllers.UserMessageController">
+            <summary>
+            用户消息控制器
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Controllers.UserMessageController.Receive">
+            <summary>
+            接收
+            </summary>
+            <returns>消息ID,消息内容</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Controllers.UserMessageController.Send">
+            <summary>
+            发送
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Controllers.UserMessageController.AffirmReceived(System.Int64,System.Boolean)">
+            <summary>
+            确认收到
+            </summary>
+            <param name="id">消息ID</param>
+            <param name="burn">是否销毁</param>
+        </member>
         <member name="T:Phenix.Core.Net.ExceptionHandlerMiddleWare">
             <summary>
             异常处理中间件
@@ -7700,6 +7790,11 @@
         <member name="P:Phenix.Core.Net.Http.QueryValue.Value">
             <summary>
             值
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Net.MessageHub">
+            <summary>
+            消息中间件
             </summary>
         </member>
         <member name="T:Phenix.Core.Net.NetConfig">

@@ -2,18 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <RootNamespace>Phenix.WebApplication</RootNamespace>
-    <PackageId>Phenix.WebApplication</PackageId>
-    <AssemblyName>Phenix.WebApplication</AssemblyName>
+    <PackageId>Phenix.Services.Host</PackageId>
+    <AssemblyName>Phenix.Services.Host</AssemblyName>
     <DefineConstants>TRACE;MySQL</DefineConstants>
-    <RootNamespace>Phenix.WebApplication</RootNamespace>
-    <Version>7.2.1</Version>
+    <RootNamespace>Phenix.Services.Host</RootNamespace>
+    <Version>7.4.0</Version>
+    <AssemblyVersion>7.4.0.0920</AssemblyVersion>
+    <FileVersion>7.4.0.0920</FileVersion>
+    <Description>Phenix Framework for .NET Core 2.1</Description>
     <Authors>ming</Authors>
-    <Description>Phenix Framework for .NET Core</Description>
     <Copyright>Copyright © 2007, 2019 Phenixヾ Studio</Copyright>
-    <Product>Phenix.WebApplication</Product>
-    <AssemblyVersion>7.2.1.0823</AssemblyVersion>
-    <FileVersion>7.2.1.0823</FileVersion>
+    <Product>Phenix.Services.Host</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -34,7 +33,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
-    <PackageReference Include="MySql.Data" Version="8.0.16" />
+    <PackageReference Include="MySql.Data" Version="8.0.17" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
@@ -45,7 +44,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Phenix.WebApplication.部署方法.doc">
+    <None Update="DockerBuild.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DockerRun.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Phenix.Services.Host.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Phenix.Services.Host.部署方法.doc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
