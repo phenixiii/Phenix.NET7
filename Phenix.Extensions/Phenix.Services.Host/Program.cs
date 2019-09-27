@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -17,7 +16,7 @@ namespace Phenix.Services.Host
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseContentRoot(Phenix.Core.AppRun.BaseDirectory)
                 .UseStartup<Startup>()
                 /*
                  * 使用轻量级跨平台服务 KestrelServer
@@ -36,6 +35,9 @@ namespace Phenix.Services.Host
                     options.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(30); //请求标头超时
                     options.AllowSynchronousIO = true; //是否允许对请求和响应使用同步 IO
                 })
+                /*
+                 * 请改写为自己系统的端口
+                 */
                 .UseUrls("http://*:5000");
     }
 }

@@ -6,7 +6,7 @@ using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Schema;
 
-namespace Phenix.EntityBuilder
+namespace Phenix.Tools.EntityBuilder
 {
     class Program
     {

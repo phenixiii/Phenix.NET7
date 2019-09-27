@@ -2,39 +2,36 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Version>7.3.0</Version>
-    <AssemblyVersion>7.3.0.0920</AssemblyVersion>
-    <FileVersion>7.3.0.0920</FileVersion>
+    <Version>7.2.5</Version>
     <Description>Phenix Framework for .NET Core 2.1</Description>
     <Authors>ming</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <AssemblyName>Phenix.DataExchange.Plugin</AssemblyName>
-    <RootNamespace>Phenix.DataExchange.Plugin</RootNamespace>
+    <AssemblyName>Phenix.Services.DataExchange.Plugin</AssemblyName>
+    <DefineConstants>TRACE;MySQL</DefineConstants>
+    <RootNamespace>Phenix.Services.DataExchange.Plugin</RootNamespace>
     <Copyright>Copyright © 2007, 2019 Phenixヾ Studio</Copyright>
     <Company />
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\Bin_ORA\</OutputPath>
-    <DefineConstants>TRACE;ORA</DefineConstants>
+    <OutputPath>..\..\..\Bin_MySQL\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\Bin_ORA\</OutputPath>
-    <DefineConstants>TRACE;ORA</DefineConstants>
+    <OutputPath>..\..\..\Bin_MySQL\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.1.1" />
+    <PackageReference Include="MySql.Data" Version="8.0.17" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.31" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Phenix.Core">
-      <HintPath>..\..\Bin_ORA\netcoreapp2.1\Phenix.Core.dll</HintPath>
+      <HintPath>..\..\..\Bin_MySQL\netcoreapp2.1\Phenix.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

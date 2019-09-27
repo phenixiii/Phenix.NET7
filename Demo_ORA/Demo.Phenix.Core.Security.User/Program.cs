@@ -33,10 +33,10 @@ namespace Demo
             Console.WriteLine();
 
             Console.WriteLine("演示注册用户的方法 New()");
-            string password;
+            string initialPassword;
             string dynamicPassword;
-            User user = User.New("林冲", "13966666666", "13966666666@139.com", "豹子头", "127.0.0.1", out password, out dynamicPassword);
-            Console.WriteLine("当有用户申请注册时，你的服务应调用方法 New() 新增用户，然后将调用返回的初始登录口令 {0} 或动态口令 {1} 利用第三方渠道（邮箱或短信）推送给到用户。", password, dynamicPassword);
+            User user = User.New("林冲", "13966666666", "13966666666@139.com", "豹子头", "127.0.0.1", out initialPassword, out dynamicPassword);
+            Console.WriteLine("当有用户申请注册时，你的服务应调用方法 New() 新增用户，然后将调用返回的初始口令 {0} 或动态口令 {1} 利用第三方渠道（邮箱或短信）推送给到用户。", initialPassword, dynamicPassword);
             Console.WriteLine("被持久化的用户信息里，登录口令和动态口令都已被MD5散列了的。");
             Console.WriteLine("用户的手机 {0}、邮箱 {1}、注册昵称 {2}，这些属性在注册后仍然是可以赋值被自动提交持久化的，前提是你必须保证系统已经成功验证了用户身份才能允许修改。", user.Phone, user.EMail, user.RegAlias);
             Console.WriteLine("请按任意键继续");
@@ -52,7 +52,7 @@ namespace Demo
 
             Console.WriteLine("演示核对登录口令有效性的方法 IsValidPassword()");
             Console.WriteLine("你的服务在做用户身份验证时，客户端除了传来用户名，也要提供登录口令（你必须在客户端完成MD5散列化）。");
-            Console.WriteLine("身份验证结果：{0}", user.IsValidPassword(MD5CryptoTextProvider.ComputeHash(password), "127.0.0.1", false));
+            Console.WriteLine("身份验证结果：{0}", user.IsValidPassword(MD5CryptoTextProvider.ComputeHash(initialPassword), "127.0.0.1", false));
             Console.WriteLine("这个函数的第二个参数，要求你的服务能识别出请求方的IP地址，以便后续在响应客户端请求时能做比对 {0}，实现禁止多处终端发起请求的功能，开关是 User.AllowMultiAddressRequest 属性（默认值 {1}）。", user.RequestAddress, User.AllowMultiAddressRequest);
             Console.WriteLine("用户登录后，服务在每次响应客户端的请求时都要做身份验证，具体实现可以交给 WebAPI 服务框架来完成，在此略过。");
             Console.WriteLine("如果同一用户名在尝试多次身份验证都失败的话，是有怀疑服务在被高频试错攻击，应该禁止这个用户名在一段时间内的登录请求。");

@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
-using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
 using Phenix.Core.Data.Expressions;
@@ -146,7 +145,7 @@ namespace Demo
         /// 获取顶层团体名称
         /// </summary>
         /// <param name="likeName">类似名称</param>
-        /// <returns>顶层团体名称及ID清单</returns>
+        /// <returns>结果集(顶层团体名称-ID)</returns>
         public static IDictionary<string, long> FetchRootNames(string likeName = null)
         {
             Initialize();

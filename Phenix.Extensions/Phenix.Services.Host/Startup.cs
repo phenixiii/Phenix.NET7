@@ -1,10 +1,7 @@
-﻿using System.IO;
-using System.Reflection;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +17,7 @@ namespace Phenix.Services.Host
             /*
              * 注册缺省数据库
              * 请改写为自己系统的数据库连接串
+             * 配置数据请自行维护以便导入注册
              */
             Phenix.Core.Data.Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
         }
@@ -44,9 +42,24 @@ namespace Phenix.Services.Host
                 });
             });
 
-            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            //services.AddTransient<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
+            /*
+             * 注入系统入口服务 
+             */
+            services.AddGateService<Phenix.Services.GateService>();
 
+            /*
+             * 注入用户消息服务 
+             */
+            services.AddUserMessageHub();
+
+            /*
+             * 配置SignalR策略以支撑用户消息服务
+             */
+            services.AddSignalR().AddMessagePackProtocol();
+
+            /*
+             * 配置Controller策略
+             */
             services.AddMvc(options =>
                 {
                     /*
@@ -76,27 +89,27 @@ namespace Phenix.Services.Host
                      *
                      * 系统Admin管理员的角色是‘Admin’（Phenix.Core.Security.User.AdminRoleName），权限范围仅限于访问带[Authorize(Roles=Phenix.Core.Security.User.AdminRoleName)]标签的 Controller/Action
                      */
-                    options.Filters.Add<Phenix.Core.Net.AuthorizationFilter>();
+                    options.Filters.AddAuthorizationFilter();
                 })
                 .ConfigureApplicationPartManager(options =>
                 {
                     /*
-                     * 装配静态加载（引用模式）的程序集里的 Controller
+                     * 装配核心控制器，包含：
+                     *   Phenix.Core.Net.Api.GateController 响应 phAjax.checkIn()、phAjax.logon() 请求
+                     *   Phenix.Core.Net.Api.MyselfController 响应 phAjax.getMyself()、phAjax.changePassword() 请求
+                     *   Phenix.Core.Net.Api.SequenceController 响应 phAjax.getSequence() 请求
+                     *   Phenix.Core.Net.Api.IncrementController 响应 phAjax.getIncrement() 请求
+                     *   Phenix.Core.Net.Api.UserMessageController 响应 phAjax.sendMessage()、phAjax.receiveMessage()、phAjax.affirmReceivedMessage() 请求
                      */
-                    options.ApplicationParts.Add(new AssemblyPart(typeof(Phenix.Core.AppRun).Assembly));
+                    options.AddKernelPart();
                     /*
-                     * 装配动态加载（插件模式）的程序集里的 Controller
-                     * 约定全都存放在当前程序的基础目录下，且统一命名为"*.Plugin.dll"后缀
+                     * 装配插件控制器
+                     * 系统的 Controller 都应该按照领域划分开发各自的插件程序集，部署到本服务容器的执行目录下
+                     * 插件程序集的命名，都应该统一采用"*.Plugin.dll"作为文件名的后缀
                      */
-                    foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
-                        options.ApplicationParts.Add(new AssemblyPart(Assembly.LoadFrom(fileName)));
+                    options.AddPluginPart();
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            /*
-             * 配置SignalR策略
-             */
-            services.AddSignalR();
 
             /*
              * 配置转接头中间件（代理服务器和负载均衡器）
@@ -115,50 +128,52 @@ namespace Phenix.Services.Host
             }
 
             /*
-             * 使用CORS中间件响应跨域请求，策略见 ConfigureServices 函数里的 services.AddCors() 限制条件
+             * 使用CORS中间件（响应跨域请求）
+             * 策略见 ConfigureServices 函数里的 services.AddCors() 限制条件
              */
             app.UseCors();
 
             /*
-             * 使用转接头中间件（代理服务器和负载均衡器），策略见 ConfigureServices 函数里的 services.Configure<ForwardedHeadersOptions>() 以适应部署环境
+             * 使用转接头中间件（代理服务器和负载均衡器）
+             * 策略见 ConfigureServices 函数里的 services.Configure<ForwardedHeadersOptions>() 以适应部署环境
              */
             app.UseForwardedHeaders();
 
             /*
-             * 注册异常处理中间件
+             * 使用异常处理中间件
              * 拦截异常并转译成 context.Response.StatusCode，异常详情见报文体：
-             * InvalidOperationException 转译为 400 BadRequest
-             * AuthenticationException 转译为 401 Unauthorized
-             * SecurityException 转译为 403 Forbidden
-             * ValidationException 转译为 409 Conflict
-             * NotSupportedException/NotImplementedException 转译为 501 NotImplemented
+             *   System.InvalidOperationException 转译为 400 BadRequest
+             *   System.Security.Authentication.AuthenticationException 转译为 401 Unauthorized
+             *   System.Security.SecurityException 转译为 403 Forbidden
+             *   System.ComponentModel.DataAnnotations.ValidationException 转译为 409 Conflict
+             *   System.NotSupportedException/System.NotImplementedException 转译为 501 NotImplemented
              * 除以上之外的异常都转译为 500 InternalServerError
              */
-            app.UseMiddleware<Phenix.Core.Net.ExceptionHandlerMiddleWare>();
+            app.UseExceptionHandlerMiddleware();
 
             /*
-             * 注册身份验证中间件
+             * 使用身份验证中间件
              * 与客户端接口 phenix.js 一起实现用户的身份验证功能
              * 你也可以开发自己的客户端接口（比如桌面端、APP应用端），仅需在报文上添加身份验证 Header
              * 身份验证 Header 格式为 Phenix-Authorization=[登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密的时间戳)]
              * 登录口令/动态口令应该通过第三方渠道（邮箱或短信）推送给到用户，由用户输入到系统提供的客户端登录界面上，用于加密时间戳生成报文的签名
              * 用户登录成功后，客户端程序要将二次MD5登录口令/动态口令缓存在本地，以便每次向服务端发起 call 时都能为报文添加上身份验证 Header
              * 如果报文上没有 Phenix-Authorization 身份验证 Header，会被 Phenix.Core.Net.AuthenticationMiddleware 当作是匿名用户
-             * 匿名用户的访问经过 Phenix.Core.Net.AuthorizationFilter 后，仅允许访问到带[AllowAnonymous]标签或不打[Authorize]标签的 Controller/Action
-             * 
-             * 系统服务端一定要有 SecurityController，否则 Phenix.Core.Net.AuthenticationMiddleware 无法正确处理 phenix.js 的 logOn/logOnVerify 函数的登录请求
+             * 匿名用户的访问经过 Phenix.Core.Net.AuthorizationFilter 后，仅允许访问到带[AllowAnonymous]标签或不打[Authorize]标签的 Controller/Action             * 
              *
              * 验证失败的话 context.Response.StatusCode = 401 Unauthorized，失败详情见报文体
              * 验证成功的话 Phenix.Core.Security.Identity.CurrentIdentity.IsAuthenticated = true 且 context.User 会被赋值为 new ClaimsPrincipal(Phenix.Core.Security.Identity.CurrentIdentity)
              *
              * 系统Admin管理员的登录名是‘ADMIN’，初始登录口令也是‘ADMIN’（注意是大写），在系统部署到生产环境正式上线前，你应该用‘ADMIN’登录一次系统，把口令的复杂度修改成达标的
              */
-            app.UseMiddleware<Phenix.Core.Net.AuthenticationMiddleware>();
+            app.UseAuthenticationMiddleware();
 
-            //app.UseSignalR(routes =>
-            //{
-            //    routes.MapHub<ChatHub>("/chatHub");
-            //});
+            /*
+             * 使用用户消息服务
+             * 如果部署环境使用了 Nginx 等代理服务器或负载均衡器，类似 proxy_set_header Connection 配置项要从请求头里面获取，比如 proxy_set_header Connection $http_connection;
+             * 负载均衡器应该开启会话保持功能（客户端登录后的请求要一直落到同一台服务器上），配置会话保持类型为源IP（按访问IP的hash结果分配响应的应用服务器）
+             */
+            app.UseUserMessageHub();
 
             /*
              * 必要的话，请注册第三方客户端IP限流控制中间件

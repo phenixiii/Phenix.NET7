@@ -1,20 +1,20 @@
 ﻿/*
-    Phenix Framework for .NET Core
+    Phenix Framework for .NET Core 2.1
     Copyright © 2007, 2019 Phenixヾ Studio All rights reserved.
 
-    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/CryptoJS/core-min.js"></script>
-    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/CryptoJS/enc-base64-min.js"></script>
-    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/CryptoJS/cipher-core-min.js"></script>
-    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/CryptoJS/aes-min.js"></script>
-    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/CryptoJS/md5-min.js"></script>
-    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/base64-binary.js"></script>
-    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/json2.js"></script>
-    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/jquery.min.js"></script> --v3.2.1
-    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/jquery.signalR.min.js"></script> --v2.3.0
-    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/jquery.cookie.js"></script>
-    <script type="text/javascript" src="../Phenix.Services.Host.Client.Ajax/phenix.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/core-min.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/enc-base64-min.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/cipher-core-min.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/aes-min.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/md5-min.js"></script>
+    <script type="text/javascript" src="../lib/base64-binary.js"></script>
+    <script type="text/javascript" src="../lib/json2.js"></script>
+    <script type="text/javascript" src="../lib/jquery.min.js"></script> --v3.2.1
+    <script type="text/javascript" src="../lib/signalr.min.js"></script> --v1.0.4
+    <script type="text/javascript" src="../lib/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../lib/phenix7.js"></script>
 
-    使用方法参考 Phenix.Services.Host.Client.Test 目录下的示例代码
+    示例代码见 test 目录
  */
 ;
 $.support.cors = true;
@@ -85,7 +85,7 @@ var phAjax = (function($) {
         XMLHttpRequest.setRequestHeader(METHOD_OVERRIDE_HEADER_NAME, "PUT");
     };
 
-    var setPatchOverrideHeader = function (XMLHttpRequest) {
+    var setPatchOverrideHeader = function(XMLHttpRequest) {
         XMLHttpRequest.setRequestHeader(METHOD_OVERRIDE_HEADER_NAME, "PATCH");
     };
 
@@ -93,14 +93,38 @@ var phAjax = (function($) {
         XMLHttpRequest.setRequestHeader(METHOD_OVERRIDE_HEADER_NAME, "DELETE");
     };
 
-    //身份验证Header格式: Phenix-Authorization=[登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密的时间戳)]
-    var formatComplexAuthorizationHeader = function(XMLHttpRequest, userName, userKey) {
+    // 身份验证token: [登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密的时间戳)]
+    var formatComplexAuthorization = function(userName, userKey) {
         var timestamp = phUtils.random(9) + new Date().toISOString();
-        XMLHttpRequest.setRequestHeader(AUTHORIZATION_HEADER_NAME, encodeURIComponent(userName) + "," + timestamp + "," + phUtils.encrypt(timestamp, userKey));
+        var result = encodeURIComponent(userName) + "," + timestamp + "," + phUtils.encrypt(timestamp, userKey);
+        return result;
     };
 
-    var formatComplexAuthorizationHeaderByStorage = function(XMLHttpRequest) {
-        formatComplexAuthorizationHeader(XMLHttpRequest, getUserName(), getUserKey());
+    var formatComplexAuthorizationByStorage = function() {
+        return formatComplexAuthorization(getUserName(), getUserKey());
+    };
+
+    var setComplexAuthorizationHeader = function(XMLHttpRequest, userName, userKey) {
+        XMLHttpRequest.setRequestHeader(AUTHORIZATION_HEADER_NAME, formatComplexAuthorization(userName, userKey));
+    };
+
+    var setComplexAuthorizationHeaderByStorage = function(XMLHttpRequest) {
+        setComplexAuthorizationHeader(XMLHttpRequest, getUserName(), getUserKey());
+    };
+
+    var heartbeatMessage = function(connection, onFail) {
+        connection.invoke("Heartbeat")
+            .catch(function(error) {
+                if (typeof onFail == "function")
+                    onFail(error);
+                connection.start()
+                    .catch(function(error) {
+                        if (typeof onFail == "function") onFail(error);
+                    });
+            });
+        setTimeout(function() {
+            heartbeatMessage(connection, onFail);
+        }, 30000);
     };
 
     return {
@@ -116,14 +140,14 @@ var phAjax = (function($) {
             return phUtils.encrypt(data, getUserKey());
         },
 
-        decrypt: function (hexStr) {
+        decrypt: function(hexStr) {
             return phUtils.decrypt(hexStr, getUserKey());
         },
 
         // 登记/注册(获取动态口令)
         checkIn: function(options) {
             var defaults = {
-                baseAddress: getBaseAddress(), //"http://localhost:5000"
+                baseAddress: phAjax.baseAddress, //"http://localhost:5000"
                 name: "ADMIN", //登录名(未注册则自动注册)
                 phone: null, //手机(注册用可为空)
                 eMail: null, //邮箱(注册用可为空)
@@ -162,7 +186,7 @@ var phAjax = (function($) {
         // 登录
         logon: function(options) {
             var defaults = {
-                baseAddress: getBaseAddress(), //"http://localhost:5000"
+                baseAddress: phAjax.baseAddress, //"http://localhost:5000"
                 name: "ADMIN", //登录名
                 password: "ADMIN", //登录口令/动态口令
                 tag: new Date().toISOString(), //捎带数据(默认是客户端当前时间)
@@ -180,7 +204,7 @@ var phAjax = (function($) {
                 crossDomain: true,
                 timeout: 3000,
                 beforeSend: function(XMLHttpRequest) {
-                    formatComplexAuthorizationHeader(XMLHttpRequest, options.name, userKey);
+                    setComplexAuthorizationHeader(XMLHttpRequest, options.name, userKey);
                 },
                 data: phUtils.encrypt(options.tag, userKey),
                 complete: function(XMLHttpRequest, textStatus) {
@@ -199,74 +223,191 @@ var phAjax = (function($) {
         },
 
         // 获取自己资料
-        getMyself: function(onSuccess, onError) {
+        getMyself: function(options) {
+            var defaults = {
+                onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
+            };
+            options = $.extend(defaults, options);
             phAjax.call({
                 path: "/api/security/myself",
                 onSuccess: function(result) {
-                    if (typeof onSuccess == "function")
-                        onSuccess(result);
+                    if (typeof options.onSuccess == "function")
+                        options.onSuccess(JSON.parse(phAjax.decrypt(result))); //User
                 },
-                onError: function(XMLHttpRequest, textStatus) {
-                    if (XMLHttpRequest.status != 200) {
-                        if (typeof onError == "function")
-                            onError(XMLHttpRequest, textStatus, new Error(XMLHttpRequest.responseText));
-                    }
+                onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (typeof options.onError == "function")
+                        options.onError(XMLHttpRequest, textStatus, errorThrown);
                 },
             });
         },
 
         // 修改登录口令
-        changePassword: function(newPassword, onSuccess, onError) {
+        // newPassword: 新登录口令
+        changePassword: function(newPassword, options) {
+            var defaults = {
+                onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
+            };
+            options = $.extend(defaults, options);
             phAjax.call({
                 type: "PATCH",
                 path: "/api/security/myself",
                 data: phAjax.encrypt(newPassword),
                 onSuccess: function(result) {
                     setUserKey(CryptoJS.MD5(newPassword).toString().toUpperCase());
-                    if (typeof onSuccess == "function")
-                        onSuccess(result);
+                    if (typeof options.onSuccess == "function")
+                        options.onSuccess(result); //是否成功
                 },
-                onError: function(XMLHttpRequest, textStatus) {
-                    if (XMLHttpRequest.status != 200) {
-                        if (typeof onError == "function")
-                            onError(XMLHttpRequest, textStatus, new Error(XMLHttpRequest.responseText));
-                    }
+                onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (typeof options.onError == "function")
+                        options.onError(XMLHttpRequest, textStatus, errorThrown);
                 },
             });
         },
 
         // 获取64位序号
-        getSequence: function(onSuccess, onError) {
+        getSequence: function(options) {
+            var defaults = {
+                onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
+            };
+            options = $.extend(defaults, options);
             phAjax.call({
                 path: "/api/data/sequence",
                 onSuccess: function(result) {
-                    if (typeof onSuccess == "function")
-                        onSuccess(result);
+                    if (typeof options.onSuccess == "function")
+                        options.onSuccess(result); //64位序号
                 },
-                onError: function(XMLHttpRequest, textStatus) {
-                    if (XMLHttpRequest.status != 200) {
-                        if (typeof onError == "function")
-                            onError(XMLHttpRequest, textStatus, new Error(XMLHttpRequest.responseText));
-                    }
+                onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (typeof options.onError == "function")
+                        options.onError(XMLHttpRequest, textStatus, errorThrown);
                 },
             });
         },
 
         // 获取64位增量值
-        getIncrement: function (key, initialValue, onSuccess, onError) {
+        // key: 键
+        // initialValue: 初值
+        getIncrement: function(key, initialValue, options) {
+            var defaults = {
+                onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
+            };
+            options = $.extend(defaults, options);
             phAjax.call({
                 path: "/api/data/increment?key=" + encodeURIComponent(key) + "&initialValue=" + initialValue,
                 onSuccess: function(result) {
-                    if (typeof onSuccess == "function")
-                        onSuccess(result);
+                    if (typeof options.onSuccess == "function")
+                        options.onSuccess(result); //64位增量值
                 },
-                onError: function(XMLHttpRequest, textStatus) {
-                    if (XMLHttpRequest.status != 200) {
-                        if (typeof onError == "function")
-                            onError(XMLHttpRequest, textStatus, new Error(XMLHttpRequest.responseText));
-                    }
+                onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (typeof options.onError == "function")
+                        options.onError(XMLHttpRequest, textStatus, errorThrown);
                 },
             });
+        },
+
+        // 发送消息
+        // receiver: 接收用户
+        // content: 消息内容
+        sendMessage: function(receiver, content, options) {
+            var defaults = {
+                onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
+            };
+            options = $.extend(defaults, options);
+            phAjax.call({
+                type: "POST",
+                path: "/api/message/user-message?receiver=" + encodeURIComponent(receiver),
+                data: content,
+                onSuccess: function(result) {
+                    if (typeof options.onSuccess == "function")
+                        options.onSuccess(result); //undefined
+                },
+                onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (typeof options.onError == "function")
+                        options.onError(XMLHttpRequest, textStatus, errorThrown);
+                },
+            });
+        },
+
+        // 接收消息（PULL）
+        receiveMessage: function(options) {
+            var defaults = {
+                onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
+            };
+            options = $.extend(defaults, options);
+            phAjax.call({
+                path: "/api/message/user-message",
+                onSuccess: function(result) {
+                    if (typeof options.onSuccess == "function")
+                        options.onSuccess(result); //结果集(消息ID-消息内容)
+                },
+                onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (typeof options.onError == "function")
+                        options.onError(XMLHttpRequest, textStatus, errorThrown);
+                },
+            });
+        },
+
+        // 确认收到
+        // id: 消息ID
+        // burn: 是否销毁
+        affirmReceivedMessage: function(id, burn, options) {
+            var defaults = {
+                onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
+            };
+            options = $.extend(defaults, options);
+            phAjax.call({
+                type: "PATCH",
+                path: "/api/message/user-message?id=" + id + "&burn=" + burn,
+                onSuccess: function(result) {
+                    if (typeof options.onSuccess == "function")
+                        options.onSuccess(result); //undefined
+                },
+                onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (typeof options.onError == "function")
+                        options.onError(XMLHttpRequest, textStatus, errorThrown);
+                },
+            });
+        },
+
+        // 订阅消息（PUSH）
+        subscribeMessage: function(options) {
+            var defaults = {
+                onReceived: null, //处理收到消息, 参数(messages)为消息id(key)+content(array[key])数据字典集合
+                onConnected: null, //连接成功的回调函数
+                onFail: null, //连接失败的回调函数, 参数(error)
+            };
+            options = $.extend(defaults, options);
+            var connection = new signalR.HubConnectionBuilder()
+                .withUrl(phAjax.baseAddress + "/api/message/user-message-hub",
+                    {
+                        accessTokenFactory: function() {
+                            return formatComplexAuthorizationByStorage();
+                        }
+                    })
+                .configureLogging(signalR.LogLevel.Error)
+                .build();
+            connection.on('onReceived',
+                function(messages) {
+                    if (typeof options.onReceived == "function")
+                        options.onReceived(messages);
+                });
+            connection.start()
+                .catch(function(error) {
+                    if (typeof options.onFail == "function")
+                        options.onFail(error);
+                }).then(function() {
+                    setTimeout(function() {
+                        heartbeatMessage(connection, options.onFail);
+                    }, 30000);
+                    if (typeof options.onConnected == "function")
+                        options.onConnected();
+                });
         },
 
         // 呼叫
@@ -295,7 +436,7 @@ var phAjax = (function($) {
                 timeout: options.timeout,
                 beforeSend: function(XMLHttpRequest) {
                     if (!options.anonymity)
-                        formatComplexAuthorizationHeaderByStorage(XMLHttpRequest);
+                        setComplexAuthorizationHeaderByStorage(XMLHttpRequest);
                     if (options.type == "PUT")
                         setPutOverrideHeader(XMLHttpRequest);
                     else if (options.type == "PATCH")
@@ -305,11 +446,19 @@ var phAjax = (function($) {
                 },
                 data: options.data,
                 success: function(result) {
-                    if (typeof options.onSuccess == "function")
+                    if (typeof options.onSuccess == "function") {
                         options.onSuccess(result);
+                        options.onSuccess = null;
+                    }
                 },
                 complete: function(XMLHttpRequest, textStatus) {
-                    if (XMLHttpRequest.status >= 203) {
+                    if (XMLHttpRequest.status == 200) {
+                        if (typeof options.onSuccess == "function") {
+                            options.onSuccess(XMLHttpRequest.responseText);
+                            options.onSuccess = null;
+                        }
+                    }
+                    else if (XMLHttpRequest.status >= 203) {
                         if (typeof options.onError == "function")
                             options.onError(XMLHttpRequest, textStatus, new Error(XMLHttpRequest.responseText));
                     }

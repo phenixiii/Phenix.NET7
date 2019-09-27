@@ -254,14 +254,14 @@
             未隐藏的字段的数目
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DataReader.Dispose">
+        <member name="M:Phenix.Core.Data.Common.DataReader.DisposeManagedResources">
             <summary>
-            释放
+            释放托管资源
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DataReader.Close">
+        <member name="M:Phenix.Core.Data.Common.DataReader.DisposeUnmanagedResources">
             <summary>
-            关闭
+            释放非托管资源
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Common.DataReader.GetSchemaTable">
@@ -1577,6 +1577,7 @@
             取fetchScript中数据源队列
             </summary>
             <param name="fetchScript">fetch脚本</param>
+            <returns>结果集(tableName-tableAliases)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Common.SqlHelper.FindColumnExpression(System.String,System.String)">
             <summary>
@@ -1725,6 +1726,13 @@
             <summary>
             缺省数据库入口
             </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.Fetch(System.Boolean)">
+            <summary>
+            获取数据库入口
+            </summary>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <returns>数据库入口</returns>
         </member>
         <member name="M:Phenix.Core.Data.Database.Fetch(System.String,System.Boolean)">
             <summary>
@@ -5252,6 +5260,13 @@
             <param name="propertyName">属性名</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
         </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.GetPrimaryKeyProperty``1(System.Boolean)">
+            <summary>
+            检索主键表字段
+            </summary>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <returns>字段</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.GetPrimaryKeyProperty``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean)">
             <summary>
             检索主键表字段
@@ -6780,6 +6795,73 @@
             值
             </summary>
         </member>
+        <member name="T:Phenix.Core.DisposableBase`1">
+            <summary>
+            释放资源基类
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.DisposableBase`1.Default">
+            <summary>
+            单例
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.DisposableBase`1.DisposeManagedResources">
+            <summary>
+            释放托管资源
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.DisposableBase`1.DisposeUnmanagedResources">
+            <summary>
+            释放非托管资源
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.DisposableBase">
+            <summary>
+            释放资源基类
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.DisposableBase.Finalize">
+            <summary>
+            释放资源基类
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.DisposableBase.Disposing">
+            <summary>
+            正在释放中
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.DisposableBase.Dispose">
+            <summary>
+            释放自己
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.DisposableBase.Dispose(System.Boolean)">
+            <summary>
+            释放
+            </summary>
+            <param name="disposing">如果为 true, 则释放托管资源和非托管资源; 如果为 false, 则仅释放非托管资源</param>
+        </member>
+        <member name="M:Phenix.Core.DisposableBase.DisposeManagedResources">
+            <summary>
+            释放托管资源
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.DisposableBase.DisposeUnmanagedResources">
+            <summary>
+            释放非托管资源
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.DisposableBase.Close">
+            <summary>
+            释放资源
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.DisposableBase.TryDispose(System.Object)">
+            <summary>
+            尝试释放对象
+            </summary>
+            <param name="value">对象</param>
+        </member>
         <member name="T:Phenix.Core.IO.CompressHelper">
             <summary>
             压缩助手
@@ -7141,7 +7223,7 @@
             接收
             </summary>
             <param name="receiver">接收用户</param>
-            <returns>消息ID,消息内容</returns>
+            <returns>结果集(消息ID-消息内容)</returns>
         </member>
         <member name="M:Phenix.Core.Message.UserMessage.AffirmReceived(System.Int64,System.Boolean)">
             <summary>
@@ -7202,97 +7284,48 @@
             消息内容
             </summary>
         </member>
-        <member name="T:Phenix.Core.Net.AuthenticationMiddleware">
-            <summary>
-            身份验证中间件
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.AuthenticationMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
-            <summary>
-            身份验证中间件
-            </summary>
-            <param name="next">下一个中间件</param>
-        </member>
-        <member name="M:Phenix.Core.Net.AuthenticationMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
-            <summary>
-            动态执行
-            </summary>
-            <param name="context">上下文</param>
-        </member>
-        <member name="T:Phenix.Core.Net.AuthorizationFilter">
-            <summary>
-            访问授权过滤器
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Net.AuthorizationFilter.Paused">
-            <summary>
-            暂停
-            缺省为 false
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Net.AuthorizationFilter.PauseReason">
-            <summary>
-            暂停原因
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.AuthorizationFilter.OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)">
-            <summary>
-            处理访问授权
-            </summary>
-            <param name="context">上下文</param>
-        </member>
-        <member name="M:Phenix.Core.Net.AuthorizationFilter.Pause(System.String)">
-            <summary>
-            暂停
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.AuthorizationFilter.Activate">
-            <summary>
-            激活
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Net.ControllerBase">
+        <member name="T:Phenix.Core.Net.Api.ControllerBase">
             <summary>
             控制器的授权角色
             </summary>
         </member>
-        <member name="P:Phenix.Core.Net.ControllerBase.User">
+        <member name="P:Phenix.Core.Net.Api.ControllerBase.User">
             <summary>
             用户身份
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.ControllerBase.Encrypt(System.Object)">
+        <member name="M:Phenix.Core.Net.Api.ControllerBase.Encrypt(System.Object)">
             <summary>
             加密
             Key/IV=登录口令/动态口令
             </summary>
             <param name="data">需加密的对象/字符串</param>
         </member>
-        <member name="M:Phenix.Core.Net.ControllerBase.Decrypt(System.String)">
+        <member name="M:Phenix.Core.Net.Api.ControllerBase.Decrypt(System.String)">
             <summary>
             解密
              Key/IV=登录口令/动态口令
             </summary>
             <param name="sourceBuffer">Hex字符串</param>
         </member>
-        <member name="M:Phenix.Core.Net.ControllerBase.DecryptBody">
+        <member name="M:Phenix.Core.Net.Api.ControllerBase.DecryptBody">
             <summary>
             解密报文体
              Key/IV=登录口令/动态口令
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.ControllerBase.DecryptBody``1">
+        <member name="M:Phenix.Core.Net.Api.ControllerBase.DecryptBody``1">
             <summary>
             解密报文体
              Key/IV=登录口令/动态口令
             </summary>
         </member>
-        <member name="T:Phenix.Core.Net.ControllerRole">
+        <member name="T:Phenix.Core.Net.Api.ControllerRole">
             <summary>
             控制器的授权角色
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.ControllerRole.New(System.String,System.String,System.Collections.Generic.IList{System.String})">
+        <member name="M:Phenix.Core.Net.Api.ControllerRole.New(System.String,System.String,System.Collections.Generic.IList{System.String})">
             <summary>
             新增控制器的授权角色
             </summary>
@@ -7301,7 +7334,7 @@
             <param name="roles">角色数组</param>
             <returns>控制器的授权角色</returns>
         </member>
-        <member name="M:Phenix.Core.Net.ControllerRole.Fetch(System.Int64,System.Int32)">
+        <member name="M:Phenix.Core.Net.Api.ControllerRole.Fetch(System.Int64,System.Int32)">
             <summary>
             获取控制器的授权角色
             </summary>
@@ -7309,7 +7342,7 @@
             <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
             <returns>控制器的授权角色</returns>
         </member>
-        <member name="M:Phenix.Core.Net.ControllerRole.Fetch(System.String,System.String)">
+        <member name="M:Phenix.Core.Net.Api.ControllerRole.Fetch(System.String,System.String)">
             <summary>
             获取控制器的授权角色
             </summary>
@@ -7317,77 +7350,88 @@
             <param name="methodName">方法名</param>
             <returns>控制器的授权角色</returns>
         </member>
-        <member name="M:Phenix.Core.Net.ControllerRole.Delete">
+        <member name="M:Phenix.Core.Net.Api.ControllerRole.Delete">
             <summary>
             删除控制器的授权角色
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.ControllerRole.ResetAll">
+        <member name="M:Phenix.Core.Net.Api.ControllerRole.ResetAll">
             <summary>
             重置所有缓存
             </summary>
         </member>
-        <member name="F:Phenix.Core.Net.ControllerRole._id">
+        <member name="F:Phenix.Core.Net.Api.ControllerRole._id">
             <summary>
             ID
             </summary>
         </member>
-        <member name="P:Phenix.Core.Net.ControllerRole.Id">
+        <member name="P:Phenix.Core.Net.Api.ControllerRole.Id">
             <summary>
             ID
             </summary>
         </member>
-        <member name="F:Phenix.Core.Net.ControllerRole._controllerName">
+        <member name="F:Phenix.Core.Net.Api.ControllerRole._controllerName">
             <summary>
             Controller全名
             </summary>
         </member>
-        <member name="P:Phenix.Core.Net.ControllerRole.ControllerName">
+        <member name="P:Phenix.Core.Net.Api.ControllerRole.ControllerName">
             <summary>
             Controller全名
             </summary>
         </member>
-        <member name="F:Phenix.Core.Net.ControllerRole._actionName">
+        <member name="F:Phenix.Core.Net.Api.ControllerRole._actionName">
             <summary>
             Action名
             </summary>
         </member>
-        <member name="P:Phenix.Core.Net.ControllerRole.ActionName">
+        <member name="P:Phenix.Core.Net.Api.ControllerRole.ActionName">
             <summary>
             Action名
             </summary>
         </member>
-        <member name="F:Phenix.Core.Net.ControllerRole._roles">
+        <member name="F:Phenix.Core.Net.Api.ControllerRole._roles">
             <summary>
             角色清单
             多个角色用‘|’分隔，互相为 or 关系
             多组角色个用‘,’分隔，互相为 and 关系
             </summary>
         </member>
-        <member name="P:Phenix.Core.Net.ControllerRole.Roles">
+        <member name="P:Phenix.Core.Net.Api.ControllerRole.Roles">
             <summary>
             角色清单
             多个角色用‘|’分隔，互相为 or 关系
             多组角色个用‘,’分隔，互相为 and 关系
             </summary>
         </member>
-        <member name="P:Phenix.Core.Net.ControllerRole.InvalidTime">
+        <member name="P:Phenix.Core.Net.Api.ControllerRole.InvalidTime">
             <summary>
             失效时间
             </summary>
         </member>
-        <member name="T:Phenix.Core.Net.Controllers.EventLogController">
+        <member name="T:Phenix.Core.Net.Api.EventLogController">
             <summary>
             事件日志控制器
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Controllers.EventLogController.Post">
+        <member name="M:Phenix.Core.Net.Api.EventLogController.Post">
             <summary>
             保存
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Phenix.Core.Net.Controllers.GateController" -->
-        <member name="M:Phenix.Core.Net.Controllers.GateController.CheckIn(System.String,System.String,System.String,System.String)">
+        <member name="T:Phenix.Core.Net.Api.GateController">
+            <summary>
+            系统入口控制器
+            系统必备（配套 Phenix.Core.Net.AuthenticationMiddleware 或 phAjax7 使用）
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.GateController.#ctor(Phenix.Core.Net.Api.IGateService)">
+            <summary>
+            初始化
+            </summary>
+            <param name="gateService">依赖注入的系统入口服务</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.GateController.CheckIn(System.String,System.String,System.String,System.String)">
             <summary>
             登记/注册(获取动态口令)
             </summary>
@@ -7397,18 +7441,54 @@
             <param name="regAlias">注册昵称(注册用可为空)</param>
             <returns>返回信息</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Controllers.GateController.Logon">
+        <member name="M:Phenix.Core.Net.Api.GateController.Logon">
             <summary>
             登录
             </summary>
-            <returns>当前登录用户资料</returns>
         </member>
-        <member name="T:Phenix.Core.Net.Controllers.IncrementController">
+        <member name="T:Phenix.Core.Net.Api.IGateService">
+            <summary>
+            系统入口服务接口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.IGateService.PushDynamicPassword(Phenix.Core.Security.User,System.String,System.Int32)">
+            <summary>
+            当用户获取动态口令时被CheckIn触发(可推送动态口令给到用户) 
+            </summary>
+            <param name="user">用户资料</param>
+            <param name="dynamicPassword">动态口令(6位数字一般作为验证码用短信发送给到用户)</param>
+            <param name="validityMinutes">动态口令有效周期(分钟>=3)</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.IGateService.PushPassword(Phenix.Core.Security.User,System.String,System.String,System.Int32)">
+            <summary>
+            当新用户注册时被CheckIn触发(可推送初始口令/动态口令给到用户) 
+            </summary>
+            <param name="newUser">用户资料</param>
+            <param name="initialPassword">初始口令(一般通过邮箱发送给到用户)</param>
+            <param name="dynamicPassword">动态口令(6位数字一般作为验证码用短信发送给到用户)</param>
+            <param name="validityMinutes">动态口令有效周期(分钟>=3)</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.IGateService.CompleteCheckIn(Phenix.Core.Security.User,System.Exception)">
+            <summary>
+            当完成CheckIn时触发
+            </summary>
+            <param name="user">用户资料</param>
+            <param name="error">非null时说明有异常发生</param>
+            <returns>提示信息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.IGateService.Logon(Phenix.Core.Security.User,System.String)">
+            <summary>
+            当完成Logon时触发
+            </summary>
+            <param name="user">用户资料</param>
+            <param name="tag">捎带数据(默认是客户端当前时间)</param>
+        </member>
+        <member name="T:Phenix.Core.Net.Api.IncrementController">
             <summary>
             64位增量
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Controllers.IncrementController.Get(System.String,System.Int64)">
+        <member name="M:Phenix.Core.Net.Api.IncrementController.Get(System.String,System.Int64)">
             <summary>
             获取64位增量值
             </summary>
@@ -7416,118 +7496,128 @@
             <param name="initialValue">初值</param>
             <returns>下一个值</returns>
         </member>
-        <member name="T:Phenix.Core.Net.Controllers.MyselfController">
+        <member name="T:Phenix.Core.Net.Api.MyselfController">
             <summary>
             用户自己控制器
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Controllers.MyselfController.Get">
+        <member name="M:Phenix.Core.Net.Api.MyselfController.Get">
             <summary>
             获取自己资料
             </summary>
             <returns>自己资料</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Controllers.MyselfController.ChangePassword">
+        <member name="M:Phenix.Core.Net.Api.MyselfController.ChangePassword">
             <summary>
             修改登录口令
             </summary>
         </member>
-        <member name="T:Phenix.Core.Net.Controllers.SequenceController">
+        <member name="T:Phenix.Core.Net.Api.SequenceController">
             <summary>
             64位序号
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Controllers.SequenceController.Get">
+        <member name="M:Phenix.Core.Net.Api.SequenceController.Get">
             <summary>
             获取64位序号
             </summary>
             <returns>64位序号</returns>
         </member>
-        <member name="T:Phenix.Core.Net.Controllers.UserMessageController">
+        <member name="T:Phenix.Core.Net.Api.UserMessageController">
             <summary>
             用户消息控制器
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Controllers.UserMessageController.Receive">
+        <member name="M:Phenix.Core.Net.Api.UserMessageController.Receive">
             <summary>
-            接收
+            接收（PULL）
             </summary>
-            <returns>消息ID,消息内容</returns>
+            <returns>结果集(消息ID-消息内容)</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Controllers.UserMessageController.Send">
+        <member name="M:Phenix.Core.Net.Api.UserMessageController.Send(System.String)">
             <summary>
             发送
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Controllers.UserMessageController.AffirmReceived(System.Int64,System.Boolean)">
+        <member name="M:Phenix.Core.Net.Api.UserMessageController.AffirmReceived(System.Int64,System.Boolean)">
             <summary>
             确认收到
             </summary>
             <param name="id">消息ID</param>
             <param name="burn">是否销毁</param>
         </member>
-        <member name="T:Phenix.Core.Net.ExceptionHandlerMiddleWare">
+        <member name="T:Phenix.Core.Net.Api.UserMessageHub">
             <summary>
-            异常处理中间件
+            用户消息中间件
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.ExceptionHandlerMiddleWare.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+        <member name="M:Phenix.Core.Net.Api.UserMessageHub.#ctor(Microsoft.AspNetCore.SignalR.IHubContext{Phenix.Core.Net.Api.UserMessageHub})">
             <summary>
-            异常处理中间件
+            初始化
             </summary>
-            <param name="next">下一个中间件</param>
         </member>
-        <member name="M:Phenix.Core.Net.ExceptionHandlerMiddleWare.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
+        <member name="M:Phenix.Core.Net.Api.UserMessageHub.Dispose(System.Boolean)">
             <summary>
-            动态执行
+            释放
+            </summary>
+            <param name="disposing">如果为 true, 则释放托管资源和非托管资源; 如果为 false, 则仅释放非托管资源</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.UserMessageHub.OnConnectedAsync">
+            <summary>
+            连接
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.UserMessageHub.OnDisconnectedAsync(System.Exception)">
+            <summary>
+            断开
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.UserMessageHub.Heartbeat">
+            <summary>
+            心跳
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.UserMessageHubPusher.DisposeManagedResources">
+            <summary>
+            释放托管资源
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.UserMessageHubPusher.DisposeUnmanagedResources">
+            <summary>
+            释放非托管资源
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Net.Filters.AuthorizationFilter">
+            <summary>
+            访问授权过滤器
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Filters.AuthorizationFilter.Paused">
+            <summary>
+            暂停
+            缺省为 false
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Filters.AuthorizationFilter.PauseReason">
+            <summary>
+            暂停原因
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Filters.AuthorizationFilter.OnAuthorization(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)">
+            <summary>
+            处理访问授权
             </summary>
             <param name="context">上下文</param>
         </member>
-        <member name="T:Phenix.Core.Net.HttpRequestExtension">
+        <member name="M:Phenix.Core.Net.Filters.AuthorizationFilter.Pause(System.String)">
             <summary>
-            HttpRequest扩展
+            暂停
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.HttpRequestExtension.GetRemoteAddress(Microsoft.AspNetCore.Http.HttpRequest)">
+        <member name="M:Phenix.Core.Net.Filters.AuthorizationFilter.Activate">
             <summary>
-            取远端IP地址
-            前置条件：在Startup里应配置和使用转接头中间件（代理服务器和负载均衡器）
+            激活
             </summary>
-            <param name="request">HttpRequest</param>
-            <returns>远端IP地址</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.HttpRequestExtension.GetAcceptLanguage(Microsoft.AspNetCore.Http.HttpRequest)">
-            <summary>
-            取区域性名称
-            </summary>
-            <param name="request">HttpRequest</param>
-            <returns>区域性名称</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.HttpRequestExtension.ReadBody(Microsoft.AspNetCore.Http.HttpRequest)">
-            <summary>
-            取报文主体
-            </summary>
-            <param name="request">HttpRequest</param>
-            <returns>报文主体</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.HttpRequestExtension.ReadBodyAsString(Microsoft.AspNetCore.Http.HttpRequest)">
-            <summary>
-            取报文主体
-            </summary>
-            <param name="request">HttpRequest</param>
-            <returns>报文主体</returns>
-        </member>
-        <member name="T:Phenix.Core.Net.HttpResponseExtension">
-            <summary>
-            HttpResponse扩展
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.HttpResponseExtension.PackAsync(Microsoft.AspNetCore.Http.HttpResponse,System.Exception)">
-            <summary>
-            打包错误消息
-            </summary>
-            <param name="response">HttpResponse</param>
-            <param name="error">错误消息</param>
         </member>
         <member name="T:Phenix.Core.Net.Http.HttpClient">
             <summary>
@@ -7567,6 +7657,7 @@
             <summary>
             释放
             </summary>
+            <param name="disposing">如果为 true, 则释放托管资源和非托管资源; 如果为 false, 则仅释放非托管资源</param>
         </member>
         <member name="M:Phenix.Core.Net.Http.HttpClient.Upload(System.Int64,System.String,System.String,System.Action{System.Int64,System.Nullable{System.Boolean},System.Exception})">
             <summary>
@@ -7725,17 +7816,6 @@
             SendAsync
             </summary>
         </member>
-        <member name="T:Phenix.Core.Net.Http.HttpResponseMessageExtension">
-            <summary>
-            HttpResponseMessage扩展
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpResponseMessageExtension.ThrowIfFailedAsync(System.Net.Http.HttpResponseMessage)">
-            <summary>
-            如果调用失败就抛出异常
-            </summary>
-            <param name="message">HttpResponseMessage</param>
-        </member>
         <member name="T:Phenix.Core.Net.Http.OfflineCache">
             <summary>
             脱机缓存
@@ -7792,10 +7872,39 @@
             值
             </summary>
         </member>
-        <member name="T:Phenix.Core.Net.MessageHub">
+        <member name="T:Phenix.Core.Net.Middleware.AuthenticationMiddleware">
             <summary>
-            消息中间件
+            身份验证中间件
             </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Middleware.AuthenticationMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            身份验证中间件
+            </summary>
+            <param name="next">下一个中间件</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Middleware.AuthenticationMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            动态执行
+            </summary>
+            <param name="context">上下文</param>
+        </member>
+        <member name="T:Phenix.Core.Net.Middleware.ExceptionHandlerMiddleware">
+            <summary>
+            异常处理中间件
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Middleware.ExceptionHandlerMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            异常处理中间件
+            </summary>
+            <param name="next">下一个中间件</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Middleware.ExceptionHandlerMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            动态执行
+            </summary>
+            <param name="context">上下文</param>
         </member>
         <member name="T:Phenix.Core.Net.NetConfig">
             <summary>
@@ -7812,34 +7921,39 @@
             Phenix-Authorization
             </summary>
         </member>
-        <member name="F:Phenix.Core.Net.NetConfig.SecurityGatePath">
+        <member name="F:Phenix.Core.Net.NetConfig.ApiSecurityGatePath">
             <summary>
             /api/Security/Gate
             </summary>
         </member>
-        <member name="F:Phenix.Core.Net.NetConfig.SecurityMyselfPath">
+        <member name="F:Phenix.Core.Net.NetConfig.ApiSecurityMyselfPath">
             <summary>
             /api/security/myself
             </summary>
         </member>
-        <member name="F:Phenix.Core.Net.NetConfig.DataSequencePath">
+        <member name="F:Phenix.Core.Net.NetConfig.ApiDataSequencePath">
             <summary>
             /api/data/sequence
             </summary>
         </member>
-        <member name="F:Phenix.Core.Net.NetConfig.DataIncrementPath">
+        <member name="F:Phenix.Core.Net.NetConfig.ApiDataIncrementPath">
             <summary>
             /api/data/increment
             </summary>
         </member>
-        <member name="F:Phenix.Core.Net.NetConfig.LogEventLogPath">
+        <member name="F:Phenix.Core.Net.NetConfig.ApiLogEventLogPath">
             <summary>
             /api/log/event-log
             </summary>
         </member>
-        <member name="F:Phenix.Core.Net.NetConfig.MessageUserMessagePath">
+        <member name="F:Phenix.Core.Net.NetConfig.ApiMessageUserMessagePath">
             <summary>
             /api/message/user-message
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.NetConfig.ApiMessageUserMessageHubPath">
+            <summary>
+            /api/message/user-message-hub
             </summary>
         </member>
         <member name="P:Phenix.Core.Net.NetConfig.LocalAddress">
@@ -8909,6 +9023,16 @@
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 UserNotFoundException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>用户资料</returns>
         </member>
+        <member name="M:Phenix.Core.Security.Identity.Fetch(System.String,System.String,System.Int32,System.Boolean)">
+            <summary>
+            获取用户身份
+            </summary>
+            <param name="userName">登录名</param>
+            <param name="cultureName">区域性名称</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 UserNotFoundException; 如果为 false, 则在找不到信息时返回 null</param>
+            <returns>用户资料</returns>
+        </member>
         <member name="M:Phenix.Core.Security.Identity.IsValid(System.String,System.String,System.String,System.String,System.String,System.Boolean)">
             <summary>
             核对有效性
@@ -9099,7 +9223,7 @@
             获取顶层团体名称
             </summary>
             <param name="likeName">类似名称</param>
-            <returns>顶层团体名称及ID清单</returns>
+            <returns>结果集(顶层团体名称-ID)</returns>
         </member>
         <member name="M:Phenix.Core.Security.Teams.Delete">
             <summary>
@@ -9216,7 +9340,7 @@
             <param name="eMail">邮箱</param>
             <param name="regAlias">注册昵称</param>
             <param name="requestAddress">服务请求方IP地址</param>
-            <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
+            <param name="initialPassword">初始口令(一般通过邮箱发送给到用户)</param>
             <param name="dynamicPassword">动态口令(6位数字一般作为验证码用短信发送给到用户)</param>
             <returns>用户资料</returns>
         </member>
@@ -11197,6 +11321,139 @@
             </summary>
             <param name="array">作为从集合中复制的元素的目标位置的一维 Array. Array 必须具有从零开始的索引</param>
             <param name="arrayIndex">array 中从零开始的索引, 在此处开始复制</param>
+        </member>
+        <member name="T:Microsoft.AspNetCore.Builder.ApplicationBuilderExtension">
+            <summary>
+            ApplicationBuilder扩展
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.ApplicationBuilderExtension.UseExceptionHandlerMiddleware(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            使用异常处理中间件
+            </summary>
+            <param name="builder">IApplicationBuilder</param>
+            <returns>IApplicationBuilder</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.ApplicationBuilderExtension.UseAuthenticationMiddleware(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            使用身份验证中间件
+            </summary>
+            <param name="builder">IApplicationBuilder</param>
+            <returns>IApplicationBuilder</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Builder.ApplicationBuilderExtension.UseUserMessageHub(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            使用用户消息服务
+            </summary>
+            <param name="builder">IApplicationBuilder</param>
+            <returns>IApplicationBuilder</returns>
+        </member>
+        <member name="T:Microsoft.AspNetCore.Mvc.ApplicationPartManagerExtension">
+            <summary>
+            ApplicationPartManager扩展
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Mvc.ApplicationPartManagerExtension.AddKernelPart(Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager)">
+            <summary>
+            装配核心控制器
+            </summary>
+            <param name="manager">ApplicationPartManager</param>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Mvc.ApplicationPartManagerExtension.AddPluginPart(Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager,System.String)">
+            <summary>
+            装配插件控制器
+            </summary>
+            <param name="manager">ApplicationPartManager</param>
+            <param name="filter">装配的插件控制器所在程序集统一采用"*.Plugin.dll"作为文件名后缀</param>
+        </member>
+        <member name="T:Microsoft.AspNetCore.Mvc.HttpRequestExtension">
+            <summary>
+            HttpRequest扩展
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.GetRemoteAddress(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            获取远端IP地址
+            前置条件：在Startup里应配置和使用转接头中间件（代理服务器和负载均衡器）
+            </summary>
+            <param name="request">HttpRequest</param>
+            <returns>远端IP地址</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.GetAcceptLanguage(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            获取区域性名称
+            </summary>
+            <param name="request">HttpRequest</param>
+            <returns>区域性名称</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.ReadBody(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            获取报文主体
+            </summary>
+            <param name="request">HttpRequest</param>
+            <returns>报文主体</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.ReadBodyAsString(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            获取报文主体
+            </summary>
+            <param name="request">HttpRequest</param>
+            <returns>报文主体</returns>
+        </member>
+        <member name="T:Microsoft.AspNetCore.Http.HttpResponseExtension">
+            <summary>
+            HttpResponse扩展
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Http.HttpResponseExtension.PackAsync(Microsoft.AspNetCore.Http.HttpResponse,System.Exception)">
+            <summary>
+            打包错误消息
+            </summary>
+            <param name="response">HttpResponse</param>
+            <param name="error">错误消息</param>
+        </member>
+        <member name="T:Microsoft.Extensions.DependencyInjection.FilterCollectionExtension">
+            <summary>
+            FilterCollection扩展
+            </summary>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.FilterCollectionExtension.AddAuthorizationFilter(Microsoft.AspNetCore.Mvc.Filters.FilterCollection)">
+            <summary>
+            注册访问授权过滤器
+            </summary>
+            <param name="filters">FilterCollection</param>
+            <returns>IFilterMetadata</returns>
+        </member>
+        <member name="T:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtension">
+            <summary>
+            ServiceCollection扩展
+            </summary>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtension.AddGateService``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.DependencyInjection.ServiceLifetime)">
+            <summary>
+            注入系统入口服务
+            </summary>
+            <param name="services">IServiceCollection</param>
+            <param name="serviceLifetime"></param>
+            <returns>IServiceCollection</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtension.AddUserMessageHub(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            注入用户消息服务
+            </summary>
+            <param name="services">IServiceCollection</param>
+            <returns>IServiceCollection</returns>
+        </member>
+        <member name="T:System.Net.Http.HttpResponseMessageExtension">
+            <summary>
+            HttpResponseMessage扩展
+            </summary>
+        </member>
+        <member name="M:System.Net.Http.HttpResponseMessageExtension.ThrowIfFailedAsync(System.Net.Http.HttpResponseMessage)">
+            <summary>
+            如果调用失败就抛出异常
+            </summary>
+            <param name="message">HttpResponseMessage</param>
         </member>
     </members>
 </doc>

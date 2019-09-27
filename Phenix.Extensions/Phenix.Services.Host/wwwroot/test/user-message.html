@@ -1,0 +1,114 @@
+﻿<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>UserMessageController & UserMessageHub Client Test</title>
+
+    <script type="text/javascript" src="../lib/crypto-js/core-min.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/enc-base64-min.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/cipher-core-min.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/aes-min.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/md5-min.js"></script>
+    <script type="text/javascript" src="../lib/base64-binary.js"></script>
+    <script type="text/javascript" src="../lib/json2.js"></script>
+    <script type="text/javascript" src="../lib/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/signalr.min.js"></script>
+    <script type="text/javascript" src="../lib/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../lib/phenix7.js"></script>
+
+    <script type="text/javascript">
+
+        function onComplete(XMLHttpRequest, textStatus) {
+            if (XMLHttpRequest.status === 200)
+                alert("成功! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
+            else if (XMLHttpRequest.status === 401)
+                alert("无效! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
+            else
+                alert("失败! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
+        };
+
+        function sendMessage(receiver) {
+            phAjax.sendMessage(receiver, "Hello " + receiver,
+                {
+                    onSuccess: function() {
+                        alert("成功发布消息!");
+                    },
+                    onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert("发布消息失败! status: " +
+                            XMLHttpRequest.statusText +
+                            ", response: " +
+                            XMLHttpRequest.responseText);
+                    },
+                });
+        };
+
+        function affirmReceivedMessage(id) {
+            phAjax.affirmReceivedMessage(id, true,
+                {
+                    onSuccess: function() {
+                        alert("成功确认(销毁)消息!");
+                    },
+                    onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert("确认(销毁)消息失败! status: " +
+                            XMLHttpRequest.statusText +
+                            ", response: " +
+                            XMLHttpRequest.responseText);
+                    },
+                });
+        };
+
+        function receiveMessage() {
+            phAjax.receiveMessage({
+                onSuccess: function(messages) {
+                    for (var id in messages) {
+                        alert("拉取消息 id: " + id + ", content：" + messages[id]);
+                        affirmReceivedMessage(id);
+                    };
+                },
+                onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("拉取消息失败! status: " +
+                        XMLHttpRequest.statusText +
+                        ", response: " +
+                        XMLHttpRequest.responseText);
+                },
+            });
+        };
+
+        function subscribeMessage() {
+            phAjax.subscribeMessage({
+                onReceived: function(messages) {
+                    for (var id in messages) {
+                        alert("收到消息 id: " + id + ", content：" + messages[id]);
+                        affirmReceivedMessage(id);
+                    };
+                },
+                onConnected: function() {
+                    alert("消息订阅成功!");
+                },
+                onFail: function(error) {
+                    alert("消息订阅失败! error: " + JSON.stringify(error));
+                },
+            });
+        };
+
+        $(function() {
+        });
+
+    </script>
+</head>
+<body>
+    请启动 Phenix.Services.Host_MySQL/ORA 程序<br />
+    <br />
+    普通用户登录<br />
+    新(/已注册)的登录名<input id="userName" type="text" value="TEST" />
+    <input name="userCheckIn" onclick="phAjax.checkIn({baseAddress: 'http://localhost:5000', name: userName.value, onComplete: onComplete});" type="button" value="登记/注册" /><br />
+    动态口令/登录口令<input id="userPassword" type="text" value="请在此输入日志文件里的口令" />
+    <input name="userLogon" onclick="phAjax.logon({name: userName.value, password: userPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
+    <br />
+    <input name="sendMessageButton" onclick="sendMessage(userName.value);" type="button" value="发布消息给自己" /><br />
+    <br />
+    <input name="receiveMessageButton" onclick="receiveMessage();" type="button" value="拉取消息" /><br />
+    <br />
+    <input name="subscribeMessageButton" onclick="subscribeMessage();" type="button" value="启动消息订阅机制" /><br />
+    <br />
+</body>
+</html>

@@ -91,17 +91,17 @@ namespace Demo
         /// <param name="eMail">邮箱</param>
         /// <param name="regAlias">注册昵称</param>
         /// <param name="requestAddress">服务请求方IP地址</param>
-        /// <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
+        /// <param name="initialPassword">初始口令(一般通过邮箱发送给到用户)</param>
         /// <param name="dynamicPassword">动态口令(6位数字一般作为验证码用短信发送给到用户)</param>
         /// <returns>用户资料</returns>
-        public static User New(string name, string phone, string eMail, string regAlias, string requestAddress, out string password, out string dynamicPassword)
+        public static User New(string name, string phone, string eMail, string regAlias, string requestAddress, out string initialPassword, out string dynamicPassword)
         {
             Initialize();
 
-            password = Guid.NewGuid().ToString().Substring(0, 10);
+            initialPassword = Guid.NewGuid().ToString().Substring(0, 10);
             dynamicPassword = new Random().Next(100000, 1000000).ToString();
             User result = new User(Sequence.Value, name, phone, eMail, regAlias, DateTime.Now,
-                MD5CryptoTextProvider.ComputeHash(password), MD5CryptoTextProvider.ComputeHash(dynamicPassword), DateTime.Now,
+                MD5CryptoTextProvider.ComputeHash(initialPassword), MD5CryptoTextProvider.ComputeHash(dynamicPassword), DateTime.Now,
                 requestAddress, 0, null,
                 null, null, null,
                 false, null, false, null, null);
