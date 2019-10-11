@@ -1,18 +1,18 @@
 ﻿<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>GateController Client Test</title>
+    <title>GateController & GateService Client Test</title>
 
     <script type="text/javascript" src="../lib/crypto-js/core-min.js"></script>
     <script type="text/javascript" src="../lib/crypto-js/enc-base64-min.js"></script>
     <script type="text/javascript" src="../lib/crypto-js/cipher-core-min.js"></script>
     <script type="text/javascript" src="../lib/crypto-js/aes-min.js"></script>
     <script type="text/javascript" src="../lib/crypto-js/md5-min.js"></script>
-    <script type="text/javascript" src="../lib/base64-binary.js"></script>
     <script type="text/javascript" src="../lib/json2.js"></script>
     <script type="text/javascript" src="../lib/jquery.min.js"></script>
-    <script type="text/javascript" src="../lib/signalr.min.js"></script>
     <script type="text/javascript" src="../lib/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../lib/jquery.base64.js"></script>
+    <script type="text/javascript" src="../lib/signalr.min.js"></script>
     <script type="text/javascript" src="../lib/phenix7.js"></script>
 
     <script type="text/javascript">
@@ -26,7 +26,7 @@
                 alert("失败! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
         };
 
-        $(function() {
+        $(function () {
         });
 
     </script>
@@ -36,13 +36,13 @@
     <br />
     系统Admin管理员登录<br />
     登录名<input id="adminUserName" type="text" value="ADMIN" />登录口令<input id="adminPassword" type="text" value="ADMIN" />
-    <input name="adminLogon" onclick="phAjax.logon({baseAddress: 'http://localhost:5000', name: adminUserName.value, password: adminPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
+    <input name="adminLogonButton" onclick="phAjax.logon({baseAddress: 'http://localhost:5000', name: adminUserName.value, password: adminPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
     <br />
     普通用户登录<br />
     新(/已注册)的登录名<input id="userName" type="text" value="TEST" />
-    <input name="userCheckIn" onclick="phAjax.checkIn({baseAddress: 'http://localhost:5000', name: userName.value, onComplete: onComplete});" type="button" value="登记/注册" /><br />
+    <input name="checkInButton" onclick="phAjax.checkIn({baseAddress: 'http://localhost:5000', name: userName.value, onComplete: onComplete});" type="button" value="登记/注册" /><br />
     动态口令/登录口令<input id="userPassword" type="text" value="请在此输入日志文件里的口令" />
-    <input name="userLogon" onclick="phAjax.logon({name: userName.value, password: userPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
+    <input name="logonButton" onclick="phAjax.logon({name: userName.value, password: userPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
     <br />
 </body>
 </html>

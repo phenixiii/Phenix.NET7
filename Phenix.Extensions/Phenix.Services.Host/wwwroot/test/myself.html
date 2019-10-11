@@ -8,11 +8,11 @@
     <script type="text/javascript" src="../lib/crypto-js/cipher-core-min.js"></script>
     <script type="text/javascript" src="../lib/crypto-js/aes-min.js"></script>
     <script type="text/javascript" src="../lib/crypto-js/md5-min.js"></script>
-    <script type="text/javascript" src="../lib/base64-binary.js"></script>
     <script type="text/javascript" src="../lib/json2.js"></script>
     <script type="text/javascript" src="../lib/jquery.min.js"></script>
-    <script type="text/javascript" src="../lib/signalr.min.js"></script>
     <script type="text/javascript" src="../lib/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../lib/jquery.base64.js"></script>
+    <script type="text/javascript" src="../lib/signalr.min.js"></script>
     <script type="text/javascript" src="../lib/phenix7.js"></script>
 
     <script type="text/javascript">
@@ -28,36 +28,34 @@
 
         function getMyself() {
             phAjax.getMyself({
-                    onSuccess: function(result) {
-                        alert(JSON.stringify(result));
-                    },
-                    onError: function(XMLHttpRequest, textStatus, errorThrown) {
-                        alert("获取自己资料失败! status: " +
-                            XMLHttpRequest.statusText +
-                            ", response: " +
-                            XMLHttpRequest.responseText);
-                    }
+                onSuccess: function (result) {
+                    alert(JSON.stringify(result));
+                },
+                onError: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("获取自己资料失败! status: " +
+                        XMLHttpRequest.statusText +
+                        ", response: " +
+                        XMLHttpRequest.responseText);
                 }
-            );
+            });
         };
 
         function changePassword(newPassword) {
             phAjax.changePassword(newPassword,
                 {
-                    onSuccess: function(result) {
+                    onSuccess: function (result) {
                         alert("成功修改口令");
                     },
-                    onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                    onError: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert("修改口令失败! status: " +
                             XMLHttpRequest.statusText +
                             ", response: " +
                             XMLHttpRequest.responseText);
                     }
-                }
-            );
+                });
         };
 
-        $(function() {
+        $(function () {
         });
 
     </script>
@@ -67,14 +65,14 @@
     <br />
     普通用户登录<br />
     新(/已注册)的登录名<input id="userName" type="text" value="TEST" />
-    <input name="userCheckIn" onclick="phAjax.checkIn({baseAddress: 'http://localhost:5000', name: userName.value, onComplete: onComplete});" type="button" value="登记/注册" /><br />
+    <input name="checkInButton" onclick="phAjax.checkIn({baseAddress: 'http://localhost:5000', name: userName.value, onComplete: onComplete});" type="button" value="登记/注册" /><br />
     动态口令/登录口令<input id="userPassword" type="text" value="请在此输入日志文件里的口令" />
-    <input name="userLogon" onclick="phAjax.logon({name: userName.value, password: userPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
+    <input name="logonButton" onclick="phAjax.logon({name: userName.value, password: userPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
     <br />
-    <input name="getMyself" onclick="getMyself();" type="button" value="获取自己资料" /><br />
+    <input name="getMyselfButton" onclick="getMyself();" type="button" value="获取自己资料" /><br />
     <br />
     新登录口令<input id="newPassword" type="text" value="" />
-    <input name="changePassword" onclick="changePassword(newPassword.value);" type="button" value="修改登录口令" /><br />
+    <input name="changePasswordButton" onclick="changePassword(newPassword.value);" type="button" value="修改登录口令" /><br />
     <br />
 </body>
 </html>

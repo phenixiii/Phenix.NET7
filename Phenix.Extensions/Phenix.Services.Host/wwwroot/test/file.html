@@ -1,0 +1,98 @@
+﻿<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>FileController & FileService Client Test</title>
+
+    <script type="text/javascript" src="../lib/crypto-js/core-min.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/enc-base64-min.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/cipher-core-min.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/aes-min.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/md5-min.js"></script>
+    <script type="text/javascript" src="../lib/json2.js"></script>
+    <script type="text/javascript" src="../lib/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../lib/jquery.base64.js"></script>
+    <script type="text/javascript" src="../lib/signalr.min.js"></script>
+    <script type="text/javascript" src="../lib/phenix7.js"></script>
+
+    <script type="text/javascript">
+
+        function onComplete(XMLHttpRequest, textStatus) {
+            if (XMLHttpRequest.status === 200)
+                alert("成功! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
+            else if (XMLHttpRequest.status === 401)
+                alert("无效! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
+            else
+                alert("失败! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
+        };
+
+        function uploadFile() {
+            phAjax.uploadFiles({
+                data: { tag: "Hello uploadFiles!" },
+                files: $("#file")[0].files,
+                onProgress: function (fileName, chunkCount, chunkNumber, chunkSize) {
+                    document.getElementById('hint').innerHTML = fileName + ": " + Math.ceil(chunkNumber * 100 / chunkCount) + "%";
+                    return true; //继续上传
+                },
+                onSuccess: function (result) {
+                    document.getElementById('hint').innerHTML = $("#file")[0].files[0].name;
+                    alert("完成上传: " + JSON.stringify(result));
+                },
+                onError: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("上传失败! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
+                },
+            });
+        };
+
+        function downloadFile() {
+            phAjax.downloadFile({
+                data: { tag: "Hello downloadFile!" },
+                fileName: $("#file")[0].files[0].name,
+                onProgress: function (fileName, chunkCount, chunkNumber, chunkSize, chunkBody, chunkBuffer) {
+                    document.getElementById('hint').innerHTML = fileName + ": " + Math.ceil(chunkNumber * 100 / chunkCount) + "%";
+                },
+                onSuccess: function (fileName, fileBlob) {
+                    document.getElementById('hint').innerHTML = fileName;
+                    showImage(fileBlob);
+                },
+                onError: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("下载失败! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
+                },
+            });
+        };
+
+        function showImage(blob) {
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                var img = document.createElement("img");
+                img.onload = function (e) {
+                    img.onload = null;
+                    window.URL.revokeObjectURL(img.src);
+                };
+                img.src = evt.target.result;
+                $("#imgContainer").html(img);
+            }
+            reader.readAsDataURL(blob);
+        };
+
+        $(function () {
+        });
+
+    </script>
+</head>
+<body>
+    请启动 Phenix.Services.Host_MySQL/ORA 程序<br />
+    <br />
+    普通用户登录<br />
+    新(/已注册)的登录名<input id="userName" type="text" value="TEST" />
+    <input name="checkInButton" onclick="phAjax.checkIn({baseAddress: 'http://localhost:5000', name: userName.value, onComplete: onComplete});" type="button" value="登记/注册" /><br />
+    动态口令/登录口令<input id="userPassword" type="text" value="请在此输入日志文件里的口令" />
+    <input name="logonButton" onclick="phAjax.logon({name: userName.value, password: userPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
+    <br />
+    <input id="file" type="file" multiple />
+    <input name="uploadFileButton" onclick="uploadFile();" type="button" value="上传图片" />
+    <input name="downloadFileButton" onclick="downloadFile();" type="button" value="下载图片" />
+    <div id="hint"></div>
+    <div id="imgContainer"></div>
+</body>
+</html>

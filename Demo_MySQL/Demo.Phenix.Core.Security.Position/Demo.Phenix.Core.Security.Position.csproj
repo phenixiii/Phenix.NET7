@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <RootNamespace>Demo</RootNamespace>
   </PropertyGroup>
 
@@ -15,13 +15,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MySql.Data" Version="8.0.16" />
+    <PackageReference Include="MySql.Data" Version="8.0.17" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Phenix.Core">
-      <HintPath>..\..\Bin_MySQL\netcoreapp2.1\Phenix.Core.dll</HintPath>
+      <HintPath>..\..\Bin_MySQL\netcoreapp3.0\Phenix.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

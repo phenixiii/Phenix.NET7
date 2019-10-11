@@ -46,7 +46,7 @@ namespace Phenix.Services
         /// <param name="user">用户资料</param>
         /// <param name="error">非null时说明有异常发生</param>
         /// <returns>提示信息</returns>
-        public string CompleteCheckIn(User user, Exception error)
+        public string AfterCheckIn(User user, Exception error)
         {
             /*
              * 以下代码直接抛出异常给到客户端
@@ -67,7 +67,7 @@ namespace Phenix.Services
         /// </summary>
         /// <param name="user">用户资料</param>
         /// <param name="tag">捎带数据(默认是客户端当前时间)</param>
-        public void Logon(User user, string tag)
+        public void AfterLogon(User user, string tag)
         {
             /*
              * 本函数被执行到，说明当前用户 user 已经登录成功

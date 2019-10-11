@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,6 @@ using Oracle.ManagedDataAccess.Client;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
 using Phenix.Core.Data.Schema;
-using Phenix.Core.Reflection;
 
 namespace Phenix.Services.DataExchange.Plugin
 {
@@ -156,13 +156,13 @@ namespace Phenix.Services.DataExchange.Plugin
         /// </summary>
         /// <returns>返回JSON格式的记录</returns>
         [HttpGet]
-        public string SelectRecord()
+        public async Task<string> SelectRecord()
         {
             /*
              * 传入参数为报文体的"参数名-参数值"键值队列
              * 鉴于 Oracle.DataAccess 传参对顺序敏感，对参数名不敏感，所以客户端只要传正确顺序的参数值即可
              */
-            return Database.ExecuteGet(SelectRecord, Utilities.JsonDeserialize<IDictionary<string, object>>(Request.ReadBodyAsString()));
+            return Database.ExecuteGet(SelectRecord, await Request.ReadBody<IDictionary<string, object>>());
         }
 
         private string SelectRecord(DbConnection connection, IDictionary<string, object> paramValues)
@@ -202,7 +202,7 @@ namespace Phenix.Services.DataExchange.Plugin
         /// 接收报文
         /// </summary>
         [HttpPost]
-        public void Receive()
+        public async Task Receive()
         {
             /*
              * 传入参数为报文体的"属性名-属性值"键值队列
@@ -210,7 +210,7 @@ namespace Phenix.Services.DataExchange.Plugin
              * 接收报文时，先一股脑收下，然后再异步一个个处理它们（所以完全可以保存原始结构的报文）
              * 异步处理报文（本示例是已被写入的表记录）时，如果需要反馈消息给到发送方，也是通过异步方式
              */
-            WriteTable.InsertRecord(Utilities.JsonDeserialize<IDictionary<string, object>>(Request.ReadBodyAsString()));
+            WriteTable.InsertRecord(await Request.ReadBody<IDictionary<string, object>>());
         }
 
         #endregion

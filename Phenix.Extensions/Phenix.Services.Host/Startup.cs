@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Phenix.Services.Host
 {
@@ -13,13 +15,6 @@ namespace Phenix.Services.Host
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
-            /*
-             * 注册缺省数据库
-             * 请改写为自己系统的数据库连接串
-             * 配置数据请自行维护以便导入注册
-             */
-            Phenix.Core.Data.Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
         }
 
         public IConfiguration Configuration { get; }
@@ -29,23 +24,21 @@ namespace Phenix.Services.Host
         {
             /*
              * 配置跨域请求响应策略
-             * 请根据自己系统的安全要求用 options.AddPolicy 以精细化管控访问限制
+             * 请根据自己系统的安全需要再精细化管控访问限制
              */
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy(builder =>
-                {
-                    builder.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials();
-                });
+                options.AddDefaultPolicy(builder => builder
+                    .SetIsOriginAllowed(origin => true)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
             });
 
             /*
-             * 注入系统入口服务 
+             * 开启SignalR服务
              */
-            services.AddGateService<Phenix.Services.GateService>();
+            services.AddSignalR(options => { options.MaximumReceiveMessageSize = Int16.MaxValue; }).AddMessagePackProtocol();
 
             /*
              * 注入用户消息服务 
@@ -53,14 +46,19 @@ namespace Phenix.Services.Host
             services.AddUserMessageHub();
 
             /*
-             * 配置SignalR策略以支撑用户消息服务
+             * 注入系统入口服务 
              */
-            services.AddSignalR().AddMessagePackProtocol();
+            services.AddGateService<Phenix.Services.GateService>();
+
+            /*
+             * 注入文件存取服务 
+             */
+            services.AddFileService<Phenix.Services.FileService>();
 
             /*
              * 配置Controller策略
              */
-            services.AddMvc(options =>
+            services.AddControllers(options =>
                 {
                     /*
                      * 如果想要的格式不支持，那么就会返回 406 NotAcceptable
@@ -72,7 +70,7 @@ namespace Phenix.Services.Host
                     /*
                      * 注册访问授权过滤器 
                      * 与 Controller/Action 上的[AllowAnonymous]/[Authorize(Roles="角色1|角色2")]标签配合完成用户的访问授权功能
-                     * 按照就近原则，Action 上的标签优先于 Controller 上的标签（即忽略 Controller 上的标签）
+                     * 按照就近原则 Action 上的标签优先于 Controller 上的标签（即忽略 Controller 上的标签）
                      *
                      * [AllowAnonymous]标签等同于不打[Authorize]标签
                      * [Authorize]标签声明的 Roles 应该与 Phenix.Core.Security.Identity.CurrentIdentity.User.Position.Roles（即 PH7_Position 表的 PT_Roles 字段）处于一套语境（注意大小写敏感）
@@ -108,8 +106,7 @@ namespace Phenix.Services.Host
                      * 插件程序集的命名，都应该统一采用"*.Plugin.dll"作为文件名的后缀
                      */
                     options.AddPluginPart();
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                });
 
             /*
              * 配置转接头中间件（代理服务器和负载均衡器）
@@ -120,12 +117,10 @@ namespace Phenix.Services.Host
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
 
             /*
              * 使用CORS中间件（响应跨域请求）
@@ -169,18 +164,28 @@ namespace Phenix.Services.Host
             app.UseAuthenticationMiddleware();
 
             /*
-             * 使用用户消息服务
-             * 如果部署环境使用了 Nginx 等代理服务器或负载均衡器，类似 proxy_set_header Connection 配置项要从请求头里面获取，比如 proxy_set_header Connection $http_connection;
-             * 负载均衡器应该开启会话保持功能（客户端登录后的请求要一直落到同一台服务器上），配置会话保持类型为源IP（按访问IP的hash结果分配响应的应用服务器）
-             */
-            app.UseUserMessageHub();
-
-            /*
              * 必要的话，请注册第三方客户端IP限流控制中间件
              * 所有打上[AllowAnonymous]标签的 Controller/Action 都应该被限流
              */
 
-            app.UseMvc();
+            /*
+             * 以下代码务必被最后执行到
+             */
+            app.UseStaticFiles();
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute().RequireAuthorization();
+                /*
+                 * 使用用户消息服务
+                 * 如果部署环境使用了 Nginx 等代理服务器或负载均衡器，类似 proxy_set_header Connection 配置项要从请求头里面获取，比如 proxy_set_header Connection $http_connection;
+                 * 负载均衡器应该开启会话保持功能（客户端登录后的请求要一直落到同一台服务器上），配置会话保持类型为源IP（按访问IP的hash结果分配响应的应用服务器）
+                 */
+                endpoints.MapUserMessageHub();
+            });
         }
     }
 }

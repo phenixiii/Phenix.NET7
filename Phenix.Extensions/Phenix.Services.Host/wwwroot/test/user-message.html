@@ -8,11 +8,11 @@
     <script type="text/javascript" src="../lib/crypto-js/cipher-core-min.js"></script>
     <script type="text/javascript" src="../lib/crypto-js/aes-min.js"></script>
     <script type="text/javascript" src="../lib/crypto-js/md5-min.js"></script>
-    <script type="text/javascript" src="../lib/base64-binary.js"></script>
     <script type="text/javascript" src="../lib/json2.js"></script>
     <script type="text/javascript" src="../lib/jquery.min.js"></script>
-    <script type="text/javascript" src="../lib/signalr.min.js"></script>
     <script type="text/javascript" src="../lib/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../lib/jquery.base64.js"></script>
+    <script type="text/javascript" src="../lib/signalr.min.js"></script>
     <script type="text/javascript" src="../lib/phenix7.js"></script>
 
     <script type="text/javascript">
@@ -29,10 +29,10 @@
         function sendMessage(receiver) {
             phAjax.sendMessage(receiver, "Hello " + receiver,
                 {
-                    onSuccess: function() {
+                    onSuccess: function () {
                         alert("成功发布消息!");
                     },
-                    onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                    onError: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert("发布消息失败! status: " +
                             XMLHttpRequest.statusText +
                             ", response: " +
@@ -44,10 +44,10 @@
         function affirmReceivedMessage(id) {
             phAjax.affirmReceivedMessage(id, true,
                 {
-                    onSuccess: function() {
+                    onSuccess: function () {
                         alert("成功确认(销毁)消息!");
                     },
-                    onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                    onError: function (XMLHttpRequest, textStatus, errorThrown) {
                         alert("确认(销毁)消息失败! status: " +
                             XMLHttpRequest.statusText +
                             ", response: " +
@@ -58,13 +58,13 @@
 
         function receiveMessage() {
             phAjax.receiveMessage({
-                onSuccess: function(messages) {
+                onSuccess: function (messages) {
                     for (var id in messages) {
                         alert("拉取消息 id: " + id + ", content：" + messages[id]);
                         affirmReceivedMessage(id);
                     };
                 },
-                onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                onError: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("拉取消息失败! status: " +
                         XMLHttpRequest.statusText +
                         ", response: " +
@@ -75,22 +75,28 @@
 
         function subscribeMessage() {
             phAjax.subscribeMessage({
-                onReceived: function(messages) {
+                onReceived: function (messages) {
                     for (var id in messages) {
                         alert("收到消息 id: " + id + ", content：" + messages[id]);
                         affirmReceivedMessage(id);
                     };
                 },
-                onConnected: function() {
-                    alert("消息订阅成功!");
+                onThen: function (connection) {
+                    alert("订阅成功!");
                 },
-                onFail: function(error) {
-                    alert("消息订阅失败! error: " + JSON.stringify(error));
+                onFail: function (connection, error) {
+                    alert("订阅失败! error: " + JSON.stringify(error));
+                },
+                onReconnecting: function (connection, error) {
+                    alert("重新订阅! error: " + JSON.stringify(error));
+                },
+                onClose: function (connection, error) {
+                    alert("订阅关闭! error: " + JSON.stringify(error));
                 },
             });
         };
 
-        $(function() {
+        $(function () {
         });
 
     </script>
@@ -100,9 +106,9 @@
     <br />
     普通用户登录<br />
     新(/已注册)的登录名<input id="userName" type="text" value="TEST" />
-    <input name="userCheckIn" onclick="phAjax.checkIn({baseAddress: 'http://localhost:5000', name: userName.value, onComplete: onComplete});" type="button" value="登记/注册" /><br />
+    <input name="checkInButton" onclick="phAjax.checkIn({baseAddress: 'http://localhost:5000', name: userName.value, onComplete: onComplete});" type="button" value="登记/注册" /><br />
     动态口令/登录口令<input id="userPassword" type="text" value="请在此输入日志文件里的口令" />
-    <input name="userLogon" onclick="phAjax.logon({name: userName.value, password: userPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
+    <input name="logonButton" onclick="phAjax.logon({name: userName.value, password: userPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
     <br />
     <input name="sendMessageButton" onclick="sendMessage(userName.value);" type="button" value="发布消息给自己" /><br />
     <br />

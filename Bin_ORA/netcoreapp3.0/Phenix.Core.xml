@@ -6902,24 +6902,9 @@
             文件块信息
             </summary>
         </member>
-        <member name="M:Phenix.Core.IO.FileChunkInfo.#ctor(System.String,System.Int32,System.Int32,System.Int32,System.String)">
+        <member name="M:Phenix.Core.IO.FileChunkInfo.#ctor(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Byte[])">
             <summary>
-            下载文件信息
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.IO.FileChunkInfo.#ctor(System.String,System.Int32,System.Int32,System.Int32,System.Byte[])">
-            <summary>
-            下载文件信息
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.IO.FileChunkInfo.#ctor(System.String)">
-            <summary>
-            下载文件信息
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.IO.FileChunkInfo.#ctor(Phenix.Core.IO.FileChunkInfo)">
-            <summary>
-            下载文件信息
+            初始化
             </summary>
         </member>
         <member name="P:Phenix.Core.IO.FileChunkInfo.FileName">
@@ -6942,9 +6927,14 @@
             块大小
             </summary>
         </member>
-        <member name="P:Phenix.Core.IO.FileChunkInfo.ChunkBuffer">
+        <member name="P:Phenix.Core.IO.FileChunkInfo.ChunkMaxSize">
             <summary>
-            块缓存
+            块最大值
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.IO.FileChunkInfo.ChunkBody">
+            <summary>
+            块体
             </summary>
         </member>
         <member name="P:Phenix.Core.IO.FileChunkInfo.Stop">
@@ -6956,56 +6946,6 @@
             <summary>
             是否结束
             </summary>
-        </member>
-        <member name="M:Phenix.Core.IO.FileChunkInfo.GetChunkBuffer">
-            <summary>
-            获取块缓存
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.IO.FileChunkInfo.SetChunkBuffer(System.Byte[])">
-            <summary>
-            设值块缓存
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.IO.FileHelper">
-            <summary>
-            File助手
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.IO.FileHelper.GetChunkCount(System.Int64)">
-            <summary>
-            取文件块数
-            </summary>
-            <param name="fileSize">文件大小</param>
-        </member>
-        <member name="M:Phenix.Core.IO.FileHelper.ReadChunkInfo(System.String,System.Int32)">
-            <summary>
-            读取文件块
-            </summary>
-            <param name="path">文件名</param>
-            <param name="chunkNumber">块号</param>
-        </member>
-        <member name="M:Phenix.Core.IO.FileHelper.ReadChunkInfo(System.String,System.IO.Stream,System.Int32)">
-            <summary>
-            读取文件块
-            </summary>
-            <param name="fileName">文件名</param>
-            <param name="fileStream">文件流</param>
-            <param name="chunkNumber">块号</param>
-        </member>
-        <member name="M:Phenix.Core.IO.FileHelper.WriteChunkInfo(System.String,Phenix.Core.IO.FileChunkInfo)">
-            <summary>
-            写入文件块
-            </summary>
-            <param name="path">文件名</param>
-            <param name="chunkInfo">文件块信息</param>
-        </member>
-        <member name="M:Phenix.Core.IO.FileHelper.WriteChunkInfo(System.IO.Stream,Phenix.Core.IO.FileChunkInfo)">
-            <summary>
-            写入文件块
-            </summary>
-            <param name="fileStream">文件流</param>
-            <param name="chunkInfo">文件块信息</param>
         </member>
         <member name="T:Phenix.Core.IO.StreamHelper">
             <summary>
@@ -7301,114 +7241,6 @@
             </summary>
             <param name="data">需加密的对象/字符串</param>
         </member>
-        <member name="M:Phenix.Core.Net.Api.ControllerBase.Decrypt(System.String)">
-            <summary>
-            解密
-             Key/IV=登录口令/动态口令
-            </summary>
-            <param name="sourceBuffer">Hex字符串</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.ControllerBase.DecryptBody">
-            <summary>
-            解密报文体
-             Key/IV=登录口令/动态口令
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.ControllerBase.DecryptBody``1">
-            <summary>
-            解密报文体
-             Key/IV=登录口令/动态口令
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Net.Api.ControllerRole">
-            <summary>
-            控制器的授权角色
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.ControllerRole.New(System.String,System.String,System.Collections.Generic.IList{System.String})">
-            <summary>
-            新增控制器的授权角色
-            </summary>
-            <param name="controllerName">Controller全名</param>
-            <param name="actionName">Action名</param>
-            <param name="roles">角色数组</param>
-            <returns>控制器的授权角色</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.ControllerRole.Fetch(System.Int64,System.Int32)">
-            <summary>
-            获取控制器的授权角色
-            </summary>
-            <param name="id">ID</param>
-            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
-            <returns>控制器的授权角色</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.ControllerRole.Fetch(System.String,System.String)">
-            <summary>
-            获取控制器的授权角色
-            </summary>
-            <param name="controllerName">类全名</param>
-            <param name="methodName">方法名</param>
-            <returns>控制器的授权角色</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.ControllerRole.Delete">
-            <summary>
-            删除控制器的授权角色
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.ControllerRole.ResetAll">
-            <summary>
-            重置所有缓存
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Net.Api.ControllerRole._id">
-            <summary>
-            ID
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Net.Api.ControllerRole.Id">
-            <summary>
-            ID
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Net.Api.ControllerRole._controllerName">
-            <summary>
-            Controller全名
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Net.Api.ControllerRole.ControllerName">
-            <summary>
-            Controller全名
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Net.Api.ControllerRole._actionName">
-            <summary>
-            Action名
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Net.Api.ControllerRole.ActionName">
-            <summary>
-            Action名
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Net.Api.ControllerRole._roles">
-            <summary>
-            角色清单
-            多个角色用‘|’分隔，互相为 or 关系
-            多组角色个用‘,’分隔，互相为 and 关系
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Net.Api.ControllerRole.Roles">
-            <summary>
-            角色清单
-            多个角色用‘|’分隔，互相为 or 关系
-            多组角色个用‘,’分隔，互相为 and 关系
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Net.Api.ControllerRole.InvalidTime">
-            <summary>
-            失效时间
-            </summary>
-        </member>
         <member name="T:Phenix.Core.Net.Api.EventLogController">
             <summary>
             事件日志控制器
@@ -7419,10 +7251,32 @@
             保存
             </summary>
         </member>
+        <member name="T:Phenix.Core.Net.Api.FileController">
+            <summary>
+            文件存取控制器
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.FileController.#ctor(Phenix.Core.Net.Api.IFileService)">
+            <summary>
+            初始化
+            </summary>
+            <param name="fileService">依赖注入的文件服务</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.FileController.UploadFileChunk(System.Threading.CancellationToken)">
+            <summary>
+            上传文件块
+            </summary>
+            <returns>上传最后一块时返回的数据</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.FileController.DownloadFileChunk(System.Threading.CancellationToken)">
+            <summary>
+            下载文件块
+            </summary>
+            <returns>文件块信息</returns>
+        </member>
         <member name="T:Phenix.Core.Net.Api.GateController">
             <summary>
             系统入口控制器
-            系统必备（配套 Phenix.Core.Net.AuthenticationMiddleware 或 phAjax7 使用）
             </summary>
         </member>
         <member name="M:Phenix.Core.Net.Api.GateController.#ctor(Phenix.Core.Net.Api.IGateService)">
@@ -7446,6 +7300,40 @@
             登录
             </summary>
         </member>
+        <member name="T:Phenix.Core.Net.Api.IFileService">
+            <summary>
+            文件存取服务接口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.IFileService.GetUploadPath(Phenix.Core.Data.Model.DynamicEntity,System.String)">
+            <summary>
+            获取上传文件存储路径
+            </summary>
+            <param name="data">客户端动态实体</param>
+            <param name="fileName">上传文件名</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.IFileService.AfterUploadFile(Phenix.Core.Data.Model.DynamicEntity,System.String)">
+            <summary>
+            当完成上传文件时触发
+            </summary>
+            <param name="data">客户端动态实体</param>
+            <param name="path">文件存储路径</param>
+            <returns>返回的数据</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.IFileService.GetDownloadPath(Phenix.Core.Data.Model.DynamicEntity,System.String)">
+            <summary>
+            获取下载文件存储路径
+            </summary>
+            <param name="data">客户端动态实体</param>
+            <param name="fileName">下载文件名</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.IFileService.AfterDownloadFile(Phenix.Core.Data.Model.DynamicEntity,System.String)">
+            <summary>
+            当完成下载文件时触发
+            </summary>
+            <param name="data">客户端动态实体</param>
+            <param name="path">文件存储路径</param>
+        </member>
         <member name="T:Phenix.Core.Net.Api.IGateService">
             <summary>
             系统入口服务接口
@@ -7468,7 +7356,7 @@
             <param name="dynamicPassword">动态口令(6位数字一般作为验证码用短信发送给到用户)</param>
             <param name="validityMinutes">动态口令有效周期(分钟>=3)</param>
         </member>
-        <member name="M:Phenix.Core.Net.Api.IGateService.CompleteCheckIn(Phenix.Core.Security.User,System.Exception)">
+        <member name="M:Phenix.Core.Net.Api.IGateService.AfterCheckIn(Phenix.Core.Security.User,System.Exception)">
             <summary>
             当完成CheckIn时触发
             </summary>
@@ -7476,7 +7364,7 @@
             <param name="error">非null时说明有异常发生</param>
             <returns>提示信息</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Api.IGateService.Logon(Phenix.Core.Security.User,System.String)">
+        <member name="M:Phenix.Core.Net.Api.IGateService.AfterLogon(Phenix.Core.Security.User,System.String)">
             <summary>
             当完成Logon时触发
             </summary>
@@ -7617,6 +7505,95 @@
         <member name="M:Phenix.Core.Net.Filters.AuthorizationFilter.Activate">
             <summary>
             激活
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Net.Filters.ControllerRole">
+            <summary>
+            控制器的授权角色
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Filters.ControllerRole.New(System.String,System.String,System.Collections.Generic.IList{System.String})">
+            <summary>
+            新增控制器的授权角色
+            </summary>
+            <param name="controllerName">Controller全名</param>
+            <param name="actionName">Action名</param>
+            <param name="roles">角色数组</param>
+            <returns>控制器的授权角色</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Filters.ControllerRole.Fetch(System.Int64,System.Int32)">
+            <summary>
+            获取控制器的授权角色
+            </summary>
+            <param name="id">ID</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+            <returns>控制器的授权角色</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Filters.ControllerRole.Fetch(System.String,System.String)">
+            <summary>
+            获取控制器的授权角色
+            </summary>
+            <param name="controllerName">类全名</param>
+            <param name="methodName">方法名</param>
+            <returns>控制器的授权角色</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Filters.ControllerRole.Delete">
+            <summary>
+            删除控制器的授权角色
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Filters.ControllerRole.ResetAll">
+            <summary>
+            重置所有缓存
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Filters.ControllerRole._id">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Filters.ControllerRole.Id">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Filters.ControllerRole._controllerName">
+            <summary>
+            Controller全名
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Filters.ControllerRole.ControllerName">
+            <summary>
+            Controller全名
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Filters.ControllerRole._actionName">
+            <summary>
+            Action名
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Filters.ControllerRole.ActionName">
+            <summary>
+            Action名
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Filters.ControllerRole._roles">
+            <summary>
+            角色清单
+            多个角色用‘|’分隔，互相为 or 关系
+            多组角色个用‘,’分隔，互相为 and 关系
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Filters.ControllerRole.Roles">
+            <summary>
+            角色清单
+            多个角色用‘|’分隔，互相为 or 关系
+            多组角色个用‘,’分隔，互相为 and 关系
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Filters.ControllerRole.InvalidTime">
+            <summary>
+            失效时间
             </summary>
         </member>
         <member name="T:Phenix.Core.Net.Http.HttpClient">
@@ -7954,6 +7931,11 @@
         <member name="F:Phenix.Core.Net.NetConfig.ApiMessageUserMessageHubPath">
             <summary>
             /api/message/user-message-hub
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.NetConfig.ApiInoutFilePath">
+            <summary>
+            /api/inout/file
             </summary>
         </member>
         <member name="P:Phenix.Core.Net.NetConfig.LocalAddress">
@@ -11341,12 +11323,12 @@
             <param name="builder">IApplicationBuilder</param>
             <returns>IApplicationBuilder</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Builder.ApplicationBuilderExtension.UseUserMessageHub(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+        <member name="M:Microsoft.AspNetCore.Builder.ApplicationBuilderExtension.MapUserMessageHub(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder)">
             <summary>
             使用用户消息服务
             </summary>
-            <param name="builder">IApplicationBuilder</param>
-            <returns>IApplicationBuilder</returns>
+            <param name="builder">IEndpointRouteBuilder</param>
+            <returns>HubEndpointConventionBuilder</returns>
         </member>
         <member name="T:Microsoft.AspNetCore.Mvc.ApplicationPartManagerExtension">
             <summary>
@@ -11393,12 +11375,55 @@
             <param name="request">HttpRequest</param>
             <returns>报文主体</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.ReadBodyAsString(Microsoft.AspNetCore.Http.HttpRequest)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.ReadBody``1(Microsoft.AspNetCore.Http.HttpRequest,System.Boolean)">
             <summary>
             获取报文主体
             </summary>
             <param name="request">HttpRequest</param>
+            <param name="decrypt">需要解密</param>
             <returns>报文主体</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.ReadBodyAsString(Microsoft.AspNetCore.Http.HttpRequest,System.Boolean)">
+            <summary>
+            获取报文主体
+            </summary>
+            <param name="request">HttpRequest</param>
+            <param name="decrypt">需要解密</param>
+            <returns>报文主体</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunk(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService)">
+            <summary>
+            处理上传文件块
+            </summary>
+            <param name="request">HttpRequest</param>
+            <param name="fileService">文件服务</param>
+            <returns>上传最后一块时返回的数据</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunk(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService,System.Threading.CancellationToken)">
+            <summary>
+            处理上传文件块
+            </summary>
+            <param name="request">HttpRequest</param>
+            <param name="fileService">文件服务</param>
+            <param name="cancellationToken">取消</param>
+            <returns>上传最后一块时返回的数据</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunk(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService)">
+            <summary>
+            处理下载文件块
+            </summary>
+            <param name="request">HttpRequest</param>
+            <param name="fileService">文件服务</param>
+            <returns>文件块信息</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunk(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService,System.Threading.CancellationToken)">
+            <summary>
+            处理下载文件块
+            </summary>
+            <param name="request">HttpRequest</param>
+            <param name="fileService">文件服务</param>
+            <param name="cancellationToken">取消</param>
+            <returns>文件块信息</returns>
         </member>
         <member name="T:Microsoft.AspNetCore.Http.HttpResponseExtension">
             <summary>
@@ -11432,6 +11457,14 @@
         <member name="M:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtension.AddGateService``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.DependencyInjection.ServiceLifetime)">
             <summary>
             注入系统入口服务
+            </summary>
+            <param name="services">IServiceCollection</param>
+            <param name="serviceLifetime"></param>
+            <returns>IServiceCollection</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtension.AddFileService``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.DependencyInjection.ServiceLifetime)">
+            <summary>
+            注入文件存取服务
             </summary>
             <param name="services">IServiceCollection</param>
             <param name="serviceLifetime"></param>

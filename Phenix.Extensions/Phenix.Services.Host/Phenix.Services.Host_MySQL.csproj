@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <PackageId>Phenix.Services.Host</PackageId>
     <AssemblyName>Phenix.Services.Host</AssemblyName>
     <DefineConstants>TRACE;MySQL</DefineConstants>
     <RootNamespace>Phenix.Services.Host</RootNamespace>
-    <Version>7.2.5</Version>
-    <AssemblyVersion>7.2.5.0927</AssemblyVersion>
-    <FileVersion>7.2.5.0927</FileVersion>
-    <Description>Phenix Framework for .NET Core 2.1</Description>
+    <Version>7.3.7</Version>
+    <AssemblyVersion>7.3.7.1011</AssemblyVersion>
+    <FileVersion>7.3.7.1011</FileVersion>
+    <Description>Phenix Framework for .NET Core 3.0</Description>
     <Authors>ming</Authors>
     <Copyright>Copyright © 2007, 2019 Phenixヾ Studio</Copyright>
     <Product>Phenix.Services.Host</Product>
@@ -24,27 +24,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="1.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="3.0.0" />
     <PackageReference Include="MySql.Data" Version="8.0.17" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Phenix.Core">
-      <HintPath>..\..\Bin_MySQL\netcoreapp2.1\Phenix.Core.dll</HintPath>
+      <HintPath>..\..\Bin_MySQL\netcoreapp3.0\Phenix.Core.dll</HintPath>
     </Reference>
     <Reference Include="Phenix.Services">
-      <HintPath>..\..\Bin_MySQL\netcoreapp2.1\Phenix.Services.dll</HintPath>
+      <HintPath>..\..\Bin_MySQL\netcoreapp3.0\Phenix.Services.dll</HintPath>
     </Reference>
   </ItemGroup>
 
