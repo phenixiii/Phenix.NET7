@@ -105,7 +105,12 @@
 
 
 20191011
-1，升级至 for .net core 3.0，开发工具 Visual Studio 2019 16.3.x及以上版本
+1，升级至for .net core 3.0，开发工具 Visual Studio 2019 16.3.x及以上版本
 2，提供服务接口IFileService以扩展系统自身的个性化的文件上传下载功能，示例代码见Phenix.Services工程里的FileService类，注入方法见Phenix.Services.Host工程Startup类里的AddFileService()代码行，用法见测试网页file.html
+
+
+20191013
+1，增补《Phenix.Services.Host.部署方法》内容
+2，调通Phenix.Services.Host部署在Docker的方法
 
 

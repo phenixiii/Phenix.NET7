@@ -81,6 +81,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services_MySQL", "Ph
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services_ORA", "Phenix.Extensions\Phenix.Services\Phenix.Services_ORA.csproj", "{27148442-5D9F-4846-95E2-006B714D0C61}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{21ACEA56-E832-4AF1-A566-A4EBC61D932E}"
+	ProjectSection(SolutionItems) = preProject
+		ChangeLog.txt = ChangeLog.txt
+		Phenix.Services.Host.用EventLogController归集系统日志.eam = Phenix.Services.Host.用EventLogController归集系统日志.eam
+		Phenix.Services.Host.用EventLogController归集系统日志.pptx = Phenix.Services.Host.用EventLogController归集系统日志.pptx
+		Phenix.Services.Host.部署方法.doc = Phenix.Services.Host.部署方法.doc
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
