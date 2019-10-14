@@ -114,3 +114,8 @@
 2，调通Phenix.Services.Host部署在Docker的方法
 
 
+20191014
+1，重构Phenix.Core.Net.Http.HttpClient类
+2，调通Demo.Phenix.Core.Net.Http.OfflineCache工程
+3，phenix7.js、Phenix.Core.Net.Http.HttpClient类的Call函数，补充'是否加密上传数据'、'是否解密返回数据'参数
+

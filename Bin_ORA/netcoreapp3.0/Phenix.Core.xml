@@ -7226,7 +7226,7 @@
         </member>
         <member name="T:Phenix.Core.Net.Api.ControllerBase">
             <summary>
-            控制器的授权角色
+            控制器基类
             </summary>
         </member>
         <member name="P:Phenix.Core.Net.Api.ControllerBase.User">
@@ -7238,6 +7238,7 @@
             <summary>
             加密
             Key/IV=登录口令/动态口令
+            对应phAjax.decrypt()函数
             </summary>
             <param name="data">需加密的对象/字符串</param>
         </member>
@@ -7620,11 +7621,6 @@
             缺省为构造过的第一个HttpClient对象
             </summary>
         </member>
-        <member name="P:Phenix.Core.Net.Http.HttpClient.Identity">
-            <summary>
-            用户身份
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Net.Http.HttpClient.UploadingCount">
             <summary>
             上传中报文数量
@@ -7642,7 +7638,7 @@
             </summary>
             <param name="id">ID</param>
             <param name="path">资源路径(含查询条件)("/api/log/event-log")</param>
-            <param name="data">传到服务端的数据</param>
+            <param name="data">上传数据</param>
             <param name="complete">结束(ID,成功与否(null代表已过期))</param>
         </member>
         <member name="M:Phenix.Core.Net.Http.HttpClient.Upload(System.Int64,System.String,System.String,System.Int32,System.Action{System.Int64,System.Nullable{System.Boolean},System.Exception})">
@@ -7651,7 +7647,7 @@
             </summary>
             <param name="id">ID</param>
             <param name="path">资源路径(含查询条件)("/api/log/event-log")</param>
-            <param name="data">传到服务端的数据</param>
+            <param name="data">上传数据</param>
             <param name="validityMinutes">有效周期(分钟)</param>
             <param name="complete">结束(ID,成功与否(null代表已过期))</param>
         </member>
@@ -7682,7 +7678,7 @@
             <param name="name">名称</param>
             <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
             <param name="tag">tag</param>
-            <returns>提示信息</returns>
+            <returns>用户身份</returns>
         </member>
         <member name="M:Phenix.Core.Net.Http.HttpClient.Logon(System.String,System.String,System.String)">
             <summary>
@@ -7691,28 +7687,36 @@
             <param name="name">名称</param>
             <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
             <param name="tag">tag</param>
-            <returns>提示信息</returns>
+            <returns>用户身份</returns>
         </member>
         <member name="M:Phenix.Core.Net.Http.HttpClient.ChangePasswordAsync(System.String)">
             <summary>
             修改登录口令
             </summary>
             <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
-            <returns>提示信息</returns>
         </member>
         <member name="M:Phenix.Core.Net.Http.HttpClient.ChangePassword(System.String)">
             <summary>
             修改登录口令
             </summary>
             <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
-            <returns>提示信息</returns>
         </member>
         <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,Phenix.Core.Net.Http.QueryValue[])">
             <summary>
             呼叫
             </summary>
             <param name="method">请求方法</param>
-            <param name="path">资源路径("/api/security/myself")</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,System.Boolean,Phenix.Core.Net.Http.QueryValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="decryptResult">是否解密返回数据（服务端的控制器代码请用Encrypt(result)加密）</param>
             <param name="queryValues">查询条件值</param>
             <returns>返回对象</returns>
         </member>
@@ -7721,8 +7725,31 @@
             呼叫
             </summary>
             <param name="method">请求方法</param>
-            <param name="path">资源路径("/api/security/myself")</param>
-            <param name="data">传到服务端的数据</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="data">上传数据</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,Phenix.Core.Net.Http.QueryValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="data">上传数据</param>
+            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,System.Boolean,Phenix.Core.Net.Http.QueryValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="data">上传数据</param>
+            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）</param>
+            <param name="decryptResult">是否解密返回数据（服务端的控制器代码请用Encrypt(result)加密）</param>
             <param name="queryValues">查询条件值</param>
             <returns>返回对象</returns>
         </member>
@@ -7731,7 +7758,17 @@
             呼叫
             </summary>
             <param name="method">请求方法</param>
-            <param name="path">资源路径("/api/security/myself")</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,System.Boolean,Phenix.Core.Net.Http.QueryValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="decryptResult">是否解密返回数据（服务端的控制器代码请用Encrypt(result)加密）</param>
             <param name="queryValues">查询条件值</param>
             <returns>返回对象</returns>
         </member>
@@ -7740,8 +7777,31 @@
             呼叫
             </summary>
             <param name="method">请求方法</param>
-            <param name="path">资源路径("/api/security/myself")</param>
-            <param name="data">传到服务端的数据</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="data">上传数据</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,Phenix.Core.Net.Http.QueryValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="data">上传数据</param>
+            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,System.Boolean,Phenix.Core.Net.Http.QueryValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="data">上传数据</param>
+            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）</param>
+            <param name="decryptResult">是否解密返回数据（服务端的控制器代码请用Encrypt(result)加密）</param>
             <param name="queryValues">查询条件值</param>
             <returns>返回对象</returns>
         </member>
@@ -7750,38 +7810,54 @@
             呼叫
             </summary>
             <param name="method">请求方法</param>
-            <param name="path">资源路径("/api/security/myself")</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
             <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
         </member>
         <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Net.Http.QueryValue[])">
             <summary>
             呼叫
             </summary>
             <param name="method">请求方法</param>
-            <param name="path">资源路径("/api/security/myself")</param>
-            <param name="data">传到服务端的数据</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="data">上传数据</param>
             <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,Phenix.Core.Net.Http.QueryValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="data">上传数据</param>
+            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）</param>
+            <param name="queryValues">查询条件值</param>
         </member>
         <member name="M:Phenix.Core.Net.Http.HttpClient.Call(System.Net.Http.HttpMethod,System.String,Phenix.Core.Net.Http.QueryValue[])">
             <summary>
             呼叫
             </summary>
             <param name="method">请求方法</param>
-            <param name="path">资源路径("/api/security/myself")</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
             <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
         </member>
         <member name="M:Phenix.Core.Net.Http.HttpClient.Call(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Net.Http.QueryValue[])">
             <summary>
             呼叫
             </summary>
             <param name="method">请求方法</param>
-            <param name="path">资源路径("/api/security/myself")</param>
-            <param name="data">传到服务端的数据</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="data">上传数据</param>
             <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Call(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,Phenix.Core.Net.Http.QueryValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="data">上传数据</param>
+            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）</param>
+            <param name="queryValues">查询条件值</param>
         </member>
         <member name="P:Phenix.Core.Net.Http.HttpClientHandler.Owner">
             <summary>
@@ -7824,7 +7900,7 @@
             </summary>
             <param name="baseAddress">上传地址(null代表HttpClient.Default)</param>
             <param name="path">资源路径(含查询条件)("/api/log/event-log")</param>
-            <param name="data">传到服务端的数据</param>
+            <param name="data">上传数据</param>
             <param name="validityMinutes">有效周期(分钟)</param>
         </member>
         <member name="T:Phenix.Core.Net.Http.QueryValue">
@@ -11375,7 +11451,7 @@
             <param name="request">HttpRequest</param>
             <returns>报文主体</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.ReadBody``1(Microsoft.AspNetCore.Http.HttpRequest,System.Boolean)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.ReadBodyAsync``1(Microsoft.AspNetCore.Http.HttpRequest,System.Boolean)">
             <summary>
             获取报文主体
             </summary>
@@ -11383,7 +11459,7 @@
             <param name="decrypt">需要解密</param>
             <returns>报文主体</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.ReadBodyAsString(Microsoft.AspNetCore.Http.HttpRequest,System.Boolean)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.ReadBodyAsStringAsync(Microsoft.AspNetCore.Http.HttpRequest,System.Boolean)">
             <summary>
             获取报文主体
             </summary>
@@ -11391,7 +11467,7 @@
             <param name="decrypt">需要解密</param>
             <returns>报文主体</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunk(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService)">
             <summary>
             处理上传文件块
             </summary>
@@ -11399,7 +11475,7 @@
             <param name="fileService">文件服务</param>
             <returns>上传最后一块时返回的数据</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunk(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService,System.Threading.CancellationToken)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService,System.Threading.CancellationToken)">
             <summary>
             处理上传文件块
             </summary>
@@ -11408,7 +11484,7 @@
             <param name="cancellationToken">取消</param>
             <returns>上传最后一块时返回的数据</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunk(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService)">
             <summary>
             处理下载文件块
             </summary>
@@ -11416,7 +11492,7 @@
             <param name="fileService">文件服务</param>
             <returns>文件块信息</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunk(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService,System.Threading.CancellationToken)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService,System.Threading.CancellationToken)">
             <summary>
             处理下载文件块
             </summary>

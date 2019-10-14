@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v3.0": {
-      "Phenix.Core/7.3.7": {
+      "Phenix.Core/7.3.8": {
         "dependencies": {
           "Microsoft.AspNetCore.SignalR.Protocols.MessagePack": "3.0.0",
           "MySql.Data": "8.0.17",
@@ -1051,7 +1051,7 @@
     }
   },
   "libraries": {
-    "Phenix.Core/7.3.7": {
+    "Phenix.Core/7.3.8": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

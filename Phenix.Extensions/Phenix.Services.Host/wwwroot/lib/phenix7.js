@@ -89,22 +89,6 @@ var phAjax = (function($) {
         return encodeURIComponent(userName) + "," + timestamp + "," + phUtils.encrypt(timestamp, userKey);
     };
 
-    var heartbeatMessage = function(connection, onFail) {
-        connection.invoke("Heartbeat")
-            .catch(function(error) {
-                if (typeof onFail == "function")
-                    onFail(connection, error);
-                connection.start()
-                    .catch(function(error) {
-                        if (typeof onFail == "function")
-                            onFail(connection, error);
-                    });
-            });
-        setTimeout(function() {
-            heartbeatMessage(connection, onFail);
-        }, 30000);
-    };
-
     return {
         get baseAddress() {
             return getBaseAddress();
@@ -391,9 +375,6 @@ var phAjax = (function($) {
                     if (typeof options.onFail == "function")
                         options.onFail(connection, error);
                 }).then(function() {
-                    //setTimeout(function() {
-                    //    heartbeatMessage(connection, options.onFail);
-                    //}, 30000);
                     if (typeof options.onConnected == "function")
                         options.onConnected(connection);
                 });
@@ -401,7 +382,7 @@ var phAjax = (function($) {
 
         uploadFiles: function(options) {
             var defaults = {
-                data: null, //传到服务端的数据
+                data: null, //上传数据
                 files: null, //传到服务端的文件(须是FileList/File对象(如果APP应用是本地图片，要么转成base64->File对象，要么转成网络图片->base64->File对象))
                 onProgress: null, //执行进度的回调函数, 参数(fileName, chunkCount, chunkNumber, chunkSize)，回调函数返回值如为false则中止上传
                 onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
@@ -440,8 +421,8 @@ var phAjax = (function($) {
             phAjax.call({
                 type: "POST",
                 path: "/api/inout/file",
-                processData: false, //不要对data参数进行序列化处理，默认为true
-                contentType: false, //不要设置Content-Type请求头，因为文件数据是以 multipart/form-data 来编码
+                processData: false, //不要对data参数进行序列化处理
+                contentType: false, //不要设置Content-Type请求头，因为文件数据是以multipart/form-data来编码
                 data: formData,
                 onSuccess: function(result) {
                     if (chunkNumber <= 0)
@@ -467,7 +448,7 @@ var phAjax = (function($) {
 
         downloadFile: function(options) {
             var defaults = {
-                data: null, //传到服务端的数据
+                data: null, //上传数据
                 fileName: null, //下载文件名
                 onProgress: null, //执行进度的回调函数, 参数(fileName, chunkCount, chunkNumber, chunkSize, chunkBody, chunkBuffer)，函数调用返回值如为false则中止下载
                 onSuccess: null, //调用成功的回调函数, 参数(fileName, fileBlob)
@@ -485,8 +466,8 @@ var phAjax = (function($) {
             phAjax.call({
                 type: "PUT",
                 path: "/api/inout/file",
-                processData: false, //不要对data参数进行序列化处理，默认为true
-                contentType: false, //不要设置Content-Type请求头，因为文件数据是以 multipart/form-data 来编码
+                processData: false, //不要对data参数进行序列化处理
+                contentType: false, //不要设置Content-Type请求头，因为文件数据是以multipart/form-data来编码
                 data: formData,
                 onSuccess: function(result) {
                     if (result == null)
@@ -518,9 +499,11 @@ var phAjax = (function($) {
                 anonymity: false, //是否匿名访问
                 type: "GET", //请求方法(GET/POST/PUT/PATCH/DELETE)
                 path: null, //"/api/security/myself"
-                data: null,
-                processData: true,
-                contentType: "application/json;charset=utf-8",
+                data: null, //上传数据
+                encryptData: false, //默认不加密上传数据（否则服务端的控制器代码请用Request.ReadBodyXXX(true)解密）
+                decryptResult: false, //默认不解密返回数据（否则服务端的控制器代码请用Encrypt(result)加密）
+                processData: true, //默认对data参数进行序列化处理
+                contentType: "application/json;charset=utf-8", 
                 cache: false, //默认不缓存
                 timeout: 30000, //默认超时30秒
                 onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
@@ -533,7 +516,7 @@ var phAjax = (function($) {
             $.ajax({
                 type: (options.type == "PUT" || options.type == "PATCH" || options.type == "DELETE") ? "POST" : options.type,
                 url: phAjax.baseAddress + options.path,
-                dataType: "json",
+                dataType: options.decryptResult ? "text" : "json",
                 processData: options.processData,
                 contentType: options.contentType,
                 cache: options.cache,
@@ -544,17 +527,17 @@ var phAjax = (function($) {
                         XMLHttpRequest.setRequestHeader(authorizationHeaderName, formatComplexAuthorization(getUserName(), getUserKey()));
                     XMLHttpRequest.setRequestHeader(methodOverrideHeaderName, options.type);
                 },
-                data: options.data,
+                data: options.encryptData ? phAjax.encrypt(options.data) : options.data,
                 success: function(result) {
                     if (typeof options.onSuccess == "function") {
-                        options.onSuccess(result);
+                        options.onSuccess(options.decryptResult ? phAjax.decrypt(result) : result);
                         options.onSuccess = null;
                     }
                 },
                 complete: function(XMLHttpRequest, textStatus) {
                     if (XMLHttpRequest.status == 200) {
                         if (typeof options.onSuccess == "function") {
-                            options.onSuccess(XMLHttpRequest.responseText);
+                            options.onSuccess(options.decryptResult ? phAjax.decrypt(XMLHttpRequest.responseText) : XMLHttpRequest.responseText);
                             options.onSuccess = null;
                         }
                     }
