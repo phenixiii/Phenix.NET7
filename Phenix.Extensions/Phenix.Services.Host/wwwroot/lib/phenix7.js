@@ -125,7 +125,6 @@ var phAjax = (function($) {
                     "&phone=" + options.phone +
                     "&eMail=" + options.eMail +
                     "&regAlias=" + encodeURIComponent(options.regAlias),
-                dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 cache: false,
                 crossDomain: true,
@@ -160,7 +159,6 @@ var phAjax = (function($) {
             $.ajax({
                 type: "POST",
                 url: options.baseAddress + "/api/security/gate",
-                dataType: "json",
                 contentType: "application/json;charset=utf-8",
                 cache: false,
                 crossDomain: true,
@@ -343,7 +341,8 @@ var phAjax = (function($) {
                 onReceived: null, //处理收到消息, 参数(messages)为消息id(key)+content(array[key])数据字典集合
                 onThen: null, //连接成功的回调函数, 参数(connection)
                 onFail: null, //连接失败的回调函数, 参数(connection, error)
-                onReconnecting: null, //重新连接的回调函数, 参数(connection, error)
+                onReconnecting: null, //重新连接中的回调函数, 参数(connection, error)
+                onReconnected: null, //重新连接好的回调函数, 参数(connection, connectionId)
                 onClose: null, //连接关闭的回调函数, 参数(connection, error)
             };
             options = $.extend(defaults, options);
@@ -365,6 +364,10 @@ var phAjax = (function($) {
             connection.onreconnecting(function(error) {
                 if (typeof options.onReconnecting == "function")
                     options.onReconnecting(connection, error);
+            });
+            connection.onreconnected(function(connectionId) {
+                if (typeof options.onReconnected == "function")
+                    options.onReconnected(connection, connectionId);
             });
             connection.onclose(function(error) {
                 if (typeof options.onClose == "function")
@@ -556,7 +559,7 @@ var phAjax = (function($) {
 /*
     工具集
  */
-var phUtils = (function () {
+var phUtils = (function() {
     return {
         random: function(length) {
             var result = Math.random().toString(36).substr(2);

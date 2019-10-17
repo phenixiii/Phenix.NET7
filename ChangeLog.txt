@@ -119,3 +119,10 @@
 2，调通Demo.Phenix.Core.Net.Http.OfflineCache工程
 3，phenix7.js、Phenix.Core.Net.Http.HttpClient类的Call函数，补充'是否加密上传数据'、'是否解密返回数据'参数
 
+
+20191017
+1，增补Phenix.Core.Message.UserMessage的订阅消息(PUSH)功能，与phenix7.js的subscribeMessage()函数功能一致，示例见Demo.Phenix.Core.Message.UserMessage_Subscribe
+2，增补Phenix.Core.Data.Sequence、Phenix.Core.Data.Increment、Phenix.Core.Message.UserMessage带httpClient参数的系列函数，可直接指定调用的WebAPI服务，实现一层层调用WebAPI服务直到最后一层服务是直连数据库为止的穿N墙效果，或者说可实现N层负载均衡的应用服务器部署效果
+
+
+

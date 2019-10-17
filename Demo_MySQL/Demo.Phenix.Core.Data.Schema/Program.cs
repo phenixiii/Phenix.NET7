@@ -20,8 +20,9 @@ namespace Demo
             Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
             Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
             Console.WriteLine("请确认连接的是否是你的测试库？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
-            Console.WriteLine("否则按任意键继续");
+            Console.Write("否则按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("构建数据库构架对象...");
@@ -29,15 +30,17 @@ namespace Demo
             Console.WriteLine("数据库构架对象可序列化为 JSON 字符串...");
             string json = Utilities.JsonSerialize(metaData);
             Console.WriteLine(json);
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("JSON 字符串可反序列化为数据库构架对象...");
             metaData = Utilities.JsonDeserialize<MetaData>(json);
             Console.WriteLine("数据库含{0}个表、{1}个视图。", metaData.Tables.Count, metaData.Views.Count);
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("罗列全部表的结构...");
@@ -51,8 +54,9 @@ namespace Demo
                 Console.WriteLine();
             }
 
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("罗列全部视图的结构...");

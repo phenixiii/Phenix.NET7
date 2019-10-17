@@ -34,8 +34,9 @@ namespace Demo
             Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
             Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
             Console.WriteLine("请确认连接的是否是你的测试库？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
-            Console.WriteLine("否则按任意键继续");
+            Console.Write("否则按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("开始演示");
@@ -46,8 +47,9 @@ namespace Demo
             Console.WriteLine("如果传入 resetHoursLater 参数值为正数，是要求它缓存到本进程缓存内，后续调用只要在这段时间内且 resetHoursLater 参数值为正数，都取自缓存。");
             Console.WriteLine("如果传入 resetHoursLater 参数值为 0，则优先取缓存，没有才从数据库取，之前调用时传入的缓存时间被忽略。");
             Console.WriteLine("默认 resetHoursLater 参数值为 8 小时。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Teams subTeams1 = Teams.New("业务部", rootTeams);
@@ -58,8 +60,9 @@ namespace Demo
             Console.WriteLine("可在顶层团体的 AllSubTeams 属性上看到各层子团体：{0}", Utilities.JsonSerialize(rootTeams.AllSubTeams));
             subTeams11 = rootTeams.FindSubTeams(subTeams11.Name);
             Console.WriteLine("可通过顶层团体/父层团体的方法 FindSubTeams() 传入ID或名称，以遍历各层子团体获取：{0}", Utilities.JsonSerialize(subTeams11));
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("演示当新增的团体与旧团体重名时（同一棵团体树内不允许重名）：");
@@ -71,14 +74,16 @@ namespace Demo
             {
                 Console.WriteLine(AppRun.GetErrorMessage(ex));
             }
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             subTeams1.Name = "业务一部";
             Console.WriteLine("赋值 Name 属性直接更新到数据库：{0}", Utilities.JsonSerialize(subTeams1));
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("演示组织架构调整时，不允许挂在自己下层的团体的情况（另一个规则是仅允许在同一顶层团体下（同一棵团体树内）切挂）：");
@@ -92,8 +97,9 @@ namespace Demo
             }
             subTeams1.Parent = Teams.New("大船事业部", rootTeams);
             Console.WriteLine("可以挂在其他分支上：{0}", Utilities.JsonSerialize(subTeams1.Parent));
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("演示删除团体时的规则，不允许删除中层团体：");
@@ -106,8 +112,9 @@ namespace Demo
                 Console.WriteLine(AppRun.GetErrorMessage(ex));
             }
             Console.WriteLine("必须从底层向上逐层删除团体，可以直到顶层团体。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("以下示例采用递归方式删除整棵树：");
@@ -120,8 +127,9 @@ namespace Demo
             }
             else
                 Console.WriteLine("未能完成整棵树的删除。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.Write("请按回车键结束演示");

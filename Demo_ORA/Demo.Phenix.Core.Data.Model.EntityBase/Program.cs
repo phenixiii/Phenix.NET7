@@ -19,8 +19,9 @@ namespace Demo
             Console.WriteLine("继承 EntityBase 类的话，只需：");
             Console.WriteLine("user.DeleteSelf()");
             Console.WriteLine("虽对实体类代码有一定侵入性，但编码效率高，不易出错。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("不管是继承 EntityBase 还是直接操作 Database，持久化引擎都要求你在设计表结构和实体类时，遵循以下编写规范：");
@@ -40,8 +41,9 @@ namespace Demo
             Console.WriteLine("   “_UPDATE_TIME”且是DateTime：更新记录时自动填充当前时间；");
             Console.WriteLine("   “_TIMESTAMP”且是长整型15位以上精度：时间戳，更新记录时自动填充Sequence.Value；时间戳可用于乐观锁模式下的数据更新，保证在分布式架构下新数据不会被脏数据覆盖（会抛出Phenix.Core.Data.Validity.OutdatedDataException）；");
             Console.WriteLine("以上是全部的编写规范。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("持久化引擎支持在实体属性上打System.ComponentModel.DataAnnotations.ValidationAttribute派生标签，提交对象/属性时会自动完成属性的有效性验证（验证失败抛出ValidationException）。");
@@ -49,18 +51,21 @@ namespace Demo
             Console.WriteLine("    System.ComponentModel.DataAnnotations.RequiredAttribute，如果属性值不允许为空的规范是按照表字段NOT NULL的话；");
             Console.WriteLine("    System.ComponentModel.DataAnnotations.StringLengthAttribute，如果字符串属性值长度要求是按照表字段长度规范的话；");
             Console.WriteLine("一旦手工打上标签，默认规范会被覆盖");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("持久化引擎支持在实体上实现System.ComponentModel.DataAnnotations.IValidatableObject接口，也可以实现Phenix.Core.Data.Validity.IValidation接口，提交对象时自动完成对象的有效性验证（验证失败抛出ValidationException）。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("以下演示借用了 Teams 类，源码见工程里同名文件，可作为你编写自己实体类的一个参考。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("设为调试状态");
@@ -72,8 +77,9 @@ namespace Demo
             Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
             Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
             Console.WriteLine("请确认连接的是否是你的测试库？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
-            Console.WriteLine("否则按任意键继续");
+            Console.Write("否则按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("开始演示");
@@ -87,8 +93,9 @@ namespace Demo
             Console.WriteLine("赋值 Name 属性直接更新到数据库：{0}", Utilities.JsonSerialize(subTeams1));
             subTeams1.Parent = Teams.New("大船事业部", rootTeams);
             Console.WriteLine("可以挂在其他分支上：{0}", Utilities.JsonSerialize(subTeams1.Parent));
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("最后，清理环境");
@@ -101,8 +108,9 @@ namespace Demo
             }
             else
                 Console.WriteLine("未能完成整棵树的删除。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.Write("请按回车键结束演示");

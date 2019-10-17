@@ -22,8 +22,9 @@ namespace Demo
             Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
             Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
             Console.WriteLine("请确认连接的是否是你的测试库？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
-            Console.WriteLine("否则按任意键继续");
+            Console.Write("否则按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.Write("将随机挑选数据库的某个视图进行演示：");
@@ -39,7 +40,7 @@ namespace Demo
                     break;
                 }
                 Console.WriteLine("数据库中还未有视图，请新建一个用于演示!");
-                Console.WriteLine("如已准备好，请按任意键继续");
+                Console.Write("如已准备好，请按任意键继续");
                 Console.ReadKey();
             }
             Console.WriteLine();

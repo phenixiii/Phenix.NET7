@@ -6,9 +6,9 @@
     <AssemblyName>Phenix.Services.Host</AssemblyName>
     <DefineConstants>TRACE;MySQL</DefineConstants>
     <RootNamespace>Phenix.Services.Host</RootNamespace>
-    <Version>7.3.7</Version>
-    <AssemblyVersion>7.3.7.1011</AssemblyVersion>
-    <FileVersion>7.3.7.1011</FileVersion>
+    <Version>7.3.9</Version>
+    <AssemblyVersion>7.3.9.1017</AssemblyVersion>
+    <FileVersion>7.3.9.1017</FileVersion>
     <Description>Phenix Framework for .NET Core 3.0</Description>
     <Authors>ming</Authors>
     <Copyright>Copyright © 2007, 2019 Phenixヾ Studio</Copyright>

@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.31" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.50" />
   </ItemGroup>
 
   <ItemGroup>

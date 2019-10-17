@@ -22,8 +22,9 @@ namespace Demo
             Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
             Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
             Console.WriteLine("请确认连接的是否是你的测试库？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
-            Console.WriteLine("否则按任意键继续");
+            Console.Write("否则按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             string message = "我是一条日志";
@@ -38,8 +39,9 @@ namespace Demo
             Console.WriteLine("如果传入 Exception 参数，会被层层摘取出 InnerException 的 Message 内容，拼接后记录到日志里。");
             Console.WriteLine("如果传入 string extension 参数，可指定日志文件的后缀名，默认是 'log'。");
             Console.WriteLine("本地日志文件，默认存储在操作系统的 TEMP 目录里，所以有可能会被操作系统定时清理掉，请做好系统配置以保有足够的留存周期。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("演示存储到数据库的方法 Save()");

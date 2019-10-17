@@ -35,8 +35,9 @@ namespace Demo
             Console.WriteLine("   当 IsSelfDirty 为 true 且 IsSelfDeleted 为 false 时，才会按照更新实体的逻辑进行持久化；");
             Console.WriteLine("   当 IsSelfDeleted 为 true 且 IsNew 为 false 时，才会按照删除实体的逻辑进行持久化；");
             Console.WriteLine("除以上组合状态之外，调用Save()函数不会发生持久化动作。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("设为调试状态");
@@ -48,8 +49,9 @@ namespace Demo
             Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
             Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
             Console.WriteLine("请确认连接的是否是你的测试库？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
-            Console.WriteLine("否则按任意键继续");
+            Console.Write("否则按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("开始演示");
@@ -67,8 +69,9 @@ namespace Demo
             Console.WriteLine("调用Save()函数提交后的状态：IsNew = {0}，IsSelfDirty = {1}，IsSelfDeleted = {2}，IsFetched = {3}，{4}",
                 position.IsNew, position.IsSelfDirty, position.IsSelfDeleted, position.IsFetched,
                 !position.IsNew && !position.IsSelfDirty && !position.IsSelfDeleted && position.IsFetched ? "ok" : "error");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             long id = position.Id;
@@ -78,8 +81,9 @@ namespace Demo
             Console.WriteLine("新增实体对象的状态：IsNew = {0}，IsSelfDirty = {1}，IsSelfDeleted = {2}，IsFetched = {3}，{4}",
                 position.IsNew, position.IsSelfDirty, position.IsSelfDeleted, position.IsFetched,
                 !position.IsNew && !position.IsSelfDirty && !position.IsSelfDeleted && position.IsFetched ? "ok" : "error");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             position.BeginEdit();
@@ -108,8 +112,9 @@ namespace Demo
             Console.WriteLine("调用Save()后的状态：IsNew = {0}，IsSelfDirty = {1}，IsSelfDeleted = {2}，IsFetched = {3}，{4}",
                 position.IsNew, position.IsSelfDirty, position.IsSelfDeleted, position.IsFetched,
                 !position.IsNew && !position.IsSelfDirty && !position.IsSelfDeleted && position.IsFetched ? "ok" : "error");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             position.IsSelfDeleted = true;
@@ -121,8 +126,9 @@ namespace Demo
                 position.IsNew, position.IsSelfDirty, position.IsSelfDeleted, position.IsFetched,
                 !position.IsNew && !position.IsSelfDirty && position.IsSelfDeleted && !position.IsFetched ? "ok" : "error");
             Console.WriteLine("检索数据库，已被删除：{0}", Position.Select(p => p.Id == id).FirstOrDefault() == null ? "ok" : "error");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.Write("请按回车键结束演示");

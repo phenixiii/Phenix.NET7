@@ -3111,12 +3111,22 @@
             Database为空时用HttpClient连服务端
             </summary>
         </member>
+        <member name="M:Phenix.Core.Data.Increment.GetNext(Phenix.Core.Net.Http.HttpClient,System.String,System.Int64)">
+            <summary>
+            取下一个
+            </summary>
+            <param name="httpClient">HttpClient</param>
+            <param name="key">键</param>
+            <param name="initialValue">初值</param>
+            <returns>值</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Increment.GetNext(System.String,System.Int64)">
             <summary>
             取下一个
             </summary>
             <param name="key">键</param>
             <param name="initialValue">初值</param>
+            <returns>值</returns>
         </member>
         <member name="T:Phenix.Core.Data.Model.BusinessBase`1">
             <summary>
@@ -6708,6 +6718,13 @@
             小于999999999999999
             </summary>
         </member>
+        <member name="M:Phenix.Core.Data.Sequence.GetValue(Phenix.Core.Net.Http.HttpClient)">
+            <summary>
+            取值
+            </summary>
+            <param name="httpClient">HttpClient</param>
+            <returns>值</returns>
+        </member>
         <member name="T:Phenix.Core.Data.Validity.IValidation">
             <summary>
             验证接口
@@ -7136,9 +7153,33 @@
             Database为空时用HttpClient连服务端
             </summary>
         </member>
+        <member name="M:Phenix.Core.Message.UserMessage.Send(Phenix.Core.Net.Http.HttpClient,System.String,System.String)">
+            <summary>
+            保存对象日志
+            </summary>
+            <param name="httpClient">HttpClient</param>
+            <param name="receiver">接收用户</param>
+            <param name="content">消息内容</param>
+        </member>
+        <member name="M:Phenix.Core.Message.UserMessage.Send(Phenix.Core.Net.Http.HttpClient,System.String,System.String,System.String)">
+            <summary>
+            保存对象日志
+            </summary>
+            <param name="httpClient">HttpClient</param>
+            <param name="sender">发送用户</param>
+            <param name="receiver">接收用户</param>
+            <param name="content">消息内容</param>
+        </member>
+        <member name="M:Phenix.Core.Message.UserMessage.Send(Phenix.Core.Net.Http.HttpClient,Phenix.Core.Message.UserMessageInfo)">
+            <summary>
+            保存对象日志
+            </summary>
+            <param name="httpClient">HttpClient</param>
+            <param name="info">事件资料</param>
+        </member>
         <member name="M:Phenix.Core.Message.UserMessage.Send(System.String,System.String)">
             <summary>
-            发送
+            发送消息
             sender = UserIdentity.CurrentIdentity.UserNumber
             </summary>
             <param name="receiver">接收用户</param>
@@ -7146,7 +7187,7 @@
         </member>
         <member name="M:Phenix.Core.Message.UserMessage.Send(System.String,System.String,System.String)">
             <summary>
-            发送
+            发送消息
             </summary>
             <param name="sender">发送用户</param>
             <param name="receiver">接收用户</param>
@@ -7158,12 +7199,28 @@
             </summary>
             <param name="info">事件资料</param>
         </member>
+        <member name="M:Phenix.Core.Message.UserMessage.Receive(Phenix.Core.Net.Http.HttpClient,System.String)">
+            <summary>
+            接收消息（PULL）
+            </summary>
+            <param name="httpClient">HttpClient</param>
+            <param name="receiver">接收用户</param>
+            <returns>结果集(消息ID-消息内容)</returns>
+        </member>
         <member name="M:Phenix.Core.Message.UserMessage.Receive(System.String)">
             <summary>
-            接收
+            接收消息（PULL）
             </summary>
             <param name="receiver">接收用户</param>
             <returns>结果集(消息ID-消息内容)</returns>
+        </member>
+        <member name="M:Phenix.Core.Message.UserMessage.AffirmReceived(Phenix.Core.Net.Http.HttpClient,System.Int64,System.Boolean)">
+            <summary>
+            确认收到
+            </summary>
+            <param name="httpClient">HttpClient</param>
+            <param name="id">消息ID</param>
+            <param name="burn">是否销毁</param>
         </member>
         <member name="M:Phenix.Core.Message.UserMessage.AffirmReceived(System.Int64,System.Boolean)">
             <summary>
@@ -7171,6 +7228,21 @@
             </summary>
             <param name="id">消息ID</param>
             <param name="burn">是否销毁</param>
+        </member>
+        <member name="M:Phenix.Core.Message.UserMessage.Subscribe(Phenix.Core.Net.Http.HttpClient,System.Action{System.Collections.Generic.IDictionary{System.Int64,System.String}})">
+            <summary>
+            订阅消息（PUSH）
+            </summary>
+            <param name="httpClient">HttpClient</param>
+            <param name="onReceived">处理收到消息(消息ID-消息内容)</param>
+            <returns>HubConnection可添加连接事件最后务必启动连接</returns>
+        </member>
+        <member name="M:Phenix.Core.Message.UserMessage.Subscribe(System.Action{System.Collections.Generic.IDictionary{System.Int64,System.String}})">
+            <summary>
+            订阅消息（PUSH）
+            </summary>
+            <param name="onReceived">处理收到消息(消息ID-消息内容)</param>
+            <returns>HubConnection可添加连接事件最后务必启动连接</returns>
         </member>
         <member name="T:Phenix.Core.Message.UserMessageInfo">
             <summary>
@@ -7461,11 +7533,6 @@
             断开
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Api.UserMessageHub.Heartbeat">
-            <summary>
-            心跳
-            </summary>
-        </member>
         <member name="M:Phenix.Core.Net.Api.UserMessageHubPusher.DisposeManagedResources">
             <summary>
             释放托管资源
@@ -7599,25 +7666,25 @@
         </member>
         <member name="T:Phenix.Core.Net.Http.HttpClient">
             <summary>
-            服务端入口
+            HttpClient
             </summary>
         </member>
         <member name="M:Phenix.Core.Net.Http.HttpClient.New">
             <summary>
-            新增服务端入口
+            新增HttpClient
             </summary>
-            <returns>服务端入口</returns>
+            <returns>HttpClient</returns>
         </member>
         <member name="M:Phenix.Core.Net.Http.HttpClient.New(System.Uri)">
             <summary>
-            新增服务端入口
+            新增HttpClient
             </summary>
             <param name="baseAddress">服务地址(null代表"http://localhost:5000")</param>
-            <returns>服务端入口</returns>
+            <returns>HttpClient</returns>
         </member>
         <member name="P:Phenix.Core.Net.Http.HttpClient.Default">
             <summary>
-            缺省服务端入口
+            缺省HttpClient
             缺省为构造过的第一个HttpClient对象
             </summary>
         </member>
@@ -9728,6 +9795,11 @@
              Key/IV=登录口令/动态口令
             </summary>
             <param name="sourceBuffer">Hex字符串</param>
+        </member>
+        <member name="M:Phenix.Core.Security.User.FormatComplexAuthorization">
+            <summary>
+            身份验证token: [登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密的时间戳)]
+            </summary>
         </member>
         <member name="M:Phenix.Core.Security.User.IsValid(System.Boolean)">
             <summary>

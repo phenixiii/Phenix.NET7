@@ -19,8 +19,9 @@ namespace Demo
             Console.WriteLine("(如需传入JSON格式请先调用 Phenix.Core.Reflection.Utilities.JsonDeserialize<IDictionary<string, object>>(propertyValues)、Phenix.Core.Reflection.Utilities.JsonDeserialize<IList<IDictionary<string, object>>>(propertyValues) 进行转换)，");
             Console.WriteLine("也可以附带或仅仅传入 Sheet 对象，实现对指定表（或是视图时仅针对第一个属性映射的表）的增删改操作，而且动态属性的可操作范围能够扩展到 Sheet.Columns 所映射的所有属性名。");
             Console.WriteLine("使用动态对象，减少了不必要的类型定义，增加了程序代码的灵活性，但本质上和操作 IDictionary<string, object> 对象是没什么区别的，大量使用会带来一些副作用，比如代码可维护性问题，应避免滥用。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("设为调试状态");
@@ -32,8 +33,9 @@ namespace Demo
             Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
             Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
             Console.WriteLine("请确认连接的是否是你的测试库？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
-            Console.WriteLine("否则按任意键继续");
+            Console.Write("否则按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Sheet positionsSheet = Database.Default.MetaData.FindTable("ph7_position");
@@ -51,8 +53,9 @@ namespace Demo
             IDictionary<string, object> positionDictionary = Utilities.JsonDeserialize<IDictionary<string, object>>(positionJson);
             Console.WriteLine("JSON格式字符串反序列化为“属性名-属性值”键值队列对象：{0}", Utilities.JsonSerialize(positionDictionary));
             Console.WriteLine("数据准备完毕");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("演示构建动态岗位对象数组");
@@ -65,8 +68,9 @@ namespace Demo
                 Console.WriteLine("item.Roles = {0}", item.Roles);
                 Console.WriteLine();
             }
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("演示构建动态岗位对象");
@@ -76,8 +80,9 @@ namespace Demo
             Console.WriteLine("positionDynamic.Name = {0}", positionDynamic.Name);
             Console.WriteLine("positionDynamic.Roles = {0}", positionDynamic.Roles);
             Console.WriteLine();
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("演示动态岗位对象的增删改操作，注意传入了指向 ph7_position 表的 Sheet 对象以执行增删改操作");
@@ -88,8 +93,9 @@ namespace Demo
             Console.WriteLine("可更新到数据库：{0}", positionsSheet.SelectRecord<Position>(p => p.Id == positionId));
             ((DynamicEntity) positionDynamic).DeleteRecord();
             Console.WriteLine("可彻底删除记录：{0}", positionsSheet.SelectRecord<Position>(p => p.Id == positionId));
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("演示直接用指向 ph7_position 表的 Sheet 对象构建动态岗位对象");
@@ -106,8 +112,9 @@ namespace Demo
             Console.WriteLine("可添加记录到数据库：{0}", positionsSheet.SelectRecord<Position>(p => p.Id == positionId));
             ((DynamicEntity)positionDynamic).DeleteRecord();
             Console.WriteLine("再次彻底删除记录：{0}", positionsSheet.SelectRecord<Position>(p => p.Id == positionId));
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.Write("请按回车键结束演示");

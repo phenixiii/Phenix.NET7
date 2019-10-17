@@ -28,8 +28,9 @@ namespace Demo
             Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
             Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
             Console.WriteLine("请确认连接的是否是你的测试库？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
-            Console.WriteLine("否则按任意键继续");
+            Console.Write("否则按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("演示注册用户的方法 New()");
@@ -39,15 +40,17 @@ namespace Demo
             Console.WriteLine("当有用户申请注册时，你的服务应调用方法 New() 新增用户，然后将调用返回的初始口令 {0} 或动态口令 {1} 利用第三方渠道（邮箱或短信）推送给到用户。", initialPassword, dynamicPassword);
             Console.WriteLine("被持久化的用户信息里，登录口令和动态口令都已被MD5散列了的。");
             Console.WriteLine("用户的手机 {0}、邮箱 {1}、注册昵称 {2}，这些属性在注册后仍然是可以赋值被自动提交持久化的，前提是你必须保证系统已经成功验证了用户身份才能允许修改。", user.Phone, user.EMail, user.RegAlias);
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("演示获取用户资料的方法 Fetch()");
             user = User.Fetch("林冲");
             Console.WriteLine("你的服务在响应用户登录时，首先根据传来的用户名获取用户资料，以便完成下一步的身份验证：{0}", Utilities.JsonSerialize(user));
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("演示核对登录口令有效性的方法 IsValidPassword()");
@@ -62,8 +65,9 @@ namespace Demo
             Console.WriteLine("服务请求超时时限(与服务端时钟差值)，User.RequestOvertimeLimitMinutes 属性，缺省为 {0}(分钟>=10)", User.RequestOvertimeLimitMinutes);
             Console.WriteLine("你也可以直接锁定用户，将属性 Locked 置为true，缺省为 {0}，可恢复", user.Locked);
             Console.WriteLine("甚至注销用户，将属性 Disabled 置为true，缺省为 {0}，可恢复", user.Disabled);
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("演示修改登录口令的方法 ChangePassword()");
@@ -73,16 +77,18 @@ namespace Demo
             Console.WriteLine("登录口令的编码规则如下：");
             Console.WriteLine("口令长度最小值，User.PasswordLengthMinimum 属性，缺省为 {0}(个>=6)", User.PasswordLengthMinimum);
             Console.WriteLine("口令复杂度最小值(含数字、大写字母、小写字母、特殊字符的种类)， User.PasswordComplexityMinimum 属性，缺省为 {0}(个>=1)", User.PasswordComplexityMinimum);
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("演示核对动态口令有效性的方法 IsValidDynamicPassword()");
             Console.WriteLine("你的服务除了可以通过核对登录口令的有效性来验证用户身份外，还可以通过核对动态口令的方法。");
             Console.WriteLine("身份验证结果：{0}", user.IsValidDynamicPassword(MD5CryptoTextProvider.ComputeHash(dynamicPassword), "127.0.0.1", false));
             Console.WriteLine("动态口令是有有效期的，可通过设置 User.DynamicPasswordValidityMinutes 属性（默认值为 {0} 分钟以内）进行控制。", User.DynamicPasswordValidityMinutes);
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("演示申请动态口令的方法 ApplyDynamicPassword()");
@@ -92,8 +98,9 @@ namespace Demo
             Console.WriteLine("然后生成一个6位随机的动态口令：{0}", dynamicPassword);
             Console.WriteLine("通过短信等第三方渠道推送给到用户，用户用它来登录系统，客户端向服务发起动态口令登录请求（你必须在客户端完成动态口令的MD5散列化）。");
             Console.WriteLine("身份验证结果：{0}", user.IsValidDynamicPassword(MD5CryptoTextProvider.ComputeHash(dynamicPassword), "127.0.0.1", false));
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("演示用户绑定所属团体的属性 Teams 和担任岗位的属性 Position");
@@ -107,8 +114,9 @@ namespace Demo
             Console.WriteLine("现在 {0} 成为了 {1} 的一名企业组织架构管理员：{2}", user.Name, user.RootTeams.Name, user.IsOrganizationalArchitectureManager ? "ok" : "error");
             Console.WriteLine("以上提到的管理功能，需要你在系统中自行实现（如果你的系统需要这样的SaaS模式的话）。");
             Console.WriteLine("总之，你系统的岗位配置管理模块、组织架构管理模块、注册用户的权限管理（申请、审核、担任岗位和所属团体）模块，都是需要你自行开发实现的。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("最后，清理环境");
@@ -118,8 +126,9 @@ namespace Demo
             Console.WriteLine("完成岗位资料的删除。");
             user.Teams.Delete();
             Console.WriteLine("完成团体资料的删除。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.Write("请按回车键结束演示");

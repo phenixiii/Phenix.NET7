@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Phenix.Core;
 using Phenix.Core.Data;
-using Phenix.Core.Data.Common;
 using Phenix.Core.Log;
 using Phenix.Core.Net.Http;
 using Phenix.Core.Reflection;
@@ -30,13 +29,14 @@ namespace Demo
             Console.WriteLine("EventLog 在保存日志时，如果所在进程里未曾注册过任何数据库连接，就会用 OfflineCache 尝试上传给到其属性 BaseAddress 所指定的服务端。");
             Console.WriteLine("服务端应该提供‘{0}’路径的控制器，比如 Phenix.Services.Host 工程里就加载了 Phenix.Core.dll 里的 EventLogController 控制器。", Phenix.Core.Net.NetConfig.ApiLogEventLogPath);
             Console.WriteLine("在接下来的演示之前，请启动 Phenix.Services.Host_MySQL/ORA 程序。");
-            Console.WriteLine("准备好之后，请按任意键继续");
+            Console.Write("准备好之后，请按任意键继续");
             Console.ReadKey();
             Console.WriteLine();
+            Console.WriteLine();
 
-            string userName = "TEST";
+            string userName = "测试用";
             Console.WriteLine("以‘{0}’为名登录系统。", userName);
-            Phenix.Core.Net.Http.HttpClient httpClient = Phenix.Core.Net.Http.HttpClient.New(new Uri("http://localhost:5000"));
+            Phenix.Core.Net.Http.HttpClient httpClient = Phenix.Core.Net.Http.HttpClient.New(new Uri("http://localhost.:5000"));
             Console.WriteLine("构造一个 Phenix.Core.Net.Http.HttpClient 对象用于访问‘{0}’服务端。", httpClient.BaseAddress);
             Console.WriteLine("HttpClient.Default 缺省为构造过的第一个HttpClient对象：{0}", Phenix.Core.Net.Http.HttpClient.Default == httpClient ? "ok" : "error");
             while (true)
@@ -56,10 +56,10 @@ namespace Demo
                     Console.WriteLine();
                 }
             Console.WriteLine("如果客户端是自动运行的程序，需要CheckIn一个固定用户，将CheckIn时获得的登录口令写死在程序里（或其他手段保存和取用）。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
             Console.WriteLine();
-
+            Console.WriteLine();
 
             Console.WriteLine("EventLog 在保存日志时，会首先查看其 Database 属性（默认是 Phenix.Core.Data.Database.Default 值）是否有数据库连接。");
             Console.WriteLine("因为本程序模拟的是客户端，不会直连数据库的，EventLog.Database 属性肯定为空，EventLog 只会将日志给到 OfflineCache 暂存并尝试上传到服务端。");
@@ -68,18 +68,20 @@ namespace Demo
             {
                 if (File.Exists(OfflineCache.FilePath))
                     break;
-                Console.WriteLine("{0} 目录下未发现 {1} 文件，请从 Bin_ORA 或 Bin_MySQL 目录里拷贝进同名文件，完成后按任意键继续", AppRun.BaseDirectory, OfflineCache.FilePath);
+                Console.Write("{0} 目录下未发现 {1} 文件，请从 Bin_ORA 或 Bin_MySQL 目录里拷贝进同名文件，完成后按任意键继续", AppRun.BaseDirectory, OfflineCache.FilePath);
                 System.Diagnostics.Process.Start("explorer.exe", AppRun.BaseDirectory);
                 Console.ReadKey();
                 Console.WriteLine();
             }
+            Console.WriteLine();
 
             string message = "我是一条跨域传递的日志";
             Console.WriteLine("先准备一条演示用的日志 = '{0}'", message);
             OfflineCache.UploadSuspending = true;
             Console.WriteLine("为演示需要，暂停 OfflineCache 的上传线程：{0}", OfflineCache.UploadSuspending ? "ok" : "error");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             EventLog.Save(message);
@@ -88,8 +90,9 @@ namespace Demo
             Console.WriteLine("请注意 OC_BaseAddress 字段是空的，因为 EventLog.UploadBaseAddress 属性未曾赋值过：{0}", EventLog.UploadBaseAddress ?? "null");
             Console.WriteLine("对于 OC_BaseAddress 字段为空值的记录，OfflineCache 上传报文时会尝试向 HttpClient.Default 指向的服务发起请求，地址为：{0}", Phenix.Core.Net.Http.HttpClient.Default.BaseAddress);
             Console.WriteLine("暂存的报文是有有效期的，见 OC_ValidityTime 字段，你可通过设置 EventLog.UploadValidityMinutes 属性（默认值为 {0} 分钟以内）进行控制。", EventLog.UploadValidityMinutes);
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             OfflineCache.UploadSuspending = false;
@@ -103,8 +106,9 @@ namespace Demo
             Console.WriteLine("OfflineCache 上传报文成功。");
             ShowFirstCache();
             Console.WriteLine("缓存的报文，一旦上传成功，就会被自动删除。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("启动 3 个线程分别保存 10 条日志...");
@@ -116,22 +120,7 @@ namespace Demo
             };
             Task.WaitAll(tasks);
             Console.WriteLine("线程运行结束。");
-            Console.WriteLine("请按任意键继续");
-            Console.ReadKey();
-            Console.WriteLine();
-
-            Console.WriteLine("注册缺省数据库连接");
-            Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
-            Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
-            Console.WriteLine("请确认连接的是否是与 Phenix.Services.Host 同一个库？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
-            Console.WriteLine("否则按任意键继续");
-            Console.ReadKey();
-            Console.WriteLine();
-
-            ShowEventLog();
-            Console.WriteLine("以上为上传到服务端的报文。");
-            Console.WriteLine("请按任意键继续");
-            Console.ReadKey();
+            Console.WriteLine("请到 Phenix.Services.Host_MySQL/ORA 所连接的数据库里，查看 PH7_EventLog 表里已上传保存的报文。");
             Console.WriteLine();
 
             Console.Write("请按回车键结束演示");
@@ -141,7 +130,10 @@ namespace Demo
         static void SaveEventLog(int index)
         {
             for (int i = 0; i < 10; i++)
+            {
                 EventLog.Save(String.Format("{0}-{1}:{2}", index, i, Sequence.Value));
+                Console.WriteLine("保存日志：{0}-{1}:{2}", index, i, Sequence.Value);
+            }
         }
 
         private static void ShowFirstCache()
@@ -162,22 +154,6 @@ order by OC_ID desc";
                             Console.Write("{0} = {1}, ", reader.GetName(i), reader.GetValue(i) ?? "null");
                         Console.WriteLine();
                     }
-                }
-            }
-        }
-
-        private static void ShowEventLog()
-        {
-            using (DataReader reader = Database.Default.CreateDataReader(@"
-select *
-from PH7_EventLog
-order by EL_ID desc"))
-            {
-                while (reader.Read())
-                {
-                    for (int i = 0; i < reader.FieldCount; i++)
-                        Console.Write("{0} = {1}, ", reader.GetName(i), reader.GetValue(i) ?? "null");
-                    Console.WriteLine();
                 }
             }
         }

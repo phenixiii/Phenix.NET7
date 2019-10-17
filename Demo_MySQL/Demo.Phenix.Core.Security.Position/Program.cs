@@ -31,8 +31,9 @@ namespace Demo
             Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
             Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
             Console.WriteLine("请确认连接的是否是你的测试库？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
-            Console.WriteLine("否则按任意键继续");
+            Console.Write("否则按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("开始演示");
@@ -46,8 +47,9 @@ namespace Demo
             Console.WriteLine("如果传入 resetHoursLater 参数值为正数，是要求它缓存到本进程缓存内，后续调用只要在这段时间内且 resetHoursLater 参数值为正数，都取自缓存。");
             Console.WriteLine("如果传入 resetHoursLater 参数值为 0，则优先取缓存，没有才从数据库取，之前调用时传入的缓存时间被忽略。");
             Console.WriteLine("默认 resetHoursLater 参数值为 8 小时。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             List<string> roles = new List<string>(position.Roles);
@@ -55,14 +57,16 @@ namespace Demo
             position.Roles = roles;
             Console.WriteLine("赋值 Roles 属性可更新到数据库：{0}", Utilities.JsonSerialize(position));
             Console.WriteLine("赋值 Name 属性也会更新到数据库，可自行编码体验，注意岗位不允许重名。");
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             IList<Position> positions = Position.FetchAll();
             Console.WriteLine("可调用方法 FetchAll() 从数据库中获取全部的岗位资料：{0}", Utilities.JsonSerialize(positions));
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.WriteLine("演示当新增的岗位与旧岗位重名时：");
@@ -74,14 +78,16 @@ namespace Demo
             {
                 Console.WriteLine(AppRun.GetErrorMessage(ex));
             }
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             position.Delete();
             Console.WriteLine("可调用方法 Delete() 从数据库中删除岗位资料：{0}", Utilities.JsonSerialize(position));
-            Console.WriteLine("请按任意键继续");
+            Console.Write("请按任意键继续");
             Console.ReadKey();
+            Console.WriteLine();
             Console.WriteLine();
 
             Console.Write("请按回车键结束演示");
