@@ -28,7 +28,10 @@ namespace Demo
             Console.WriteLine("本演示借用了 Phenix.Core.Log.EventLog 类。");
             Console.WriteLine("EventLog 在保存日志时，如果所在进程里未曾注册过任何数据库连接，就会用 OfflineCache 尝试上传给到其属性 BaseAddress 所指定的服务端。");
             Console.WriteLine("服务端应该提供‘{0}’路径的控制器，比如 Phenix.Services.Host 工程里就加载了 Phenix.Core.dll 里的 EventLogController 控制器。", Phenix.Core.Net.NetConfig.ApiLogEventLogPath);
+            Console.WriteLine();
+            
             Console.WriteLine("在接下来的演示之前，请启动 Phenix.Services.Host_MySQL/ORA 程序。");
+            Console.WriteLine("如需观察 Phenix.Services（扩展服务）被唤起的代码执行效果，可在其 GateService 的函数里设置断点附加到执行中的 Phenix.Services.Host_MySQL/ORA 程序。");
             Console.Write("准备好之后，请按任意键继续");
             Console.ReadKey();
             Console.WriteLine();

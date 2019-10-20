@@ -6,29 +6,30 @@
     <Description>Phenix Framework for .NET Core 3.0</Description>
     <Authors>ming</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <AssemblyName>Phenix.Services</AssemblyName>
-    <DefineConstants>TRACE;ORA</DefineConstants>
-    <RootNamespace>Phenix.Services</RootNamespace>
+    <AssemblyName>Phenix.Services.DataExchange.Plugin</AssemblyName>
+    <DefineConstants>TRACE;MySQL</DefineConstants>
+    <RootNamespace>Phenix.Services.DataExchange.Plugin</RootNamespace>
     <Copyright>Copyright © 2007, 2019 Phenixヾ Studio</Copyright>
     <Company />
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\Bin_ORA\</OutputPath>
+    <OutputPath>..\..\Bin_MySQL\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\Bin_ORA\</OutputPath>
+    <OutputPath>..\..\Bin_MySQL\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="MySql.Data" Version="8.0.17" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.50" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Phenix.Core">
-      <HintPath>..\..\Bin_ORA\netcoreapp3.0\Phenix.Core.dll</HintPath>
+      <HintPath>..\..\Bin_MySQL\netcoreapp3.0\Phenix.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

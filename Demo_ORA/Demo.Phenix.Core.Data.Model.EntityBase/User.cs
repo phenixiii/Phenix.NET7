@@ -74,6 +74,7 @@ namespace Demo
                     if (_cache == null)
                     {
                         InitializeTable();
+
                         _cache = new SynchronizedDictionary<long, User>();
                         AddRenovatorTrigger(p => p.Id,
                             (tableName, primaryKeyValue, executeTime, executeAction) => { _cache.Remove(primaryKeyValue); });

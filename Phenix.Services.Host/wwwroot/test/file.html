@@ -28,15 +28,15 @@
 
         function uploadFile() {
             phAjax.uploadFiles({
-                data: { tag: "Hello uploadFiles!" },
+                message: "Hello uploadFiles!",
                 files: $("#file")[0].files,
                 onProgress: function (fileName, chunkCount, chunkNumber, chunkSize) {
                     document.getElementById('hint').innerHTML = fileName + ": " + Math.ceil(chunkNumber * 100 / chunkCount) + "%";
                     return true; //继续上传
                 },
-                onSuccess: function (result) {
+                onSuccess: function (message) {
                     document.getElementById('hint').innerHTML = $("#file")[0].files[0].name;
-                    alert("完成上传: " + JSON.stringify(result));
+                    alert("完成上传: " + message);
                 },
                 onError: function (XMLHttpRequest, textStatus, errorThrown) {
                     alert("上传失败! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
@@ -46,7 +46,7 @@
 
         function downloadFile() {
             phAjax.downloadFile({
-                data: { tag: "Hello downloadFile!" },
+                message: "Hello downloadFile!",
                 fileName: $("#file")[0].files[0].name,
                 onProgress: function (fileName, chunkCount, chunkNumber, chunkSize, chunkBody, chunkBuffer) {
                     document.getElementById('hint').innerHTML = fileName + ": " + Math.ceil(chunkNumber * 100 / chunkCount) + "%";

@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <Reference Include="Phenix.Core">
-      <HintPath>..\..\Bin_ORA\netcoreapp3.0\Phenix.Core.dll</HintPath>
+      <HintPath>..\..\Bin_MySQL\netcoreapp3.0\Phenix.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

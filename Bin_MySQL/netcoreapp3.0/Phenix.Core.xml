@@ -3128,213 +3128,6 @@
             <param name="initialValue">初值</param>
             <returns>值</returns>
         </member>
-        <member name="T:Phenix.Core.Data.Model.BusinessBase`1">
-            <summary>
-            业务对象基类
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.BusinessBase`1.#ctor">
-            <summary>
-            for CreateInstance
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.BusinessBase`1.#ctor(System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IDictionary{System.String,System.Nullable{System.Boolean}})">
-            <summary>
-            for Newtonsoft.Json.JsonConstructor
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.BusinessBase`1.Root">
-            <summary>
-            根业务对象
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.BusinessBase`1.Master">
-            <summary>
-            主业务对象
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.BusinessBase`1.IsDirty">
-            <summary>
-            更新状态(含从业务对象)
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.BusinessBase`1.HaveDetail``1">
-            <summary>
-            存在从业务对象
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.BusinessBase`1.FindDetail``1">
-            <summary>
-            检索从业务对象
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.BusinessBase`1.AddDetail``1(``0[])">
-            <summary>
-            添加从业务对象
-            </summary>
-            <param name="detail">从业务对象</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.BusinessBase`1.AddDetail``1(System.Boolean,``0[])">
-            <summary>
-            添加从业务对象
-            </summary>
-            <param name="ignoreRepeat">忽略重复的</param>
-            <param name="detail">从业务对象</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.BusinessBase`1.BeginEdit">
-            <summary>
-            启动编辑(仅允许编辑非IsSelfDirty状态的对象(含从业务对象))
-            快照当前数据
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.BusinessBase`1.CancelEdit">
-            <summary>
-            撤销编辑(仅允许撤销IsSelfDirty状态的对象(含从业务对象))
-            恢复快照数据
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.BusinessBase`1.ApplyEdit">
-            <summary>
-            应用编辑(含从业务对象)
-            丢弃快照数据
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.BusinessBase`1.SaveDepth(System.Boolean)">
-            <summary>
-            级联保存
-            </summary>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.BusinessBase`1.SaveDepth(System.Data.Common.DbConnection,System.Boolean)">
-            <summary>
-            级联保存
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.BusinessBase`1.SaveDepth(System.Data.Common.DbTransaction,System.Boolean)">
-            <summary>
-            级联保存
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
-        </member>
-        <member name="T:Phenix.Core.Data.Model.DynamicEntity">
-            <summary>
-            动态实体
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.DynamicEntity.Fetch(Phenix.Core.Data.Schema.Sheet)">
-            <summary>
-            构建动态实体
-            </summary>
-            <param name="selfSheet">操作单子</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.DynamicEntity.Fetch(System.Collections.Generic.IDictionary{System.String,System.Object},Phenix.Core.Data.Schema.Sheet)">
-            <summary>
-            构建动态实体
-            </summary>
-            <param name="propertyValues">"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
-            <param name="selfSheet">操作单子</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.DynamicEntity.FetchList(System.Collections.Generic.IList{System.Collections.Generic.IDictionary{System.String,System.Object}},Phenix.Core.Data.Schema.Sheet)">
-            <summary>
-            构建动态实体集合
-            </summary>
-            <param name="propertyValues">"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
-            <param name="selfSheet">操作单子</param>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.DynamicEntity.PropertyNames">
-            <summary>
-            属性名集合
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.DynamicEntity.SelfSheet">
-            <summary>
-            操作单子
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.DynamicEntity.TrySetMember(System.Dynamic.SetMemberBinder,System.Object)">
-            <summary>
-            设置属性值
-            </summary>
-            <param name="binder">动态设置属性操作</param>
-            <param name="value">值</param>
-            <returns>是否成功</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.DynamicEntity.TryGetMember(System.Dynamic.GetMemberBinder,System.Object@)">
-            <summary>
-            获取属性值
-            </summary>
-            <param name="binder">动态获取属性操作</param>
-            <param name="result">值</param>
-            <returns>是否成功</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.DynamicEntity.GetEnumerator">
-            <summary>
-            返回循环访问的枚举数
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.DynamicEntity.InsertRecord">
-            <summary>
-            新增记录(仅提交第一个属性映射的表)
-            </summary>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.DynamicEntity.InsertRecord(System.Data.Common.DbConnection)">
-            <summary>
-            新增记录(仅提交第一个属性映射的表)
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.DynamicEntity.InsertRecord(System.Data.Common.DbTransaction)">
-            <summary>
-            新增记录(仅提交第一个属性映射的表)
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.DynamicEntity.UpdateRecord">
-            <summary>
-            更新记录(仅提交第一个属性映射的表)
-            </summary>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.DynamicEntity.UpdateRecord(System.Data.Common.DbConnection)">
-            <summary>
-            更新记录(仅提交第一个属性映射的表)
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.DynamicEntity.UpdateRecord(System.Data.Common.DbTransaction)">
-            <summary>
-            更新记录(仅提交第一个属性映射的表)
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.DynamicEntity.DeleteRecord">
-            <summary>
-            删除记录(仅提交第一个属性映射的表)
-            </summary>
-            <returns>删除记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.DynamicEntity.DeleteRecord(System.Data.Common.DbConnection)">
-            <summary>
-            删除记录(仅提交第一个属性映射的表)
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <returns>删除记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.DynamicEntity.DeleteRecord(System.Data.Common.DbTransaction)">
-            <summary>
-            删除记录(仅提交第一个属性映射的表)
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <returns>删除记录数</returns>
-        </member>
         <member name="T:Phenix.Core.Data.Model.EntityBase`1">
             <summary>
             实体基类
@@ -4313,26 +4106,6 @@
             字符串表示
             </summary>
         </member>
-        <member name="T:Phenix.Core.Data.Model.IBusiness">
-            <summary>
-            业务对象接口
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.IBusiness.Root">
-            <summary>
-            根业务对象
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.IBusiness.Master">
-            <summary>
-            主业务对象
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.IBusiness.IsDirty">
-            <summary>
-            更新状态(含从业务对象)
-            </summary>
-        </member>
         <member name="T:Phenix.Core.Data.Model.IEntity">
             <summary>
             实体接口
@@ -4343,196 +4116,34 @@
             操作单子
             </summary>
         </member>
-        <member name="T:Phenix.Core.Data.Model.ISupportUndo">
+        <member name="T:Phenix.Core.Data.Model.NameValue">
             <summary>
-            支持编辑回滚
+            键值对
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Model.ISupportUndo.IsFetched">
+        <member name="M:Phenix.Core.Data.Model.NameValue.#ctor(System.String,System.Object)">
             <summary>
-            离线状态
+            初始化
+            </summary>
+            <param name="name">名</param>
+            <param name="value">值</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.NameValue.New(System.String,System.Object)">
+            <summary>
+            构造键值对
+            </summary>
+            <param name="name">名</param>
+            <param name="value">值</param>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.NameValue.Name">
+            <summary>
+            名
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Model.ISupportUndo.IsSelfDirty">
+        <member name="P:Phenix.Core.Data.Model.NameValue.Value">
             <summary>
-            更新状态
+            值
             </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.ISupportUndo.IsNew">
-            <summary>
-            新增状态
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.ISupportUndo.IsSelfDeleted">
-            <summary>
-            删除状态
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.ISupportUndo.OldPropertyValues">
-            <summary>
-            旧属性值
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.ISupportUndo.DirtyPropertyNames">
-            <summary>
-            脏属性值
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.ISupportUndo.BeginEdit">
-            <summary>
-            启动编辑(仅允许编辑非IsSelfDirty状态的对象)
-            快照当前数据
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.ISupportUndo.CancelEdit">
-            <summary>
-            撤销编辑(仅允许撤销IsSelfDirty状态的对象)
-            恢复快照数据
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.ISupportUndo.ApplyEdit">
-            <summary>
-            应用编辑
-            丢弃快照数据
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Data.Model.UndoableBase`1">
-            <summary>
-            可撤销编辑的实体基类
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.#ctor">
-            <summary>
-            for CreateInstance
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.#ctor(System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Nullable{System.Boolean},System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IDictionary{System.String,System.Nullable{System.Boolean}})">
-            <summary>
-            for Newtonsoft.Json.JsonConstructor
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.New(Phenix.Core.Data.Schema.Sheet)">
-            <summary>
-            新增对象(自动填充主键和保留字段)
-            </summary>
-            <param name="selfSheet">操作单子</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.New(`0)">
-            <summary>
-            新增对象(自动填充主键和保留字段)
-            </summary>
-            <param name="source">数据源</param>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.UndoableBase`1.IsFetched">
-            <summary>
-            离线状态
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.UndoableBase`1.IsNew">
-            <summary>
-            新增状态
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.UndoableBase`1.IsSelfDeleted">
-            <summary>
-            删除状态
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.UndoableBase`1.IsSelfDirty">
-            <summary>
-            更新状态
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.UndoableBase`1.OldPropertyValues">
-            <summary>
-            旧属性值
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Model.UndoableBase`1.DirtyPropertyNames">
-            <summary>
-            脏属性名
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.MarkFetched">
-            <summary>
-            MarkFetched
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.BeginEdit">
-            <summary>
-            启动编辑(仅允许编辑非IsSelfDirty状态的对象)
-            快照当前数据
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.CancelEdit">
-            <summary>
-            撤销编辑(仅允许撤销IsSelfDirty状态的对象)
-            恢复快照数据
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.ApplyEdit">
-            <summary>
-            应用编辑
-            丢弃快照数据
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.GetOldValue(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Boolean)">
-            <summary>
-            获取旧值
-            </summary>
-            <param name="propertyLambda">含类属性的 lambda 表达式</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.IsDirtyProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
-            <summary>
-            是否脏属性(null代表仅基于新旧值的判断)
-            </summary>
-            <param name="propertyLambda">含类属性的 lambda 表达式</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.SetDirtyProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Nullable{System.Boolean})">
-            <summary>
-            设置脏属性
-            </summary>
-            <param name="propertyLambda">含类属性的 lambda 表达式</param>
-            <param name="isDirty">是否脏数据(null代表仅基于新旧值的判断)</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.SetDirtyValue(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Object)">
-            <summary>
-            设置脏属性值
-            </summary>
-            <param name="propertyLambda">含类属性的 lambda 表达式</param>
-            <param name="newValue">新属性值</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.SetDirtyValues(`0)">
-            <summary>
-            设置脏属性值
-            </summary>
-            <param name="source">数据源</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.GetDirtValues">
-            <summary>
-            提取脏属性值
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.SaveSelf(System.Boolean)">
-            <summary>
-            保存自己
-            </summary>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.SaveSelf(System.Data.Common.DbConnection,System.Boolean)">
-            <summary>
-            保存自己
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.UndoableBase`1.SaveSelf(System.Data.Common.DbTransaction,System.Boolean)">
-            <summary>
-            保存自己
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
         </member>
         <member name="T:Phenix.Core.Data.Renovator">
             <summary>
@@ -5134,6 +4745,14 @@
             <summary>
             属性值
             </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.PropertyValue.#ctor(Phenix.Core.Data.Schema.Property,System.Object,System.Object)">
+            <summary>
+            属性值
+            </summary>
+            <param name="property">数据映射属性信息</param>
+            <param name="oldValue">旧值</param>
+            <param name="newValue">值/OperationExpression</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.PropertyValue.Set``1(Phenix.Core.Data.Schema.Sheet,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
             <summary>
@@ -7339,7 +6958,7 @@
             <summary>
             上传文件块
             </summary>
-            <returns>上传最后一块时返回的数据</returns>
+            <returns>完成上传时返回消息</returns>
         </member>
         <member name="M:Phenix.Core.Net.Api.FileController.DownloadFileChunk(System.Threading.CancellationToken)">
             <summary>
@@ -7378,34 +6997,36 @@
             文件存取服务接口
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Api.IFileService.GetUploadPath(Phenix.Core.Data.Model.DynamicEntity,System.String)">
+        <member name="M:Phenix.Core.Net.Api.IFileService.GetUploadPath(System.String,System.String)">
             <summary>
-            获取上传文件存储路径
+            获取上传文件的写入路径
             </summary>
-            <param name="data">客户端动态实体</param>
+            <param name="message">上传消息</param>
             <param name="fileName">上传文件名</param>
+            <returns>写入路径</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Api.IFileService.AfterUploadFile(Phenix.Core.Data.Model.DynamicEntity,System.String)">
+        <member name="M:Phenix.Core.Net.Api.IFileService.AfterUploadFile(System.String,System.String)">
             <summary>
             当完成上传文件时触发
             </summary>
-            <param name="data">客户端动态实体</param>
-            <param name="path">文件存储路径</param>
-            <returns>返回的数据</returns>
+            <param name="message">上传消息</param>
+            <param name="targetPath">写入路径</param>
+            <returns>完成上传时返回消息</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Api.IFileService.GetDownloadPath(Phenix.Core.Data.Model.DynamicEntity,System.String)">
+        <member name="M:Phenix.Core.Net.Api.IFileService.GetDownloadPath(System.String,System.String)">
             <summary>
-            获取下载文件存储路径
+            获取下载文件的读取路径
             </summary>
-            <param name="data">客户端动态实体</param>
+            <param name="message">上传消息</param>
             <param name="fileName">下载文件名</param>
+            <returns>读取路径</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Api.IFileService.AfterDownloadFile(Phenix.Core.Data.Model.DynamicEntity,System.String)">
+        <member name="M:Phenix.Core.Net.Api.IFileService.AfterDownloadFile(System.String,System.String)">
             <summary>
             当完成下载文件时触发
             </summary>
-            <param name="data">客户端动态实体</param>
-            <param name="path">文件存储路径</param>
+            <param name="message">上传消息</param>
+            <param name="sourcePath">读取路径</param>
         </member>
         <member name="T:Phenix.Core.Net.Api.IGateService">
             <summary>
@@ -7688,7 +7309,7 @@
             缺省为构造过的第一个HttpClient对象
             </summary>
         </member>
-        <member name="P:Phenix.Core.Net.Http.HttpClient.UploadingCount">
+        <member name="P:Phenix.Core.Net.Http.HttpClient.UploadingCacheCount">
             <summary>
             上传中报文数量
             </summary>
@@ -7699,21 +7320,21 @@
             </summary>
             <param name="disposing">如果为 true, 则释放托管资源和非托管资源; 如果为 false, 则仅释放非托管资源</param>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Upload(System.Int64,System.String,System.String,System.Action{System.Int64,System.Nullable{System.Boolean},System.Exception})">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadCache(System.Int64,System.String,System.String,System.Action{System.Int64,System.Nullable{System.Boolean},System.Exception})">
             <summary>
             上传报文
             </summary>
             <param name="id">ID</param>
-            <param name="path">资源路径(含查询条件)("/api/log/event-log")</param>
+            <param name="path">资源路径(含查询条件)(比如"/api/log/event-log")</param>
             <param name="data">上传数据</param>
             <param name="complete">结束(ID,成功与否(null代表已过期))</param>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Upload(System.Int64,System.String,System.String,System.Int32,System.Action{System.Int64,System.Nullable{System.Boolean},System.Exception})">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadCache(System.Int64,System.String,System.String,System.Int32,System.Action{System.Int64,System.Nullable{System.Boolean},System.Exception})">
             <summary>
             上传报文
             </summary>
             <param name="id">ID</param>
-            <param name="path">资源路径(含查询条件)("/api/log/event-log")</param>
+            <param name="path">资源路径(含查询条件)(比如"/api/log/event-log")</param>
             <param name="data">上传数据</param>
             <param name="validityMinutes">有效周期(分钟)</param>
             <param name="complete">结束(ID,成功与否(null代表已过期))</param>
@@ -7768,7 +7389,113 @@
             </summary>
             <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,Phenix.Core.Net.Http.QueryValue[])">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadFileAsync(System.String,System.String,System.Func{Phenix.Core.IO.FileChunkInfo,System.Boolean})">
+            <summary>
+            上传文件
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="sourcePath">读取路径(文件名被上传)</param>
+            <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止上传</param>
+            <returns>完成上传时返回消息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadFile(System.String,System.String,System.Func{Phenix.Core.IO.FileChunkInfo,System.Boolean})">
+            <summary>
+            上传文件
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="sourcePath">读取路径(文件名被上传)</param>
+            <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止上传</param>
+            <returns>完成上传时返回消息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadFileAsync(System.String,System.String,System.IO.Stream,System.Func{Phenix.Core.IO.FileChunkInfo,System.Boolean})">
+            <summary>
+            上传文件
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="fileName">上传文件名</param>
+            <param name="sourceStream">读取文件流</param>
+            <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止上传</param>
+            <returns>完成上传时返回消息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadFile(System.String,System.String,System.IO.Stream,System.Func{Phenix.Core.IO.FileChunkInfo,System.Boolean})">
+            <summary>
+            上传文件
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="fileName">上传文件名</param>
+            <param name="sourceStream">读取文件流</param>
+            <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止上传</param>
+            <returns>完成上传时返回消息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadFileChunkAsync(System.String,Phenix.Core.IO.FileChunkInfo)">
+            <summary>
+            上传文件
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="chunkInfo">上传文件块信息</param>
+            <returns>完成上传时返回消息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadFileChunk(System.String,Phenix.Core.IO.FileChunkInfo)">
+            <summary>
+            上传文件
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="chunkInfo">上传文件块信息</param>
+            <returns>完成上传时返回消息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.DownloadFileAsync(System.String,System.String,System.Func{Phenix.Core.IO.FileChunkInfo,System.Boolean})">
+            <summary>
+            下载文件
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="targetPath">写入路径(文件名被上传)</param>
+            <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止下载</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.DownloadFile(System.String,System.String,System.Func{Phenix.Core.IO.FileChunkInfo,System.Boolean})">
+            <summary>
+            下载文件
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="targetPath">写入路径(文件名被上传)</param>
+            <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止下载</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.DownloadFileAsync(System.String,System.String,System.IO.Stream,System.Func{Phenix.Core.IO.FileChunkInfo,System.Boolean})">
+            <summary>
+            下载文件
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="fileName">下载文件名</param>
+            <param name="targetStream">写入文件流</param>
+            <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止下载</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.DownloadFile(System.String,System.String,System.IO.Stream,System.Func{Phenix.Core.IO.FileChunkInfo,System.Boolean})">
+            <summary>
+            下载文件
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="fileName">下载文件名</param>
+            <param name="targetStream">写入文件流</param>
+            <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止下载</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.DownloadFileChunkAsync(System.String,System.String,System.Int32)">
+            <summary>
+            下载文件
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="fileName">下载文件名</param>
+            <param name="chunkNumber">下载文件块号</param>
+            <returns>下载的文件块信息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.DownloadFileChunk(System.String,System.String,System.Int32)">
+            <summary>
+            下载文件
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="fileName">下载文件名</param>
+            <param name="chunkNumber">下载文件块号</param>
+            <returns>下载的文件块信息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,Phenix.Core.Data.Model.NameValue[])">
             <summary>
             呼叫
             </summary>
@@ -7777,7 +7504,7 @@
             <param name="queryValues">查询条件值</param>
             <returns>返回对象</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,System.Boolean,Phenix.Core.Net.Http.QueryValue[])">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,System.Boolean,Phenix.Core.Data.Model.NameValue[])">
             <summary>
             呼叫
             </summary>
@@ -7787,7 +7514,7 @@
             <param name="queryValues">查询条件值</param>
             <returns>返回对象</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Net.Http.QueryValue[])">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Data.Model.NameValue[])">
             <summary>
             呼叫
             </summary>
@@ -7797,7 +7524,7 @@
             <param name="queryValues">查询条件值</param>
             <returns>返回对象</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,Phenix.Core.Net.Http.QueryValue[])">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,Phenix.Core.Data.Model.NameValue[])">
             <summary>
             呼叫
             </summary>
@@ -7808,7 +7535,59 @@
             <param name="queryValues">查询条件值</param>
             <returns>返回对象</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,System.Boolean,Phenix.Core.Net.Http.QueryValue[])">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,System.Boolean,Phenix.Core.Data.Model.NameValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="data">上传数据</param>
+            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）(如果data是HttpContent则忽略)</param>
+            <param name="decryptResult">是否解密返回数据（服务端的控制器代码请用Encrypt(result)加密）</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,Phenix.Core.Data.Model.NameValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,System.Boolean,Phenix.Core.Data.Model.NameValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="decryptResult">是否解密返回数据（服务端的控制器代码请用Encrypt(result)加密）</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Data.Model.NameValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="data">上传数据</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,Phenix.Core.Data.Model.NameValue[])">
+            <summary>
+            呼叫
+            </summary>
+            <param name="method">请求方法</param>
+            <param name="path">资源路径(比如"/api/security/myself")</param>
+            <param name="data">上传数据</param>
+            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）</param>
+            <param name="queryValues">查询条件值</param>
+            <returns>返回对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,System.Boolean,Phenix.Core.Data.Model.NameValue[])">
             <summary>
             呼叫
             </summary>
@@ -7820,59 +7599,7 @@
             <param name="queryValues">查询条件值</param>
             <returns>返回对象</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,Phenix.Core.Net.Http.QueryValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,System.Boolean,Phenix.Core.Net.Http.QueryValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="decryptResult">是否解密返回数据（服务端的控制器代码请用Encrypt(result)加密）</param>
-            <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Net.Http.QueryValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="data">上传数据</param>
-            <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,Phenix.Core.Net.Http.QueryValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="data">上传数据</param>
-            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）</param>
-            <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,System.Boolean,Phenix.Core.Net.Http.QueryValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="data">上传数据</param>
-            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）</param>
-            <param name="decryptResult">是否解密返回数据（服务端的控制器代码请用Encrypt(result)加密）</param>
-            <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync(System.Net.Http.HttpMethod,System.String,Phenix.Core.Net.Http.QueryValue[])">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync(System.Net.Http.HttpMethod,System.String,Phenix.Core.Data.Model.NameValue[])">
             <summary>
             呼叫
             </summary>
@@ -7880,7 +7607,7 @@
             <param name="path">资源路径(比如"/api/security/myself")</param>
             <param name="queryValues">查询条件值</param>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Net.Http.QueryValue[])">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Data.Model.NameValue[])">
             <summary>
             呼叫
             </summary>
@@ -7889,17 +7616,17 @@
             <param name="data">上传数据</param>
             <param name="queryValues">查询条件值</param>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,Phenix.Core.Net.Http.QueryValue[])">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,Phenix.Core.Data.Model.NameValue[])">
             <summary>
             呼叫
             </summary>
             <param name="method">请求方法</param>
             <param name="path">资源路径(比如"/api/security/myself")</param>
             <param name="data">上传数据</param>
-            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）</param>
+            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）(如果data是HttpContent则忽略)</param>
             <param name="queryValues">查询条件值</param>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Call(System.Net.Http.HttpMethod,System.String,Phenix.Core.Net.Http.QueryValue[])">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Call(System.Net.Http.HttpMethod,System.String,Phenix.Core.Data.Model.NameValue[])">
             <summary>
             呼叫
             </summary>
@@ -7907,7 +7634,7 @@
             <param name="path">资源路径(比如"/api/security/myself")</param>
             <param name="queryValues">查询条件值</param>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Call(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Net.Http.QueryValue[])">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Call(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Data.Model.NameValue[])">
             <summary>
             呼叫
             </summary>
@@ -7916,7 +7643,7 @@
             <param name="data">上传数据</param>
             <param name="queryValues">查询条件值</param>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Call(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,Phenix.Core.Net.Http.QueryValue[])">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.Call(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,Phenix.Core.Data.Model.NameValue[])">
             <summary>
             呼叫
             </summary>
@@ -7966,31 +7693,9 @@
             上传报文
             </summary>
             <param name="baseAddress">上传地址(null代表HttpClient.Default)</param>
-            <param name="path">资源路径(含查询条件)("/api/log/event-log")</param>
+            <param name="path">资源路径(含查询条件)(比如"/api/log/event-log")</param>
             <param name="data">上传数据</param>
             <param name="validityMinutes">有效周期(分钟)</param>
-        </member>
-        <member name="T:Phenix.Core.Net.Http.QueryValue">
-            <summary>
-            查询条件值
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.QueryValue.Input(System.String,System.Object)">
-            <summary>
-            输入查询
-            </summary>
-            <param name="name">名称</param>
-            <param name="value">值</param>
-        </member>
-        <member name="P:Phenix.Core.Net.Http.QueryValue.Name">
-            <summary>
-            名称
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Net.Http.QueryValue.Value">
-            <summary>
-            值
-            </summary>
         </member>
         <member name="T:Phenix.Core.Net.Middleware.AuthenticationMiddleware">
             <summary>
@@ -11545,7 +11250,7 @@
             </summary>
             <param name="request">HttpRequest</param>
             <param name="fileService">文件服务</param>
-            <returns>上传最后一块时返回的数据</returns>
+            <returns>完成上传时返回消息</returns>
         </member>
         <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService,System.Threading.CancellationToken)">
             <summary>
@@ -11554,7 +11259,7 @@
             <param name="request">HttpRequest</param>
             <param name="fileService">文件服务</param>
             <param name="cancellationToken">取消</param>
-            <returns>上传最后一块时返回的数据</returns>
+            <returns>完成上传时返回消息</returns>
         </member>
         <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService)">
             <summary>

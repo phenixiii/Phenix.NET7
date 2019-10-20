@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Phenix.Business;
 using Phenix.Core;
 using Phenix.Core.Data;
-using Phenix.Core.Data.Model;
 using Phenix.Core.Data.Schema;
 using Phenix.Core.Reflection;
 

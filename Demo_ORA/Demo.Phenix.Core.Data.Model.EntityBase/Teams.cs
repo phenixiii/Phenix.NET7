@@ -73,6 +73,7 @@ namespace Demo
                     if (_rootCache == null)
                     {
                         InitializeTable();
+
                         _rootCache = new SynchronizedDictionary<long, Teams>();
                         AddRenovatorTrigger(p => p.Id,
                             (tableName, primaryKeyValue, executeTime, executeAction) =>

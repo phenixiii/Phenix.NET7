@@ -62,10 +62,13 @@ namespace Phenix.Services.Host
                 {
                     /*
                      * 如果想要的格式不支持，那么就会返回 406 NotAcceptable
-                     * 默认返回 application/json，如果不希望支持 application/xml 请注释掉 options.OutputFormatters.Add 代码，当然也可以添加其他的格式
                      */
                     options.ReturnHttpNotAcceptable = true;
-                    options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+
+                    /*
+                     * 正常处理返回的空对象
+                     */
+                    options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
 
                     /*
                      * 注册访问授权过滤器 

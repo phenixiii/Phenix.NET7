@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v3.0": {
-      "Phenix.Core/7.3.9": {
+      "Phenix.Core/7.3.11": {
         "dependencies": {
           "Microsoft.AspNetCore.SignalR.Client": "3.0.0",
           "Microsoft.AspNetCore.SignalR.Protocols.MessagePack": "3.0.0",
@@ -315,7 +315,7 @@
     }
   },
   "libraries": {
-    "Phenix.Core/7.3.9": {
+    "Phenix.Core/7.3.11": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

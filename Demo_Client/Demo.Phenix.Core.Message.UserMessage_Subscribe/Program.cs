@@ -20,7 +20,10 @@ namespace Demo
             Console.WriteLine("在服务端使用，如果注册过数据库连接（见 Database 属性），消息就缓存在了 PH7_UserMessage 表里，否则会尝试向其 HttpClient 属性所指向的 WebAPI/SignalR 服务发起请求，一层层调用直到最后一层服务是直连数据库的可以缓存消息为止。");
             Console.WriteLine("HttpClient 属性，默认为 Phenix.Core.Net.Http.HttpClient.Default（即第一个被构造的 HttpClient），除非直接赋值指定，或者调用函数时传参指定。");
             Console.WriteLine("本 Demo 演示了显式调用带 httpClient 参数的函数的方法，直接向这个 httpClient 参数所指向的 WebAPI/SignalR 服务发起请求。");
+            Console.WriteLine();
+
             Console.WriteLine("在接下来的演示之前，请启动 Phenix.Services.Host_MySQL/ORA 程序。");
+            Console.WriteLine("如需观察 Phenix.Services（扩展服务）被唤起的代码执行效果，可在其 GateService 的函数里设置断点附加到执行中的 Phenix.Services.Host_MySQL/ORA 程序。");
             Console.Write("准备好之后，请按任意键继续");
             Console.ReadKey();
             Console.WriteLine();
