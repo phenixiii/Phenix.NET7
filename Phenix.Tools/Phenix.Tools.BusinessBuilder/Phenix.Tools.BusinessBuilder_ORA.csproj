@@ -3,9 +3,9 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyName>Phenix.Tools.EntityBuilder</AssemblyName>
+    <AssemblyName>Phenix.Tools.BusinessBuilder</AssemblyName>
     <DefineConstants>TRACE;ORA</DefineConstants>
-    <RootNamespace>Phenix.Tools.EntityBuilder</RootNamespace>
+    <RootNamespace>Phenix.Tools.BusinessBuilder</RootNamespace>
     <Version>7.3.11</Version>
     <Authors>ming</Authors>
     <Description>Phenix Framework for .NET Core 3.0</Description>

@@ -1,5 +1,5 @@
 20190522
-1，支持Oracle、MySQL，封装ADO.NET，可操作多个数据库，也为系统的分库分表策略提供持久化层面的便利
+1，发布轻量级的持久化引擎，支持Oracle、MySQL，封装ADO.NET，可操作多个数据库，也为系统的分库分表策略提供持久化层面的便利
 2，提供数据库的数据字典的查看方法，示例见Demo.Phenix.Core.Data.Schema
 3，提供存放日志到本地或数据库的通用方法，示例见Demo.Phenix.Core.Log.EventLog
 4，提供系统唯一的序列号，支持多线程、多进程、分布式应用，示例见Demo.Phenix.Core.Data.Sequence
@@ -13,8 +13,8 @@
 3，提供用户资料类以便用于注册用户的权限管理（申请、审核、担任岗位和所属团体），示例见Demo.Phenix.Core.Security.User，表结构见Phenix Data Model目录Security.sql文件
 
 
-20190711
-1，发布轻量级的持久化引擎，入口为Phenix.Core.Data.Database类，Fetch用法参考如下：
+20190715
+1，完善轻量级的持久化引擎，入口为Phenix.Core.Data.Database类，Fetch用法参考如下：
          IList<Teams> teamsList = Database.Default.MetaData.FindSheet<Teams>().SelectEntity<Teams>(p => p.Id == 559064445621642);
 2，提供Phenix.Core.Data.Model.EntityBase<T>实体基类，封装持久化引擎、动态刷新等基础设施功能，Fetch代码可简化为：
          IList<Teams> teamsList = Team.Select(p => p.Id == 559064445621642);
@@ -23,23 +23,19 @@
       以下默认规范会自动添加，不必手工打标签：
           System.ComponentModel.DataAnnotations.RequiredAttribute，如果属性值不允许为空的规范是按照表字段NOT NULL的话；
           System.ComponentModel.DataAnnotations.StringLengthAttribute，如果字符串属性值长度要求是按照表字段长度规范的话；
-     一旦手工打上标签，可覆盖默认规范           
+     一旦手工打上标签，可覆盖它们
 4，持久化引擎支持在实体上实现System.ComponentModel.DataAnnotations.IValidatableObject接口，也可以实现Phenix.Core.Data.Validity.IValidation接口，提交对象时自动完成对象的有效性验证（验证失败抛出ValidationException）
-
-
-20190715
-1，新增Phenix.Extensions目录，存放扩展模块的工程源码
-2，在Phenix.Extensions目录里，提供实体类代码生成工具Phenix.EntityBuilder工程源码，分为for Oracle和for MySQL两套工程文件，如需编译Phenix.EntityBuilder_ORA应暂时卸载Phenix.EntityBuilder_MySQL
+5，提供实体类代码生成工具Phenix.Tools.EntityBuilder工程源码，分为for Oracle和for MySQL两套工程文件
 
 
 20190804
-1，在Phenix.Extensions目录里，提供WebAPI框架服务端源码，工程见Phenix.WebApplication目录，分为for Oracle和for MySQL两套工程文件，编译时请暂时卸载另一套工程
-2，在Phenix.Extensions目录里，提供WebAPI框架客户端（JS）源码，见Phenix.WebApplication.Client.Ajax目录，对应有测试网页见Phenix.WebApplication.Client.Test目录
+1，提供Phenix.Services.Host工程，为WebAPI框架服务端源码，分为for Oracle和for MySQL两套工程文件
+2，提供phenix7.js，为WebAPI框架客户端源码，见Phenix.Services.Host\wwwroot\lib目录，测试代码见Phenix.Services.Host\wwwroot\test
 
 
 20190807
-1，Phenix.WebApplication可部署在KestrelServer+Docker环境中
-2，提供'Phenix.WebApplication.部署方法.doc'文档供参考，见'\Phenix.Extensions\Phenix.WebApplication'目录
+1，Phenix.Services.Host可部署在KestrelServer+Docker环境中
+2，提供'Phenix.Services.Host.部署方法.doc'文档供参考
 
 
 20190809
@@ -49,7 +45,7 @@
 
 20190813
 1，Phenix.Core.Data.Database和Phenix.Core.Data.Common.DbCommandHelper的调用存储过程函数ExecuteStoredProc，返回值改为IDictionary<string, object>类型，为存储过程的调用结果集"参数名-参数值"，如需转换为JSON格式请调用Phenix.Core.Reflection.Utilities.JsonSerialize(result)
-2，提供动态实体类Phenix.Core.Data.Model.DynamicEntity，以便操作IDictionary<string, object>格式的"属性名-属性值"记录数据，如需传入JSON格式请先调用Phenix.Core.Reflection.Utilities.JsonDeserialize<IDictionary<string, object>>(propertyValues)、Phenix.Core.Reflection.Utilities.JsonDeserialize<IList<IDictionary<string, object>>>(propertyValues)进行转换，示例见Demo.Phenix.Core.Data.Model.DynamicEntity
+2，提供动态实体类Phenix.Business.DynamicEntity，以便操作IDictionary<string, object>格式的"属性名-属性值"记录数据，如需传入JSON格式请先调用Phenix.Core.Reflection.Utilities.JsonDeserialize<IDictionary<string, object>>(propertyValues)、Phenix.Core.Reflection.Utilities.JsonDeserialize<IList<IDictionary<string, object>>>(propertyValues)进行转换，示例见Demo.Phenix.Business.DynamicEntity
 3，增补Phenix.Core.Data.Schema.Table和Phenix.Core.Data.Schema.View的增删改函数，以便操作IDictionary<string, object>格式的"属性名-属性值"记录数据，如需传入JSON格式数据请先调用Phenix.Core.Reflection.Utilities.JsonDeserialize<IDictionary<string, object>>(propertyValues)进行转换
 4，增补Phenix.Core.Data.Schema.Table、Phenix.Core.Data.Schema.View、Phenix.Core.Data.Model.EntityBase<T>的查询函数，可返回JSON格式的查询结果
 
@@ -62,21 +58,17 @@
 20190823
 1，Phenix Data Model目录添加Log.sql文件
 2，提供Phenix.Core.Net.Http.HttpClient类，含Checkin、Logon、ChangePassword、Call等系列函数
-3，增补Phenix.Core.Data.Sequence功能从服务端获取64位序号，仅当所在进程里未曾注册过任何数据库连接时，才会尝试向其属性HttpClient所指向的服务发起请求，服务端应该实现SequenceController控制器，见Phenix.WebApplication_ORA/MySQL工程
-4，增补Phenix.Core.Data.Increment功能从服务端获取64位增量，仅当所在进程里未曾注册过任何数据库连接时，才会尝试向其属性HttpClient所指向的服务发起请求，服务端应该实现IncrementController控制器，见Phenix.WebApplication_ORA/MySQL工程
+3，增补Phenix.Core.Data.Sequence功能从服务端获取64位序号，仅当所在进程里未曾注册过任何数据库连接时，才会尝试向其属性HttpClient所指向的服务发起请求
+4，增补Phenix.Core.Data.Increment功能从服务端获取64位增量，仅当所在进程里未曾注册过任何数据库连接时，才会尝试向其属性HttpClient所指向的服务发起请求
 5，提供Phenix.Core.Net.Http.OfflineCache类，为系统的客户端提供脱机缓存实时上传报文的功能，示例见Demo.Phenix.Core.Net.Http.OfflineCache
-6，增补Phenix.Core.Log.EventLog功能将日志上传到服务端，仅当所在进程里未曾注册过任何数据库连接时，才会利用OfflineCache尝试向其属性UploadBaseAddress所指向的服务提交日志，服务端应该实现EventLogController控制器，见Phenix.WebApplication_ORA/MySQL工程
-
-
-20190829
-1，提供'Phenix.WebApplication.用EventLogController归集系统日志.pptx'文档供参考，见'\Phenix.Extensions\Phenix.WebApplication'目录
-2，提供Phenix.Core.Data.Model.UndoableBase<T>可撤销编辑的实体基类，为实体对象的编辑操作提供单级回滚的功能，示例见Demo.Phenix.Core.Data.Model.UndoableBase
+6，增补Phenix.Core.Log.EventLog功能将日志上传到服务端，仅当所在进程里未曾注册过任何数据库连接时，才会利用OfflineCache尝试向其属性UploadBaseAddress所指向的服务提交日志
 
 
 20190905
-1，约定时间戳字段以'_TIMESTAMP'后缀命名
-2，增补Phenix.Core.Data.Model.EntityBase<T>功能具备乐观锁机制，Update()和UpdateRecord()函数提供checkTimestamp参数(默认true)，保证在分布式架构下新数据不会被脏数据覆盖（会抛出Phenix.Core.Data.Validity.OutdatedDataException）
-3，增补Phenix.Core.Data.Model.UndoableBase<T>功能具备乐观锁机制，Save()函数提供checkTimestamp参数(默认true)，保证在分布式架构下新数据不会被脏数据覆盖（会抛出Phenix.Core.Data.Validity.OutdatedDataException）
+1，提供Phenix.Business.UndoableBase<T>可撤销编辑的实体基类，为实体对象的编辑操作提供单级回滚的功能，示例见Demo.Phenix.Business.UndoableBase
+2，约定时间戳字段以'_TIMESTAMP'后缀命名
+3，增补Phenix.Core.Data.Model.EntityBase<T>功能具备乐观锁机制，Update()和UpdateRecord()函数提供checkTimestamp参数(默认true)，保证在分布式架构下新数据不会被脏数据覆盖（会抛出Phenix.Core.Data.Validity.OutdatedDataException）
+4，增补Phenix.Business.UndoableBase<T>功能具备乐观锁机制，Save()函数提供checkTimestamp参数(默认true)，保证在分布式架构下新数据不会被脏数据覆盖（会抛出Phenix.Core.Data.Validity.OutdatedDataException）
 
 
 20190911
@@ -86,22 +78,18 @@
 
 
 20190919
-1，提供Phenix.Core.Data.Model.BusinessBase<T>可操作聚合树的业务基类，为聚合根对象的整颗聚合树提供编辑操作和持久化的功能
+1，提供Phenix.Business.BusinessBase<T>可操作聚合树的业务基类，为聚合根对象的整颗聚合树提供编辑操作和持久化的功能
 2，一旦为聚合树中某个节点的业务对象打上删除标记（IsSelfDeleted=true），调用SaveDepth()函数持久化时，只要数据库中存在物理外键，将会对它及其下的所有从业务对象（包括未加载到内存）的记录做级联删除
 
 
 20190920
-1，Phenix.WebApplication工程更名为Phenix.Services.Host，仅作为WebAPI服务的容器，实现了系统运行的配置功能
-2，规定将WebAPI服务的Controller代码编写在各自的工程里，程序集的命名以"*.Plugin.dll"作为后缀，默认会被Phenix.Services.Host自动加载并装配到ApplicationParts中
-3，发布Phenix.Services.Host时，可自动将Docker相关的文件写入到Publish目录中，方便部署到Docker
+1，规定将WebAPI服务的Controller代码编写在各自的工程里，程序集的命名以"*.Plugin.dll"作为后缀，默认会被Phenix.Services.Host自动加载并装配到ApplicationParts中
+2，发布Phenix.Services.Host时，可自动将Docker相关的文件写入到Publish目录中，方便部署到Docker
 
 
 20190927
-1，Phenix.EntityBuilder工程更名为Phenix.Tools.EntityBuilder，存放在Phenix.NET7\Phenix.Extensions\Phenix.Tools目录
-2，phenix7.js存放在Phenix.NET7\Phenix.Extensions\Phenix.Services.Host\wwwroot\lib目录
-3，phenix7.js的测试网页存放在Phenix.NET7\Phenix.Extensions\Phenix.Services.Host\wwwroot\test目录
-4，提供用户消息PULL和PUSH两套方法，具体见测试网页user-message.html
-5，提供服务接口IGateService以扩展系统自身的个性化的登录功能，示例代码见Phenix.Services工程里的GateService类，注入方法见Phenix.Services.Host工程Startup类里的AddGateService()代码行
+1，提供用户消息PULL和PUSH两套方法，具体见测试网页user-message.html
+2，提供服务接口IGateService以扩展系统自身的个性化的登录功能，示例代码见Phenix.Services工程里的GateService类，注入方法见Phenix.Services.Host工程Startup类里的AddGateService()代码行
 
 
 20191011
@@ -110,7 +98,7 @@
 
 
 20191013
-1，增补《Phenix.Services.Host.部署方法》内容
+1，增补'Phenix.Services.Host.部署方法.doc'内容
 2，调通Phenix.Services.Host部署在Docker的方法
 
 
@@ -128,7 +116,13 @@
 20191020
 1，增补Phenix.Core.Net.Http.HttpClient的文件上传下载功能，与phenix7.js的uploadFiles()、downloadFile()函数功能一致，示例见Demo.Phenix.Core.Net.Http.HttpClient_UploadFile_DownloadFile
 2，Phenix.NET7解决方案，拆分为Phenix.NET7_ORA.sln和Phenix.NET7_MySQL.sln
-3，清理Phenix.Extensions目录，其内部目录内容都迁移到根目录里
+3，撤销Phenix.Extensions目录，其子目录都迁移到根目录里
 4，从Phenix.Core工程里提取出Business相关基类，独立为Phenix.Business工程
+
+
+20191021
+1，提供业务类代码生成工具Phenix.Tools.BusinessBuilder工程源码，分为for Oracle和for MySQL两套工程文件
+2，整理本升级日志
+
 
 

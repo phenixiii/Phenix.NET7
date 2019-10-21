@@ -6,13 +6,13 @@ using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Schema;
 
-namespace Phenix.Tools.EntityBuilder
+namespace Phenix.Tools.BusinessBuilder
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("**** 实体类代码生成工具 ****");
+            Console.WriteLine("**** 业务类代码生成工具 ****");
             Console.WriteLine();
 
             string dataSource;
@@ -29,7 +29,7 @@ namespace Phenix.Tools.EntityBuilder
             else
                 while (true)
                 {
-                    Console.WriteLine("请按照提示，输入需映射到实体对象的数据库的连接串...");
+                    Console.WriteLine("请按照提示，输入需映射到业务对象的数据库的连接串...");
                     Console.Write("dataSource（数据源，示例'192.168.248.52'）：");
                     dataSource = Console.ReadLine();
                     Console.Write("databaseName（数据库名称，示例'TEST'）：");
@@ -49,14 +49,14 @@ namespace Phenix.Tools.EntityBuilder
             Console.WriteLine("如需Class名称取自被整理过后的视图名(如果第4位是“_”则剔去其及之前的字符, 如果倒数第2位是“_”则剔去其及之后的字符)，请设置Phenix.Core.Data.Schema.View.ClassNameByTrimViewName属性，默认是{0}；", Phenix.Core.Data.Schema.View.ClassNameByTrimViewName);
             Console.WriteLine();
             string baseDirectory = Path.Combine(AppRun.BaseDirectory, DateTime.Now.ToString("yyyyMMddHHmm"));
-            Console.WriteLine("生成的实体类文件将存放在目录：{0}", baseDirectory);
+            Console.WriteLine("生成的业务类文件将存放在目录：{0}", baseDirectory);
             Console.WriteLine("你可以根据开发需要，摘取文件到自己的项目工程目录中。");
             Console.WriteLine();
 
             try
             {
                 Database database = Database.RegisterDefault(dataSource, databaseName, userId, password);
-                Console.Write("是否遍历{0}数据库的表，生成实体类代码(Y/N)：", database.DatabaseName);
+                Console.Write("是否遍历{0}数据库的表，生成业务类代码(Y/N)：", database.DatabaseName);
                 if (String.Compare(Console.ReadKey().KeyChar.ToString(), "Y", StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     Console.WriteLine();
@@ -66,7 +66,7 @@ namespace Phenix.Tools.EntityBuilder
                     Console.WriteLine();
                 }
 
-                Console.Write("是否遍历{0}数据库的视图，生成实体类代码(Y/N)：", database.DatabaseName);
+                Console.Write("是否遍历{0}数据库的视图，生成业务类代码(Y/N)：", database.DatabaseName);
                 if (String.Compare(Console.ReadKey().KeyChar.ToString(), "Y", StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     Console.WriteLine();
@@ -106,6 +106,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Phenix.Business;
 using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
@@ -129,7 +130,7 @@ namespace {3}
     /// </summary>
     [System.Serializable]
     [System.ComponentModel.DataAnnotations.Display(Description = ""{4}"")]
-    public class {5} : EntityBase<{5}>
+    public class {5} : BusinessBase<{5}>
     {{
         private {5}()
         {{
@@ -137,11 +138,14 @@ namespace {3}
         }}
 
         [Newtonsoft.Json.JsonConstructor]
-        public {5}(",
+        public {5}(bool? isNew, bool? isSelfDeleted, bool? isSelfDirty, IDictionary<string, object> oldPropertyValues, IDictionary<string, bool?> dirtyPropertyNames,
+            ",
                 Environment.UserName, DateTime.Now, sheet.Name, sheet.Owner.Database.DatabaseName, sheet.Description, sheet.ClassName));
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
                 codeBuilder.Append(String.Format("{0} {1}, ", kvp.Value.FieldTypeName, kvp.Value.ParameterName));
             codeBuilder[codeBuilder.Length - 2] = ')';
+            codeBuilder.Append(@"
+        : base(isNew, isSelfDeleted, isSelfDirty, oldPropertyValues, dirtyPropertyNames)");
 
             codeBuilder.Append(@"
         {");

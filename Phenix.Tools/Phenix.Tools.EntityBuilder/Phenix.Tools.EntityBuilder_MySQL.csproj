@@ -6,18 +6,18 @@
     <AssemblyName>Phenix.Tools.EntityBuilder</AssemblyName>
     <DefineConstants>TRACE;MySQL</DefineConstants>
     <RootNamespace>Phenix.Tools.EntityBuilder</RootNamespace>
-    <Version>7.3.7</Version>
+    <Version>7.3.11</Version>
     <Authors>ming</Authors>
     <Description>Phenix Framework for .NET Core 3.0</Description>
     <Copyright>Copyright © 2007, 2019 Phenixヾ Studio</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\..\Bin_MySQL\</OutputPath>
+    <OutputPath>..\..\Bin_MySQL\</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\..\Bin_MySQL\</OutputPath>
+    <OutputPath>..\..\Bin_MySQL\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <Reference Include="Phenix.Core">
-      <HintPath>..\..\..\Bin_MySQL\netcoreapp3.0\Phenix.Core.dll</HintPath>
+      <HintPath>..\..\Bin_MySQL\netcoreapp3.0\Phenix.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

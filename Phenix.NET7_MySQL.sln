@@ -25,10 +25,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Security.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Security.User", "Demo_MySQL\Demo.Phenix.Core.Security.User\Demo.Phenix.Core.Security.User.csproj", "{B3F1EE33-F212-4C11-A01B-457D35EFD956}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Data.Model.DynamicEntity", "Demo_MySQL\Demo.Phenix.Core.Data.Model.DynamicEntity\Demo.Phenix.Core.Data.Model.DynamicEntity.csproj", "{9FCFD0CC-FFCF-4228-8E59-FFB5640A29B0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Data.Model.UndoableBase", "Demo_MySQL\Demo.Phenix.Core.Data.Model.UndoableBase\Demo.Phenix.Core.Data.Model.UndoableBase.csproj", "{2214965C-3E71-4C1E-AA36-055EC4F6C632}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{21ACEA56-E832-4AF1-A566-A4EBC61D932E}"
 	ProjectSection(SolutionItems) = preProject
 		ChangeLog.txt = ChangeLog.txt
@@ -54,6 +50,16 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.DataExchange.Plugin_MySQL", "Phenix.Services.Plugin\Phenix.Services.DataExchange.Plugin\Phenix.Services.DataExchange.Plugin_MySQL.csproj", "{BACE4C07-D5E2-4741-868A-74CCDF87AF3B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Business_MySQL", "Phenix.Business\Phenix.Business_MySQL.csproj", "{5984092A-CE52-4BD2-91B2-D5557B961CC5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phenix.Tools", "Phenix.Tools", "{A61F8348-6F28-43F6-AF4A-1D72A4D4DEFC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Tools.EntityBuilder_MySQL", "Phenix.Tools\Phenix.Tools.EntityBuilder\Phenix.Tools.EntityBuilder_MySQL.csproj", "{60DD37CF-ABDB-4AFE-9912-4EDE58047D77}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Tools.BusinessBuilder_MySQL", "Phenix.Tools\Phenix.Tools.BusinessBuilder\Phenix.Tools.BusinessBuilder_MySQL.csproj", "{93EBB665-E92D-4003-A7FD-AA3B1BA47FC4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Business.UndoableBase", "Demo_MySQL\Demo.Phenix.Business.UndoableBase\Demo.Phenix.Business.UndoableBase.csproj", "{75990BDD-7D4E-4D5E-9A41-9164592C69F2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Business.DynamicEntity", "Demo_MySQL\Demo.Phenix.Business.DynamicEntity\Demo.Phenix.Business.DynamicEntity.csproj", "{99C538B0-4347-464C-9C8A-849CAB824338}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,14 +107,6 @@ Global
 		{B3F1EE33-F212-4C11-A01B-457D35EFD956}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3F1EE33-F212-4C11-A01B-457D35EFD956}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3F1EE33-F212-4C11-A01B-457D35EFD956}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9FCFD0CC-FFCF-4228-8E59-FFB5640A29B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9FCFD0CC-FFCF-4228-8E59-FFB5640A29B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9FCFD0CC-FFCF-4228-8E59-FFB5640A29B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9FCFD0CC-FFCF-4228-8E59-FFB5640A29B0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2214965C-3E71-4C1E-AA36-055EC4F6C632}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2214965C-3E71-4C1E-AA36-055EC4F6C632}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2214965C-3E71-4C1E-AA36-055EC4F6C632}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2214965C-3E71-4C1E-AA36-055EC4F6C632}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A30F88A6-401C-4510-99B2-FBD744BA6414}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A30F88A6-401C-4510-99B2-FBD744BA6414}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A30F88A6-401C-4510-99B2-FBD744BA6414}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -137,6 +135,22 @@ Global
 		{5984092A-CE52-4BD2-91B2-D5557B961CC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5984092A-CE52-4BD2-91B2-D5557B961CC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5984092A-CE52-4BD2-91B2-D5557B961CC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60DD37CF-ABDB-4AFE-9912-4EDE58047D77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60DD37CF-ABDB-4AFE-9912-4EDE58047D77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60DD37CF-ABDB-4AFE-9912-4EDE58047D77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60DD37CF-ABDB-4AFE-9912-4EDE58047D77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93EBB665-E92D-4003-A7FD-AA3B1BA47FC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93EBB665-E92D-4003-A7FD-AA3B1BA47FC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93EBB665-E92D-4003-A7FD-AA3B1BA47FC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93EBB665-E92D-4003-A7FD-AA3B1BA47FC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75990BDD-7D4E-4D5E-9A41-9164592C69F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75990BDD-7D4E-4D5E-9A41-9164592C69F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75990BDD-7D4E-4D5E-9A41-9164592C69F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75990BDD-7D4E-4D5E-9A41-9164592C69F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99C538B0-4347-464C-9C8A-849CAB824338}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99C538B0-4347-464C-9C8A-849CAB824338}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99C538B0-4347-464C-9C8A-849CAB824338}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99C538B0-4347-464C-9C8A-849CAB824338}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -151,12 +165,14 @@ Global
 		{72E41202-791D-46CA-B0CC-770A721D8C8E} = {B7AA29AA-B690-4002-8703-AC8C7DD37E2C}
 		{0865E3AA-93B7-4448-BD4D-F5D69CEF7D15} = {B7AA29AA-B690-4002-8703-AC8C7DD37E2C}
 		{B3F1EE33-F212-4C11-A01B-457D35EFD956} = {B7AA29AA-B690-4002-8703-AC8C7DD37E2C}
-		{9FCFD0CC-FFCF-4228-8E59-FFB5640A29B0} = {B7AA29AA-B690-4002-8703-AC8C7DD37E2C}
-		{2214965C-3E71-4C1E-AA36-055EC4F6C632} = {B7AA29AA-B690-4002-8703-AC8C7DD37E2C}
 		{A30F88A6-401C-4510-99B2-FBD744BA6414} = {4CBF1077-F885-4AEB-8014-ABC3D79F320E}
 		{A2AC18D8-30CC-41CF-8A3C-09527CD6006F} = {4CBF1077-F885-4AEB-8014-ABC3D79F320E}
 		{71537961-5C1F-4F80-881F-0BF5FAD47D37} = {4CBF1077-F885-4AEB-8014-ABC3D79F320E}
 		{BACE4C07-D5E2-4741-868A-74CCDF87AF3B} = {E6A82E99-1BE1-4B71-8DB4-BDDC7F6F77CB}
+		{60DD37CF-ABDB-4AFE-9912-4EDE58047D77} = {A61F8348-6F28-43F6-AF4A-1D72A4D4DEFC}
+		{93EBB665-E92D-4003-A7FD-AA3B1BA47FC4} = {A61F8348-6F28-43F6-AF4A-1D72A4D4DEFC}
+		{75990BDD-7D4E-4D5E-9A41-9164592C69F2} = {B7AA29AA-B690-4002-8703-AC8C7DD37E2C}
+		{99C538B0-4347-464C-9C8A-849CAB824338} = {B7AA29AA-B690-4002-8703-AC8C7DD37E2C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9C8CF59-EE51-4301-9EAC-22750A624DD2}
