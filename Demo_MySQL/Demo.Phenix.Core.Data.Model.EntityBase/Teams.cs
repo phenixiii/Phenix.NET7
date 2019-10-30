@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
+using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
 using Phenix.Core.Data.Expressions;
@@ -47,7 +48,7 @@ namespace Demo
                 _parentId = parentId;
         }
 
-        private Teams(long id, string name, long rootId, long parentId, IList<Teams> allSubTeam, DateTime? invalidTime)
+        private Teams(long id, string name, long rootId, long parentId, IList<Teams> allSubTeam, DateTime invalidTime)
             : this(id, name, rootId, parentId, allSubTeam)
         {
             _invalidTime = invalidTime;
@@ -75,6 +76,7 @@ namespace Demo
                         InitializeTable();
 
                         _rootCache = new SynchronizedDictionary<long, Teams>();
+                        AppRun.AddTimedTask(_rootCache, 0, 0);
                         AddRenovatorTrigger(p => p.Id,
                             (tableName, primaryKeyValue, executeTime, executeAction) =>
                             {
@@ -137,9 +139,9 @@ namespace Demo
                             allSubTeams.Add(item);
                     if (result == null)
                         throw new ArgumentException(String.Format("未检索到ID为 {0} 的顶层团体资料", rootId), nameof(rootId));
-                    return new Teams(result.Id, result.Name, result.RootId, result.ParentId, allSubTeams, resetHoursLater == 0 ? (DateTime?) null : DateTime.Now.AddHours(resetHoursLater));
+                    return new Teams(result.Id, result.Name, result.RootId, result.ParentId, allSubTeams, resetHoursLater == 0 ? DateTime.MaxValue : DateTime.Now.AddHours(resetHoursLater));
                 },
-                value => value == null || resetHoursLater < 0 || resetHoursLater > 0 && (!value._invalidTime.HasValue || value._invalidTime < DateTime.Now));
+                value => value == null || resetHoursLater < 0 || resetHoursLater > 0 && value._invalidTime < DateTime.Now);
         }
 
         /// <summary>
@@ -305,13 +307,13 @@ namespace Demo
         }
 
         [NonSerialized]
-        private readonly DateTime? _invalidTime;
+        private readonly DateTime _invalidTime;
 
         /// <summary>
         /// 失效时间
         /// </summary>
         [Newtonsoft.Json.JsonIgnore]
-        public DateTime? InvalidTime
+        public DateTime InvalidTime
         {
             get { return _invalidTime; }
         }

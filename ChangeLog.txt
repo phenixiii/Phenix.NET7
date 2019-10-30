@@ -125,4 +125,9 @@
 2，整理本升级日志
 
 
+20191030
+1，增补Phenix.Core.AppRun的定时执行任务功能，通过AddTimedTask()函数添加已实现Phenix.Core.ITimedTask接口的对象，会自动按照指定周期在一个独立线程里执行这个对象的Phenix.Core.ITimedTask.Execute()函数
+2，Phenix.Core.SyncCollections命名空间的集合类，都已实现Phenix.Core.ITimedTask接口，只要通过AddTimedTask()函数加入到Phenix.Core.AppRun的定时执行任务队列里，会自动按照指定周期清理集合对象里过期的集合项，条件是集合项对象需实现Phenix.Core.SyncCollections.IMemCachedObject接口，指定它的失效时间以自动被从集合中剔除出去
+3，重构实体对象和业务对象的缓存机制，具体用法参考Demo.Phenix.Core.Data.Model.EntityBase示例的Position和User类，可对照Teams类的原始写法
+4，重构Phenix.Core.Net.Http.OfflineCache类（脱机缓存实时上传报文），加强稳定性
 

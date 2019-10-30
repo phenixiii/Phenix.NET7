@@ -17,7 +17,7 @@ namespace Demo
     /// 用户资料
     /// </summary>
     [Serializable]
-    public sealed class User : EntityBase<User>
+    public sealed class User : EntityBase<User>, IMemCachedEntity
     {
         private User()
         {
@@ -53,7 +53,7 @@ namespace Demo
             string requestAddress, int requestFailureCount, DateTime? requestFailureTime,
             long? rootTeamsId, long? teamsId, long? positionId,
             bool locked, DateTime? lockedTime, bool disabled, DateTime? disabledTime,
-            DateTime? invalidTime)
+            DateTime invalidTime)
             : this(id, name, phone, eMail, regAlias, regTime, requestAddress, requestFailureCount, requestFailureTime, rootTeamsId, teamsId, positionId, locked, lockedTime, disabled, disabledTime)
         {
             _password = password;
@@ -63,27 +63,6 @@ namespace Demo
         }
 
         #region 工厂
-
-        private static readonly object _lock = new object();
-        private static SynchronizedDictionary<long, User> _cache;
-
-        private static void Initialize()
-        {
-            if (_cache == null)
-            {
-                lock (_lock)
-                    if (_cache == null)
-                    {
-                        InitializeTable();
-
-                        _cache = new SynchronizedDictionary<long, User>();
-                        AddRenovatorTrigger(p => p.Id,
-                            (tableName, primaryKeyValue, executeTime, executeAction) => { _cache.Remove(primaryKeyValue); });
-                    }
-
-                Thread.MemoryBarrier();
-            }
-        }
 
         /// <summary>
         /// 新增用户资料
@@ -98,7 +77,7 @@ namespace Demo
         /// <returns>用户资料</returns>
         public static User New(string name, string phone, string eMail, string regAlias, string requestAddress, out string initialPassword, out string dynamicPassword)
         {
-            Initialize();
+            InitializeTable();
 
             initialPassword = Guid.NewGuid().ToString().Substring(0, 10);
             dynamicPassword = new Random().Next(100000, 1000000).ToString();
@@ -106,9 +85,8 @@ namespace Demo
                 MD5CryptoTextProvider.ComputeHash(initialPassword), MD5CryptoTextProvider.ComputeHash(dynamicPassword), DateTime.Now,
                 requestAddress, 0, null,
                 null, null, null,
-                false, null, false, null, null);
-            result.InsertSelf();
-            _cache.Add(result.Id, result);
+                false, null, false, null, DateTime.MinValue);
+            Insert(result);
             return result;
         }
 
@@ -120,17 +98,9 @@ namespace Demo
         /// <returns>用户资料</returns>
         public static User Fetch(long id, int resetHoursLater = 8)
         {
-            Initialize();
+            InitializeTable();
 
-            return _cache.GetValue(id,
-                () =>
-                {
-                    User result = Select(p => p.Id == id).SingleOrDefault();
-                    if (result != null)
-                        result._invalidTime = resetHoursLater == 0 ? (DateTime?) null : DateTime.Now.AddHours(resetHoursLater);
-                    return result;
-                },
-                value => value == null || resetHoursLater < 0 || resetHoursLater > 0 && (!value._invalidTime.HasValue || value._invalidTime < DateTime.Now));
+            return FetchMemCache<User>(id, 8);
         }
 
         /// <summary>
@@ -140,18 +110,9 @@ namespace Demo
         /// <returns>用户资料</returns>
         public static User Fetch(string name)
         {
-            Initialize();
+            InitializeTable();
 
             return Select(p => p.Name == name).SingleOrDefault();
-        }
-
-        /// <summary>
-        /// 重置用户资料所有缓存
-        /// 默认8小时自动重置一次
-        /// </summary>
-        public static void ResetAll()
-        {
-            _cache.Clear();
         }
 
         #endregion
@@ -186,14 +147,7 @@ namespace Demo
         public string Phone
         {
             get { return _phone; }
-            set
-            {
-                if (UpdateSelf(SetProperty(p => p.Phone, value)) == 1)
-                {
-                    Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
-                    _cache.Remove(Id);
-                }
-            }
+            set { Update(this, SetProperty(p => p.Phone, value)); }
         }
 
 
@@ -205,14 +159,7 @@ namespace Demo
         public string EMail
         {
             get { return _eMail; }
-            set
-            {
-                if (UpdateSelf(SetProperty(p => p.EMail, value)) == 1)
-                {
-                    Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
-                    _cache.Remove(Id);
-                }
-            }
+            set { Update(this, SetProperty(p => p.EMail, value)); }
         }
 
         private string _regAlias;
@@ -223,14 +170,7 @@ namespace Demo
         public string RegAlias
         {
             get { return _regAlias; }
-            set
-            {
-                if (UpdateSelf(SetProperty(p => p.RegAlias, value)) == 1)
-                {
-                    Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
-                    _cache.Remove(Id);
-                }
-            }
+            set { Update(this, SetProperty(p => p.RegAlias, value)); }
         }
 
         private DateTime _regTime;
@@ -367,13 +307,12 @@ namespace Demo
                 if (value == null)
                     throw new ArgumentNullException(nameof(value), "不允许空挂所属团体");
 
-                if (UpdateSelf(SetProperty(p => p.RootTeamsId, value.RootId),
+                if (Update(this,
+                        SetProperty(p => p.RootTeamsId, value.RootId),
                         SetProperty(p => p.TeamsId, value.Id)) == 1)
                 {
                     _rootTeams = value.Root;
                     _teams = value;
-                    Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
-                    _cache.Remove(Id);
                 }
             }
         }
@@ -406,11 +345,9 @@ namespace Demo
                 if (value == null)
                     throw new ArgumentNullException(nameof(value), "不允许空挂担任岗位");
 
-                if (UpdateSelf(SetProperty(p => p.PositionId, value.Id)) == 1)
+                if (Update(this, SetProperty(p => p.PositionId, value.Id)) == 1)
                 {
                     _position = value;
-                    Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
-                    _cache.Remove(Id);
                 }
             }
         }
@@ -434,12 +371,9 @@ namespace Demo
             get { return _locked; }
             set
             {
-                if (UpdateSelf(SetProperty(p => p.Locked, value),
-                        SetProperty(p => p.LockedTime, DateTime.Now)) == 1)
-                {
-                    Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
-                    _cache.Remove(Id);
-                }
+                Update(this,
+                    SetProperty(p => p.Locked, value),
+                    SetProperty(p => p.LockedTime, DateTime.Now));
             }
         }
 
@@ -463,12 +397,9 @@ namespace Demo
             get { return _disabled; }
             set
             {
-                if (UpdateSelf(SetProperty(p => p.Disabled, value),
-                        SetProperty(p => p.DisabledTime, DateTime.Now)) == 1)
-                {
-                    Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
-                    _cache.Remove(Id);
-                }
+                Update(this,
+                    SetProperty(p => p.Disabled, value),
+                    SetProperty(p => p.DisabledTime, DateTime.Now));
             }
         }
 
@@ -483,15 +414,16 @@ namespace Demo
         }
 
         [NonSerialized]
-        private DateTime? _invalidTime;
+        private DateTime _invalidTime;
 
         /// <summary>
         /// 失效时间
         /// </summary>
         [Newtonsoft.Json.JsonIgnore]
-        public DateTime? InvalidTime
+        public DateTime InvalidTime
         {
             get { return _invalidTime; }
+            set { _invalidTime = value; }
         }
 
         #endregion

@@ -67,6 +67,20 @@
             </summary>
             <param name="error">错误</param>
         </member>
+        <member name="M:Phenix.Core.AppRun.AddTimedTask(Phenix.Core.ITimedTask,System.Int32,System.Int32)">
+            <summary>
+            添加定时执行的任务
+            </summary>
+            <param name="cycleTimedTask">定时任务</param>
+            <param name="cycleDayMultiple">执行于每月里可被参数(2~28)除整的日期(范围以外为每天)</param>
+            <param name="cycleHourMultiple">执行于被筛选日期里可被参数(2~23)除整的小时(范围以外为每小时)</param>
+        </member>
+        <member name="M:Phenix.Core.AppRun.RemoveTimedTask(Phenix.Core.ITimedTask)">
+            <summary>
+            移除定时执行的任务
+            </summary>
+            <param name="cycleTimedTask">定时任务</param>
+        </member>
         <member name="T:Phenix.Core.Data.Common.DataReader">
             <summary>
             数据读取器
@@ -2573,14 +2587,20 @@
             填充 DataSet
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Database.AddTask(System.String,System.Action{System.Data.Common.DbConnection},System.Int32,System.Int32)">
+        <member name="M:Phenix.Core.Data.Database.AddTimedTask(System.String,System.Action{System.Data.Common.DbConnection},System.Int32,System.Int32)">
             <summary>
             添加定时执行的任务
             </summary>
             <param name="key">key</param>
-            <param name="asyncAction">异步动作</param>
+            <param name="cycleTimedTask">定时任务</param>
             <param name="cycleDayMultiple">执行于每月里可被参数(2~28)除整的日期(范围以外为每天)</param>
-            <param name="cycleHourMultiple">执行于被筛选日期里可被参数(2~23)除整的小时</param>
+            <param name="cycleHourMultiple">执行于被筛选日期里可被参数(2~23)除整的小时(范围以外为每小时)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.RemoveTimedTask(System.String)">
+            <summary>
+            移除定时执行的任务
+            </summary>
+            <param name="key">key</param>
         </member>
         <member name="T:Phenix.Core.Data.ExecuteAction">
             <summary>
@@ -2626,13 +2646,6 @@
             <summary>
             条件表达式: False
             </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Expressions.CriteriaExpression.Where``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
-            <summary>
-            条件表达式
-            </summary>
-            <param name="entity">实体</param>
-            <param name="memberLambda">含类属性/类字段的 lambda 表达式</param>
         </member>
         <member name="M:Phenix.Core.Data.Expressions.CriteriaExpression.Where``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
             <summary>
@@ -3190,6 +3203,29 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <returns>更新记录数</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Insert``1(``0)">
+            <summary>
+            新增自己(如未指定主键属性则仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="memCachedEntity">IMemCachedEntity</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Insert``1(``0,System.Data.Common.DbConnection)">
+            <summary>
+            新增自己(如未指定主键属性则仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="memCachedEntity">IMemCachedEntity</param>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Insert``1(``0,System.Data.Common.DbTransaction)">
+            <summary>
+            新增自己(如未指定主键属性则仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="memCachedEntity">IMemCachedEntity</param>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <returns>更新记录数</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.SetProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
             <summary>
             设置属性值
@@ -3248,6 +3284,61 @@
             <summary>
             更新自己(仅提交第一个属性映射的表记录)
             </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update``1(``0,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新自己(仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="memCachedEntity">IMemCachedEntity</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update``1(``0,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新自己(仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="memCachedEntity">IMemCachedEntity</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update``1(``0,System.Data.Common.DbConnection,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新自己(仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="memCachedEntity">IMemCachedEntity</param>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update``1(``0,System.Data.Common.DbConnection,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新自己(仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="memCachedEntity">IMemCachedEntity</param>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update``1(``0,System.Data.Common.DbTransaction,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新自己(仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="memCachedEntity">IMemCachedEntity</param>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update``1(``0,System.Data.Common.DbTransaction,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新自己(仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="memCachedEntity">IMemCachedEntity</param>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
@@ -3382,6 +3473,32 @@
             <summary>
             删除自己
             </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="cascade">是否级联</param>
+            <returns>删除记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Delete``1(``0,System.Boolean)">
+            <summary>
+            删除自己
+            </summary>
+            <param name="memCachedEntity">IMemCachedEntity</param>
+            <param name="cascade">是否级联</param>
+            <returns>删除记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Delete``1(``0,System.Data.Common.DbConnection,System.Boolean)">
+            <summary>
+            删除自己
+            </summary>
+            <param name="memCachedEntity">IMemCachedEntity</param>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="cascade">是否级联</param>
+            <returns>删除记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Delete``1(``0,System.Data.Common.DbTransaction,System.Boolean)">
+            <summary>
+            删除自己
+            </summary>
+            <param name="memCachedEntity">IMemCachedEntity</param>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="cascade">是否级联</param>
             <returns>删除记录数</returns>
@@ -3956,6 +4073,46 @@
             <param name="executeTime">执行时间</param>
             <param name="executeAction">执行动作</param>
         </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SaveRenovateLog``1(``0,Phenix.Core.Data.ExecuteAction)">
+            <summary>
+            保存表记录更新日志
+            </summary>
+            <param name="memCachedEntity">IMemCachedEntity</param>
+            <param name="executeAction">执行动作</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SaveRenovateLog``1(``0,Phenix.Core.Data.ExecuteAction,System.DateTime)">
+            <summary>
+            保存表记录更新日志
+            </summary>
+            <param name="memCachedEntity">IMemCachedEntity</param>
+            <param name="executeTime">执行时间</param>
+            <param name="executeAction">执行动作</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchMemCache``1(System.Int64,System.Int32)">
+            <summary>
+            获取缓存
+            </summary>
+            <param name="id">ID</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+            <returns>IMemCachedEntity</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.AddMemCache``1(``0)">
+            <summary>
+            添加缓存
+            </summary>
+            <param name="memCachedEntity">IMemCachedEntity</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.RemoveMemCache``1(``0)">
+            <summary>
+            移除缓存
+            </summary>
+            <param name="memCachedEntity">IMemCachedEntity</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.ClearMemCache``1">
+            <summary>
+            清空缓存
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Data.Model.EnumCaptionAttribute">
             <summary>
             枚举字段标签
@@ -4114,6 +4271,16 @@
         <member name="P:Phenix.Core.Data.Model.IEntity.SelfSheet">
             <summary>
             操作单子
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Data.Model.IMemCachedEntity">
+            <summary>
+            实体缓存对象接口
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.IMemCachedEntity.Id">
+            <summary>
+            ID
             </summary>
         </member>
         <member name="T:Phenix.Core.Data.Model.NameValue">
@@ -4579,10 +4746,11 @@
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表字段</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheetColumn(System.Reflection.MemberInfo,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheetColumn(System.Type,System.Reflection.MemberInfo,System.Boolean)">
             <summary>
             检索单子字段
             </summary>
+            <param name="entityType">实体类</param>
             <param name="memberInfo">类属性/类字段</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>视单子</returns>
@@ -4618,7 +4786,7 @@
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表字段</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.FindTableColumn(System.Reflection.MemberInfo,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindTableColumn``1(System.Reflection.MemberInfo,System.Boolean)">
             <summary>
             检索表字段
             </summary>
@@ -6602,6 +6770,16 @@
             <param name="sourceStream">数据源</param>
             <returns>目的字节串</returns>
         </member>
+        <member name="T:Phenix.Core.ITimedTask">
+            <summary>
+            定时任务接口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.ITimedTask.Execute">
+            <summary>
+            执行
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Log.EventInfo">
             <summary>
             事件资料
@@ -7231,11 +7409,6 @@
             删除控制器的授权角色
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Filters.ControllerRole.ResetAll">
-            <summary>
-            重置所有缓存
-            </summary>
-        </member>
         <member name="F:Phenix.Core.Net.Filters.ControllerRole._id">
             <summary>
             ID
@@ -7320,16 +7493,16 @@
             </summary>
             <param name="disposing">如果为 true, 则释放托管资源和非托管资源; 如果为 false, 则仅释放非托管资源</param>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadCache(System.Int64,System.String,System.String,System.Action{System.Int64,System.Nullable{System.Boolean},System.Exception})">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadCache(System.Int64,System.String,System.String,System.Action{System.Int64})">
             <summary>
             上传报文
             </summary>
             <param name="id">ID</param>
             <param name="path">资源路径(含查询条件)(比如"/api/log/event-log")</param>
             <param name="data">上传数据</param>
-            <param name="complete">结束(ID,成功与否(null代表已过期))</param>
+            <param name="complete">完成回调函数(ID)</param>
         </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadCache(System.Int64,System.String,System.String,System.Int32,System.Action{System.Int64,System.Nullable{System.Boolean},System.Exception})">
+        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadCache(System.Int64,System.String,System.String,System.Int32,System.Action{System.Int64})">
             <summary>
             上传报文
             </summary>
@@ -7337,7 +7510,7 @@
             <param name="path">资源路径(含查询条件)(比如"/api/log/event-log")</param>
             <param name="data">上传数据</param>
             <param name="validityMinutes">有效周期(分钟)</param>
-            <param name="complete">结束(ID,成功与否(null代表已过期))</param>
+            <param name="complete">完成回调函数(ID)</param>
         </member>
         <member name="M:Phenix.Core.Net.Http.HttpClient.CheckInAsync(System.String,System.String,System.String,System.String)">
             <summary>
@@ -8065,7 +8238,7 @@
             <param name="entity">实体</param>
             <param name="memberInfo">属性/字段信息</param>
         </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.GetPropertyInfo(System.Linq.Expressions.LambdaExpression,System.Boolean)">
+        <member name="M:Phenix.Core.Reflection.Utilities.GetPropertyInfo``1(System.Linq.Expressions.LambdaExpression,System.Boolean)">
             <summary>
             检索类属性的信息
             </summary>
@@ -8075,7 +8248,7 @@
             <exception cref="T:System.ArgumentException">不存在成员访问</exception>
             <returns>类属性</returns>
         </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.GetFieldInfo(System.Linq.Expressions.LambdaExpression,System.Boolean)">
+        <member name="M:Phenix.Core.Reflection.Utilities.GetFieldInfo``1(System.Linq.Expressions.LambdaExpression,System.Boolean)">
             <summary>
             检索类字段的信息
             </summary>
@@ -8085,7 +8258,7 @@
             <exception cref="T:System.ArgumentException">不存在成员访问</exception>
             <returns>类属性</returns>
         </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.GetMemberInfo(System.Linq.Expressions.LambdaExpression,System.Boolean)">
+        <member name="M:Phenix.Core.Reflection.Utilities.GetMemberInfo``1(System.Linq.Expressions.LambdaExpression,System.Boolean)">
             <summary>
             检索类属性/类字段的信息
             </summary>
@@ -8955,11 +9128,6 @@
             删除岗位资料
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.Position.ResetAll">
-            <summary>
-            重置所有缓存
-            </summary>
-        </member>
         <member name="F:Phenix.Core.Security.Position._id">
             <summary>
             ID
@@ -9196,12 +9364,6 @@
             </summary>
             <param name="name">登录名</param>
             <returns>用户资料</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.User.ResetAll">
-            <summary>
-            重置用户资料所有缓存
-            默认8小时自动重置一次
-            </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.RequestFailureCountMaximum">
             <summary>
@@ -9584,6 +9746,16 @@
             <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
             <returns>是否正确</returns>
         </member>
+        <member name="T:Phenix.Core.SyncCollections.IMemCachedObject">
+            <summary>
+            缓存对象接口
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.SyncCollections.IMemCachedObject.InvalidTime">
+            <summary>
+            失效时间
+            </summary>
+        </member>
         <member name="T:Phenix.Core.SyncCollections.SynchronizedDictionary`2">
             <summary>
             表示键和值的集合
@@ -9765,16 +9937,6 @@
             <param name="key">键</param>
             <param name="doReplace">替换值的函数</param>
         </member>
-        <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.ReplaceAll(System.Collections.Generic.IDictionary{`0,`1})">
-            <summary>
-            替换所有
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.ReplaceAll(System.Func{System.Collections.Generic.KeyValuePair{`0,`1},`1})">
-            <summary>
-            替换所有
-            </summary>
-        </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.GetEnumerator">
             <summary>
             返回循环访问的枚举数, 为静态副本
@@ -9880,11 +10042,6 @@
         <member name="M:Phenix.Core.SyncCollections.SynchronizedHashSet`1.Clear(System.Action{System.Collections.Generic.IEnumerable{`0}})">
             <summary>
             移除所有节点
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.SyncCollections.SynchronizedHashSet`1.ReplaceAll(System.Collections.Generic.IEnumerable{`0})">
-            <summary>
-            替换所有
             </summary>
         </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedHashSet`1.UnionWith(System.Collections.Generic.IEnumerable{`0})">
@@ -10446,11 +10603,6 @@
             移除所有节点
             </summary>
         </member>
-        <member name="M:Phenix.Core.SyncCollections.SynchronizedList`1.ReplaceAll(System.Collections.Generic.IEnumerable{`0})">
-            <summary>
-            替换所有
-            </summary>
-        </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedList`1.GetEnumerator">
             <summary>
             返回循环访问的枚举数, 为静态副本
@@ -10794,16 +10946,6 @@
             <param name="key">键</param>
             <param name="doReplace">替换值的函数</param>
         </member>
-        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.ReplaceAll(System.Collections.Generic.IDictionary{`0,`1})">
-            <summary>
-            替换所有
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.ReplaceAll(System.Func{System.Collections.Generic.KeyValuePair{`0,`1},`1})">
-            <summary>
-            替换所有
-            </summary>
-        </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.GetEnumerator">
             <summary>
             返回循环访问的枚举数, 为静态副本
@@ -11023,16 +11165,6 @@
             </summary>
             <param name="key">键</param>
             <param name="doReplace">替换值的函数</param>
-        </member>
-        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedList`2.ReplaceAll(System.Collections.Generic.IDictionary{`0,`1})">
-            <summary>
-            替换所有
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedList`2.ReplaceAll(System.Func{System.Collections.Generic.KeyValuePair{`0,`1},`1})">
-            <summary>
-            替换所有
-            </summary>
         </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedList`2.GetEnumerator">
             <summary>

@@ -2,16 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Common;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
 using Phenix.Core.Data.Expressions;
 using Phenix.Core.Data.Model;
 using Phenix.Core.Log;
-using Phenix.Core.SyncCollections;
 
 namespace Demo
 {
@@ -19,7 +15,7 @@ namespace Demo
     /// 岗位资料
     /// </summary>
     [Serializable]
-    public sealed class Position : EntityBase<Position>
+    public sealed class Position : EntityBase<Position>, IMemCachedEntity
     {
         private Position()
         {
@@ -36,27 +32,6 @@ namespace Demo
 
         #region 工厂
 
-        private static readonly object _lock = new object();
-        private static SynchronizedDictionary<long, Position> _cache;
-
-        private static void Initialize()
-        {
-            if (_cache == null)
-            {
-                lock (_lock)
-                    if (_cache == null)
-                    {
-                        InitializeTable();
-
-                        _cache = new SynchronizedDictionary<long, Position>();
-                        AddRenovatorTrigger(p => p.Id,
-                            (tableName, primaryKeyValue, executeTime, executeAction) => { _cache.Remove(primaryKeyValue); });
-                    }
-
-                Thread.MemoryBarrier();
-            }
-        }
-
         /// <summary>
         /// 新增岗位资料
         /// </summary>
@@ -65,14 +40,13 @@ namespace Demo
         /// <returns>岗位资料</returns>
         public static Position New(string name, string[] roles)
         {
-            Initialize();
+            InitializeTable();
 
             Position result = new Position(Sequence.Value, name, roles);
-            result.InsertSelf();
-            _cache.Add(result.Id, result);
+            Insert(result);
             return result;
         }
-
+        
         /// <summary>
         /// 获取岗位资料
         /// </summary>
@@ -81,17 +55,9 @@ namespace Demo
         /// <returns>岗位资料</returns>
         public static Position Fetch(long id, int resetHoursLater = 8)
         {
-            Initialize();
+            InitializeTable();
 
-            return _cache.GetValue(id,
-                () =>
-                {
-                    Position result = Select(p => p.Id == id).SingleOrDefault();
-                    if (result != null)
-                        result._invalidTime = resetHoursLater == 0 ? (DateTime?) null : DateTime.Now.AddHours(resetHoursLater);
-                    return result;
-                },
-                value => value == null || resetHoursLater < 0 || resetHoursLater > 0 && (!value._invalidTime.HasValue || value._invalidTime < DateTime.Now));
+            return FetchMemCache<Position>(id, 8);
         }
 
         /// <summary>
@@ -100,17 +66,9 @@ namespace Demo
         /// <returns>岗位资料清单</returns>
         public static IList<Position> FetchAll()
         {
-            Initialize();
+            InitializeTable();
 
             return Select(Ascending(p => p.Name));
-        }
-
-        /// <summary>
-        /// 重置所有缓存
-        /// </summary>
-        public static void ResetAll()
-        {
-            _cache.Clear();
         }
 
         #endregion
@@ -135,14 +93,7 @@ namespace Demo
         public string Name
         {
             get { return _name; }
-            set
-            {
-                if (UpdateSelf(SetProperty(p => p.Name, value)) == 1)
-                {
-                    Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
-                    _cache.Remove(Id);
-                }
-            }
+            set { Update(this, SetProperty(p => p.Name, value)); }
         }
 
         private ReadOnlyCollection<string> _roles;
@@ -153,26 +104,20 @@ namespace Demo
         public IList<string> Roles
         {
             get { return _roles; }
-            set
-            {
-                if (UpdateSelf(SetProperty(p => p.Roles, value)) == 1)
-                {
-                    Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Update));
-                    _cache.Remove(Id);
-                }
-            }
+            set { Update(this, SetProperty(p => p.Roles, value)); }
         }
 
         [NonSerialized]
-        private DateTime? _invalidTime;
+        private DateTime _invalidTime;
 
         /// <summary>
         /// 失效时间
         /// </summary>
         [Newtonsoft.Json.JsonIgnore]
-        public DateTime? InvalidTime
+        public DateTime InvalidTime
         {
             get { return _invalidTime; }
+            set { _invalidTime = value; }
         }
 
         #endregion
@@ -186,8 +131,7 @@ namespace Demo
         {
             if (DeleteRecord(CriteriaExpression.Where<Position>(p => p.Id == Id).NotExists<User>(p => p.PositionId)) == 0)
                 throw new InvalidOperationException(String.Format("未能删除 {0} 岗位, 可能已被用在了用户管理上", Name));
-            Task.Run(() => SaveRenovateLog(p => p.Id, ExecuteAction.Delete));
-            _cache.Remove(Id);
+            Task.Run(() => SaveRenovateLog(this, ExecuteAction.Delete));
         }
 
         private static void InitializeTable()
