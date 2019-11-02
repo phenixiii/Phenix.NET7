@@ -66,12 +66,12 @@ namespace Demo
 
             Console.WriteLine("EventLog 在保存日志时，会首先查看其 Database 属性（默认是 Phenix.Core.Data.Database.Default 值）是否有数据库连接。");
             Console.WriteLine("因为本程序模拟的是客户端，不会直连数据库的，EventLog.Database 属性肯定为空，EventLog 只会将日志给到 OfflineCache 暂存并尝试上传到服务端。");
-            Console.WriteLine("OfflineCache 将日志暂存在 {0} 文件里（SQLite库）。", OfflineCache.FilePath);
+            Console.WriteLine("OfflineCache 将日志暂存在 {0} 文件里（SQLite库）。", OfflineCache.LocalFilePath);
             while (true)
             {
-                if (File.Exists(OfflineCache.FilePath))
+                if (File.Exists(OfflineCache.LocalFilePath))
                     break;
-                Console.Write("{0} 目录下未发现 {1} 文件，请从 Bin_ORA 或 Bin_MySQL 目录里拷贝进同名文件，完成后按任意键继续", AppRun.BaseDirectory, OfflineCache.FilePath);
+                Console.Write("{0} 目录下未发现 {1} 文件，请从 Bin_ORA 或 Bin_MySQL 目录里拷贝进同名文件，完成后按任意键继续", AppRun.BaseDirectory, OfflineCache.LocalFilePath);
                 System.Diagnostics.Process.Start("explorer.exe", AppRun.BaseDirectory);
                 Console.ReadKey();
                 Console.WriteLine();
@@ -88,8 +88,8 @@ namespace Demo
             Console.WriteLine();
 
             EventLog.Save(message);
-            Console.WriteLine("调用 EventLog.Save() 函数后，日志被保存在了 {0} 的 PH7_OfflineCache 表里：", OfflineCache.FilePath);
-            ShowFirstCache();
+            Console.WriteLine("调用 EventLog.Save() 函数后，日志被保存在了 {0} 的 PH7_OfflineCache 表里：", OfflineCache.LocalFilePath);
+            ShowOfflineCache();
             Console.WriteLine("请注意 OC_BaseAddress 字段是空的，因为 EventLog.UploadBaseAddress 属性未曾赋值过：{0}", EventLog.UploadBaseAddress ?? "null");
             Console.WriteLine("对于 OC_BaseAddress 字段为空值的记录，OfflineCache 上传报文时会尝试向 HttpClient.Default 指向的服务发起请求，地址为：{0}", Phenix.Core.Net.Http.HttpClient.Default.BaseAddress);
             Console.WriteLine("暂存的报文是有有效期的，见 OC_ValidityTime 字段，你可通过设置 EventLog.UploadValidityMinutes 属性（默认值为 {0} 分钟以内）进行控制。", EventLog.UploadValidityMinutes);
@@ -102,13 +102,15 @@ namespace Demo
             Console.WriteLine("恢复 OfflineCache 的上传线程：{0}", !OfflineCache.UploadSuspending ? "ok" : "error");
             do
             {
-                Thread.Sleep(3000);
+                Thread.Sleep(1000);
                 Console.WriteLine("等待 OfflineCache 上传报文...");
                 Console.WriteLine("OfflineCache 正在上传的报文数量：{0}", OfflineCache.UploadingCount);
             } while (OfflineCache.UploadingCount > 0);
-            Console.WriteLine("OfflineCache 上传报文成功。");
-            ShowFirstCache();
-            Console.WriteLine("缓存的报文，一旦上传成功，就会被自动删除。");
+            Console.WriteLine("OfflineCache 完成报文上传。");
+            Console.WriteLine();
+
+            bool neglect = ShowOfflineCache();
+            Console.WriteLine("缓存的报文，一旦上传成功，就会被自动删除：{0}", !neglect ? "ok" : "error");
             Console.Write("请按任意键继续");
             Console.ReadKey();
             Console.WriteLine();
@@ -139,9 +141,10 @@ namespace Demo
             }
         }
 
-        private static void ShowFirstCache()
+        private static bool ShowOfflineCache()
         {
-            using (SQLiteConnection connection = new SQLiteConnection(OfflineCache.ConnectionString))
+            bool result = false;
+            using (SQLiteConnection connection = new SQLiteConnection("Data Source=" + OfflineCache.LocalFilePath))
             using (SQLiteCommand command = connection.CreateCommand())
             {
                 connection.Open();
@@ -149,16 +152,19 @@ namespace Demo
 select *
 from PH7_OfflineCache
 order by OC_ID desc";
-                using (SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.SingleRow))
+                using (SQLiteDataReader reader = command.ExecuteReader(CommandBehavior.SingleResult))
                 {
                     while (reader.Read())
                     {
+                        result = true;
                         for (int i = 0; i < reader.FieldCount; i++)
-                            Console.Write("{0} = {1}, ", reader.GetName(i), reader.GetValue(i) ?? "null");
+                            Console.Write("报文：{0} = {1}, ", reader.GetName(i), reader.GetValue(i) ?? "null");
                         Console.WriteLine();
                     }
                 }
             }
+
+            return result;
         }
     }
 }

@@ -10,11 +10,9 @@ namespace Phenix.Services.Host
         public static void Main(string[] args)
         {
             /*
-             * 注册缺省数据库
-             * 请改写为自己系统的数据库连接串
-             * 配置数据请自行维护以便导入注册
+             * 如果未在Phenix.Core.db库文件PH7_Database表里配置数据库连接串的话请在此注册缺省数据库
              */
-            Phenix.Core.Data.Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
+            //Phenix.Core.Data.Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
 
             AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) => { Phenix.Core.Log.EventLog.SaveLocal("An unhandled exception occurred in the current domain", (Exception) eventArgs.ExceptionObject); };
             

@@ -6,13 +6,13 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v3.0": {
-      "Phenix.Core/7.3.11": {
+      "Phenix.Core/7.3.13": {
         "dependencies": {
           "Microsoft.AspNetCore.SignalR.Client": "3.0.0",
           "Microsoft.AspNetCore.SignalR.Protocols.MessagePack": "3.0.0",
           "Newtonsoft.Json": "12.0.2",
           "Oracle.ManagedDataAccess.Core": "2.19.50",
-          "System.Data.SQLite.Core": "1.0.111"
+          "System.Data.SQLite.Core": "1.0.112"
         },
         "runtime": {
           "Phenix.Core.dll": {}
@@ -175,11 +175,11 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "System.Data.SQLite.Core/1.0.111": {
+      "System.Data.SQLite.Core/1.0.112": {
         "runtime": {
           "lib/netstandard2.0/System.Data.SQLite.dll": {
-            "assemblyVersion": "1.0.111.0",
-            "fileVersion": "1.0.111.0"
+            "assemblyVersion": "1.0.112.0",
+            "fileVersion": "1.0.112.0"
           }
         },
         "runtimeTargets": {
@@ -196,12 +196,12 @@
           "runtimes/win-x64/native/netstandard2.0/SQLite.Interop.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "1.0.111.0"
+            "fileVersion": "1.0.112.0"
           },
           "runtimes/win-x86/native/netstandard2.0/SQLite.Interop.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "1.0.111.0"
+            "fileVersion": "1.0.112.0"
           }
         }
       },
@@ -315,7 +315,7 @@
     }
   },
   "libraries": {
-    "Phenix.Core/7.3.11": {
+    "Phenix.Core/7.3.13": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -488,12 +488,12 @@
       "path": "system.collections/4.3.0",
       "hashPath": "system.collections.4.3.0.nupkg.sha512"
     },
-    "System.Data.SQLite.Core/1.0.111": {
+    "System.Data.SQLite.Core/1.0.112": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-D7Qo3JWUB6epymTVRNaAXt+Y+eh0juGjXb5q8SEp/LBdKJr6a224Mk0HCOemRsXfPIF8ULblPyCbVixUvfbpiw==",
-      "path": "system.data.sqlite.core/1.0.111",
-      "hashPath": "system.data.sqlite.core.1.0.111.nupkg.sha512"
+      "sha512": "sha512-3wA9v/K2ncZWsWfEBTiQppsi2014IJMXsZ1md3pk5bEXAJyuTthSrHF4bIWm5MG+C5g5XLhA2H7XfnSq1PXCeQ==",
+      "path": "system.data.sqlite.core/1.0.112",
+      "hashPath": "system.data.sqlite.core.1.0.112.nupkg.sha512"
     },
     "System.Globalization/4.3.0": {
       "type": "package",

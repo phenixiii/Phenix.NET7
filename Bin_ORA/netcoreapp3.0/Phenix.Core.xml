@@ -1626,111 +1626,6 @@
             </summary>
             <param name="columnName">字段名</param>
         </member>
-        <member name="T:Phenix.Core.Data.Converter">
-            <summary>
-            转换器
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Converter.StringToBytes(System.String,System.Int32)">
-            <summary>
-            字符串转换成字节数组队列
-            </summary>
-            <param name="source">源字符串</param>
-            <param name="bufferSize">数组大小</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Converter.BytesToHexString(System.Byte[])">
-            <summary>
-            字节数组转换成Hex字符串
-            </summary>
-            <param name="sourceBuffer">字节数组</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Converter.HexStringToBytes(System.String)">
-            <summary>
-            Hex字符串转换成字节数组
-            </summary>
-            <param name="sourceBuffer">Hex字符串</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Converter.ReplaceString(System.String,System.String,System.String,System.StringComparison)">
-            <summary>
-            替换字符串
-            </summary>
-            <param name="source">源字符串</param>
-            <param name="oldPattern">旧段落</param>
-            <param name="newPattern">新段落</param>
-            <param name="comparisonType">搜索类型</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Converter.BooleanToSymbolic(System.Boolean)">
-            <summary>
-            布尔转换成符号
-            </summary>
-            <param name="value">布尔值</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Converter.EnumArrayToValues(System.Enum[])">
-            <summary>
-            将枚举数组替换成值组合
-            </summary>
-            <param name="enums">枚举数组</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Converter.EnumArrayToValues(System.Char,System.Enum[])">
-            <summary>
-            将枚举数组替换成值组合
-            </summary>
-            <param name="separator">标签分隔符</param>
-            <param name="enums">枚举数组</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Converter.EnumArrayToValues``1(``0[])">
-            <summary>
-            将枚举数组替换成值组合
-            </summary>
-            <param name="enums">枚举数组</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Converter.EnumArrayToValues``1(System.Char,``0[])">
-            <summary>
-            将枚举数组替换成值组合
-            </summary>
-            <param name="separator">标签分隔符</param>
-            <param name="enums">枚举数组</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Converter.ValuesToEnumArray``1(System.String,System.Char)">
-            <summary>
-            将值组合替换成枚举数组
-            </summary>
-            <param name="values">值组合</param>
-            <param name="separator">标签分隔符</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Converter.EnumArrayToFlags(System.Enum[])">
-            <summary>
-            将枚举数组替换成标记组合
-            </summary>
-            <param name="enums">枚举数组</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Converter.EnumArrayToFlags(System.Char,System.Enum[])">
-            <summary>
-            将枚举数组替换成标记组合
-            </summary>
-            <param name="separator">标签分隔符</param>
-            <param name="enums">枚举数组</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Converter.EnumArrayToFlags``1(``0[])">
-            <summary>
-            将枚举数组替换成标记组合
-            </summary>
-            <param name="enums">枚举数组</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Converter.EnumArrayToFlags``1(System.Char,``0[])">
-            <summary>
-            将枚举数组替换成标记组合
-            </summary>
-            <param name="separator">标签分隔符</param>
-            <param name="enums">枚举数组</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Converter.FlagsToEnumArray``1(System.String,System.Char)">
-            <summary>
-            将标记组合替换成枚举数组
-            </summary>
-            <param name="flags">标记组合</param>
-            <param name="separator">标签分隔符</param>
-        </member>
         <member name="T:Phenix.Core.Data.Database">
             <summary>
             数据库入口
@@ -1752,7 +1647,7 @@
             <summary>
             获取数据库入口
             </summary>
-            <param name="dataSourceKey">数据源键</param>
+            <param name="dataSourceKey">数据源键(null或""或"*"代表默认入口)</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>数据库入口</returns>
         </member>
@@ -1774,7 +1669,7 @@
             <summary>
             注册数据库入口
             </summary>
-            <param name="dataSourceKey">数据源键</param>
+            <param name="dataSourceKey">数据源键(null或""或"*"代表默认入口)</param>
             <param name="dataSource">数据源</param>
             <param name="databaseName">数据库名称</param>
             <param name="userId">用户ID</param>
@@ -1784,6 +1679,11 @@
             <param name="maxPoolSize">最大连接池</param>
             <param name="connectionLifetime">连接生命周期</param>
             <returns>数据库入口</returns>
+        </member>
+        <member name="P:Phenix.Core.Data.Database.ConfigFilePath">
+            <summary>
+            配置文件路径
+            </summary>
         </member>
         <member name="P:Phenix.Core.Data.Database.DataSourceKey">
             <summary>
@@ -1868,23 +1768,23 @@
             </summary>
             <param name="databases">分库入口队列(依序对应分库序号1-N(主库序号为0))</param>
         </member>
-        <member name="M:Phenix.Core.Data.Database.GetDatabase(System.Int32,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Database.GetSubDatabase">
             <summary>
-            获取数据库入口
+            获取分库入口(用Identity.CurrentIdentity.User.RootTeams.Id值Hash为为index, 0为主库)
             </summary>
-            <param name="index">序号(0为主库/1-N为RegisterSubDatabase注册的分库顺序)</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
         </member>
-        <member name="M:Phenix.Core.Data.Database.GetDatabase(System.Object)">
+        <member name="M:Phenix.Core.Data.Database.GetSubDatabase(System.Object)">
             <summary>
-            获取数据库入口
+            获取分库入口
             </summary>
             <param name="routeKey">路由键(Hash为index, 0为主库/1-N为RegisterSubDatabase注册的分库顺序)</param>
         </member>
-        <member name="M:Phenix.Core.Data.Database.GetDatabase">
+        <member name="M:Phenix.Core.Data.Database.GetSubDatabase(System.Int32,System.Boolean)">
             <summary>
-            获取数据库入口
+            获取分库入口
             </summary>
+            <param name="index">序号(0为主库/1-N为RegisterSubDatabase注册的分库顺序)</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
         </member>
         <member name="M:Phenix.Core.Data.Database.GetConnection">
             <summary>
@@ -6731,7 +6631,7 @@
             块大小
             </summary>
         </member>
-        <member name="P:Phenix.Core.IO.FileChunkInfo.ChunkMaxSize">
+        <member name="P:Phenix.Core.IO.FileChunkInfo.MaxChunkSize">
             <summary>
             块最大值
             </summary>
@@ -7841,14 +7741,9 @@
             脱机缓存
             </summary>
         </member>
-        <member name="P:Phenix.Core.Net.Http.OfflineCache.FilePath">
+        <member name="P:Phenix.Core.Net.Http.OfflineCache.LocalFilePath">
             <summary>
-            数据库文件路径
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Net.Http.OfflineCache.ConnectionString">
-            <summary>
-            数据库连接串
+            本地文件路径
             </summary>
         </member>
         <member name="P:Phenix.Core.Net.Http.OfflineCache.UploadingCount">
@@ -8283,56 +8178,66 @@
             序列化
             </summary>
             <param name="obj">对象</param>
-        </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.BinaryDeserialize(System.String)">
-            <summary>
-            反序列化
-            </summary>
-            <param name="sourceBuffer">Hex字符串</param>
+            <returns>Base64字符串</returns>
+            <returns>序列化文本(Base64字符串)</returns>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.BinaryDeserialize``1(System.String)">
             <summary>
             反序列化
             </summary>
-            <param name="sourceBuffer">Hex字符串</param>
+            <param name="serializedText">序列化文本(Base64字符串)</param>
+            <returns>对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Reflection.Utilities.BinaryDeserialize(System.String)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="serializedText">序列化文本(Base64字符串)</param>
+            <returns>对象</returns>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.XmlSerialize(System.Object)">
             <summary>
             序列化
             </summary>
             <param name="obj">对象</param>
-        </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.XmlDeserialize(System.String,System.Type)">
-            <summary>
-            反序列化
-            </summary>
-            <param name="value">XML值</param>
-            <param name="objectType">对象类型</param>
+            <returns>序列化文本(XML格式)</returns>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.XmlDeserialize``1(System.String)">
             <summary>
             反序列化
             </summary>
-            <param name="value">XML值</param>
+            <param name="serializedText">序列化文本(XML格式)</param>
+            <returns>对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Reflection.Utilities.XmlDeserialize(System.String,System.Type)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="serializedText">序列化文本(XML格式)</param>
+            <param name="objectType">对象类型</param>
+            <returns>对象</returns>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.JsonSerialize(System.Object)">
             <summary>
             序列化
             </summary>
             <param name="obj">对象</param>
-        </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.JsonDeserialize(System.String,System.Type)">
-            <summary>
-            反序列化
-            </summary>
-            <param name="value">JSON值</param>
-            <param name="objectType">对象类型</param>
+            <returns>序列化文本(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.JsonDeserialize``1(System.String)">
             <summary>
             反序列化
             </summary>
-            <param name="value">序列化值</param>
+            <param name="serializedText">序列化文本(JSON格式)</param>
+            <returns>对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Reflection.Utilities.JsonDeserialize(System.String,System.Type)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="serializedText">序列化文本(JSON格式)</param>
+            <param name="objectType">对象类型</param>
+            <returns>对象</returns>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.IsZero(System.String)">
             <summary>
@@ -8616,29 +8521,14 @@
             AES加解密字符串
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Encrypt(System.Byte[],System.Byte[],System.String)">
+        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Encrypt(System.String,System.String)">
             <summary>
             加密
+            IV等于Key且Key和IV将被转换为MD5值
             </summary>
-            <param name="rgbKey">密钥</param>
-            <param name="rgbIV">初始化向量</param>
-            <param name="value">需加密的字符串</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Decrypt(System.Byte[],System.Byte[],System.IO.Stream)">
-            <summary>
-            解密
-            </summary>
-            <param name="rgbKey">密钥</param>
-            <param name="rgbIV">初始化向量</param>
-            <param name="stream">需解密的字节流</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Decrypt(System.Byte[],System.Byte[],System.Byte[])">
-            <summary>
-            解密
-            </summary>
-            <param name="rgbKey">密钥</param>
-            <param name="rgbIV">初始化向量</param>
-            <param name="sourceBuffer">需解密的字节数组</param>
+            <param name="key">密钥</param>
+            <param name="sourceText">原文</param>
+            <returns>密文(Base64字符串)</returns>
         </member>
         <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Encrypt(System.String,System.String,System.String)">
             <summary>
@@ -8647,47 +8537,26 @@
             </summary>
             <param name="key">密钥</param>
             <param name="IV">初始化向量</param>
-            <param name="value">需加密的字符串</param>
+            <param name="sourceText">原文</param>
+            <returns>密文(Base64字符串)</returns>
         </member>
-        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Encrypt(System.String,System.String)">
+        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Encrypt(System.Byte[],System.Byte[],System.String)">
             <summary>
             加密
+            </summary>
+            <param name="rgbKey">密钥</param>
+            <param name="rgbIV">初始化向量</param>
+            <param name="sourceText">原文</param>
+            <returns>密文</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Decrypt(System.String,System.String)">
+            <summary>
+            解密
             IV等于Key且Key和IV将被转换为MD5值
             </summary>
             <param name="key">密钥</param>
-            <param name="value">需加密的字符串</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Decrypt(System.String,System.String,System.IO.Stream)">
-            <summary>
-            解密
-            </summary>
-            <param name="key">密钥</param>
-            <param name="IV">初始化向量</param>
-            <param name="stream">需解密的字节流</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Decrypt(System.String,System.IO.Stream)">
-            <summary>
-            解密
-            IV等于Key
-            </summary>
-            <param name="key">密钥</param>
-            <param name="stream">需解密的字节流</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Decrypt(System.String,System.String,System.Byte[])">
-            <summary>
-            解密
-            </summary>
-            <param name="key">密钥</param>
-            <param name="IV">初始化向量</param>
-            <param name="sourceBuffer">需解密的字节数组</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Decrypt(System.String,System.Byte[])">
-            <summary>
-            解密
-            IV等于Key
-            </summary>
-            <param name="key">密钥</param>
-            <param name="sourceBuffer">需解密的字节数组</param>
+            <param name="cipherText">密文(Base64字符串)</param>
+            <returns>原文</returns>
         </member>
         <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Decrypt(System.String,System.String,System.String)">
             <summary>
@@ -8696,44 +8565,76 @@
             </summary>
             <param name="key">密钥</param>
             <param name="IV">初始化向量</param>
-            <param name="sourceBuffer">需解密的Hex字符串</param>
+            <param name="cipherText">密文(Base64字符串)</param>
+            <returns>原文</returns>
         </member>
-        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Decrypt(System.String,System.String)">
+        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Decrypt(System.String,System.Byte[])">
             <summary>
             解密
-            IV等于Key且Key和IV将被转换为MD5值
+            IV等于Key
             </summary>
             <param name="key">密钥</param>
-            <param name="sourceBuffer">需解密的Hex字符串</param>
+            <param name="cipherBuffer">密文</param>
+            <returns>原文</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Decrypt(System.String,System.String,System.Byte[])">
+            <summary>
+            解密
+            </summary>
+            <param name="key">密钥</param>
+            <param name="IV">初始化向量</param>
+            <param name="cipherBuffer">密文</param>
+            <returns>原文</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Decrypt(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            解密
+            </summary>
+            <param name="rgbKey">密钥</param>
+            <param name="rgbIV">初始化向量</param>
+            <param name="cipherBuffer">密文</param>
+            <returns>原文</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Decrypt(System.String,System.IO.Stream)">
+            <summary>
+            解密
+            IV等于Key
+            </summary>
+            <param name="key">密钥</param>
+            <param name="cipherStream">密文</param>
+            <returns>原文</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Decrypt(System.String,System.String,System.IO.Stream)">
+            <summary>
+            解密
+            </summary>
+            <param name="key">密钥</param>
+            <param name="IV">初始化向量</param>
+            <param name="cipherStream">密文</param>
+            <returns>原文</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Cryptography.AesCryptoTextProvider.Decrypt(System.Byte[],System.Byte[],System.IO.Stream)">
+            <summary>
+            解密
+            </summary>
+            <param name="rgbKey">密钥</param>
+            <param name="rgbIV">初始化向量</param>
+            <param name="cipherStream">密文</param>
+            <returns>原文</returns>
         </member>
         <member name="T:Phenix.Core.Security.Cryptography.DesCryptoTextProvider">
             <summary>
             DES加解密字符串
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Encrypt(System.Byte[],System.Byte[],System.String)">
+        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Encrypt(System.String,System.String)">
             <summary>
             加密
+            IV等于Key且Key和IV将被转换为MD5值
             </summary>
-            <param name="rgbKey">密钥</param>
-            <param name="rgbIV">初始化向量</param>
-            <param name="value">需加密的字符串</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Decrypt(System.Byte[],System.Byte[],System.IO.Stream)">
-            <summary>
-            解密
-            </summary>
-            <param name="rgbKey">密钥</param>
-            <param name="rgbIV">初始化向量</param>
-            <param name="stream">需解密的字节流</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Decrypt(System.Byte[],System.Byte[],System.Byte[])">
-            <summary>
-            解密
-            </summary>
-            <param name="rgbKey">密钥</param>
-            <param name="rgbIV">初始化向量</param>
-            <param name="sourceBuffer">需解密的字节数组</param>
+            <param name="key">密钥</param>
+            <param name="sourceText">原文</param>
+            <returns>密文(Base64字符串)</returns>
         </member>
         <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Encrypt(System.String,System.String,System.String)">
             <summary>
@@ -8742,47 +8643,26 @@
             </summary>
             <param name="key">密钥</param>
             <param name="IV">初始化向量</param>
-            <param name="value">需加密的字符串</param>
+            <param name="sourceText">原文</param>
+            <returns>密文(Base64字符串)</returns>
         </member>
-        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Encrypt(System.String,System.String)">
+        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Encrypt(System.Byte[],System.Byte[],System.String)">
             <summary>
             加密
+            </summary>
+            <param name="rgbKey">密钥</param>
+            <param name="rgbIV">初始化向量</param>
+            <param name="sourceText">原文</param>
+            <returns>密文</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Decrypt(System.String,System.String)">
+            <summary>
+            解密
             IV等于Key且Key和IV将被转换为MD5值
             </summary>
             <param name="key">密钥</param>
-            <param name="value">需加密的字符串</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Decrypt(System.String,System.String,System.IO.Stream)">
-            <summary>
-            解密
-            </summary>
-            <param name="key">密钥</param>
-            <param name="IV">初始化向量</param>
-            <param name="stream">需解密的字节流</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Decrypt(System.String,System.IO.Stream)">
-            <summary>
-            解密
-            IV等于Key
-            </summary>
-            <param name="key">密钥</param>
-            <param name="stream">需解密的字节流</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Decrypt(System.String,System.String,System.Byte[])">
-            <summary>
-            解密
-            </summary>
-            <param name="key">密钥</param>
-            <param name="IV">初始化向量</param>
-            <param name="sourceBuffer">需解密的字节数组</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Decrypt(System.String,System.Byte[])">
-            <summary>
-            解密
-            IV等于Key
-            </summary>
-            <param name="key">密钥</param>
-            <param name="sourceBuffer">需解密的字节数组</param>
+            <param name="cipherText">密文(Base64字符串)</param>
+            <returns>原文</returns>
         </member>
         <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Decrypt(System.String,System.String,System.String)">
             <summary>
@@ -8791,19 +8671,66 @@
             </summary>
             <param name="key">密钥</param>
             <param name="IV">初始化向量</param>
-            <param name="sourceBuffer">需解密的Hex字符串</param>
+            <param name="cipherText">密文(Base64字符串)</param>
+            <returns>原文</returns>
         </member>
-        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Decrypt(System.String,System.String)">
+        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Decrypt(System.String,System.Byte[])">
             <summary>
             解密
-            IV等于Key且Key和IV将被转换为MD5值
+            IV等于Key
             </summary>
             <param name="key">密钥</param>
-            <param name="sourceBuffer">需解密的Hex字符串</param>
+            <param name="cipherBuffer">密文</param>
+            <returns>原文</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Decrypt(System.String,System.String,System.Byte[])">
+            <summary>
+            解密
+            </summary>
+            <param name="key">密钥</param>
+            <param name="IV">初始化向量</param>
+            <param name="cipherBuffer">密文</param>
+            <returns>原文</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Decrypt(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            解密
+            </summary>
+            <param name="rgbKey">密钥</param>
+            <param name="rgbIV">初始化向量</param>
+            <param name="cipherBuffer">密文</param>
+            <returns>原文</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Decrypt(System.String,System.IO.Stream)">
+            <summary>
+            解密
+            IV等于Key
+            </summary>
+            <param name="key">密钥</param>
+            <param name="cipherStream">密文</param>
+            <returns>原文</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Decrypt(System.String,System.String,System.IO.Stream)">
+            <summary>
+            解密
+            </summary>
+            <param name="key">密钥</param>
+            <param name="IV">初始化向量</param>
+            <param name="cipherStream">密文</param>
+            <returns>原文</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Cryptography.DesCryptoTextProvider.Decrypt(System.Byte[],System.Byte[],System.IO.Stream)">
+            <summary>
+            解密
+            </summary>
+            <param name="rgbKey">密钥</param>
+            <param name="rgbIV">初始化向量</param>
+            <param name="cipherStream">密文</param>
+            <returns>原文</returns>
         </member>
         <member name="T:Phenix.Core.Security.Cryptography.KeyPair">
             <summary>
-            公钥密钥对
+            公钥私钥对
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.Cryptography.KeyPair.PublicKey">
@@ -8813,7 +8740,7 @@
         </member>
         <member name="P:Phenix.Core.Security.Cryptography.KeyPair.PrivateKey">
             <summary>
-            密钥
+            私钥
             </summary>
         </member>
         <member name="T:Phenix.Core.Security.Cryptography.MD5CryptoTextProvider">
@@ -8825,7 +8752,7 @@
             <summary>
             取Hash字符串
             </summary>
-            <param name="value">需加密的字符串</param>
+            <param name="sourceText">原文</param>
             <param name="toUpper">返回大写字符串</param>
             <returns>Hash字符串</returns>
         </member>
@@ -8834,69 +8761,52 @@
             Rijndael加解密字符串
             </summary>
         </member>
+        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Encrypt(System.String,System.String)">
+            <summary>
+            加密
+            IV等于Key且Key和IV将被转换为MD5值
+            </summary>
+            <param name="key">密钥</param>
+            <param name="sourceText">原文</param>
+            <returns>密文(Base64字符串)</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Encrypt(System.String,System.String,System.String)">
+            <summary>
+            加密
+            Key和IV将被转换为MD5值
+            </summary>
+            <param name="key">密钥</param>
+            <param name="IV">初始化向量</param>
+            <param name="sourceText">原文</param>
+            <returns>密文(Base64字符串)</returns>
+        </member>
         <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Encrypt(System.Byte[],System.Byte[],System.String)">
             <summary>
             加密
             </summary>
             <param name="rgbKey">密钥</param>
             <param name="rgbIV">初始化向量</param>
-            <param name="value">需加密的字符串</param>
+            <param name="sourceText">原文</param>
+            <returns>密文</returns>
         </member>
-        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Decrypt(System.Byte[],System.Byte[],System.IO.Stream)">
+        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Decrypt(System.String,System.String)">
             <summary>
             解密
+            IV等于Key且Key和IV将被转换为MD5值
             </summary>
-            <param name="rgbKey">密钥</param>
-            <param name="rgbIV">初始化向量</param>
-            <param name="stream">需解密的字节流</param>
+            <param name="key">密钥</param>
+            <param name="cipherText">密文(Base64字符串)</param>
+            <returns>原文</returns>
         </member>
-        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Decrypt(System.Byte[],System.Byte[],System.Byte[])">
+        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Decrypt(System.String,System.String,System.String)">
             <summary>
             解密
-            </summary>
-            <param name="rgbKey">密钥</param>
-            <param name="rgbIV">初始化向量</param>
-            <param name="sourceBuffer">需解密的字节数组</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Encrypt(System.String,System.String,System.String)">
-            <summary>
-            加密
+            Key和IV将被转换为MD5值
             </summary>
             <param name="key">密钥</param>
             <param name="IV">初始化向量</param>
-            <param name="value">需加密的字符串</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Encrypt(System.String,System.String)">
-            <summary>
-            加密
-            IV等于Key
-            </summary>
-            <param name="key">密钥</param>
-            <param name="value">需加密的字符串</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Decrypt(System.String,System.String,System.IO.Stream)">
-            <summary>
-            解密
-            </summary>
-            <param name="key">密钥</param>
-            <param name="IV">初始化向量</param>
-            <param name="stream">需解密的字节流</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Decrypt(System.String,System.IO.Stream)">
-            <summary>
-            解密
-            IV等于Key
-            </summary>
-            <param name="key">密钥</param>
-            <param name="stream">需解密的字节流</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Decrypt(System.String,System.String,System.Byte[])">
-            <summary>
-            解密
-            </summary>
-            <param name="key">密钥</param>
-            <param name="IV">初始化向量</param>
-            <param name="sourceBuffer">需解密的字节数组</param>
+            <param name="cipherText">密文(Base64字符串)</param>
+            <returns>原文</returns>
         </member>
         <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Decrypt(System.String,System.Byte[])">
             <summary>
@@ -8904,23 +8814,53 @@
             IV等于Key
             </summary>
             <param name="key">密钥</param>
-            <param name="sourceBuffer">需解密的字节数组</param>
+            <param name="cipherBuffer">密文</param>
+            <returns>原文</returns>
         </member>
-        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Decrypt(System.String,System.String,System.String)">
+        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Decrypt(System.String,System.String,System.Byte[])">
             <summary>
             解密
             </summary>
             <param name="key">密钥</param>
             <param name="IV">初始化向量</param>
-            <param name="sourceBuffer">需解密的Hex字符串</param>
+            <param name="cipherBuffer">密文</param>
+            <returns>原文</returns>
         </member>
-        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Decrypt(System.String,System.String)">
+        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Decrypt(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            解密
+            </summary>
+            <param name="rgbKey">密钥</param>
+            <param name="rgbIV">初始化向量</param>
+            <param name="cipherBuffer">密文</param>
+            <returns>原文</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Decrypt(System.String,System.IO.Stream)">
             <summary>
             解密
             IV等于Key
             </summary>
             <param name="key">密钥</param>
-            <param name="sourceBuffer">需解密的Hex字符串</param>
+            <param name="cipherStream">密文</param>
+            <returns>原文</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Decrypt(System.String,System.String,System.IO.Stream)">
+            <summary>
+            解密
+            </summary>
+            <param name="key">密钥</param>
+            <param name="IV">初始化向量</param>
+            <param name="cipherStream">密文</param>
+            <returns>原文</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider.Decrypt(System.Byte[],System.Byte[],System.IO.Stream)">
+            <summary>
+            解密
+            </summary>
+            <param name="rgbKey">密钥</param>
+            <param name="rgbIV">初始化向量</param>
+            <param name="cipherStream">密文</param>
+            <returns>原文</returns>
         </member>
         <member name="T:Phenix.Core.Security.Cryptography.RSACryptoTextProvider">
             <summary>
@@ -8929,31 +8869,12 @@
         </member>
         <member name="M:Phenix.Core.Security.Cryptography.RSACryptoTextProvider.CreateKeyPair">
             <summary>
-            生成公钥密钥对
+            生成公钥私钥对
             </summary>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.RSACryptoTextProvider.CreateKeyPair(System.Int32)">
-            <summary>
-            生成公钥密钥对
-            </summary>
-            <param name="dwKeySize">密钥尺寸</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.RSACryptoTextProvider.CreateKeyPair(System.Security.Cryptography.CspParameters)">
-            <summary>
-            生成公钥密钥对
-            </summary>
-            <param name="parameters">服务参数</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.RSACryptoTextProvider.CreateKeyPair(System.Int32,System.Security.Cryptography.CspParameters)">
-            <summary>
-            生成公钥密钥对
-            </summary>
-            <param name="dwKeySize">密钥尺寸</param>
-            <param name="parameters">服务参数</param>
         </member>
         <member name="M:Phenix.Core.Security.Cryptography.RSACryptoTextProvider.CreateKeyPair(System.Security.Cryptography.RSACryptoServiceProvider)">
             <summary>
-            生成公钥密钥对
+            生成公钥私钥对
             </summary>
             <param name="cryptoServiceProvider">加密服务</param>
         </member>
@@ -8962,16 +8883,9 @@
             加密
             </summary>
             <param name="publicKey">公钥</param>
-            <param name="value">需加密的字符串</param>
+            <param name="sourceText">原文</param>
             <param name="fOAEP">如果为 true，则使用OAEP填充（仅在运行Microsoft Windows XP或更高版本的计算机上可用）执行直接的RSA加密；否则，如果为false，则使用PKCS#1 1.5版填充</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.RSACryptoTextProvider.Encrypt(System.Security.Cryptography.CspParameters,System.String,System.Boolean)">
-            <summary>
-            加密
-            </summary>
-            <param name="parameters">服务参数</param>
-            <param name="value">需加密的字符串</param>
-            <param name="fOAEP">如果为 true，则使用OAEP填充（仅在运行Microsoft Windows XP或更高版本的计算机上可用）执行直接的RSA加密；否则，如果为false，则使用PKCS#1 1.5版填充</param>
+            <returns>密文(Base64字符串)</returns>
         </member>
         <member name="M:Phenix.Core.Security.Cryptography.RSACryptoTextProvider.Encrypt(System.Security.Cryptography.RSACryptoServiceProvider,System.String,System.String,System.Boolean)">
             <summary>
@@ -8979,33 +8893,28 @@
             </summary>
             <param name="cryptoServiceProvider">加密服务</param>
             <param name="publicKey">公钥</param>
-            <param name="value">需加密的字符串</param>
+            <param name="sourceText">原文</param>
             <param name="fOAEP">如果为 true，则使用OAEP填充（仅在运行Microsoft Windows XP或更高版本的计算机上可用）执行直接的RSA加密；否则，如果为false，则使用PKCS#1 1.5版填充</param>
+            <returns>密文(Base64字符串)</returns>
         </member>
         <member name="M:Phenix.Core.Security.Cryptography.RSACryptoTextProvider.Decrypt(System.String,System.String,System.Boolean)">
             <summary>
             解密
             </summary>
-            <param name="privateKey">密钥</param>
-            <param name="value">需加密的字符串</param>
+            <param name="privateKey">私钥</param>
+            <param name="cipherText">密文(Base64字符串)</param>
             <param name="fOAEP">如果为 true，则使用OAEP填充（仅在运行Microsoft Windows XP或更高版本的计算机上可用）执行直接的RSA加密；否则，如果为false，则使用PKCS#1 1.5版填充</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Cryptography.RSACryptoTextProvider.Decrypt(System.Security.Cryptography.CspParameters,System.String,System.Boolean)">
-            <summary>
-            解密
-            </summary>
-            <param name="parameters">服务参数</param>
-            <param name="value">需加密的字符串</param>
-            <param name="fOAEP">如果为 true，则使用OAEP填充（仅在运行Microsoft Windows XP或更高版本的计算机上可用）执行直接的RSA加密；否则，如果为false，则使用PKCS#1 1.5版填充</param>
+            <returns>原文</returns>
         </member>
         <member name="M:Phenix.Core.Security.Cryptography.RSACryptoTextProvider.Decrypt(System.Security.Cryptography.RSACryptoServiceProvider,System.String,System.String,System.Boolean)">
             <summary>
             解密
             </summary>
             <param name="cryptoServiceProvider">加密服务</param>
-            <param name="privateKey">密钥</param>
-            <param name="value">需解密的字符串</param>
+            <param name="privateKey">私钥</param>
+            <param name="cipherText">密文(Base64字符串)</param>
             <param name="fOAEP">如果为 true，则使用OAEP填充（仅在运行Microsoft Windows XP或更高版本的计算机上可用）执行直接的RSA加密；否则，如果为false，则使用PKCS#1 1.5版填充</param>
+            <returns>原文</returns>
         </member>
         <member name="T:Phenix.Core.Security.Identity">
             <summary>

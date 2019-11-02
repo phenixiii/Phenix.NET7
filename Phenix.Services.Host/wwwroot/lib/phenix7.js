@@ -27,7 +27,7 @@ var phAjax = (function($) {
     var methodOverrideHeaderName = "X-HTTP-Method-Override";
     var authorizationHeaderName = "Phenix-Authorization";
 
-    var chunkMaxSize = 64 * 1024;
+    var maxChunkSize = 64 * 1024;
 
     var getBaseAddress = function() {
         var result;
@@ -406,18 +406,18 @@ var phAjax = (function($) {
         uploadFileChunk: function (message, file, chunkNumber, onProgress, onSuccess, onError) {
             var formData = new FormData();
             formData.append("message", message);
-            var chunkCount = Math.ceil(file.size / chunkMaxSize);
-            var chunkSize = chunkNumber > 0 ? chunkNumber < chunkCount ? chunkMaxSize : file.size - chunkMaxSize * (chunkCount - 1) : 0;
+            var chunkCount = Math.ceil(file.size / maxChunkSize);
+            var chunkSize = chunkNumber > 0 ? chunkNumber < chunkCount ? maxChunkSize : file.size - maxChunkSize * (chunkCount - 1) : 0;
             formData.append("chunkInfo",
                 JSON.stringify({
                     FileName: file.name,
                     ChunkCount: chunkCount,
                     ChunkNumber: chunkNumber,
                     ChunkSize: chunkSize,
-                    ChunkMaxSize: chunkMaxSize
+                    ChunkMaxSize: maxChunkSize
                 }));
             if (chunkNumber > 0) {
-                var p = chunkMaxSize * (chunkNumber - 1);
+                var p = maxChunkSize * (chunkNumber - 1);
                 formData.append("chunkBody", file.slice(p, p + chunkSize), file.name);
             };
             phAjax.call({

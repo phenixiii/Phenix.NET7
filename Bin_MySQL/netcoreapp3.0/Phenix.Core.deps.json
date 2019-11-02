@@ -6,13 +6,13 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v3.0": {
-      "Phenix.Core/7.3.11": {
+      "Phenix.Core/7.3.13": {
         "dependencies": {
           "Microsoft.AspNetCore.SignalR.Client": "3.0.0",
           "Microsoft.AspNetCore.SignalR.Protocols.MessagePack": "3.0.0",
-          "MySql.Data": "8.0.17",
+          "MySql.Data": "8.0.18",
           "Newtonsoft.Json": "12.0.2",
-          "System.Data.SQLite.Core": "1.0.111"
+          "System.Data.SQLite.Core": "1.0.112"
         },
         "runtime": {
           "Phenix.Core.dll": {}
@@ -203,19 +203,20 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "MySql.Data/8.0.17": {
+      "MySql.Data/8.0.18": {
         "dependencies": {
           "BouncyCastle.NetCore": "1.8.3",
           "Google.Protobuf": "3.6.1",
           "SSH.NET": "2016.1.0",
           "System.Configuration.ConfigurationManager": "4.4.1",
+          "System.Resources.Extensions": "4.6.0-preview8.19405.3",
           "System.Security.Permissions": "4.4.1",
           "System.Text.Encoding.CodePages": "4.4.0"
         },
         "runtime": {
-          "lib/netstandard2.0/MySql.Data.dll": {
-            "assemblyVersion": "8.0.17.0",
-            "fileVersion": "8.0.17.0"
+          "lib/netstandard2.1/MySql.Data.dll": {
+            "assemblyVersion": "8.0.18.0",
+            "fileVersion": "8.0.18.0"
           }
         }
       },
@@ -422,11 +423,11 @@
           "System.Text.Encoding": "4.3.0"
         }
       },
-      "System.Data.SQLite.Core/1.0.111": {
+      "System.Data.SQLite.Core/1.0.112": {
         "runtime": {
           "lib/netstandard2.0/System.Data.SQLite.dll": {
-            "assemblyVersion": "1.0.111.0",
-            "fileVersion": "1.0.111.0"
+            "assemblyVersion": "1.0.112.0",
+            "fileVersion": "1.0.112.0"
           }
         },
         "runtimeTargets": {
@@ -443,12 +444,12 @@
           "runtimes/win-x64/native/netstandard2.0/SQLite.Interop.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "1.0.111.0"
+            "fileVersion": "1.0.112.0"
           },
           "runtimes/win-x86/native/netstandard2.0/SQLite.Interop.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "1.0.111.0"
+            "fileVersion": "1.0.112.0"
           }
         }
       },
@@ -755,6 +756,14 @@
         "dependencies": {
           "System.Reflection": "4.3.0",
           "System.Runtime": "4.3.0"
+        }
+      },
+      "System.Resources.Extensions/4.6.0-preview8.19405.3": {
+        "runtime": {
+          "lib/netstandard2.0/System.Resources.Extensions.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.700.19.40503"
+          }
         }
       },
       "System.Resources.ResourceManager/4.3.0": {
@@ -1132,7 +1141,7 @@
     }
   },
   "libraries": {
-    "Phenix.Core/7.3.11": {
+    "Phenix.Core/7.3.13": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -1312,12 +1321,12 @@
       "path": "microsoft.win32.primitives/4.3.0",
       "hashPath": "microsoft.win32.primitives.4.3.0.nupkg.sha512"
     },
-    "MySql.Data/8.0.17": {
+    "MySql.Data/8.0.18": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-yfwJ+4L6RqRW3N2qUSOzHGehJNTMes8GB4XnOTO4m3s7P/lVgoL/nLL91XU+7XEC3j2QHHTJZX2Mia1nY/Gtlg==",
-      "path": "mysql.data/8.0.17",
-      "hashPath": "mysql.data.8.0.17.nupkg.sha512"
+      "sha512": "sha512-BgzDO6yitNn0np6kUbNpgRsXj7o1Km0lZoSdDi3++HuWQdFxbaERuxcYbmkDZEqEtvySxf5ww+dqSE0uf9F5+A==",
+      "path": "mysql.data/8.0.18",
+      "hashPath": "mysql.data.8.0.18.nupkg.sha512"
     },
     "NETStandard.Library/1.6.1": {
       "type": "package",
@@ -1501,12 +1510,12 @@
       "path": "system.console/4.3.0",
       "hashPath": "system.console.4.3.0.nupkg.sha512"
     },
-    "System.Data.SQLite.Core/1.0.111": {
+    "System.Data.SQLite.Core/1.0.112": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-D7Qo3JWUB6epymTVRNaAXt+Y+eh0juGjXb5q8SEp/LBdKJr6a224Mk0HCOemRsXfPIF8ULblPyCbVixUvfbpiw==",
-      "path": "system.data.sqlite.core/1.0.111",
-      "hashPath": "system.data.sqlite.core.1.0.111.nupkg.sha512"
+      "sha512": "sha512-3wA9v/K2ncZWsWfEBTiQppsi2014IJMXsZ1md3pk5bEXAJyuTthSrHF4bIWm5MG+C5g5XLhA2H7XfnSq1PXCeQ==",
+      "path": "system.data.sqlite.core/1.0.112",
+      "hashPath": "system.data.sqlite.core.1.0.112.nupkg.sha512"
     },
     "System.Diagnostics.Debug/4.3.0": {
       "type": "package",
@@ -1710,6 +1719,13 @@
       "sha512": "sha512-7u6ulLcZbyxB5Gq0nMkQttcdBTx57ibzw+4IOXEfR+sXYQoHvjW5LTLyNr8O22UIMrqYbchJQJnos4eooYzYJA==",
       "path": "system.reflection.typeextensions/4.3.0",
       "hashPath": "system.reflection.typeextensions.4.3.0.nupkg.sha512"
+    },
+    "System.Resources.Extensions/4.6.0-preview8.19405.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6GWlVqlVxY8bHHD2SSoWmI8o86BJXZT8LSadE8BIbUa5UzHYi95WFnYU6Xaif58D6fduDN/Dv0ZOindx4L7YYA==",
+      "path": "system.resources.extensions/4.6.0-preview8.19405.3",
+      "hashPath": "system.resources.extensions.4.6.0-preview8.19405.3.nupkg.sha512"
     },
     "System.Resources.ResourceManager/4.3.0": {
       "type": "package",

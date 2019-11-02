@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.111" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.112" />
   </ItemGroup>
 
   <ItemGroup>

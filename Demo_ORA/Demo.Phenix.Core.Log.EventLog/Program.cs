@@ -53,12 +53,14 @@ select *
 from PH7_EventLog
 order by EL_ID desc", CommandBehavior.SingleRow))
             {
-                while (reader.Read())
+                if (reader.Read())
                 {
                     for (int i = 0; i < reader.FieldCount; i++)
                         Console.Write("{0} = {1}, ", reader.GetName(i), reader.GetValue(i) ?? "null");
                     Console.WriteLine();
                 }
+                else
+                    Console.WriteLine("error：未找到日志！");
             }
             Console.WriteLine("默认下，每月月底会清理一次 PH7_EventLog 表里 {0} 月前的日志记录。", EventLog.ClearLogDeferMonths);
             Console.WriteLine();
