@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <Version>7.3.11</Version>
+    <Version>7.3.15</Version>
     <Description>Phenix Framework for .NET Core 3.0</Description>
     <Authors>ming</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <AssemblyName>Phenix.Services</AssemblyName>
     <DefineConstants>TRACE;ORA</DefineConstants>
     <RootNamespace>Phenix.Services</RootNamespace>
-    <Copyright>Copyright © 2007, 2019 Phenixヾ Studio</Copyright>
+    <Copyright>Copyright © 2007, 2020 Phenixヾ Studio</Copyright>
     <Company />
   </PropertyGroup>
 
@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.50" />
   </ItemGroup>
 

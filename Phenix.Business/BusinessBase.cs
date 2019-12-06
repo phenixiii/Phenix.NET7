@@ -8,7 +8,7 @@ using Phenix.Core.SyncCollections;
 namespace Phenix.Business
 {
     /// <summary>
-    /// 业务对象基类
+    /// 业务基类
     /// </summary>
     [Serializable]
     public abstract class BusinessBase<T> : UndoableBase<T>, IBusiness, IRefinedBusiness
@@ -194,7 +194,7 @@ namespace Phenix.Business
         /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
         public virtual void SaveDepth(bool checkTimestamp = true)
         {
-            GetSelfSheet().GetSheet().Owner.Database.Execute((Action<DbTransaction, bool>) SaveDepth, checkTimestamp);
+            Database.Execute((Action<DbTransaction, bool>) SaveDepth, checkTimestamp);
         }
 
         /// <summary>

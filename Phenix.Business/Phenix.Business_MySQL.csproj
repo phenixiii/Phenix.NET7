@@ -2,28 +2,30 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <Version>7.3.11</Version>
+    <Version>7.3.15</Version>
     <Description>Phenix Framework for .NET Core 3.0</Description>
     <Authors>ming</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <AssemblyName>Phenix.Business</AssemblyName>
     <DefineConstants>TRACE;MySQL</DefineConstants>
     <RootNamespace>Phenix.Business</RootNamespace>
-    <Copyright>Copyright © 2007, 2019 Phenixヾ Studio</Copyright>
+    <Copyright>Copyright © 2007, 2020 Phenixヾ Studio</Copyright>
     <Company />
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\Bin_MySQL\</OutputPath>
+    <DocumentationFile>..\Bin_MySQL\Phenix.Business.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\Bin_MySQL\</OutputPath>
+    <DocumentationFile>..\Bin_MySQL\Phenix.Business.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.0.18" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>

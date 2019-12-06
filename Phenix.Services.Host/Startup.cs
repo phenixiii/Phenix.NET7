@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -92,24 +91,24 @@ namespace Phenix.Services.Host
                      */
                     options.Filters.AddAuthorizationFilter();
                 })
-                .ConfigureApplicationPartManager(options =>
+                .ConfigureApplicationPartManager(parts =>
                 {
                     /*
-                     * 装配核心控制器，包含：
-                     *   Phenix.Core.Net.Api.GateController 响应 phAjax.checkIn()、phAjax.logon() 请求
-                     *   Phenix.Core.Net.Api.MyselfController 响应 phAjax.getMyself()、phAjax.changePassword() 请求
-                     *   Phenix.Core.Net.Api.SequenceController 响应 phAjax.getSequence() 请求
-                     *   Phenix.Core.Net.Api.IncrementController 响应 phAjax.getIncrement() 请求
-                     *   Phenix.Core.Net.Api.UserMessageController 响应 phAjax.sendMessage()、phAjax.receiveMessage()、phAjax.affirmReceivedMessage() 请求
-                     *   Phenix.Core.Net.Api.FileController 响应 phAjax.uploadFileChunk()、phAjax.downloadFileChunk() 请求
+                     * 装配Controller核心，包含：
+                     *   Phenix.Core.Net.Api.Security.GateController 响应 phAjax.checkIn()、phAjax.logon() 请求
+                     *   Phenix.Core.Net.Api.Security.MyselfController 响应 phAjax.getMyself()、phAjax.changePassword() 请求
+                     *   Phenix.Core.Net.Api.Data.SequenceController 响应 phAjax.getSequence() 请求
+                     *   Phenix.Core.Net.Api.Data.IncrementController 响应 phAjax.getIncrement() 请求
+                     *   Phenix.Core.Net.Api.Message.UserMessageController 响应 phAjax.sendMessage()、phAjax.receiveMessage()、phAjax.affirmReceivedMessage() 请求
+                     *   Phenix.Core.Net.Api.Inout.FileController 响应 phAjax.uploadFileChunk()、phAjax.downloadFileChunk() 请求
                      */
-                    options.AddKernelPart();
+                    parts.AddKernelPart();
                     /*
-                     * 装配插件控制器
+                     * 装配Controller插件
                      * 系统的 Controller 都应该按照领域划分开发各自的插件程序集，部署到本服务容器的执行目录下
                      * 插件程序集的命名，都应该统一采用"*.Plugin.dll"作为文件名的后缀
                      */
-                    options.AddPluginPart();
+                    parts.AddPluginPart();
                 });
 
             /*
@@ -173,7 +172,7 @@ namespace Phenix.Services.Host
              */
 
             /*
-             * 以下代码务必被最后执行到
+             * 以下代码务必放在最后执行
              */
             app.UseStaticFiles();
             app.UseRouting();

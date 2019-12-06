@@ -1,15 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Phenix.Business.DynamicEntity">
-    <Position X="8.5" Y="0.5" Width="2.25" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
-    <TypeIdentifier>
-      <HashCode>QAAAAAAACAAAABEAQAEAAIAACACAgAABAAAAAAggAAA=</HashCode>
-      <FileName>DynamicEntity.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Phenix.Business.UndoableBase&lt;T&gt;">
     <Position X="6" Y="0.5" Width="2.25" />
     <Compartments>
@@ -22,7 +12,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.Business.BusinessBase&lt;T&gt;">
-    <Position X="2.75" Y="3.75" Width="3" />
+    <Position X="2.75" Y="2.75" Width="3" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -36,6 +26,28 @@
     </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
+  <Class Name="Phenix.Business.RootBusinessBase&lt;T&gt;">
+    <Position X="5.75" Y="6.25" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAFAAgAAAAAAAAAEABgAAEAAAAA=</HashCode>
+      <FileName>RootBusinessBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Business.CachedRootBusinessBase&lt;T&gt;">
+    <Position X="8.25" Y="6.25" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAIAAAQwAAEAAAAAAAAAAAAMAAAAAEFBAAA=</HashCode>
+      <FileName>CachedRootBusinessBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
   <Interface Name="Phenix.Business.ISupportUndo">
     <Position X="0.75" Y="0.5" Width="1.75" />
     <TypeIdentifier>
@@ -44,7 +56,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Phenix.Business.IBusiness">
-    <Position X="3.5" Y="0.5" Width="1.5" />
+    <Position X="2.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAACCAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
       <FileName>IBusiness.cs</FileName>

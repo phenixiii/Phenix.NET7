@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Phenix.Core.Net.Api;
+using Phenix.Core.Net.Api.Inout;
 
 namespace Phenix.Services
 {

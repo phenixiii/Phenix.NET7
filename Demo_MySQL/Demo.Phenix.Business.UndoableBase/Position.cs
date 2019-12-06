@@ -11,35 +11,22 @@ namespace Demo
     /// 岗位资料
     /// </summary>
     [Serializable]
-    public sealed class Position : UndoableBase<Position>
+    public sealed class Position : CachedRootBusinessBase<Position>
     {
         private Position()
         {
-            //for fetch
+            //禁止添加代码
         }
-        
+
         [Newtonsoft.Json.JsonConstructor]
-        private Position(bool? isNew, bool? isSelfDeleted, bool? isSelfDirty,
-            IDictionary<string, object> oldPropertyValues, IDictionary<string, bool?> dirtyPropertyNames,
-            long id, string name, IList<string> roles)
-            : base(isNew, isSelfDeleted, isSelfDirty, oldPropertyValues, dirtyPropertyNames)
+        private Position(long id, string name, IList<string> roles)
+            : base(id)
         {
-            _id = id;
             _name = name;
             _roles = roles != null ? new ReadOnlyCollection<string>(roles) : null;
         }
 
         #region 属性
-
-        private long _id;
-
-        /// <summary>
-        /// ID
-        /// </summary>
-        public long Id
-        {
-            get { return _id; }
-        }
 
         private string _name;
 
@@ -66,15 +53,18 @@ namespace Demo
         #endregion
 
         #region 方法
-        
+
+        #region DeleteSelf
+
         /// <summary>
-        /// 删除岗位资料
+        /// 为DeleteSelf()函数执行时追加检查是否存在关联关系的外键条件表达式
         /// </summary>
-        public void Delete()
+        protected override CriteriaExpression AppendAssociationLambda(CriteriaExpression criteriaExpressionForDeleteSelf)
         {
-            if (DeleteRecord(CriteriaExpression.Where<Position>(p => p.Id == Id).NotExists<User>(p => p.PositionId)) == 0)
-                throw new InvalidOperationException(String.Format("未能删除 {0} 岗位, 可能已被用在了用户管理上", Name));
+            return criteriaExpressionForDeleteSelf.NotExists<User>(p => p.PositionId);
         }
+
+        #endregion
 
         #endregion
     }

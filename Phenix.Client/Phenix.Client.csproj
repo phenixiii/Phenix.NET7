@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <Version>7.3.15</Version>
+    <Description>Phenix Framework for .NET Core 3.0</Description>
+    <Authors>ming</Authors>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <AssemblyName>Phenix.Client</AssemblyName>
+    <RootNamespace>Phenix.Client</RootNamespace>
+    <Copyright>Copyright © 2007, 2020 Phenixヾ Studio</Copyright>
+    <Company />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\Bin_MySQL\</OutputPath>
+    <DocumentationFile>..\Bin_MySQL\Phenix.Client.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\Bin_MySQL\</OutputPath>
+    <DocumentationFile>..\Bin_MySQL\Phenix.Client.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="3.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.112" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Phenix.Core">
+      <HintPath>..\Bin_MySQL\netcoreapp3.0\Phenix.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties Reactor_Enabled="1" /></VisualStudio></ProjectExtensions>
+
+</Project>

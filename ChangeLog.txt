@@ -7,18 +7,11 @@
 6，提供直接读取数据库数据DataReader功能，示例见Demo.Phenix.Core.Data.Common.DataReader
 
 
-20190706
-1，提供岗位资料类以便用于岗位配置管理，示例见Demo.Phenix.Core.Security.Position，表结构见Phenix Data Model目录Security.sql文件
-2，提供团体资料类以便用于组织架构管理，示例见Demo.Phenix.Core.Security.Teams，表结构见Phenix Data Model目录Security.sql文件
-3，提供用户资料类以便用于注册用户的权限管理（申请、审核、担任岗位和所属团体），示例见Demo.Phenix.Core.Security.User，表结构见Phenix Data Model目录Security.sql文件
-
-
 20190715
 1，完善轻量级的持久化引擎，入口为Phenix.Core.Data.Database类，Fetch用法参考如下：
          IList<Teams> teamsList = Database.Default.MetaData.FindSheet<Teams>().SelectEntity<Teams>(p => p.Id == 559064445621642);
 2，提供Phenix.Core.Data.Model.EntityBase<T>实体基类，封装持久化引擎、动态刷新等基础设施功能，Fetch代码可简化为：
          IList<Teams> teamsList = Team.Select(p => p.Id == 559064445621642);
-      示例见Demo.Phenix.Core.Data.Model.EntityBase
 3，持久化引擎支持在实体属性上打System.ComponentModel.DataAnnotations.ValidationAttribute派生标签，提交对象/属性时会自动完成属性的有效性验证（验证失败抛出ValidationException）
       以下默认规范会自动添加，不必手工打标签：
           System.ComponentModel.DataAnnotations.RequiredAttribute，如果属性值不允许为空的规范是按照表字段NOT NULL的话；
@@ -45,7 +38,7 @@
 
 20190813
 1，Phenix.Core.Data.Database和Phenix.Core.Data.Common.DbCommandHelper的调用存储过程函数ExecuteStoredProc，返回值改为IDictionary<string, object>类型，为存储过程的调用结果集"参数名-参数值"，如需转换为JSON格式请调用Phenix.Core.Reflection.Utilities.JsonSerialize(result)
-2，提供动态实体类Phenix.Business.DynamicEntity，以便操作IDictionary<string, object>格式的"属性名-属性值"记录数据，如需传入JSON格式请先调用Phenix.Core.Reflection.Utilities.JsonDeserialize<IDictionary<string, object>>(propertyValues)、Phenix.Core.Reflection.Utilities.JsonDeserialize<IList<IDictionary<string, object>>>(propertyValues)进行转换，示例见Demo.Phenix.Business.DynamicEntity
+2，提供动态实体类Phenix.Core.Data.Model.DynamicEntity，以便操作IDictionary<string, object>格式的"属性名-属性值"记录数据，如需传入JSON格式请先调用Phenix.Core.Reflection.Utilities.JsonDeserialize<IDictionary<string, object>>(propertyValues)、Phenix.Core.Reflection.Utilities.JsonDeserialize<IList<IDictionary<string, object>>>(propertyValues)进行转换
 3，增补Phenix.Core.Data.Schema.Table和Phenix.Core.Data.Schema.View的增删改函数，以便操作IDictionary<string, object>格式的"属性名-属性值"记录数据，如需传入JSON格式数据请先调用Phenix.Core.Reflection.Utilities.JsonDeserialize<IDictionary<string, object>>(propertyValues)进行转换
 4，增补Phenix.Core.Data.Schema.Table、Phenix.Core.Data.Schema.View、Phenix.Core.Data.Model.EntityBase<T>的查询函数，可返回JSON格式的查询结果
 
@@ -55,26 +48,17 @@
 2，增补Phenix.Core.Data.Common.DataReader的SelectRecord()函数，直接导出JSON格式的查询结果，JSON格式的属性名为数据源的表/视图的字段名/别名
 
 
-20190823
-1，Phenix Data Model目录添加Log.sql文件
-2，提供Phenix.Core.Net.Http.HttpClient类，含Checkin、Logon、ChangePassword、Call等系列函数
-3，增补Phenix.Core.Data.Sequence功能从服务端获取64位序号，仅当所在进程里未曾注册过任何数据库连接时，才会尝试向其属性HttpClient所指向的服务发起请求
-4，增补Phenix.Core.Data.Increment功能从服务端获取64位增量，仅当所在进程里未曾注册过任何数据库连接时，才会尝试向其属性HttpClient所指向的服务发起请求
-5，提供Phenix.Core.Net.Http.OfflineCache类，为系统的客户端提供脱机缓存实时上传报文的功能，示例见Demo.Phenix.Core.Net.Http.OfflineCache
-6，增补Phenix.Core.Log.EventLog功能将日志上传到服务端，仅当所在进程里未曾注册过任何数据库连接时，才会利用OfflineCache尝试向其属性UploadBaseAddress所指向的服务提交日志
-
-
 20190905
-1，提供Phenix.Business.UndoableBase<T>可撤销编辑的实体基类，为实体对象的编辑操作提供单级回滚的功能，示例见Demo.Phenix.Business.UndoableBase
-2，约定时间戳字段以'_TIMESTAMP'后缀命名
-3，增补Phenix.Core.Data.Model.EntityBase<T>功能具备乐观锁机制，Update()和UpdateRecord()函数提供checkTimestamp参数(默认true)，保证在分布式架构下新数据不会被脏数据覆盖（会抛出Phenix.Core.Data.Validity.OutdatedDataException）
-4，增补Phenix.Business.UndoableBase<T>功能具备乐观锁机制，Save()函数提供checkTimestamp参数(默认true)，保证在分布式架构下新数据不会被脏数据覆盖（会抛出Phenix.Core.Data.Validity.OutdatedDataException）
+1，提供Phenix.Client程序集，含HttpClient类Checkin、Logon、ChangePassword、Sequence、Increment、Message、UploadFile、DownloadFile、EventLog、Call等系列函数，示例代码见：Demo.Phenix.Client.HttpClient_Message、Demo.Phenix.Client.HttpClient_File
+2，提供Phenix.Business程序集，含Phenix.Business.UndoableBase<T>可撤销编辑的实体基类，为实体对象的编辑操作提供单级回滚的功能，示例见Demo.Phenix.Business.UndoableBase
+3，约定时间戳字段以'_TIMESTAMP'后缀命名
+4，增补Phenix.Core.Data.Model.EntityBase<T>功能具备乐观锁机制，Update()和UpdateRecord()函数提供checkTimestamp参数(默认true)，保证在分布式架构下新数据不会被脏数据覆盖（会抛出Phenix.Core.Data.Validity.OutdatedDataException）
 
 
 20190911
 1，除了主键（后缀'_ID'）、制单人（后缀'_ORIGINATOR'）、制单时间（后缀'_ORIGINATE_TIME'）、制单团体（后缀'_ORIGINATE_TEAMS'）等水印字段外，约定系统自定义的水印字段用后缀'_WM'进行标识，以便在新增记录以后的历次修改中，这些字段都不会再被改动（即使编辑过实体对象也不会被持久化）
 2，仅允许用户增删改查操作自己所在团队的记录，当前用户的所属团队Identity.CurrentIdentity.User.Name/Id会被作为查询的过滤条件（即单库切片），前提是聚合根对应的表结构务必含制单团体（后缀'_ORIGINATE_TEAMS'）字段）
-3，如果系统在Phenix.Core.Data.Database对象上用RegisterSubDatabase()函数注册过分库（顺序为1-N），当前用户在增删改查操作时会被自动路由到其中一个库上，路由算法是当前用户的所属团队Identity.CurrentIdentity.User.Id哈希值的N+1余数，分库路由顺序为主库0、分库1-N，相当于其所属团队的所有用户都在这个库上进行操作
+3，如果应用系统还有分库（顺序为1-N），当前用户在增删改查操作时会被自动路由到其中一个库上（index为0主库1-N分库），路由算法是Identity.CurrentIdentity.User.RootTeams.Id的Hash值取N的余数
 
 
 20190919
@@ -102,38 +86,29 @@
 2，调通Phenix.Services.Host部署在Docker的方法
 
 
-20191014
-1，重构Phenix.Core.Net.Http.HttpClient类
-2，调通Demo.Phenix.Core.Net.Http.OfflineCache工程
-3，phenix7.js、Phenix.Core.Net.Http.HttpClient类的Call函数，补充'是否加密上传数据'、'是否解密返回数据'参数
-
-
-20191017
-1，增补Phenix.Core.Message.UserMessage的订阅消息(PUSH)功能，与phenix7.js的subscribeMessage()函数功能一致，示例见Demo.Phenix.Core.Message.UserMessage_Subscribe
-2，增补Phenix.Core.Data.Sequence、Phenix.Core.Data.Increment、Phenix.Core.Message.UserMessage带httpClient参数的系列函数，可直接指定调用的WebAPI服务，实现一层层调用WebAPI服务直到最后一层服务是直连数据库为止的穿N墙效果，或者说可实现N层负载均衡的应用服务器部署效果
-
-
-20191020
-1，增补Phenix.Core.Net.Http.HttpClient的文件上传下载功能，与phenix7.js的uploadFiles()、downloadFile()函数功能一致，示例见Demo.Phenix.Core.Net.Http.HttpClient_UploadFile_DownloadFile
-2，Phenix.NET7解决方案，拆分为Phenix.NET7_ORA.sln和Phenix.NET7_MySQL.sln
-3，撤销Phenix.Extensions目录，其子目录都迁移到根目录里
-4，从Phenix.Core工程里提取出Business相关基类，独立为Phenix.Business工程
-
-
 20191021
-1，提供业务类代码生成工具Phenix.Tools.BusinessBuilder工程源码
-2，整理本升级日志
+1，重构Phenix.Client.HttpClient类
+2，phenix7.js和Phenix.Client.HttpClient类的Call函数，补充'是否加密上传数据'、'是否解密返回数据'参数
+3，提供业务类代码生成工具Phenix.Tools.BusinessBuilder工程源码
 
 
 20191030
-1，增补Phenix.Core.AppRun的定时执行任务功能，通过AddTimedTask()函数添加已实现Phenix.Core.ITimedTask接口的对象，会自动按照指定周期在一个独立线程里执行这个对象的Phenix.Core.ITimedTask.Execute()函数
-2，Phenix.Core.SyncCollections命名空间的集合类，都已实现Phenix.Core.ITimedTask接口，只要通过AddTimedTask()函数加入到Phenix.Core.AppRun的定时执行任务队列里，会自动按照指定周期清理集合对象里过期的集合项，条件是集合项对象需实现Phenix.Core.SyncCollections.IMemCachedObject接口，指定它的失效时间以自动被从集合中剔除出去
-3，重构实体对象和业务对象的缓存机制，具体用法参考Demo.Phenix.Core.Data.Model.EntityBase示例的Position和User类，可对照Teams类的原始写法
-4，重构Phenix.Core.Net.Http.OfflineCache类（脱机缓存实时上传报文），加强稳定性
+1，新增Phenix.Core.Threading.Timer类，提供定时执行任务功能，通过AddTimedTask()函数添加已实现Phenix.Core.Threading.ITimedTask接口的对象，会自动按照指定周期在一个独立线程里执行这个对象的Execute()函数
+2，Phenix.Core.SyncCollections命名空间的集合类，都已实现Phenix.Core.Threading.ITimedTask接口，只要通过AddTimedTask()函数加入到Phenix.Core.Threading.Timer的定时执行任务队列里，会自动按照指定周期清理集合对象里过期的集合项，前提条件是集合项对象需实现Phenix.Core.SyncCollections.ICachedObject接口，指定它的失效时间以自动被从集合中剔除出去
+3，提供具备缓存机制的实体基类Phenix.Core.CachedRootEntityBase<T>和业务基类Phenix.Business.CachedRootBusinessBase<T>
 
 
 20191102
 1，提供非对称加密的公钥私钥生成工具Phenix.Tools.CreateKeyPair工程源码
-2，数据库连接串配置记录存放在Phenix.Core.db库文件PH7_Database表里，以便在程序运行时无需通过代码注册数据库入口，可直接获取Phenix.Core.Data.Database对象，具体配置方法见示例记录的Remark字段内容
+2，数据库连接串配置记录存放在Phenix.Core.db（推荐使用SQLite Expert工具打开）库文件PH7_Database表里，以便在程序运行时无需通过编写代码注册数据库入口，可直接获取Phenix.Core.Data.Database对象，具体配置方法见示例记录的Remark字段内容
 3，注释掉Phenix.Services.Host工程里的数据库入口注册代码，改用Phenix.Core.db库文件PH7_Database表做数据库连接串的配置
+
+
+20191205
+1，基于Orleans框架全面改造Phenix.Core和Phenix.Services.Host工程，以支持并行和分布式大规模服务架构设计
+2，规定将Orleans服务的Grain及其接口代码编写在各自的工程里，程序集的命名以"*.Plugin.dll"作为后缀，默认会被Phenix.Services.Host自动加载并装配到ApplicationParts中
+
+
+
+
 

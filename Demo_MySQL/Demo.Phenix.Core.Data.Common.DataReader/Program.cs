@@ -18,7 +18,7 @@ namespace Demo
             Console.WriteLine("DataReader 类除了封装 .NET DataReader 原功能外，还提供了 GetNullableXXX 系列函数，以利获取允许为空的字段值时精简代码。");
             Console.WriteLine();
 
-            Console.WriteLine("注册缺省数据库连接");
+            Console.WriteLine("注册缺省数据库连接（也可以在 Phenix.Core.db 的 PH7_Database 表中配置）");
             Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
             Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
             Console.WriteLine("请确认连接的是否是你的测试库？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
@@ -42,7 +42,6 @@ namespace Demo
                 Console.WriteLine("数据库中还未有视图，请新建一个用于演示!");
                 Console.Write("如已准备好，请按任意键继续");
                 Console.ReadKey();
-                Console.WriteLine();
             }
             Console.WriteLine();
 
@@ -60,7 +59,7 @@ namespace Demo
                     Console.WriteLine("么有一条记录");
             }
             Console.WriteLine();
-
+            
             Console.Write("请按回车键结束演示");
             Console.ReadLine();
         }

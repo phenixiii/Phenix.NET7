@@ -1,1 +1,1 @@
-docker run -d -p 5000:5000 phenix.services.host:7.3.7 .
+docker run -d -p 5000:5000 phenix.services.host:7.3 .

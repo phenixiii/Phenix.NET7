@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.SyncCollections;
 
@@ -12,31 +13,40 @@ namespace Demo
         {
             Console.WriteLine("**** 演示 Phenix.Core.Data.Sequence 功能 ****");
             Console.WriteLine();
-            Console.WriteLine("Sequence 类，为系统提供唯一的序列号，支持多线程、多进程、分布式应用，每次调用 Value 属性可获取不会重复的 15 位 Long 值，但不保证是连续的。");
-            Console.WriteLine("序列号可作为业务对象（业务表）ID 值的填充来源。");
+            Console.WriteLine("Sequence 类，封装了运行在 Orleans 服务群的 SequenceGrain 的64位序号生成器。");
+            Console.WriteLine("每次调用 Sequence 对象的 Value 属性，将获得同一 index 下不会重复（但不保证连续）的15位 Long 类型数值，可作为业务对象（业务表）ID 值的填充来源。");
             Console.WriteLine();
 
-            Console.WriteLine("Sequence 类，可以在服务端使用也可以在客户端使用。");
-            Console.WriteLine("在服务端使用，如果注册过数据库连接（见 Database 属性），就以该数据库为基准保证数据的唯一性，否则会尝试向其 HttpClient 属性所指向的 WebAPI 服务发起请求，一层层调用直到最后一层服务是直连数据库的可以作为基准为止。");
-            Console.WriteLine("HttpClient 属性，默认为 Phenix.Core.Net.Http.HttpClient.Default（即第一个被构造的 HttpClient），除非直接赋值指定，或者调用函数时传参指定。");
-            Console.WriteLine("本 Demo 演示了直连数据库的服务端使用场景。");
+            Console.WriteLine("本场景是运行在服务端，如果要在客户端获取64位增量，请使用 phAjax.getSequence() / Phenix.Client.HttpClient.GetSequenceAsync()。");
             Console.WriteLine();
 
-            Console.WriteLine("注册缺省数据库连接");
+            Console.WriteLine("在接下来的演示之前，请启动 Phenix.Services.Host 程序，并保证其与本程序的 Phenix.Core.db 的缺省数据库配置信息是一致的。");
+            Console.WriteLine("数据库配置信息存放在 Phenix.Core.db 的 PH7_Database 表中，配置方法见其示例记录的 Remark 字段内容。");
+            Console.Write("准备好之后，请按任意键继续");
+            Console.ReadKey();
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.WriteLine("设为调试状态");
+            AppRun.Debugging = true;
+            Console.WriteLine("测试过程中产生的日志保存在：" + AppRun.TempDirectory);
+            Console.WriteLine();
+
+            Console.WriteLine("注册缺省数据库连接（也可以在 Phenix.Core.db 的 PH7_Database 表中配置）");
             Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
             Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
-            Console.WriteLine("请确认连接的是否是你的测试库？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
+            Console.WriteLine("请确认是否是你的测试库（并保证与 Phenix.Services.Host 程序连接的缺省数据库是同一个）？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
             Console.Write("否则按任意键继续");
             Console.ReadKey();
             Console.WriteLine();
             Console.WriteLine();
 
-            Console.WriteLine("启动 3 个线程分别读取 Sequence：");
+            Console.WriteLine("启动3个线程分别读取不同 index 下 Sequence 的值，参数 index 随机产生，范围在0~999之间：");
             Task[] tasks = new[]
             {
-                Task.Run(() => FetchSequence(1)),
-                Task.Run(() => FetchSequence(2)),
-                Task.Run(() => FetchSequence(3))
+                Task.Run(() => FetchSequence(new Random().Next(0, 1000))),
+                Task.Run(() => FetchSequence(new Random().Next(0, 1000))),
+                Task.Run(() => FetchSequence(new Random().Next(0, 1000)))
             };
             Task.WaitAll(tasks);
             foreach (KeyValuePair<long, int> kvp in _sequenceValues)
@@ -53,10 +63,9 @@ namespace Demo
 
         static void FetchSequence(int index)
         {
+            Phenix.Core.Data.Sequence sequence = Phenix.Core.Data.Sequence.Fetch(index);
             for (int i = 0; i < 10; i++)
-            {
-                _sequenceValues.Add(Phenix.Core.Data.Sequence.Value, index);
-            }
+                _sequenceValues.Add(sequence.Value.Result, index);
         }
     }
 }

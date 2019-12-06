@@ -4,6 +4,203 @@
         <name>Phenix.Core</name>
     </assembly>
     <members>
+        <member name="T:Phenix.Core.Actor.ClusterClient">
+            <summary>
+            Orleans服务集群客户端
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Actor.ClusterClient.Default">
+            <summary>
+            缺省Orleans服务集群客户端
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Actor.ClusterClient.Fetch">
+            <summary>
+            获取Orleans服务集群客户端
+            </summary>
+            <returns>Orleans服务集群客户端</returns>
+        </member>
+        <member name="M:Phenix.Core.Actor.ClusterClient.Fetch(System.String,System.String,System.String)">
+            <summary>
+            获取Orleans服务集群客户端
+            </summary>
+            <param name="clusterId">Orleans集群的唯一ID</param>
+            <param name="serviceId">Orleans服务的唯一ID</param>
+            <param name="connectionString">Orleans数据库连接串</param>
+            <returns>Orleans服务集群客户端</returns>
+        </member>
+        <member name="T:Phenix.Core.Actor.EntangledRootEntityBase`2">
+            <summary>
+            纠缠根实体基类
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Actor.EntangledRootEntityBase`2.#ctor">
+            <summary>
+            for CreateInstance
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Actor.EntangledRootEntityBase`2.#ctor(System.Int64)">
+            <summary>
+            for Newtonsoft.Json.JsonConstructor
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Actor.EntangledRootEntityBase`2.FetchAsync(System.Int64,System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="id">ID</param>
+            <param name="doCreate">如果没有该ID的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Actor.EntangledRootEntityBase`2.FetchAsync(Orleans.IClusterClient,System.Int64,System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="client">IClusterClient</param>
+            <param name="id">ID</param>
+            <param name="doCreate">如果没有该ID的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Actor.EntangledRootEntityBase`2.FetchAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            获取实体对象
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+        </member>
+        <member name="M:Phenix.Core.Actor.EntangledRootEntityBase`2.FetchAsync(Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            获取实体对象
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+        </member>
+        <member name="M:Phenix.Core.Actor.EntangledRootEntityBase`2.FetchAsync(Orleans.IClusterClient,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            获取实体对象
+            </summary>
+            <param name="client">IClusterClient</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+        </member>
+        <member name="M:Phenix.Core.Actor.EntangledRootEntityBase`2.FetchAsync(Orleans.IClusterClient,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            获取实体对象
+            </summary>
+            <param name="client">IClusterClient</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+        </member>
+        <member name="P:Phenix.Core.Actor.EntangledRootEntityBase`2.Database">
+            <summary>
+            数据库入口
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Actor.EntangledRootEntityBase`2.Sheet">
+            <summary>
+            单子
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Actor.EntangledRootEntityBase`2.Grain">
+            <summary>
+            IRootEntityGrain
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Actor.EntangledRootEntityBase`2._id">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Actor.EntangledRootEntityBase`2.Id">
+            <summary>
+            ID(映射表XX_ID字段)
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Actor.EntangledRootEntityBase`2.InsertSelf">
+            <summary>
+            新增自己(如未指定主键属性则仅提交第一个属性映射的表记录)
+            </summary>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Actor.EntangledRootEntityBase`2.InsertSelf(System.Data.Common.DbConnection)">
+            <summary>
+            新增自己(如未指定主键属性则仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Actor.EntangledRootEntityBase`2.InsertSelf(System.Data.Common.DbTransaction)">
+            <summary>
+            新增自己(如未指定主键属性则仅提交第一个属性映射的表记录)
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Actor.EntangledRootEntityBase`2.SetProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Object)">
+            <summary>
+            设置属性值
+            </summary>
+            <param name="propertyLambda">含类属性的 lambda 表达式</param>
+            <param name="newValue">新值</param>
+        </member>
+        <member name="M:Phenix.Core.Actor.EntangledRootEntityBase`2.UpdateSelf(Phenix.Core.Data.Model.NameValue[])">
+            <summary>
+            更新自己(提交第一个属性映射的表记录)
+            </summary>
+            <param name="nameValues">待更新属性值队列</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Actor.EntangledRootEntityBase`2.UpdateSelf(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            更新自己(提交第一个属性映射的表记录)
+            </summary>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="T:Phenix.Core.Actor.IRootEntityGrain">
+            <summary>
+            根实体Grain接口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Actor.IRootEntityGrain.SelectRecord">
+            <summary>
+            获取记录(JSON格式)
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Actor.IRootEntityGrain.UpdateRecord(System.String)">
+            <summary>
+            更新记录
+            </summary>
+            <param name="propertyValues">待更新"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="T:Phenix.Core.Actor.RootEntityGrainBase`1">
+            <summary>
+            根实体Grain基类
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Actor.RootEntityGrainBase`1.Id">
+            <summary>
+            ID(映射表XX_ID字段)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Actor.RootEntityGrainBase`1.Kernel">
+            <summary>
+            根实体对象
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Actor.RootEntityGrainBase`1.Phenix#Core#Actor#IRootEntityGrain#SelectRecord">
+            <summary>
+            获取记录(JSON格式)
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Actor.RootEntityGrainBase`1.Phenix#Core#Actor#IRootEntityGrain#UpdateRecord(System.String)">
+            <summary>
+            更新记录
+            </summary>
+            <param name="propertyValues">待更新"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
+            <returns>更新记录数</returns>
+        </member>
         <member name="T:Phenix.Core.AppRun">
             <summary>
             应用系统执行
@@ -66,20 +263,6 @@
             是否致命的错误
             </summary>
             <param name="error">错误</param>
-        </member>
-        <member name="M:Phenix.Core.AppRun.AddTimedTask(Phenix.Core.ITimedTask,System.Int32,System.Int32)">
-            <summary>
-            添加定时执行的任务
-            </summary>
-            <param name="cycleTimedTask">定时任务</param>
-            <param name="cycleDayMultiple">执行于每月里可被参数(2~28)除整的日期(范围以外为每天)</param>
-            <param name="cycleHourMultiple">执行于被筛选日期里可被参数(2~23)除整的小时(范围以外为每小时)</param>
-        </member>
-        <member name="M:Phenix.Core.AppRun.RemoveTimedTask(Phenix.Core.ITimedTask)">
-            <summary>
-            移除定时执行的任务
-            </summary>
-            <param name="cycleTimedTask">定时任务</param>
         </member>
         <member name="T:Phenix.Core.Data.Common.DataReader">
             <summary>
@@ -1770,20 +1953,20 @@
         </member>
         <member name="M:Phenix.Core.Data.Database.GetSubDatabase">
             <summary>
-            获取分库入口(用Identity.CurrentIdentity.User.RootTeams.Id值Hash为为index, 0为主库)
+            获取分库入口(用Identity.CurrentIdentity.User.RootTeams.Id值Hash为为index, 0为主库/1-N为分库顺序)
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Database.GetSubDatabase(System.Object)">
             <summary>
             获取分库入口
             </summary>
-            <param name="routeKey">路由键(Hash为index, 0为主库/1-N为RegisterSubDatabase注册的分库顺序)</param>
+            <param name="routeKey">路由键(Hash为index, 0为主库/1-N为分库顺序)</param>
         </member>
         <member name="M:Phenix.Core.Data.Database.GetSubDatabase(System.Int32,System.Boolean)">
             <summary>
             获取分库入口
             </summary>
-            <param name="index">序号(0为主库/1-N为RegisterSubDatabase注册的分库顺序)</param>
+            <param name="index">序号(0为主库/1-N为分库顺序)</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
         </member>
         <member name="M:Phenix.Core.Data.Database.GetConnection">
@@ -2679,6 +2862,22 @@
             短路值
             </summary>
         </member>
+        <member name="M:Phenix.Core.Data.Expressions.CriteriaExpression.Equals(System.Object)">
+            <summary>
+            比较对象
+            </summary>
+            <param name="obj">对象</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Expressions.CriteriaExpression.GetHashCode">
+            <summary>
+            取哈希值(注意字符串在32位和64位系统有不同的算法得到不同的结果) 
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Expressions.CriteriaExpression.ToString">
+            <summary>
+            字符串表示
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Data.Expressions.CriteriaExpressionType">
             <summary>
             条件表达式类型
@@ -2887,6 +3086,22 @@
             </summary>
             <param name="entity">实体</param>
         </member>
+        <member name="M:Phenix.Core.Data.Expressions.OperationExpression.Equals(System.Object)">
+            <summary>
+            比较对象
+            </summary>
+            <param name="obj">对象</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Expressions.OperationExpression.GetHashCode">
+            <summary>
+            取哈希值(注意字符串在32位和64位系统有不同的算法得到不同的结果) 
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Expressions.OperationExpression.ToString">
+            <summary>
+            字符串表示
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Data.Expressions.OperationSign">
             <summary>
             运算符号
@@ -3009,42 +3224,540 @@
             顺序
             </summary>
         </member>
+        <member name="M:Phenix.Core.Data.Expressions.OrderBy.Equals(System.Object)">
+            <summary>
+            比较对象
+            </summary>
+            <param name="obj">对象</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Expressions.OrderBy.GetHashCode">
+            <summary>
+            取哈希值(注意字符串在32位和64位系统有不同的算法得到不同的结果) 
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Expressions.OrderBy.ToString">
+            <summary>
+            字符串表示
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Data.Grains.IIncrementGrain">
+            <summary>
+            64位增量Grain接口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Grains.IIncrementGrain.GetNext">
+            <summary>
+            取值
+            </summary>
+            <returns>64位增量</returns>
+        </member>
+        <member name="T:Phenix.Core.Data.Grains.IncrementGrain">
+            <summary>
+            64位增量Grain
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Data.Grains.IncrementValue">
+            <summary>
+            增量值
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Grains.IncrementValue.Fetch(System.String,System.Int64)">
+            <summary>
+            获取增量值
+            </summary>
+            <param name="key"></param>
+            <param name="initialValue"></param>
+            <returns>增量值</returns>
+        </member>
+        <member name="P:Phenix.Core.Data.Grains.IncrementValue.ClearDeferMonths">
+            <summary>
+            清理几个月前的增量值
+            缺省为 3(>=3)
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Grains.IncrementValue._key">
+            <summary>
+            键
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Grains.IncrementValue.Key">
+            <summary>
+            键
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Grains.IncrementValue._initialValue">
+            <summary>
+            初始值
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Grains.IncrementValue.InitialValue">
+            <summary>
+            初始值
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Grains.IncrementValue._value">
+            <summary>
+            值
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Grains.IncrementValue.Value">
+            <summary>
+            值
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Grains.IncrementValue._activityTime">
+            <summary>
+            活动时间
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Grains.IncrementValue.ActivityTime">
+            <summary>
+            活动时间
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Grains.IncrementValue.GetNext">
+            <summary>
+            取值
+            </summary>
+            <returns>64位增量</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Grains.IncrementValue.Initialize(Phenix.Core.Data.Schema.Sheet)">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Data.Grains.ISequenceGrain">
+            <summary>
+            64位序号Grain接口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Grains.ISequenceGrain.GetValue">
+            <summary>
+            取值
+            </summary>
+            <returns>64位序号</returns>
+        </member>
+        <member name="T:Phenix.Core.Data.Grains.SequenceGrain">
+            <summary>
+            64位序号Grain
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Grains.SequenceGrain.OnActivateAsync">
+            <summary>
+            激活时触发
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Data.Increment">
             <summary>
             64位增量
-            </summary> 
-        </member>
-        <member name="P:Phenix.Core.Data.Increment.Database">
-            <summary>
-            数据库入口
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Increment.HttpClient">
+        <member name="M:Phenix.Core.Data.Increment.Fetch(System.String,System.Int64)">
             <summary>
-            Database为空时用HttpClient连服务端
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Increment.GetNext(Phenix.Core.Net.Http.HttpClient,System.String,System.Int64)">
-            <summary>
-            取下一个
-            </summary>
-            <param name="httpClient">HttpClient</param>
-            <param name="key">键</param>
-            <param name="initialValue">初值</param>
-            <returns>值</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Increment.GetNext(System.String,System.Int64)">
-            <summary>
-            取下一个
+            获取64位增量
             </summary>
             <param name="key">键</param>
             <param name="initialValue">初值</param>
-            <returns>值</returns>
+            <returns>64位增量</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Increment.Fetch(Orleans.IClusterClient,System.String,System.Int64)">
+            <summary>
+            获取64位增量
+            </summary>
+            <param name="client">IClusterClient</param>
+            <param name="key">键</param>
+            <param name="initialValue">初值</param>
+            <returns>64位增量</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Increment.GetNext">
+            <summary>
+            取值
+            </summary>
+            <returns>64位增量</returns>
+        </member>
+        <member name="T:Phenix.Core.Data.Model.CachedRootEntityBase`1">
+            <summary>
+            缓存根实体基类
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.#ctor">
+            <summary>
+            for CreateInstance
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.#ctor(System.Int64)">
+            <summary>
+            for Newtonsoft.Json.JsonConstructor
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.CachedRootEntityBase`1.IdCache">
+            <summary>
+            主键缓存
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.CachedRootEntityBase`1.ObjectCache">
+            <summary>
+            对象缓存
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(System.Int64,System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="id">ID</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(System.Int64,System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="id">ID</param>
+            <param name="doCreate">如果没有该ID的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(System.Data.Common.DbConnection,System.Int64,System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="id">ID</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(System.Data.Common.DbConnection,System.Int64,System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="id">ID</param>
+            <param name="doCreate">如果没有该ID的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(System.Data.Common.DbTransaction,System.Int64,System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="id">ID</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(System.Data.Common.DbTransaction,System.Int64,System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="id">ID</param>
+            <param name="doCreate">如果没有该ID的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+            <returns>IMemCachedEntity</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+            <returns>IMemCachedEntity</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.Fetch(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.CachedRootEntityBase`1.InvalidTime">
+            <summary>
+            失效时间
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.InsertSelf(System.Data.Common.DbTransaction)">
+            <summary>
+            新增自己
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.UpdateSelf(System.Data.Common.DbTransaction,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新自己
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.DeleteSelf(System.Data.Common.DbTransaction,System.Boolean)">
+            <summary>
+            删除自己
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="cascade">是否级联</param>
+            <returns>删除记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.CachedRootEntityBase`1.SaveRenovateLog(System.Data.Common.DbTransaction,Phenix.Core.Data.ExecuteAction,System.DateTime)">
+            <summary>
+            保存表记录更新日志
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="executeTime">执行时间</param>
+            <param name="executeAction">执行动作</param>
+        </member>
+        <member name="T:Phenix.Core.Data.Model.DynamicEntity">
+            <summary>
+            动态实体
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.Fetch(Phenix.Core.Data.Schema.Sheet)">
+            <summary>
+            构建动态实体
+            </summary>
+            <param name="selfSheet">操作单子</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.Fetch(Phenix.Core.Data.Model.NameValue[])">
+            <summary>
+            构建动态实体
+            </summary>
+            <param name="nameValues">"属性名-属性值"键值队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.Fetch(System.Collections.Generic.IDictionary{System.String,System.Object},Phenix.Core.Data.Schema.Sheet)">
+            <summary>
+            构建动态实体
+            </summary>
+            <param name="propertyValues">"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
+            <param name="selfSheet">操作单子</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.FetchList(System.Collections.Generic.IList{System.Collections.Generic.IDictionary{System.String,System.Object}},Phenix.Core.Data.Schema.Sheet)">
+            <summary>
+            构建动态实体集合
+            </summary>
+            <param name="propertyValues">"属性名-属性值"键值队列(仅提交第一个属性映射的表)</param>
+            <param name="selfSheet">操作单子</param>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.DynamicEntity.PropertyValues">
+            <summary>
+            "属性名-属性值"键值队列
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.DynamicEntity.SelfSheet">
+            <summary>
+            操作单子
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.TrySetMember(System.Dynamic.SetMemberBinder,System.Object)">
+            <summary>
+            设置属性值
+            </summary>
+            <param name="binder">动态设置属性操作</param>
+            <param name="value">值</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.TryGetMember(System.Dynamic.GetMemberBinder,System.Object@)">
+            <summary>
+            获取属性值
+            </summary>
+            <param name="binder">动态获取属性操作</param>
+            <param name="result">值</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.GetEnumerator">
+            <summary>
+            返回循环访问的枚举数
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.InsertRecord">
+            <summary>
+            新增记录(仅提交第一个属性映射的表)
+            </summary>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.InsertRecord(System.Data.Common.DbConnection)">
+            <summary>
+            新增记录(仅提交第一个属性映射的表)
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.InsertRecord(System.Data.Common.DbTransaction)">
+            <summary>
+            新增记录(仅提交第一个属性映射的表)
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.UpdateRecord">
+            <summary>
+            更新记录(仅提交第一个属性映射的表)
+            </summary>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.UpdateRecord(System.Data.Common.DbConnection)">
+            <summary>
+            更新记录(仅提交第一个属性映射的表)
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.UpdateRecord(System.Data.Common.DbTransaction)">
+            <summary>
+            更新记录(仅提交第一个属性映射的表)
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.DeleteRecord">
+            <summary>
+            删除记录(仅提交第一个属性映射的表)
+            </summary>
+            <returns>删除记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.DeleteRecord(System.Data.Common.DbConnection)">
+            <summary>
+            删除记录(仅提交第一个属性映射的表)
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <returns>删除记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DynamicEntity.DeleteRecord(System.Data.Common.DbTransaction)">
+            <summary>
+            删除记录(仅提交第一个属性映射的表)
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <returns>删除记录数</returns>
         </member>
         <member name="T:Phenix.Core.Data.Model.EntityBase`1">
             <summary>
             实体基类
             </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Fetch(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            获取实体对象
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Fetch(Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            获取实体对象
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Fetch(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            获取实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Fetch(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            获取实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Fetch(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            获取实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Fetch(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            获取实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
         </member>
         <member name="P:Phenix.Core.Data.Model.EntityBase`1.Database">
             <summary>
@@ -3056,19 +3769,14 @@
             单子
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Model.EntityBase`1.SelfSheet">
+        <member name="P:Phenix.Core.Data.Model.EntityBase`1.PrimaryKeyPropertyLambda">
             <summary>
-            操作单子
+            主键表达式(null代表增删改持久化时遍历类遇到的第一个主键属性)
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Clone">
             <summary>
             克隆
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.GetSelfSheet">
-            <summary>
-            获取操作单子
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.FillReservedFields(System.Boolean,System.Boolean)">
@@ -3077,11 +3785,6 @@
             </summary>
             <param name="isWatermarkColumn">是否仅在insert时被提交</param>
             <param name="overwritingOnUpdate">是否要在Update时被覆盖</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.GetPersistTablePrimaryKeyPropertyLambda">
-            <summary>
-            提供映射到待持久化(增删改)的表的主键的属性 lambda 表达式(null代表遍历类遇到的第一个主键属性)
-            </summary>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.InsertSelf">
             <summary>
@@ -3103,29 +3806,6 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <returns>更新记录数</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Insert``1(``0)">
-            <summary>
-            新增自己(如未指定主键属性则仅提交第一个属性映射的表记录)
-            </summary>
-            <param name="memCachedEntity">IMemCachedEntity</param>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Insert``1(``0,System.Data.Common.DbConnection)">
-            <summary>
-            新增自己(如未指定主键属性则仅提交第一个属性映射的表记录)
-            </summary>
-            <param name="memCachedEntity">IMemCachedEntity</param>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Insert``1(``0,System.Data.Common.DbTransaction)">
-            <summary>
-            新增自己(如未指定主键属性则仅提交第一个属性映射的表记录)
-            </summary>
-            <param name="memCachedEntity">IMemCachedEntity</param>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <returns>更新记录数</returns>
-        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.SetProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
             <summary>
             设置属性值
@@ -3142,14 +3822,14 @@
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            更新自己(仅提交第一个属性映射的表记录)
+            更新自己(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
             <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            更新自己(仅提交第一个属性映射的表记录)
+            更新自己(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
@@ -3157,7 +3837,7 @@
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbConnection,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            更新自己(仅提交第一个属性映射的表记录)
+            更新自己(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
@@ -3165,7 +3845,7 @@
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbConnection,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            更新自己(仅提交第一个属性映射的表记录)
+            更新自己(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
@@ -3174,7 +3854,7 @@
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbTransaction,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            更新自己(仅提交第一个属性映射的表记录)
+            更新自己(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
@@ -3182,63 +3862,8 @@
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbTransaction,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            更新自己(仅提交第一个属性映射的表记录)
+            更新自己(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update``1(``0,Phenix.Core.Data.Schema.PropertyValue[])">
-            <summary>
-            更新自己(仅提交第一个属性映射的表记录)
-            </summary>
-            <param name="memCachedEntity">IMemCachedEntity</param>
-            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update``1(``0,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
-            <summary>
-            更新自己(仅提交第一个属性映射的表记录)
-            </summary>
-            <param name="memCachedEntity">IMemCachedEntity</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update``1(``0,System.Data.Common.DbConnection,Phenix.Core.Data.Schema.PropertyValue[])">
-            <summary>
-            更新自己(仅提交第一个属性映射的表记录)
-            </summary>
-            <param name="memCachedEntity">IMemCachedEntity</param>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update``1(``0,System.Data.Common.DbConnection,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
-            <summary>
-            更新自己(仅提交第一个属性映射的表记录)
-            </summary>
-            <param name="memCachedEntity">IMemCachedEntity</param>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update``1(``0,System.Data.Common.DbTransaction,Phenix.Core.Data.Schema.PropertyValue[])">
-            <summary>
-            更新自己(仅提交第一个属性映射的表记录)
-            </summary>
-            <param name="memCachedEntity">IMemCachedEntity</param>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
-            <returns>更新记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Update``1(``0,System.Data.Common.DbTransaction,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
-            <summary>
-            更新自己(仅提交第一个属性映射的表记录)
-            </summary>
-            <param name="memCachedEntity">IMemCachedEntity</param>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列(null代表提交所有属性)</param>
@@ -3356,14 +3981,14 @@
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.DeleteSelf(System.Boolean)">
             <summary>
-            删除自己
+            删除自己(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
             <param name="cascade">是否级联</param>
             <returns>删除记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.DeleteSelf(System.Data.Common.DbConnection,System.Boolean)">
             <summary>
-            删除自己
+            删除自己(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="cascade">是否级联</param>
@@ -3371,34 +3996,8 @@
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.DeleteSelf(System.Data.Common.DbTransaction,System.Boolean)">
             <summary>
-            删除自己
+            删除自己(如未指定主键属性则仅提交第一个属性映射的表记录)
             </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="cascade">是否级联</param>
-            <returns>删除记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Delete``1(``0,System.Boolean)">
-            <summary>
-            删除自己
-            </summary>
-            <param name="memCachedEntity">IMemCachedEntity</param>
-            <param name="cascade">是否级联</param>
-            <returns>删除记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Delete``1(``0,System.Data.Common.DbConnection,System.Boolean)">
-            <summary>
-            删除自己
-            </summary>
-            <param name="memCachedEntity">IMemCachedEntity</param>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="cascade">是否级联</param>
-            <returns>删除记录数</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.Delete``1(``0,System.Data.Common.DbTransaction,System.Boolean)">
-            <summary>
-            删除自己
-            </summary>
-            <param name="memCachedEntity">IMemCachedEntity</param>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="cascade">是否级联</param>
             <returns>删除记录数</returns>
@@ -3958,60 +4557,22 @@
             <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
             <param name="asyncAction">异步动作(表名,表主键值,执行时间,执行动作)</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SaveRenovateLog(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},Phenix.Core.Data.ExecuteAction)">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SaveRenovateLog(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},Phenix.Core.Data.ExecuteAction)">
             <summary>
             保存表记录更新日志
             </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
             <param name="executeAction">执行动作</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SaveRenovateLog(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},Phenix.Core.Data.ExecuteAction,System.DateTime)">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SaveRenovateLog(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Object}},Phenix.Core.Data.ExecuteAction,System.DateTime)">
             <summary>
             保存表记录更新日志
             </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
             <param name="executeTime">执行时间</param>
             <param name="executeAction">执行动作</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SaveRenovateLog``1(``0,Phenix.Core.Data.ExecuteAction)">
-            <summary>
-            保存表记录更新日志
-            </summary>
-            <param name="memCachedEntity">IMemCachedEntity</param>
-            <param name="executeAction">执行动作</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SaveRenovateLog``1(``0,Phenix.Core.Data.ExecuteAction,System.DateTime)">
-            <summary>
-            保存表记录更新日志
-            </summary>
-            <param name="memCachedEntity">IMemCachedEntity</param>
-            <param name="executeTime">执行时间</param>
-            <param name="executeAction">执行动作</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchMemCache``1(System.Int64,System.Int32)">
-            <summary>
-            获取缓存
-            </summary>
-            <param name="id">ID</param>
-            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
-            <returns>IMemCachedEntity</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.AddMemCache``1(``0)">
-            <summary>
-            添加缓存
-            </summary>
-            <param name="memCachedEntity">IMemCachedEntity</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.RemoveMemCache``1(``0)">
-            <summary>
-            移除缓存
-            </summary>
-            <param name="memCachedEntity">IMemCachedEntity</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.ClearMemCache``1">
-            <summary>
-            清空缓存
-            </summary>
         </member>
         <member name="T:Phenix.Core.Data.Model.EnumCaptionAttribute">
             <summary>
@@ -4168,19 +4729,29 @@
             实体接口
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Model.IEntity.SelfSheet">
+        <member name="T:Phenix.Core.Data.Model.IRootEntity">
             <summary>
-            操作单子
+            根实体接口
             </summary>
         </member>
-        <member name="T:Phenix.Core.Data.Model.IMemCachedEntity">
+        <member name="P:Phenix.Core.Data.Model.IRootEntity.Id">
             <summary>
-            实体缓存对象接口
+            ID(映射表XX_ID字段)
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Model.IMemCachedEntity.Id">
+        <member name="T:Phenix.Core.Data.Model.ITreeEntity">
             <summary>
-            ID
+            树实体接口
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.ITreeEntity.RootId">
+            <summary>
+            根ID(映射表XX_Root_ID字段)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.ITreeEntity.ParentId">
+            <summary>
+            父ID(映射表XX_Parent_ID字段)
             </summary>
         </member>
         <member name="T:Phenix.Core.Data.Model.NameValue">
@@ -4195,11 +4766,18 @@
             <param name="name">名</param>
             <param name="value">值</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.NameValue.New(System.String,System.Object)">
+        <member name="M:Phenix.Core.Data.Model.NameValue.Set(System.String,System.Object)">
             <summary>
-            构造键值对
+            设置键值对
             </summary>
             <param name="name">名</param>
+            <param name="value">值</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.NameValue.Set``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Object)">
+            <summary>
+            设置键值对
+            </summary>
+            <param name="propertyLambda">含类属性的 lambda 表达式</param>
             <param name="value">值</param>
         </member>
         <member name="P:Phenix.Core.Data.Model.NameValue.Name">
@@ -4211,6 +4789,363 @@
             <summary>
             值
             </summary>
+        </member>
+        <member name="T:Phenix.Core.Data.Model.RootEntityBase`1">
+            <summary>
+            根实体基类
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.RootEntityBase`1.#ctor">
+            <summary>
+            for CreateInstance
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.RootEntityBase`1.#ctor(System.Int64)">
+            <summary>
+            for Newtonsoft.Json.JsonConstructor
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.RootEntityBase`1.Fetch(System.Int64,System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="id">ID</param>
+            <param name="doCreate">如果没有该ID的实体对象则调用本函数新增并自动持久化</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.RootEntityBase`1.Fetch(System.Data.Common.DbConnection,System.Int64,System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="id">ID</param>
+            <param name="doCreate">如果没有该ID的实体对象则调用本函数新增并自动持久化</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.RootEntityBase`1.Fetch(System.Data.Common.DbTransaction,System.Int64,System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="id">ID</param>
+            <param name="doCreate">如果没有该ID的实体对象则调用本函数新增并自动持久化</param>
+        </member>
+        <member name="F:Phenix.Core.Data.Model.RootEntityBase`1._id">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.RootEntityBase`1.Id">
+            <summary>
+            ID(映射表XX_ID字段)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.RootEntityBase`1.PrimaryKeyPropertyLambda">
+            <summary>
+            主键表达式(null代表增删改持久化时遍历类遇到的第一个主键属性)
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.RootEntityBase`1.AppendAssociationLambda(Phenix.Core.Data.Expressions.CriteriaExpression)">
+            <summary>
+            为DeleteSelf()函数执行时追加检查是否存在关联关系的外键条件表达式
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.RootEntityBase`1.DeleteSelf(System.Data.Common.DbTransaction,System.Boolean)">
+            <summary>
+            删除自己
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="cascade">是否级联</param>
+            <returns>删除记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.RootEntityBase`1.AddRenovatorTrigger(System.Action{System.String,System.Int64,System.DateTime,Phenix.Core.Data.ExecuteAction})">
+            <summary>
+            添加动态刷新触发器
+            </summary>
+            <param name="asyncAction">异步动作(表名,表主键值,执行时间,执行动作)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.RootEntityBase`1.SaveRenovateLog(System.Data.Common.DbTransaction,Phenix.Core.Data.ExecuteAction)">
+            <summary>
+            保存表记录更新日志
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="executeAction">执行动作</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.RootEntityBase`1.SaveRenovateLog(System.Data.Common.DbTransaction,Phenix.Core.Data.ExecuteAction,System.DateTime)">
+            <summary>
+            保存表记录更新日志
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="executeTime">执行时间</param>
+            <param name="executeAction">执行动作</param>
+        </member>
+        <member name="T:Phenix.Core.Data.Model.TreeEntityBase`1">
+            <summary>
+            树实体基类
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.#ctor">
+            <summary>
+            for CreateInstance
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.#ctor(System.Int64,System.Int64,System.Int64)">
+            <summary>
+            for Newtonsoft.Json.JsonConstructor
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(System.Int64,System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="rootId">根ID</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(System.Int64,System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="rootId">根ID</param>
+            <param name="doCreate">如果没有该ID的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(System.Data.Common.DbConnection,System.Int64,System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="rootId">根ID</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(System.Data.Common.DbConnection,System.Int64,System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="rootId">根ID</param>
+            <param name="doCreate">如果没有该ID的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(System.Data.Common.DbTransaction,System.Int64,System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="rootId">根ID</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(System.Data.Common.DbTransaction,System.Int64,System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="rootId">根ID</param>
+            <param name="doCreate">如果没有该ID的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+            <returns>IMemCachedEntity</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+            <returns>IMemCachedEntity</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.Fetch(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{System.Threading.Tasks.Task{`0}},System.Int32)">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+        </member>
+        <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._rootId">
+            <summary>
+            根ID
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.RootId">
+            <summary>
+            根ID(映射表XX_Root_ID字段)
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._parentId">
+            <summary>
+            父ID
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.ParentId">
+            <summary>
+            父ID(映射表XX_Parent_ID字段)
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._root">
+            <summary>
+            根对象
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.Root">
+            <summary>
+            根对象
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._parent">
+            <summary>
+            父对象
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.Parent">
+            <summary>
+            父对象
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._allChildren">
+            <summary>
+            全部儿孙对象数组
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.AllChildren">
+            <summary>
+            全部儿孙对象数组
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FindInBranch(System.Int64)">
+            <summary>
+            在枝杈中寻找
+            </summary>
+            <param name="id">ID</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchChildren">
+            <summary>
+            获取子对象
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.AddChild(System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            添加子对象
+            </summary>
+            <param name="doCreate">调用本函数新增并自动持久化</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.AddChild(System.Data.Common.DbConnection,System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            添加子对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="doCreate">调用本函数新增并自动持久化</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.AddChild(System.Data.Common.DbTransaction,System.Func{System.Threading.Tasks.Task{`0}})">
+            <summary>
+            添加子对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="doCreate">调用本函数新增并自动持久化</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.DeleteBranch">
+            <summary>
+            删除枝杈
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.DeleteBranch(System.Data.Common.DbConnection)">
+            <summary>
+            删除枝杈
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.DeleteBranch(System.Data.Common.DbTransaction)">
+            <summary>
+            删除枝杈
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.SaveRenovateLog(System.Data.Common.DbTransaction,Phenix.Core.Data.ExecuteAction,System.DateTime)">
+            <summary>
+            保存表记录更新日志
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="executeTime">执行时间</param>
+            <param name="executeAction">执行动作</param>
         </member>
         <member name="T:Phenix.Core.Data.Renovator">
             <summary>
@@ -4264,6 +5199,44 @@
             <param name="executeAction">执行动作</param>
             <param name="executeTime">执行时间</param>
         </member>
+        <member name="M:Phenix.Core.Data.Renovator.Save``1(System.Data.Common.DbConnection,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},Phenix.Core.Data.ExecuteAction)">
+            <summary>
+            保存表记录更新日志
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="entity">实体</param>
+            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="executeAction">执行动作</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Renovator.Save``1(System.Data.Common.DbConnection,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},Phenix.Core.Data.ExecuteAction,System.DateTime)">
+            <summary>
+            保存表记录更新日志
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="entity">实体</param>
+            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="executeAction">执行动作</param>
+            <param name="executeTime">执行时间</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Renovator.Save``1(System.Data.Common.DbTransaction,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},Phenix.Core.Data.ExecuteAction)">
+            <summary>
+            保存表记录更新日志
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="entity">实体</param>
+            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="executeAction">执行动作</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Renovator.Save``1(System.Data.Common.DbTransaction,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},Phenix.Core.Data.ExecuteAction,System.DateTime)">
+            <summary>
+            保存表记录更新日志
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="entity">实体</param>
+            <param name="primaryKeyMemberLambda">含类主键属性/字段的 lambda 表达式</param>
+            <param name="executeAction">执行动作</param>
+            <param name="executeTime">执行时间</param>
+        </member>
         <member name="M:Phenix.Core.Data.Renovator.Save(System.String,System.Int64,Phenix.Core.Data.ExecuteAction)">
             <summary>
             保存表记录更新日志
@@ -4276,6 +5249,44 @@
             <summary>
             保存表记录更新日志
             </summary>
+            <param name="tableName">表名</param>
+            <param name="primaryKeyValue">表主键值</param>
+            <param name="executeAction">执行动作</param>
+            <param name="executeTime">执行时间</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Renovator.Save(System.Data.Common.DbConnection,System.String,System.Int64,Phenix.Core.Data.ExecuteAction)">
+            <summary>
+            保存表记录更新日志
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="tableName">表名</param>
+            <param name="primaryKeyValue">表主键值</param>
+            <param name="executeAction">执行动作</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Renovator.Save(System.Data.Common.DbConnection,System.String,System.Int64,Phenix.Core.Data.ExecuteAction,System.DateTime)">
+            <summary>
+            保存表记录更新日志
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="tableName">表名</param>
+            <param name="primaryKeyValue">表主键值</param>
+            <param name="executeAction">执行动作</param>
+            <param name="executeTime">执行时间</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Renovator.Save(System.Data.Common.DbTransaction,System.String,System.Int64,Phenix.Core.Data.ExecuteAction)">
+            <summary>
+            保存表记录更新日志
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="tableName">表名</param>
+            <param name="primaryKeyValue">表主键值</param>
+            <param name="executeAction">执行动作</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Renovator.Save(System.Data.Common.DbTransaction,System.String,System.Int64,Phenix.Core.Data.ExecuteAction,System.DateTime)">
+            <summary>
+            保存表记录更新日志
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="tableName">表名</param>
             <param name="primaryKeyValue">表主键值</param>
             <param name="executeAction">执行动作</param>
@@ -4410,7 +5421,7 @@
         </member>
         <member name="P:Phenix.Core.Data.Schema.Column.IsTimestampColumn">
             <summary>
-            是否"时间戳"字段（字段类型需是长整型15位以上精度，更新记录时自动填充Sequence.Value）
+            是否"时间戳"字段（字段类型需是长整型15位以上精度，更新记录时自动填充Sequence.Default.Value）
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Schema.Column.IsWatermarkColumn">
@@ -4497,19 +5508,21 @@
             </summary>
             <param name="obj">对象</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Field.Set``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+        <member name="M:Phenix.Core.Data.Schema.Field.Set``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean)">
             <summary>
             设置值
             </summary>
             <param name="entity">实体</param>
             <param name="valueLambda">值 lambda 表达式</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到Set函数时引发 InvalidOperationException; 如果为 false, 则在找不到Set函数时返回 false</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Field.Set``1(``0,System.Object)">
+        <member name="M:Phenix.Core.Data.Schema.Field.Set``1(``0,System.Object,System.Boolean)">
             <summary>
             设置值
             </summary>
             <param name="entity">实体</param>
             <param name="value">值/OperationExpression</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到Set函数时引发 InvalidOperationException; 如果为 false, 则在找不到Set函数时返回 false</param>
         </member>
         <member name="T:Phenix.Core.Data.Schema.ForeignKey">
             <summary>
@@ -4782,19 +5795,21 @@
             </summary>
             <param name="obj">对象</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Property.Set``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+        <member name="M:Phenix.Core.Data.Schema.Property.Set``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean)">
             <summary>
             设置值
             </summary>
             <param name="entity">实体</param>
             <param name="valueLambda">值 lambda 表达式</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到Set函数时引发 InvalidOperationException; 如果为 false, 则在找不到Set函数时返回 false</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Property.Set``1(``0,System.Object)">
+        <member name="M:Phenix.Core.Data.Schema.Property.Set``1(``0,System.Object,System.Boolean)">
             <summary>
             设置值
             </summary>
             <param name="entity">实体</param>
             <param name="value">值/OperationExpression</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到Set函数时引发 InvalidOperationException; 如果为 false, 则在找不到Set函数时返回 false</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Property.Validate(System.Object)">
             <summary>
@@ -4854,6 +5869,13 @@
             <summary>
             值/OperationExpression
             </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.PropertyValue.ChangeFields``1(``0,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            更新字段值
+            </summary>
+            <param name="entity">实体</param>
+            <param name="propertyValues">待更新属性值队列</param>
         </member>
         <member name="T:Phenix.Core.Data.Schema.Sheet">
             <summary>
@@ -5033,14 +6055,14 @@
             <summary>
             获取实际操作的单子
             </summary>
-            <param name="index">序号(0为主库/1-N为Database.RegisterSubDatabase注册的分库顺序)</param>
+            <param name="index">序号(0为主库/1-N为分库顺序)</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.GetSheet(System.Object)">
             <summary>
             获取实际操作的单子
             </summary>
-            <param name="routeKey">路由键(Hash为index, 0为主库/1-N为Database.RegisterSubDatabase注册的分库顺序)</param>
+            <param name="routeKey">路由键(Hash为index, 0为主库/1-N为分库顺序)</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.GetSheet">
             <summary>
@@ -6377,27 +7399,25 @@
             64位序号
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Sequence.ClearMarkerDeferMonths">
+        <member name="P:Phenix.Core.Data.Sequence.Default">
             <summary>
-            清理几个月前的Marker(仅当直连Database时有效)
-            缺省为 3(>=3)
+            单例
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Sequence.PreLoadPoolSize">
+        <member name="M:Phenix.Core.Data.Sequence.Fetch(System.Int32)">
             <summary>
-            预加载池大小(仅当用HttpClient连服务端下载时有效)
-            缺省为 10(>=10)
+            获取64位序号
             </summary>
+            <param name="primaryKey">主键(范围仅限于0~999)</param>
+            <returns>64位序号</returns>
         </member>
-        <member name="P:Phenix.Core.Data.Sequence.Database">
+        <member name="M:Phenix.Core.Data.Sequence.Fetch(Orleans.IClusterClient,System.Int32)">
             <summary>
-            数据库入口
+            获取64位序号
             </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Sequence.HttpClient">
-            <summary>
-            Database为空时用HttpClient连服务端下载
-            </summary>
+            <param name="client">IClusterClient</param>
+            <param name="primaryKey">主键(范围仅限于0~999)</param>
+            <returns>64位序号</returns>
         </member>
         <member name="P:Phenix.Core.Data.Sequence.Value">
             <summary>
@@ -6405,12 +7425,25 @@
             小于999999999999999
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Sequence.GetValue(Phenix.Core.Net.Http.HttpClient)">
+        <member name="T:Phenix.Core.Data.Validity.AssociationDataException">
             <summary>
-            取值
+            关联数据异常
             </summary>
-            <param name="httpClient">HttpClient</param>
-            <returns>值</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Validity.AssociationDataException.#ctor">
+            <summary>
+            关联数据异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Validity.AssociationDataException.#ctor(System.String,System.Exception)">
+            <summary>
+            关联数据异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Validity.AssociationDataException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            序列化
+            </summary>
         </member>
         <member name="T:Phenix.Core.Data.Validity.IValidation">
             <summary>
@@ -6611,6 +7644,11 @@
             初始化
             </summary>
         </member>
+        <member name="M:Phenix.Core.IO.FileChunkInfo.#ctor(System.String)">
+            <summary>
+            初始化
+            </summary>
+        </member>
         <member name="P:Phenix.Core.IO.FileChunkInfo.FileName">
             <summary>
             文件名
@@ -6669,16 +7707,6 @@
             </summary>
             <param name="sourceStream">数据源</param>
             <returns>目的字节串</returns>
-        </member>
-        <member name="T:Phenix.Core.ITimedTask">
-            <summary>
-            定时任务接口
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.ITimedTask.Execute">
-            <summary>
-            执行
-            </summary>
         </member>
         <member name="T:Phenix.Core.Log.EventInfo">
             <summary>
@@ -6765,17 +7793,6 @@
             数据库入口
             </summary>
         </member>
-        <member name="P:Phenix.Core.Log.EventLog.UploadBaseAddress">
-            <summary>
-            用HttpClient上传到服务端的地址(null代表HttpClient.Default)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Log.EventLog.UploadValidityMinutes">
-            <summary>
-            用HttpClient上传到服务端的有效周期
-            缺省为 3(分钟>=3)
-            </summary>
-        </member>
         <member name="M:Phenix.Core.Log.EventLog.Save(System.String,System.Exception)">
             <summary>
             保存错误日志
@@ -6845,35 +7862,6 @@
             数据库入口
             </summary>
         </member>
-        <member name="P:Phenix.Core.Message.UserMessage.HttpClient">
-            <summary>
-            Database为空时用HttpClient连服务端
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Message.UserMessage.Send(Phenix.Core.Net.Http.HttpClient,System.String,System.String)">
-            <summary>
-            保存对象日志
-            </summary>
-            <param name="httpClient">HttpClient</param>
-            <param name="receiver">接收用户</param>
-            <param name="content">消息内容</param>
-        </member>
-        <member name="M:Phenix.Core.Message.UserMessage.Send(Phenix.Core.Net.Http.HttpClient,System.String,System.String,System.String)">
-            <summary>
-            保存对象日志
-            </summary>
-            <param name="httpClient">HttpClient</param>
-            <param name="sender">发送用户</param>
-            <param name="receiver">接收用户</param>
-            <param name="content">消息内容</param>
-        </member>
-        <member name="M:Phenix.Core.Message.UserMessage.Send(Phenix.Core.Net.Http.HttpClient,Phenix.Core.Message.UserMessageInfo)">
-            <summary>
-            保存对象日志
-            </summary>
-            <param name="httpClient">HttpClient</param>
-            <param name="info">事件资料</param>
-        </member>
         <member name="M:Phenix.Core.Message.UserMessage.Send(System.String,System.String)">
             <summary>
             发送消息
@@ -6896,14 +7884,6 @@
             </summary>
             <param name="info">事件资料</param>
         </member>
-        <member name="M:Phenix.Core.Message.UserMessage.Receive(Phenix.Core.Net.Http.HttpClient,System.String)">
-            <summary>
-            接收消息（PULL）
-            </summary>
-            <param name="httpClient">HttpClient</param>
-            <param name="receiver">接收用户</param>
-            <returns>结果集(消息ID-消息内容)</returns>
-        </member>
         <member name="M:Phenix.Core.Message.UserMessage.Receive(System.String)">
             <summary>
             接收消息（PULL）
@@ -6911,35 +7891,12 @@
             <param name="receiver">接收用户</param>
             <returns>结果集(消息ID-消息内容)</returns>
         </member>
-        <member name="M:Phenix.Core.Message.UserMessage.AffirmReceived(Phenix.Core.Net.Http.HttpClient,System.Int64,System.Boolean)">
-            <summary>
-            确认收到
-            </summary>
-            <param name="httpClient">HttpClient</param>
-            <param name="id">消息ID</param>
-            <param name="burn">是否销毁</param>
-        </member>
         <member name="M:Phenix.Core.Message.UserMessage.AffirmReceived(System.Int64,System.Boolean)">
             <summary>
             确认收到
             </summary>
             <param name="id">消息ID</param>
             <param name="burn">是否销毁</param>
-        </member>
-        <member name="M:Phenix.Core.Message.UserMessage.Subscribe(Phenix.Core.Net.Http.HttpClient,System.Action{System.Collections.Generic.IDictionary{System.Int64,System.String}})">
-            <summary>
-            订阅消息（PUSH）
-            </summary>
-            <param name="httpClient">HttpClient</param>
-            <param name="onReceived">处理收到消息(消息ID-消息内容)</param>
-            <returns>HubConnection可添加连接事件最后务必启动连接</returns>
-        </member>
-        <member name="M:Phenix.Core.Message.UserMessage.Subscribe(System.Action{System.Collections.Generic.IDictionary{System.Int64,System.String}})">
-            <summary>
-            订阅消息（PUSH）
-            </summary>
-            <param name="onReceived">处理收到消息(消息ID-消息内容)</param>
-            <returns>HubConnection可添加连接事件最后务必启动连接</returns>
         </member>
         <member name="T:Phenix.Core.Message.UserMessageInfo">
             <summary>
@@ -7003,7 +7960,7 @@
             用户身份
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Api.ControllerBase.Encrypt(System.Object)">
+        <member name="M:Phenix.Core.Net.Api.ControllerBase.EncryptAsync(System.Object)">
             <summary>
             加密
             Key/IV=登录口令/动态口令
@@ -7011,51 +7968,170 @@
             </summary>
             <param name="data">需加密的对象/字符串</param>
         </member>
-        <member name="T:Phenix.Core.Net.Api.EventLogController">
+        <member name="T:Phenix.Core.Net.Api.Data.IncrementController">
             <summary>
-            事件日志控制器
+            64位增量
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Api.EventLogController.Post">
+        <member name="M:Phenix.Core.Net.Api.Data.IncrementController.Get(System.String,System.Int64)">
             <summary>
-            保存
+            获取64位增量值
+            </summary>
+            <param name="key">键</param>
+            <param name="initialValue">初值</param>
+            <returns>下一个值</returns>
+        </member>
+        <member name="T:Phenix.Core.Net.Api.Data.SequenceController">
+            <summary>
+            64位序号
             </summary>
         </member>
-        <member name="T:Phenix.Core.Net.Api.FileController">
+        <member name="M:Phenix.Core.Net.Api.Data.SequenceController.Get">
+            <summary>
+            获取64位序号
+            </summary>
+            <returns>64位序号</returns>
+        </member>
+        <member name="T:Phenix.Core.Net.Api.Inout.FileController">
             <summary>
             文件存取控制器
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Api.FileController.#ctor(Phenix.Core.Net.Api.IFileService)">
+        <member name="M:Phenix.Core.Net.Api.Inout.FileController.#ctor(Phenix.Core.Net.Api.Inout.IFileService)">
             <summary>
             初始化
             </summary>
             <param name="fileService">依赖注入的文件服务</param>
         </member>
-        <member name="M:Phenix.Core.Net.Api.FileController.UploadFileChunk(System.Threading.CancellationToken)">
+        <member name="M:Phenix.Core.Net.Api.Inout.FileController.UploadFileChunk(System.Threading.CancellationToken)">
             <summary>
             上传文件块
             </summary>
             <returns>完成上传时返回消息</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Api.FileController.DownloadFileChunk(System.Threading.CancellationToken)">
+        <member name="M:Phenix.Core.Net.Api.Inout.FileController.DownloadFileChunk(System.Threading.CancellationToken)">
             <summary>
             下载文件块
             </summary>
             <returns>文件块信息</returns>
         </member>
-        <member name="T:Phenix.Core.Net.Api.GateController">
+        <member name="T:Phenix.Core.Net.Api.Inout.IFileService">
+            <summary>
+            文件存取服务接口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.Inout.IFileService.GetUploadPath(System.String,System.String)">
+            <summary>
+            获取上传文件的写入路径
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="fileName">上传文件名</param>
+            <returns>写入路径</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.Inout.IFileService.AfterUploadFile(System.String,System.String)">
+            <summary>
+            当完成上传文件时触发
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="targetPath">写入路径</param>
+            <returns>完成上传时返回消息</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.Inout.IFileService.GetDownloadPath(System.String,System.String)">
+            <summary>
+            获取下载文件的读取路径
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="fileName">下载文件名</param>
+            <returns>读取路径</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.Inout.IFileService.AfterDownloadFile(System.String,System.String)">
+            <summary>
+            当完成下载文件时触发
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="sourcePath">读取路径</param>
+        </member>
+        <member name="T:Phenix.Core.Net.Api.Log.EventLogController">
+            <summary>
+            事件日志控制器
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.Log.EventLogController.Post">
+            <summary>
+            保存
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Net.Api.Message.UserMessageController">
+            <summary>
+            用户消息控制器
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.Message.UserMessageController.Receive">
+            <summary>
+            接收（PULL）
+            </summary>
+            <returns>结果集(消息ID-消息内容)</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.Message.UserMessageController.Send(System.String)">
+            <summary>
+            发送
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.Message.UserMessageController.AffirmReceived(System.Int64,System.Boolean)">
+            <summary>
+            确认收到
+            </summary>
+            <param name="id">消息ID</param>
+            <param name="burn">是否销毁</param>
+        </member>
+        <member name="T:Phenix.Core.Net.Api.Message.UserMessageHub">
+            <summary>
+            用户消息中间件
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.Message.UserMessageHub.#ctor(Microsoft.AspNetCore.SignalR.IHubContext{Phenix.Core.Net.Api.Message.UserMessageHub})">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.Message.UserMessageHub.Dispose(System.Boolean)">
+            <summary>
+            释放
+            </summary>
+            <param name="disposing">如果为 true, 则释放托管资源和非托管资源; 如果为 false, 则仅释放非托管资源</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.Message.UserMessageHub.OnConnectedAsync">
+            <summary>
+            连接
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.Message.UserMessageHub.OnDisconnectedAsync(System.Exception)">
+            <summary>
+            断开
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.Message.UserMessageHubPusher.DisposeManagedResources">
+            <summary>
+            释放托管资源
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.Message.UserMessageHubPusher.DisposeUnmanagedResources">
+            <summary>
+            释放非托管资源
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Net.Api.Security.GateController">
             <summary>
             系统入口控制器
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Api.GateController.#ctor(Phenix.Core.Net.Api.IGateService)">
+        <member name="M:Phenix.Core.Net.Api.Security.GateController.#ctor(Phenix.Core.Net.Api.Security.IGateService)">
             <summary>
             初始化
             </summary>
             <param name="gateService">依赖注入的系统入口服务</param>
         </member>
-        <member name="M:Phenix.Core.Net.Api.GateController.CheckIn(System.String,System.String,System.String,System.String)">
+        <member name="M:Phenix.Core.Net.Api.Security.GateController.CheckIn(System.String,System.String,System.String,System.String)">
             <summary>
             登记/注册(获取动态口令)
             </summary>
@@ -7065,53 +8141,17 @@
             <param name="regAlias">注册昵称(注册用可为空)</param>
             <returns>返回信息</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Api.GateController.Logon">
+        <member name="M:Phenix.Core.Net.Api.Security.GateController.Logon">
             <summary>
             登录
             </summary>
         </member>
-        <member name="T:Phenix.Core.Net.Api.IFileService">
-            <summary>
-            文件存取服务接口
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.IFileService.GetUploadPath(System.String,System.String)">
-            <summary>
-            获取上传文件的写入路径
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="fileName">上传文件名</param>
-            <returns>写入路径</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.IFileService.AfterUploadFile(System.String,System.String)">
-            <summary>
-            当完成上传文件时触发
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="targetPath">写入路径</param>
-            <returns>完成上传时返回消息</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.IFileService.GetDownloadPath(System.String,System.String)">
-            <summary>
-            获取下载文件的读取路径
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="fileName">下载文件名</param>
-            <returns>读取路径</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.IFileService.AfterDownloadFile(System.String,System.String)">
-            <summary>
-            当完成下载文件时触发
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="sourcePath">读取路径</param>
-        </member>
-        <member name="T:Phenix.Core.Net.Api.IGateService">
+        <member name="T:Phenix.Core.Net.Api.Security.IGateService">
             <summary>
             系统入口服务接口
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Api.IGateService.PushDynamicPassword(Phenix.Core.Security.User,System.String,System.Int32)">
+        <member name="M:Phenix.Core.Net.Api.Security.IGateService.PushDynamicPassword(Phenix.Core.Security.User,System.String,System.Int32)">
             <summary>
             当用户获取动态口令时被CheckIn触发(可推送动态口令给到用户) 
             </summary>
@@ -7119,7 +8159,7 @@
             <param name="dynamicPassword">动态口令(6位数字一般作为验证码用短信发送给到用户)</param>
             <param name="validityMinutes">动态口令有效周期(分钟>=3)</param>
         </member>
-        <member name="M:Phenix.Core.Net.Api.IGateService.PushPassword(Phenix.Core.Security.User,System.String,System.String,System.Int32)">
+        <member name="M:Phenix.Core.Net.Api.Security.IGateService.PushPassword(Phenix.Core.Security.User,System.String,System.String,System.Int32)">
             <summary>
             当新用户注册时被CheckIn触发(可推送初始口令/动态口令给到用户) 
             </summary>
@@ -7128,7 +8168,7 @@
             <param name="dynamicPassword">动态口令(6位数字一般作为验证码用短信发送给到用户)</param>
             <param name="validityMinutes">动态口令有效周期(分钟>=3)</param>
         </member>
-        <member name="M:Phenix.Core.Net.Api.IGateService.AfterCheckIn(Phenix.Core.Security.User,System.Exception)">
+        <member name="M:Phenix.Core.Net.Api.Security.IGateService.AfterCheckIn(Phenix.Core.Security.User,System.Exception)">
             <summary>
             当完成CheckIn时触发
             </summary>
@@ -7136,110 +8176,27 @@
             <param name="error">非null时说明有异常发生</param>
             <returns>提示信息</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Api.IGateService.AfterLogon(Phenix.Core.Security.User,System.String)">
+        <member name="M:Phenix.Core.Net.Api.Security.IGateService.AfterLogon(Phenix.Core.Security.User,System.String)">
             <summary>
             当完成Logon时触发
             </summary>
             <param name="user">用户资料</param>
             <param name="tag">捎带数据(默认是客户端当前时间)</param>
         </member>
-        <member name="T:Phenix.Core.Net.Api.IncrementController">
-            <summary>
-            64位增量
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.IncrementController.Get(System.String,System.Int64)">
-            <summary>
-            获取64位增量值
-            </summary>
-            <param name="key">键</param>
-            <param name="initialValue">初值</param>
-            <returns>下一个值</returns>
-        </member>
-        <member name="T:Phenix.Core.Net.Api.MyselfController">
+        <member name="T:Phenix.Core.Net.Api.Security.MyselfController">
             <summary>
             用户自己控制器
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Api.MyselfController.Get">
+        <member name="M:Phenix.Core.Net.Api.Security.MyselfController.Get">
             <summary>
             获取自己资料
             </summary>
             <returns>自己资料</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Api.MyselfController.ChangePassword">
+        <member name="M:Phenix.Core.Net.Api.Security.MyselfController.ChangePasswordAsync">
             <summary>
             修改登录口令
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Net.Api.SequenceController">
-            <summary>
-            64位序号
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.SequenceController.Get">
-            <summary>
-            获取64位序号
-            </summary>
-            <returns>64位序号</returns>
-        </member>
-        <member name="T:Phenix.Core.Net.Api.UserMessageController">
-            <summary>
-            用户消息控制器
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.UserMessageController.Receive">
-            <summary>
-            接收（PULL）
-            </summary>
-            <returns>结果集(消息ID-消息内容)</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.UserMessageController.Send(System.String)">
-            <summary>
-            发送
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.UserMessageController.AffirmReceived(System.Int64,System.Boolean)">
-            <summary>
-            确认收到
-            </summary>
-            <param name="id">消息ID</param>
-            <param name="burn">是否销毁</param>
-        </member>
-        <member name="T:Phenix.Core.Net.Api.UserMessageHub">
-            <summary>
-            用户消息中间件
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.UserMessageHub.#ctor(Microsoft.AspNetCore.SignalR.IHubContext{Phenix.Core.Net.Api.UserMessageHub})">
-            <summary>
-            初始化
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.UserMessageHub.Dispose(System.Boolean)">
-            <summary>
-            释放
-            </summary>
-            <param name="disposing">如果为 true, 则释放托管资源和非托管资源; 如果为 false, 则仅释放非托管资源</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.UserMessageHub.OnConnectedAsync">
-            <summary>
-            连接
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.UserMessageHub.OnDisconnectedAsync(System.Exception)">
-            <summary>
-            断开
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.UserMessageHubPusher.DisposeManagedResources">
-            <summary>
-            释放托管资源
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.UserMessageHubPusher.DisposeUnmanagedResources">
-            <summary>
-            释放非托管资源
             </summary>
         </member>
         <member name="T:Phenix.Core.Net.Filters.AuthorizationFilter">
@@ -7279,45 +8236,17 @@
             控制器的授权角色
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Filters.ControllerRole.New(System.String,System.String,System.Collections.Generic.IList{System.String})">
+        <member name="M:Phenix.Core.Net.Filters.ControllerRole.#ctor">
             <summary>
-            新增控制器的授权角色
+            for CreateInstance
             </summary>
-            <param name="controllerName">Controller全名</param>
-            <param name="actionName">Action名</param>
-            <param name="roles">角色数组</param>
-            <returns>控制器的授权角色</returns>
         </member>
-        <member name="M:Phenix.Core.Net.Filters.ControllerRole.Fetch(System.Int64,System.Int32)">
+        <member name="M:Phenix.Core.Net.Filters.ControllerRole.Fetch(Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor)">
             <summary>
             获取控制器的授权角色
             </summary>
-            <param name="id">ID</param>
-            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
+            <param name="controllerActionDescriptor">ControllerActionDescriptor</param>
             <returns>控制器的授权角色</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Filters.ControllerRole.Fetch(System.String,System.String)">
-            <summary>
-            获取控制器的授权角色
-            </summary>
-            <param name="controllerName">类全名</param>
-            <param name="methodName">方法名</param>
-            <returns>控制器的授权角色</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Filters.ControllerRole.Delete">
-            <summary>
-            删除控制器的授权角色
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Net.Filters.ControllerRole._id">
-            <summary>
-            ID
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Net.Filters.ControllerRole.Id">
-            <summary>
-            ID
-            </summary>
         </member>
         <member name="F:Phenix.Core.Net.Filters.ControllerRole._controllerName">
             <summary>
@@ -7352,418 +8281,6 @@
             多个角色用‘|’分隔，互相为 or 关系
             多组角色个用‘,’分隔，互相为 and 关系
             </summary>
-        </member>
-        <member name="P:Phenix.Core.Net.Filters.ControllerRole.InvalidTime">
-            <summary>
-            失效时间
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Net.Http.HttpClient">
-            <summary>
-            HttpClient
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.New">
-            <summary>
-            新增HttpClient
-            </summary>
-            <returns>HttpClient</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.New(System.Uri)">
-            <summary>
-            新增HttpClient
-            </summary>
-            <param name="baseAddress">服务地址(null代表"http://localhost:5000")</param>
-            <returns>HttpClient</returns>
-        </member>
-        <member name="P:Phenix.Core.Net.Http.HttpClient.Default">
-            <summary>
-            缺省HttpClient
-            缺省为构造过的第一个HttpClient对象
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Net.Http.HttpClient.UploadingCacheCount">
-            <summary>
-            上传中报文数量
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Dispose(System.Boolean)">
-            <summary>
-            释放
-            </summary>
-            <param name="disposing">如果为 true, 则释放托管资源和非托管资源; 如果为 false, 则仅释放非托管资源</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadCache(System.Int64,System.String,System.String,System.Action{System.Int64})">
-            <summary>
-            上传报文
-            </summary>
-            <param name="id">ID</param>
-            <param name="path">资源路径(含查询条件)(比如"/api/log/event-log")</param>
-            <param name="data">上传数据</param>
-            <param name="complete">完成回调函数(ID)</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadCache(System.Int64,System.String,System.String,System.Int32,System.Action{System.Int64})">
-            <summary>
-            上传报文
-            </summary>
-            <param name="id">ID</param>
-            <param name="path">资源路径(含查询条件)(比如"/api/log/event-log")</param>
-            <param name="data">上传数据</param>
-            <param name="validityMinutes">有效周期(分钟)</param>
-            <param name="complete">完成回调函数(ID)</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CheckInAsync(System.String,System.String,System.String,System.String)">
-            <summary>
-            登记/注册(获取动态口令)
-            </summary>
-            <param name="name">名称</param>
-            <param name="phone">手机</param>
-            <param name="eMail">邮箱</param>
-            <param name="regAlias">注册昵称</param>
-            <returns>提示信息</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CheckIn(System.String,System.String,System.String,System.String)">
-            <summary>
-            登记/注册(获取动态口令)
-            </summary>
-            <param name="name">名称</param>
-            <param name="phone">手机</param>
-            <param name="eMail">邮箱</param>
-            <param name="regAlias">注册昵称</param>
-            <returns>提示信息</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.LogonAsync(System.String,System.String,System.String)">
-            <summary>
-            登录
-            </summary>
-            <param name="name">名称</param>
-            <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
-            <param name="tag">tag</param>
-            <returns>用户身份</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Logon(System.String,System.String,System.String)">
-            <summary>
-            登录
-            </summary>
-            <param name="name">名称</param>
-            <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
-            <param name="tag">tag</param>
-            <returns>用户身份</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.ChangePasswordAsync(System.String)">
-            <summary>
-            修改登录口令
-            </summary>
-            <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.ChangePassword(System.String)">
-            <summary>
-            修改登录口令
-            </summary>
-            <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadFileAsync(System.String,System.String,System.Func{Phenix.Core.IO.FileChunkInfo,System.Boolean})">
-            <summary>
-            上传文件
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="sourcePath">读取路径(文件名被上传)</param>
-            <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止上传</param>
-            <returns>完成上传时返回消息</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadFile(System.String,System.String,System.Func{Phenix.Core.IO.FileChunkInfo,System.Boolean})">
-            <summary>
-            上传文件
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="sourcePath">读取路径(文件名被上传)</param>
-            <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止上传</param>
-            <returns>完成上传时返回消息</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadFileAsync(System.String,System.String,System.IO.Stream,System.Func{Phenix.Core.IO.FileChunkInfo,System.Boolean})">
-            <summary>
-            上传文件
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="fileName">上传文件名</param>
-            <param name="sourceStream">读取文件流</param>
-            <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止上传</param>
-            <returns>完成上传时返回消息</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadFile(System.String,System.String,System.IO.Stream,System.Func{Phenix.Core.IO.FileChunkInfo,System.Boolean})">
-            <summary>
-            上传文件
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="fileName">上传文件名</param>
-            <param name="sourceStream">读取文件流</param>
-            <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止上传</param>
-            <returns>完成上传时返回消息</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadFileChunkAsync(System.String,Phenix.Core.IO.FileChunkInfo)">
-            <summary>
-            上传文件
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="chunkInfo">上传文件块信息</param>
-            <returns>完成上传时返回消息</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.UploadFileChunk(System.String,Phenix.Core.IO.FileChunkInfo)">
-            <summary>
-            上传文件
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="chunkInfo">上传文件块信息</param>
-            <returns>完成上传时返回消息</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.DownloadFileAsync(System.String,System.String,System.Func{Phenix.Core.IO.FileChunkInfo,System.Boolean})">
-            <summary>
-            下载文件
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="targetPath">写入路径(文件名被上传)</param>
-            <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止下载</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.DownloadFile(System.String,System.String,System.Func{Phenix.Core.IO.FileChunkInfo,System.Boolean})">
-            <summary>
-            下载文件
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="targetPath">写入路径(文件名被上传)</param>
-            <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止下载</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.DownloadFileAsync(System.String,System.String,System.IO.Stream,System.Func{Phenix.Core.IO.FileChunkInfo,System.Boolean})">
-            <summary>
-            下载文件
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="fileName">下载文件名</param>
-            <param name="targetStream">写入文件流</param>
-            <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止下载</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.DownloadFile(System.String,System.String,System.IO.Stream,System.Func{Phenix.Core.IO.FileChunkInfo,System.Boolean})">
-            <summary>
-            下载文件
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="fileName">下载文件名</param>
-            <param name="targetStream">写入文件流</param>
-            <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止下载</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.DownloadFileChunkAsync(System.String,System.String,System.Int32)">
-            <summary>
-            下载文件
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="fileName">下载文件名</param>
-            <param name="chunkNumber">下载文件块号</param>
-            <returns>下载的文件块信息</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.DownloadFileChunk(System.String,System.String,System.Int32)">
-            <summary>
-            下载文件
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="fileName">下载文件名</param>
-            <param name="chunkNumber">下载文件块号</param>
-            <returns>下载的文件块信息</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,Phenix.Core.Data.Model.NameValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,System.Boolean,Phenix.Core.Data.Model.NameValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="decryptResult">是否解密返回数据（服务端的控制器代码请用Encrypt(result)加密）</param>
-            <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Data.Model.NameValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="data">上传数据</param>
-            <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,Phenix.Core.Data.Model.NameValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="data">上传数据</param>
-            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）</param>
-            <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,System.Boolean,Phenix.Core.Data.Model.NameValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="data">上传数据</param>
-            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）(如果data是HttpContent则忽略)</param>
-            <param name="decryptResult">是否解密返回数据（服务端的控制器代码请用Encrypt(result)加密）</param>
-            <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,Phenix.Core.Data.Model.NameValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,System.Boolean,Phenix.Core.Data.Model.NameValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="decryptResult">是否解密返回数据（服务端的控制器代码请用Encrypt(result)加密）</param>
-            <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Data.Model.NameValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="data">上传数据</param>
-            <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,Phenix.Core.Data.Model.NameValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="data">上传数据</param>
-            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）</param>
-            <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Call``1(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,System.Boolean,Phenix.Core.Data.Model.NameValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="data">上传数据</param>
-            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）</param>
-            <param name="decryptResult">是否解密返回数据（服务端的控制器代码请用Encrypt(result)加密）</param>
-            <param name="queryValues">查询条件值</param>
-            <returns>返回对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync(System.Net.Http.HttpMethod,System.String,Phenix.Core.Data.Model.NameValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="queryValues">查询条件值</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Data.Model.NameValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="data">上传数据</param>
-            <param name="queryValues">查询条件值</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.CallAsync(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,Phenix.Core.Data.Model.NameValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="data">上传数据</param>
-            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）(如果data是HttpContent则忽略)</param>
-            <param name="queryValues">查询条件值</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Call(System.Net.Http.HttpMethod,System.String,Phenix.Core.Data.Model.NameValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="queryValues">查询条件值</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Call(System.Net.Http.HttpMethod,System.String,System.Object,Phenix.Core.Data.Model.NameValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="data">上传数据</param>
-            <param name="queryValues">查询条件值</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClient.Call(System.Net.Http.HttpMethod,System.String,System.Object,System.Boolean,Phenix.Core.Data.Model.NameValue[])">
-            <summary>
-            呼叫
-            </summary>
-            <param name="method">请求方法</param>
-            <param name="path">资源路径(比如"/api/security/myself")</param>
-            <param name="data">上传数据</param>
-            <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）</param>
-            <param name="queryValues">查询条件值</param>
-        </member>
-        <member name="P:Phenix.Core.Net.Http.HttpClientHandler.Owner">
-            <summary>
-            所属服务端入口
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.HttpClientHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
-            <summary>
-            SendAsync
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Net.Http.OfflineCache">
-            <summary>
-            脱机缓存
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Net.Http.OfflineCache.LocalFilePath">
-            <summary>
-            本地文件路径
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Net.Http.OfflineCache.UploadingCount">
-            <summary>
-            上传中报文数量
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Net.Http.OfflineCache.UploadSuspending">
-            <summary>
-            是否暂停上传
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Http.OfflineCache.Upload(System.String,System.String,System.Object,System.Int32)">
-            <summary>
-            上传报文
-            </summary>
-            <param name="baseAddress">上传地址(null代表HttpClient.Default)</param>
-            <param name="path">资源路径(含查询条件)(比如"/api/log/event-log")</param>
-            <param name="data">上传数据</param>
-            <param name="validityMinutes">有效周期(分钟)</param>
         </member>
         <member name="T:Phenix.Core.Net.Middleware.AuthenticationMiddleware">
             <summary>
@@ -7834,11 +8351,6 @@
             /api/data/increment
             </summary>
         </member>
-        <member name="F:Phenix.Core.Net.NetConfig.ApiLogEventLogPath">
-            <summary>
-            /api/log/event-log
-            </summary>
-        </member>
         <member name="F:Phenix.Core.Net.NetConfig.ApiMessageUserMessagePath">
             <summary>
             /api/message/user-message
@@ -7852,6 +8364,11 @@
         <member name="F:Phenix.Core.Net.NetConfig.ApiInoutFilePath">
             <summary>
             /api/inout/file
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.NetConfig.ApiLogEventLogPath">
+            <summary>
+            /api/log/event-log
             </summary>
         </member>
         <member name="P:Phenix.Core.Net.NetConfig.LocalAddress">
@@ -8143,6 +8660,16 @@
             <exception cref="T:System.ArgumentException">不存在成员访问</exception>
             <returns>类属性</returns>
         </member>
+        <member name="M:Phenix.Core.Reflection.Utilities.GetPropertyInfo(System.Linq.Expressions.LambdaExpression,System.Boolean)">
+            <summary>
+            检索类属性的信息
+            </summary>
+            <param name="propertyLambda">含类属性的 lambda 表达式</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <exception cref="T:System.ArgumentNullException">lambda</exception>
+            <exception cref="T:System.ArgumentException">不存在成员访问</exception>
+            <returns>类属性</returns>
+        </member>
         <member name="M:Phenix.Core.Reflection.Utilities.GetFieldInfo``1(System.Linq.Expressions.LambdaExpression,System.Boolean)">
             <summary>
             检索类字段的信息
@@ -8153,7 +8680,27 @@
             <exception cref="T:System.ArgumentException">不存在成员访问</exception>
             <returns>类属性</returns>
         </member>
+        <member name="M:Phenix.Core.Reflection.Utilities.GetFieldInfo(System.Linq.Expressions.LambdaExpression,System.Boolean)">
+            <summary>
+            检索类字段的信息
+            </summary>
+            <param name="fieldLambda">含类字段的 lambda 表达式</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <exception cref="T:System.ArgumentNullException">lambda</exception>
+            <exception cref="T:System.ArgumentException">不存在成员访问</exception>
+            <returns>类属性</returns>
+        </member>
         <member name="M:Phenix.Core.Reflection.Utilities.GetMemberInfo``1(System.Linq.Expressions.LambdaExpression,System.Boolean)">
+            <summary>
+            检索类属性/类字段的信息
+            </summary>
+            <param name="memberLambda">含类属性/类字段的 lambda 表达式</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <exception cref="T:System.ArgumentNullException">lambda</exception>
+            <exception cref="T:System.ArgumentException">不存在成员访问</exception>
+            <returns>类属性/类字段</returns>
+        </member>
+        <member name="M:Phenix.Core.Reflection.Utilities.GetMemberInfo(System.Linq.Expressions.LambdaExpression,System.Boolean)">
             <summary>
             检索类属性/类字段的信息
             </summary>
@@ -8916,6 +9463,369 @@
             <param name="fOAEP">如果为 true，则使用OAEP填充（仅在运行Microsoft Windows XP或更高版本的计算机上可用）执行直接的RSA加密；否则，如果为false，则使用PKCS#1 1.5版填充</param>
             <returns>原文</returns>
         </member>
+        <member name="T:Phenix.Core.Security.Grains.IUserGrain">
+            <summary>
+            用户资料Grain接口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Security.Grains.IUserGrain.Fetch">
+            <summary>
+            获取用户资料
+            </summary>
+            <returns>用户资料</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Grains.IUserGrain.Encrypt(System.String)">
+            <summary>
+            加密
+            Key/IV=登录口令/动态口令
+            </summary>
+            <param name="sourceText">原文</param>
+            <returns>密文(Base64字符串)</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Grains.IUserGrain.Decrypt(System.String)">
+            <summary>
+            解密
+             Key/IV=登录口令/动态口令
+            </summary>
+            <param name="cipherText">密文(Base64字符串)</param>
+            <returns>原文</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Grains.IUserGrain.IsValid(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            核对有效性
+            </summary>
+            <param name="timestamp">时间戳</param>
+            <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
+            <param name="requestAddress">服务请求方IP地址</param>
+            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
+            <returns>是否正确</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Grains.IUserGrain.IsValidLogon(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            核对登录有效性
+            </summary>
+            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
+            <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
+            <param name="requestAddress">服务请求方IP地址</param>
+            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
+            <returns>是否正确</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Grains.IUserGrain.ChangePassword(System.String,System.Boolean)">
+            <summary>
+            修改登录口令
+            </summary>
+            <param name="newPassword">新登录口令</param>
+            <param name="throwIfNotConform">如果为 true, 账号无效或口令不规范会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserPasswordComplexityException异常而不是返回false</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Grains.IUserGrain.ApplyDynamicPassword(System.String,System.Boolean)">
+            <summary>
+            申请动态口令
+            </summary>
+            <param name="requestAddress">服务请求方IP地址</param>
+            <param name="throwIfNotConform">如果为 true, 核对有效性不符会抛出UserNotFoundException/UserLockedException异常而不是返回false</param>
+            <returns>动态口令(6位数字一般作为验证码用短信发送给到用户)</returns>
+        </member>
+        <member name="T:Phenix.Core.Security.Grains.User">
+            <summary>
+            用户资料
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Security.Grains.User.#ctor">
+            <summary>
+            for CreateInstance
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.RequestFailureCountMaximum">
+            <summary>
+            服务请求失败次数极限
+            缺省为 5(次>=3)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.RequestFailureLockedMinutes">
+            <summary>
+            服务请求失败锁定周期
+            缺省为 30(分钟>=10)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.AllowMultiAddressRequest">
+            <summary>
+            允许多处终端发起请求
+            缺省为 true
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.RequestOvertimeLimitMinutes">
+            <summary>
+            服务请求超时时限(与服务端时钟差值)
+            缺省为 30(分钟>=10)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.PasswordLengthMinimum">
+            <summary>
+            口令长度最小值
+            缺省为 6(个>=6)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.PasswordComplexityMinimum">
+            <summary>
+            口令复杂度最小值(含数字、大写字母、小写字母、特殊字符的种类)
+            缺省为 2(个>=1)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.DynamicPasswordValidityMinutes">
+            <summary>
+            动态口令有效周期
+            缺省为 10(分钟>=3)
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._name">
+            <summary>
+            登录名
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.Name">
+            <summary>
+            登录名
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._phone">
+            <summary>
+            手机
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.Phone">
+            <summary>
+            手机
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._eMail">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.EMail">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._regAlias">
+            <summary>
+            注册昵称
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.RegAlias">
+            <summary>
+            注册昵称
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._regTime">
+            <summary>
+            注册时间
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.RegTime">
+            <summary>
+            注册时间
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._requestAddress">
+            <summary>
+            服务请求方IP地址
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.RequestAddress">
+            <summary>
+            服务请求方IP地址
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._requestFailureCount">
+            <summary>
+            服务请求失败次数
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.RequestFailureCount">
+            <summary>
+            服务请求失败次数
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._requestFailureTime">
+            <summary>
+            服务请求失败时间
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.RequestFailureTime">
+            <summary>
+            服务请求失败时间
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._rootTeamsId">
+            <summary>
+            所属顶层团体ID
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.RootTeamsId">
+            <summary>
+            所属顶层团体ID
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._rootTeams">
+            <summary>
+            顶层团体
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.RootTeams">
+            <summary>
+            顶层团体
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._teamsId">
+            <summary>
+            所属团体ID
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.TeamsId">
+            <summary>
+            所属团体ID
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.Teams">
+            <summary>
+            所属团体
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._positionId">
+            <summary>
+            担任岗位ID
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.PositionId">
+            <summary>
+            担任岗位ID
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._position">
+            <summary>
+            担任岗位
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.Position">
+            <summary>
+            担任岗位
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.IsOrganizationalArchitectureManager">
+            <summary>
+            是否企业组织架构管理员
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._locked">
+            <summary>
+            是否锁定
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.Locked">
+            <summary>
+            是否锁定
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._lockedTime">
+            <summary>
+            锁定时间
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.LockedTime">
+            <summary>
+            锁定时间
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._disabled">
+            <summary>
+            是否注销
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.Disabled">
+            <summary>
+            是否注销
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._disabledTime">
+            <summary>
+            注销时间
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.DisabledTime">
+            <summary>
+            注销时间
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._password">
+            <summary>
+            登录口令(散列值)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.Password">
+            <summary>
+            登录口令(散列值)
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._dynamicPassword">
+            <summary>
+            动态口令(散列值)
+            为空时用登录口令
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.DynamicPassword">
+            <summary>
+            动态口令(散列值)
+            为空时用登录口令
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User._dynamicPasswordCreateTime">
+            <summary>
+            动态口令生成时间
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.DynamicPasswordCreateTime">
+            <summary>
+            动态口令生成时间
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User.AdminUserName">
+            <summary>
+            管理员登录名
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.Grains.User.AdminRoleName">
+            <summary>
+            管理员角色
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Grains.User.IsAdmin">
+            <summary>
+            是否管理员
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Security.Grains.User.Encrypt(System.Object)">
+            <summary>
+            加密
+            Key/IV=登录口令/动态口令
+            </summary>
+            <param name="data">需加密的对象/字符串</param>
+            <returns>密文(Base64字符串)</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Grains.User.Decrypt(System.String)">
+            <summary>
+            解密
+             Key/IV=登录口令/动态口令
+            </summary>
+            <param name="cipherText">密文(Base64字符串)</param>
+            <returns>原文</returns>
+        </member>
+        <member name="T:Phenix.Core.Security.Grains.UserGrain">
+            <summary>
+            用户资料Grain
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Security.Identity">
             <summary>
             用户身份
@@ -8926,7 +9836,7 @@
             当前用户身份
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.Identity.Fetch(System.String,System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Security.Identity.FetchAsync(System.String,System.String,System.Boolean)">
             <summary>
             获取用户身份
             </summary>
@@ -8934,40 +9844,6 @@
             <param name="cultureName">区域性名称</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 UserNotFoundException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>用户资料</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.Identity.Fetch(System.String,System.String,System.Int32,System.Boolean)">
-            <summary>
-            获取用户身份
-            </summary>
-            <param name="userName">登录名</param>
-            <param name="cultureName">区域性名称</param>
-            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 UserNotFoundException; 如果为 false, 则在找不到信息时返回 null</param>
-            <returns>用户资料</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.Identity.IsValid(System.String,System.String,System.String,System.String,System.String,System.Boolean)">
-            <summary>
-            核对有效性
-            </summary>
-            <param name="userName">登录名</param>
-            <param name="timestamp">时间戳</param>
-            <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
-            <param name="requestAddress">服务请求方IP地址</param>
-            <param name="cultureName">区域性名称</param>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
-            <returns>是否正确</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.Identity.IsValidLogon(System.String,System.String,System.String,System.String,System.String,System.Boolean)">
-            <summary>
-            核对登录有效性
-            </summary>
-            <param name="userName">登录名</param>
-            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-            <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
-            <param name="requestAddress">服务请求方IP地址</param>
-            <param name="cultureName">区域性名称</param>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
-            <returns>是否正确</returns>
         </member>
         <member name="P:Phenix.Core.Security.Identity.User">
             <summary>
@@ -8999,6 +9875,26 @@
             服务请求最近时间
             </summary>
         </member>
+        <member name="M:Phenix.Core.Security.Identity.IsValidAsync(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            核对有效性
+            </summary>
+            <param name="timestamp">时间戳</param>
+            <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
+            <param name="requestAddress">服务请求方IP地址</param>
+            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
+            <returns>是否正确</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Identity.IsValidLogonAsync(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            核对登录有效性
+            </summary>
+            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
+            <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
+            <param name="requestAddress">服务请求方IP地址</param>
+            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
+            <returns>是否正确</returns>
+        </member>
         <member name="M:Phenix.Core.Security.Identity.IsInRole(System.String)">
             <summary>
             确定是否属于指定的角色
@@ -9017,35 +9913,6 @@
             <param name="name">名称</param>
             <param name="roles">角色数组</param>
             <returns>岗位资料</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.Position.Fetch(System.Int64,System.Int32)">
-            <summary>
-            获取岗位资料
-            </summary>
-            <param name="id">ID</param>
-            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
-            <returns>岗位资料</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.Position.FetchAll">
-            <summary>
-            获取全部岗位资料
-            </summary>
-            <returns>岗位资料清单</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.Position.Delete">
-            <summary>
-            删除岗位资料
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.Position._id">
-            <summary>
-            ID
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.Position.Id">
-            <summary>
-            ID
-            </summary>
         </member>
         <member name="F:Phenix.Core.Security.Position._name">
             <summary>
@@ -9067,9 +9934,9 @@
             角色清单
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.Position.InvalidTime">
+        <member name="M:Phenix.Core.Security.Position.AppendAssociationLambda(Phenix.Core.Data.Expressions.CriteriaExpression)">
             <summary>
-            失效时间
+            为DeleteSelf()函数执行时追加检查是否存在关联关系的外键条件表达式
             </summary>
         </member>
         <member name="T:Phenix.Core.Security.Principal">
@@ -9109,20 +9976,11 @@
             团体资料
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.Teams.New(System.String,Phenix.Core.Security.Teams)">
+        <member name="M:Phenix.Core.Security.Teams.New(System.String)">
             <summary>
             新增团体资料
             </summary>
             <param name="name">名称</param>
-            <param name="parent">父层团体</param>
-            <returns>团体资料</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.Teams.FetchRoot(System.Int64,System.Int32)">
-            <summary>
-            获取顶层团体资料
-            </summary>
-            <param name="rootId">顶层团体ID</param>
-            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
             <returns>团体资料</returns>
         </member>
         <member name="M:Phenix.Core.Security.Teams.FetchRootNames(System.String)">
@@ -9131,27 +9989,6 @@
             </summary>
             <param name="likeName">类似名称</param>
             <returns>结果集(顶层团体名称-ID)</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.Teams.Delete">
-            <summary>
-            删除团体资料
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Security.Teams.ResetAll">
-            <summary>
-            重置团体资料所有缓存
-            默认8小时自动重置一次
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.Teams._id">
-            <summary>
-            ID
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.Teams.Id">
-            <summary>
-            ID
-            </summary>
         </member>
         <member name="F:Phenix.Core.Security.Teams._name">
             <summary>
@@ -9163,80 +10000,26 @@
             名称
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.Teams._rootId">
+        <member name="M:Phenix.Core.Security.Teams.FindInBranch(System.String)">
             <summary>
-            顶层团体ID
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.Teams.RootId">
-            <summary>
-            顶层团体ID
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.Teams.Root">
-            <summary>
-            顶层团体
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.Teams._parentId">
-            <summary>
-            父层团体ID
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.Teams.ParentId">
-            <summary>
-            父层团体ID
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.Teams.Parent">
-            <summary>
-            父层团体
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.Teams.AllSubTeams">
-            <summary>
-            子团体(仅限this=Root时)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.Teams.SubTeams">
-            <summary>
-            子层团体
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.Teams.InvalidTime">
-            <summary>
-            失效时间
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Security.Teams.IsSubTeams(Phenix.Core.Security.Teams)">
-            <summary>
-            是否子层团体
-            </summary>
-            <param name="teams">团体</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Teams.FindSubTeams(System.Int64)">
-            <summary>
-            寻找子层团体
-            </summary>
-            <param name="id">团体ID</param>
-        </member>
-        <member name="M:Phenix.Core.Security.Teams.FindSubTeams(System.String)">
-            <summary>
-            寻找子层团体
+            在枝杈中寻找
             </summary>
             <param name="name">名称</param>
+        </member>
+        <member name="M:Phenix.Core.Security.Teams.AppendAssociationLambda(Phenix.Core.Data.Expressions.CriteriaExpression)">
+            <summary>
+            为DeleteSelf()函数执行时追加检查是否存在关联关系的外键条件表达式
+            </summary>
         </member>
         <member name="T:Phenix.Core.Security.User">
             <summary>
             用户资料
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.User.BuildPassword(System.String)">
+        <member name="M:Phenix.Core.Security.User.#ctor">
             <summary>
-            构建登录口令
+            for CreateInstance
             </summary>
-            <param name="name">名称</param>
-            <returns>登录口令</returns>
         </member>
         <member name="M:Phenix.Core.Security.User.New(System.String,System.String,System.String,System.String,System.String,System.String@,System.String@)">
             <summary>
@@ -9259,72 +10042,12 @@
             <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
             <returns>用户资料</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User.Fetch(System.Int64,System.Int32)">
+        <member name="M:Phenix.Core.Security.User.BuildPassword(System.String)">
             <summary>
-            获取用户资料
+            构建登录口令
             </summary>
-            <param name="id">ID</param>
-            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
-            <returns>用户资料</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.User.Fetch(System.String)">
-            <summary>
-            获取用户资料
-            </summary>
-            <param name="name">登录名</param>
-            <returns>用户资料</returns>
-        </member>
-        <member name="P:Phenix.Core.Security.User.RequestFailureCountMaximum">
-            <summary>
-            服务请求失败次数极限
-            缺省为 5(次>=3)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User.RequestFailureLockedMinutes">
-            <summary>
-            服务请求失败锁定周期
-            缺省为 30(分钟>=10)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User.AllowMultiAddressRequest">
-            <summary>
-            允许多处终端发起请求
-            缺省为 true
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User.RequestOvertimeLimitMinutes">
-            <summary>
-            服务请求超时时限(与服务端时钟差值)
-            缺省为 30(分钟>=10)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User.PasswordLengthMinimum">
-            <summary>
-            口令长度最小值
-            缺省为 6(个>=6)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User.PasswordComplexityMinimum">
-            <summary>
-            口令复杂度最小值(含数字、大写字母、小写字母、特殊字符的种类)
-            缺省为 2(个>=1)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User.DynamicPasswordValidityMinutes">
-            <summary>
-            动态口令有效周期
-            缺省为 10(分钟>=3)
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User._id">
-            <summary>
-            ID
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User.Id">
-            <summary>
-            ID
-            </summary>
+            <param name="name">名称</param>
+            <returns>登录口令</returns>
         </member>
         <member name="F:Phenix.Core.Security.User._name">
             <summary>
@@ -9376,38 +10099,6 @@
             注册时间
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.User._password">
-            <summary>
-            登录口令(散列值)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User.Password">
-            <summary>
-            登录口令(散列值)
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User._dynamicPassword">
-            <summary>
-            动态口令(散列值)
-            为空时用登录口令
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User.DynamicPassword">
-            <summary>
-            动态口令(散列值)
-            为空时用登录口令
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User._dynamicPasswordCreateTime">
-            <summary>
-            动态口令生成时间
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User.DynamicPasswordCreateTime">
-            <summary>
-            动态口令生成时间
-            </summary>
-        </member>
         <member name="F:Phenix.Core.Security.User._requestAddress">
             <summary>
             服务请求方IP地址
@@ -9448,6 +10139,11 @@
             所属顶层团体ID
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User._rootTeams">
+            <summary>
+            所属顶层团体
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User.RootTeams">
             <summary>
             顶层团体
@@ -9478,39 +10174,14 @@
             担任岗位ID
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.Position">
+        <member name="F:Phenix.Core.Security.User._position">
             <summary>
             担任岗位
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.Roles">
+        <member name="P:Phenix.Core.Security.User.Position">
             <summary>
-            角色清单
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User.IsOrganizationalArchitectureManager">
-            <summary>
-            是否企业组织架构管理员
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User.GuestUserName">
-            <summary>
-            Guest登录名
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User.AdminUserName">
-            <summary>
-            管理员登录名
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User.AdminRoleName">
-            <summary>
-            管理员角色
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User.IsAdmin">
-            <summary>
-            是否管理员
+            担任岗位
             </summary>
         </member>
         <member name="F:Phenix.Core.Security.User._locked">
@@ -9553,9 +10224,61 @@
             注销时间
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.InvalidTime">
+        <member name="F:Phenix.Core.Security.User._password">
             <summary>
-            失效时间
+            登录口令(散列值)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.User.Password">
+            <summary>
+            登录口令(散列值)
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User._dynamicPassword">
+            <summary>
+            动态口令(散列值)
+            为空时用登录口令
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.User.DynamicPassword">
+            <summary>
+            动态口令(散列值)
+            为空时用登录口令
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User._dynamicPasswordCreateTime">
+            <summary>
+            动态口令生成时间
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.User.DynamicPasswordCreateTime">
+            <summary>
+            动态口令生成时间
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.User.IsOrganizationalArchitectureManager">
+            <summary>
+            是否企业组织架构管理员
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User.GuestUserName">
+            <summary>
+            Guest登录名
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User.AdminUserName">
+            <summary>
+            管理员登录名
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User.AdminRoleName">
+            <summary>
+            管理员角色
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.User.IsAdmin">
+            <summary>
+            是否管理员
             </summary>
         </member>
         <member name="M:Phenix.Core.Security.User.Encrypt(System.Object)">
@@ -9570,36 +10293,7 @@
             解密
              Key/IV=登录口令/动态口令
             </summary>
-            <param name="sourceBuffer">Hex字符串</param>
-        </member>
-        <member name="M:Phenix.Core.Security.User.FormatComplexAuthorization">
-            <summary>
-            身份验证token: [登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密的时间戳)]
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Security.User.IsValid(System.Boolean)">
-            <summary>
-            核对有效性
-            </summary>
-            <param name="throwIfNotConform">如果为 true, 账号无效会抛出UserNotFoundException/UserLockedException异常而不是返回false</param>
-            <returns>是否正确</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.User.IsValid(System.String,System.Boolean)">
-            <summary>
-            核对有效性
-            </summary>
-            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-            <param name="throwIfNotConform">如果为 true, 服务请求超时会抛出OvertimeRequestException异常而不是返回false</param>
-            <returns>是否正确</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.User.IsValid(System.String,System.String,System.Boolean)">
-            <summary>
-            核对有效性
-            </summary>
-            <param name="timestamp">时间戳</param>
-            <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
-            <returns>是否正确</returns>
+            <param name="cipherText">密文(Base64字符串)</param>
         </member>
         <member name="M:Phenix.Core.Security.User.IsValid(System.String,System.String,System.String,System.Boolean)">
             <summary>
@@ -9621,15 +10315,6 @@
             <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
             <returns>是否正确</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User.IsValidPassword(System.String,System.String,System.Boolean)">
-            <summary>
-            核对登录口令有效性
-            </summary>
-            <param name="password">登录口令(散列值)</param>
-            <param name="requestAddress">服务请求方IP地址</param>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
-            <returns>是否正确</returns>
-        </member>
         <member name="M:Phenix.Core.Security.User.ChangePassword(System.String,System.Boolean)">
             <summary>
             修改登录口令
@@ -9646,21 +10331,12 @@
             <param name="throwIfNotConform">如果为 true, 核对有效性不符会抛出UserNotFoundException/UserLockedException异常而不是返回false</param>
             <returns>动态口令(6位数字一般作为验证码用短信发送给到用户)</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User.IsValidDynamicPassword(System.String,System.String,System.Boolean)">
-            <summary>
-            核对动态口令有效性
-            </summary>
-            <param name="dynamicPassword">动态口令(散列值)</param>
-            <param name="requestAddress">服务请求方IP地址</param>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
-            <returns>是否正确</returns>
-        </member>
-        <member name="T:Phenix.Core.SyncCollections.IMemCachedObject">
+        <member name="T:Phenix.Core.SyncCollections.ICachedObject">
             <summary>
             缓存对象接口
             </summary>
         </member>
-        <member name="P:Phenix.Core.SyncCollections.IMemCachedObject.InvalidTime">
+        <member name="P:Phenix.Core.SyncCollections.ICachedObject.InvalidTime">
             <summary>
             失效时间
             </summary>
@@ -9782,13 +10458,22 @@
             <param name="key">键</param>
             <param name="value">当此方法返回值时, 如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会返回 item 参数的类型默认值</param>
         </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.GetValue(`0,System.Func{`1},System.Boolean)">
+            <summary>
+            获取与指定的键相关联的值
+            </summary>
+            <param name="key">键</param>
+            <param name="doCreate">如果没有该键, 构建值的函数</param>
+            <param name="reset">如果找到该键, 是否重置</param>
+            <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
+        </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.GetValue(`0,System.Func{`1},System.Func{`1,System.Boolean})">
             <summary>
             获取与指定的键相关联的值
             </summary>
             <param name="key">键</param>
             <param name="doCreate">如果没有该键, 构建值的函数</param>
-            <param name="reset">如果找到该键, 是否重置的函数</param>
+            <param name="reset">如果找到该键, 是否重置的函数(null代表false)</param>
             <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
         </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})">
@@ -10791,13 +11476,22 @@
             <param name="key">键</param>
             <param name="value">当此方法返回值时, 如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会返回 item 参数的类型默认值</param>
         </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.GetValue(`0,System.Func{`1},System.Boolean)">
+            <summary>
+            获取与指定的键相关联的值
+            </summary>
+            <param name="key">键</param>
+            <param name="doCreate">如果没有该键, 构建值的函数</param>
+            <param name="reset">如果找到该键, 是否重置</param>
+            <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
+        </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.GetValue(`0,System.Func{`1},System.Func{`1,System.Boolean})">
             <summary>
             获取与指定的键相关联的值
             </summary>
             <param name="key">键</param>
             <param name="doCreate">如果没有该键, 构建值的函数</param>
-            <param name="reset">如果找到该键, 是否重置的函数</param>
+            <param name="reset">如果找到该键, 是否重置的函数(null代表false)</param>
             <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
         </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})">
@@ -10993,13 +11687,22 @@
             <param name="key">键</param>
             <param name="value">当此方法返回值时, 如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会返回 item 参数的类型默认值</param>
         </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedList`2.GetValue(`0,System.Func{`1},System.Boolean)">
+            <summary>
+            获取与指定的键相关联的值
+            </summary>
+            <param name="key">键</param>
+            <param name="doCreate">如果没有该键, 构建值的函数</param>
+            <param name="reset">如果找到该键, 是否重置</param>
+            <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
+        </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedList`2.GetValue(`0,System.Func{`1},System.Func{`1,System.Boolean})">
             <summary>
             获取与指定的键相关联的值
             </summary>
             <param name="key">键</param>
             <param name="doCreate">如果没有该键, 构建值的函数</param>
-            <param name="reset">如果找到该键, 是否重置的函数</param>
+            <param name="reset">如果找到该键, 是否重置的函数(null代表false)</param>
             <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
         </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedList`2.IndexOfKey(`0)">
@@ -11198,6 +11901,82 @@
             <param name="array">作为从集合中复制的元素的目标位置的一维 Array. Array 必须具有从零开始的索引</param>
             <param name="arrayIndex">array 中从零开始的索引, 在此处开始复制</param>
         </member>
+        <member name="T:Phenix.Core.Threading.ITimedTask">
+            <summary>
+            定时任务接口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Threading.ITimedTask.Execute">
+            <summary>
+            执行
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Threading.Timer">
+            <summary>
+            定时器
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Threading.Timer.CreateTimedTask``1(System.Int32,System.Int32)">
+            <summary>
+            构建定时执行的任务
+            </summary>
+            <param name="cycleDayMultiple">执行于每月里可被参数(2~28)除整的日期(范围以外为每天)</param>
+            <param name="cycleHourMultiple">执行于被筛选日期里可被参数(2~23)除整的小时(范围以外为每小时)</param>
+        </member>
+        <member name="M:Phenix.Core.Threading.Timer.AddTimedTask(Phenix.Core.Threading.ITimedTask,System.Int32,System.Int32)">
+            <summary>
+            添加定时执行的任务
+            </summary>
+            <param name="cycleTimedTask">定时任务</param>
+            <param name="cycleDayMultiple">执行于每月里可被参数(2~28)除整的日期(范围以外为每天)</param>
+            <param name="cycleHourMultiple">执行于被筛选日期里可被参数(2~23)除整的小时(范围以外为每小时)</param>
+        </member>
+        <member name="M:Phenix.Core.Threading.Timer.RemoveTimedTask(Phenix.Core.Threading.ITimedTask)">
+            <summary>
+            移除定时执行的任务
+            </summary>
+            <param name="cycleTimedTask">定时任务</param>
+        </member>
+        <member name="T:Orleans.Hosting.ApplicationPartManagerExtension">
+            <summary>
+            IApplicationPartManager扩展
+            </summary>
+        </member>
+        <member name="M:Orleans.Hosting.ApplicationPartManagerExtension.AddKernelPart(Orleans.ApplicationParts.IApplicationPartManager)">
+            <summary>
+            装配Actor核心
+            </summary>
+            <param name="manager">IApplicationPartManager</param>
+        </member>
+        <member name="M:Orleans.Hosting.ApplicationPartManagerExtension.AddPluginPart(Orleans.ApplicationParts.IApplicationPartManager,System.String)">
+            <summary>
+            装配Actor插件
+            </summary>
+            <param name="manager">IApplicationPartManager</param>
+            <param name="filter">装配的Actor插件所在程序集统一采用"*.Plugin.dll"作为文件名后缀</param>
+        </member>
+        <member name="T:Orleans.Hosting.SiloBuilderExtension">
+            <summary>
+            SiloBuilder扩展
+            </summary>
+        </member>
+        <member name="M:Orleans.Hosting.SiloBuilderExtension.ConfigureCluster(Orleans.Hosting.ISiloBuilder)">
+            <summary>
+            配置Orleans服务集群
+            </summary>
+            <param name="builder">ISiloBuilder</param>
+            <returns>ISiloBuilder</returns>
+        </member>
+        <member name="M:Orleans.Hosting.SiloBuilderExtension.ConfigureCluster(Orleans.Hosting.ISiloBuilder,System.String,System.String,System.String)">
+            <summary>
+            配置Orleans服务集群
+            </summary>
+            <param name="builder">ISiloBuilder</param>
+            <param name="clusterId">Orleans集群的唯一ID</param>
+            <param name="serviceId">Orleans服务的唯一ID</param>
+            <param name="connectionString">Orleans数据库连接串</param>
+            <returns>ISiloBuilder</returns>
+        </member>
         <member name="T:Microsoft.AspNetCore.Builder.ApplicationBuilderExtension">
             <summary>
             ApplicationBuilder扩展
@@ -11223,24 +12002,6 @@
             </summary>
             <param name="builder">IEndpointRouteBuilder</param>
             <returns>HubEndpointConventionBuilder</returns>
-        </member>
-        <member name="T:Microsoft.AspNetCore.Mvc.ApplicationPartManagerExtension">
-            <summary>
-            ApplicationPartManager扩展
-            </summary>
-        </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.ApplicationPartManagerExtension.AddKernelPart(Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager)">
-            <summary>
-            装配核心控制器
-            </summary>
-            <param name="manager">ApplicationPartManager</param>
-        </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.ApplicationPartManagerExtension.AddPluginPart(Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager,System.String)">
-            <summary>
-            装配插件控制器
-            </summary>
-            <param name="manager">ApplicationPartManager</param>
-            <param name="filter">装配的插件控制器所在程序集统一采用"*.Plugin.dll"作为文件名后缀</param>
         </member>
         <member name="T:Microsoft.AspNetCore.Mvc.HttpRequestExtension">
             <summary>
@@ -11285,7 +12046,7 @@
             <param name="decrypt">需要解密</param>
             <returns>报文主体</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.Inout.IFileService)">
             <summary>
             处理上传文件块
             </summary>
@@ -11293,7 +12054,7 @@
             <param name="fileService">文件服务</param>
             <returns>完成上传时返回消息</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService,System.Threading.CancellationToken)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.Inout.IFileService,System.Threading.CancellationToken)">
             <summary>
             处理上传文件块
             </summary>
@@ -11302,7 +12063,7 @@
             <param name="cancellationToken">取消</param>
             <returns>完成上传时返回消息</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.Inout.IFileService)">
             <summary>
             处理下载文件块
             </summary>
@@ -11310,7 +12071,7 @@
             <param name="fileService">文件服务</param>
             <returns>文件块信息</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.IFileService,System.Threading.CancellationToken)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.Inout.IFileService,System.Threading.CancellationToken)">
             <summary>
             处理下载文件块
             </summary>
@@ -11330,6 +12091,24 @@
             </summary>
             <param name="response">HttpResponse</param>
             <param name="error">错误消息</param>
+        </member>
+        <member name="T:Microsoft.Extensions.DependencyInjection.ApplicationPartManagerExtension">
+            <summary>
+            ApplicationPartManager扩展
+            </summary>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.ApplicationPartManagerExtension.AddKernelPart(Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager)">
+            <summary>
+            装配Controller核心
+            </summary>
+            <param name="manager">ApplicationPartManager</param>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.ApplicationPartManagerExtension.AddPluginPart(Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager,System.String)">
+            <summary>
+            装配Controller插件
+            </summary>
+            <param name="manager">ApplicationPartManager</param>
+            <param name="filter">装配的Controller插件所在程序集统一采用"*.Plugin.dll"作为文件名后缀</param>
         </member>
         <member name="T:Microsoft.Extensions.DependencyInjection.FilterCollectionExtension">
             <summary>

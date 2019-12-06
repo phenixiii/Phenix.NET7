@@ -4,14 +4,14 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <PackageId>Phenix.Services.Host</PackageId>
     <AssemblyName>Phenix.Services.Host</AssemblyName>
-    <DefineConstants>TRACE;ORA</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <RootNamespace>Phenix.Services.Host</RootNamespace>
-    <Version>7.3.13</Version>
-    <AssemblyVersion>7.3.13.1102</AssemblyVersion>
-    <FileVersion>7.3.13.1102</FileVersion>
+    <Version>7.3.15</Version>
+    <AssemblyVersion>7.3.15.1205</AssemblyVersion>
+    <FileVersion>7.3.15.1205</FileVersion>
     <Description>Phenix Framework for .NET Core 3.0</Description>
     <Authors>ming</Authors>
-    <Copyright>Copyright © 2007, 2019 Phenixヾ Studio</Copyright>
+    <Copyright>Copyright © 2007, 2020 Phenixヾ Studio</Copyright>
     <Product>Phenix.Services.Host</Product>
   </PropertyGroup>
 
@@ -24,9 +24,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="3.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Microsoft.Orleans.Client" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Orleans.OrleansCodeGenerator" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Orleans.Reminders.AdoNet" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Orleans.Server" Version="3.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.50" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.112" />
   </ItemGroup>
@@ -48,6 +54,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="DockerRun.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Phenix.Core.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

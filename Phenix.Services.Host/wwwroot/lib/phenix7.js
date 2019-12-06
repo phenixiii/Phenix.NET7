@@ -499,7 +499,7 @@ var phAjax = (function($) {
         call: function(options) {
             var defaults = {
                 anonymity: false, //是否匿名访问
-                type: "GET", //请求方法(GET/POST/PUT/PATCH/DELETE)
+                type: "GET", //HttpMethod(GET/POST/PUT/PATCH/DELETE)
                 path: null, //"/api/security/myself"
                 data: null, //上传数据
                 encryptData: false, //默认不加密上传数据（否则服务端的控制器代码请用Request.ReadBodyXXX(true)解密）

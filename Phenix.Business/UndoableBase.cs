@@ -47,11 +47,9 @@ namespace Phenix.Business
         /// <summary>
         /// 新增对象(自动填充主键和保留字段)
         /// </summary>
-        /// <param name="selfSheet">操作单子</param>
-        public static T New(Sheet selfSheet = null)
+        public static T New()
         {
             T result = DynamicFactory.Create<T>();
-            result.SelfSheet = selfSheet;
             result.IsNew = true;
             return result;
         }
@@ -66,7 +64,6 @@ namespace Phenix.Business
                 throw new ArgumentNullException(nameof(source));
 
             T result = source.Clone();
-            result.SelfSheet = source.SelfSheet;
             result.IsNew = true;
             return result;
         }
@@ -130,7 +127,7 @@ namespace Phenix.Business
                 if (value && !IsSelfDirty)
                 {
                     Dictionary<string, object> oldPropertyValues = new Dictionary<string, object>(StringComparer.Ordinal);
-                    foreach (KeyValuePair<string, Property> kvp in GetSelfSheet().GetProperties(this.GetType()))
+                    foreach (KeyValuePair<string, Property> kvp in Sheet.GetProperties(this.GetType()))
                     {
                         if (kvp.Value.Column.TableColumn.IsWatermarkColumn)
                             continue;
@@ -148,10 +145,9 @@ namespace Phenix.Business
                 {
                     if (_oldPropertyValues != null)
                     {
-                        Sheet selfSheet = GetSelfSheet();
                         foreach (KeyValuePair<string, object> kvp in _oldPropertyValues)
                         {
-                            Property property = selfSheet.GetProperty(this.GetType(), kvp.Key);
+                            Property property = Sheet.GetProperty(this.GetType(), kvp.Key);
                             property.Field.Set(this, kvp.Value);
                         }
 
@@ -281,7 +277,7 @@ namespace Phenix.Business
         public void SetDirtyValue(Expression<Func<T, object>> propertyLambda, object newValue)
         {
             IsSelfDirty = true;
-            Property property = GetSelfSheet().GetProperty(this.GetType(), Utilities.GetPropertyInfo<T>(propertyLambda).Name);
+            Property property = Sheet.GetProperty(this.GetType(), Utilities.GetPropertyInfo<T>(propertyLambda).Name);
             property.Field.Set(this, newValue);
             DirtyPropertyNames[property.PropertyInfo.Name] = true;
         }
@@ -298,7 +294,7 @@ namespace Phenix.Business
             bool result = false;
             Dictionary<string, object> oldPropertyValues = new Dictionary<string, object>(StringComparer.Ordinal);
             Dictionary<string, bool?> dirtyPropertyNames = new Dictionary<string, bool?>(StringComparer.Ordinal);
-            foreach (KeyValuePair<string, Property> kvp in GetSelfSheet().GetProperties(this.GetType()))
+            foreach (KeyValuePair<string, Property> kvp in Sheet.GetProperties(this.GetType()))
             {
                 if (kvp.Value.Column.TableColumn.IsWatermarkColumn)
                     continue;
@@ -335,9 +331,8 @@ namespace Phenix.Business
                 return null;
 
             List<PropertyValue> result = new List<PropertyValue>(_oldPropertyValues.Count);
-            Sheet selfSheet = GetSelfSheet();
-            Sheet targetTable = selfSheet.GetPrimaryKeyProperty(GetPersistTablePrimaryKeyPropertyLambda()).Column.TableColumn.Owner;
-            foreach (KeyValuePair<string, Property> kvp in selfSheet.GetProperties(this.GetType(), targetTable))
+            Sheet targetTable = Sheet.GetPrimaryKeyProperty(PrimaryKeyPropertyLambda).Column.TableColumn.Owner;
+            foreach (KeyValuePair<string, Property> kvp in Sheet.GetProperties(this.GetType(), targetTable))
             {
                 if (kvp.Value.Column.TableColumn.IsWatermarkColumn)
                     continue;
@@ -369,7 +364,7 @@ namespace Phenix.Business
         /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
         public virtual int SaveSelf(bool checkTimestamp = true)
         {
-            return GetSelfSheet().GetSheet().Owner.Database.ExecuteGet((Func<DbTransaction, bool, int>) SaveSelf, checkTimestamp);
+            return Database.ExecuteGet((Func<DbTransaction, bool, int>) SaveSelf, checkTimestamp);
         }
 
         /// <summary>

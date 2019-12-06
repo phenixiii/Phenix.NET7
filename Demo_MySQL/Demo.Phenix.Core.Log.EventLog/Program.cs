@@ -18,10 +18,22 @@ namespace Demo
             Console.WriteLine("数据库日志存储在缺省数据库的 PH7_EventLog 表记录里。");
             Console.WriteLine();
 
-            Console.WriteLine("注册缺省数据库连接");
+            Console.WriteLine("在接下来的演示之前，请启动 Phenix.Services.Host 程序（需要用到运行在 Orleans 服务群的 SequenceGrain），并保证其正确连接到你的测试库。");
+            Console.WriteLine("数据库配置信息存放在 Phenix.Core.db 的 PH7_Database 表中，配置方法见其示例记录的 Remark 字段内容。");
+            Console.Write("准备好之后，请按任意键继续");
+            Console.ReadKey();
+            Console.WriteLine();
+            Console.WriteLine();
+
+            Console.WriteLine("设为调试状态");
+            AppRun.Debugging = true;
+            Console.WriteLine("测试过程中产生的日志保存在：" + AppRun.TempDirectory);
+            Console.WriteLine();
+
+            Console.WriteLine("注册缺省数据库连接（也可以在 Phenix.Core.db 的 PH7_Database 表中配置）");
             Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
             Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
-            Console.WriteLine("请确认连接的是否是你的测试库？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
+            Console.WriteLine("请确认是否是你的测试库（并保证与 Phenix.Services.Host 程序连接的缺省数据库是同一个）？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
             Console.Write("否则按任意键继续");
             Console.ReadKey();
             Console.WriteLine();

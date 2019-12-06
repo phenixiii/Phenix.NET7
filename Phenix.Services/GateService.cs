@@ -1,5 +1,5 @@
 ﻿using System;
-using Phenix.Core.Net.Api;
+using Phenix.Core.Net.Api.Security;
 using Phenix.Core.Security;
 
 namespace Phenix.Services
