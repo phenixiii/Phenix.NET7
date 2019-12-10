@@ -4,7 +4,6 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>Phenix.Tools.CreateKeyPair</AssemblyName>
-    <DefineConstants>TRACE;ORA</DefineConstants>
     <RootNamespace>Phenix.Tools.CreateKeyPair</RootNamespace>
     <Version>7.3.13</Version>
     <Authors>ming</Authors>

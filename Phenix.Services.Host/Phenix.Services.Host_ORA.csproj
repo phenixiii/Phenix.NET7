@@ -2,17 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <PackageId>Phenix.Services.Host</PackageId>
-    <AssemblyName>Phenix.Services.Host</AssemblyName>
-    <DefineConstants>TRACE</DefineConstants>
-    <RootNamespace>Phenix.Services.Host</RootNamespace>
     <Version>7.3.15</Version>
     <AssemblyVersion>7.3.15.1205</AssemblyVersion>
     <FileVersion>7.3.15.1205</FileVersion>
     <Description>Phenix Framework for .NET Core 3.0</Description>
     <Authors>ming</Authors>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <AssemblyName>Phenix.Services.Host</AssemblyName>
+    <RootNamespace>Phenix.Services.Host</RootNamespace>
     <Copyright>Copyright © 2007, 2020 Phenixヾ Studio</Copyright>
     <Product>Phenix.Services.Host</Product>
+    <PackageId>Phenix.Services.Host</PackageId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -38,11 +38,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Phenix.Actor">
+      <HintPath>..\Bin_ORA\netcoreapp3.0\Phenix.Actor.dll</HintPath>
+    </Reference>
     <Reference Include="Phenix.Core">
       <HintPath>..\Bin_ORA\netcoreapp3.0\Phenix.Core.dll</HintPath>
     </Reference>
     <Reference Include="Phenix.Services">
       <HintPath>..\Bin_ORA\netcoreapp3.0\Phenix.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="Phenix.Services.Plugin">
+      <HintPath>..\Bin_ORA\netcoreapp3.0\Phenix.Services.Plugin.dll</HintPath>
     </Reference>
   </ItemGroup>
 

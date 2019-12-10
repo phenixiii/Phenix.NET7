@@ -15,6 +15,11 @@ namespace Phenix.Services.Host
             AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) => { Phenix.Core.Log.EventLog.SaveLocal("An unhandled exception occurred in the current domain", (Exception) eventArgs.ExceptionObject); };
 
             /*
+             * 注册用户资料工厂
+             */
+            Phenix.Core.Security.Identity.RegisterFactory(new Phenix.Services.Plugin.UserFactory());
+
+            /*
              * 启动WebAPI服务
              * 启动Orleans服务集群
              *
@@ -38,14 +43,10 @@ namespace Phenix.Services.Host
                      * 设置服务ID：Phenix.Core.Data.Database.Default.DataSourceKey
                      * 设置Clustering、GrainStorage、Reminder数据库：Phenix.Core.Data.Database.Default
                      *
-                     * 装配Actor核心，包含：
-                     *   Phenix.Core.Data.Grains.SequenceGrain 响应 Phenix.Core.Data.Sequence 请求
-                     *   Phenix.Core.Data.Grains.IncrementGrain 响应 Phenix.Core.Data.Increment 请求
-                     *   Phenix.Core.Security.Grains.UserGrain 响应 Phenix.Core.Security.User 请求
-                     *
                      * 装配Actor插件
                      * 系统的 Actor 都应该按照领域划分开发各自的插件程序集，部署到本服务容器的执行目录下
                      * 插件程序集的命名，都应该统一采用"*.Plugin.dll"作为文件名的后缀
+                     * 插件 Phenix.Services.Plugin 的 UserGrain 响应 User 请求
                      */
                     .ConfigureCluster()
                     /*

@@ -1,5 +1,5 @@
 20190522
-1，发布轻量级的持久化引擎，支持Oracle、MySQL，封装ADO.NET，可操作多个数据库，也为系统的分库分表策略提供持久化层面的便利
+1，发布轻量级的持久化引擎，支持Oracle、MySQL，封装ADO.NET，可同时操作多个数据库，提供分库分表策略的持久化方法
 2，提供数据库的数据字典的查看方法，示例见Demo.Phenix.Core.Data.Schema
 3，提供存放日志到本地或数据库的通用方法，示例见Demo.Phenix.Core.Log.EventLog
 4，提供系统唯一的序列号，支持多线程、多进程、分布式应用，示例见Demo.Phenix.Core.Data.Sequence
@@ -105,8 +105,10 @@
 
 
 20191205
-1，基于Orleans框架全面改造Phenix.Core和Phenix.Services.Host工程，以支持并行和分布式大规模服务架构设计
+1，提供Phenix.Actor工程，封装Orleans的客户端和服务集群配置方法和入口，以及一套轻量级的Grain开发框架，支持并行和分布式大规模服务架构设计
 2，规定将Orleans服务的Grain及其接口代码编写在各自的工程里，程序集的命名以"*.Plugin.dll"作为后缀，默认会被Phenix.Services.Host自动加载并装配到ApplicationParts中
+3，提供Phenix.Services.Plugin工程，包含用户身份验证和管理的UserGrain类、IUserGrain接口，及其代理UserGrain服务的User类，通过UserFactory类注册到Phenix.Core的权限控制模块，注册方法（见Phenix.Services.Host）：
+         Phenix.Core.Security.Identity.RegisterFactory(new Phenix.Services.Plugin.UserFactory());
 
 
 

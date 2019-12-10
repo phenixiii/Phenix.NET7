@@ -7,24 +7,33 @@
     <FileVersion>7.3.15.1205</FileVersion>
     <Description>Phenix Framework for .NET Core 3.0</Description>
     <Authors>ming</Authors>
+    <DefineConstants>TRACE;ORA</DefineConstants>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <AssemblyName>Phenix.Business</AssemblyName>
-    <RootNamespace>Phenix.Business</RootNamespace>
+    <AssemblyName>Phenix.Actor</AssemblyName>
+    <RootNamespace>Phenix.Actor</RootNamespace>
     <Copyright>Copyright © 2007, 2020 Phenixヾ Studio</Copyright>
     <Company />
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\Bin_ORA\</OutputPath>
-    <DocumentationFile>..\Bin_ORA\Phenix.Business.xml</DocumentationFile>
+    <DocumentationFile>..\Bin_ORA\Phenix.Actor.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\Bin_ORA\</OutputPath>
-    <DocumentationFile>..\Bin_ORA\Phenix.Business.xml</DocumentationFile>
+    <DocumentationFile>..\Bin_ORA\Phenix.Actor.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.Orleans.Client" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Orleans.OrleansCodeGenerator" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Orleans.Reminders.AdoNet" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Orleans.Server" Version="3.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 

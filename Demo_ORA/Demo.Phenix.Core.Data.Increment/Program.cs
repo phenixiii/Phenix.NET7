@@ -13,16 +13,16 @@ namespace Demo
         {
             Console.WriteLine("**** 演示 Phenix.Core.Data.Increment 功能 ****");
             Console.WriteLine();
-            Console.WriteLine("Increment 类，封装了运行在 Orleans 服务群的 IncrementGrain 的64位增量生成器。");
-            Console.WriteLine("每次调用 Increment 对象的 GetNext() 函数，将获得同一 key 下从 initialValue 起连续递增的 Long 类型数值，可作为业务码（比如订单号）递增部分的填充来源。");
-            Console.WriteLine("受并行竞争影响，单个进程或线程不一定能获得连续的增量值，但整个系统里一定是连续的。");
+            Console.WriteLine("Increment 类，64位增量生成器，仅允许通过 Database.Increment 获取到实例。");
+            Console.WriteLine("每次调用 Database 的 Increment 属性的 GetNext() 函数，将获得该数据库下同一 key 从 initialValue 起连续递增的 Long 类型数值，可作为业务码（比如订单号）递增部分的填充来源。");
+            Console.WriteLine("受并行竞争影响，单个进程或线程不一定能获得连续的增量值，但整个数据库下一定是连续的。");
             Console.WriteLine("需注意的是，取到后是用还是弃用，由你的代码自行决定。");
             Console.WriteLine();
 
             Console.WriteLine("本场景是运行在服务端，如果要在客户端获取64位增量，请使用 phAjax.getIncrement() / Phenix.Client.HttpClient.GetIncrementAsync()。");
             Console.WriteLine();
 
-            Console.WriteLine("在接下来的演示之前，请启动 Phenix.Services.Host 程序（需要用到运行在 Orleans 服务群的 IncrementGrain），并保证其正确连接到你的测试库。");
+            Console.WriteLine("在接下来的演示之前，请启动 Phenix.Services.Host 程序，并保证其正确连接到你的测试库。");
             Console.WriteLine("数据库配置信息存放在 Phenix.Core.db 的 PH7_Database 表中，配置方法见其示例记录的 Remark 字段内容。");
             Console.Write("准备好之后，请按任意键继续");
             Console.ReadKey();
@@ -53,7 +53,7 @@ namespace Demo
             Task.WaitAll(tasks);
             foreach (KeyValuePair<string, int> kvp in _incrementValues)
             {
-                Console.Write("business code = {0}, 线程 {1}", kvp.Key, kvp.Value);
+                Console.Write("business code = {0}, taskIndex = {1}", kvp.Key, kvp.Value);
                 Console.WriteLine();
             }
 
@@ -63,22 +63,21 @@ namespace Demo
 
         static readonly SynchronizedSortedDictionary<string, int> _incrementValues = new SynchronizedSortedDictionary<string, int> ();
 
-        static void FetchIncrement(int index)
+        static void FetchIncrement(int taskIndex)
         {
             Task[] tasks = new[]
             {
-                Task.Run(() => FetchIncrement("SX201905AAA", 0, index)),
-                Task.Run(() => FetchIncrement("SX201905AAA", 1000, index)),
-                Task.Run(() => FetchIncrement("SX201905XXX", 1, index)),
+                Task.Run(() => FetchIncrement("SX2019AAA", 0, taskIndex)),
+                Task.Run(() => FetchIncrement("SX2019AAA", 1000, taskIndex)),
+                Task.Run(() => FetchIncrement("SX2019XXX", 1, taskIndex)),
             };
             Task.WaitAll(tasks);
         }
 
         static void FetchIncrement(string key, long initialValue, int index)
         {
-            Phenix.Core.Data.Increment increment = Phenix.Core.Data.Increment.Fetch(key, initialValue);
             for (int i = 0; i < 10; i++)
-                _incrementValues.Add(String.Format("{0}-{1:D6}", key, increment.GetNext().Result), index);
+                _incrementValues.Add(String.Format("{0}-{1:D6}", key, Database.Default.Increment.GetNext(key, initialValue)), index);
         }
     }
 }

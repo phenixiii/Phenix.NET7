@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Phenix.Client.Security;
 using Phenix.Core;
-using Phenix.Core.Data;
 using Phenix.Core.Data.Model;
 using Phenix.Core.IO;
 using Phenix.Core.Message;
@@ -432,7 +431,7 @@ namespace Phenix.Client
             if (AppRun.Debugging)
                 Phenix.Core.Log.EventLog.SaveLocal(method, message, error);
             else
-                await SaveEventLogAsync(new Phenix.Core.Log.EventInfo(Sequence.Default.Value.Result, DateTime.Now,
+                await SaveEventLogAsync(new Phenix.Core.Log.EventInfo(await GetSequenceAsync(), DateTime.Now,
                     method != null ? (method.ReflectedType ?? method.DeclaringType).FullName : null,
                     method != null ? method.Name : null,
                     message,
