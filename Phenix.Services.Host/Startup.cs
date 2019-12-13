@@ -126,12 +126,6 @@ namespace Phenix.Services.Host
                 app.UseDeveloperExceptionPage();
 
             /*
-             * 使用CORS中间件（响应跨域请求）
-             * 策略见 ConfigureServices 函数里的 services.AddCors() 限制条件
-             */
-            app.UseCors();
-
-            /*
              * 使用转接头中间件（代理服务器和负载均衡器）
              * 策略见 ConfigureServices 函数里的 services.Configure<ForwardedHeadersOptions>() 以适应部署环境
              */
@@ -176,6 +170,7 @@ namespace Phenix.Services.Host
              */
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
