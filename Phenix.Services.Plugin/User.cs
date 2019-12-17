@@ -105,10 +105,7 @@ namespace Phenix.Services.Plugin
 
         #region 属性
 
-        /// <summary>
-        /// 登录名
-        /// </summary>
-        protected string _name;
+        private string _name;
 
         /// <summary>
         /// 登录名
@@ -118,10 +115,7 @@ namespace Phenix.Services.Plugin
             get { return _name; }
         }
 
-        /// <summary>
-        /// 手机
-        /// </summary>
-        protected string _phone;
+        private string _phone;
 
         /// <summary>
         /// 手机
@@ -132,10 +126,7 @@ namespace Phenix.Services.Plugin
             set { UpdateSelf(SetProperty(p => p.Phone, value)); }
         }
 
-        /// <summary>
-        /// 邮箱
-        /// </summary>
-        protected string _eMail;
+        private string _eMail;
 
         /// <summary>
         /// 邮箱
@@ -146,10 +137,7 @@ namespace Phenix.Services.Plugin
             set { UpdateSelf(SetProperty(p => p.EMail, value)); }
         }
 
-        /// <summary>
-        /// 注册昵称
-        /// </summary>
-        protected string _regAlias;
+        private string _regAlias;
 
         /// <summary>
         /// 注册昵称
@@ -160,10 +148,7 @@ namespace Phenix.Services.Plugin
             set { UpdateSelf(SetProperty(p => p.RegAlias, value)); }
         }
 
-        /// <summary>
-        /// 注册时间
-        /// </summary>
-        protected DateTime _regTime;
+        private DateTime _regTime;
 
         /// <summary>
         /// 注册时间
@@ -173,10 +158,7 @@ namespace Phenix.Services.Plugin
             get { return _regTime; }
         }
 
-        /// <summary>
-        /// 服务请求方IP地址
-        /// </summary>
-        protected string _requestAddress;
+        private string _requestAddress;
 
         /// <summary>
         /// 服务请求方IP地址
@@ -186,10 +168,7 @@ namespace Phenix.Services.Plugin
             get { return _requestAddress; }
         }
 
-        /// <summary>
-        /// 服务请求失败次数
-        /// </summary>
-        protected int _requestFailureCount;
+        private int _requestFailureCount;
 
         /// <summary>
         /// 服务请求失败次数
@@ -199,10 +178,7 @@ namespace Phenix.Services.Plugin
             get { return _requestFailureCount; }
         }
 
-        /// <summary>
-        /// 服务请求失败时间
-        /// </summary>
-        protected DateTime? _requestFailureTime;
+        private DateTime? _requestFailureTime;
 
         /// <summary>
         /// 服务请求失败时间
@@ -212,10 +188,7 @@ namespace Phenix.Services.Plugin
             get { return _requestFailureTime; }
         }
 
-        /// <summary>
-        /// 所属顶层团体ID
-        /// </summary>
-        protected long? _rootTeamsId;
+        private long? _rootTeamsId;
 
         /// <summary>
         /// 所属顶层团体ID
@@ -225,10 +198,7 @@ namespace Phenix.Services.Plugin
             get { return _rootTeamsId; }
         }
 
-        /// <summary>
-        /// 所属顶层团体
-        /// </summary>
-        protected Teams _rootTeams;
+        private Teams _rootTeams;
 
         /// <summary>
         /// 顶层团体
@@ -243,10 +213,7 @@ namespace Phenix.Services.Plugin
             }
         }
 
-        /// <summary>
-        /// 所属团体ID
-        /// </summary>
-        protected long? _teamsId;
+        private long? _teamsId;
 
         /// <summary>
         /// 所属团体ID
@@ -285,10 +252,7 @@ namespace Phenix.Services.Plugin
             }
         }
 
-        /// <summary>
-        /// 担任岗位ID
-        /// </summary>
-        protected long? _positionId;
+        private long? _positionId;
 
         /// <summary>
         /// 担任岗位ID
@@ -298,10 +262,7 @@ namespace Phenix.Services.Plugin
             get { return _positionId; }
         }
 
-        /// <summary>
-        /// 担任岗位
-        /// </summary>
-        protected Position _position;
+        private Position _position;
 
         /// <summary>
         /// 担任岗位
@@ -324,10 +285,7 @@ namespace Phenix.Services.Plugin
             }
         }
 
-        /// <summary>
-        /// 是否锁定
-        /// </summary>
-        protected bool _locked;
+        private bool _locked;
 
         /// <summary>
         /// 是否锁定
@@ -338,10 +296,7 @@ namespace Phenix.Services.Plugin
             set { UpdateSelf(SetProperty(p => p.Locked, value), SetProperty(p => p.LockedTime, DateTime.Now)); }
         }
 
-        /// <summary>
-        /// 锁定时间
-        /// </summary>
-        protected DateTime? _lockedTime;
+        private DateTime? _lockedTime;
 
         /// <summary>
         /// 锁定时间
@@ -351,10 +306,7 @@ namespace Phenix.Services.Plugin
             get { return _lockedTime; }
         }
 
-        /// <summary>
-        /// 是否注销
-        /// </summary>
-        protected bool _disabled;
+        private bool _disabled;
 
         /// <summary>
         /// 是否注销
@@ -365,10 +317,7 @@ namespace Phenix.Services.Plugin
             set { UpdateSelf(SetProperty(p => p.Disabled, value), SetProperty(p => p.DisabledTime, DateTime.Now)); }
         }
 
-        /// <summary>
-        /// 注销时间
-        /// </summary>
-        protected DateTime? _disabledTime;
+        private DateTime? _disabledTime;
 
         /// <summary>
         /// 注销时间
@@ -382,7 +331,7 @@ namespace Phenix.Services.Plugin
         /// 登录口令(散列值)
         /// </summary>
         [NonSerialized]
-        protected string _password;
+        private string _password;
 
         /// <summary>
         /// 登录口令(散列值)
@@ -397,7 +346,7 @@ namespace Phenix.Services.Plugin
         /// 为空时用登录口令
         /// </summary>
         [NonSerialized]
-        protected string _dynamicPassword;
+        private string _dynamicPassword;
 
         /// <summary>
         /// 动态口令(散列值)
@@ -412,7 +361,7 @@ namespace Phenix.Services.Plugin
         /// 动态口令生成时间
         /// </summary>
         [NonSerialized]
-        protected DateTime _dynamicPasswordCreateTime;
+        private DateTime _dynamicPasswordCreateTime;
 
         /// <summary>
         /// 动态口令生成时间
@@ -452,33 +401,33 @@ namespace Phenix.Services.Plugin
         /// <param name="cipherText">密文(Base64字符串)</param>
         public Task<string> Decrypt(string cipherText)
         {
-            return Grain.Encrypt(cipherText);
-        }
-
-        /// <summary>
-        /// 核对有效性
-        /// </summary>
-        /// <param name="timestamp">时间戳</param>
-        /// <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
-        /// <param name="requestAddress">服务请求方IP地址</param>
-        /// <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
-        /// <returns>是否正确</returns>
-        public Task<bool> IsValid(string timestamp, string signature, string requestAddress, bool throwIfNotConform = true)
-        {
-            return Grain.IsValid(timestamp, signature, requestAddress, throwIfNotConform);
+            return Grain.Decrypt(cipherText);
         }
 
         /// <summary>
         /// 核对登录有效性
         /// </summary>
         /// <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-        /// <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
+        /// <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
         /// <param name="requestAddress">服务请求方IP地址</param>
         /// <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
         /// <returns>是否正确</returns>
         public Task<bool> IsValidLogon(string timestamp, string signature, string requestAddress, bool throwIfNotConform = true)
         {
             return Grain.IsValidLogon(timestamp, signature, requestAddress, throwIfNotConform);
+        }
+
+        /// <summary>
+        /// 核对有效性
+        /// </summary>
+        /// <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
+        /// <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
+        /// <param name="requestAddress">服务请求方IP地址</param>
+        /// <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
+        /// <returns>是否正确</returns>
+        public Task<bool> IsValid(string timestamp, string signature, string requestAddress, bool throwIfNotConform = true)
+        {
+            return Grain.IsValid(timestamp, signature, requestAddress, throwIfNotConform);
         }
 
         /// <summary>

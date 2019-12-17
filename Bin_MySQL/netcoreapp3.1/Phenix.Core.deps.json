@@ -1,12 +1,12 @@
 {
   "runtimeTarget": {
-    "name": ".NETCoreApp,Version=v3.0",
+    "name": ".NETCoreApp,Version=v3.1",
     "signature": ""
   },
   "compilationOptions": {},
   "targets": {
-    ".NETCoreApp,Version=v3.0": {
-      "Phenix.Core/7.3.15": {
+    ".NETCoreApp,Version=v3.1": {
+      "Phenix.Core/7.3.16": {
         "dependencies": {
           "MySql.Data": "8.0.18",
           "Newtonsoft.Json": "12.0.3",
@@ -992,7 +992,7 @@
     }
   },
   "libraries": {
-    "Phenix.Core/7.3.15": {
+    "Phenix.Core/7.3.16": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

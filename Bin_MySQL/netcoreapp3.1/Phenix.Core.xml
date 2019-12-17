@@ -787,7 +787,7 @@
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DataReader.CreateParameter(System.String,System.Object,Oracle.ManagedDataAccess.Client.OracleDbType,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Data.Common.DataReader.CreateParameter(System.String,System.Object,MySql.Data.MySqlClient.MySqlDbType,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
             </summary>
@@ -1018,22 +1018,22 @@
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,Oracle.ManagedDataAccess.Client.OracleDbType,System.Data.ParameterDirection)">
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,MySql.Data.MySqlClient.MySqlDbType,System.Data.ParameterDirection)">
             <summary>
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,Oracle.ManagedDataAccess.Client.OracleDbType,System.Data.ParameterDirection,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,MySql.Data.MySqlClient.MySqlDbType,System.Data.ParameterDirection,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,Oracle.ManagedDataAccess.Client.OracleDbType,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,MySql.Data.MySqlClient.MySqlDbType,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,Oracle.ManagedDataAccess.Client.OracleDbType,System.Data.ParameterDirection,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,MySql.Data.MySqlClient.MySqlDbType,System.Data.ParameterDirection,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
             </summary>
@@ -1453,7 +1453,7 @@
             <param name="name">名称</param>
             <param name="value">值</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.ParamValue.InputOutput(System.String,System.Object,Oracle.ManagedDataAccess.Client.OracleDbType)">
+        <member name="M:Phenix.Core.Data.Common.ParamValue.InputOutput(System.String,System.Object,MySql.Data.MySqlClient.MySqlDbType)">
             <summary>
             输入输出参数
             </summary>
@@ -1461,14 +1461,14 @@
             <param name="value">值</param>
             <param name="dbType">OracleDbType</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.ParamValue.Output(System.String,Oracle.ManagedDataAccess.Client.OracleDbType)">
+        <member name="M:Phenix.Core.Data.Common.ParamValue.Output(System.String,MySql.Data.MySqlClient.MySqlDbType)">
             <summary>
             输出参数
             </summary>
             <param name="name">名称</param>
             <param name="dbType">OracleDbType</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.ParamValue.ReturnValue(System.String,Oracle.ManagedDataAccess.Client.OracleDbType)">
+        <member name="M:Phenix.Core.Data.Common.ParamValue.ReturnValue(System.String,MySql.Data.MySqlClient.MySqlDbType)">
             <summary>
             返回值
             </summary>
@@ -9204,24 +9204,24 @@
             服务请求最近时间
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.Identity.IsValidAsync(System.String,System.String,System.String,System.Boolean)">
-            <summary>
-            核对有效性
-            </summary>
-            <param name="timestamp">时间戳</param>
-            <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
-            <param name="requestAddress">服务请求方IP地址</param>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
-            <returns>是否正确</returns>
-        </member>
         <member name="M:Phenix.Core.Security.Identity.IsValidLogonAsync(System.String,System.String,System.String,System.Boolean)">
             <summary>
             核对登录有效性
             </summary>
             <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-            <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
+            <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
             <param name="requestAddress">服务请求方IP地址</param>
             <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
+            <returns>是否正确</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.Identity.IsValidAsync(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            核对有效性
+            </summary>
+            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
+            <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
+            <param name="requestAddress">服务请求方IP地址</param>
+            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
             <returns>是否正确</returns>
         </member>
         <member name="M:Phenix.Core.Security.Identity.IsInRole(System.String)">
@@ -9375,7 +9375,7 @@
             核对登录有效性
             </summary>
             <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-            <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
+            <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
             <param name="requestAddress">服务请求方IP地址</param>
             <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
             <returns>是否正确</returns>
@@ -9384,8 +9384,8 @@
             <summary>
             核对有效性
             </summary>
-            <param name="timestamp">时间戳</param>
-            <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
+            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
+            <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
             <param name="requestAddress">服务请求方IP地址</param>
             <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
             <returns>是否正确</returns>
@@ -9591,7 +9591,7 @@
         <member name="P:Phenix.Core.Security.User.PasswordComplexityMinimum">
             <summary>
             口令复杂度最小值(含数字、大写字母、小写字母、特殊字符的种类)
-            缺省为 2(个>=1)
+            缺省为 3(个>=1)
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.DynamicPasswordValidityMinutes">
@@ -9833,7 +9833,7 @@
             核对登录有效性
             </summary>
             <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-            <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
+            <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
             <param name="requestAddress">服务请求方IP地址</param>
             <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
             <returns>是否正确</returns>
@@ -9842,8 +9842,8 @@
             <summary>
             核对有效性
             </summary>
-            <param name="timestamp">时间戳</param>
-            <param name="signature">签名(被登录口令/动态口令 Rijndael 加密的时间戳)</param>
+            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
+            <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
             <param name="requestAddress">服务请求方IP地址</param>
             <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
             <returns>是否正确</returns>
@@ -9879,6 +9879,29 @@
             <param name="requestAddress">服务请求方IP地址</param>
             <param name="throwIfNotConform">如果为 true, 核对有效性不符会抛出UserNotFoundException/UserLockedException异常而不是返回false</param>
             <returns>动态口令(6位数字一般作为验证码用短信发送给到用户)</returns>
+        </member>
+        <member name="T:Phenix.Core.SyncCollections.CachedObject`1">
+            <summary>
+            缓存对象
+            </summary>
+            <typeparam name="TValue">被缓存对象</typeparam>
+        </member>
+        <member name="M:Phenix.Core.SyncCollections.CachedObject`1.#ctor(`0,System.DateTime)">
+            <summary>
+            初始化
+            </summary>
+            <param name="value">被缓存对象</param>
+            <param name="invalidTime">失效时间</param>
+        </member>
+        <member name="P:Phenix.Core.SyncCollections.CachedObject`1.Value">
+            <summary>
+            被缓存对象
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.SyncCollections.CachedObject`1.InvalidTime">
+            <summary>
+            失效时间
+            </summary>
         </member>
         <member name="T:Phenix.Core.SyncCollections.ICachedObject">
             <summary>

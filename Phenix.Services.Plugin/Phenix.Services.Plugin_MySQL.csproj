@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-    <Version>7.3.15</Version>
-    <AssemblyVersion>7.3.15.1205</AssemblyVersion>
-    <FileVersion>7.3.15.1205</FileVersion>
-    <Description>Phenix Framework for .NET Core 3.0</Description>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>7.3.16</Version>
+    <AssemblyVersion>7.3.16.1216</AssemblyVersion>
+    <FileVersion>7.3.16.1216</FileVersion>
+    <Description>Phenix Framework 7 for .NET Core 3 + Orleans 3</Description>
     <Authors>ming</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <AssemblyName>Phenix.Services.Plugin</AssemblyName>
@@ -23,16 +23,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Orleans.Core.Abstractions" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Orleans.Core.Abstractions" Version="3.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
   <Reference Include="Phenix.Actor">
-    <HintPath>..\Bin_MySQL\netcoreapp3.0\Phenix.Actor.dll</HintPath>
+    <HintPath>..\Bin_MySQL\netcoreapp3.1\Phenix.Actor.dll</HintPath>
   </Reference>
     <Reference Include="Phenix.Core">
-      <HintPath>..\Bin_MySQL\netcoreapp3.0\Phenix.Core.dll</HintPath>
+      <HintPath>..\Bin_MySQL\netcoreapp3.1\Phenix.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

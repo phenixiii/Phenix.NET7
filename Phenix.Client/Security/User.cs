@@ -156,10 +156,7 @@ namespace Phenix.Client.Security
             get { return _rootTeams; }
         }
 
-        /// <summary>
-        /// 所属团体ID
-        /// </summary>
-        protected long? _teamsId;
+        private readonly long? _teamsId;
 
         /// <summary>
         /// 所属团体ID
@@ -186,9 +183,6 @@ namespace Phenix.Client.Security
             }
         }
 
-        /// <summary>
-        /// 担任岗位ID
-        /// </summary>
         private readonly long? _positionId;
 
         /// <summary>
@@ -270,36 +264,6 @@ namespace Phenix.Client.Security
             set { _password = value; }
         }
 
-        #region Admin
-
-        /// <summary>
-        /// 管理员登录名
-        /// </summary>
-        public const string AdminUserName = "ADMIN";
-
-        /// <summary>
-        /// 管理员角色
-        /// </summary>
-        public const string AdminRoleName = "Admin";
-
-        [NonSerialized]
-        private bool? _isAdmin;
-        /// <summary>
-        /// 是否管理员
-        /// </summary>
-        [Newtonsoft.Json.JsonIgnore]
-        public bool IsAdmin
-        {
-            get
-            {
-                if (!_isAdmin.HasValue)
-                    _isAdmin = String.CompareOrdinal(Name, AdminUserName) == 0;
-                return _isAdmin.Value;
-            }
-        }
-
-        #endregion
-
         #endregion
 
         #region 方法
@@ -334,7 +298,7 @@ namespace Phenix.Client.Security
         }
 
         /// <summary>
-        /// 身份验证token: [登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密的时间戳)]
+        /// 身份验证token: [登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)]
         /// </summary>
         public string FormatComplexAuthorization()
         {

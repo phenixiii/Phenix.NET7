@@ -150,7 +150,7 @@ namespace Phenix.Client
             if (!Identity.IsAuthenticated)
                 throw new UserVerifyException();
 
-            await CallAsync(HttpMethod.Patch, NetConfig.ApiSecurityMyselfPath, Identity.User.Encrypt(password));
+            await CallAsync(HttpMethod.Patch, NetConfig.ApiSecurityMyselfPath, password, true);
             Identity.User.Password = MD5CryptoTextProvider.ComputeHash(password);
         }
 

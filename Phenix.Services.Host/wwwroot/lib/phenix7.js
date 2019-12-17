@@ -1,5 +1,5 @@
 ﻿/*
-    Phenix Framework for .NET Core 3.0
+    Phenix Framework 7 for .NET Core 3 & Orleans 3
     Copyright © 2007, 2019 Phenixヾ Studio All rights reserved.
 
     <script type="text/javascript" src="../lib/crypto-js/core-min.js"></script>
@@ -83,7 +83,7 @@ var phAjax = (function($) {
         }
     };
 
-    // 身份验证token: [登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密的时间戳)]
+    // 身份验证token: [登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)]
     var formatComplexAuthorization = function(userName, userKey) {
         var timestamp = phUtils.random(9) + new Date().toISOString();
         return encodeURIComponent(userName) + "," + timestamp + "," + phUtils.encrypt(timestamp, userKey);
@@ -102,8 +102,8 @@ var phAjax = (function($) {
             return phUtils.encrypt(data, getUserKey());
         },
 
-        decrypt: function(hexStr) {
-            return phUtils.decrypt(hexStr, getUserKey());
+        decrypt: function(cipherText) {
+            return phUtils.decrypt(cipherText, getUserKey());
         },
 
         // 登记/注册(获取动态口令)
@@ -191,9 +191,10 @@ var phAjax = (function($) {
             options = $.extend(defaults, options);
             phAjax.call({
                 path: "/api/security/myself",
+                decryptResult: true,
                 onSuccess: function(result) {
                     if (typeof options.onSuccess == "function")
-                        options.onSuccess(JSON.parse(phAjax.decrypt(result))); //User
+                        options.onSuccess(JSON.parse(result)); //User
                 },
                 onError: function(XMLHttpRequest, textStatus, errorThrown) {
                     if (typeof options.onError == "function")
@@ -213,7 +214,8 @@ var phAjax = (function($) {
             phAjax.call({
                 type: "PATCH",
                 path: "/api/security/myself",
-                data: phAjax.encrypt(newPassword),
+                data: newPassword,
+                encryptData: true,
                 onSuccess: function(result) {
                     setUserKey(CryptoJS.MD5(newPassword).toString().toUpperCase());
                     if (typeof options.onSuccess == "function")
@@ -414,7 +416,7 @@ var phAjax = (function($) {
                     ChunkCount: chunkCount,
                     ChunkNumber: chunkNumber,
                     ChunkSize: chunkSize,
-                    ChunkMaxSize: maxChunkSize
+                    MaxChunkSize: maxChunkSize
                 }));
             if (chunkNumber > 0) {
                 var p = maxChunkSize * (chunkNumber - 1);
@@ -502,8 +504,8 @@ var phAjax = (function($) {
                 type: "GET", //HttpMethod(GET/POST/PUT/PATCH/DELETE)
                 path: null, //"/api/security/myself"
                 data: null, //上传数据
-                encryptData: false, //默认不加密上传数据（否则服务端的控制器代码请用Request.ReadBodyXXX(true)解密）
-                decryptResult: false, //默认不解密返回数据（否则服务端的控制器代码请用Encrypt(result)加密）
+                encryptData: false, //默认不加密上传数据（否则服务端的控制器代码请用Request.ReadBodyAsync(true)解密）
+                decryptResult: false, //默认不解密返回数据（否则服务端的控制器代码请用this.EncryptAsync(result)加密）
                 processData: true, //默认对data参数进行序列化处理
                 contentType: "application/json;charset=utf-8", 
                 cache: false, //默认不缓存
@@ -575,19 +577,19 @@ var phUtils = (function() {
                 key = CryptoJS.MD5(CryptoJS.enc.Utf8.parse(key));
             if (typeof (data) == "string") {
                 result = CryptoJS.AES.encrypt(data, key, { iv: key, mode: CryptoJS.mode.CBC });
-                return result.ciphertext.toString();
+                return CryptoJS.enc.Base64.stringify(result.ciphertext);
             } else if (typeof (data) == "object") {
                 data = JSON.stringify(data);
                 result = CryptoJS.AES.encrypt(data, key, { iv: key, mode: CryptoJS.mode.CBC });
-                return result.ciphertext.toString();
+                return CryptoJS.enc.Base64.stringify(result.ciphertext);
             }
             return null;
         },
         
-        decrypt: function(hexStr, key) {
+        decrypt: function(cipherText, key) {
             if (typeof (key) == "string")
                 key = CryptoJS.MD5(CryptoJS.enc.Utf8.parse(key));
-            var result = CryptoJS.AES.decrypt(CryptoJS.enc.Base64.stringify(CryptoJS.enc.Hex.parse(hexStr)), key, { iv: key, mode: CryptoJS.mode.CBC });
+            var result = CryptoJS.AES.decrypt(cipherText, key, { iv: key, mode: CryptoJS.mode.CBC });
             return result.toString(CryptoJS.enc.Utf8);
         },
         

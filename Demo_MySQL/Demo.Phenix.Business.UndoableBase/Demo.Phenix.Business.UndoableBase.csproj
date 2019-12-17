@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Demo</RootNamespace>
   </PropertyGroup>
 
@@ -22,10 +22,10 @@
 
   <ItemGroup>
     <Reference Include="Phenix.Business">
-      <HintPath>..\..\Bin_MySQL\netcoreapp3.0\Phenix.Business.dll</HintPath>
+      <HintPath>..\..\Bin_MySQL\netcoreapp3.1\Phenix.Business.dll</HintPath>
     </Reference>
     <Reference Include="Phenix.Core">
-      <HintPath>..\..\Bin_MySQL\netcoreapp3.0\Phenix.Core.dll</HintPath>
+      <HintPath>..\..\Bin_MySQL\netcoreapp3.1\Phenix.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

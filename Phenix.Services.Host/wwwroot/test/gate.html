@@ -36,11 +36,11 @@
     <br />
     系统Admin管理员登录<br />
     登录名<input id="adminUserName" type="text" value="ADMIN" />登录口令<input id="adminPassword" type="text" value="ADMIN" />
-    <input name="adminLogonButton" onclick="phAjax.logon({baseAddress: 'http://localhost:5000', name: adminUserName.value, password: adminPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
+    <input name="adminLogonButton" onclick="phAjax.logon({baseAddress: 'http://localhost.:5000', name: adminUserName.value, password: adminPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
     <br />
     普通用户登录<br />
     新(/已注册)的登录名<input id="userName" type="text" value="TEST" />
-    <input name="checkInButton" onclick="phAjax.checkIn({baseAddress: 'http://localhost:5000', name: userName.value, onComplete: onComplete});" type="button" value="登记/注册" /><br />
+    <input name="checkInButton" onclick="phAjax.checkIn({baseAddress: 'http://localhost.:5000', name: userName.value, onComplete: onComplete});" type="button" value="登记/注册" /><br />
     动态口令/登录口令<input id="userPassword" type="text" value="请在此输入日志文件里的口令" />
     <input name="logonButton" onclick="phAjax.logon({name: userName.value, password: userPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
     <br />

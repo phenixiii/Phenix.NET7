@@ -14,14 +14,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{21ACEA56-E832-4AF1-A566-A4EBC61D932E}"
 	ProjectSection(SolutionItems) = preProject
 		ChangeLog.txt = ChangeLog.txt
+		Phenix.Services.Host.分布式服务架构.pptx = Phenix.Services.Host.分布式服务架构.pptx
 		Phenix.Services.Host.部署方法.doc = Phenix.Services.Host.部署方法.doc
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo_Client", "Demo_Client", "{4CBF1077-F885-4AEB-8014-ABC3D79F320E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services_ORA", "Phenix.Services\Phenix.Services_ORA.csproj", "{E340D451-0E23-4BA6-B7BD-0257F05B9BB9}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phenix.Services.Plugin", "Phenix.Services.Plugin", "{D487002D-CCF5-46DF-88C4-0142174CEC49}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Host_ORA", "Phenix.Services.Host\Phenix.Services.Host_ORA.csproj", "{EEC4928E-95B4-4BCA-B3E6-5471652D7B7E}"
 EndProject
@@ -50,6 +49,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Actor_ORA", "Phenix.Actor\Phenix.Actor_ORA.csproj", "{16542B94-D102-4EA5-ADD2-7C6585B25579}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Plugin_ORA", "Phenix.Services.Plugin\Phenix.Services.Plugin_ORA.csproj", "{32D004C1-6003-41D9-8083-ADCD364C6CD2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Algorithm_ORA", "Phenix.Algorithm\Phenix.Algorithm_ORA.csproj", "{25E424E1-9A89-4989-9098-04F2A2CD941A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -125,6 +126,10 @@ Global
 		{32D004C1-6003-41D9-8083-ADCD364C6CD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32D004C1-6003-41D9-8083-ADCD364C6CD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32D004C1-6003-41D9-8083-ADCD364C6CD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25E424E1-9A89-4989-9098-04F2A2CD941A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25E424E1-9A89-4989-9098-04F2A2CD941A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25E424E1-9A89-4989-9098-04F2A2CD941A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25E424E1-9A89-4989-9098-04F2A2CD941A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,3 +1,4 @@
+using System;
 using System.Security.Principal;
 using System.Threading;
 
@@ -27,6 +28,16 @@ namespace Phenix.Client.Security
         #endregion
 
         #region 属性
+
+        /// <summary>
+        /// Guest登录名
+        /// </summary>
+        public const string GuestUserName = "GUEST";
+
+        /// <summary>
+        /// 管理员登录名
+        /// </summary>
+        public const string AdminUserName = "ADMIN";
 
         private User _user;
 
@@ -78,7 +89,8 @@ namespace Phenix.Client.Security
         {
             if (!IsAuthenticated)
                 return false;
-            return User.IsAdmin || User.Position != null && User.Position.Roles.Contains(role);
+            return User.Position != null && User.Position.Roles.Contains(role) ||
+                   String.CompareOrdinal(User.Name, AdminUserName) == 0;
         }
 
         #endregion

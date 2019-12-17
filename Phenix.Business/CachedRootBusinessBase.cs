@@ -48,12 +48,12 @@ namespace Phenix.Business
 
         private static readonly object _lock = new object();
 
-        private static SynchronizedDictionary<string, long> _idCache;
+        private static SynchronizedDictionary<string, CachedObject<long>> _idCache;
 
         /// <summary>
         /// 主键缓存
         /// </summary>
-        protected static SynchronizedDictionary<string, long> IdCache
+        protected static SynchronizedDictionary<string, CachedObject<long>> IdCache
         {
             get
             {
@@ -62,7 +62,7 @@ namespace Phenix.Business
                     lock (_lock)
                         if (_idCache == null)
                         {
-                            _idCache = new SynchronizedDictionary<string, long>(StringComparer.Ordinal);
+                            _idCache = new SynchronizedDictionary<string, CachedObject<long>>(StringComparer.Ordinal);
                         }
 
                     Thread.MemoryBarrier();
@@ -239,8 +239,8 @@ namespace Phenix.Business
 
             T result = null;
             string key = criteriaExpression.ToString();
-            if (IdCache.TryGetValue(key, out long id))
-                result = Fetch(id, doCreate, resetHoursLater);
+            if (IdCache.TryGetValue(key, out CachedObject<long> id))
+                result = Fetch(id.Value, doCreate, resetHoursLater);
             if (result == null)
             {
                 result = BusinessBase<T>.Fetch(criteriaExpression, doCreate);
@@ -248,7 +248,7 @@ namespace Phenix.Business
                 {
                     result.InvalidTime = resetHoursLater == 0 ? DateTime.MaxValue : DateTime.Now.AddHours(resetHoursLater);
                     ObjectCache[result.Id] = result;
-                    IdCache[key] = result.Id;
+                    IdCache[key] = new CachedObject<long>(result.Id, result.InvalidTime);
                 }
             }
 
@@ -303,8 +303,8 @@ namespace Phenix.Business
 
             T result = null;
             string key = criteriaExpression.ToString();
-            if (IdCache.TryGetValue(key, out long id))
-                result = Fetch(connection, id, doCreate, resetHoursLater);
+            if (IdCache.TryGetValue(key, out CachedObject<long> id))
+                result = Fetch(connection, id.Value, doCreate, resetHoursLater);
             if (result == null)
             {
                 result = BusinessBase<T>.Fetch(connection, criteriaExpression, doCreate);
@@ -312,7 +312,7 @@ namespace Phenix.Business
                 {
                     result.InvalidTime = resetHoursLater == 0 ? DateTime.MaxValue : DateTime.Now.AddHours(resetHoursLater);
                     ObjectCache[result.Id] = result;
-                    IdCache[key] = result.Id;
+                    IdCache[key] = new CachedObject<long>(result.Id, result.InvalidTime);
                 }
             }
 
@@ -364,8 +364,8 @@ namespace Phenix.Business
         {
             T result = null;
             string key = criteriaExpression.ToString();
-            if (IdCache.TryGetValue(key, out long id))
-                result = Fetch(transaction, id, doCreate, resetHoursLater);
+            if (IdCache.TryGetValue(key, out CachedObject<long> id))
+                result = Fetch(transaction, id.Value, doCreate, resetHoursLater);
             if (result == null)
             {
                 result = BusinessBase<T>.Fetch(transaction, criteriaExpression, doCreate);
@@ -373,7 +373,7 @@ namespace Phenix.Business
                 {
                     result.InvalidTime = resetHoursLater == 0 ? DateTime.MaxValue : DateTime.Now.AddHours(resetHoursLater);
                     ObjectCache[result.Id] = result;
-                    IdCache[key] = result.Id;
+                    IdCache[key] = new CachedObject<long>(result.Id, result.InvalidTime);
                 }
             }
 

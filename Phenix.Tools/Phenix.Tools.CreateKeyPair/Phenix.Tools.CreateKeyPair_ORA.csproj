@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Phenix.Tools.CreateKeyPair</AssemblyName>
     <RootNamespace>Phenix.Tools.CreateKeyPair</RootNamespace>
     <Version>7.3.13</Version>
     <Authors>ming</Authors>
-    <Description>Phenix Framework for .NET Core 3.0</Description>
+    <Description>Phenix Framework 7 for .NET Core 3 + Orleans 3</Description>
     <Copyright>Copyright © 2007, 2019 Phenixヾ Studio</Copyright>
   </PropertyGroup>
 
@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <Reference Include="Phenix.Core">
-      <HintPath>..\..\Bin_ORA\netcoreapp3.0\Phenix.Core.dll</HintPath>
+      <HintPath>..\..\Bin_ORA\netcoreapp3.1\Phenix.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

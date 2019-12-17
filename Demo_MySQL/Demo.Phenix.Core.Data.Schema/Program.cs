@@ -8,7 +8,7 @@ namespace Demo
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Console.WriteLine("**** 演示 Phenix.Core.Data.Schema 功能 ****");
             Console.WriteLine();

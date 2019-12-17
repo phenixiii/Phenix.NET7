@@ -1,15 +1,15 @@
 {
   "runtimeTarget": {
-    "name": ".NETCoreApp,Version=v3.0",
+    "name": ".NETCoreApp,Version=v3.1",
     "signature": ""
   },
   "compilationOptions": {},
   "targets": {
-    ".NETCoreApp,Version=v3.0": {
-      "Phenix.Core/7.3.15": {
+    ".NETCoreApp,Version=v3.1": {
+      "Phenix.Core/7.3.16": {
         "dependencies": {
           "Newtonsoft.Json": "12.0.3",
-          "Oracle.ManagedDataAccess.Core": "2.19.50",
+          "Oracle.ManagedDataAccess.Core": "2.19.60",
           "System.Data.SQLite.Core": "1.0.112"
         },
         "runtime": {
@@ -24,7 +24,7 @@
           }
         }
       },
-      "Oracle.ManagedDataAccess.Core/2.19.50": {
+      "Oracle.ManagedDataAccess.Core/2.19.60": {
         "runtime": {
           "lib/netstandard2.0/Oracle.ManagedDataAccess.dll": {
             "assemblyVersion": "2.0.19.1",
@@ -65,7 +65,7 @@
     }
   },
   "libraries": {
-    "Phenix.Core/7.3.15": {
+    "Phenix.Core/7.3.16": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -77,12 +77,12 @@
       "path": "newtonsoft.json/12.0.3",
       "hashPath": "newtonsoft.json.12.0.3.nupkg.sha512"
     },
-    "Oracle.ManagedDataAccess.Core/2.19.50": {
+    "Oracle.ManagedDataAccess.Core/2.19.60": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-Ol5ByODjY1XFQFTni+wQQPQp454ktpHyxVNo0uFz+NMNIvU4PeSUdae0mfjns8QyrarrLQ1EFeaIevXjmR47KA==",
-      "path": "oracle.manageddataaccess.core/2.19.50",
-      "hashPath": "oracle.manageddataaccess.core.2.19.50.nupkg.sha512"
+      "sha512": "sha512-hQqREt883jwr0LYrYgOtkqgZ3TbEyCGm/eekwA1Vth66aD66752PRKBbTvM9b1a71ewuvaXRy2T9KVwlSMYaTw==",
+      "path": "oracle.manageddataaccess.core/2.19.60",
+      "hashPath": "oracle.manageddataaccess.core.2.19.60.nupkg.sha512"
     },
     "System.Data.SQLite.Core/1.0.112": {
       "type": "package",

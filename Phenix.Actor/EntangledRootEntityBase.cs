@@ -96,7 +96,8 @@ namespace Phenix.Actor
             return result;
         }
 
-        private static readonly SynchronizedDictionary<string, long> _idCache = new SynchronizedDictionary<string, long>(StringComparer.Ordinal);
+        private static readonly SynchronizedDictionary<string, CachedObject<long>> _idCache = 
+            new SynchronizedDictionary<string, CachedObject<long>>(StringComparer.Ordinal);
 
         /// <summary>
         /// 获取实体对象
@@ -144,8 +145,8 @@ namespace Phenix.Actor
 
             T result = null;
             string key = criteriaExpression.ToString();
-            if (_idCache.TryGetValue(key, out long id))
-                result = await FetchAsync(client, id, doCreate);
+            if (_idCache.TryGetValue(key, out CachedObject<long> id))
+                result = await FetchAsync(client, id.Value, doCreate);
             if (result == null)
                 result = Sheet.SelectEntity<T>(criteriaExpression).FirstOrDefault();
             if (result == null && doCreate != null)
@@ -164,8 +165,9 @@ namespace Phenix.Actor
 
             if (result != null)
             {
-                result.Grain = client.GetGrain<TGrainInterface>(result.Id);
-                _idCache[key] = result.Id;
+                if (result.Grain == null)
+                    result.Grain = client.GetGrain<TGrainInterface>(result.Id);
+                _idCache[key] = new CachedObject<long>(result.Id, DateTime.Now.AddHours(8));
             }
 
             return result;
@@ -192,7 +194,7 @@ namespace Phenix.Actor
             }
         }
 
-        private static object _initializeLock = new object();
+        private static readonly object _initializeLock = new object();
         private static bool _initialized;
         private static Sheet _sheet;
 
@@ -262,6 +264,14 @@ namespace Phenix.Actor
 
         #region 方法
 
+        /// <summary>
+        /// 刷新自己(映射表的字段不能带 readonly 标记)
+        /// </summary>
+        public virtual void RefreshSelf()
+        {
+            Utilities.FillFieldValues(FetchAsync(Grain, Id).Result, this);
+        }
+
         #region InsertSelf
 
         /// <summary>
@@ -314,7 +324,7 @@ namespace Phenix.Actor
         /// <summary>
         /// 更新自己(提交第一个属性映射的表记录)
         /// </summary>
-        /// <param name="nameValues">待更新属性值队列</param>
+        /// <param name="nameValues">待更新属性值队列(映射表的字段不能带 readonly 标记)</param>
         /// <returns>更新记录数</returns>
         public Task<int> UpdateSelf(params NameValue[] nameValues)
         {
@@ -330,14 +340,14 @@ namespace Phenix.Actor
         /// <summary>
         /// 更新自己(提交第一个属性映射的表记录)
         /// </summary>
-        /// <param name="propertyValues">待更新属性值队列</param>
+        /// <param name="propertyValues">待更新属性值队列(映射表的字段不能带 readonly 标记)</param>
         /// <returns>更新记录数</returns>
         public Task<int> UpdateSelf(IDictionary<string, object> propertyValues)
         {
             if (propertyValues == null || propertyValues.Count == 0)
                 throw new ArgumentNullException(nameof(propertyValues));
 
-            propertyValues.Add("Id", Id);
+            propertyValues["Id"] =  Id;
             return Grain.UpdateRecord(Utilities.JsonSerialize(propertyValues));
         }
 
