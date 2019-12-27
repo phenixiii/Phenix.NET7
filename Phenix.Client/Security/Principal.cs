@@ -8,11 +8,7 @@ namespace Phenix.Client.Security
     /// </summary>
     public sealed class Principal : IPrincipal
     {
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="identity">用户身份</param>
-        public Principal(Identity identity)
+        internal Principal(Identity identity)
         {
             _identity = identity;
         }

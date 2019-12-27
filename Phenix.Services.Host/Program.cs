@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Orleans.Configuration;
 using Orleans.Hosting;
 
 namespace Phenix.Services.Host
@@ -48,12 +47,12 @@ namespace Phenix.Services.Host
                      * 插件程序集的命名，都应该统一采用"*.Plugin.dll"作为文件名的后缀
                      * 插件 Phenix.Services.Plugin 的 UserGrain 响应 User 请求
                      */
-                    .ConfigureCluster()
+                    .ConfigureCluster(OrleansConfig.ClusterId, OrleansConfig.ServiceId)
                     /*
                      * 设置Silo端口：EndpointOptions.DEFAULT_SILO_PORT
                      * 设置Gateway端口：EndpointOptions.DEFAULT_SILO_PORT
                      */
-                    .ConfigureEndpoints(EndpointOptions.DEFAULT_SILO_PORT, EndpointOptions.DEFAULT_GATEWAY_PORT))
+                    .ConfigureEndpoints(OrleansConfig.DefaultSiloPort, OrleansConfig.DefaultGatewayPort))
                 /*
                  * 启动WebAPI服务
                  */
@@ -79,7 +78,7 @@ namespace Phenix.Services.Host
                             //options.AllowSynchronousIO = true; //是否允许对请求和响应使用同步 IO
                         })
                         .ConfigureLogging(logging => logging.AddConsole())
-                        .UseUrls("http://*:5000") //不部署到IIS环境时请改写为自己系统的端口
+                        .UseUrls(WebHostConfig.Urls) //不部署到IIS环境时请改写为自己系统的端口
                         .UseIISIntegration() //当部署到IIS环境时可以自动搭接ANCM和IIS
                         .UseStartup<Startup>();
                 });

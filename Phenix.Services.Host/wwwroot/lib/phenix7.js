@@ -1,6 +1,6 @@
 ﻿/*
     Phenix Framework 7 for .NET Core 3 & Orleans 3
-    Copyright © 2007, 2019 Phenixヾ Studio All rights reserved.
+    Copyright © 2007, 2020 Phenixヾ Studio All rights reserved.
 
     <script type="text/javascript" src="../lib/crypto-js/core-min.js"></script>
     <script type="text/javascript" src="../lib/crypto-js/enc-base64-min.js"></script>

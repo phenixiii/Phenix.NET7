@@ -20,8 +20,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo_Client", "Demo_Client", "{4CBF1077-F885-4AEB-8014-ABC3D79F320E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services_MySQL", "Phenix.Services\Phenix.Services_MySQL.csproj", "{75CF8274-B20F-4EAC-A2A2-3E8580073D0C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Host_MySQL", "Phenix.Services.Host\Phenix.Services.Host_MySQL.csproj", "{F957AABA-D2A0-48BB-9F0D-1E3CB3DE30EB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Business_MySQL", "Phenix.Business\Phenix.Business_MySQL.csproj", "{5984092A-CE52-4BD2-91B2-D5557B961CC5}"
@@ -52,6 +50,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Plugin_MySQ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Algorithm_MySQL", "Phenix.Algorithm\Phenix.Algorithm_MySQL.csproj", "{55B8685A-81FD-4A9C-B256-4C75F8243FDF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo_Practice", "Demo_Practice", "{C83289F4-BDE3-4A03-8F74-D385DE4F1F82}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo.InventoryControl", "Demo.InventoryControl", "{7DFE1184-706A-4129-8FFB-E82C5E18964A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.InventoryControl.Plugin_MySQL", "Demo_Practice\Demo.InventoryControl\Demo.InventoryControl.Plugin\Demo.InventoryControl.Plugin_MySQL.csproj", "{D67B4568-3537-42AB-B330-86D3D8F747FE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Extend_MySQL", "Phenix.Services.Extend\Phenix.Services.Extend_MySQL.csproj", "{707782EB-7ED1-4AB4-B6ED-AB8E278DEC7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,10 +76,6 @@ Global
 		{7639E825-33EC-44FE-BD97-34EC24A9C90A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7639E825-33EC-44FE-BD97-34EC24A9C90A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7639E825-33EC-44FE-BD97-34EC24A9C90A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{75CF8274-B20F-4EAC-A2A2-3E8580073D0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75CF8274-B20F-4EAC-A2A2-3E8580073D0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{75CF8274-B20F-4EAC-A2A2-3E8580073D0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{75CF8274-B20F-4EAC-A2A2-3E8580073D0C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F957AABA-D2A0-48BB-9F0D-1E3CB3DE30EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F957AABA-D2A0-48BB-9F0D-1E3CB3DE30EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F957AABA-D2A0-48BB-9F0D-1E3CB3DE30EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -130,6 +132,14 @@ Global
 		{55B8685A-81FD-4A9C-B256-4C75F8243FDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55B8685A-81FD-4A9C-B256-4C75F8243FDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55B8685A-81FD-4A9C-B256-4C75F8243FDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D67B4568-3537-42AB-B330-86D3D8F747FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D67B4568-3537-42AB-B330-86D3D8F747FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D67B4568-3537-42AB-B330-86D3D8F747FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D67B4568-3537-42AB-B330-86D3D8F747FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{707782EB-7ED1-4AB4-B6ED-AB8E278DEC7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{707782EB-7ED1-4AB4-B6ED-AB8E278DEC7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{707782EB-7ED1-4AB4-B6ED-AB8E278DEC7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{707782EB-7ED1-4AB4-B6ED-AB8E278DEC7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,6 +156,8 @@ Global
 		{9459C7AC-86D8-4363-B43F-B241F9D5B7B2} = {B7AA29AA-B690-4002-8703-AC8C7DD37E2C}
 		{FC67D084-17C9-4280-A05C-83327B36F16D} = {4CBF1077-F885-4AEB-8014-ABC3D79F320E}
 		{E7F6EA6B-22E4-4EFB-99BF-8D665A41EE33} = {4CBF1077-F885-4AEB-8014-ABC3D79F320E}
+		{7DFE1184-706A-4129-8FFB-E82C5E18964A} = {C83289F4-BDE3-4A03-8F74-D385DE4F1F82}
+		{D67B4568-3537-42AB-B330-86D3D8F747FE} = {7DFE1184-706A-4129-8FFB-E82C5E18964A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9C8CF59-EE51-4301-9EAC-22750A624DD2}

@@ -2,7 +2,7 @@
 using Phenix.Core.Net.Api.Security;
 using Phenix.Core.Security;
 
-namespace Phenix.Services
+namespace Phenix.Services.Extend
 {
     /// <summary>
     /// 系统入口服务

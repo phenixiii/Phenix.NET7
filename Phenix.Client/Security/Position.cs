@@ -10,11 +10,6 @@ namespace Phenix.Client.Security
     [Serializable]
     public class Position
     {
-        private Position()
-        {
-            //禁止添加代码
-        }
-
         [Newtonsoft.Json.JsonConstructor]
         private Position(long id, string name, IList<string> roles)
         {

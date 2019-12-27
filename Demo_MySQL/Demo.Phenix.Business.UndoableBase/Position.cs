@@ -13,6 +13,9 @@ namespace Demo
     [Serializable]
     public sealed class Position : CachedRootBusinessBase<Position>
     {
+        /// <summary>
+        /// for CreateInstance
+        /// </summary>
         private Position()
         {
             //禁止添加代码

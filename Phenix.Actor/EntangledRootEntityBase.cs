@@ -4,7 +4,6 @@ using System.Data.Common;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using Orleans;
 using Phenix.Core.Data;
@@ -194,8 +193,6 @@ namespace Phenix.Actor
             }
         }
 
-        private static readonly object _initializeLock = new object();
-        private static bool _initialized;
         private static Sheet _sheet;
 
         /// <summary>
@@ -205,24 +202,13 @@ namespace Phenix.Actor
         {
             get
             {
-                Sheet result = _sheet ?? (_sheet = _database != null ? _database.MetaData.FindSheet<T>(true) : Database.Default.MetaData.FindSheet<T>(true));
-
-                if (!_initialized)
+                return _sheet ?? (_sheet = Database.MetaData.FindSheet<T>(database =>
                 {
-                    lock (_initializeLock)
-                        if (!_initialized)
-                        {
-                            MethodInfo methodInfo = typeof(T).GetMethod("Initialize",
-                                BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[] {typeof(Sheet)}, null);
-                            if (methodInfo != null)
-                                methodInfo.Invoke(null, new object[] {result});
-                            _initialized = true;
-                        }
-
-                    Thread.MemoryBarrier();
-                }
-
-                return result;
+                    MethodInfo methodInfo = typeof(T).GetMethod("Initialize",
+                        BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[] {typeof(Database)}, null);
+                    if (methodInfo != null)
+                        methodInfo.Invoke(null, new object[] {database});
+                }));
             }
             set
             {
@@ -230,7 +216,7 @@ namespace Phenix.Actor
                 _database = null;
             }
         }
-        
+
         #endregion
 
         [NonSerialized]

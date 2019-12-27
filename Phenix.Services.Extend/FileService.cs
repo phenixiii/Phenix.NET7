@@ -2,7 +2,7 @@
 using System.IO;
 using Phenix.Core.Net.Api.Inout;
 
-namespace Phenix.Services
+namespace Phenix.Services.Extend
 {
     /// <summary>
     /// 文件存取服务

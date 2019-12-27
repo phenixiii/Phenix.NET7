@@ -47,12 +47,12 @@ namespace Phenix.Services.Host
             /*
              * 注入系统入口服务 
              */
-            services.AddGateService<Phenix.Services.GateService>();
+            services.AddGateService<Phenix.Services.Extend.GateService>();
 
             /*
              * 注入文件存取服务 
              */
-            services.AddFileService<Phenix.Services.FileService>();
+            services.AddFileService<Phenix.Services.Extend.FileService>();
 
             /*
              * 配置Controller策略

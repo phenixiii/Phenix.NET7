@@ -9,11 +9,6 @@ namespace Phenix.Client.Security
     [Serializable]
     public class Teams
     {
-        private Teams()
-        {
-            //禁止添加代码
-        }
-
         [Newtonsoft.Json.JsonConstructor]
         private Teams(long id, string name, long rootId, long parentId, IList<Teams> allChildren)
         {

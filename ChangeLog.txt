@@ -28,7 +28,7 @@
 
 20190807
 1，Phenix.Services.Host可部署在KestrelServer+Docker环境中
-2，提供'Phenix.Services.Host.部署方法.doc'文档供参考
+2，提供《Phenix.Services.Host.部署方法.doc》文档
 
 
 20190809
@@ -68,21 +68,21 @@
 
 20190920
 1，规定将WebAPI服务的Controller代码编写在各自的工程里，程序集的命名以"*.Plugin.dll"作为后缀，默认会被Phenix.Services.Host自动加载并装配到ApplicationParts中
-2，发布Phenix.Services.Host时，可自动将Docker相关的文件写入到Publish目录中，方便部署到Docker
+2，发布Phenix.Services.Host时，可自动将Docker相关的文件写入到发布目录（Publish目录）中，方便部署到Docker
 
 
 20190927
 1，提供用户消息PULL和PUSH两套方法，具体见测试网页user-message.html
-2，提供服务接口IGateService以扩展系统自身的个性化的登录功能，示例代码见Phenix.Services工程里的GateService类，注入方法见Phenix.Services.Host工程Startup类里的AddGateService()代码行
+2，提供服务接口IGateService以扩展系统自身的个性化的登录功能，框架代码见Phenix.Services.Extend工程里的GateService类，注入方法见Phenix.Services.Host工程Startup类里的AddGateService()代码行
 
 
 20191011
 1，升级至for .net core3.0，开发工具 Visual Studio 2019 16.3.x及以上版本
-2，提供服务接口IFileService以扩展系统自身的个性化的文件上传下载功能，示例代码见Phenix.Services工程里的FileService类，注入方法见Phenix.Services.Host工程Startup类里的AddFileService()代码行，用法见测试网页file.html
+2，提供服务接口IFileService以扩展系统自身的个性化的文件上传下载功能，框架代码见Phenix.Services.Extend工程里的FileService类，注入方法见Phenix.Services.Host工程Startup类里的AddFileService()代码行，用法见测试网页file.html
 
 
 20191013
-1，增补'Phenix.Services.Host.部署方法.doc'内容
+1，修订《Phenix.Services.Host.部署方法.doc》
 2，调通Phenix.Services.Host部署在Docker的方法
 
 
@@ -105,15 +105,19 @@
 
 
 20191205
-1，提供Phenix.Actor工程，封装Orleans3的客户端和服务集群配置方法和入口，以及一套轻量级的Grain开发框架，支持并行和分布式大规模服务架构设计
+1，提供Phenix.Actor工程源码，封装Orleans3的客户端和服务集群配置方法和入口，以及一套轻量级的Grain开发框架，支持并行和分布式大规模服务架构设计
 2，规定将Orleans服务的Grain及其接口代码编写在各自的工程里，程序集的命名以"*.Plugin.dll"作为后缀，默认会被Phenix.Services.Host自动加载并装配到ApplicationParts中
-3，提供Phenix.Services.Plugin工程，包含用户身份验证和管理的UserGrain类、IUserGrain接口，及其代理UserGrain服务的User类，通过UserFactory类注册到Phenix.Core的权限控制模块，注册方法（见Phenix.Services.Host）：
+3，提供Phenix.Services.Plugin工程源码，包含用户身份验证和管理的UserGrain类、IUserGrain接口，及其代理UserGrain服务的User类，通过UserFactory类注册到Phenix.Core的权限控制模块，注册方法（见Phenix.Services.Host）：
          Phenix.Core.Security.Identity.RegisterFactory(new Phenix.Services.Plugin.UserFactory());
 
 
 20191216
 1，升级至for .net core3.1 + SignalR3.1
 2，调通Phenix.Services.Host\wwwroot\test目录的测试网页
-3，提供Phenix.Algorithm工程，含0-1背包算法
+3，提供Phenix.Algorithm工程源码，含容量区间范围条件及可分组的0-1背包算法
 
+
+20191227
+1，提供《Phenix.Services.Host.分布式服务架构.pptx》，讲解WebAPI（应用）服务和Orleans（领域）服务的搭建和部署方法
+2，提供Phenix.Core.AppSettings应用系统配置工具，配置项定义方法参考Phenix.Services.Host的OrleansConfig类，系统实施时可直接在Phenix.Core.db库文件PH7_AppSettings表里做配置
 

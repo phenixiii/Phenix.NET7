@@ -20,8 +20,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo_Client", "Demo_Client", "{4CBF1077-F885-4AEB-8014-ABC3D79F320E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services_ORA", "Phenix.Services\Phenix.Services_ORA.csproj", "{E340D451-0E23-4BA6-B7BD-0257F05B9BB9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Host_ORA", "Phenix.Services.Host\Phenix.Services.Host_ORA.csproj", "{EEC4928E-95B4-4BCA-B3E6-5471652D7B7E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Business_ORA", "Phenix.Business\Phenix.Business_ORA.csproj", "{68F18727-70A8-4A5F-A5B6-450833D13EDB}"
@@ -52,6 +50,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Plugin_ORA"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Algorithm_ORA", "Phenix.Algorithm\Phenix.Algorithm_ORA.csproj", "{25E424E1-9A89-4989-9098-04F2A2CD941A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Extend_ORA", "Phenix.Services.Extend\Phenix.Services.Extend_ORA.csproj", "{4FB6D7E3-5063-4258-A7C3-A8401C3C8227}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,10 +70,6 @@ Global
 		{8869A4BE-402C-4956-B7B5-EC79C934E30F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8869A4BE-402C-4956-B7B5-EC79C934E30F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8869A4BE-402C-4956-B7B5-EC79C934E30F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E340D451-0E23-4BA6-B7BD-0257F05B9BB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E340D451-0E23-4BA6-B7BD-0257F05B9BB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E340D451-0E23-4BA6-B7BD-0257F05B9BB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E340D451-0E23-4BA6-B7BD-0257F05B9BB9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EEC4928E-95B4-4BCA-B3E6-5471652D7B7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EEC4928E-95B4-4BCA-B3E6-5471652D7B7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEC4928E-95B4-4BCA-B3E6-5471652D7B7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -130,6 +126,10 @@ Global
 		{25E424E1-9A89-4989-9098-04F2A2CD941A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25E424E1-9A89-4989-9098-04F2A2CD941A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25E424E1-9A89-4989-9098-04F2A2CD941A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FB6D7E3-5063-4258-A7C3-A8401C3C8227}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FB6D7E3-5063-4258-A7C3-A8401C3C8227}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FB6D7E3-5063-4258-A7C3-A8401C3C8227}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FB6D7E3-5063-4258-A7C3-A8401C3C8227}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

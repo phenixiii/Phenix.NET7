@@ -26,6 +26,18 @@ namespace Orleans.Hosting
         /// <param name="builder">ISiloBuilder</param>
         /// <param name="clusterId">Orleans集群的唯一ID</param>
         /// <param name="serviceId">Orleans服务的唯一ID</param>
+        /// <returns>ISiloBuilder</returns>
+        public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder, string clusterId, string serviceId)
+        {
+            return ConfigureCluster(builder, clusterId, serviceId, Database.Default.ConnectionString);
+        }
+
+        /// <summary>
+        /// 配置Orleans服务集群
+        /// </summary>
+        /// <param name="builder">ISiloBuilder</param>
+        /// <param name="clusterId">Orleans集群的唯一ID</param>
+        /// <param name="serviceId">Orleans服务的唯一ID</param>
         /// <param name="connectionString">Orleans数据库连接串</param>
         /// <returns>ISiloBuilder</returns>
         public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder, string clusterId, string serviceId, string connectionString)
@@ -37,10 +49,7 @@ namespace Orleans.Hosting
                     options.ClusterId = clusterId;
                     options.ServiceId = serviceId;
                 })
-                .ConfigureApplicationParts(parts =>
-                {
-                    parts.AddPluginPart();
-                })
+                .ConfigureApplicationParts(parts => { parts.AddPluginPart(); })
                 .UseAdoNetClustering(options =>
                 {
                     options.ConnectionString = connectionString;

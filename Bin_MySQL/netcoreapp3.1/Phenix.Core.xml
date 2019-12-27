@@ -67,6 +67,71 @@
             </summary>
             <param name="error">错误</param>
         </member>
+        <member name="T:Phenix.Core.AppSettings">
+            <summary>
+            应用系统配置工具
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.AppSettings.ConfigFilePath">
+            <summary>
+            配置文件路径
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.AppSettings.SaveValue(System.String,System.String,System.Boolean)">
+            <summary>
+            保存信息
+            </summary>
+            <param name="key">键</param>
+            <param name="value">值</param>
+            <param name="inEncrypt">是否加密</param>
+        </member>
+        <member name="M:Phenix.Core.AppSettings.ReadValue(System.String,System.Boolean)">
+            <summary>
+            读取信息
+            </summary>
+            <param name="key">键</param>
+            <param name="inEncrypt">是否加密</param>
+        </member>
+        <member name="M:Phenix.Core.AppSettings.SetProperty``2(``0@,``1,System.Boolean,System.Boolean)">
+            <summary>
+            设置属性值
+            key = null
+            </summary>
+            <param name="field">属性字段</param>
+            <param name="newValue">新值</param>
+            <param name="allowSave">允许保存状态信息?</param>
+            <param name="inEncrypt">是否加密</param>
+        </member>
+        <member name="M:Phenix.Core.AppSettings.SetProperty``2(System.String,``0@,``1,System.Boolean,System.Boolean)">
+            <summary>
+            设置属性值
+            </summary>
+            <param name="key">键</param>
+            <param name="field">属性字段</param>
+            <param name="newValue">新值</param>
+            <param name="allowSave">允许保存状态信息?</param>
+            <param name="inEncrypt">是否加密</param>
+        </member>
+        <member name="M:Phenix.Core.AppSettings.GetProperty``2(``0@,``1,System.Boolean,System.Boolean)">
+            <summary>
+            获取属性值
+            key = null
+            </summary>
+            <param name="field">属性字段</param>
+            <param name="defaultValue">缺省值</param>
+            <param name="allowSave">允许保存状态信息?</param>
+            <param name="inEncrypt">是否加密</param>
+        </member>
+        <member name="M:Phenix.Core.AppSettings.GetProperty``2(System.String,``0@,``1,System.Boolean,System.Boolean)">
+            <summary>
+            获取属性值
+            </summary>
+            <param name="key">键</param>
+            <param name="field">属性字段</param>
+            <param name="defaultValue">缺省值</param>
+            <param name="allowSave">允许保存状态信息?</param>
+            <param name="inEncrypt">是否加密</param>
+        </member>
         <member name="T:Phenix.Core.Data.Common.DataReader">
             <summary>
             数据读取器
@@ -5332,99 +5397,139 @@
             视图清单
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheet``1(System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.MetaData.RefreshCache">
             <summary>
-            检索单子
+            刷新缓存
             </summary>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
-            <returns>单子</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheet(System.Type,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheet``1(System.Action{Phenix.Core.Data.Database})">
             <summary>
-            检索单子
+            检索表/视图
+            </summary>
+            <param name="doCreate">如果没有映射的表/视图则调用本函数新增; 如果本函数为 null 则引发 ArgumentException</param>
+            <returns>表/视图</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheet(System.Type,System.Action{Phenix.Core.Data.Database})">
+            <summary>
+            检索表/视图
             </summary>
             <param name="entityType">实体类</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
-            <returns>单子</returns>
+            <param name="doCreate">如果没有映射的表/视图则调用本函数新增; 如果本函数为 null 则引发 ArgumentException</param>
+            <returns>表/视图</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheetColumn``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheetColumn``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Action{Phenix.Core.Data.Database})">
             <summary>
-            检索单子字段
+            检索表/视图字段
             </summary>
             <param name="memberLambda">含类属性/类字段的 lambda 表达式</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
-            <returns>表字段</returns>
+            <param name="doCreate">如果没有映射的表/视图字段则调用本函数新增; 如果本函数为 null 则引发 ArgumentException</param>
+            <returns>表/视图字段</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheetColumn(System.Type,System.Reflection.MemberInfo,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheetColumn``1(System.Reflection.MemberInfo,System.Action{Phenix.Core.Data.Database})">
             <summary>
-            检索单子字段
+            检索表/视图字段
+            </summary>
+            <param name="memberInfo">类属性/类字段</param>
+            <param name="doCreate">如果没有映射的表/视图字段则调用本函数新增; 如果本函数为 null 则引发 ArgumentException</param>
+            <returns>表/视图字段</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheetColumn(System.Type,System.Reflection.MemberInfo,System.Action{Phenix.Core.Data.Database})">
+            <summary>
+            检索表/视图字段
             </summary>
             <param name="entityType">实体类</param>
             <param name="memberInfo">类属性/类字段</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
-            <returns>视单子</returns>
+            <param name="doCreate">如果没有映射的表/视图字段则调用本函数新增; 如果本函数为 null 则引发 ArgumentException</param>
+            <returns>表/视图字段</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.FindTable``1(System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindTableColumn``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Action{Phenix.Core.Data.Database})">
+            <summary>
+            检索表/视图的表字段
+            </summary>
+            <param name="memberLambda">含类属性/类字段的 lambda 表达式</param>
+            <param name="doCreate">如果没有映射的表字段则调用本函数新增; 如果本函数为 null 则引发 ArgumentException</param>
+            <returns>表/视图的表字段</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindTableColumn``1(System.Reflection.MemberInfo,System.Action{Phenix.Core.Data.Database})">
+            <summary>
+            检索表/视图的表字段
+            </summary>
+            <param name="memberInfo">类属性/类字段</param>
+            <param name="doCreate">如果没有映射的表字段则调用本函数新增; 如果本函数为 null 则引发 ArgumentException</param>
+            <returns>表/视图的表字段</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindTableColumn(System.Type,System.Reflection.MemberInfo,System.Action{Phenix.Core.Data.Database})">
+            <summary>
+            检索表/视图的表字段
+            </summary>
+            <param name="entityType">实体类</param>
+            <param name="memberInfo">类属性/类字段</param>
+            <param name="doCreate">如果没有映射的表字段则调用本函数新增; 如果本函数为 null 则引发 ArgumentException</param>
+            <returns>表/视图的表字段</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindTable``1(System.Action{Phenix.Core.Data.Database})">
             <summary>
             检索表
             </summary>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="doCreate">如果没有映射的表则调用本函数新增; 如果本函数为 null 则引发 ArgumentException</param>
             <returns>表</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.FindTable(System.Type,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindTable(System.Type,System.Action{Phenix.Core.Data.Database})">
             <summary>
             检索表
             </summary>
             <param name="entityType">实体类</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="doCreate">如果没有映射的表则调用本函数新增; 如果本函数为 null 则引发 ArgumentException</param>
             <returns>表</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.FindTable(System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindTable(System.String,System.Action{Phenix.Core.Data.Database})">
             <summary>
             检索表
             </summary>
             <param name="tableName">表名</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="doCreate">如果没有找到表则调用本函数新增; 如果本函数为 null 则引发 ArgumentException</param>
             <returns>表</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.FindTableColumn``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindTableColumn(System.String,System.String,System.Action{Phenix.Core.Data.Database})">
             <summary>
             检索表字段
             </summary>
-            <param name="memberLambda">含类属性/类字段的 lambda 表达式</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="tableName">表名</param>
+            <param name="columnName">字段名</param>
+            <param name="doCreate">如果没有表字段则调用本函数新增; 如果本函数为 null 则引发 ArgumentException</param>
             <returns>表字段</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.FindTableColumn``1(System.Reflection.MemberInfo,System.Boolean)">
-            <summary>
-            检索表字段
-            </summary>
-            <param name="memberInfo">类属性/类字段</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
-            <returns>表字段</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.FindView``1(System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindView``1(System.Action{Phenix.Core.Data.Database})">
             <summary>
             检索视图
             </summary>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="doCreate">如果没有映射的视图则调用本函数新增; 如果本函数为 null 则引发 ArgumentException</param>
             <returns>视图</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.FindView(System.Type,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindView(System.Type,System.Action{Phenix.Core.Data.Database})">
             <summary>
             检索视图
             </summary>
             <param name="entityType">实体类</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="doCreate">如果没有映射的视图则调用本函数新增; 如果本函数为 null 则引发 ArgumentException</param>
             <returns>视图</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.FindView(System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindView(System.String,System.Action{Phenix.Core.Data.Database})">
             <summary>
             检索视图
             </summary>
             <param name="viewName">视图名</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="doCreate">如果没有找到视图则调用本函数新增; 如果本函数为 null 则引发 ArgumentException</param>
             <returns>视图</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FindViewColumn(System.String,System.String,System.Action{Phenix.Core.Data.Database})">
+            <summary>
+            检索视图字段
+            </summary>
+            <param name="viewName">视图名</param>
+            <param name="columnName">字段名</param>
+            <param name="doCreate">如果没有视图字段则调用本函数新增; 如果本函数为 null 则引发 ArgumentException</param>
+            <returns>视图字段</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.ExtractViewTables(System.String)">
             <summary>
@@ -9443,6 +9548,11 @@
             岗位资料
             </summary>
         </member>
+        <member name="M:Phenix.Core.Security.Position.#ctor">
+            <summary>
+            for CreateInstance
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Security.Position.New(System.String,System.String[])">
             <summary>
             新增岗位资料
@@ -9513,6 +9623,11 @@
             团体资料
             </summary>
         </member>
+        <member name="M:Phenix.Core.Security.Teams.#ctor">
+            <summary>
+            for CreateInstance
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Security.Teams.New(System.String)">
             <summary>
             新增团体资料
@@ -9551,11 +9666,6 @@
         <member name="T:Phenix.Core.Security.User">
             <summary>
             用户资料
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Security.User.#ctor">
-            <summary>
-            for CreateInstance
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.RequestFailureCountMaximum">
