@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Orleans;
 using Phenix.Actor;
 
 namespace Phenix.Services.Plugin
@@ -6,7 +7,7 @@ namespace Phenix.Services.Plugin
     /// <summary>
     /// 用户资料Grain接口
     /// </summary>
-    public interface IUserGrain : IRootEntityGrain
+    public interface IUserGrain : IRootEntityGrain, IGrainWithIntegerKey
     {
         /// <summary>
         /// 加密

@@ -121,3 +121,10 @@
 1，提供《Phenix.Services.Host.分布式服务架构.pptx》，讲解WebAPI（应用）服务和Orleans（领域）服务的搭建和部署方法
 2，提供Phenix.Core.AppSettings应用系统配置工具，配置项定义方法参考Phenix.Services.Host的OrleansConfig类，系统实施时可直接在Phenix.Core.db库文件PH7_AppSettings表里做配置
 
+
+20200107
+1，微调Phenix.Actor工程的功能
+2，添加Demo_Practice目录，用于存放实战演练项目的代码
+3，添加Demo.InventoryControl库存管控演练项目到Demo_Practice目录
+4，InventoryControl演练第一步，完成货架装卸货物的记录功能，见Demo.InventoryControl.Plugin_MySQL工程
+

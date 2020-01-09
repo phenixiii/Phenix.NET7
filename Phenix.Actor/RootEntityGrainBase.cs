@@ -19,7 +19,7 @@ namespace Phenix.Actor
         /// <summary>
         /// ID(映射表XX_ID字段)
         /// </summary>
-        protected long Id
+        protected virtual long Id
         {
             get
             {
@@ -34,7 +34,7 @@ namespace Phenix.Actor
         /// <summary>
         /// 根实体对象
         /// </summary>
-        protected T Kernel
+        protected virtual T Kernel
         {
             get { return _kernel ?? (_kernel = RootEntityBase<T>.Fetch(p => p.Id == Id)); }
             private set { _kernel = value; }

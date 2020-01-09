@@ -21,9 +21,9 @@ namespace Phenix.Actor
     /// 纠缠根实体基类
     /// </summary>
     [Serializable]
-    public abstract class EntangledRootEntityBase<T, TGrainInterface> 
+    public abstract class EntangledRootEntityBase<T, TGrainInterface>
         where T : EntangledRootEntityBase<T, TGrainInterface>
-        where TGrainInterface : IRootEntityGrain
+        where TGrainInterface : IRootEntityGrain, IGrainWithIntegerKey
     {
         /// <summary>
         /// for CreateInstance
@@ -95,7 +95,7 @@ namespace Phenix.Actor
             return result;
         }
 
-        private static readonly SynchronizedDictionary<string, CachedObject<long>> _idCache = 
+        private static readonly SynchronizedDictionary<string, CachedObject<long>> _idCache =
             new SynchronizedDictionary<string, CachedObject<long>>(StringComparer.Ordinal);
 
         /// <summary>
@@ -228,7 +228,7 @@ namespace Phenix.Actor
         [Newtonsoft.Json.JsonIgnore]
         public TGrainInterface Grain
         {
-            get { return _grain ; }
+            get { return _grain; }
             private set { _grain = value; }
         }
 
@@ -266,7 +266,7 @@ namespace Phenix.Actor
         /// <returns>更新记录数</returns>
         public int InsertSelf()
         {
-            return Database.ExecuteGet((Func<DbTransaction, int>)InsertSelf);
+            return Database.ExecuteGet((Func<DbTransaction, int>) InsertSelf);
         }
 
         /// <summary>
@@ -333,7 +333,7 @@ namespace Phenix.Actor
             if (propertyValues == null || propertyValues.Count == 0)
                 throw new ArgumentNullException(nameof(propertyValues));
 
-            propertyValues["Id"] =  Id;
+            propertyValues["Id"] = Id;
             return Grain.UpdateRecord(Utilities.JsonSerialize(propertyValues));
         }
 
