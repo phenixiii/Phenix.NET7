@@ -128,3 +128,8 @@
 3，添加Demo.InventoryControl库存管控演练项目到Demo_Practice目录
 4，InventoryControl演练第一步，完成货架装卸货物的记录功能，见Demo.InventoryControl.Plugin_MySQL工程
 
+
+20200113
+1，简化Phenix.Algorithm工程ZeroOneKnapsackProblem类的功能，用法见Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem工程
+2，完善Phenix.Core工程AppSettings类的功能
+

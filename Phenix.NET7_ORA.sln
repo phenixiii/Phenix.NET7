@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Core_ORA", "Phenix.Core\Phenix.Core_ORA.csproj", "{FC4C581B-081D-4160-A295-D72CDEF22810}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo_ORA", "Demo_ORA", "{1140EBB7-3D04-4936-B893-FC46D34B8D01}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Data.Schema", "Demo_ORA\Demo.Phenix.Core.Data.Schema\Demo.Phenix.Core.Data.Schema.csproj", "{D1679C40-A8C3-4312-BDBD-01E9E8E929D4}"
@@ -52,12 +54,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Algorithm_ORA", "Phe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Extend_ORA", "Phenix.Services.Extend\Phenix.Services.Extend_ORA.csproj", "{4FB6D7E3-5063-4258-A7C3-A8401C3C8227}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem", "Demo_ORA\Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem\Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem.csproj", "{F2C70441-C9A8-4FEA-81E1-C7C20005167B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FC4C581B-081D-4160-A295-D72CDEF22810}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC4C581B-081D-4160-A295-D72CDEF22810}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC4C581B-081D-4160-A295-D72CDEF22810}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC4C581B-081D-4160-A295-D72CDEF22810}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D1679C40-A8C3-4312-BDBD-01E9E8E929D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D1679C40-A8C3-4312-BDBD-01E9E8E929D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1679C40-A8C3-4312-BDBD-01E9E8E929D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -130,6 +138,10 @@ Global
 		{4FB6D7E3-5063-4258-A7C3-A8401C3C8227}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FB6D7E3-5063-4258-A7C3-A8401C3C8227}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FB6D7E3-5063-4258-A7C3-A8401C3C8227}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2C70441-C9A8-4FEA-81E1-C7C20005167B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2C70441-C9A8-4FEA-81E1-C7C20005167B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2C70441-C9A8-4FEA-81E1-C7C20005167B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2C70441-C9A8-4FEA-81E1-C7C20005167B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,6 +158,7 @@ Global
 		{0FE74B3F-00AC-4876-AD44-91CDE0F981DB} = {1140EBB7-3D04-4936-B893-FC46D34B8D01}
 		{E5395651-B15C-44AD-A166-0E4530E24823} = {4CBF1077-F885-4AEB-8014-ABC3D79F320E}
 		{17E0DC62-4AC7-4FEB-A13B-9C57217B0731} = {4CBF1077-F885-4AEB-8014-ABC3D79F320E}
+		{F2C70441-C9A8-4FEA-81E1-C7C20005167B} = {1140EBB7-3D04-4936-B893-FC46D34B8D01}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9C8CF59-EE51-4301-9EAC-22750A624DD2}
