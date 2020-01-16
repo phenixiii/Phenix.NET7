@@ -114,7 +114,6 @@
 20191216
 1，升级至for .net core3.1 + SignalR3.1
 2，调通Phenix.Services.Host\wwwroot\test目录的测试网页
-3，提供Phenix.Algorithm工程源码，含容量区间范围条件及可分组的0-1背包算法
 
 
 20191227
@@ -130,7 +129,7 @@
 
 
 20200113
-1，简化Phenix.Algorithm工程ZeroOneKnapsackProblem类的功能，用法见Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem工程
+1，提供Phenix.Algorithm工程源码，含ZeroOneKnapsackProblem类的0-1背包算法，用法见Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem工程
 2，完善Phenix.Core工程AppSettings类的功能
 
 
