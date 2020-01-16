@@ -133,3 +133,8 @@
 1，简化Phenix.Algorithm工程ZeroOneKnapsackProblem类的功能，用法见Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem工程
 2，完善Phenix.Core工程AppSettings类的功能
 
+
+20200116
+1，丰富Phenix.Algorithm工程ZeroOneKnapsackProblem类的功能，添加"打包至少占有一定容量"、"打包至少占有一定容量且不低于一定价值"、"趋向最小规格且不考虑打包价值/只要满足最低打包价值"等约束条件
+2，丰富Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem工程的演示代码
+

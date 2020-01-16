@@ -1,4 +1,4 @@
-﻿namespace Phenix.Algorithm.KnapsackProblem
+﻿namespace Phenix.Algorithm.CombinatorialOptimization
 {
     /// <summary>
     /// 物品接口
