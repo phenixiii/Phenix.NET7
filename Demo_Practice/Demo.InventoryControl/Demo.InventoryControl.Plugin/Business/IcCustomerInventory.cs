@@ -1,4 +1,6 @@
-﻿using System.Data.Common;
+﻿using System.Collections.Generic;
+using System.Data.Common;
+using Phenix.Algorithm.CombinatorialOptimization;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Model;
 
@@ -7,7 +9,7 @@ namespace Demo.InventoryControl.Plugin.Business
     /// <summary>
     /// 货主库存
     /// </summary>
-    public class IcCustomerInventory : EntityBase<IcCustomerInventory>
+    public class IcCustomerInventory : EntityBase<IcCustomerInventory>, IGoods
     {
         /// <summary>
         /// for CreateInstance
@@ -149,6 +151,18 @@ namespace Demo.InventoryControl.Plugin.Business
 
         #region 动态属性
 
+        int IGoods.Size
+        {
+            get { return Weight; }
+        }
+
+        private int _value;
+
+        int IGoods.Value
+        {
+            get { return _value; }
+        }
+
         private CustomerInventoryStatus _customerInventoryStatus;
 
         /// <summary>
@@ -176,22 +190,44 @@ namespace Demo.InventoryControl.Plugin.Business
         #region 方法
 
         /// <summary>
+        /// 是否匹配
+        /// </summary>
+        /// <param name="brand">品牌(null代表忽略本筛选条件)</param>
+        /// <param name="cardNumber">卡号(null代表忽略本筛选条件)</param>
+        /// <param name="transportNumber">车皮/箱号(null代表忽略本筛选条件)</param>
+        public bool IsMatch(string brand, string cardNumber, string transportNumber)
+        {
+            return !PickMarks.HasValue &&
+                   (brand == null || Brand == brand) &&
+                   (cardNumber == null || CardNumber == cardNumber) &&
+                   (transportNumber == null || TransportNumber == transportNumber);
+        }
+
+        public void ResetValue(int value)
+        {
+            _value = value;
+        }
+
+        /// <summary>
         /// 标记挑中
         /// </summary>
         /// <param name="transaction">DbTransaction</param>
         /// <param name="pickMarks">挑中标记号码</param>
-        public void MarkPicked(DbTransaction transaction, long pickMarks)
+        /// <param name="locations">所属货架号</param>
+        public void MarkPicked(DbTransaction transaction, long pickMarks, ref IList<string> locations)
         {
             UpdateSelf(transaction,
                 SetProperty(p => p.CustomerInventoryStatus, CustomerInventoryStatus.Picked),
                 SetProperty(p => p.PickMarks, pickMarks));
+            if (!locations.Contains(Location))
+                locations.Add(Location);
         }
 
         /// <summary>
         /// 卸下货架
         /// </summary>
-        /// <param name="pickMarks">挑中标记号码</param>
         /// <param name="transaction">DbTransaction</param>
+        /// <param name="pickMarks">挑中标记号码</param>
         public bool Unload(DbTransaction transaction, long pickMarks)
         {
             if (PickMarks == pickMarks)

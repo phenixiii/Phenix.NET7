@@ -2,6 +2,7 @@
 {
     /// <summary>
     /// 货主库存状态
+    /// </summary>
     public enum CustomerInventoryStatus
     {
         /// <summary>

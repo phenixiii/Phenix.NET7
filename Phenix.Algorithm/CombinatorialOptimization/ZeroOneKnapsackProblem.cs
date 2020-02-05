@@ -5,7 +5,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
 {
     /// <summary>
     /// 0-1背包问题的动态规划算法
-    /// 从一组物品中挑选出一个价值最高的子集使其尽可能装满容量为W的背包
+    /// 从N个物品中挑选出一个价值最高的子集使其尽可能装满容量为W的背包
     /// </summary>
     public static class ZeroOneKnapsackProblem
     {
@@ -86,15 +86,15 @@ namespace Phenix.Algorithm.CombinatorialOptimization
             }
 
             List<IGoods> result = new List<IGoods>();
-            int canPackedSizeP = knapsackSizeP;
+            int canPackSizeP = knapsackSizeP;
             while (putinSizeStack.Count > 0)
             {
-                if (!putinSizeStack.Pop().Contains(canPackedSizeP))
+                if (!putinSizeStack.Pop().Contains(canPackSizeP))
                     continue;
                 IGoods goods = goodsList[putinSizeStack.Count];
                 result.Add(goods);
-                canPackedSizeP = canPackedSizeP - goods.Size / precision;
-                if (canPackedSizeP < minSizeP)
+                canPackSizeP = canPackSizeP - goods.Size / precision;
+                if (canPackSizeP < minSizeP)
                     break;
             }
 
@@ -184,6 +184,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
                 putinSizeDictionary.Add(i, putinSizeList);
             }
 
+            List<IGoods> result = new List<IGoods>();
             if (!aimForMinSize)
                 for (int ii = goodsList.Count - 1; ii >= 0; ii--)
                 {
@@ -193,21 +194,21 @@ namespace Phenix.Algorithm.CombinatorialOptimization
                     for (int s = knapsackSizeP; s >= minPackSizeP; s--)
                         if (putinSizeList.Contains(s))
                         {
-                            List<IGoods> result = new List<IGoods>();
+                            result.Clear();
                             IGoods goods = goodsList[ii];
                             result.Add(goods);
-                            int canPackedSizeP = s - goods.Size / precision;
+                            int canPackSizeP = s - goods.Size / precision;
                             for (int i = ii - 1; i >= 0; i--)
-                                if (putinSizeDictionary[i].Contains(canPackedSizeP))
+                                if (putinSizeDictionary[i].Contains(canPackSizeP))
                                 {
                                     goods = goodsList[i];
                                     result.Add(goods);
-                                    canPackedSizeP = canPackedSizeP - goods.Size / precision;
-                                    if (canPackedSizeP < minSizeP)
+                                    canPackSizeP = canPackSizeP - goods.Size / precision;
+                                    if (canPackSizeP < minSizeP)
                                         break;
                                 }
 
-                            if (s - canPackedSizeP >= minPackSizeP)
+                            if (s - canPackSizeP >= minPackSizeP)
                                 return result;
                         }
                 }
@@ -220,21 +221,21 @@ namespace Phenix.Algorithm.CombinatorialOptimization
                     for (int s = minPackSizeP; s <= knapsackSizeP; s++)
                         if (putinSizeList.Contains(s))
                         {
-                            List<IGoods> result = new List<IGoods>();
+                            result.Clear();
                             IGoods goods = goodsList[ii];
                             result.Add(goods);
-                            int canPackedSizeP = s - goods.Size / precision;
+                            int canPackSizeP = s - goods.Size / precision;
                             for (int i = ii - 1; i >= 0; i--)
-                                if (putinSizeDictionary[i].Contains(canPackedSizeP))
+                                if (putinSizeDictionary[i].Contains(canPackSizeP))
                                 {
                                     goods = goodsList[i];
                                     result.Add(goods);
-                                    canPackedSizeP = canPackedSizeP - goods.Size / precision;
-                                    if (canPackedSizeP < minSizeP)
+                                    canPackSizeP = canPackSizeP - goods.Size / precision;
+                                    if (canPackSizeP < minSizeP)
                                         break;
                                 }
 
-                            if (s - canPackedSizeP >= minPackSizeP)
+                            if (s - canPackSizeP >= minPackSizeP)
                                 return result;
                         }
                 }
@@ -349,21 +350,21 @@ namespace Phenix.Algorithm.CombinatorialOptimization
                             IGoods goods = goodsList[ii];
                             packedValue = packedValue + goods.Value;
                             packedList.Add(goods);
-                            int canPackedSizeP = s - goods.Size / precision;
+                            int canPackSizeP = s - goods.Size / precision;
                             for (int i = ii - 1; i >= 0; i--)
-                                if (putinSizeDictionary[i].Contains(canPackedSizeP))
+                                if (putinSizeDictionary[i].Contains(canPackSizeP))
                                 {
                                     goods = goodsList[i];
                                     packedValue = packedValue + goods.Value;
                                     packedList.Add(goods);
-                                    canPackedSizeP = canPackedSizeP - goods.Size / precision;
-                                    if (canPackedSizeP < minSizeP)
+                                    canPackSizeP = canPackSizeP - goods.Size / precision;
+                                    if (canPackSizeP < minSizeP)
                                         break;
                                 }
 
                             if (minPackValue > packedValue)
                                 break;
-                            if (s - canPackedSizeP >= minPackSizeP)
+                            if (s - canPackSizeP >= minPackSizeP)
                             {
                                 result.Add(ii, packedList);
                                 break;
@@ -385,19 +386,19 @@ namespace Phenix.Algorithm.CombinatorialOptimization
                             IGoods goods = goodsList[ii];
                             packedValue = packedValue + goods.Value;
                             packedList.Add(goods);
-                            int canPackedSizeP = s - goods.Size / precision;
+                            int canPackSizeP = s - goods.Size / precision;
                             for (int i = ii - 1; i >= 0; i--)
-                                if (putinSizeDictionary[i].Contains(canPackedSizeP))
+                                if (putinSizeDictionary[i].Contains(canPackSizeP))
                                 {
                                     goods = goodsList[i];
                                     packedValue = packedValue + goods.Value;
                                     packedList.Add(goods);
-                                    canPackedSizeP = canPackedSizeP - goods.Size / precision;
-                                    if (canPackedSizeP < minSizeP)
+                                    canPackSizeP = canPackSizeP - goods.Size / precision;
+                                    if (canPackSizeP < minSizeP)
                                         break;
                                 }
 
-                            if (s - canPackedSizeP >= minPackSizeP && minPackValue <= packedValue)
+                            if (s - canPackSizeP >= minPackSizeP && minPackValue <= packedValue)
                             {
                                 result.Add(ii, packedList);
                                 break;

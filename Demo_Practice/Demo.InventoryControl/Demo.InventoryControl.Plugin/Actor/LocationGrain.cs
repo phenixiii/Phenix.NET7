@@ -78,6 +78,16 @@ namespace Demo.InventoryControl.Plugin.Actor
 
         #region 方法
 
+        Task<long> ILocationGrain.GetStackOrdinal()
+        {
+            return Task.FromResult(Kernel.GetStackOrdinal());
+        }
+
+        Task<int> ILocationGrain.GetUnloadValue(string brand, string cardNumber, string transportNumber)
+        {
+            return Task.FromResult(Kernel.GetUnloadValue(brand, cardNumber, transportNumber));
+        }
+
         Task ILocationGrain.Refresh()
         {
             Kernel.Refresh();

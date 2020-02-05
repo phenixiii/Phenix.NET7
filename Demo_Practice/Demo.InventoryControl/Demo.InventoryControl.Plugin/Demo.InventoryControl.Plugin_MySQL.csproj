@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>7.3.18</Version>
-    <AssemblyVersion>7.3.18.0107</AssemblyVersion>
-    <FileVersion>7.3.18.0107</FileVersion>
+    <Version>7.3.21</Version>
+    <AssemblyVersion>7.3.21.0119</AssemblyVersion>
+    <FileVersion>7.3.21.0119</FileVersion>
     <Description>Phenix Framework 7 for .NET Core 3 + Orleans 3</Description>
     <Authors>ming</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -30,6 +30,9 @@
   <ItemGroup>
     <Reference Include="Phenix.Actor">
       <HintPath>..\..\..\Bin_MySQL\netcoreapp3.1\Phenix.Actor.dll</HintPath>
+    </Reference>
+    <Reference Include="Phenix.Algorithm">
+      <HintPath>..\..\..\Bin_MySQL\netcoreapp3.1\Phenix.Algorithm.dll</HintPath>
     </Reference>
     <Reference Include="Phenix.Core">
       <HintPath>..\..\..\Bin_MySQL\netcoreapp3.1\Phenix.Core.dll</HintPath>

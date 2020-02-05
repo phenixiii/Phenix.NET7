@@ -69,12 +69,19 @@ namespace Demo.InventoryControl.Plugin.Business
 
         #region 动态属性
 
-        private IList<IcCustomerInventory> _inventoryList;
+        private long _lastStackOrdinal;
 
         /// <summary>
-        /// 货架库存
+        /// 最后一个LIFO序号
         /// </summary>
-        public IList<IcCustomerInventory> InventoryList
+        public long LastStackOrdinal
+        {
+            get { return _lastStackOrdinal; }
+        }
+
+        private IList<IcCustomerInventory> _inventoryList;
+
+        private IList<IcCustomerInventory> InventoryList
         {
             get
             {
@@ -92,6 +99,42 @@ namespace Demo.InventoryControl.Plugin.Business
         #region 方法
 
         /// <summary>
+        /// 取LIFO序号
+        /// </summary>
+        public long GetStackOrdinal()
+        {
+            UpdateSelf(SetProperty(p => p.LastStackOrdinal, p => p.LastStackOrdinal + 1));
+            return LastStackOrdinal;
+        }
+
+        /// <summary>
+        /// 取卸下价值(0-9)
+        /// </summary>
+        /// <param name="brand">品牌(null代表忽略本筛选条件)</param>
+        /// <param name="cardNumber">卡号(null代表忽略本筛选条件)</param>
+        /// <param name="transportNumber">车皮/箱号(null代表忽略本筛选条件)</param>
+        public int GetUnloadValue(string brand, string cardNumber, string transportNumber)
+        {
+            if (InventoryList.Count == 0)
+                return 0;
+            if (InventoryList.Count == 1)
+                return InventoryList[0].IsMatch(brand, cardNumber, transportNumber) ? 9 : 0;
+
+            int i = 0;
+            int jointCount = 0;
+            Dictionary<int, bool> stackOrdinal = new Dictionary<int, bool>(InventoryList.Count);
+            foreach (IcCustomerInventory item in InventoryList)
+            {
+                i = i + 1;
+                stackOrdinal.Add(i, item.IsMatch(brand, cardNumber, transportNumber));
+                if (i >= 2 && stackOrdinal[i] && stackOrdinal[i - 1])
+                    jointCount = jointCount + i;
+            }
+
+            return jointCount * 18 / (InventoryList.Count * (InventoryList.Count + 1));
+        }
+
+        /// <summary>
         /// 刷新状态
         /// </summary>
         public void Refresh()
@@ -107,6 +150,7 @@ CREATE TABLE IC_Location (
   IL_Area VARCHAR(10) NOT NULL,
   IL_Alley VARCHAR(10) NOT NULL,
   IL_Ordinal VARCHAR(10) NOT NULL,
+  IL_Last_Stack_Ordinal NUMERIC(15) default 0 NOT NULL,
   PRIMARY KEY(IL_ID),
   UNIQUE(IL_Area, IL_Alley, IL_Ordinal)
 )", false);

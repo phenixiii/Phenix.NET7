@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Demo.InventoryControl.Plugin.Business.CustomerInventory.Location">
+    <Position X="5.5" Y="0.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABICgACAAAAAAAAAAFIAAAQEABIAAAAAAAAAAEIBAAA=</HashCode>
+      <FileName>Business\CustomerInventory\Location.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Owner" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Demo.InventoryControl.Plugin.Business.CustomerInventory.Area">
+    <Position X="0.5" Y="0.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABICoACAAAAAgAAAAEIAAAQAABIAAAAAAAAAAEIAgAA=</HashCode>
+      <FileName>Business\CustomerInventory\Area.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Demo.InventoryControl.Plugin.Business.CustomerInventory.Alley">
+    <Position X="3" Y="0.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABICoACAAAAAAAAAAEIAAAQAABIAAAAAAAAggEIAAAA=</HashCode>
+      <FileName>Business\CustomerInventory\Alley.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Owner" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

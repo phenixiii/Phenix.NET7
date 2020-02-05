@@ -58,24 +58,19 @@ namespace Demo.InventoryControl.Plugin.Actor
 
         #region 方法
 
-        Task ICustomerGrain.LoadLocation(string brand, string cardNumber, string transportNumber, int weight, string locationArea, string locationAlley, string locationOrdinal)
+        async Task ICustomerGrain.LoadLocation(string brand, string cardNumber, string transportNumber, int weight, string locationArea, string locationAlley, string locationOrdinal)
         {
-            Kernel.LoadLocation(brand, cardNumber, transportNumber, weight, locationArea, locationAlley, locationOrdinal);
-            RefreshLocation(AppConfig.FormatLocation(locationArea, locationAlley, locationOrdinal));
-            return Task.CompletedTask;
+            await Kernel.LoadLocation(brand, cardNumber, transportNumber, weight, locationArea, locationAlley, locationOrdinal);
         }
 
-        Task ICustomerGrain.UnloadLocation(long pickMarks)
+        async Task<bool> ICustomerGrain.PickInventory(long pickMarks, string brand, string cardNumber, string transportNumber, int minTotalWeight, int maxTotalWeight)
         {
-            foreach (string location in Kernel.UnloadLocation(pickMarks))
-                RefreshLocation(location);
-            return Task.CompletedTask;
+            return await Kernel.PickInventory(pickMarks, brand, cardNumber, transportNumber, minTotalWeight, maxTotalWeight);
         }
 
-        private void RefreshLocation(string location)
+        async Task ICustomerGrain.UnloadLocation(long pickMarks)
         {
-            ILocationGrain locationGrain = ClusterClient.Default.GetGrain<ILocationGrain>(location);
-            locationGrain.Refresh();
+            await Kernel.UnloadLocation(pickMarks);
         }
 
         #endregion

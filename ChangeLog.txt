@@ -137,3 +137,8 @@
 1，丰富Phenix.Algorithm工程ZeroOneKnapsackProblem类的功能，添加"打包至少占有一定容量"、"打包至少占有一定容量且不低于一定价值"、"趋向最小规格且不考虑打包价值/只要满足最低打包价值"等约束条件
 2，丰富Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem工程的演示代码
 
+
+20020205
+1，提供Phenix.Algorithm.CombinatorialOptimization.BunchKnapsackProblem类，从M支集束的N个物品中挑选出一个尽可能整支和价值高的子集使其装满容量为W且允许有一定超载范围的背包
+2，InventoryControl演练第二步，完成从Area-Alley-Location逐层自动挑货的标记功能，见Demo.InventoryControl.Plugin_MySQL工程
+

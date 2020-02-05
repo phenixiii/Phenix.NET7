@@ -1,10 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem">
-    <Position X="2.25" Y="0.5" Width="2.25" />
+    <Position X="4" Y="0.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>CombinatorialOptimization\ZeroOneKnapsackProblem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Algorithm.CombinatorialOptimization.PackedBunches">
+    <Position X="0.5" Y="2.25" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABBAAAAQAAAAABAAAAAAAAAAAAAAAAAAAAAgAAAEAAA=</HashCode>
+      <FileName>CombinatorialOptimization\PackedBunches.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="AtomicValue" />
+      <Property Name="Value" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Phenix.Algorithm.CombinatorialOptimization.BunchKnapsackProblem">
+    <Position X="6.5" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Phenix.Algorithm.CombinatorialOptimization.BunchKnapsackProblem.PackedInfo" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>CombinatorialOptimization\BunchKnapsackProblem.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AIAAAAAFAIAAAAQAAAAgAgAAABAEAEVAQCACAAAAACA=</HashCode>
+      <FileName>CombinatorialOptimization\BunchKnapsackProblem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="Phenix.Algorithm.CombinatorialOptimization.IGoods">
@@ -12,6 +43,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
       <FileName>CombinatorialOptimization\IGoods.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Phenix.Algorithm.CombinatorialOptimization.IGoodsBunch">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CombinatorialOptimization\IGoodsBunch.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Microsoft YaHei UI" Size="9" />

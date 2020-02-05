@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
+using System.Threading.Tasks;
+using Demo.InventoryControl.Plugin.Actor;
+using Demo.InventoryControl.Plugin.Business.CustomerInventory;
+using Phenix.Actor;
+using Phenix.Algorithm.CombinatorialOptimization;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Model;
 
@@ -48,51 +52,37 @@ namespace Demo.InventoryControl.Plugin.Business
 
         #region 动态属性
 
-        private IList<IcCustomerInventory> _inventoryList;
+        private Dictionary<string, Area> _areaDictionary;
 
-        /// <summary>
-        /// 货主库存
-        /// </summary>
-        public IList<IcCustomerInventory> InventoryList
+        private IDictionary<string, Area> AreaDictionary
         {
             get
             {
-                return _inventoryList ?? (_inventoryList = IcCustomerInventory.Select(p =>
-                               p.CustomerId == Id &&
-                               p.CustomerInventoryStatus < CustomerInventoryStatus.NotStored,
-                           IcCustomerInventory.Ascending(p => p.LocationArea),
-                           IcCustomerInventory.Ascending(p => p.LocationAlley),
-                           IcCustomerInventory.Ascending(p => p.LocationOrdinal),
-                           IcCustomerInventory.Ascending(p => p.StackOrdinal)));
-            }
-        }
-
-        private Dictionary<string, List<IcCustomerInventory>> _locationInventoryList;
-
-        /// <summary>
-        /// 货架-货主库存
-        /// </summary>
-        public IDictionary<string, List<IcCustomerInventory>> LocationInventoryList
-        {
-            get
-            {
-                if (_locationInventoryList == null)
+                if (_areaDictionary == null)
                 {
-                    _locationInventoryList = new Dictionary<string, List<IcCustomerInventory>>(StringComparer.Ordinal);
-                    foreach (IcCustomerInventory item in InventoryList)
+                    Dictionary<string, Area> result = new Dictionary<string, Area>(StringComparer.Ordinal);
+                    foreach (IcCustomerInventory item in IcCustomerInventory.Select(p =>
+                            p.CustomerId == Id &&
+                            p.CustomerInventoryStatus < CustomerInventoryStatus.NotStored,
+                        IcCustomerInventory.Ascending(p => p.LocationArea),
+                        IcCustomerInventory.Ascending(p => p.LocationAlley),
+                        IcCustomerInventory.Ascending(p => p.LocationOrdinal),
+                        IcCustomerInventory.Ascending(p => p.StackOrdinal)))
                     {
-                        List<IcCustomerInventory> value;
-                        if (!_locationInventoryList.TryGetValue(item.Location, out value))
+                        Area area;
+                        if (!result.TryGetValue(item.LocationArea, out area))
                         {
-                            value = new List<IcCustomerInventory>();
-                            _locationInventoryList.Add(item.Location, value);
+                            area = new Area(this, item.LocationArea);
+                            result.Add(item.LocationArea, area);
                         }
 
-                        value.Add(item);
+                        area.Add(item);
                     }
+
+                    _areaDictionary = result;
                 }
 
-                return _locationInventoryList;
+                return _areaDictionary;
             }
         }
 
@@ -102,51 +92,88 @@ namespace Demo.InventoryControl.Plugin.Business
 
         #region 方法
 
+        private Area FetchArea(string locationArea)
+        {
+            Area result;
+            if (!AreaDictionary.TryGetValue(locationArea, out result))
+            {
+                result = new Area(this, locationArea);
+                AreaDictionary.Add(locationArea, result);
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// 装上货架
         /// </summary>
-        public void LoadLocation(string brand, string cardNumber, string transportNumber, int weight,
+        /// <param name="brand">品牌</param>
+        /// <param name="cardNumber">卡号</param>
+        /// <param name="transportNumber">车皮/箱号</param>
+        /// <param name="weight">重量</param>
+        /// <param name="locationArea">货架库区</param>
+        /// <param name="locationAlley">货架巷道</param>
+        /// <param name="locationOrdinal">货架序号</param>
+        public async Task LoadLocation(string brand, string cardNumber, string transportNumber, int weight,
             string locationArea, string locationAlley, string locationOrdinal)
         {
-            string location = AppConfig.FormatLocation(locationArea, locationAlley, locationOrdinal);
+            await FetchArea(locationArea).Load(brand, cardNumber, transportNumber, weight, locationArea, locationAlley, locationOrdinal);
+        }
 
-            List<IcCustomerInventory> value;
-            if (!LocationInventoryList.TryGetValue(location, out value))
+        /// <summary>
+        /// 挑选货物
+        /// </summary>
+        /// <param name="pickMarks">挑中标记号码</param>
+        /// <param name="brand">品牌(null代表忽略本筛选条件)</param>
+        /// <param name="cardNumber">卡号(null代表忽略本筛选条件)</param>
+        /// <param name="transportNumber">车皮/箱号(null代表忽略本筛选条件)</param>
+        /// <param name="minTotalWeight">最小总重</param>
+        /// <param name="maxTotalWeight">最大总重</param>
+        public async Task<bool> PickInventory(long pickMarks, string brand, string cardNumber, string transportNumber, int minTotalWeight, int maxTotalWeight)
+        {
+            IList<IGoods> matchedAreas = new List<IGoods>();
+            foreach (KeyValuePair<string, Area> kvp in AreaDictionary)
+                if (await kvp.Value.IsMatch(brand, cardNumber, transportNumber))
+                    matchedAreas.Add(kvp.Value);
+
+            PackedBunches packedBunches = BunchKnapsackProblem.Pack(matchedAreas, minTotalWeight, maxTotalWeight - minTotalWeight);
+            if (packedBunches != null)
             {
-                value = new List<IcCustomerInventory>();
-                LocationInventoryList.Add(location, value);
+                foreach (string location in Database.ExecuteGet(DoMarkPicked, pickMarks, packedBunches.AtomicValue))
+                    await ClusterClient.Default.GetGrain<ILocationGrain>(location).Refresh();
+                return true;
             }
 
-            IcCustomerInventory customerInventory = new IcCustomerInventory(Id, brand, cardNumber, transportNumber, weight,
-                locationArea, locationAlley, locationOrdinal, value.Count > 0 ? value.Last().StackOrdinal + 1 : 1);
-            customerInventory.InsertSelf();
-            value.Add(customerInventory);
-            InventoryList.Add(customerInventory);
+            return false;
         }
-        
+
+        private IList<string> DoMarkPicked(DbTransaction transaction, long pickMarks, IList<IGoods> inventoryList)
+        {
+            IList<string> result = new List<string>();
+            foreach (IcCustomerInventory item in inventoryList)
+                item.MarkPicked(transaction, pickMarks, ref result);
+            return result;
+        }
+
         /// <summary>
         /// 卸下货架
         /// </summary>
         /// <param name="pickMarks">挑中标记号码</param>
         /// <returns>受影响的货架号清单</returns>
-        public IList<string> UnloadLocation(long pickMarks)
+        public async Task UnloadLocation(long pickMarks)
         {
-            return Database.ExecuteGet(DoUnloadLocation, pickMarks);
+            foreach (string location in Database.ExecuteGet(DoUnloadLocation, pickMarks))
+                await ClusterClient.Default.GetGrain<ILocationGrain>(location).Refresh();
         }
 
         private IList<string> DoUnloadLocation(DbTransaction transaction, long pickMarks)
         {
             IList<string> result = new List<string>();
-            for (int i = InventoryList.Count - 1; i >= 0; i--)
+            foreach (Area item in new List<Area>(AreaDictionary.Values))
             {
-                IcCustomerInventory item = InventoryList[i];
-                if (item.Unload(transaction, pickMarks))
-                {
-                    InventoryList.Remove(item);
-                    if (LocationInventoryList.TryGetValue(item.Location, out List<IcCustomerInventory> value))
-                        value.Remove(item);
-                    result.Add(item.Location);
-                }
+                item.Unload(transaction, pickMarks, ref result);
+                if (item.Empty)
+                    AreaDictionary.Remove(item.Name);
             }
 
             return result;
