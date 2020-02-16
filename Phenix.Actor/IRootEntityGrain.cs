@@ -3,7 +3,7 @@
 namespace Phenix.Actor
 {
     /// <summary>
-    /// 根实体接口
+    /// 根实体Grain接口
     /// </summary>
     public interface IRootEntityGrain
     {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Orleans.Configuration;
 using Orleans.Runtime.Messaging;
+using Phenix.Actor;
 using Phenix.Core.Data;
 
 namespace Orleans.Hosting
@@ -79,7 +80,8 @@ namespace Orleans.Hosting
 #if ORA
                     options.Invariant = "Oracle.DataAccess.Client";
 #endif
-                });
+                })
+                .AddSimpleMessageStreamProvider(StreamProvider.Name);
         }
     }
 }

@@ -19,12 +19,14 @@ namespace Phenix.Actor
         private static readonly SynchronizedDictionary<string, IClusterClient> _cache =
             new SynchronizedDictionary<string, IClusterClient>(StringComparer.Ordinal);
 
+        private static IClusterClient _default;
+
         /// <summary>
         /// 缺省Orleans服务集群客户端
         /// </summary>
         public static IClusterClient Default
         {
-            get { return Fetch(); }
+            get { return _default ?? (_default = Fetch()); }
         }
 
         #endregion
@@ -73,6 +75,7 @@ namespace Phenix.Actor
                     {
                         parts.AddPluginPart();
                     })
+                    .AddSimpleMessageStreamProvider(StreamProvider.Name)
                     .Build();
                 result.Connect().Wait();
                 return result;

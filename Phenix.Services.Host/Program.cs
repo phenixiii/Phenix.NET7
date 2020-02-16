@@ -41,11 +41,13 @@ namespace Phenix.Services.Host
                      * 设置集群ID：Phenix.Core.Data.Database.Default.DataSourceKey
                      * 设置服务ID：Phenix.Core.Data.Database.Default.DataSourceKey
                      * 设置Clustering、GrainStorage、Reminder数据库：Phenix.Core.Data.Database.Default
+                     * 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProvider.Name
                      *
                      * 装配Actor插件
-                     * 系统的 Actor 都应该按照领域划分开发各自的插件程序集，部署到本服务容器的执行目录下
+                     * 系统的Actor都应该按照领域划分，分别开发各自的插件
+                     * 插件程序集的部署，都存放在本服务容器的当前执行目录下
                      * 插件程序集的命名，都应该统一采用"*.Plugin.dll"作为文件名的后缀
-                     * 插件 Phenix.Services.Plugin 的 UserGrain 响应 User 请求
+                     * 用户的身份验证和访问授权等功能，由Actor插件Phenix.Services.Plugin中的UserGrain提供
                      */
                     .ConfigureCluster(OrleansConfig.ClusterId, OrleansConfig.ServiceId)
                     /*

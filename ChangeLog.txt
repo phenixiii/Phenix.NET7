@@ -142,3 +142,12 @@
 1，提供Phenix.Algorithm.CombinatorialOptimization.BunchKnapsackProblem类，从M支集束的N个物品中挑选出一个尽可能整支和价值高的子集使其装满容量为W且允许有一定超载范围的背包
 2，InventoryControl演练第二步，完成从Area-Alley-Location逐层自动挑货的标记功能，见Demo.InventoryControl.Plugin_MySQL工程
 
+
+20020213
+1，为Phenix.Actor工程封装Orleans Streams功能，见StreamProvider、StreamGrainBase类
+2，Demo.InventoryControl.Plugin_MySQL工程，添加Demo.InventoryControl.Plugin.oom设计文档
+3，添加Demo.InspectionStation检查站作业演练项目到Demo_Practice目录
+4，InspectionStation演练第一步，完成各作业点的地磅和车牌号的数据上报和读取、闸口的放行，作业点动态信息的发布和订阅，见Demo.InspectionStation.Plugin_MySQL工程
+
+
+

@@ -6,12 +6,9 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AIIAIAAQAAAAAQAAAAAQAQQAAAAAAAAAAAAAIAABAAA=</HashCode>
+      <HashCode>AIAAICAACAAAAQAAAAAAAQYAAAAAAAEAAAAgIAAAAAA=</HashCode>
       <FileName>Business\IcCustomer.cs</FileName>
     </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Property Name="InventoryList" />
-    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Demo.InventoryControl.Plugin.Business.IcCustomerInventory">
     <Position X="3.75" Y="0.5" Width="2.5" />
@@ -19,20 +16,21 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>IEADAACAEBAAAQABAAJQAgYQgDAAABADRgAAAAABAEA=</HashCode>
+      <HashCode>IFADAACAEBAAAQABAAJQAgYQgDIAABQDRgAAAEABAEA=</HashCode>
       <FileName>Business\IcCustomerInventory.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="CustomerInventoryStatus" />
     </ShowAsAssociation>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="Demo.InventoryControl.Plugin.Business.IcLocation">
-    <Position X="0.5" Y="3.75" Width="2" />
+    <Position X="0.5" Y="4.25" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAQAABAAQAAABAAAAAEAAAgAAAAAAACAQABAAE=</HashCode>
+      <HashCode>AAAAAAAQAUBAAQAAABAAAAAEAAAgQAAAAAACgQABAAE=</HashCode>
       <FileName>Business\IcLocation.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>

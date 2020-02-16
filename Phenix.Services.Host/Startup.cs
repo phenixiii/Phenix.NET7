@@ -70,7 +70,7 @@ namespace Phenix.Services.Host
                     options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
 
                     /*
-                     * 注册访问授权过滤器 
+                     * 注册访问授权过滤器
                      * 与 Controller/Action 上的[AllowAnonymous]/[Authorize(Roles="角色1|角色2")]标签配合完成用户的访问授权功能
                      * 按照就近原则 Action 上的标签优先于 Controller 上的标签（即忽略 Controller 上的标签）
                      *
