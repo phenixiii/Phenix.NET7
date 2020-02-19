@@ -9,7 +9,7 @@ using Phenix.Actor;
 namespace Demo.InspectionStation.Plugin.Api.OperationPoint
 {
     /// <summary>
-    /// 道闸
+    /// 道闸Controller
     /// </summary>
     [EnableCors]
     [Route(NetConfig.ApiOperationPointGatePath)]

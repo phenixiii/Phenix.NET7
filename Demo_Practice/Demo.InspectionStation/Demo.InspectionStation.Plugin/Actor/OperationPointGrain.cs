@@ -69,15 +69,7 @@ namespace Demo.InspectionStation.Plugin.Actor
         /// </summary>
         protected override string StreamNamespace
         {
-            get { return AppConfig.OperationPointStreamNamespace; }
-        }
-
-        /// <summary>
-        /// 是自动(激活的)观察者
-        /// </summary>
-        protected override bool IsAutoObserver
-        {
-            get { return false; }
+            get { return Name; }
         }
 
         #endregion

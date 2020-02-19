@@ -6,6 +6,11 @@
     public static class NetConfig
     {
         /// <summary>
+        /// /api/center/listen
+        /// </summary>
+        public const string ApiCenterListenPath = "/api/center/listen";
+
+        /// <summary>
         /// /api/operation-point/weighbridge
         /// </summary>
         public const string ApiOperationPointWeighbridgePath = "/api/operation-point/weighbridge";

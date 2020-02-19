@@ -38,11 +38,11 @@ namespace Demo
             Console.WriteLine();
             Console.WriteLine();
 
-            Console.WriteLine("注册缺省数据库连接");
-            Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
-            Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
-            Console.WriteLine("请确认连接的是否是你的测试库？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
-            Console.Write("否则按任意键继续");
+            Console.WriteLine("在接下来的演示之前，请检查缺省数据库连接配置信息，以保证其连接到的是你指定的测试库。");
+            Console.WriteLine("数据库连接配置信息存放在 SQLite 库 Phenix.Core.db 文件的 PH7_Database 表中，配置方法见其示例记录的 Remark 字段内容。");
+            Console.WriteLine("缺省数据库连接串：{0}", Database.Default.ConnectionString);
+            Console.WriteLine("如不符，请退出程序，找到 PH7_Database 表中那条 DataSourceKey 字段值为'*'的记录，配置好后再重启本程序。");
+            Console.Write("如果确认准确无误，请按任意键继续");
             Console.ReadKey();
             Console.WriteLine();
             Console.WriteLine();

@@ -15,30 +15,63 @@ namespace Phenix.Actor
     {
         #region 属性
 
+        /// <summary>
+        /// StreamId
+        /// </summary>
+        protected abstract Guid StreamId { get; }
+
+        #region Observable
+
+        /// <summary>
+        /// (自己作为Observable的)StreamNamespace
+        /// </summary>
+        protected abstract string StreamNamespace { get; }
+
         private IAsyncStream<string> _streamWorker;
 
         /// <summary>
-        /// IAsyncStream
+        /// (自己作为Observable的)Stream
         /// </summary>
         protected IAsyncStream<string> StreamWorker
         {
             get { return _streamWorker ?? (_streamWorker = StreamProvider.Default.GetStream<string>(StreamId, StreamNamespace)); }
         }
 
-        /// <summary>
-        /// StreamId
-        /// </summary>
-        protected abstract Guid StreamId { get; }
+        #endregion
+
+        #region Observer
 
         /// <summary>
-        /// StreamNamespace
+        /// (自己作为Observer)侦听的一组StreamNamespace
         /// </summary>
-        protected abstract string StreamNamespace { get; }
+        protected virtual IList<string> ListenStreamNamespaces
+        {
+            get { return null; }
+        }
+
+        private Dictionary<string, IAsyncStream<string>> _listenStreamWorkers;
 
         /// <summary>
-        /// 是自动(激活的)观察者
+        /// (自己作为Observer)侦听的一组Stream
         /// </summary>
-        protected abstract bool IsAutoObserver { get; }
+        protected IDictionary<string, IAsyncStream<string>> ListenStreamWorkers
+        {
+            get
+            {
+                if (_listenStreamWorkers == null)
+                {
+                    Dictionary<string, IAsyncStream<string>> result = new Dictionary<string, IAsyncStream<string>>(StringComparer.Ordinal);
+                    if (ListenStreamNamespaces != null)
+                        foreach (string streamNamespace in ListenStreamNamespaces)
+                            result[streamNamespace] = StreamProvider.Default.GetStream<string>(StreamId, streamNamespace);
+                    _listenStreamWorkers = result;
+                }
+
+                return _listenStreamWorkers;
+            }
+        }
+
+        #endregion
 
         #endregion
 
@@ -49,33 +82,58 @@ namespace Phenix.Actor
         /// </summary>
         public override async Task OnActivateAsync()
         {
-            if (IsAutoObserver)
-                await SubscribeAsync();
+            foreach (KeyValuePair<string, IAsyncStream<string>> kvp in ListenStreamWorkers)
+                await SubscribeAsync(kvp.Value);
             await base.OnActivateAsync();
+        }
+
+        private async Task SubscribeAsync(IAsyncStream<string> worker, StreamSequenceToken token = null)
+        {
+            IList<StreamSubscriptionHandle<string>> streamHandles = await worker.GetAllSubscriptionHandles();
+            if (streamHandles != null && streamHandles.Count > 0)
+                foreach (StreamSubscriptionHandle<string> item in streamHandles)
+                    await item.ResumeAsync((content, sequenceToken) => OnReceive(Utilities.JsonDeserialize<TEvent>(content), sequenceToken), OnSubscribeError, OnSubscribeCompleted, token);
+            else
+                await worker.SubscribeAsync((content, sequenceToken) => OnReceive(Utilities.JsonDeserialize<TEvent>(content), sequenceToken), OnSubscribeError, OnSubscribeCompleted, token);
         }
 
         /// <summary>
         /// 订阅消息
         /// </summary>
-        protected async Task SubscribeAsync(StreamSequenceToken token = null)
+        /// <param name="streamNamespaces">(自己作为Observer)侦听的StreamNamespace</param>
+        /// <param name="token">StreamSequenceToken</param>
+        protected async Task SubscribeAsync(string streamNamespaces, StreamSequenceToken token = null)
         {
-            IList<StreamSubscriptionHandle<string>> streamHandles = await StreamWorker.GetAllSubscriptionHandles();
+            IAsyncStream<string> worker = StreamProvider.Default.GetStream<string>(StreamId, streamNamespaces);
+            await SubscribeAsync(worker, token);
+            ListenStreamWorkers[streamNamespaces] = worker;
+        }
+
+        private async Task UnsubscribeAsync(IAsyncStream<string> worker)
+        {
+            IList<StreamSubscriptionHandle<string>> streamHandles = await worker.GetAllSubscriptionHandles();
             if (streamHandles != null && streamHandles.Count > 0)
                 foreach (StreamSubscriptionHandle<string> item in streamHandles)
-                    await item.ResumeAsync((content, sequenceToken) => OnReceive(Utilities.JsonDeserialize<TEvent>(content), sequenceToken), OnSubscribeError, OnSubscribeCompleted, token);
-            else
-                await StreamWorker.SubscribeAsync((content, sequenceToken) => OnReceive(Utilities.JsonDeserialize<TEvent>(content), sequenceToken), OnSubscribeError, OnSubscribeCompleted, token);
+                    await item.UnsubscribeAsync();
         }
 
         /// <summary>
         /// 退订消息
         /// </summary>
-        protected async Task UnsubscribeAsync()
+        /// <param name="streamNamespaces">(自己作为Observer)侦听的StreamNamespace</param>
+        protected async Task UnsubscribeAsync(string streamNamespaces)
         {
-            IList<StreamSubscriptionHandle<string>> streamHandles = await StreamWorker.GetAllSubscriptionHandles();
-            if (streamHandles != null && streamHandles.Count > 0)
-                foreach (StreamSubscriptionHandle<string> item in streamHandles)
-                    await item.UnsubscribeAsync();
+            if (ListenStreamWorkers.TryGetValue(streamNamespaces, out IAsyncStream<string> worker))
+                await UnsubscribeAsync(worker);
+        }
+
+        /// <summary>
+        /// 退订消息
+        /// </summary>
+        protected async Task UnsubscribeAllAsync()
+        {
+            foreach (KeyValuePair<string, IAsyncStream<string>> kvp in ListenStreamWorkers)
+                await UnsubscribeAsync(kvp.Value);
         }
 
         /// <summary>

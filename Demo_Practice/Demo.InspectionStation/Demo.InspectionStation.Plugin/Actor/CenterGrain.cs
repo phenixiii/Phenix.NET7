@@ -6,6 +6,8 @@ using Orleans;
 using Orleans.Streams;
 using Phenix.Actor;
 using Phenix.Core.Data.Model;
+using Phenix.Core.Message;
+using Phenix.Core.Reflection;
 
 namespace Demo.InspectionStation.Plugin.Actor
 {
@@ -70,15 +72,15 @@ namespace Demo.InspectionStation.Plugin.Actor
         /// </summary>
         protected override string StreamNamespace
         {
-            get { return AppConfig.OperationPointStreamNamespace; }
+            get { throw new NotImplementedException(); }
         }
 
         /// <summary>
-        /// 是自动(激活的)观察者
+        /// (自己作为Observer)侦听的一组StreamNamespace
         /// </summary>
-        protected override bool IsAutoObserver
+        protected override IList<string> ListenStreamNamespaces
         {
-            get { return true; }
+            get { return Kernel.OperationPoints; }
         }
 
         #endregion
@@ -92,14 +94,25 @@ namespace Demo.InspectionStation.Plugin.Actor
         /// <param name="token">StreamSequenceToken</param>
         protected override Task OnReceive(IsOperationPoint content, StreamSequenceToken token)
         {
-            Kernel.OperationPointDictionary[content.Name] = content;
+            UserMessage.Send(StreamId.ToString(), Name, Utilities.JsonSerialize(content));
             return Task.CompletedTask;
         }
 
-        Task ICenterGrain.Monitoring(IList<string> operationPoints)
+        Task<IDictionary<string, IsOperationPoint>> ICenterGrain.FetchOperationPoint()
         {
-            Kernel.Monitoring(operationPoints);
-            return Task.CompletedTask;
+            return Task.FromResult(Kernel.OperationPointDictionary);
+        }
+
+        async Task ICenterGrain.Listen(IList<string> operationPoints)
+        {
+            IList<string> oldOperationPoints = new List<string>(Kernel.OperationPoints);
+            Kernel.Listen(operationPoints);
+            foreach (string s in oldOperationPoints)
+                if (!operationPoints.Contains(s))
+                    await UnsubscribeAsync(s);
+            foreach (string s in operationPoints)
+                if (!oldOperationPoints.Contains(s))
+                    await SubscribeAsync(s);
         }
 
         #endregion

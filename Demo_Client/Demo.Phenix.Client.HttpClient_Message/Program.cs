@@ -17,7 +17,7 @@ namespace Demo
             Console.WriteLine();
 
             Console.WriteLine("在接下来的演示之前，请启动 Phenix.Services.Host 程序，并保证其正确连接到你的测试库。");
-            Console.WriteLine("数据库配置信息存放在 Phenix.Core.db 的 PH7_Database 表中，配置方法见其示例记录的 Remark 字段内容。");
+            Console.WriteLine("Phenix.Services.Host 程序的数据库连接配置信息，存放在其所在目录 SQLite 库 Phenix.Core.db 文件的 PH7_Database 表中，配置方法见其示例记录的 Remark 字段内容。");
             Console.WriteLine("如需观察 Phenix.Services（扩展服务）被唤起的代码执行效果，可在其 GateService 的函数里设置断点，将程序集附加到执行中的 Phenix.Services.Host 程序。");
             Console.Write("准备好之后，请按任意键继续");
             Console.ReadKey();
@@ -52,21 +52,36 @@ namespace Demo
             Console.WriteLine();
 
             Console.WriteLine("启动消息的订阅...");
-            HubConnection connection = httpClient.SubscribeMessage(delegate(IDictionary<long, string> messages)
+            int i = 0;
+            string prevMessage = String.Empty;
+            long messageId = httpClient.GetSequenceAsync().Result;
+            HubConnection connection = httpClient.SubscribeMessage(messages =>
             {
                 foreach (KeyValuePair<long, string> kvp in messages)
                 {
                     Console.WriteLine("收到消息：{0} — '{1}'", kvp.Key, kvp.Value);
-                    httpClient.AffirmReceivedMessageAsync(kvp.Key, true).Wait();
-                    Console.WriteLine("确认收到消息：{0} — 阅后即焚", kvp.Key);
+                    httpClient.AffirmReceivedMessageAsync(kvp.Key, i == 0).Wait();
+                    Console.WriteLine("确认收到消息：{0}({1})", kvp.Key, i == 0 ? "阅后即焚" : "不阅后即焚");
                 }
 
                 Console.Write("如果希望再来一遍，请输入需要发送的消息，否则请直接按回车键结束演示：");
                 string message = Console.ReadLine();
                 if (String.IsNullOrEmpty(message))
                     Environment.Exit(0);
-                httpClient.SendMessageAsync(Phenix.Client.Security.Identity.CurrentIdentity.User.Name, message).Wait();
-                Console.WriteLine("向自己发送一条消息：{0}", message);
+                if (String.CompareOrdinal(prevMessage, message) == 0)
+                {
+                    i = i + 1;
+                    message = String.Format("{0}[同一ID({1})第{2}次]", message, messageId, i);
+                    httpClient.SendMessageAsync(messageId, Phenix.Client.Security.Identity.CurrentIdentity.User.Name, message).Wait();
+                    Console.WriteLine("向自己发送刷新消息：{0}", message);
+                }
+                else
+                {
+                    i = 0;
+                    prevMessage = message;
+                    httpClient.SendMessageAsync(Phenix.Client.Security.Identity.CurrentIdentity.User.Name, message).Wait();
+                    Console.WriteLine("向自己发送一条消息：{0}", message);
+                }
             });
             connection.Reconnecting += delegate(Exception error)
             {

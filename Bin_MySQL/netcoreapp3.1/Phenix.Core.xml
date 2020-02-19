@@ -1124,11 +1124,12 @@
             DbConnection 助手
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbConnectionHelper.BuildConnectionString(System.String,System.String,System.String,System.String,System.Boolean,System.Int32,System.Int32,System.Int32)">
+        <member name="M:Phenix.Core.Data.Common.DbConnectionHelper.BuildConnectionString(System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.Boolean,System.Int32,System.Int32,System.Int32)">
             <summary>
             构建数据库连接串
             </summary>
             <param name="dataSource">数据源</param>
+            <param name="port">端口</param>
             <param name="databaseName">数据库名称</param>
             <param name="userId">用户ID</param>
             <param name="password">用户口令</param>
@@ -1702,11 +1703,12 @@
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>数据库入口</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Database.RegisterDefault(System.String,System.String,System.String,System.String,System.Boolean,System.Int32,System.Int32,System.Int32)">
+        <member name="M:Phenix.Core.Data.Database.RegisterDefault(System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.Boolean,System.Int32,System.Int32,System.Int32)">
             <summary>
             注册数据库入口
             </summary>
             <param name="dataSource">数据源</param>
+            <param name="port">端口</param>
             <param name="databaseName">数据库名称</param>
             <param name="userId">用户ID</param>
             <param name="password">用户口令</param>
@@ -1716,12 +1718,13 @@
             <param name="connectionLifetime">连接生命周期</param>
             <returns>数据库入口</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Database.Register(System.String,System.String,System.String,System.String,System.String,System.Boolean,System.Int32,System.Int32,System.Int32)">
+        <member name="M:Phenix.Core.Data.Database.Register(System.String,System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.Boolean,System.Int32,System.Int32,System.Int32)">
             <summary>
             注册数据库入口
             </summary>
             <param name="dataSourceKey">数据源键(null或""或"*"代表默认入口)</param>
             <param name="dataSource">数据源</param>
+            <param name="port">端口</param>
             <param name="databaseName">数据库名称</param>
             <param name="userId">用户ID</param>
             <param name="password">用户口令</param>
@@ -1744,6 +1747,11 @@
         <member name="P:Phenix.Core.Data.Database.DataSource">
             <summary>
             数据源
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Database.Port">
+            <summary>
+            端口
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Database.DatabaseName">
@@ -7654,14 +7662,6 @@
             数据库入口
             </summary>
         </member>
-        <member name="M:Phenix.Core.Message.UserMessage.Send(System.String,System.String)">
-            <summary>
-            发送消息
-            sender = UserIdentity.CurrentIdentity.UserNumber
-            </summary>
-            <param name="receiver">接收用户</param>
-            <param name="content">消息内容</param>
-        </member>
         <member name="M:Phenix.Core.Message.UserMessage.Send(System.String,System.String,System.String)">
             <summary>
             发送消息
@@ -7694,6 +7694,15 @@
             <summary>
             用户消息资料
             </summary>
+        </member>
+        <member name="M:Phenix.Core.Message.UserMessageInfo.#ctor(System.Int64,System.String,System.String,System.String)">
+            <summary>
+            初始化
+            </summary>
+            <param name="id">ID</param>
+            <param name="sender">发送用户</param>
+            <param name="receiver">接收用户</param>
+            <param name="content">消息内容</param>
         </member>
         <member name="M:Phenix.Core.Message.UserMessageInfo.#ctor(System.Int64,System.DateTime,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.String,System.String,System.String)">
             <summary>
@@ -7741,6 +7750,12 @@
             <summary>
             消息内容
             </summary>
+        </member>
+        <member name="M:Phenix.Core.Message.UserMessageInfo.Renew(System.String)">
+            <summary>
+            重新开始
+            </summary>
+            <param name="content">消息内容</param>
         </member>
         <member name="T:Phenix.Core.Net.Api.ControllerBase">
             <summary>
@@ -7863,6 +7878,11 @@
             接收（PULL）
             </summary>
             <returns>结果集(消息ID-消息内容)</returns>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.Message.UserMessageController.Send(System.Int64,System.String)">
+            <summary>
+            发送
+            </summary>
         </member>
         <member name="M:Phenix.Core.Net.Api.Message.UserMessageController.Send(System.String)">
             <summary>

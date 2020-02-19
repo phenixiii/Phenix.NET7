@@ -14,16 +14,20 @@ namespace Phenix.Services.Host
             AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) => { Phenix.Core.Log.EventLog.SaveLocal("An unhandled exception occurred in the current domain", (Exception) eventArgs.ExceptionObject); };
 
             /*
-             * 注册用户资料工厂
+             * 可在此注册系统用到的各数据库的连接串
+             * 但建议通过SQLite库Phenix.Core.db文件的PH7_Database表预先配置，系统在执行到Phenix.Core.Data.Database.Fetch()时会被自动加载
+             * 以下注释掉的代码，是注册缺省数据库连接串，也就是Phenix.Core.Data.Database.Default的内容，相当于PH7_Database表中那条DataSourceKey字段值为'*'的记录
+             */
+            //Phenix.Core.Data.Database.RegisterDefault("192.168.248.52", null, "TEST", "SHBPMO", "SHBPMO");
+
+            /*
+             * 注册用户资料工厂，以打通封装在Phenix.Services.Plugin的UserGrain中的用户身份验证等功能
              */
             Phenix.Core.Security.Identity.RegisterFactory(new Phenix.Services.Plugin.UserFactory());
 
             /*
-             * 启动WebAPI服务
-             * 启动Orleans服务集群
-             *
-             * Phenix.Core.Data.Database的配置方法，可通过Phenix.Core.db的PH7_Database表，也可以通过类似下面的代码进行注册（缺省数据库Phenix.Core.Data.Database.Default的连接串，相当于PH7_Database表DataSourceKey字段值为'*'的记录）：
-             * Phenix.Core.Data.Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
+             * 构建Host并启动服务
+             * 如第一次启动，可在wwwroot\test目录里打开各个测试网页，验证服务环境是否正常
              */
             CreateHostBuilder(args).Build().Run();
         }
@@ -35,6 +39,8 @@ namespace Phenix.Services.Host
                 .UseContentRoot(Phenix.Core.AppRun.BaseDirectory)
                 /*
                  * 启动Orleans服务集群
+                 * 请事先在数据库中手工添加Orleans配置库，默认是Phenix.Core.Data.Database.Default指向的数据库
+                 * Orleans配置库的脚本文件，见Orleans Database Script目录，分为MySQL和Oracle两组，建议按需顺序执行
                  */
                 .UseOrleans((context, builder) => builder
                     /*

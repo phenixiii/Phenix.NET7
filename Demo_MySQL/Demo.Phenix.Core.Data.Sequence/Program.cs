@@ -17,14 +17,7 @@ namespace Demo
             Console.WriteLine("每次获取 Database 的 Sequence 属性的 Value 值，将获得该数据库下不会重复（但不保证连续）的15位 Long 类型数值，可作为业务对象（业务表）ID 值的填充来源。");
             Console.WriteLine();
 
-            Console.WriteLine("本场景是运行在服务端，如果要在客户端获取64位序号，请使用 phAjax.getSequence() / Phenix.Client.HttpClient.GetSequenceAsync()。");
-            Console.WriteLine();
-
-            Console.WriteLine("在接下来的演示之前，请启动 Phenix.Services.Host 程序，并保证其正确连接到你的测试库。");
-            Console.WriteLine("数据库配置信息存放在 Phenix.Core.db 的 PH7_Database 表中，配置方法见其示例记录的 Remark 字段内容。");
-            Console.Write("准备好之后，请按任意键继续");
-            Console.ReadKey();
-            Console.WriteLine();
+            Console.WriteLine("本场景是在服务端运行，如果要在客户端获取64位序号，请使用 phAjax.getSequence() / Phenix.Client.HttpClient.GetSequenceAsync()。");
             Console.WriteLine();
 
             Console.WriteLine("设为调试状态");
@@ -32,11 +25,11 @@ namespace Demo
             Console.WriteLine("测试过程中产生的日志保存在：" + AppRun.TempDirectory);
             Console.WriteLine();
 
-            Console.WriteLine("注册缺省数据库连接（也可以在 Phenix.Core.db 的 PH7_Database 表中配置）");
-            Database.RegisterDefault("192.168.248.52", "TEST", "SHBPMO", "SHBPMO");
-            Console.WriteLine("数据库连接串 = {0}", Database.Default.ConnectionString);
-            Console.WriteLine("请确认是否是你的测试库（并保证与 Phenix.Services.Host 程序连接的缺省数据库是同一个）？如不符，请退出程序修改 Database.RegisterDefault 部分代码段。");
-            Console.Write("否则按任意键继续");
+            Console.WriteLine("在接下来的演示之前，请检查缺省数据库连接配置信息，以保证其连接到的是你指定的测试库。");
+            Console.WriteLine("数据库连接配置信息存放在 SQLite 库 Phenix.Core.db 文件的 PH7_Database 表中，配置方法见其示例记录的 Remark 字段内容。");
+            Console.WriteLine("缺省数据库连接串：{0}", Database.Default.ConnectionString);
+            Console.WriteLine("如不符，请退出程序，找到 PH7_Database 表中那条 DataSourceKey 字段值为'*'的记录，配置好后再重启本程序。");
+            Console.Write("如果确认准确无误，请按任意键继续");
             Console.ReadKey();
             Console.WriteLine();
             Console.WriteLine();

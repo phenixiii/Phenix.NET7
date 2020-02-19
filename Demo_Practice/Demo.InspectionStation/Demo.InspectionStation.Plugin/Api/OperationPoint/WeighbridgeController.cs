@@ -8,7 +8,7 @@ using Phenix.Actor;
 namespace Demo.InspectionStation.Plugin.Api.OperationPoint
 {
     /// <summary>
-    /// 磅秤
+    /// 磅秤Controller
     /// </summary>
     [EnableCors]
     [Route(NetConfig.ApiOperationPointWeighbridgePath)]

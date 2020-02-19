@@ -13,7 +13,6 @@ using Phenix.Client.Security;
 using Phenix.Core;
 using Phenix.Core.Data.Model;
 using Phenix.Core.IO;
-using Phenix.Core.Message;
 using Phenix.Core.Net;
 using Phenix.Core.Reflection;
 using Phenix.Core.Security.Auth;
@@ -187,43 +186,33 @@ namespace Phenix.Client
         #region Message
 
         /// <summary>
-        /// 保存对象日志
+        /// 接收消息（PULL）
+        /// </summary>
+        /// <returns>结果集(消息ID-消息内容)</returns>
+        public async Task<IDictionary<long, string>> ReceiveMessageAsync()
+        {
+            return await CallAsync<IDictionary<long, string>>(HttpMethod.Get, NetConfig.ApiMessageUserMessagePath);
+        }
+
+        /// <summary>
+        /// 发送消息
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <param name="receiver">接收用户</param>
+        /// <param name="content">消息内容</param>
+        public async Task SendMessageAsync(long id, string receiver, string content)
+        {
+            await CallAsync(HttpMethod.Put, NetConfig.ApiMessageUserMessagePath, content, NameValue.Set("id", id), NameValue.Set("receiver", receiver));
+        }
+
+        /// <summary>
+        /// 发送消息
         /// </summary>
         /// <param name="receiver">接收用户</param>
         /// <param name="content">消息内容</param>
         public async Task SendMessageAsync(string receiver, string content)
         {
-            await SendMessageAsync(Identity.User.Name, receiver, content);
-        }
-
-        /// <summary>
-        /// 保存对象日志
-        /// </summary>
-        /// <param name="sender">发送用户</param>
-        /// <param name="receiver">接收用户</param>
-        /// <param name="content">消息内容</param>
-        public async Task SendMessageAsync(string sender, string receiver, string content)
-        {
-            await SendMessageAsync(new UserMessageInfo(await GetSequenceAsync(), DateTime.Now, null, null, sender, receiver, content));
-        }
-
-        /// <summary>
-        /// 保存对象日志
-        /// </summary>
-        /// <param name="info">事件资料</param>
-        public async Task SendMessageAsync(UserMessageInfo info)
-        {
-            await CallAsync(HttpMethod.Post, NetConfig.ApiMessageUserMessagePath, info.Content, NameValue.Set("receiver", info.Receiver));
-        }
-
-        /// <summary>
-        /// 接收消息（PULL）
-        /// </summary>
-        /// <param name="receiver">接收用户</param>
-        /// <returns>结果集(消息ID-消息内容)</returns>
-        public async Task<IDictionary<long, string>> ReceiveMessageAsync(string receiver)
-        {
-            return await CallAsync<IDictionary<long, string>>(HttpMethod.Get, NetConfig.ApiMessageUserMessagePath, NameValue.Set("receiver", receiver));
+            await CallAsync(HttpMethod.Post, NetConfig.ApiMessageUserMessagePath, content, NameValue.Set("receiver", receiver));
         }
 
         /// <summary>

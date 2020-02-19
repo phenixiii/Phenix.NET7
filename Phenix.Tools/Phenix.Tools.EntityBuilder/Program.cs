@@ -55,7 +55,7 @@ namespace Phenix.Tools.EntityBuilder
 
             try
             {
-                Database database = Database.RegisterDefault(dataSource, databaseName, userId, password);
+                Database database = Database.RegisterDefault(dataSource, null, databaseName, userId, password);
                 Console.Write("是否遍历{0}数据库的表，生成实体类代码(Y/N)：", database.DatabaseName);
                 if (String.Compare(Console.ReadKey().KeyChar.ToString(), "Y", StringComparison.OrdinalIgnoreCase) == 0)
                 {

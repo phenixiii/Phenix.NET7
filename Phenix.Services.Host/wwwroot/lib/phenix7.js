@@ -270,6 +270,50 @@ var phAjax = (function($) {
             });
         },
 
+        // 接收消息（PULL）
+        receiveMessage: function(options) {
+            var defaults = {
+                onSuccess: null, //调用成功的回调函数, 参数(messages)为消息id(key)+content(array[key])数据字典集合
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
+            };
+            options = $.extend(defaults, options);
+            phAjax.call({
+                path: "/api/message/user-message",
+                onSuccess: function(result) {
+                    if (typeof options.onSuccess == "function")
+                        options.onSuccess(result);
+                },
+                onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (typeof options.onError == "function")
+                        options.onError(XMLHttpRequest, textStatus, errorThrown);
+                },
+            });
+        },
+
+        // 发送消息
+        // receiver: 接收用户
+        // content: 消息内容
+        sendMessage: function(id, receiver, content, options) {
+            var defaults = {
+                onSuccess: null, //调用成功的回调函数
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
+            };
+            options = $.extend(defaults, options);
+            phAjax.call({
+                type: "PUT",
+                path: "/api/message/user-message?id=" + id + "&receiver=" + encodeURIComponent(receiver),
+                data: content,
+                onSuccess: function(result) {
+                    if (typeof options.onSuccess == "function")
+                        options.onSuccess();
+                },
+                onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (typeof options.onError == "function")
+                        options.onError(XMLHttpRequest, textStatus, errorThrown);
+                },
+            });
+        },
+
         // 发送消息
         // receiver: 接收用户
         // content: 消息内容
@@ -286,26 +330,6 @@ var phAjax = (function($) {
                 onSuccess: function(result) {
                     if (typeof options.onSuccess == "function")
                         options.onSuccess();
-                },
-                onError: function(XMLHttpRequest, textStatus, errorThrown) {
-                    if (typeof options.onError == "function")
-                        options.onError(XMLHttpRequest, textStatus, errorThrown);
-                },
-            });
-        },
-
-        // 接收消息（PULL）
-        receiveMessage: function(options) {
-            var defaults = {
-                onSuccess: null, //调用成功的回调函数, 参数(messages)为消息id(key)+content(array[key])数据字典集合
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
-            };
-            options = $.extend(defaults, options);
-            phAjax.call({
-                path: "/api/message/user-message",
-                onSuccess: function(result) {
-                    if (typeof options.onSuccess == "function")
-                        options.onSuccess(result);
                 },
                 onError: function(XMLHttpRequest, textStatus, errorThrown) {
                     if (typeof options.onError == "function")

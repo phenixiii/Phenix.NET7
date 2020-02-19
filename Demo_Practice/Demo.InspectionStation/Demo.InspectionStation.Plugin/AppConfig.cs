@@ -16,10 +16,5 @@ namespace Demo.InspectionStation.Plugin
         {
             get { return _operationPointStreamId; }
         }
-
-        /// <summary>
-        /// OperationPoint的StreamNamespace
-        /// </summary>
-        public const string OperationPointStreamNamespace = "InspectionStation.OperationPoint";
     }
 }

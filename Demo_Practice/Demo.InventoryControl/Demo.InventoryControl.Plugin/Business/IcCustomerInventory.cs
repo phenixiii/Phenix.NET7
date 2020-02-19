@@ -203,6 +203,10 @@ namespace Demo.InventoryControl.Plugin.Business
                    (transportNumber == null || TransportNumber == transportNumber);
         }
 
+        /// <summary>
+        /// 重置权重
+        /// </summary>
+        /// <param name="value">权重</param>
         public void ResetValue(int value)
         {
             _value = value;

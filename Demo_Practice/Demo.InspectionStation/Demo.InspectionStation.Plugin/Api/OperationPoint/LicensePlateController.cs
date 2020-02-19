@@ -8,7 +8,7 @@ using Phenix.Actor;
 namespace Demo.InspectionStation.Plugin.Api.OperationPoint
 {
     /// <summary>
-    /// 车牌
+    /// 车牌Controller
     /// </summary>
     [EnableCors]
     [Route(NetConfig.ApiOperationPointLicensePlatePath)]

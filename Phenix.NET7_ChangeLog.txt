@@ -1,0 +1,165 @@
+Phenix Framework 7 for .net core 3 & Orleans 3
+Copyright © 2007, 2020 Phenixヾ Studio
+
+发布地址：https://github.com/phenixiii/Phenix.NET7
+技术交流群：206648373
+
+
+20190522
+1，发布轻量级的持久化引擎，支持Oracle、MySQL，封装ADO.NET，可同时操作多个数据库，提供分库分表策略的持久化方法
+2，提供数据库的数据字典的查看方法，示例见Demo.Phenix.Core.Data.Schema
+3，提供存放日志到本地或数据库的通用方法，示例见Demo.Phenix.Core.Log.EventLog
+4，提供系统唯一的序列号，支持多线程、多进程、分布式应用，示例见Demo.Phenix.Core.Data.Sequence
+5，提供连续递增的序列号，支持多线程、多进程、分布式应用，示例见Demo.Phenix.Core.Data.Increment
+6，提供直接读取数据库数据DataReader功能，示例见Demo.Phenix.Core.Data.Common.DataReader
+
+
+20190715
+1，完善轻量级的持久化引擎，入口为Phenix.Core.Data.Database类，Fetch用法参考如下：
+         IList<Teams> teamsList = Database.Default.MetaData.FindSheet<Teams>().SelectEntity<Teams>(p => p.Id == 559064445621642);
+2，提供Phenix.Core.Data.Model.EntityBase<T>实体基类，封装持久化引擎、动态刷新等基础设施功能，Fetch代码可简化为：
+         IList<Teams> teamsList = Team.Select(p => p.Id == 559064445621642);
+3，持久化引擎支持在实体属性上打System.ComponentModel.DataAnnotations.ValidationAttribute派生标签，提交对象/属性时会自动完成属性的有效性验证（验证失败抛出ValidationException）
+      以下默认规范会自动添加，不必手工打标签：
+          System.ComponentModel.DataAnnotations.RequiredAttribute，如果属性值不允许为空的规范是按照表字段NOT NULL的话；
+          System.ComponentModel.DataAnnotations.StringLengthAttribute，如果字符串属性值长度要求是按照表字段长度规范的话；
+     一旦手工打上标签，可覆盖它们
+4，持久化引擎支持在实体上实现System.ComponentModel.DataAnnotations.IValidatableObject接口，也可以实现Phenix.Core.Data.Validity.IValidation接口，提交对象时自动完成对象的有效性验证（验证失败抛出ValidationException）
+5，提供实体类代码生成工具Phenix.Tools.EntityBuilder工程源码
+
+
+20190804
+1，提供WebAPI服务端Phenix.Services.Host工程源码
+2，提供WebAPI服务的phenix7.js客户端源码，见Phenix.Services.Host\wwwroot\lib目录，测试代码见Phenix.Services.Host\wwwroot\test
+
+
+20190807
+1，Phenix.Services.Host可部署在KestrelServer+Docker环境中
+2，提供《Phenix.Services.Host.部署方法.doc》文档
+
+
+20190809
+1，提供Phenix.Core.Data.Schema.Table配置项ClassNameByTrimTableName，可根据自己Build Entity的需要，规定ClassName属性的取值是否取自被整理的表名(如果第4位是"_"则剔去其及之前的字符)，默认是false
+2，提供Phenix.Core.Data.Schema.View配置项ClassNameByTrimViewName，可根据自己Build Entity的需要，规定ClassName属性的取值是否取自被整理的视图名(如果第4位是"_"则剔去其及之前的字符, 如果倒数第2位是"_"则剔去其及之后的字符)，默认是false
+
+
+20190813
+1，Phenix.Core.Data.Database和Phenix.Core.Data.Common.DbCommandHelper的调用存储过程函数ExecuteStoredProc，返回值改为IDictionary<string, object>类型，为存储过程的调用结果集"参数名-参数值"，如需转换为JSON格式请调用Phenix.Core.Reflection.Utilities.JsonSerialize(result)
+2，提供动态实体类Phenix.Core.Data.Model.DynamicEntity，以便操作IDictionary<string, object>格式的"属性名-属性值"记录数据，如需传入JSON格式请先调用Phenix.Core.Reflection.Utilities.JsonDeserialize<IDictionary<string, object>>(propertyValues)、Phenix.Core.Reflection.Utilities.JsonDeserialize<IList<IDictionary<string, object>>>(propertyValues)进行转换
+3，增补Phenix.Core.Data.Schema.Table和Phenix.Core.Data.Schema.View的增删改函数，以便操作IDictionary<string, object>格式的"属性名-属性值"记录数据，如需传入JSON格式数据请先调用Phenix.Core.Reflection.Utilities.JsonDeserialize<IDictionary<string, object>>(propertyValues)进行转换
+4，增补Phenix.Core.Data.Schema.Table、Phenix.Core.Data.Schema.View、Phenix.Core.Data.Model.EntityBase<T>的查询函数，可返回JSON格式的查询结果
+
+
+20190814
+1，增补Phenix.Core.Data.Schema.Table、Phenix.Core.Data.Schema.View、Phenix.Core.Data.Model.EntityBase<T>的查询函数，可读取DataReader内容返回实体对象或JSON格式的查询结果
+2，增补Phenix.Core.Data.Common.DataReader的SelectRecord()函数，直接导出JSON格式的查询结果，JSON格式的属性名为数据源的表/视图的字段名/别名
+
+
+20190905
+1，提供Phenix.Client程序集，含HttpClient类Checkin、Logon、ChangePassword、Sequence、Increment、Message、UploadFile、DownloadFile、EventLog、Call等系列函数，示例代码见：Demo.Phenix.Client.HttpClient_Message、Demo.Phenix.Client.HttpClient_File
+2，提供Phenix.Business程序集，含Phenix.Business.UndoableBase<T>可撤销编辑的实体基类，为实体对象的编辑操作提供单级回滚的功能，示例见Demo.Phenix.Business.UndoableBase
+3，约定时间戳字段以'_TIMESTAMP'后缀命名
+4，增补Phenix.Core.Data.Model.EntityBase<T>功能具备乐观锁机制，Update()和UpdateRecord()函数提供checkTimestamp参数(默认true)，保证在分布式架构下新数据不会被脏数据覆盖（会抛出Phenix.Core.Data.Validity.OutdatedDataException）
+
+
+20190911
+1，除了主键（后缀'_ID'）、制单人（后缀'_ORIGINATOR'）、制单时间（后缀'_ORIGINATE_TIME'）、制单团体（后缀'_ORIGINATE_TEAMS'）等水印字段外，约定系统自定义的水印字段用后缀'_WM'进行标识，以便在新增记录以后的历次修改中，这些字段都不会再被改动（即使编辑过实体对象也不会被持久化）
+2，仅允许用户增删改查操作自己所在团队的记录，当前用户的所属团队Identity.CurrentIdentity.User.Name/Id会被作为查询的过滤条件（即单库切片），前提是聚合根对应的表结构务必含制单团体（后缀'_ORIGINATE_TEAMS'）字段）
+3，如果应用系统还有分库（顺序为1-N），当前用户在增删改查操作时会被自动路由到其中一个库上（index为0主库1-N分库），路由算法是Identity.CurrentIdentity.User.RootTeams.Id的Hash值取N的余数
+
+
+20190919
+1，提供Phenix.Business.BusinessBase<T>可操作聚合树的业务基类，为聚合根对象的整颗聚合树提供编辑操作和持久化的功能
+2，一旦为聚合树中某个节点的业务对象打上删除标记（IsSelfDeleted=true），调用SaveDepth()函数持久化时，只要数据库中存在物理外键，将会对它及其下的所有从业务对象（包括未加载到内存）的记录做级联删除
+
+
+20190920
+1，规定将WebAPI服务的Controller代码编写在各自的工程里，程序集的命名以"*.Plugin.dll"作为后缀，默认会被Phenix.Services.Host自动加载并装配到ApplicationParts中
+2，发布Phenix.Services.Host时，可自动将Docker相关的文件写入到发布目录（Publish目录）中，方便部署到Docker
+
+
+20190927
+1，提供用户消息PULL和PUSH两套方法，具体见测试网页user-message.html
+2，提供服务接口IGateService以扩展系统自身的个性化的登录功能，框架代码见Phenix.Services.Extend工程里的GateService类，注入方法见Phenix.Services.Host工程Startup类里的AddGateService()代码行
+
+
+20191011
+1，升级至for .net core3.0，开发工具 Visual Studio 2019 16.3.x及以上版本
+2，提供服务接口IFileService以扩展系统自身的个性化的文件上传下载功能，框架代码见Phenix.Services.Extend工程里的FileService类，注入方法见Phenix.Services.Host工程Startup类里的AddFileService()代码行，用法见测试网页file.html
+
+
+20191013
+1，修订《Phenix.Services.Host.部署方法.doc》
+2，调通Phenix.Services.Host部署在Docker的方法
+
+
+20191021
+1，重构Phenix.Client.HttpClient类
+2，phenix7.js和Phenix.Client.HttpClient类的Call函数，补充'是否加密上传数据'、'是否解密返回数据'参数
+3，提供业务类代码生成工具Phenix.Tools.BusinessBuilder工程源码
+
+
+20191030
+1，新增Phenix.Core.Threading.Timer类，提供定时执行任务功能，通过AddTimedTask()函数添加已实现Phenix.Core.Threading.ITimedTask接口的对象，会自动按照指定周期在一个独立线程里执行这个对象的Execute()函数
+2，Phenix.Core.SyncCollections命名空间的集合类，都已实现Phenix.Core.Threading.ITimedTask接口，只要通过AddTimedTask()函数加入到Phenix.Core.Threading.Timer的定时执行任务队列里，会自动按照指定周期清理集合对象里过期的集合项，前提条件是集合项对象需实现Phenix.Core.SyncCollections.ICachedObject接口，指定它的失效时间以自动被从集合中剔除出去
+3，提供具备缓存机制的实体基类Phenix.Core.CachedRootEntityBase<T>和业务基类Phenix.Business.CachedRootBusinessBase<T>
+
+
+20191102
+1，提供非对称加密的公钥私钥生成工具Phenix.Tools.CreateKeyPair工程源码
+2，数据库连接串配置记录存放在Phenix.Core.db（推荐使用SQLite Expert工具打开）库文件PH7_Database表里，以便在程序运行时无需通过编写代码注册数据库入口，可直接获取Phenix.Core.Data.Database对象，具体配置方法见示例记录的Remark字段内容
+3，注释掉Phenix.Services.Host工程里的数据库入口注册代码，改用Phenix.Core.db库文件PH7_Database表做数据库连接串的配置
+
+
+20191205
+1，提供Phenix.Actor工程源码，封装Orleans3的客户端和服务集群配置方法和入口，以及一套轻量级的Grain开发框架，支持并行和分布式大规模服务架构设计
+2，规定将Orleans服务的Grain及其接口代码编写在各自的工程里，程序集的命名以"*.Plugin.dll"作为后缀，默认会被Phenix.Services.Host自动加载并装配到ApplicationParts中
+3，提供Phenix.Services.Plugin工程源码，包含用户身份验证和管理的UserGrain类、IUserGrain接口，及其代理UserGrain服务的User类，通过UserFactory类注册到Phenix.Core的权限控制模块，注册方法（见Phenix.Services.Host）：
+         Phenix.Core.Security.Identity.RegisterFactory(new Phenix.Services.Plugin.UserFactory());
+
+
+20191216
+1，升级至for .net core3.1 + SignalR3.1
+2，调通Phenix.Services.Host\wwwroot\test目录的测试网页
+
+
+20191227
+1，提供《Phenix.Services.Host.分布式服务架构.pptx》，讲解WebAPI（应用）服务和Orleans（领域）服务的搭建和部署方法
+2，提供Phenix.Core.AppSettings应用系统配置工具，配置项定义方法参考Phenix.Services.Host的OrleansConfig类，系统实施时可直接在Phenix.Core.db库文件PH7_AppSettings表里做配置
+
+
+20200107
+1，微调Phenix.Actor工程的功能
+2，添加Demo_Practice目录，用于存放实战演练项目的代码
+3，添加Demo.InventoryControl库存管控演练项目到Demo_Practice目录
+4，InventoryControl演练第一步，完成货架装卸货物的记录功能，见Demo.InventoryControl.Plugin_MySQL工程
+
+
+20200113
+1，提供Phenix.Algorithm工程源码，含ZeroOneKnapsackProblem类的0-1背包算法，用法见Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem工程
+2，完善Phenix.Core工程AppSettings类的功能
+
+
+20200116
+1，丰富Phenix.Algorithm工程ZeroOneKnapsackProblem类的功能，添加"打包至少占有一定容量"、"打包至少占有一定容量且不低于一定价值"、"趋向最小规格且不考虑打包价值/只要满足最低打包价值"等约束条件
+2，丰富Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem工程的演示代码
+
+
+20200205
+1，提供Phenix.Algorithm.CombinatorialOptimization.BunchKnapsackProblem类，从M支集束的N个物品中挑选出一个尽可能整支和价值高的子集使其装满容量为W且允许有一定超载范围的背包
+2，InventoryControl演练第二步，完成从Area-Alley-Location逐层自动挑货的标记功能，见Demo.InventoryControl.Plugin_MySQL工程
+
+
+20200213
+1，为Phenix.Actor工程封装Orleans Streams功能，见StreamProvider、StreamGrainBase类
+2，Demo.InventoryControl.Plugin_MySQL工程，添加Demo.InventoryControl.Plugin.oom设计文档
+3，添加Demo.InspectionStation检查站作业演练项目到Demo_Practice目录
+4，InspectionStation演练第一步，完成各作业点的地磅和车牌号的数据上报和读取、闸口的放行，作业点动态信息的发布和订阅，见Demo.InspectionStation.Plugin_MySQL工程
+
+
+20200217
+1，升级用户消息发布和订阅功能，允许在单一的消息ID上持续发送消息，可用于数据监控等业务场景，示例代码见：Demo.Phenix.Client.HttpClient_Message
+2，改造Phenix.Actor工程的Orleans Streams功能，StreamGrainBase类可支持网格化的消息发布和订阅机制
+3，InspectionStation演练第二步，中控的WebAPI客户端可订阅指定的多个作业点的动态信息，通过SignalR的推送机制实时获取到最新数据，见Demo.InspectionStation.Plugin_MySQL工程
+
+

@@ -57,8 +57,6 @@ namespace Demo.InspectionStation.Plugin.Business
             get { return _operationPoints; }
         }
 
-        private Dictionary<string, IsOperationPoint> _operationPointDictionary;
-
         /// <summary>
         /// 监控的作业点
         /// </summary>
@@ -66,18 +64,11 @@ namespace Demo.InspectionStation.Plugin.Business
         {
             get
             {
-                if (_operationPointDictionary == null)
-                {
-                    Dictionary<string, IsOperationPoint> result = new Dictionary<string, IsOperationPoint>(StringComparer.Ordinal);
-                    if (_operationPoints != null && _operationPoints.Count > 0)
-                        foreach (IsOperationPoint item in IsOperationPoint.Select(p =>
-                            _operationPoints.Contains(p.Name)))
-                            result.Add(item.Name, item);
-
-                    _operationPointDictionary = result;
-                }
-
-                return _operationPointDictionary;
+                Dictionary<string, IsOperationPoint> result = new Dictionary<string, IsOperationPoint>(StringComparer.Ordinal);
+                if (_operationPoints != null && _operationPoints.Count > 0)
+                    foreach (IsOperationPoint item in IsOperationPoint.Select(p => _operationPoints.Contains(p.Name)))
+                        result.Add(item.Name, item);
+                return result;
             }
         }
 
@@ -91,18 +82,9 @@ namespace Demo.InspectionStation.Plugin.Business
         /// 监控指定的作业点
         /// </summary>
         /// <param name="operationPoints">作业点</param>
-        public void Monitoring(IList<string> operationPoints)
+        public void Listen(IList<string> operationPoints)
         {
             UpdateSelf(SetProperty(p => p.OperationPoints, operationPoints));
-            Refresh();
-        }
-
-        /// <summary>
-        /// 刷新状态
-        /// </summary>
-        public void Refresh()
-        {
-            _operationPointDictionary = null;
         }
 
         private static void Initialize(Database database)
