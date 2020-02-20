@@ -163,3 +163,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 3，InspectionStation演练第二步，中控的WebAPI客户端可订阅指定的多个作业点的动态信息，通过SignalR的推送机制实时获取到最新数据，见Demo.InspectionStation.Plugin_MySQL工程
 
 
+20200220
+1，修订《Phenix.Services.Host.部署方法.doc》，补充'开发环境的搭建'等章节
+2，补充和修订Demo.InspectionStation和Demo.InventoryControl的设计文档
+
