@@ -166,4 +166,4 @@ Copyright © 2007, 2020 Phenixヾ Studio
 20200220
 1，修订《Phenix.Services.Host.部署方法.doc》，补充'开发环境的搭建'等章节
 2，补充和修订Demo.InspectionStation和Demo.InventoryControl的设计文档
-
+3，提供《Phenix.Services.Host.分布式服务插件.pptx》，讲解WebAPI（应用）服务和Orleans（领域）服务的设计和开发方法
