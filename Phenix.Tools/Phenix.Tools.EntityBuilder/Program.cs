@@ -100,21 +100,11 @@ namespace Phenix.Tools.EntityBuilder
 
             StringBuilder codeBuilder = new StringBuilder("using System;");
             codeBuilder.Append(String.Format(@"
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.Common;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Phenix.Core;
 using Phenix.Core.Data;
-using Phenix.Core.Data.Common;
-using Phenix.Core.Data.Expressions;
 using Phenix.Core.Data.Model;
-using Phenix.Core.Data.Validity;
-using Phenix.Core.Log;
-using Phenix.Core.Security;
-using Phenix.Core.SyncCollections;
 
 /* 
    builder:    {0}

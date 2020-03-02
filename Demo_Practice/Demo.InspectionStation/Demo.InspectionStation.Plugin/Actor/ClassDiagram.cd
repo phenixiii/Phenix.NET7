@@ -6,18 +6,18 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAKIoAEAAAQAAAQAAAAEAQAIAAAAgBABAAAAgIAAAA=</HashCode>
+      <HashCode>AAAKIoAAAAAQAAAQAAAAEAQAIAAAAgBABAAAAgIAAAA=</HashCode>
       <FileName>Actor\OperationPointGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Demo.InspectionStation.Plugin.Actor.CenterGrain">
-    <Position X="2.25" Y="0.5" Width="3" />
+    <Position X="2.75" Y="0.5" Width="3" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAACIAAEAAAQAAAAAAAAEAQAAgAAAABABAAAAgAAAAA=</HashCode>
+      <HashCode>AAACIAAAAAAQAAAAAAAAEAQAAAAAIABABABAAgAACAA=</HashCode>
       <FileName>Actor\CenterGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -30,9 +30,9 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Demo.InspectionStation.Plugin.Actor.ICenterGrain">
-    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
       <FileName>Actor\ICenterGrain.cs</FileName>
     </TypeIdentifier>
   </Interface>

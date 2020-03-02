@@ -113,11 +113,17 @@ namespace Demo.InventoryControl.Plugin.Business.CustomerInventory
             return _items.Count > 0;
         }
 
-        public void Unload(DbTransaction transaction, long pickMarks, ref IList<string> locations)
+        public void Unloading(DbTransaction transaction, long pickMarks)
+        {
+            foreach (KeyValuePair<string, Alley> kvp in _alleyDictionary)
+                kvp.Value.Unloading(transaction, pickMarks);
+        }
+
+        public void Unloaded(long pickMarks, ref IList<string> locations)
         {
             foreach (Alley item in new List<Alley>(_alleyDictionary.Values))
             {
-                item.Unload(transaction, pickMarks, ref locations);
+                item.Unloaded(pickMarks, ref locations);
                 if (item.Empty)
                     _alleyDictionary.Remove(item.Name);
             }

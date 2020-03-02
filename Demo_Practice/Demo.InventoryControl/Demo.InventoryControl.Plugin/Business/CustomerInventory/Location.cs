@@ -120,13 +120,20 @@ namespace Demo.InventoryControl.Plugin.Business.CustomerInventory
             return _items.Count > 0;
         }
 
-        public bool Unload(DbTransaction transaction, long pickMarks)
+        public void Unloading(DbTransaction transaction, long pickMarks)
+        {
+            foreach (IcCustomerInventory item in _inventoryList)
+                if (item.PickMarks == pickMarks)
+                    item.Unload(transaction);
+        }
+
+        public bool Unloaded(long pickMarks)
         {
             bool result = false;
             for (int i = _inventoryList.Count - 1; i >= 0; i--)
             {
                 IcCustomerInventory item = _inventoryList[i];
-                if (item.Unload(transaction, pickMarks))
+                if (item.PickMarks == pickMarks)
                 {
                     _inventoryList.Remove(item);
                     result = true;

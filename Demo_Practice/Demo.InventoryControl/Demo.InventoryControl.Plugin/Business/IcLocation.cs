@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Model;
 
@@ -7,7 +8,7 @@ namespace Demo.InventoryControl.Plugin.Business
     /// <summary>
     /// 货架
     /// </summary>
-    public class IcLocation : RootEntityBase<IcLocation>
+    public class IcLocation : EntityBase<IcLocation>
     {
         /// <summary>
         /// for CreateInstance
@@ -24,8 +25,8 @@ namespace Demo.InventoryControl.Plugin.Business
         /// <param name="alley">巷道</param>
         /// <param name="ordinal">序号</param>
         public IcLocation(string area, string alley, string ordinal)
-            : base(Database.Sequence.Value)
         {
+            _id = Database.Default.Sequence.Value;
             _area = area;
             _alley = alley;
             _ordinal = ordinal;
@@ -85,10 +86,9 @@ namespace Demo.InventoryControl.Plugin.Business
         {
             get
             {
-                return _inventoryList ?? (_inventoryList = IcCustomerInventory.Select(p =>
+                return _inventoryList ?? (_inventoryList = IcCustomerInventory.FetchAll(Database.Default, p =>
                                p.LocationArea == Area && p.LocationAlley == Alley && p.LocationOrdinal == Ordinal &&
-                               p.CustomerInventoryStatus < CustomerInventoryStatus.NotStored,
-                           IcCustomerInventory.Ascending(p => p.StackOrdinal)));
+                               p.CustomerInventoryStatus < CustomerInventoryStatus.NotStored));
             }
         }
 
@@ -123,7 +123,7 @@ namespace Demo.InventoryControl.Plugin.Business
             int i = 0;
             int jointCount = 0;
             Dictionary<int, bool> stackOrdinal = new Dictionary<int, bool>(InventoryList.Count);
-            foreach (IcCustomerInventory item in InventoryList)
+            foreach (IcCustomerInventory item in InventoryList.OrderBy(p => p.StackOrdinal))
             {
                 i = i + 1;
                 stackOrdinal.Add(i, item.IsMatch(brand, cardNumber, transportNumber));

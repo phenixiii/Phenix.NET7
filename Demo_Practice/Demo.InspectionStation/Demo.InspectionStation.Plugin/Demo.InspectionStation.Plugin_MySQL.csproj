@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>7.3.23</Version>
-    <AssemblyVersion>7.3.23.0217</AssemblyVersion>
-    <FileVersion>7.3.23.0217</FileVersion>
+    <Version>7.3.24</Version>
+    <AssemblyVersion>7.3.24.0224</AssemblyVersion>
+    <FileVersion>7.3.24.0224</FileVersion>
     <Description>Phenix Framework 7 for .NET Core 3 + Orleans 3</Description>
     <Authors>ming</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.Orleans.Client" Version="3.0.2" />
+    <PackageReference Include="Microsoft.Orleans.Client" Version="3.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 

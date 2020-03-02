@@ -10,8 +10,8 @@ namespace Phenix.Actor
     /// <summary>
     /// 数据流Grain基类
     /// </summary>
-    public abstract class StreamGrainBase<TRootEntityBase, TEvent> : RootEntityGrainBase<TRootEntityBase>
-        where TRootEntityBase : RootEntityBase<TRootEntityBase>
+    public abstract class StreamGrainBase<TKernel, TEvent> : EntityGrainBase<TKernel>
+        where TKernel : EntityBase<TKernel>
     {
         #region 属性
 

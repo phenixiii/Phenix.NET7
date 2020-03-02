@@ -33,34 +33,8 @@ namespace Phenix.Business
 
         #region 属性
 
-        #region 结构关系
-
-        /// <summary>
-        /// 根业务对象
-        /// </summary>
-        [Newtonsoft.Json.JsonIgnore]
-        public IBusiness Root
-        {
-            get { return Master == null ? this : Master.Root; }
-        }
-
-        [NonSerialized]
-        private IBusiness _master;
-
-        /// <summary>
-        /// 主业务对象
-        /// </summary>
-        [Newtonsoft.Json.JsonIgnore]
-        public IBusiness Master
-        {
-            get { return _master; }
-            private set { _master = value; }
-        }
-
         [NonSerialized]
         private readonly SynchronizedDictionary<Type, List<IBusiness>> _details = new SynchronizedDictionary<Type, List<IBusiness>>();
-
-        #endregion
 
         /// <summary>
         /// 更新状态(含从业务对象)
@@ -87,58 +61,58 @@ namespace Phenix.Business
         #region Detail
 
         /// <summary>
-        /// 存在从业务对象
-        /// </summary>
-        public bool HaveDetail<TDetailBusiness>()
-            where TDetailBusiness : BusinessBase<TDetailBusiness>
-        {
-            return _details.ContainsKey(typeof(TDetailBusiness));
-        }
-
-        /// <summary>
-        /// 检索从业务对象
-        /// </summary>
-        public TDetailBusiness[] FindDetail<TDetailBusiness>()
-            where TDetailBusiness : BusinessBase<TDetailBusiness>
-        {
-            if (_details.TryGetValue(typeof(TDetailBusiness), out List<IBusiness> detail))
-            {
-                List<TDetailBusiness> result = new List<TDetailBusiness>(detail.Count);
-                foreach (IBusiness item in detail)
-                    result.Add((TDetailBusiness) item);
-                return result.ToArray();
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// 添加从业务对象
+        /// 设置从业务对象
         /// </summary>
         /// <param name="detail">从业务对象</param>
-        protected void AddDetail<TDetailBusiness>(params TDetailBusiness[] detail)
-            where TDetailBusiness : BusinessBase<TDetailBusiness>
+        protected void SetDetail<TDetail>(params TDetail[] detail)
+            where TDetail : BusinessBase<TDetail>
         {
-            AddDetail(true, detail);
+            SetDetail(true, detail);
         }
 
         /// <summary>
-        /// 添加从业务对象
+        /// 设置从业务对象
         /// </summary>
         /// <param name="ignoreRepeat">忽略重复的</param>
         /// <param name="detail">从业务对象</param>
-        protected void AddDetail<TDetailBusiness>(bool ignoreRepeat = true, params TDetailBusiness[] detail)
-            where TDetailBusiness : BusinessBase<TDetailBusiness>
+        protected void SetDetail<TDetail>(bool ignoreRepeat = true, params TDetail[] detail)
+            where TDetail : BusinessBase<TDetail>
         {
             if (detail == null || detail.Length == 0)
                 return;
-            List<IBusiness> value = _details.GetValue(typeof(TDetailBusiness), () => new List<IBusiness>());
-            foreach (TDetailBusiness item in detail)
+            List<IBusiness> value = _details.GetValue(typeof(TDetail), () => new List<IBusiness>());
+            foreach (TDetail item in detail)
                 if (ignoreRepeat || !value.Contains(item))
                 {
                     item.Master = this;
                     value.Add(item);
                 }
+        }
+
+        /// <summary>
+        /// 存在从业务对象
+        /// </summary>
+        public bool HaveDetail<TDetail>()
+            where TDetail : BusinessBase<TDetail>
+        {
+            return _details.ContainsKey(typeof(TDetail));
+        }
+
+        /// <summary>
+        /// 检索从业务对象
+        /// </summary>
+        public TDetail[] FindDetail<TDetail>()
+            where TDetail : BusinessBase<TDetail>
+        {
+            if (_details.TryGetValue(typeof(TDetail), out List<IBusiness> detail))
+            {
+                List<TDetail> result = new List<TDetail>(detail.Count);
+                foreach (IBusiness item in detail)
+                    result.Add((TDetail) item);
+                return result.ToArray();
+            }
+
+            return null;
         }
 
         #endregion
@@ -192,7 +166,7 @@ namespace Phenix.Business
         /// 级联保存
         /// </summary>
         /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
-        public virtual void SaveDepth(bool checkTimestamp = true)
+        public void SaveDepth(bool checkTimestamp = true)
         {
             Database.Execute((Action<DbTransaction, bool>) SaveDepth, checkTimestamp);
         }
@@ -202,7 +176,7 @@ namespace Phenix.Business
         /// </summary>
         /// <param name="connection">DbConnection(注意跨库风险未作校验)</param>
         /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
-        public virtual void SaveDepth(DbConnection connection, bool checkTimestamp = true)
+        public void SaveDepth(DbConnection connection, bool checkTimestamp = true)
         {
             DbConnectionHelper.Execute(connection, SaveDepth, checkTimestamp);
         }

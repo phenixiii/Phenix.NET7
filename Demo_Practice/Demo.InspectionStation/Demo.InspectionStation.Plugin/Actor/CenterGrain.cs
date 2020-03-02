@@ -5,7 +5,7 @@ using Demo.InspectionStation.Plugin.Business;
 using Orleans;
 using Orleans.Streams;
 using Phenix.Actor;
-using Phenix.Core.Data.Model;
+using Phenix.Core.Data;
 using Phenix.Core.Message;
 using Phenix.Core.Reflection;
 
@@ -43,20 +43,7 @@ namespace Demo.InspectionStation.Plugin.Actor
         /// </summary>
         protected override IsCenter Kernel
         {
-            get
-            {
-                if (_kernel == null)
-                {
-                    _kernel = RootEntityBase<IsCenter>.Fetch(p => p.Name == Name);
-                    if (_kernel == null)
-                    {
-                        _kernel = new IsCenter(Name);
-                        _kernel.InsertSelf();
-                    }
-                }
-
-                return _kernel;
-            }
+            get { return _kernel ?? (_kernel = IsCenter.FetchRoot(Database.Default, p => p.Name == Name, () => Task.FromResult(new IsCenter(Name)))); }
         }
 
         /// <summary>

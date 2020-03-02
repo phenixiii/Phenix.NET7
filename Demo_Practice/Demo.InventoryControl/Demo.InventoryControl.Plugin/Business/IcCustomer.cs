@@ -14,7 +14,7 @@ namespace Demo.InventoryControl.Plugin.Business
     /// <summary>
     /// 货主
     /// </summary>
-    public class IcCustomer : RootEntityBase<IcCustomer>
+    public class IcCustomer : EntityBase<IcCustomer>
     {
         /// <summary>
         /// for CreateInstance
@@ -29,8 +29,8 @@ namespace Demo.InventoryControl.Plugin.Business
         /// </summary>
         /// <param name="name">名称</param>
         public IcCustomer(string name)
-            : base(Database.Sequence.Value)
         {
+            _id = Database.Default.Sequence.Value;
             _name = name;
         }
 
@@ -61,7 +61,7 @@ namespace Demo.InventoryControl.Plugin.Business
                 if (_areaDictionary == null)
                 {
                     Dictionary<string, Area> result = new Dictionary<string, Area>(StringComparer.Ordinal);
-                    foreach (IcCustomerInventory item in IcCustomerInventory.Select(p =>
+                    foreach (IcCustomerInventory item in FetchDetails<IcCustomerInventory>(p =>
                             p.CustomerId == Id &&
                             p.CustomerInventoryStatus < CustomerInventoryStatus.NotStored,
                         IcCustomerInventory.Ascending(p => p.LocationArea),
@@ -139,7 +139,7 @@ namespace Demo.InventoryControl.Plugin.Business
             PackedBunches packedBunches = BunchKnapsackProblem.Pack(matchedAreas, minTotalWeight, maxTotalWeight - minTotalWeight);
             if (packedBunches != null)
             {
-                foreach (string location in Database.ExecuteGet(DoMarkPicked, pickMarks, packedBunches.AtomicValue))
+                foreach (string location in SelfSheet.Owner.Database.ExecuteGet(DoMarkPicked, pickMarks, packedBunches.AtomicValue))
                     await ClusterClient.Default.GetGrain<ILocationGrain>(location).Refresh();
                 return true;
             }
@@ -162,16 +162,23 @@ namespace Demo.InventoryControl.Plugin.Business
         /// <returns>受影响的货架号清单</returns>
         public async Task UnloadLocation(long pickMarks)
         {
-            foreach (string location in Database.ExecuteGet(DoUnloadLocation, pickMarks))
+            SelfSheet.Owner.Database.Execute(DoUnloading, pickMarks);
+            foreach (string location in DoUnloaded(pickMarks))
                 await ClusterClient.Default.GetGrain<ILocationGrain>(location).Refresh();
         }
 
-        private IList<string> DoUnloadLocation(DbTransaction transaction, long pickMarks)
+        private void DoUnloading(DbTransaction transaction, long pickMarks)
+        {
+            foreach (KeyValuePair<string, Area> kvp in AreaDictionary)
+                kvp.Value.Unloading(transaction, pickMarks);
+        }
+
+        private IList<string> DoUnloaded(long pickMarks)
         {
             IList<string> result = new List<string>();
             foreach (Area item in new List<Area>(AreaDictionary.Values))
             {
-                item.Unload(transaction, pickMarks, ref result);
+                item.Unloaded(pickMarks, ref result);
                 if (item.Empty)
                     AreaDictionary.Remove(item.Name);
             }

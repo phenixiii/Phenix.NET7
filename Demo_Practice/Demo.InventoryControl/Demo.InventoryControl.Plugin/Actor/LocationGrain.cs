@@ -2,14 +2,14 @@
 using Demo.InventoryControl.Plugin.Business;
 using Orleans;
 using Phenix.Actor;
-using Phenix.Core.Data.Model;
+using Phenix.Core.Data;
 
 namespace Demo.InventoryControl.Plugin.Actor
 {
     /// <summary>
     /// 货架Grain
     /// </summary>
-    public class LocationGrain : RootEntityGrainBase<IcLocation>, ILocationGrain
+    public class LocationGrain : EntityGrainBase<IcLocation>, ILocationGrain
     {
         #region 属性
 
@@ -58,20 +58,7 @@ namespace Demo.InventoryControl.Plugin.Actor
         /// </summary>
         protected override IcLocation Kernel
         {
-            get
-            {
-                if (_kernel == null)
-                {
-                    _kernel = RootEntityBase<IcLocation>.Fetch(p => p.Area == Area && p.Alley == Alley && p.Ordinal == Ordinal);
-                    if (_kernel == null)
-                    {
-                        _kernel = new IcLocation(Area, Alley, Ordinal);
-                        _kernel.InsertSelf();
-                    }
-                }
-
-                return _kernel;
-            }
+            get { return _kernel ?? (_kernel = IcLocation.FetchRoot(Database.Default, p => p.Area == Area && p.Alley == Alley && p.Ordinal == Ordinal, () => Task.FromResult(new IcLocation(Area, Alley, Ordinal)))); }
         }
 
         #endregion

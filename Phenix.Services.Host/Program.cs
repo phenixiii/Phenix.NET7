@@ -23,7 +23,7 @@ namespace Phenix.Services.Host
             /*
              * 注册用户资料工厂，以打通封装在Phenix.Services.Plugin的UserGrain中的用户身份验证等功能
              */
-            Phenix.Core.Security.Identity.RegisterFactory(new Phenix.Services.Plugin.UserFactory());
+            Phenix.Core.Security.Identity.RegisterFactory(new Phenix.Services.Plugin.UserProxyFactory());
 
             /*
              * 构建Host并启动服务

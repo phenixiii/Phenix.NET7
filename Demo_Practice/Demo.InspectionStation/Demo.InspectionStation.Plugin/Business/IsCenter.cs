@@ -9,7 +9,7 @@ namespace Demo.InspectionStation.Plugin.Business
     /// <summary>
     /// 中控
     /// </summary>
-    public class IsCenter : RootEntityBase<IsCenter>
+    public class IsCenter : EntityBase<IsCenter>
     {
         /// <summary>
         /// for CreateInstance
@@ -24,8 +24,8 @@ namespace Demo.InspectionStation.Plugin.Business
         /// </summary>
         /// <param name="name">名称</param>
         public IsCenter(string name)
-            : base(Database.Sequence.Value)
         {
+            _id = Database.Default.Sequence.Value;
             _name = name;
         }
 
@@ -66,7 +66,7 @@ namespace Demo.InspectionStation.Plugin.Business
             {
                 Dictionary<string, IsOperationPoint> result = new Dictionary<string, IsOperationPoint>(StringComparer.Ordinal);
                 if (_operationPoints != null && _operationPoints.Count > 0)
-                    foreach (IsOperationPoint item in IsOperationPoint.Select(p => _operationPoints.Contains(p.Name)))
+                    foreach (IsOperationPoint item in IsOperationPoint.FetchAll(Database.Default, p => _operationPoints.Contains(p.Name)))
                         result.Add(item.Name, item);
                 return result;
             }

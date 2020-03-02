@@ -243,15 +243,6 @@ namespace Phenix.Client.Security
             get { return _disabledTime; }
         }
 
-        /// <summary>
-        /// 是否企业组织架构管理员
-        /// </summary>
-        [Newtonsoft.Json.JsonIgnore]
-        public bool IsOrganizationalArchitectureManager
-        {
-            get { return _rootTeamsId == _teamsId; }
-        }
-
         [NonSerialized]
         private string _password;
 

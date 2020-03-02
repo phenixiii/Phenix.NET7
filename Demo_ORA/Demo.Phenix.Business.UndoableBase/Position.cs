@@ -11,7 +11,7 @@ namespace Demo
     /// 岗位资料
     /// </summary>
     [Serializable]
-    public sealed class Position : CachedRootBusinessBase<Position>
+    public sealed class Position : BusinessBase<Position>
     {
         private Position()
         {
@@ -20,8 +20,8 @@ namespace Demo
 
         [Newtonsoft.Json.JsonConstructor]
         private Position(long id, string name, IList<string> roles)
-            : base(id)
         {
+            _id = id;
             _name = name;
             _roles = roles != null ? new ReadOnlyCollection<string>(roles) : null;
         }
@@ -57,11 +57,11 @@ namespace Demo
         #region DeleteSelf
 
         /// <summary>
-        /// 为DeleteSelf()函数执行时追加检查是否存在关联关系的外键条件表达式
+        /// 追加检查是否存在关联关系的外键条件表达式
         /// </summary>
-        protected override CriteriaExpression AppendAssociationLambda(CriteriaExpression criteriaExpressionForDeleteSelf)
+        protected override CriteriaExpression AppendAssociationLambdaForDeleteSelf(CriteriaExpression criteriaExpression)
         {
-            return criteriaExpressionForDeleteSelf.NotExists<User>(p => p.PositionId);
+            return criteriaExpression.NotExists<User>(p => p.PositionId);
         }
 
         #endregion

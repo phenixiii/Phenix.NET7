@@ -2,14 +2,14 @@
 using Demo.InventoryControl.Plugin.Business;
 using Orleans;
 using Phenix.Actor;
-using Phenix.Core.Data.Model;
+using Phenix.Core.Data;
 
 namespace Demo.InventoryControl.Plugin.Actor
 {
     /// <summary>
     /// 货主Grain
     /// </summary>
-    public class CustomerGrain : RootEntityGrainBase<IcCustomer>, ICustomerGrain
+    public class CustomerGrain : EntityGrainBase<IcCustomer>, ICustomerGrain
     {
         #region 属性
 
@@ -38,20 +38,7 @@ namespace Demo.InventoryControl.Plugin.Actor
         /// </summary>
         protected override IcCustomer Kernel
         {
-            get
-            {
-                if (_kernel == null)
-                {
-                    _kernel = RootEntityBase<IcCustomer>.Fetch(p => p.Name == Name);
-                    if (_kernel == null)
-                    {
-                        _kernel = new IcCustomer(Name);
-                        _kernel.InsertSelf();
-                    }
-                }
-
-                return _kernel;
-            }
+            get { return _kernel ?? (_kernel = IcCustomer.FetchRoot(Database.Default, p => p.Name == Name, () => Task.FromResult(new IcCustomer(Name)))); }
         }
 
         #endregion

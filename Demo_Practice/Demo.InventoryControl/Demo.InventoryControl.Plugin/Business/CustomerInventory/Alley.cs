@@ -116,10 +116,16 @@ namespace Demo.InventoryControl.Plugin.Business.CustomerInventory
             return _items.Count > 0;
         }
 
-        public void Unload(DbTransaction transaction, long pickMarks, ref IList<string> locations)
+        public void Unloading(DbTransaction transaction, long pickMarks)
+        {
+            foreach (KeyValuePair<string, Location> kvp in _locationDictionary)
+                kvp.Value.Unloading(transaction, pickMarks);
+        }
+
+        public void Unloaded(long pickMarks, ref IList<string> locations)
         {
             foreach (Location item in new List<Location>(_locationDictionary.Values))
-                if (item.Unload(transaction, pickMarks))
+                if (item.Unloaded(pickMarks))
                 {
                     if (item.Empty)
                         _locationDictionary.Remove(item.Ordinal);

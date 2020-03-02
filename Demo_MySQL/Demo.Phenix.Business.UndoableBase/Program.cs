@@ -54,7 +54,7 @@ namespace Demo
             Console.WriteLine();
 
             Console.WriteLine("开始演示");
-            Position position = Position.New();
+            Position position = Position.New(Database.Default);
             position.Name = "企业组织架构管理员";
             position.Roles = new string[]
             {
@@ -75,7 +75,7 @@ namespace Demo
 
             long id = position.Id;
 
-            position = Position.Fetch(id); //Select(p => p.Id == id).FirstOrDefault();
+            position = Position.FetchRoot(Database.Default, p => p.Id == id); 
             Console.WriteLine("获取 Position 对象：{0}", Utilities.JsonSerialize(position));
             Console.WriteLine("状态：IsNew = {0}，IsSelfDirty = {1}，IsSelfDeleted = {2}，IsFetched = {3}，{4}",
                 position.IsNew, position.IsSelfDirty, position.IsSelfDeleted, position.IsFetched,
@@ -123,7 +123,7 @@ namespace Demo
             Console.WriteLine("提交后：IsNew = {0}，IsSelfDirty = {1}，IsSelfDeleted = {2}，IsFetched = {3}，{4}",
                 position.IsNew, position.IsSelfDirty, position.IsSelfDeleted, position.IsFetched,
                 !position.IsNew && !position.IsSelfDirty && position.IsSelfDeleted && !position.IsFetched ? "ok" : "error");
-            Console.WriteLine("检索数据库，已被删除：{0}", Position.Fetch(id) == null ? "ok" : "error");
+            Console.WriteLine("检索数据库，已被删除：{0}", Position.FetchRoot(Database.Default, p => p.Id == id) == null ? "ok" : "error");
             Console.Write("请按任意键继续");
             Console.ReadKey();
             Console.WriteLine();

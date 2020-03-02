@@ -7,7 +7,7 @@ namespace Demo.InspectionStation.Plugin.Business
     /// <summary>
     /// 作业点
     /// </summary>
-    public class IsOperationPoint : RootEntityBase<IsOperationPoint>
+    public class IsOperationPoint : EntityBase<IsOperationPoint>
     {
         /// <summary>
         /// for CreateInstance
@@ -22,8 +22,8 @@ namespace Demo.InspectionStation.Plugin.Business
         /// </summary>
         /// <param name="name">名称</param>
         public IsOperationPoint(string name)
-            : base(Database.Sequence.Value)
         {
+            _id = Database.Default.Sequence.Value;
             _name = name;
         }
 

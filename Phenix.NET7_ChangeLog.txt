@@ -6,7 +6,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 
 20190522
-1，发布轻量级的持久化引擎，支持Oracle、MySQL，封装ADO.NET，可同时操作多个数据库，提供分库分表策略的持久化方法
+1，发布轻量级的持久化引擎，支持Oracle、MySQL，封装ADO.NET，可同时操作多个（主库+分库）数据库
 2，提供数据库的数据字典的查看方法，示例见Demo.Phenix.Core.Data.Schema
 3，提供存放日志到本地或数据库的通用方法，示例见Demo.Phenix.Core.Log.EventLog
 4，提供系统唯一的序列号，支持多线程、多进程、分布式应用，示例见Demo.Phenix.Core.Data.Sequence
@@ -65,7 +65,6 @@ Copyright © 2007, 2020 Phenixヾ Studio
 20190911
 1，除了主键（后缀'_ID'）、制单人（后缀'_ORIGINATOR'）、制单时间（后缀'_ORIGINATE_TIME'）、制单团体（后缀'_ORIGINATE_TEAMS'）等水印字段外，约定系统自定义的水印字段用后缀'_WM'进行标识，以便在新增记录以后的历次修改中，这些字段都不会再被改动（即使编辑过实体对象也不会被持久化）
 2，仅允许用户增删改查操作自己所在团队的记录，当前用户的所属团队Identity.CurrentIdentity.User.Name/Id会被作为查询的过滤条件（即单库切片），前提是聚合根对应的表结构务必含制单团体（后缀'_ORIGINATE_TEAMS'）字段）
-3，如果应用系统还有分库（顺序为1-N），当前用户在增删改查操作时会被自动路由到其中一个库上（index为0主库1-N分库），路由算法是Identity.CurrentIdentity.User.RootTeams.Id的Hash值取N的余数
 
 
 20190919
@@ -112,10 +111,10 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 
 20191205
-1，提供Phenix.Actor工程源码，封装Orleans3的客户端和服务集群配置方法和入口，以及一套轻量级的Grain开发框架，支持并行和分布式大规模服务架构设计
+1，提供Phenix.Actor工程源码，封装Orleans3的客户端和服务集群配置方法和入口，以及一套轻量级的Actor开发框架，支持并行和分布式大规模服务架构设计
 2，规定将Orleans服务的Grain及其接口代码编写在各自的工程里，程序集的命名以"*.Plugin.dll"作为后缀，默认会被Phenix.Services.Host自动加载并装配到ApplicationParts中
-3，提供Phenix.Services.Plugin工程源码，包含用户身份验证和管理的UserGrain类、IUserGrain接口，及其代理UserGrain服务的User类，通过UserFactory类注册到Phenix.Core的权限控制模块，注册方法（见Phenix.Services.Host）：
-         Phenix.Core.Security.Identity.RegisterFactory(new Phenix.Services.Plugin.UserFactory());
+3，提供Phenix.Services.Plugin工程源码，包含用户身份验证和管理的UserGrain类、IUserGrain接口，及其代理UserGrain服务的UserProxy类，通过UserProxyFactory类注册到Phenix.Core的权限控制模块，注册方法（见Phenix.Services.Host）：
+         Phenix.Core.Security.Identity.RegisterFactory(new Phenix.Services.Plugin.UserProxyFactory());
 
 
 20191216
@@ -167,3 +166,15 @@ Copyright © 2007, 2020 Phenixヾ Studio
 1，修订《Phenix.Services.Host.部署方法.doc》，补充'开发环境的搭建'等章节
 2，补充和修订Demo.InspectionStation和Demo.InventoryControl的设计文档
 3，提供《Phenix.Services.Host.分布式服务插件.pptx》，讲解WebAPI（应用）服务和Orleans（领域）服务的设计和开发方法
+
+
+20200223
+1，重构Phenix.Core持久层框架，强调聚合和聚合根的领域对象模型，在采取分库策略的数据库部署场景下，一个聚合里的所有对象都随聚合根对象一起锁定在某个分库上进行持久化，持久化的路由算法是取自聚合根对象里一个映射'_RU'后缀字段的属性值经HASH取余得到具体的分库ID
+2，重构Phenix.Core权限控制模块，借助Phenix.Services.Plugin工程实现分布式部署
+3，重构Phenix.Services.Plugin工程，精简UserGrain仅限于身份验证和口令管理功能
+4，重构Phenix.Actor工程，精简EntityGrainProxyBase仅限于实体Grain的代理功能
+
+
+
+
+

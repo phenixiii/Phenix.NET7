@@ -6,9 +6,9 @@
     <AssemblyName>Phenix.Tools.EntityBuilder</AssemblyName>
     <DefineConstants>TRACE;MySQL</DefineConstants>
     <RootNamespace>Phenix.Tools.EntityBuilder</RootNamespace>
-    <Version>7.3.23</Version>
-    <AssemblyVersion>7.3.23.0217</AssemblyVersion>
-    <FileVersion>7.3.23.0217</FileVersion>
+    <Version>7.3.24</Version>
+    <AssemblyVersion>7.3.24.0224</AssemblyVersion>
+    <FileVersion>7.3.24.0224</FileVersion>
     <Authors>ming</Authors>
     <Description>Phenix Framework 7 for .NET Core 3 + Orleans 3</Description>
     <Copyright>Copyright © 2007, 2020 Phenixヾ Studio</Copyright>

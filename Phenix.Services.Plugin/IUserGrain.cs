@@ -1,29 +1,25 @@
 ﻿using System.Threading.Tasks;
 using Orleans;
 using Phenix.Actor;
+using Phenix.Core.Security;
 
 namespace Phenix.Services.Plugin
 {
     /// <summary>
     /// 用户资料Grain接口
     /// </summary>
-    public interface IUserGrain : IRootEntityGrain, IGrainWithIntegerKey
+    public interface IUserGrain : IEntityGrain<User>, IGrainWithStringKey
     {
         /// <summary>
-        /// 加密
-        /// Key/IV=登录口令/动态口令
+        /// 登记/注册
         /// </summary>
-        /// <param name="sourceText">原文</param>
-        /// <returns>密文(Base64字符串)</returns>
-        Task<string> Encrypt(string sourceText);
-
-        /// <summary>
-        /// 解密
-        ///  Key/IV=登录口令/动态口令
-        /// </summary>
-        /// <param name="cipherText">密文(Base64字符串)</param>
-        /// <returns>原文</returns>
-        Task<string> Decrypt(string cipherText);
+        /// <param name="name">登录名</param>
+        /// <param name="phone">手机(注册用可为空)</param>
+        /// <param name="eMail">邮箱(注册用可为空)</param>
+        /// <param name="regAlias">注册昵称(注册用可为空)</param>
+        /// <param name="requestAddress">服务请求方IP地址</param>
+        /// <returns>返回信息</returns>
+        Task<string> CheckIn(string name, string phone, string eMail, string regAlias, string requestAddress);
 
         /// <summary>
         /// 核对登录有效性
@@ -46,19 +42,38 @@ namespace Phenix.Services.Plugin
         Task<bool> IsValid(string timestamp, string signature, string requestAddress, bool throwIfNotConform);
 
         /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="tag">捎带数据(默认是客户端当前时间)</param>
+        Task Logon(string tag);
+
+        /// <summary>
+        /// 确定是否属于指定的角色
+        /// </summary>
+        /// <param name="role">角色</param>
+        Task<bool> IsInRole(string role);
+
+        /// <summary>
+        /// 加密
+        /// Key/IV=登录口令/动态口令
+        /// </summary>
+        /// <param name="sourceText">原文</param>
+        /// <returns>密文(Base64字符串)</returns>
+        Task<string> Encrypt(string sourceText);
+
+        /// <summary>
+        /// 解密
+        ///  Key/IV=登录口令/动态口令
+        /// </summary>
+        /// <param name="cipherText">密文(Base64字符串)</param>
+        Task<string> Decrypt(string cipherText);
+
+        /// <summary>
         /// 修改登录口令
         /// </summary>
         /// <param name="newPassword">新登录口令</param>
         /// <param name="throwIfNotConform">如果为 true, 账号无效或口令不规范会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserPasswordComplexityException异常而不是返回false</param>
         /// <returns>是否成功</returns>
         Task<bool> ChangePassword(string newPassword, bool throwIfNotConform);
-
-        /// <summary>
-        /// 申请动态口令
-        /// </summary>
-        /// <param name="requestAddress">服务请求方IP地址</param>
-        /// <param name="throwIfNotConform">如果为 true, 核对有效性不符会抛出UserNotFoundException/UserLockedException异常而不是返回false</param>
-        /// <returns>动态口令(6位数字一般作为验证码用短信发送给到用户)</returns>
-        Task<string> ApplyDynamicPassword(string requestAddress, bool throwIfNotConform);
     }
 }

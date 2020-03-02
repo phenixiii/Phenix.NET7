@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Phenix.Client.Security;
 using Phenix.Core;
-using Phenix.Core.Data.Model;
+using Phenix.Core.Data.Schema;
 using Phenix.Core.IO;
 using Phenix.Core.Net;
 using Phenix.Core.Reflection;

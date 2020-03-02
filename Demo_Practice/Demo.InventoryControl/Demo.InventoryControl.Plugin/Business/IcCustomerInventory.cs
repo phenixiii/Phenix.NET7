@@ -22,7 +22,7 @@ namespace Demo.InventoryControl.Plugin.Business
         public IcCustomerInventory(long customerId, string brand, string cardNumber, string transportNumber, int weight,
             string locationArea, string locationAlley, string locationOrdinal, long stackOrdinal)
         {
-            _id = Database.Sequence.Value;
+            _id = Database.Default.Sequence.Value;
 
             _customerId = customerId;
             _brand = brand;
@@ -38,16 +38,6 @@ namespace Demo.InventoryControl.Plugin.Business
         #region 属性
 
         #region 基本属性
-
-        private long _id;
-
-        /// <summary>
-        /// ID
-        /// </summary>
-        public long Id
-        {
-            get { return _id; }
-        }
 
         private long _customerId;
 
@@ -231,17 +221,10 @@ namespace Demo.InventoryControl.Plugin.Business
         /// 卸下货架
         /// </summary>
         /// <param name="transaction">DbTransaction</param>
-        /// <param name="pickMarks">挑中标记号码</param>
-        public bool Unload(DbTransaction transaction, long pickMarks)
+        public void Unload(DbTransaction transaction)
         {
-            if (PickMarks == pickMarks)
-            {
-                UpdateSelf(transaction,
-                    SetProperty(p => p.CustomerInventoryStatus, CustomerInventoryStatus.NotStored));
-                return true;
-            }
-
-            return false;
+            UpdateSelf(transaction,
+                SetProperty(p => p.CustomerInventoryStatus, CustomerInventoryStatus.NotStored));
         }
 
         private static void Initialize(Database database)
