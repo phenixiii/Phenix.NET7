@@ -57,9 +57,9 @@ namespace Demo
         #region DeleteSelf
 
         /// <summary>
-        /// 追加检查是否存在关联关系的外键条件表达式
+        /// 为删除自己追加条件表达式
         /// </summary>
-        protected override CriteriaExpression AppendAssociationLambdaForDeleteSelf(CriteriaExpression criteriaExpression)
+        protected override CriteriaExpression AppendCriteriaForDeleteSelf(CriteriaExpression criteriaExpression)
         {
             return criteriaExpression.NotExists<User>(p => p.PositionId);
         }

@@ -19,22 +19,6 @@ namespace Demo.InventoryControl.Plugin.Business
             //禁止添加代码
         }
 
-        public IcCustomerInventory(long customerId, string brand, string cardNumber, string transportNumber, int weight,
-            string locationArea, string locationAlley, string locationOrdinal, long stackOrdinal)
-        {
-            _id = Database.Default.Sequence.Value;
-
-            _customerId = customerId;
-            _brand = brand;
-            _cardNumber = cardNumber;
-            _transportNumber = transportNumber;
-            _weight = weight;
-            _locationArea = locationArea;
-            _locationAlley = locationAlley;
-            _locationOrdinal = locationOrdinal;
-            _stackOrdinal = stackOrdinal;
-        }
-
         #region 属性
 
         #region 基本属性

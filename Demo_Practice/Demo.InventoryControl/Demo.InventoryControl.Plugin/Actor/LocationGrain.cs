@@ -3,6 +3,7 @@ using Demo.InventoryControl.Plugin.Business;
 using Orleans;
 using Phenix.Actor;
 using Phenix.Core.Data;
+using Phenix.Core.Data.Schema;
 
 namespace Demo.InventoryControl.Plugin.Actor
 {
@@ -58,7 +59,16 @@ namespace Demo.InventoryControl.Plugin.Actor
         /// </summary>
         protected override IcLocation Kernel
         {
-            get { return _kernel ?? (_kernel = IcLocation.FetchRoot(Database.Default, p => p.Area == Area && p.Alley == Alley && p.Ordinal == Ordinal, () => Task.FromResult(new IcLocation(Area, Alley, Ordinal)))); }
+            get
+            {
+                return _kernel ?? (_kernel = IcLocation.FetchRoot(Database.Default,
+                           p => p.Area == Area && p.Alley == Alley && p.Ordinal == Ordinal,
+                           () => Task.FromResult(IcLocation.New(Database.Default,
+                               NameValue.Set<IcLocation>(p => p.Area, Area),
+                               NameValue.Set<IcLocation>(p => p.Alley, Alley),
+                               NameValue.Set<IcLocation>(p => p.Ordinal, Ordinal)))));
+            }
+            set { _kernel = value; }
         }
 
         #endregion

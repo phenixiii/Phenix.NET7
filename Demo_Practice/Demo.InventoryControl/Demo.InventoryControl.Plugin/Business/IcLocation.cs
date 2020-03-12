@@ -18,20 +18,6 @@ namespace Demo.InventoryControl.Plugin.Business
             //禁止添加代码
         }
 
-        /// <summary>
-        /// 新增
-        /// </summary>
-        /// <param name="area">库区</param>
-        /// <param name="alley">巷道</param>
-        /// <param name="ordinal">序号</param>
-        public IcLocation(string area, string alley, string ordinal)
-        {
-            _id = Database.Default.Sequence.Value;
-            _area = area;
-            _alley = alley;
-            _ordinal = ordinal;
-        }
-
         #region 属性
 
         #region 基本属性

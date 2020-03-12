@@ -3,6 +3,7 @@ using Demo.InventoryControl.Plugin.Business;
 using Orleans;
 using Phenix.Actor;
 using Phenix.Core.Data;
+using Phenix.Core.Data.Schema;
 
 namespace Demo.InventoryControl.Plugin.Actor
 {
@@ -38,7 +39,14 @@ namespace Demo.InventoryControl.Plugin.Actor
         /// </summary>
         protected override IcCustomer Kernel
         {
-            get { return _kernel ?? (_kernel = IcCustomer.FetchRoot(Database.Default, p => p.Name == Name, () => Task.FromResult(new IcCustomer(Name)))); }
+            get
+            {
+                return _kernel ?? (_kernel = IcCustomer.FetchRoot(Database.Default,
+                           p => p.Name == Name,
+                           () => Task.FromResult(IcCustomer.New(Database.Default,
+                               NameValue.Set<IcCustomer>(p => p.Name, Name)))));
+            }
+            set { _kernel = value; }
         }
 
         #endregion

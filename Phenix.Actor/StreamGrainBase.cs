@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans.Streams;
 using Phenix.Core.Data.Model;
-using Phenix.Core.Reflection;
 
 namespace Phenix.Actor
 {
@@ -27,14 +26,14 @@ namespace Phenix.Actor
         /// </summary>
         protected abstract string StreamNamespace { get; }
 
-        private IAsyncStream<string> _streamWorker;
+        private IAsyncStream<TEvent> _streamWorker;
 
         /// <summary>
         /// (自己作为Observable的)Stream
         /// </summary>
-        protected IAsyncStream<string> StreamWorker
+        protected IAsyncStream<TEvent> StreamWorker
         {
-            get { return _streamWorker ?? (_streamWorker = StreamProvider.Default.GetStream<string>(StreamId, StreamNamespace)); }
+            get { return _streamWorker ?? (_streamWorker = StreamProvider.Default.GetStream<TEvent>(StreamId, StreamNamespace)); }
         }
 
         #endregion
@@ -49,21 +48,21 @@ namespace Phenix.Actor
             get { return null; }
         }
 
-        private Dictionary<string, IAsyncStream<string>> _listenStreamWorkers;
+        private Dictionary<string, IAsyncStream<TEvent>> _listenStreamWorkers;
 
         /// <summary>
         /// (自己作为Observer)侦听的一组Stream
         /// </summary>
-        protected IDictionary<string, IAsyncStream<string>> ListenStreamWorkers
+        protected IDictionary<string, IAsyncStream<TEvent>> ListenStreamWorkers
         {
             get
             {
                 if (_listenStreamWorkers == null)
                 {
-                    Dictionary<string, IAsyncStream<string>> result = new Dictionary<string, IAsyncStream<string>>(StringComparer.Ordinal);
+                    Dictionary<string, IAsyncStream<TEvent>> result = new Dictionary<string, IAsyncStream<TEvent>>(StringComparer.Ordinal);
                     if (ListenStreamNamespaces != null)
                         foreach (string streamNamespace in ListenStreamNamespaces)
-                            result[streamNamespace] = StreamProvider.Default.GetStream<string>(StreamId, streamNamespace);
+                            result[streamNamespace] = StreamProvider.Default.GetStream<TEvent>(StreamId, streamNamespace);
                     _listenStreamWorkers = result;
                 }
 
@@ -82,19 +81,33 @@ namespace Phenix.Actor
         /// </summary>
         public override async Task OnActivateAsync()
         {
-            foreach (KeyValuePair<string, IAsyncStream<string>> kvp in ListenStreamWorkers)
+            foreach (KeyValuePair<string, IAsyncStream<TEvent>> kvp in ListenStreamWorkers)
                 await SubscribeAsync(kvp.Value);
             await base.OnActivateAsync();
         }
 
-        private async Task SubscribeAsync(IAsyncStream<string> worker, StreamSequenceToken token = null)
+        #region Observable
+
+        /// <summary>
+        /// 发送消息
+        /// </summary>
+        protected Task Send(TEvent content, StreamSequenceToken token = null)
         {
-            IList<StreamSubscriptionHandle<string>> streamHandles = await worker.GetAllSubscriptionHandles();
+            return StreamWorker.OnNextAsync(content, token);
+        }
+
+        #endregion
+
+        #region Observer
+
+        private async Task SubscribeAsync(IAsyncStream<TEvent> worker, StreamSequenceToken token = null)
+        {
+            IList<StreamSubscriptionHandle<TEvent>> streamHandles = await worker.GetAllSubscriptionHandles();
             if (streamHandles != null && streamHandles.Count > 0)
-                foreach (StreamSubscriptionHandle<string> item in streamHandles)
-                    await item.ResumeAsync((content, sequenceToken) => OnReceive(Utilities.JsonDeserialize<TEvent>(content), sequenceToken), OnSubscribeError, OnSubscribeCompleted, token);
+                foreach (StreamSubscriptionHandle<TEvent> item in streamHandles)
+                    await item.ResumeAsync(OnReceive, OnSubscribeError, OnSubscribeCompleted, token);
             else
-                await worker.SubscribeAsync((content, sequenceToken) => OnReceive(Utilities.JsonDeserialize<TEvent>(content), sequenceToken), OnSubscribeError, OnSubscribeCompleted, token);
+                await worker.SubscribeAsync(OnReceive, OnSubscribeError, OnSubscribeCompleted, token);
         }
 
         /// <summary>
@@ -104,16 +117,16 @@ namespace Phenix.Actor
         /// <param name="token">StreamSequenceToken</param>
         protected async Task SubscribeAsync(string streamNamespaces, StreamSequenceToken token = null)
         {
-            IAsyncStream<string> worker = StreamProvider.Default.GetStream<string>(StreamId, streamNamespaces);
+            IAsyncStream<TEvent> worker = StreamProvider.Default.GetStream<TEvent>(StreamId, streamNamespaces);
             await SubscribeAsync(worker, token);
             ListenStreamWorkers[streamNamespaces] = worker;
         }
 
-        private async Task UnsubscribeAsync(IAsyncStream<string> worker)
+        private async Task UnsubscribeAsync(IAsyncStream<TEvent> worker)
         {
-            IList<StreamSubscriptionHandle<string>> streamHandles = await worker.GetAllSubscriptionHandles();
+            IList<StreamSubscriptionHandle<TEvent>> streamHandles = await worker.GetAllSubscriptionHandles();
             if (streamHandles != null && streamHandles.Count > 0)
-                foreach (StreamSubscriptionHandle<string> item in streamHandles)
+                foreach (StreamSubscriptionHandle<TEvent> item in streamHandles)
                     await item.UnsubscribeAsync();
         }
 
@@ -123,7 +136,7 @@ namespace Phenix.Actor
         /// <param name="streamNamespaces">(自己作为Observer)侦听的StreamNamespace</param>
         protected async Task UnsubscribeAsync(string streamNamespaces)
         {
-            if (ListenStreamWorkers.TryGetValue(streamNamespaces, out IAsyncStream<string> worker))
+            if (ListenStreamWorkers.TryGetValue(streamNamespaces, out IAsyncStream<TEvent> worker))
                 await UnsubscribeAsync(worker);
         }
 
@@ -132,7 +145,7 @@ namespace Phenix.Actor
         /// </summary>
         protected async Task UnsubscribeAllAsync()
         {
-            foreach (KeyValuePair<string, IAsyncStream<string>> kvp in ListenStreamWorkers)
+            foreach (KeyValuePair<string, IAsyncStream<TEvent>> kvp in ListenStreamWorkers)
                 await UnsubscribeAsync(kvp.Value);
         }
 
@@ -159,13 +172,7 @@ namespace Phenix.Actor
             return Task.CompletedTask;
         }
 
-        /// <summary>
-        /// 发送消息
-        /// </summary>
-        protected Task Send(TEvent content, StreamSequenceToken token = null)
-        {
-            return StreamWorker.OnNextAsync(Utilities.JsonSerialize(content), token);
-        }
+        #endregion
 
         #endregion
     }

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
+using Phenix.Core.Data.Schema;
 using Phenix.Core.SyncCollections;
 
 namespace Phenix.Business

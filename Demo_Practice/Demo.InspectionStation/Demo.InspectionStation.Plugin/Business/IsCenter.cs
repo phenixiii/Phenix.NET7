@@ -19,16 +19,6 @@ namespace Demo.InspectionStation.Plugin.Business
             //禁止添加代码
         }
 
-        /// <summary>
-        /// 新增
-        /// </summary>
-        /// <param name="name">名称</param>
-        public IsCenter(string name)
-        {
-            _id = Database.Default.Sequence.Value;
-            _name = name;
-        }
-
         #region 属性
 
         #region 基本属性

@@ -27,7 +27,7 @@ namespace Demo
             Console.WriteLine("   “_ORIGINATOR”且是字符串/长整型15位以上精度：新增记录时自动填充Identity.CurrentIdentity.User.Name/Id；");
             Console.WriteLine("   “_ORIGINATE_TIME”且是DateTime：新增记录时自动填充当前时间；");
             Console.WriteLine("   “_ORIGINATE_TEAMS”且是字符串/长整型15位以上精度：新增记录时自动填充Identity.CurrentIdentity.User.RootTeams.Name/Id；");
-            Console.WriteLine("   “_UPDATER”：且是字符串/长整型15位以上精度：更新记录时自动填充Identity.CurrentIdentity.User.Name/Id；");
+            Console.WriteLine("   “_UPDATER”且是字符串/长整型15位以上精度：更新记录时自动填充Identity.CurrentIdentity.User.Name/Id；");
             Console.WriteLine("   “_UPDATE_TIME”且是DateTime：更新记录时自动填充当前时间；");
             Console.WriteLine("   “_TIMESTAMP”且是长整型15位以上精度：时间戳，更新记录时自动填充Sequence.Default.Value；时间戳可用于乐观锁模式下的数据更新，保证在分布式架构下新数据不会被脏数据覆盖（会抛出Phenix.Core.Data.Validity.OutdatedDataException）；");
             Console.WriteLine("   “_RU”：分库路由字段，仅在新增记录时被提交，提交后不允许修改，分库增删改查时其值被HASH路由到指定的数据库；");

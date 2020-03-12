@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Demo.InventoryControl.Plugin.Actor;
 using Phenix.Actor;
 using Phenix.Algorithm.CombinatorialOptimization;
+using Phenix.Core.Data;
+using Phenix.Core.Data.Schema;
 
 namespace Demo.InventoryControl.Plugin.Business.CustomerInventory
 {
@@ -91,8 +93,16 @@ namespace Demo.InventoryControl.Plugin.Business.CustomerInventory
         {
             string location = AppConfig.FormatLocation(locationArea, locationAlley, locationOrdinal);
             ILocationGrain locationGrain = ClusterClient.Default.GetGrain<ILocationGrain>(location);
-            IcCustomerInventory inventory = new IcCustomerInventory(Owner.Owner.Owner.Id, brand, cardNumber, transportNumber, weight,
-                locationArea, locationAlley, locationOrdinal, await locationGrain.GetStackOrdinal());
+            IcCustomerInventory inventory = IcCustomerInventory.New(Database.Default,
+                NameValue.Set<IcCustomerInventory>(p => p.CustomerId, Owner.Owner.Owner.Id),
+                NameValue.Set<IcCustomerInventory>(p => p.Brand, brand),
+                NameValue.Set<IcCustomerInventory>(p => p.CardNumber, cardNumber),
+                NameValue.Set<IcCustomerInventory>(p => p.TransportNumber, transportNumber),
+                NameValue.Set<IcCustomerInventory>(p => p.Weight, weight),
+                NameValue.Set<IcCustomerInventory>(p => p.LocationArea, locationArea),
+                NameValue.Set<IcCustomerInventory>(p => p.LocationAlley, locationAlley),
+                NameValue.Set<IcCustomerInventory>(p => p.LocationOrdinal, locationOrdinal),
+                NameValue.Set<IcCustomerInventory>(p => p.StackOrdinal, await locationGrain.GetStackOrdinal()));
             inventory.InsertSelf();
             await locationGrain.Refresh();
             Add(inventory);

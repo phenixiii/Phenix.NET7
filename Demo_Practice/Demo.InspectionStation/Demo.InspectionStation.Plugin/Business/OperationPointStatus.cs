@@ -1,8 +1,11 @@
-﻿namespace Demo.InspectionStation.Plugin.Business
+﻿using System;
+
+namespace Demo.InspectionStation.Plugin.Business
 {
     /// <summary>
     /// 作业点状态
     /// </summary>
+    [Serializable]
     public enum OperationPointStatus
     {
         /// <summary>

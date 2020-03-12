@@ -6,9 +6,9 @@
     <AssemblyName>Phenix.Tools.BusinessBuilder</AssemblyName>
     <DefineConstants>TRACE;MySQL</DefineConstants>
     <RootNamespace>Phenix.Tools.BusinessBuilder</RootNamespace>
-    <Version>7.3.24</Version>
-    <AssemblyVersion>7.3.24.0224</AssemblyVersion>
-    <FileVersion>7.3.24.0224</FileVersion>
+    <Version>7.3.25</Version>
+    <AssemblyVersion>7.3.25.0303</AssemblyVersion>
+    <FileVersion>7.3.25.0303</FileVersion>
     <Authors>ming</Authors>
     <Description>Phenix Framework 7 for .NET Core 3 + Orleans 3</Description>
     <Copyright>Copyright © 2007, 2020 Phenixヾ Studio</Copyright>

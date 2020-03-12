@@ -7,6 +7,7 @@ namespace Demo.InspectionStation.Plugin.Business
     /// <summary>
     /// 作业点
     /// </summary>
+    [Serializable]
     public class IsOperationPoint : EntityBase<IsOperationPoint>
     {
         /// <summary>
@@ -15,16 +16,6 @@ namespace Demo.InspectionStation.Plugin.Business
         private IsOperationPoint()
         {
             //禁止添加代码
-        }
-
-        /// <summary>
-        /// 新增
-        /// </summary>
-        /// <param name="name">名称</param>
-        public IsOperationPoint(string name)
-        {
-            _id = Database.Default.Sequence.Value;
-            _name = name;
         }
 
         /// <summary>

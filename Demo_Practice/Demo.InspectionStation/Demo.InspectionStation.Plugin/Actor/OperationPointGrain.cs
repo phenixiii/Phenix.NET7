@@ -5,6 +5,7 @@ using Orleans;
 using Orleans.Streams;
 using Phenix.Actor;
 using Phenix.Core.Data;
+using Phenix.Core.Data.Schema;
 
 namespace Demo.InspectionStation.Plugin.Actor
 {
@@ -40,7 +41,14 @@ namespace Demo.InspectionStation.Plugin.Actor
         /// </summary>
         protected override IsOperationPoint Kernel
         {
-            get { return _kernel ?? (_kernel = IsOperationPoint.FetchRoot(Database.Default, p => p.Name == Name, () => Task.FromResult(new IsOperationPoint(Name)))); }
+            get
+            {
+                return _kernel ?? (_kernel = IsOperationPoint.FetchRoot(Database.Default,
+                           p => p.Name == Name,
+                           () => Task.FromResult(IsOperationPoint.New(Database.Default,
+                               NameValue.Set<IsOperationPoint>(p => p.Name, Name)))));
+            }
+            set { _kernel = value; }
         }
 
         /// <summary>

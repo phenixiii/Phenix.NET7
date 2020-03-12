@@ -6,6 +6,7 @@ using Orleans;
 using Orleans.Streams;
 using Phenix.Actor;
 using Phenix.Core.Data;
+using Phenix.Core.Data.Schema;
 using Phenix.Core.Message;
 using Phenix.Core.Reflection;
 
@@ -43,7 +44,14 @@ namespace Demo.InspectionStation.Plugin.Actor
         /// </summary>
         protected override IsCenter Kernel
         {
-            get { return _kernel ?? (_kernel = IsCenter.FetchRoot(Database.Default, p => p.Name == Name, () => Task.FromResult(new IsCenter(Name)))); }
+            get
+            {
+                return _kernel ?? (_kernel = IsCenter.FetchRoot(Database.Default,
+                           p => p.Name == Name,
+                           () => Task.FromResult(IsCenter.New(Database.Default,
+                               NameValue.Set<IsCenter>(p => p.Name, Name)))));
+            }
+            set { _kernel = value; }
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿using System.Data.Common;
-using Phenix.Core.Data;
+using Phenix.Core.Data.Schema;
 
 namespace Phenix.Business
 {

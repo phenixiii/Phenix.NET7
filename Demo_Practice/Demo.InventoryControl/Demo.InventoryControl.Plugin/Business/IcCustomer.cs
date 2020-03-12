@@ -24,16 +24,6 @@ namespace Demo.InventoryControl.Plugin.Business
             //禁止添加代码
         }
 
-        /// <summary>
-        /// 新增
-        /// </summary>
-        /// <param name="name">名称</param>
-        public IcCustomer(string name)
-        {
-            _id = Database.Default.Sequence.Value;
-            _name = name;
-        }
-
         #region 属性
 
         #region 基本属性
@@ -159,7 +149,6 @@ namespace Demo.InventoryControl.Plugin.Business
         /// 卸下货架
         /// </summary>
         /// <param name="pickMarks">挑中标记号码</param>
-        /// <returns>受影响的货架号清单</returns>
         public async Task UnloadLocation(long pickMarks)
         {
             SelfSheet.Owner.Database.Execute(DoUnloading, pickMarks);

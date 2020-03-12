@@ -145,6 +145,9 @@ namespace {3}
 
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
             {
+                if (String.CompareOrdinal(kvp.Value.PropertyName, "Id") == 0)
+                    continue;
+
                 codeBuilder.Append(String.Format(@"
         private {0} {1};
         /// <summary>

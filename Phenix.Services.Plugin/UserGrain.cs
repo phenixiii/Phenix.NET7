@@ -42,6 +42,7 @@ namespace Phenix.Services.Plugin
         protected override User Kernel
         {
             get { return _kernel ?? (_kernel = User.FetchRoot(Database.Default, p => p.Name == Name)); }
+            set { _kernel = value; }
         }
 
         #endregion
@@ -50,20 +51,21 @@ namespace Phenix.Services.Plugin
 
         Task<string> IUserGrain.CheckIn(string name, string phone, string eMail, string regAlias, string requestAddress)
         {
-            if (Kernel != null)
+            User user = Kernel;
+            if (user != null)
             {
-                string dynamicPassword = Kernel.ApplyDynamicPassword(requestAddress, true);
+                string dynamicPassword = user.ApplyDynamicPassword(requestAddress, true);
                 /*
                  * 以下代码供你自己测试用
                  * 生产环境下，请替换为通过第三方渠道（邮箱或短信）推送给到用户
                  */
-                Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0} 的动态口令是'{1}'(有效期 {2} 分钟)", Kernel.Name, dynamicPassword, User.DynamicPasswordValidityMinutes));
+                Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0} 的动态口令是'{1}'(有效期 {2} 分钟)", user.Name, dynamicPassword, User.DynamicPasswordValidityMinutes));
             }
             else
             {
                 string initialPassword = User.BuildPassword(name);
                 string dynamicPassword = User.BuildDynamicPassword();
-                User user = User.New(Database.Default,
+                user = User.New(Database.Default,
                     NameValue.Set<User>(p => p.Name, name),
                     NameValue.Set<User>(p => p.Phone, phone),
                     NameValue.Set<User>(p => p.EMail, eMail),
@@ -83,11 +85,12 @@ namespace Phenix.Services.Plugin
              * 以下代码供你自己测试用
              * 生产环境下，请替换为提示用户留意查看邮箱或短信以收取动态口令
              */
-            return Task.FromResult(String.Format("{0} 的动态口令存放于 {1} 目录下的日志文件里", Kernel.Name, Phenix.Core.Log.EventLog.LocalDirectory));
+            return Task.FromResult(String.Format("{0} 的动态口令存放于 {1} 目录下的日志文件里", user.Name, Phenix.Core.Log.EventLog.LocalDirectory));
         }
 
         Task IUserGrain.Logon(string tag)
         {
+            Kernel = null;
             /*
              * 本函数被执行到，说明当前用户 user 已经登录成功
              * 可利用客户端传过来的 tag 扩展出系统自己的用户登录功能
