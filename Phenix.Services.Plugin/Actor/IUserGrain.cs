@@ -3,7 +3,7 @@ using Orleans;
 using Phenix.Actor;
 using Phenix.Core.Security;
 
-namespace Phenix.Services.Plugin
+namespace Phenix.Services.Plugin.Actor
 {
     /// <summary>
     /// 用户资料Grain接口

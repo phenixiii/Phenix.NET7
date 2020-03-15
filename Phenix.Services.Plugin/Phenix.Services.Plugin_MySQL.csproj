@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>7.3.25</Version>
-    <AssemblyVersion>7.3.25.0303</AssemblyVersion>
-    <FileVersion>7.3.25.0303</FileVersion>
+    <Version>7.3.26</Version>
+    <AssemblyVersion>7.3.26.0315</AssemblyVersion>
+    <FileVersion>7.3.26.0315</FileVersion>
     <Description>Phenix Framework 7 for .NET Core 3 + Orleans 3</Description>
     <Authors>ming</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>

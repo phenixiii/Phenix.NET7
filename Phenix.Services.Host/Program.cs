@@ -1,24 +1,49 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Orleans;
 using Orleans.Hosting;
 
 namespace Phenix.Services.Host
 {
     public static class Program
     {
+        #region 属性
+
+        private static readonly object _lock = new object();
+        private static IHost _host;
+        private static bool _hostStopping;
+        private static readonly ManualResetEvent _hostStopped = new ManualResetEvent(false);
+
+        #endregion
+
+        #region 方法
+
         public static void Main(string[] args)
         {
-            AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) => { Phenix.Core.Log.EventLog.SaveLocal("An unhandled exception occurred in the current domain", (Exception) eventArgs.ExceptionObject); };
-
-            /*
-             * 可在此注册系统用到的各数据库的连接串
-             * 但建议通过SQLite库Phenix.Core.db文件的PH7_Database表预先配置，系统在执行到Phenix.Core.Data.Database.Fetch()时会被自动加载
-             * 以下注释掉的代码，是注册缺省数据库连接串，也就是Phenix.Core.Data.Database.Default的内容，相当于PH7_Database表中那条DataSourceKey字段值为'*'的记录
-             */
-            //Phenix.Core.Data.Database.RegisterDefault("192.168.248.52", null, "TEST", "SHBPMO", "SHBPMO");
+            AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) =>
+            {
+                Phenix.Core.Log.EventLog.SaveLocal("An unhandled exception occurred in the current domain", (Exception) eventArgs.ExceptionObject);
+            };
+            Console.CancelKeyPress += (sender, eventArgs) =>
+            {
+                eventArgs.Cancel = true;
+                if (!_hostStopping)
+                    lock (_lock)
+                        if (!_hostStopping)
+                        {
+                            _hostStopping = true;
+                            Task.Run(() =>
+                            {
+                                _host.StopAsync();
+                                _hostStopped.Set();
+                            }).Ignore();
+                        }
+            };
 
             /*
              * 注册用户资料工厂，以打通封装在Phenix.Services.Plugin的UserGrain中的用户身份验证等功能
@@ -27,9 +52,10 @@ namespace Phenix.Services.Host
 
             /*
              * 构建Host并启动服务
-             * 如第一次启动，可在wwwroot\test目录里打开各个测试网页，验证服务环境是否正常
+             * 如第一次启动，可在wwwroot\test目录里打开测试网页，验证服务环境是否正常
              */
-            CreateHostBuilder(args).Build().Run();
+            _host = CreateHostBuilder(args).Build();
+            _host.Run();
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args)
@@ -60,7 +86,21 @@ namespace Phenix.Services.Host
                      * 设置Silo端口：EndpointOptions.DEFAULT_SILO_PORT
                      * 设置Gateway端口：EndpointOptions.DEFAULT_SILO_PORT
                      */
-                    .ConfigureEndpoints(OrleansConfig.DefaultSiloPort, OrleansConfig.DefaultGatewayPort))
+                    .ConfigureEndpoints(OrleansConfig.DefaultSiloPort, OrleansConfig.DefaultGatewayPort)
+                    /*
+                     * 使用Dashboard插件
+                     * 本地打开可视化监控工具：http://localhost:8080/
+                     * 建议仅向内网开放
+                     */
+                    .UseDashboard(options =>
+                    {
+                        options.Username = OrleansConfig.DashboardUsername; //设置用于访问Dashboard的用户名（基本身份验证）
+                        options.Password = OrleansConfig.DashboardPassword; //设置用于访问Dashboard的用户口令（基本身份验证）
+                        options.Host = OrleansConfig.DashboardHost; //将Web服务器绑定到的主机名（默认为*）
+                        options.Port = OrleansConfig.DashboardPort; //设置Dashboard可视化页面访问的端口（默认为8080）
+                        options.HostSelf = OrleansConfig.DashboardHostSelf; //将Dashboard设置为托管自己的http服务器（默认为true）
+                        options.CounterUpdateIntervalMs = OrleansConfig.DashboardCounterUpdateIntervalMs; //采样计数器之间的更新间隔（以毫秒为单位，默认为1000）
+                    }))
                 /*
                  * 启动WebAPI服务
                  */
@@ -91,5 +131,7 @@ namespace Phenix.Services.Host
                         .UseStartup<Startup>();
                 });
         }
+
+        #endregion
     }
 }

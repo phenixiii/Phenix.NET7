@@ -7,7 +7,7 @@ using Phenix.Core.Data.Schema;
 using Phenix.Core.Security;
 using Phenix.Core.Security.Auth;
 
-namespace Phenix.Services.Plugin
+namespace Phenix.Services.Plugin.Actor
 {
     /// <summary>
     /// 用户资料Grain

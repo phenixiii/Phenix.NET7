@@ -1,5 +1,6 @@
 ﻿using Phenix.Actor;
 using Phenix.Core.Security;
+using Phenix.Services.Plugin.Actor;
 
 namespace Phenix.Services.Plugin
 {

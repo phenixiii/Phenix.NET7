@@ -35,6 +35,11 @@
             临时目录
             </summary>
         </member>
+        <member name="P:Phenix.Core.AppRun.ConfigFilePath">
+            <summary>
+            配置文件路径
+            </summary>
+        </member>
         <member name="M:Phenix.Core.AppRun.FindException``1(System.Exception)">
             <summary>
             检索错误类型
@@ -69,12 +74,7 @@
         </member>
         <member name="T:Phenix.Core.AppSettings">
             <summary>
-            应用系统配置工具
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.AppSettings.ConfigFilePath">
-            <summary>
-            配置文件路径
+            应用系统配置工具(配套Phenix.Core.db的PH7_AppSettings表)
             </summary>
         </member>
         <member name="M:Phenix.Core.AppSettings.SaveValue(System.String,System.String,System.Boolean)">
@@ -99,8 +99,8 @@
             </summary>
             <param name="field">属性字段</param>
             <param name="newValue">新值</param>
-            <param name="allowSave">允许保存状态信息?</param>
             <param name="inEncrypt">是否加密</param>
+            <param name="allowSave">允许保存状态信息?</param>
         </member>
         <member name="M:Phenix.Core.AppSettings.SetProperty``2(System.String,``0@,``1,System.Boolean,System.Boolean)">
             <summary>
@@ -109,8 +109,8 @@
             <param name="key">键</param>
             <param name="field">属性字段</param>
             <param name="newValue">新值</param>
-            <param name="allowSave">允许保存状态信息?</param>
             <param name="inEncrypt">是否加密</param>
+            <param name="allowSave">允许保存状态信息?</param>
         </member>
         <member name="M:Phenix.Core.AppSettings.GetProperty``2(``0@,``1,System.Boolean,System.Boolean)">
             <summary>
@@ -119,8 +119,8 @@
             </summary>
             <param name="field">属性字段</param>
             <param name="defaultValue">缺省值</param>
-            <param name="allowSave">允许保存状态信息?</param>
             <param name="inEncrypt">是否加密</param>
+            <param name="allowSave">允许保存状态信息?</param>
         </member>
         <member name="M:Phenix.Core.AppSettings.GetProperty``2(System.String,``0@,``1,System.Boolean,System.Boolean)">
             <summary>
@@ -129,8 +129,8 @@
             <param name="key">键</param>
             <param name="field">属性字段</param>
             <param name="defaultValue">缺省值</param>
-            <param name="allowSave">允许保存状态信息?</param>
             <param name="inEncrypt">是否加密</param>
+            <param name="allowSave">允许保存状态信息?</param>
         </member>
         <member name="T:Phenix.Core.Data.Common.DataReader">
             <summary>
@@ -1680,7 +1680,7 @@
         </member>
         <member name="T:Phenix.Core.Data.Database">
             <summary>
-            数据库入口
+            数据库入口(配套Phenix.Core.db的PH7_Database表)
             </summary>
         </member>
         <member name="F:Phenix.Core.Data.Database.DefaultDataSourceKey">
@@ -1715,11 +1715,6 @@
             <param name="maxPoolSize">最大连接池</param>
             <param name="connectionLifetime">连接生命周期</param>
             <returns>数据库入口</returns>
-        </member>
-        <member name="P:Phenix.Core.Data.Database.ConfigFilePath">
-            <summary>
-            配置文件路径
-            </summary>
         </member>
         <member name="P:Phenix.Core.Data.Database.DataSourceKey">
             <summary>

@@ -117,7 +117,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 20200113
 1，提供Phenix.Algorithm工程源码，含ZeroOneKnapsackProblem类的0-1背包算法，用法见Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem工程
-2，完善Phenix.Core工程AppSettings类的功能
+2，完善Phenix.Core.AppSettings类的功能
 
 
 20200116
@@ -160,4 +160,9 @@ Copyright © 2007, 2020 Phenixヾ Studio
 1，梳理Phenix.Core持久层框架
 2，提供《Phenix.Core.Data.持久层开发接口.doc》，讲解Phenix.Core持久层框架的数据库集群、主库+分库、分库分表策略、使用接口和持久层开发方法
 
+
+20200315
+1，为Phenix.Services.Host工程添加Dashboard插件，可在浏览器上打开可视化Silo监控工具：http://localhost:8080/
+2，完善Phenix.Core.AppSettings功能，类似Phenix.Core.Data.Database.Fetch()函数会自动加密Phenix.Core.db库文件PH7_Database表Password字段值，ReadValue()函数也会加密PH7_AppSettings表Value字段值
+3，修订《Phenix.Services.Host.部署方法.doc》、《Phenix.Core.Data.持久层开发接口.doc》
 
