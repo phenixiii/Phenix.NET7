@@ -48,8 +48,8 @@ namespace Demo.InspectionStation.Plugin.Actor
             {
                 return _kernel ?? (_kernel = IsCenter.FetchRoot(Database.Default,
                            p => p.Name == Name,
-                           () => Task.FromResult(IsCenter.New(Database.Default,
-                               NameValue.Set<IsCenter>(p => p.Name, Name)))));
+                           () => IsCenter.New(Database.Default,
+                               NameValue.Set<IsCenter>(p => p.Name, Name))));
             }
             set { _kernel = value; }
         }

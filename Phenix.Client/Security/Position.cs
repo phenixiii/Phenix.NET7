@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Phenix.Core.Data.Model;
 
 namespace Phenix.Client.Security
 {
@@ -8,8 +9,16 @@ namespace Phenix.Client.Security
     /// 岗位资料
     /// </summary>
     [Serializable]
-    public class Position
+    public class Position : DataBase<Position>
     {
+        /// <summary>
+        /// for CreateInstance
+        /// </summary>
+        private Position()
+        {
+            //禁止添加代码
+        }
+
         [Newtonsoft.Json.JsonConstructor]
         private Position(long id, string name, IList<string> roles)
         {
@@ -19,16 +28,6 @@ namespace Phenix.Client.Security
         }
 
         #region 属性
-
-        private readonly long _id;
-
-        /// <summary>
-        /// ID
-        /// </summary>
-        public long Id
-        {
-            get { return _id; }
-        }
 
         private readonly string _name;
 

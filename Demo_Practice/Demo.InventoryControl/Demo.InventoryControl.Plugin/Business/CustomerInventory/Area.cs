@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
 using Phenix.Algorithm.CombinatorialOptimization;
+using Phenix.Core.SyncCollections;
 
 namespace Demo.InventoryControl.Plugin.Business.CustomerInventory
 {
@@ -36,7 +37,7 @@ namespace Demo.InventoryControl.Plugin.Business.CustomerInventory
 
         #region 动态属性
 
-        private readonly Dictionary<string, Alley> _alleyDictionary = new Dictionary<string, Alley>(StringComparer.Ordinal);
+        private readonly SynchronizedDictionary<string, Alley> _alleyDictionary = new SynchronizedDictionary<string, Alley>(StringComparer.Ordinal);
 
         public bool Empty
         {
@@ -72,14 +73,7 @@ namespace Demo.InventoryControl.Plugin.Business.CustomerInventory
 
         private Alley FetchAlley(string locationAlley)
         {
-            Alley result;
-            if (!_alleyDictionary.TryGetValue(locationAlley, out result))
-            {
-                result = new Alley(this, locationAlley);
-                _alleyDictionary.Add(locationAlley, result);
-            }
-
-            return result;
+            return _alleyDictionary.GetValue(locationAlley, () => new Alley(this, locationAlley));
         }
 
         public void Add(IcCustomerInventory inventory)

@@ -45,8 +45,8 @@ namespace Demo.InspectionStation.Plugin.Actor
             {
                 return _kernel ?? (_kernel = IsOperationPoint.FetchRoot(Database.Default,
                            p => p.Name == Name,
-                           () => Task.FromResult(IsOperationPoint.New(Database.Default,
-                               NameValue.Set<IsOperationPoint>(p => p.Name, Name)))));
+                           () => IsOperationPoint.New(Database.Default,
+                               NameValue.Set<IsOperationPoint>(p => p.Name, Name))));
             }
             set { _kernel = value; }
         }

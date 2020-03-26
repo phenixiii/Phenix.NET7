@@ -58,10 +58,7 @@ namespace Phenix.Actor
         /// <returns>流提供者</returns>
         public static IStreamProvider Fetch(string clusterId, string serviceId, string connectionString)
         {
-            return _cache.GetValue(String.Format("{0}*{1}", clusterId, serviceId), () =>
-            {
-                return ClusterClient.Fetch(clusterId, serviceId, connectionString).GetStreamProvider(Name);
-            });
+            return _cache.GetValue(String.Format("{0}*{1}", clusterId, serviceId), () => ClusterClient.Fetch(clusterId, serviceId, connectionString).GetStreamProvider(Name));
         }
 
         #endregion

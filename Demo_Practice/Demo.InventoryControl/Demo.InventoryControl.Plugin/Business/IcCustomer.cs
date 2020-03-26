@@ -8,6 +8,7 @@ using Phenix.Actor;
 using Phenix.Algorithm.CombinatorialOptimization;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Model;
+using Phenix.Core.SyncCollections;
 
 namespace Demo.InventoryControl.Plugin.Business
 {
@@ -42,7 +43,7 @@ namespace Demo.InventoryControl.Plugin.Business
 
         #region 动态属性
 
-        private Dictionary<string, Area> _areaDictionary;
+        private SynchronizedDictionary<string, Area> _areaDictionary;
 
         private IDictionary<string, Area> AreaDictionary
         {
@@ -50,22 +51,17 @@ namespace Demo.InventoryControl.Plugin.Business
             {
                 if (_areaDictionary == null)
                 {
-                    Dictionary<string, Area> result = new Dictionary<string, Area>(StringComparer.Ordinal);
+                    SynchronizedDictionary<string, Area> result = new SynchronizedDictionary<string, Area>(StringComparer.Ordinal);
                     foreach (IcCustomerInventory item in FetchDetails<IcCustomerInventory>(p =>
                             p.CustomerId == Id &&
                             p.CustomerInventoryStatus < CustomerInventoryStatus.NotStored,
-                        IcCustomerInventory.Ascending(p => p.LocationArea),
-                        IcCustomerInventory.Ascending(p => p.LocationAlley),
-                        IcCustomerInventory.Ascending(p => p.LocationOrdinal),
-                        IcCustomerInventory.Ascending(p => p.StackOrdinal)))
+                        IcCustomerInventory.Ascending(p => p.LocationArea)
+                            .Ascending(p => p.LocationArea)
+                            .Ascending(p => p.LocationAlley)
+                            .Ascending(p => p.LocationOrdinal)
+                            .Ascending(p => p.StackOrdinal)))
                     {
-                        Area area;
-                        if (!result.TryGetValue(item.LocationArea, out area))
-                        {
-                            area = new Area(this, item.LocationArea);
-                            result.Add(item.LocationArea, area);
-                        }
-
+                        Area area = result.GetValue(item.LocationArea, ()=> new Area(this, item.LocationArea));
                         area.Add(item);
                     }
 
@@ -84,14 +80,7 @@ namespace Demo.InventoryControl.Plugin.Business
 
         private Area FetchArea(string locationArea)
         {
-            Area result;
-            if (!AreaDictionary.TryGetValue(locationArea, out result))
-            {
-                result = new Area(this, locationArea);
-                AreaDictionary.Add(locationArea, result);
-            }
-
-            return result;
+            return _areaDictionary.GetValue(locationArea, () => new Area(this, locationArea));
         }
 
         /// <summary>

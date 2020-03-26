@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
+using Phenix.Core.Data.Model;
 using Phenix.Core.Reflection;
 using Phenix.Core.Security.Auth;
 using Phenix.Core.Security.Cryptography;
@@ -10,8 +11,16 @@ namespace Phenix.Client.Security
     /// 用户资料
     /// </summary>
     [Serializable]
-    public class User
+    public class User : DataBase<User>
     {
+        /// <summary>
+        /// for CreateInstance
+        /// </summary>
+        private User()
+        {
+            //禁止添加代码
+        }
+
         [Newtonsoft.Json.JsonConstructor]
         private User(long id, string name, string phone, string eMail, string regAlias, DateTime regTime,
             string requestAddress, int requestFailureCount, DateTime? requestFailureTime,
@@ -45,16 +54,6 @@ namespace Phenix.Client.Security
         }
 
         #region 属性
-
-        private readonly long _id;
-
-        /// <summary>
-        /// ID
-        /// </summary>
-        public long Id
-        {
-            get { return _id; }
-        }
 
         private readonly string _name;
 
@@ -178,7 +177,7 @@ namespace Phenix.Client.Security
             get
             {
                 if (_teams == null && _teamsId.HasValue)
-                    _teams = RootTeams.FindInBranch(_teamsId.Value);
+                    _teams = RootTeams.FindInBranch(p => p.Id == _teamsId.Value);
                 return _teams;
             }
         }
@@ -249,7 +248,8 @@ namespace Phenix.Client.Security
         /// <summary>
         /// 登录口令/动态口令(散列值)
         /// </summary>
-        protected internal string Password
+        [Newtonsoft.Json.JsonIgnore]
+        public string Password
         {
             get { return _password; }
             set { _password = value; }
@@ -296,7 +296,7 @@ namespace Phenix.Client.Security
             string timestamp = String.Format("{0}{1}", new Random().Next(100000000, 1000000000), DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
             return String.Format("{0},{1},{2}", Uri.EscapeDataString(Name), timestamp, Encrypt(timestamp));
         }
-        
+
         #endregion
     }
 }

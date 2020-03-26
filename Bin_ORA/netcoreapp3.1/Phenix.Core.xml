@@ -2996,60 +2996,50 @@
             降序
             </summary>
         </member>
-        <member name="T:Phenix.Core.Data.Expressions.OrderBy">
+        <member name="T:Phenix.Core.Data.Expressions.OrderBy`1">
             <summary>
             排序
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Expressions.OrderBy.Ascending``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+        <member name="P:Phenix.Core.Data.Expressions.OrderBy`1.PropertyName">
+            <summary>
+            属性名
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Expressions.OrderBy`1.Order">
+            <summary>
+            顺序
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Expressions.OrderBy`1.After">
+            <summary>
+            后随
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Expressions.OrderBy`1.Ascending(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
             <summary>
             升序
             </summary>
             <param name="propertyLambda">含类属性的 lambda 表达式</param>
         </member>
-        <member name="M:Phenix.Core.Data.Expressions.OrderBy.Descending``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+        <member name="M:Phenix.Core.Data.Expressions.OrderBy`1.Descending(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
             <summary>
             降序
             </summary>
             <param name="propertyLambda">含类属性的 lambda 表达式</param>
         </member>
-        <member name="P:Phenix.Core.Data.Expressions.OrderBy.OwnerTypeAssemblyQualifiedName">
-            <summary>
-            所属类程序集限定名
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Expressions.OrderBy.OwnerType">
-            <summary>
-            所属类
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Expressions.OrderBy.PropertyName">
-            <summary>
-            属性名
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Expressions.OrderBy.PropertyInfo">
-            <summary>
-            属性
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Expressions.OrderBy.Order">
-            <summary>
-            顺序
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Expressions.OrderBy.Equals(System.Object)">
+        <member name="M:Phenix.Core.Data.Expressions.OrderBy`1.Equals(System.Object)">
             <summary>
             比较对象
             </summary>
             <param name="obj">对象</param>
         </member>
-        <member name="M:Phenix.Core.Data.Expressions.OrderBy.GetHashCode">
+        <member name="M:Phenix.Core.Data.Expressions.OrderBy`1.GetHashCode">
             <summary>
             取哈希值(注意字符串在32位和64位系统有不同的算法得到不同的结果) 
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Expressions.OrderBy.ToString">
+        <member name="M:Phenix.Core.Data.Expressions.OrderBy`1.ToString">
             <summary>
             字符串表示
             </summary>
@@ -3072,6 +3062,41 @@
             <param name="initialValue">初值</param>
             <returns>值</returns>
         </member>
+        <member name="T:Phenix.Core.Data.Model.DataBase`1">
+            <summary>
+            数据基类
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DataBase`1.#ctor">
+            <summary>
+            for CreateInstance
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.DataBase`1.Root">
+            <summary>
+            根数据
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.DataBase`1.Master">
+            <summary>
+            主数据
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Model.DataBase`1._id">
+            <summary>
+            主键属性
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.DataBase`1.Id">
+            <summary>
+            主键属性(映射表XX_ID字段)
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.DataBase`1.Clone">
+            <summary>
+            克隆
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Data.Model.EntityBase`1">
             <summary>
             实体基类
@@ -3087,6 +3112,7 @@
             新增实体对象(自动填充主键和保留字段)
             </summary>
             <param name="database">数据库入口</param>
+            <returns>实体对象</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.New(Phenix.Core.Data.Database,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
@@ -3104,7 +3130,7 @@
             <param name="propertyValues">待更新属性值队列</param>
             <returns>实体对象</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Threading.Tasks.Task{`0}})">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{`0})">
             <summary>
             获取根实体对象
             </summary>
@@ -3113,7 +3139,7 @@
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
             <returns>根实体对象</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{System.Threading.Tasks.Task{`0}})">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{`0})">
             <summary>
             获取根实体对象
             </summary>
@@ -3122,7 +3148,7 @@
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
             <returns>根实体对象</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Threading.Tasks.Task{`0}})">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{`0})">
             <summary>
             获取根实体对象
             </summary>
@@ -3131,7 +3157,7 @@
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
             <returns>根实体对象</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{System.Threading.Tasks.Task{`0}})">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{`0})">
             <summary>
             获取根实体对象
             </summary>
@@ -3234,13 +3260,13 @@
             <param name="propertyValues">待更新属性值队列</param>
             <returns>实体对象</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchDetails``1(Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchDetails``1(Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取从实体对象
             </summary>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchDetails``1(System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchDetails``1(System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取从实体对象
             </summary>
@@ -3248,14 +3274,14 @@
             <param name="pageSize">每页条数</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchDetails``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchDetails``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取从实体对象
             </summary>
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchDetails``1(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchDetails``1(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取从实体对象
             </summary>
@@ -3264,14 +3290,14 @@
             <param name="pageSize">每页条数</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchDetails``1(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchDetails``1(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取从实体对象
             </summary>
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchDetails``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchDetails``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取从实体对象
             </summary>
@@ -3654,6 +3680,21 @@
             </summary>
             <param name="propertyLambda">含类属性的 lambda 表达式</param>
         </member>
+        <member name="T:Phenix.Core.Data.Model.IData">
+            <summary>
+            数据接口
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.IData.Root">
+            <summary>
+            根数据
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.IData.Master">
+            <summary>
+            主数据
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Data.Model.IEntity">
             <summary>
             实体接口
@@ -3679,6 +3720,72 @@
             主实体
             </summary>
         </member>
+        <member name="T:Phenix.Core.Data.Model.TreeDataBase`1">
+            <summary>
+            树实体基类
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeDataBase`1.#ctor">
+            <summary>
+            for CreateInstance
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeDataBase`1.#ctor(System.Int64,System.Int64,System.Int64,System.Collections.Generic.IList{`0})">
+            <summary>
+            for Newtonsoft.Json.JsonConstructor
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Model.TreeDataBase`1._rootId">
+            <summary>
+            根ID
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.TreeDataBase`1.RootId">
+            <summary>
+            根ID(映射表XX_Root_ID字段)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.TreeDataBase`1.Root">
+            <summary>
+            根数据
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Model.TreeDataBase`1._parentId">
+            <summary>
+            父ID
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.TreeDataBase`1.ParentId">
+            <summary>
+            父ID(映射表XX_Parent_ID字段)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.TreeDataBase`1.Master">
+            <summary>
+            主数据
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Model.TreeDataBase`1._allChildren">
+            <summary>
+            全部儿孙对象
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.TreeDataBase`1.AllChildren">
+            <summary>
+            全部儿孙对象
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeDataBase`1.GetChildren">
+            <summary>
+            获取子对象
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeDataBase`1.FindInBranch(System.Func{`0,System.Boolean})">
+            <summary>
+            在枝杈中寻找
+            </summary>
+            <param name="criteria">匹配条件</param>
+        </member>
         <member name="T:Phenix.Core.Data.Model.TreeEntityBase`1">
             <summary>
             树实体基类
@@ -3694,37 +3801,64 @@
             for Newtonsoft.Json.JsonConstructor
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Threading.Tasks.Task{`0}})">
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.NewRoot(Phenix.Core.Data.Database)">
+            <summary>
+            新增根实体对象(自动填充主键和保留字段)
+            </summary>
+            <param name="database">数据库入口</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.NewRoot(Phenix.Core.Data.Database,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            新增根实体对象(自动填充主键和保留字段)
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.NewRoot(Phenix.Core.Data.Database,Phenix.Core.Data.Schema.NameValue[])">
+            <summary>
+            新增根实体对象(自动填充主键和保留字段)
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{`0})">
             <summary>
             获取整颗树
             </summary>
             <param name="database">数据库入口</param>
             <param name="criteriaLambda">条件表达式</param>
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{System.Threading.Tasks.Task{`0}})">
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{`0})">
             <summary>
             获取整颗树
             </summary>
             <param name="database">数据库入口</param>
             <param name="criteriaExpression">条件表达式</param>
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{System.Threading.Tasks.Task{`0}})">
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{`0})">
             <summary>
             获取整颗树
             </summary>
             <param name="selfSheet">操作单子</param>
             <param name="criteriaLambda">条件表达式</param>
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{System.Threading.Tasks.Task{`0}})">
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{`0})">
             <summary>
             获取整颗树
             </summary>
             <param name="selfSheet">操作单子</param>
             <param name="criteriaExpression">条件表达式</param>
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
         </member>
         <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._rootId">
             <summary>
@@ -3734,11 +3868,6 @@
         <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.RootId">
             <summary>
             根ID(映射表XX_Root_ID字段)
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._root">
-            <summary>
-            根对象
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.Root">
@@ -3756,11 +3885,6 @@
             父ID(映射表XX_Parent_ID字段)
             </summary>
         </member>
-        <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._parent">
-            <summary>
-            父对象
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.Master">
             <summary>
             主实体
@@ -3768,15 +3892,15 @@
         </member>
         <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._allChildren">
             <summary>
-            全部儿孙对象数组
+            全部儿孙对象
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.AllChildren">
             <summary>
-            全部儿孙对象数组
+            全部儿孙对象
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchChildren">
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.GetChildren">
             <summary>
             获取子对象
             </summary>
@@ -3793,20 +3917,20 @@
             </summary>
             <param name="master">父对象</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.AddChild(System.Func{System.Threading.Tasks.Task{`0}})">
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.AddChild(System.Func{`0})">
             <summary>
             添加子对象
             </summary>
             <param name="doCreate">调用本函数新增并自动持久化</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.AddChild(System.Data.Common.DbConnection,System.Func{System.Threading.Tasks.Task{`0}})">
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.AddChild(System.Data.Common.DbConnection,System.Func{`0})">
             <summary>
             添加子对象
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="doCreate">调用本函数新增并自动持久化</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.AddChild(System.Data.Common.DbTransaction,System.Func{System.Threading.Tasks.Task{`0}})">
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.AddChild(System.Data.Common.DbTransaction,System.Func{`0})">
             <summary>
             添加子对象
             </summary>
@@ -4752,14 +4876,7 @@
             <param name="routeKey">路由键</param>
             <returns>Handles[routeKey != null ? Math.Abs(routeKey.GetHashCode()) % (Handles.Count + 1) : 0]</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.GetFields(System.Type)">
-            <summary>
-            获取数据映射类字段
-            </summary>
-            <param name="entityType">实体类</param>
-            <returns>类字段名-类字段</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.GetFields(System.Type,System.Boolean,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.GetFields(System.Type,System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
             <summary>
             获取数据映射类字段(均映射的是遍历类时遇到的第一个符合条件的表)
             </summary>
@@ -5695,20 +5812,20 @@
             <param name="criteriaExpression">条件表达式</param>
             <returns>删除记录数</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5716,14 +5833,14 @@
             <param name="pageSize">每页条数</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5731,7 +5848,7 @@
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5740,14 +5857,14 @@
             <param name="pageSize">每页条数</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5755,7 +5872,7 @@
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5764,14 +5881,14 @@
             <param name="pageSize">每页条数</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5779,7 +5896,7 @@
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5788,7 +5905,7 @@
             <param name="pageSize">每页条数</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5796,7 +5913,7 @@
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5805,7 +5922,7 @@
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5815,7 +5932,7 @@
             <param name="pageSize">每页条数</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5823,7 +5940,7 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5832,7 +5949,7 @@
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5842,14 +5959,14 @@
             <param name="pageSize">每页条数</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5857,7 +5974,7 @@
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5866,7 +5983,7 @@
             <param name="pageSize">每页条数</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5874,7 +5991,7 @@
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5883,7 +6000,7 @@
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5893,7 +6010,7 @@
             <param name="pageSize">每页条数</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5901,7 +6018,7 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5910,7 +6027,7 @@
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5920,7 +6037,7 @@
             <param name="pageSize">每页条数</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbCommand,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbCommand,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -5937,14 +6054,14 @@
             </summary>
             <param name="reader">DataReader</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -5952,7 +6069,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -5961,7 +6078,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -5969,7 +6086,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -5978,7 +6095,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -5988,7 +6105,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -5996,7 +6113,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6005,7 +6122,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6015,7 +6132,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6023,7 +6140,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6032,7 +6149,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6042,7 +6159,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6051,7 +6168,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6061,7 +6178,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6072,7 +6189,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6081,7 +6198,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6091,7 +6208,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6102,7 +6219,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6110,7 +6227,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6119,7 +6236,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6129,7 +6246,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6138,7 +6255,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6148,7 +6265,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6159,7 +6276,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -6168,7 +6285,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6178,7 +6295,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -6189,7 +6306,7 @@
             <param name="orderBys">排序队列</param>
             <returns>记录(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbCommand,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,System.Boolean,Phenix.Core.Data.Expressions.OrderBy[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbCommand,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录(JSON格式)
             </summary>
@@ -7532,6 +7649,146 @@
             本机IP地址
             </summary>
         </member>
+        <member name="T:Phenix.Core.Plugin.IPlugin">
+            <summary>
+            插件接口
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Plugin.IPlugin.State">
+            <summary>
+            插件状态
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Plugin.IPlugin.Start">
+            <summary>
+            启动
+            </summary>
+            <returns>确定启动</returns>
+        </member>
+        <member name="M:Phenix.Core.Plugin.IPlugin.Suspend">
+            <summary>
+            暂停
+            </summary>
+            <returns>确定停止</returns>
+        </member>
+        <member name="M:Phenix.Core.Plugin.IPlugin.ReceiveMessage(System.Object)">
+            <summary>
+            接收消息
+            </summary>
+            <param name="message">消息</param>
+            <returns>按需返回</returns>
+        </member>
+        <member name="T:Phenix.Core.Plugin.PluginBase">
+            <summary>
+            插件抽象类
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Plugin.PluginBase.Owner">
+            <summary>
+            插件容器
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Plugin.PluginBase.State">
+            <summary>
+            插件状态
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Plugin.PluginBase.FindPluginType(System.String,System.Boolean)">
+            <summary>
+            检索插件类
+            </summary>
+            <param name="assemblyName">程序集名称</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <returns>插件类</returns>
+        </member>
+        <member name="M:Phenix.Core.Plugin.PluginBase.FindPluginType(System.Reflection.Assembly,System.Boolean)">
+            <summary>
+            检索插件类
+            </summary>
+            <param name="assembly">程序集</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <returns>插件类</returns>
+        </member>
+        <member name="M:Phenix.Core.Plugin.PluginBase.Start">
+            <summary>
+            启动
+            </summary>
+            <returns>确定启动</returns>
+        </member>
+        <member name="M:Phenix.Core.Plugin.PluginBase.Suspend">
+            <summary>
+            暂停
+            </summary>
+            <returns>确定停止</returns>
+        </member>
+        <member name="M:Phenix.Core.Plugin.PluginBase.ReceiveMessage(System.Object)">
+            <summary>
+            接收消息
+            </summary>
+            <param name="message">消息</param>
+            <returns>按需返回</returns>
+        </member>
+        <member name="M:Phenix.Core.Plugin.PluginBase.SendMessage(System.Object)">
+            <summary>
+            发送消息
+            </summary>
+            <param name="message">消息</param>
+            <returns>按需返回</returns>
+        </member>
+        <member name="T:Phenix.Core.Plugin.PluginHost">
+            <summary>
+            插件容器
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Plugin.PluginHost.Default">
+            <summary>
+            单例
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Plugin.PluginHost.GetPlugin(System.String,System.Func{Phenix.Core.Plugin.IPlugin,System.Object,System.Object})">
+            <summary>
+            获取插件
+            </summary>
+            <param name="assemblyName">程序集名</param>
+            <param name="onMessage">插件发送过来的消息</param>
+        </member>
+        <member name="M:Phenix.Core.Plugin.PluginHost.GetPlugin(System.Reflection.Assembly,System.Func{Phenix.Core.Plugin.IPlugin,System.Object,System.Object})">
+            <summary>
+            获取插件
+            </summary>
+            <param name="assembly">程序集</param>
+            <param name="onMessage">插件发送过来的消息</param>
+        </member>
+        <member name="T:Phenix.Core.Plugin.PluginState">
+            <summary>
+            插件状态
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Plugin.PluginState.Created">
+            <summary>
+            构建
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Plugin.PluginState.Initialized">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Plugin.PluginState.Finalizing">
+            <summary>
+            终止化
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Plugin.PluginState.Started">
+            <summary>
+            启动
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Plugin.PluginState.Suspended">
+            <summary>
+            停止
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Reflection.DynamicCtorDelegate">
             <summary>
             动态执行构建函数的委托函数
@@ -7617,11 +7874,12 @@
             工具集
             </summary>
         </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.LoadAssembly(System.String)">
+        <member name="M:Phenix.Core.Reflection.Utilities.LoadAssembly(System.String,System.Boolean)">
             <summary>
             加载程序集
             </summary>
             <param name="assemblyName">程序集名</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>程序集</returns>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.AssembleFullTypeName(System.String,System.String)">
@@ -9411,21 +9669,23 @@
             <param name="key">键</param>
             <param name="value">当此方法返回值时, 如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会返回 item 参数的类型默认值</param>
         </member>
-        <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.GetValue(`0,System.Func{`1},System.Boolean)">
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.GetValue(`0,System.Func{`1},System.Boolean,System.Boolean)">
             <summary>
             获取与指定的键相关联的值
             </summary>
             <param name="key">键</param>
             <param name="doCreate">如果没有该键, 构建值的函数</param>
+            <param name="lockCreate">构建值时加锁</param>
             <param name="reset">如果找到该键, 是否重置</param>
             <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
         </member>
-        <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.GetValue(`0,System.Func{`1},System.Func{`1,System.Boolean})">
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.GetValue(`0,System.Func{`1},System.Boolean,System.Func{`1,System.Boolean})">
             <summary>
             获取与指定的键相关联的值
             </summary>
             <param name="key">键</param>
             <param name="doCreate">如果没有该键, 构建值的函数</param>
+            <param name="lockCreate">构建值时加锁</param>
             <param name="reset">如果找到该键, 是否重置的函数(null代表false)</param>
             <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
         </member>
@@ -10429,21 +10689,23 @@
             <param name="key">键</param>
             <param name="value">当此方法返回值时, 如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会返回 item 参数的类型默认值</param>
         </member>
-        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.GetValue(`0,System.Func{`1},System.Boolean)">
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.GetValue(`0,System.Func{`1},System.Boolean,System.Boolean)">
             <summary>
             获取与指定的键相关联的值
             </summary>
             <param name="key">键</param>
             <param name="doCreate">如果没有该键, 构建值的函数</param>
+            <param name="lockCreate">构建值时加锁</param>
             <param name="reset">如果找到该键, 是否重置</param>
             <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
         </member>
-        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.GetValue(`0,System.Func{`1},System.Func{`1,System.Boolean})">
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.GetValue(`0,System.Func{`1},System.Boolean,System.Func{`1,System.Boolean})">
             <summary>
             获取与指定的键相关联的值
             </summary>
             <param name="key">键</param>
             <param name="doCreate">如果没有该键, 构建值的函数</param>
+            <param name="lockCreate">构建值时加锁</param>
             <param name="reset">如果找到该键, 是否重置的函数(null代表false)</param>
             <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
         </member>
@@ -10640,21 +10902,23 @@
             <param name="key">键</param>
             <param name="value">当此方法返回值时, 如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会返回 item 参数的类型默认值</param>
         </member>
-        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedList`2.GetValue(`0,System.Func{`1},System.Boolean)">
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedList`2.GetValue(`0,System.Func{`1},System.Boolean,System.Boolean)">
             <summary>
             获取与指定的键相关联的值
             </summary>
             <param name="key">键</param>
             <param name="doCreate">如果没有该键, 构建值的函数</param>
+            <param name="lockCreate">构建值时加锁</param>
             <param name="reset">如果找到该键, 是否重置</param>
             <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
         </member>
-        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedList`2.GetValue(`0,System.Func{`1},System.Func{`1,System.Boolean})">
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedList`2.GetValue(`0,System.Func{`1},System.Boolean,System.Func{`1,System.Boolean})">
             <summary>
             获取与指定的键相关联的值
             </summary>
             <param name="key">键</param>
             <param name="doCreate">如果没有该键, 构建值的函数</param>
+            <param name="lockCreate">构建值时加锁</param>
             <param name="reset">如果找到该键, 是否重置的函数(null代表false)</param>
             <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
         </member>

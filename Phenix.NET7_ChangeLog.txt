@@ -46,8 +46,8 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 
 20190905
-1，提供Phenix.Client程序集，含HttpClient类Checkin、Logon、ChangePassword、Sequence、Increment、Message、UploadFile、DownloadFile、EventLog、Call等系列函数，示例代码见：Demo.Phenix.Client.HttpClient_Message、Demo.Phenix.Client.HttpClient_File
-2，提供Phenix.Business程序集，含Phenix.Business.UndoableBase<T>可撤销编辑的实体基类，为实体对象的编辑操作提供单级回滚的功能，示例见Demo.Phenix.Business.UndoableBase
+1，提供Phenix.Client工程，含HttpClient类Checkin、Logon、ChangePassword、Sequence、Increment、Message、UploadFile、DownloadFile、EventLog、Call等系列函数，示例代码见：Demo.Phenix.Client.HttpClient_Message、Demo.Phenix.Client.HttpClient_File
+2，提供Phenix.Business工程，含Phenix.Business.UndoableBase<T>可撤销编辑的实体基类，为实体对象的编辑操作提供单级回滚的功能，示例见Demo.Phenix.Business.UndoableBase
 3，约定时间戳字段以'_TIMESTAMP'后缀命名
 4，增补Phenix.Core.Data.Model.EntityBase<T>功能具备乐观锁机制，Update()和UpdateRecord()函数提供checkTimestamp参数(默认true)，保证在分布式架构下新数据不会被脏数据覆盖（会抛出Phenix.Core.Data.Validity.OutdatedDataException）
 
@@ -165,4 +165,14 @@ Copyright © 2007, 2020 Phenixヾ Studio
 1，为Phenix.Services.Host工程添加Dashboard插件，可在浏览器上打开可视化Silo监控工具：http://localhost:8080/
 2，完善Phenix.Core.AppSettings功能，类似Phenix.Core.Data.Database.Fetch()函数会自动加密Phenix.Core.db库文件PH7_Database表Password字段值，ReadValue()函数也会加密PH7_AppSettings表Value字段值
 3，修订《Phenix.Services.Host.部署方法.doc》、《Phenix.Core.Data.持久层开发接口.doc》
+
+
+20200318
+1，增补Phenix.Core.Plugin插件模块，用于动态加载和管理包含有实现了IPlugin接口的插件类的程序集
+2，修订《Phenix.Core.Data.持久层开发接口.doc》
+
+
+20200324
+1，添加Phenix.Security目录，用于存放权限管理模块工程
+2，提供Phenix.Security.Plugin工程，包含注册用户自建团队成为超级管理员，或加入某团队等功能
 

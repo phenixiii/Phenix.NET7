@@ -53,7 +53,7 @@ namespace Phenix.Actor
         {
             return _cache.GetValue(String.Format("{0}*{1}", clusterId, serviceId), () =>
             {
-                IClusterClient result = new ClientBuilder()
+                IClusterClient value = new ClientBuilder()
                     .ConfigureLogging(logging => logging.AddConsole())
                     .Configure<ConnectionOptions>(options => { options.ProtocolVersion = NetworkProtocolVersion.Version2; })
                     .Configure<ClusterOptions>(options =>
@@ -77,8 +77,8 @@ namespace Phenix.Actor
                     })
                     .AddSimpleMessageStreamProvider(StreamProvider.Name)
                     .Build();
-                result.Connect().Wait();
-                return result;
+                value.Connect().Wait();
+                return value;
             });
         }
 

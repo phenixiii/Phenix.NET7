@@ -6,7 +6,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAABAAAECAAAAAAACAAAAAQgAAAAAIAAAAAAAIAAAAA=</HashCode>
+      <HashCode>AAABAAAECAAAABAACAAAAAQgAAAAAIAAAAAAAIACAAA=</HashCode>
       <FileName>Security\Identity.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -21,7 +21,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAACIAAAAAAAAAAAAABAAAQAAgAAAAAAAAABAAAAAAA=</HashCode>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAQAAgAAAAAAAAABAAAAAAA=</HashCode>
       <FileName>Security\Position.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -46,24 +46,17 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAGIAAACAAQACAAAABAQAUQAACAAAAAAgACAAAAAAg=</HashCode>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Security\Teams.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Root" />
-      <Property Name="Parent" />
-    </ShowAsAssociation>
-    <ShowAsCollectionAssociation>
-      <Property Name="AllChildren" />
-    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="Phenix.Client.Security.User">
-    <Position X="5.5" Y="0.5" Width="3" />
+    <Position X="5.5" Y="0.5" Width="2.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>UQQKagAhgACAQBFwAADEAAQgCSKAgEAGAqACoASAABE=</HashCode>
+      <HashCode>UQQKagAggACAQABwAACEAAQAASKAgEAGAqACoASAABE=</HashCode>
       <FileName>Security\User.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

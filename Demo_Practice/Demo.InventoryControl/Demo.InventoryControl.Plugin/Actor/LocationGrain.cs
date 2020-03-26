@@ -63,10 +63,10 @@ namespace Demo.InventoryControl.Plugin.Actor
             {
                 return _kernel ?? (_kernel = IcLocation.FetchRoot(Database.Default,
                            p => p.Area == Area && p.Alley == Alley && p.Ordinal == Ordinal,
-                           () => Task.FromResult(IcLocation.New(Database.Default,
+                           () => IcLocation.New(Database.Default,
                                NameValue.Set<IcLocation>(p => p.Area, Area),
                                NameValue.Set<IcLocation>(p => p.Alley, Alley),
-                               NameValue.Set<IcLocation>(p => p.Ordinal, Ordinal)))));
+                               NameValue.Set<IcLocation>(p => p.Ordinal, Ordinal))));
             }
             set { _kernel = value; }
         }

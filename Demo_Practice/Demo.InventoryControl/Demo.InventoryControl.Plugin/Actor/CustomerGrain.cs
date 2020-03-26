@@ -43,8 +43,8 @@ namespace Demo.InventoryControl.Plugin.Actor
             {
                 return _kernel ?? (_kernel = IcCustomer.FetchRoot(Database.Default,
                            p => p.Name == Name,
-                           () => Task.FromResult(IcCustomer.New(Database.Default,
-                               NameValue.Set<IcCustomer>(p => p.Name, Name)))));
+                           () => IcCustomer.New(Database.Default,
+                               NameValue.Set<IcCustomer>(p => p.Name, Name))));
             }
             set { _kernel = value; }
         }
