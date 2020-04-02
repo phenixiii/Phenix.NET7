@@ -16,7 +16,7 @@ namespace Demo.InspectionStation.Plugin.Api.OperationPoint
     [ApiController]
     public sealed class GateController : Phenix.Core.Net.Api.ControllerBase
     {
-        // GET: /api/operation-point/gate?operationPointName=道口1
+        // GET: /api/inspection-station/operation-point/gate?operationPointName=道口1
         /// <summary>
         /// 获取
         /// </summary>
@@ -38,7 +38,7 @@ namespace Demo.InspectionStation.Plugin.Api.OperationPoint
             }
         }
 
-        // PUT: /api/operation-point/gate?operationPointName=道口1
+        // PUT: /api/inspection-station/operation-point/gate?operationPointName=道口1
         /// <summary>
         /// 放行
         /// </summary>

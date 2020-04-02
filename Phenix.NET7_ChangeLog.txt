@@ -172,7 +172,12 @@ Copyright © 2007, 2020 Phenixヾ Studio
 2，修订《Phenix.Core.Data.持久层开发接口.doc》
 
 
-20200324
-1，添加Phenix.Security目录，用于存放权限管理模块工程
-2，提供Phenix.Security.Plugin工程，包含注册用户自建团队成为超级管理员，或加入某团队等功能
+20200402
+1，修订Phenix.Tools.EntityBuilder、Phenix.Tools.BusinessBuilder代码生成问题，增补 protected override void InitializeSelf() 函数代码生成功能，用于填充表字段默认值
+2，修订《Phenix.Core.Data.持久层开发接口.doc》
+
+
+20200405
+1，添加Phenix.Security目录，用于存放权限管理模块的工程代码
+2，提供Phenix.Security.Plugin工程，包含注册用户自建团队成为超级管理员，或作为普通成员加入到某个团队等功能
 

@@ -1796,11 +1796,6 @@
             实际操作的数据库入口(0为主库序号，1-N为分库序号)
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Database.ClearCache">
-            <summary>
-            清除缓存
-            </summary>
-        </member>
         <member name="M:Phenix.Core.Data.Database.FetchMetaData(System.Int32)">
             <summary>
             获取元数据

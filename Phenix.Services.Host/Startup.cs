@@ -77,12 +77,10 @@ namespace Phenix.Services.Host
                      *
                      * 程序运行时 Phenix.Core.Net.AuthorizationFilter 会尝试把 Controller/Action 上的标签 Roles 写入 PH7_Controller_Role 表中，曾写入过的不会被覆盖
                      * PH7_Controller_Role 表 CR_Roles 字段存储的是[Authorize]标签 Roles 属性值，如有多个[Authorize]就用‘,’分隔它们，字段为 null 时等同于[AllowAnonymous]
-                     * 你可以基于 PH7_Controller_Role 表，开发自己系统的 Controller/Action 访问权限的配置管理模块（本工程提供了基本的控制器代码），然后开放权限给到系统Admin管理员使用
+                     * 你可以基于 PH7_Controller_Role 表，开发自己系统的 Controller/Action 访问权限的配置管理模块（本工程提供了基本的控制器代码）
                      * 访问授权过滤器会优先采纳 PH7_Controller_Role 表的记录（一旦写入表后，代码里的标签其实就被忽略掉了，除非删除相应的记录）
                      *
-                     * 验证失败的话 context.Response.StatusCode = 403 Forbidden
-                     *
-                     * 系统Admin管理员的角色是‘Admin’（Phenix.Core.Security.User.AdminRoleName），权限范围仅限于访问带[Authorize(Roles=Phenix.Core.Security.User.AdminRoleName)]标签的 Controller/Action
+                     * 验证失败的话返回 context.Response.StatusCode = 403 Forbidden
                      */
                     options.Filters.AddAuthorizationFilter();
                 })
@@ -104,7 +102,8 @@ namespace Phenix.Services.Host
                      * 插件程序集的命名，都应该统一采用"*.Plugin.dll"作为文件名的后缀
                      */
                     parts.AddPluginPart();
-                });
+                })
+                .AddNewtonsoftJson();
 
             /*
              * 配置转接头中间件（代理服务器和负载均衡器）
@@ -151,7 +150,7 @@ namespace Phenix.Services.Host
              * 验证失败的话 context.Response.StatusCode = 401 Unauthorized，失败详情见报文体
              * 验证成功的话 Phenix.Core.Security.Identity.CurrentIdentity.IsAuthenticated = true 且 context.User 会被赋值为 new ClaimsPrincipal(Phenix.Core.Security.Identity.CurrentIdentity)
              *
-             * 系统Admin管理员的登录名是‘ADMIN’，初始登录口令也是‘ADMIN’（注意是大写），在系统部署到生产环境正式上线前，你应该用‘ADMIN’登录一次系统，把口令的复杂度修改成达标的
+             * 系统管理员的登录名是‘ADMIN’，初始登录口令也是‘ADMIN’（注意是大写），系统正式运行之前请更改口令
              */
             app.UseAuthenticationMiddleware();
 

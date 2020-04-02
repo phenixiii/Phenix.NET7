@@ -15,7 +15,7 @@ namespace Demo.InspectionStation.Plugin.Api.OperationPoint
     [ApiController]
     public sealed class WeighbridgeController : Phenix.Core.Net.Api.ControllerBase
     {
-        // GET: /api/operation-point/weighbridge?operationPointName=道口1
+        // GET: /api/inspection-station/operation-point/weighbridge?operationPointName=道口1
         /// <summary>
         /// 获取
         /// </summary>
@@ -28,7 +28,7 @@ namespace Demo.InspectionStation.Plugin.Api.OperationPoint
             return await ClusterClient.Default.GetGrain<IOperationPointGrain>(operationPointName).GetWeighbridge();
         }
 
-        // PUT: /api/operation-point/weighbridge?operationPointName=道口1
+        // PUT: /api/inspection-station/operation-point/weighbridge?operationPointName=道口1
         /// <summary>
         /// 设置
         /// </summary>
@@ -40,7 +40,7 @@ namespace Demo.InspectionStation.Plugin.Api.OperationPoint
             await ClusterClient.Default.GetGrain<IOperationPointGrain>(operationPointName).SetWeighbridge(await Request.ReadBodyAsync<int>());
         }
 
-        // POST: /api/operation-point/license-plate?operationPointName=道口1
+        // POST: /api/inspection-station/operation-point/weighbridge?operationPointName=道口1
         /// <summary>
         /// 心跳(每10秒至少2次)
         /// </summary>

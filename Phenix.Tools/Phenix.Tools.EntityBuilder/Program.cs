@@ -132,7 +132,6 @@ namespace {3}
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
                 codeBuilder.Append(String.Format("{0} {1}, ", kvp.Value.FieldTypeName, kvp.Value.ParameterName));
             codeBuilder[codeBuilder.Length - 2] = ')';
-
             codeBuilder.Append(@"
         {");
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
@@ -141,8 +140,18 @@ namespace {3}
                     kvp.Value.FieldName, kvp.Value.ParameterName));
             codeBuilder.Append(@"
         }
-");
 
+        protected override void InitializeSelf()
+        {");
+            foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
+                if (!String.IsNullOrEmpty(kvp.Value.DataDefault) &&
+                    kvp.Value.TableColumn != null && kvp.Value.Owner.PrimaryKeyColumn != null && kvp.Value.TableColumn.Owner == kvp.Value.Owner.PrimaryKeyColumn.TableColumn.Owner)
+                    codeBuilder.Append(String.Format(@"
+            {0} = {1}{2}{1};",
+                        kvp.Value.FieldName, kvp.Value.FieldTypeName == "string" ? "\"" : null, kvp.Value.DataDefault));
+            codeBuilder.Append(@"
+        }
+");
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
             {
                 if (String.CompareOrdinal(kvp.Value.PropertyName, "Id") == 0)
