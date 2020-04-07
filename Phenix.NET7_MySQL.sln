@@ -11,13 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Data.Commo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Log.EventLog", "Demo_MySQL\Demo.Phenix.Core.Log.EventLog\Demo.Phenix.Core.Log.EventLog.csproj", "{7639E825-33EC-44FE-BD97-34EC24A9C90A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{21ACEA56-E832-4AF1-A566-A4EBC61D932E}"
-	ProjectSection(SolutionItems) = preProject
-		ChangeLog.txt = ChangeLog.txt
-		Phenix.Services.Host.分布式服务架构.pptx = Phenix.Services.Host.分布式服务架构.pptx
-		Phenix.Services.Host.部署方法.doc = Phenix.Services.Host.部署方法.doc
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo_Client", "Demo_Client", "{4CBF1077-F885-4AEB-8014-ABC3D79F320E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Host_MySQL", "Phenix.Services.Host\Phenix.Services.Host_MySQL.csproj", "{F957AABA-D2A0-48BB-9F0D-1E3CB3DE30EB}"

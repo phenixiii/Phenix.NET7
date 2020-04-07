@@ -13,31 +13,7 @@ namespace Phenix.Services.Plugin
     [Serializable]
     public class UserProxy : EntityGrainProxyBase<UserProxy, User, IUserGrain>, IUserProxy
     {
-        #region 属性
-
-        long IUserProxy.Id
-        {
-            get { return GetKernelPropertyAsync<long>(p => p.Id).Result; }
-        }
-
-        Teams IUserProxy.RootTeams
-        {
-            get { return GetKernelPropertyAsync<Teams>(p => p.RootTeams).Result; }
-        }
-
-        bool IUserProxy.IsAuthenticated
-        {
-            get { return GetKernelPropertyAsync<bool>(p => p.IsAuthenticated).Result; }
-        }
-
-        #endregion
-
         #region 方法
-
-        Task<User> IUserProxy.FetchUser()
-        {
-            return Grain.FetchKernel();
-        }
 
         Task<string> IUserProxy.CheckIn(string name, string phone, string eMail, string regAlias, string requestAddress)
         {

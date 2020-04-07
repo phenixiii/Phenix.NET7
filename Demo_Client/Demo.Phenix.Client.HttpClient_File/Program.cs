@@ -17,7 +17,7 @@ namespace Demo
 
             Console.WriteLine("在接下来的演示之前，请启动 Phenix.Services.Host 程序，并保证其正确连接到你的测试库。");
             Console.WriteLine("Phenix.Services.Host 程序的数据库连接配置信息，存放在其所在目录 SQLite 库 Phenix.Core.db 文件的 PH7_Database 表中，配置方法见其示例记录的 Remark 字段内容。");
-            Console.WriteLine("如需观察 Phenix.Services（扩展服务）被唤起的代码执行效果，可在其 GateService 的函数里设置断点，将程序集附加到执行中的 Phenix.Services.Host 程序。");
+            Console.WriteLine("当上传下载文件时，Host 会唤起 Phenix.Services（扩展服务）的 FileService 相关函数，你可以将程序集附加到执行中的 Phenix.Services.Host 程序， 设置断点观察调用过程。");
             Console.Write("准备好之后，请按任意键继续");
             Console.ReadKey();
             Console.WriteLine();

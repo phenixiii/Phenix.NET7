@@ -178,6 +178,13 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 
 20200405
+1，微调Phenix.Actor工程的功能
+2，微调Phenix.Services.Plugin工程的代码
+
+
+20200407
 1，添加Phenix.Security目录，用于存放权限管理模块的工程代码
 2，提供Phenix.Security.Plugin工程，包含注册用户自建团队成为超级管理员，或作为普通成员加入到某个团队等功能
+
+
 

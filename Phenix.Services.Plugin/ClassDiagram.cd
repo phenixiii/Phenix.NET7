@@ -10,8 +10,11 @@
   </Class>
   <Class Name="Phenix.Services.Plugin.UserProxy">
     <Position X="2.5" Y="0.5" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAQACAAAAAAAAIAAQgBJAEAAAQAAACAAA=</HashCode>
+      <HashCode>AAACAAAAAAAAQACAAABAAAAIAAAgAJAEAAAAAAACAAA=</HashCode>
       <FileName>UserProxy.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />

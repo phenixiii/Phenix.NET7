@@ -11,12 +11,12 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.Actor.EntityGrainBase&lt;TKernel&gt;">
-    <Position X="4.25" Y="2.75" Width="2.75" />
+    <Position X="2.75" Y="3" Width="3.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAABAEAACAAAAAEQAAAAAAgAAAAA=</HashCode>
+      <HashCode>ABACAAAIAAAAAAAAAABAEAABAAgAAAAAAAAAAgAAAAA=</HashCode>
       <FileName>EntityGrainBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -32,7 +32,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.Actor.StreamGrainBase&lt;TKernel, TEvent&gt;">
-    <Position X="7.25" Y="2.75" Width="2.75" />
+    <Position X="3.25" Y="6" Width="2.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -41,20 +41,21 @@
       <FileName>StreamGrainBase.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Phenix.Actor.EntityGrainClientBase&lt;T, TGrainInterface, TKernel&gt;">
-    <Position X="0.5" Y="2.75" Width="3.5" />
+  <Class Name="Phenix.Actor.EntityGrainProxyBase&lt;T, TKernel, TGrainInterface&gt;">
+    <Position X="6.5" Y="3" Width="4" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAQAAAAAAAAAAAAEEAAAAAAAAgIAAAAAAAAAABQAA=</HashCode>
-      <FileName>EntityGrainClientBase.cs</FileName>
+      <HashCode>AAAAQAABAAABAAAAAEEAACAAAAAgIAAAAAIYAAABQAA=</HashCode>
+      <FileName>EntityGrainProxyBase.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
-  <Interface Name="Phenix.Actor.IEntityGrain">
-    <Position X="4" Y="0.5" Width="2" />
+  <Interface Name="Phenix.Actor.IEntityGrain&lt;TKernel&gt;">
+    <Position X="0.5" Y="3" Width="2" />
     <TypeIdentifier>
-      <HashCode>AEAAAAAAAAIAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>QEAAAAAAAAIAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IEntityGrain.cs</FileName>
     </TypeIdentifier>
   </Interface>

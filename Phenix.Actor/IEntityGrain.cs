@@ -19,7 +19,7 @@ namespace Phenix.Actor
         /// <summary>
         /// 获取根实体对象
         /// </summary>
-        /// <returns>根实体对象(JSON格式)</returns>
+        /// <returns>根实体对象</returns>
         Task<TKernel> FetchKernel();
 
         /// <summary>

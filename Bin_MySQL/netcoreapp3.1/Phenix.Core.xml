@@ -4,6 +4,44 @@
         <name>Phenix.Core</name>
     </assembly>
     <members>
+        <member name="T:Phenix.Core.Actor.IEntityGrainProxy`1">
+            <summary>
+            实体Grain代理接口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Actor.IEntityGrainProxy`1.ExistKernel">
+            <summary>
+            存在根实体对象
+            </summary>
+            <returns>是否存在</returns>
+        </member>
+        <member name="M:Phenix.Core.Actor.IEntityGrainProxy`1.FetchKernel">
+            <summary>
+            获取根实体对象
+            </summary>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Actor.IEntityGrainProxy`1.GetKernelProperty``1(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            获取根实体对象属性值
+            </summary>
+            <param name="propertyLambda">含类属性的 lambda 表达式</param>
+            <returns>属性值</returns>
+        </member>
+        <member name="M:Phenix.Core.Actor.IEntityGrainProxy`1.SetKernelProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Object)">
+            <summary>
+            设置根实体对象属性值
+            </summary>
+            <param name="propertyLambda">含类属性的 lambda 表达式</param>
+            <param name="newValue">新值</param>
+        </member>
+        <member name="M:Phenix.Core.Actor.IEntityGrainProxy`1.UpdateKernelProperty(Phenix.Core.Data.Schema.NameValue[])">
+            <summary>
+            更新根实体对象属性值
+            </summary>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>是否成功</returns>
+        </member>
         <member name="T:Phenix.Core.AppRun">
             <summary>
             应用系统执行
@@ -8970,27 +9008,6 @@
             <summary>
             用户资料代理接口
             </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.IUserProxy.Id">
-            <summary>
-            ID(映射表XX_ID字段)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.IUserProxy.RootTeams">
-            <summary>
-            顶层团体
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.IUserProxy.IsAuthenticated">
-            <summary>
-            已身份验证?
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Security.IUserProxy.FetchUser">
-            <summary>
-            获取User对象
-            </summary>
-            <returns>User对象(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Security.IUserProxy.CheckIn(System.String,System.String,System.String,System.String,System.String)">
             <summary>

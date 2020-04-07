@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Phenix.Core.Actor;
 using Phenix.Core.Data.Model;
 using Phenix.Core.Data.Schema;
 using Phenix.Core.Reflection;
@@ -11,7 +12,7 @@ namespace Phenix.Actor
     /// 实体Grain代理基类
     /// </summary>
     [Serializable]
-    public abstract class EntityGrainProxyBase<T, TKernel, TGrainInterface>
+    public abstract class EntityGrainProxyBase<T, TKernel, TGrainInterface> : IEntityGrainProxy<TKernel>
         where T : EntityGrainProxyBase<T, TKernel, TGrainInterface>
         where TKernel : EntityBase<TKernel>
         where TGrainInterface : IEntityGrain<TKernel>
@@ -68,6 +69,11 @@ namespace Phenix.Actor
             return await Grain.ExistKernel();
         }
 
+        Task<bool> IEntityGrainProxy<TKernel>.ExistKernel()
+        {
+            return ExistKernelAsync();
+        }
+
         /// <summary>
         /// 获取根实体对象
         /// </summary>
@@ -75,6 +81,11 @@ namespace Phenix.Actor
         public async Task<TKernel> FetchKernelAsync()
         {
             return await Grain.FetchKernel();
+        }
+
+        Task<TKernel> IEntityGrainProxy<TKernel>.FetchKernel()
+        {
+            return FetchKernelAsync();
         }
 
         /// <summary>
@@ -87,6 +98,11 @@ namespace Phenix.Actor
             return (TValue) Utilities.ChangeType(await Grain.GetKernelProperty(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name), typeof(TValue));
         }
 
+        Task<TValue> IEntityGrainProxy<TKernel>.GetKernelProperty<TValue>(Expression<Func<TKernel, object>> propertyLambda)
+        {
+            return GetKernelPropertyAsync<TValue>(propertyLambda);
+        }
+
         /// <summary>
         /// 设置根实体对象属性值
         /// </summary>
@@ -97,6 +113,11 @@ namespace Phenix.Actor
             return NameValue.Set(propertyLambda, newValue);
         }
 
+        NameValue IEntityGrainProxy<TKernel>.SetKernelProperty(Expression<Func<TKernel, object>> propertyLambda, object newValue)
+        {
+            return SetKernelProperty(propertyLambda, newValue);
+        }
+
         /// <summary>
         /// 更新根实体对象属性值
         /// </summary>
@@ -105,6 +126,11 @@ namespace Phenix.Actor
         public async Task<bool> UpdateKernelPropertyAsync(params NameValue[] propertyValues)
         {
             return await Grain.UpdateKernelProperty(propertyValues);
+        }
+
+        Task<bool> IEntityGrainProxy<TKernel>.UpdateKernelProperty(params NameValue[] propertyValues)
+        {
+            return UpdateKernelPropertyAsync(propertyValues);
         }
 
         #endregion

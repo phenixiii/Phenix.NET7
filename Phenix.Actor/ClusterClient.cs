@@ -35,6 +35,9 @@ namespace Phenix.Actor
 
         /// <summary>
         /// 获取Orleans服务集群客户端
+        /// Orleans集群的唯一ID = Database.Default.DataSourceKey
+        /// Orleans服务的唯一ID = Database.Default.DataSourceKey
+        /// Orleans数据库连接串 = Database.Default.ConnectionString
         /// </summary>
         /// <returns>Orleans服务集群客户端</returns>
         public static IClusterClient Fetch()

@@ -11,13 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Data.Commo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Log.EventLog", "Demo_ORA\Demo.Phenix.Core.Log.EventLog\Demo.Phenix.Core.Log.EventLog.csproj", "{8869A4BE-402C-4956-B7B5-EC79C934E30F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{21ACEA56-E832-4AF1-A566-A4EBC61D932E}"
-	ProjectSection(SolutionItems) = preProject
-		ChangeLog.txt = ChangeLog.txt
-		Phenix.Services.Host.分布式服务架构.pptx = Phenix.Services.Host.分布式服务架构.pptx
-		Phenix.Services.Host.部署方法.doc = Phenix.Services.Host.部署方法.doc
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo_Client", "Demo_Client", "{4CBF1077-F885-4AEB-8014-ABC3D79F320E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Host_ORA", "Phenix.Services.Host\Phenix.Services.Host_ORA.csproj", "{EEC4928E-95B4-4BCA-B3E6-5471652D7B7E}"
@@ -53,6 +46,16 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Extend_ORA", "Phenix.Services.Extend\Phenix.Services.Extend_ORA.csproj", "{4FB6D7E3-5063-4258-A7C3-A8401C3C8227}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem", "Demo_ORA\Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem\Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem.csproj", "{F2C70441-C9A8-4FEA-81E1-C7C20005167B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo_Practice", "Demo_Practice", "{6ADF1332-5B28-4AF1-8E60-AC6A2F1D34C5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo.InspectionStation", "Demo.InspectionStation", "{06026AD5-640D-4252-B77F-4528FBB6919F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.InspectionStation.Plugin_ORA", "Demo_Practice\Demo.InspectionStation\Demo.InspectionStation.Plugin\Demo.InspectionStation.Plugin_ORA.csproj", "{87083954-C65B-461D-AB9D-88B4AC7CB946}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo.InventoryControl", "Demo.InventoryControl", "{48F3047D-1FF7-4F02-85A1-AB7D5143E48E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.InventoryControl.Plugin_ORA", "Demo_Practice\Demo.InventoryControl\Demo.InventoryControl.Plugin\Demo.InventoryControl.Plugin_ORA.csproj", "{A8E560ED-D458-4C50-8E40-D96C2777709C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -136,6 +139,14 @@ Global
 		{F2C70441-C9A8-4FEA-81E1-C7C20005167B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2C70441-C9A8-4FEA-81E1-C7C20005167B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2C70441-C9A8-4FEA-81E1-C7C20005167B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87083954-C65B-461D-AB9D-88B4AC7CB946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87083954-C65B-461D-AB9D-88B4AC7CB946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87083954-C65B-461D-AB9D-88B4AC7CB946}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87083954-C65B-461D-AB9D-88B4AC7CB946}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8E560ED-D458-4C50-8E40-D96C2777709C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8E560ED-D458-4C50-8E40-D96C2777709C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8E560ED-D458-4C50-8E40-D96C2777709C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8E560ED-D458-4C50-8E40-D96C2777709C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -153,6 +164,10 @@ Global
 		{E5395651-B15C-44AD-A166-0E4530E24823} = {4CBF1077-F885-4AEB-8014-ABC3D79F320E}
 		{17E0DC62-4AC7-4FEB-A13B-9C57217B0731} = {4CBF1077-F885-4AEB-8014-ABC3D79F320E}
 		{F2C70441-C9A8-4FEA-81E1-C7C20005167B} = {1140EBB7-3D04-4936-B893-FC46D34B8D01}
+		{06026AD5-640D-4252-B77F-4528FBB6919F} = {6ADF1332-5B28-4AF1-8E60-AC6A2F1D34C5}
+		{87083954-C65B-461D-AB9D-88B4AC7CB946} = {06026AD5-640D-4252-B77F-4528FBB6919F}
+		{48F3047D-1FF7-4F02-85A1-AB7D5143E48E} = {6ADF1332-5B28-4AF1-8E60-AC6A2F1D34C5}
+		{A8E560ED-D458-4C50-8E40-D96C2777709C} = {48F3047D-1FF7-4F02-85A1-AB7D5143E48E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9C8CF59-EE51-4301-9EAC-22750A624DD2}
