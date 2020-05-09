@@ -9,9 +9,19 @@ namespace Phenix.Services.Plugin
     /// </summary>
     public class UserProxyFactory : IUserProxyFactory
     {
-        IUserProxy IUserProxyFactory.Fetch(string name)
+        IUserProxy IUserProxyFactory.FetchUserProxy(string name)
         {
             return UserProxy.Fetch(ClusterClient.Default.GetGrain<IUserGrain>(name));
+        }
+
+        ITeamsProxy IUserProxyFactory.FetchTeamsProxy(long id)
+        {
+            return TeamsProxy.Fetch(ClusterClient.Default.GetGrain<ITeamsGrain>(id));
+        }
+
+        IPositionProxy IUserProxyFactory.FetchPositionProxy(long id)
+        {
+            return PositionProxy.Fetch(ClusterClient.Default.GetGrain<IPositionGrain>(id));
         }
     }
 }

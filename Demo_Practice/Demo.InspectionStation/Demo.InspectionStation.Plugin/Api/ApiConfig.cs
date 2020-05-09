@@ -1,9 +1,9 @@
 ﻿namespace Demo.InspectionStation.Plugin.Api
 {
     /// <summary>
-    /// 网络配置信息
+    /// WebAPI配置信息
     /// </summary>
-    public static class NetConfig
+    public static class ApiConfig
     {
         /// <summary>
         /// /api/center/listen

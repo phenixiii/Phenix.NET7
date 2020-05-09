@@ -75,10 +75,10 @@ namespace Phenix.Services.Host
                      * [Authorize]标签 Roles 声明的多个角色用‘|’分隔，互相为 or 关系
                      * 在 Controller/Action 上允许打多个[Authorize]标签，互相为 and 关系（也可以写在一个标签里用‘,’分隔）
                      *
-                     * 程序运行时 Phenix.Core.Net.AuthorizationFilter 会尝试把 Controller/Action 上的标签 Roles 写入 PH7_Controller_Role 表中，曾写入过的不会被覆盖
+                     * 程序运行时 Phenix.Core.Net.Filters.AuthorizationFilter 会尝试把 Controller/Action 上的标签 Roles 写入 PH7_Controller_Role 表中，曾写入过的不会被覆盖
                      * PH7_Controller_Role 表 CR_Roles 字段存储的是[Authorize]标签 Roles 属性值，如有多个[Authorize]就用‘,’分隔它们，字段为 null 时等同于[AllowAnonymous]
-                     * 你可以基于 PH7_Controller_Role 表，开发自己系统的 Controller/Action 访问权限的配置管理模块（本工程提供了基本的控制器代码）
-                     * 访问授权过滤器会优先采纳 PH7_Controller_Role 表的记录（一旦写入表后，代码里的标签其实就被忽略掉了，除非删除相应的记录）
+                     * 访问授权过滤器会优先采纳 PH7_Controller_Role 表的记录（一旦写入表后，代码里的标签会被忽略掉不再有效用，除非删除对应的那条 PH7_Controller_Role 表记录）
+                     * 你可以基于 PH7_Controller_Role 表，开发自己系统的 Controller/Action 访问权限的配置管理模块
                      *
                      * 验证失败的话返回 context.Response.StatusCode = 403 Forbidden
                      */
@@ -143,12 +143,14 @@ namespace Phenix.Services.Host
              * 你也可以开发自己的客户端接口（比如桌面端、APP应用端），仅需在报文上添加身份验证 Header
              * 身份验证 Header 格式为 Phenix-Authorization=[登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)]
              * 登录口令/动态口令应该通过第三方渠道（邮箱或短信）推送给到用户，由用户输入到系统提供的客户端登录界面上，用于加密时间戳生成报文的签名
-             * 用户登录成功后，客户端程序要将二次MD5登录口令/动态口令缓存在本地，以便每次向服务端发起 call 时都能为报文添加上身份验证 Header
+             * 用户登录成功后，客户端程序要将二次MD5登录口令/动态口令缓存在本地，以便每次向服务端发起 call 时都能为报文添加上 Phenix-Authorization
              * 如果报文上没有 Phenix-Authorization 身份验证 Header，会被 Phenix.Core.Net.AuthenticationMiddleware 当作是匿名用户
-             * 匿名用户的访问经过 Phenix.Core.Net.AuthorizationFilter 后，仅允许访问到带[AllowAnonymous]标签或不打[Authorize]标签的 Controller/Action             * 
+             * 匿名用户仅允许访问带[AllowAnonymous]标签或不打[Authorize]标签的 Controller/Action
              *
              * 验证失败的话 context.Response.StatusCode = 401 Unauthorized，失败详情见报文体
              * 验证成功的话 Phenix.Core.Security.Identity.CurrentIdentity.IsAuthenticated = true 且 context.User 会被赋值为 new ClaimsPrincipal(Phenix.Core.Security.Identity.CurrentIdentity)
+             *
+             * 鉴于登录名及注册时传递的手机号、邮箱等都是明文传输，建议为 WebAPI 服务前置的 Nginx 服务/负载均衡服务器挂上 SSL 证书，启用 HTTPS 协议
              *
              * 系统管理员的登录名是‘ADMIN’，初始登录口令也是‘ADMIN’（注意是大写），系统正式运行之前请更改口令
              */

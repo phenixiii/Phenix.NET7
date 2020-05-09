@@ -12,11 +12,10 @@ namespace Demo.InspectionStation.Plugin.Api.OperationPoint
     /// 道闸Controller
     /// </summary>
     [EnableCors]
-    [Route(NetConfig.ApiOperationPointGatePath)]
+    [Route(ApiConfig.ApiOperationPointGatePath)]
     [ApiController]
     public sealed class GateController : Phenix.Core.Net.Api.ControllerBase
     {
-        // GET: /api/inspection-station/operation-point/gate?operationPointName=道口1
         /// <summary>
         /// 获取
         /// </summary>
@@ -24,7 +23,7 @@ namespace Demo.InspectionStation.Plugin.Api.OperationPoint
         /// <returns>开闭(null=不确定)</returns>
         [Authorize]
         [HttpGet]
-        public async Task<bool?> Get(string operationPointName)
+        public async Task<bool?> GetStatus(string operationPointName)
         {
             OperationPointStatus status = await ClusterClient.Default.GetGrain<IOperationPointGrain>(operationPointName).GetStatus();
             switch (status)
@@ -38,14 +37,13 @@ namespace Demo.InspectionStation.Plugin.Api.OperationPoint
             }
         }
 
-        // PUT: /api/inspection-station/operation-point/gate?operationPointName=道口1
         /// <summary>
         /// 放行
         /// </summary>
         /// <param name="operationPointName">作业点名称</param>
         [Authorize]
         [HttpPut]
-        public async Task Put(string operationPointName)
+        public async Task PermitThrough(string operationPointName)
         {
             await ClusterClient.Default.GetGrain<IOperationPointGrain>(operationPointName).PermitThrough();
         }

@@ -55,7 +55,7 @@ namespace Demo
 
             Console.WriteLine("开始演示");
             Position position = Position.New(Database.Default);
-            position.Name = "企业组织架构管理员";
+            position.Name = "公司管理员";
             position.Roles = new string[]
             {
                 "组织架构管理", "岗位管理", "组员管理"

@@ -61,9 +61,9 @@ namespace Demo.InventoryControl.Plugin.Actor
         {
             get
             {
-                return _kernel ?? (_kernel = IcLocation.FetchRoot(Database.Default,
+                return _kernel ?? (_kernel = IcLocation.FetchRoot(Database,
                            p => p.Area == Area && p.Alley == Alley && p.Ordinal == Ordinal,
-                           () => IcLocation.New(Database.Default,
+                           () => IcLocation.New(Database,
                                NameValue.Set<IcLocation>(p => p.Area, Area),
                                NameValue.Set<IcLocation>(p => p.Alley, Alley),
                                NameValue.Set<IcLocation>(p => p.Ordinal, Ordinal))));

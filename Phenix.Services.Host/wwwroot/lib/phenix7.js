@@ -212,8 +212,8 @@ var phAjax = (function($) {
             };
             options = $.extend(defaults, options);
             phAjax.call({
-                type: "PATCH",
-                path: "/api/security/myself",
+                type: "PUT",
+                path: "/api/security/myself/password",
                 data: newPassword,
                 encryptData: true,
                 onSuccess: function(result) {
@@ -348,7 +348,7 @@ var phAjax = (function($) {
             };
             options = $.extend(defaults, options);
             phAjax.call({
-                type: "PATCH",
+                type: "DELETE",
                 path: "/api/message/user-message?id=" + id + "&burn=" + burn,
                 onSuccess: function(result) {
                     if (typeof options.onSuccess == "function")
@@ -409,6 +409,45 @@ var phAjax = (function($) {
                 });
         },
 
+        downloadFile: function(options) {
+            var defaults = {
+                message: null, //上传消息
+                fileName: null, //下载文件名
+                onProgress: null, //执行进度的回调函数, 参数(fileName, chunkCount, chunkNumber, chunkSize, chunkBody, chunkBuffer)，函数调用返回值如为false则中止下载
+                onSuccess: null, //调用成功的回调函数, 参数(fileName, fileBlob)
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
+            };
+            options = $.extend(defaults, options);
+            phAjax.downloadFileChunk(options.message, options.fileName, 1, null, options.onProgress, options.onSuccess, options.onError);
+        },
+
+        downloadFileChunk: function(message, fileName, chunkNumber, chunkBuffer, onProgress, onSuccess, onError) {
+            phAjax.call({
+                path: "/api/inout/file?message=" + encodeURIComponent(message) + "&fileName=" + encodeURIComponent(fileName) + "&chunkNumber=" + chunkNumber,
+                onSuccess: function (result) {
+                    if (result == null)
+                        return;
+                    result.chunkBody = $.base64.atob(result.chunkBody);
+                    chunkBuffer = chunkBuffer == null ? result.chunkBody : chunkBuffer.concat(result.chunkBody);
+                    if (typeof onProgress == "function") {
+                        var goon = onProgress(result.fileName, result.chunkCount, result.chunkNumber, result.chunkSize, result.chunkBody, chunkBuffer);
+                        if (typeof goon == "boolean" && !goon)
+                            return;
+                    };
+                    if (result.chunkNumber >= result.chunkCount) {
+                        if (typeof onSuccess == "function")
+                            onSuccess(result.fileName, new Blob([phUtils.toUint8Array(chunkBuffer)]));
+                        return;
+                    };
+                    phAjax.downloadFileChunk(message, fileName, chunkNumber + 1, chunkBuffer, onProgress, onSuccess, onError);
+                },
+                onError: function (XMLHttpRequest, textStatus, errorThrown) {
+                    if (typeof onError == "function")
+                        onError(XMLHttpRequest, textStatus, errorThrown);
+                },
+            });
+        },
+
         uploadFiles: function(options) {
             var defaults = {
                 message: null, //上传消息
@@ -447,7 +486,7 @@ var phAjax = (function($) {
                 formData.append("chunkBody", file.slice(p, p + chunkSize), file.name);
             };
             phAjax.call({
-                type: "POST",
+                type: "PUT",
                 path: "/api/inout/file",
                 processData: false, //不要对data参数进行序列化处理
                 contentType: false, //不要设置Content-Type请求头，因为文件数据是以multipart/form-data来编码
@@ -466,53 +505,6 @@ var phAjax = (function($) {
                         return;
                     };
                     phAjax.uploadFileChunk(message, file, chunkNumber + 1, onProgress, onSuccess, onError);
-                },
-                onError: function(XMLHttpRequest, textStatus, errorThrown) {
-                    if (typeof onError == "function")
-                        onError(XMLHttpRequest, textStatus, errorThrown);
-                },
-            });
-        },
-
-        downloadFile: function(options) {
-            var defaults = {
-                message: null, //上传消息
-                fileName: null, //下载文件名
-                onProgress: null, //执行进度的回调函数, 参数(fileName, chunkCount, chunkNumber, chunkSize, chunkBody, chunkBuffer)，函数调用返回值如为false则中止下载
-                onSuccess: null, //调用成功的回调函数, 参数(fileName, fileBlob)
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
-            };
-            options = $.extend(defaults, options);
-            phAjax.downloadFileChunk(options.message, options.fileName, 1, null, options.onProgress, options.onSuccess, options.onError);
-        },
-
-        downloadFileChunk: function (message, fileName, chunkNumber, chunkBuffer, onProgress, onSuccess, onError) {
-            var formData = new FormData();
-            formData.append("message", message);
-            formData.append("fileName", fileName);
-            formData.append("chunkNumber", chunkNumber);
-            phAjax.call({
-                type: "PUT",
-                path: "/api/inout/file",
-                processData: false, //不要对data参数进行序列化处理
-                contentType: false, //不要设置Content-Type请求头，因为文件数据是以multipart/form-data来编码
-                data: formData,
-                onSuccess: function(result) {
-                    if (result == null)
-                        return;
-                    result.chunkBody = $.base64.atob(result.chunkBody);
-                    chunkBuffer = chunkBuffer == null ? result.chunkBody : chunkBuffer.concat(result.chunkBody);
-                    if (typeof onProgress == "function") {
-                        var goon = onProgress(result.fileName, result.chunkCount, result.chunkNumber, result.chunkSize, result.chunkBody, chunkBuffer);
-                        if (typeof goon == "boolean" && !goon)
-                            return;
-                    };
-                    if (result.chunkNumber >= result.chunkCount) {
-                        if (typeof onSuccess == "function")
-                            onSuccess(result.fileName, new Blob([phUtils.toUint8Array(chunkBuffer)]));
-                        return;
-                    };
-                    phAjax.downloadFileChunk(message, fileName, chunkNumber + 1, chunkBuffer, onProgress, onSuccess, onError);
                 },
                 onError: function(XMLHttpRequest, textStatus, errorThrown) {
                     if (typeof onError == "function")

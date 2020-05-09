@@ -6,16 +6,49 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAACIAAAAIBAAAABAAAAEAQAAAgAAAAQAIAAAwAAAAA=</HashCode>
+      <HashCode>QAACIAAAAIBAAAAAABAAEAQAAAgAAAAQAIAAAwAAAAA=</HashCode>
       <FileName>Actor\UserGrain.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Services.Plugin.Actor.TeamsGrain">
+    <Position X="2.5" Y="4.75" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Actor\TeamsGrain.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Services.Plugin.Actor.PositionGrain">
+    <Position X="2.5" Y="6.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Actor\PositionGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Interface Name="Phenix.Services.Plugin.Actor.IUserGrain">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQAAAAAACAAAgCAQAAoAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <HashCode>AQAAAAAAACAAgCAQAAoAAAAAAAAAAAAAAAAIBAAAAAA=</HashCode>
       <FileName>Actor\IUserGrain.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Phenix.Services.Plugin.Actor.ITeamsGrain">
+    <Position X="0.5" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Actor\ITeamsGrain.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Phenix.Services.Plugin.Actor.IPositionGrain">
+    <Position X="0.5" Y="6.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Actor\IPositionGrain.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Microsoft YaHei UI" Size="9" />

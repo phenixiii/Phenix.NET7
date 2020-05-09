@@ -362,7 +362,7 @@ namespace Phenix.Business
         /// <summary>
         /// 保存自己
         /// </summary>
-        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
+        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
         public int SaveSelf(bool checkTimestamp = true)
         {
             return Database.ExecuteGet((Func<DbTransaction, bool, int>) SaveSelf, checkTimestamp);
@@ -372,7 +372,7 @@ namespace Phenix.Business
         /// 保存自己
         /// </summary>
         /// <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
+        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
         public int SaveSelf(DbConnection connection, bool checkTimestamp = true)
         {
             return DbConnectionHelper.ExecuteGet(connection, SaveSelf, checkTimestamp);
@@ -382,7 +382,7 @@ namespace Phenix.Business
         /// 保存自己
         /// </summary>
         /// <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
+        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
         public virtual int SaveSelf(DbTransaction transaction, bool checkTimestamp = true)
         {
             int result = 0;

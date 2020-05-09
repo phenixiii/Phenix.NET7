@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Orleans;
 using Phenix.Actor;
+using Phenix.Core.Data.Schema;
 using Phenix.Core.Security;
 
 namespace Phenix.Services.Plugin.Actor
@@ -48,12 +49,6 @@ namespace Phenix.Services.Plugin.Actor
         Task Logon(string tag);
 
         /// <summary>
-        /// 确定是否属于指定的角色
-        /// </summary>
-        /// <param name="role">角色</param>
-        Task<bool> IsInRole(string role);
-
-        /// <summary>
         /// 加密
         /// Key/IV=登录口令/动态口令
         /// </summary>
@@ -75,5 +70,12 @@ namespace Phenix.Services.Plugin.Actor
         /// <param name="throwIfNotConform">如果为 true, 账号无效或口令不规范会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserPasswordComplexityException异常而不是返回false</param>
         /// <returns>是否成功</returns>
         Task<bool> ChangePassword(string newPassword, bool throwIfNotConform);
+
+        /// <summary>
+        /// 更新顶层团体
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <returns>顶层团体主键</returns>
+        Task<long> PatchRootTeams(string name);
     }
 }

@@ -15,7 +15,7 @@ namespace Demo.InspectionStation.Plugin.Actor
     /// <summary>
     /// 中控Grain
     /// </summary>
-    public class CenterGrain : StreamGrainBase<IsCenter, IsOperationPoint>, ICenterGrain
+    public class CenterGrain : StreamEntityGrainBase<IsCenter, IsOperationPoint>, ICenterGrain
     {
         #region 属性
 
@@ -46,9 +46,9 @@ namespace Demo.InspectionStation.Plugin.Actor
         {
             get
             {
-                return _kernel ?? (_kernel = IsCenter.FetchRoot(Database.Default,
+                return _kernel ?? (_kernel = IsCenter.FetchRoot(Database,
                            p => p.Name == Name,
-                           () => IsCenter.New(Database.Default,
+                           () => IsCenter.New(Database,
                                NameValue.Set<IsCenter>(p => p.Name, Name))));
             }
             set { _kernel = value; }

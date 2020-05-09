@@ -89,6 +89,21 @@ namespace Phenix.Actor
         }
 
         /// <summary>
+        /// 更新根实体对象
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        /// <returns>是否成功</returns>
+        public async Task<int> PatchKernelAsync(params NameValue[] propertyValues)
+        {
+            return await Grain.PatchKernel(propertyValues);
+        }
+
+        Task<int> IEntityGrainProxy<TKernel>.PatchKernel(params NameValue[] propertyValues)
+        {
+            return PatchKernelAsync(propertyValues);
+        }
+
+        /// <summary>
         /// 获取根实体对象属性值
         /// </summary>
         /// <param name="propertyLambda">含类属性的 lambda 表达式</param>
@@ -111,26 +126,6 @@ namespace Phenix.Actor
         public NameValue SetKernelProperty(Expression<Func<TKernel, object>> propertyLambda, object newValue)
         {
             return NameValue.Set(propertyLambda, newValue);
-        }
-
-        NameValue IEntityGrainProxy<TKernel>.SetKernelProperty(Expression<Func<TKernel, object>> propertyLambda, object newValue)
-        {
-            return SetKernelProperty(propertyLambda, newValue);
-        }
-
-        /// <summary>
-        /// 更新根实体对象属性值
-        /// </summary>
-        /// <param name="propertyValues">待更新属性值队列</param>
-        /// <returns>是否成功</returns>
-        public async Task<bool> UpdateKernelPropertyAsync(params NameValue[] propertyValues)
-        {
-            return await Grain.UpdateKernelProperty(propertyValues);
-        }
-
-        Task<bool> IEntityGrainProxy<TKernel>.UpdateKernelProperty(params NameValue[] propertyValues)
-        {
-            return UpdateKernelPropertyAsync(propertyValues);
         }
 
         #endregion

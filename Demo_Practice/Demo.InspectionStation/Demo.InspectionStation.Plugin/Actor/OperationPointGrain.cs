@@ -12,7 +12,7 @@ namespace Demo.InspectionStation.Plugin.Actor
     /// <summary>
     /// 作业点Grain
     /// </summary>
-    public class OperationPointGrain : StreamGrainBase<IsOperationPoint, IsOperationPoint>, IOperationPointGrain
+    public class OperationPointGrain : StreamEntityGrainBase<IsOperationPoint, IsOperationPoint>, IOperationPointGrain
     {
         #region 属性
 
@@ -43,9 +43,9 @@ namespace Demo.InspectionStation.Plugin.Actor
         {
             get
             {
-                return _kernel ?? (_kernel = IsOperationPoint.FetchRoot(Database.Default,
+                return _kernel ?? (_kernel = IsOperationPoint.FetchRoot(Database,
                            p => p.Name == Name,
-                           () => IsOperationPoint.New(Database.Default,
+                           () => IsOperationPoint.New(Database,
                                NameValue.Set<IsOperationPoint>(p => p.Name, Name))));
             }
             set { _kernel = value; }

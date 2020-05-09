@@ -1,3 +1,4 @@
+using System;
 using System.Security.Principal;
 using System.Threading;
 
@@ -62,9 +63,17 @@ namespace Phenix.Client.Security
         /// 确定是否属于指定的角色
         /// </summary>
         /// <param name="role">角色</param>
+        /// <returns>属于指定的角色</returns>
         public bool IsInRole(string role)
         {
-            return Identity != null && Identity.IsInRole(role);
+            Identity identity = Identity;
+            if (identity == null)
+                return false;
+            if (!identity.IsAuthenticated)
+                return false;
+            if (String.IsNullOrEmpty(role))
+                return true;
+            return identity.User.Position != null && identity.User.Position.IsInRole(role);
         }
 
         #endregion

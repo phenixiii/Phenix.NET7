@@ -6,11 +6,11 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v3.1": {
-      "Phenix.Core/7.3.29": {
+      "Phenix.Core/7.3.30": {
         "dependencies": {
           "Newtonsoft.Json": "12.0.3",
-          "Oracle.ManagedDataAccess.Core": "2.19.60",
-          "System.Data.SQLite.Core": "1.0.112"
+          "Oracle.ManagedDataAccess.Core": "2.19.70",
+          "System.Data.SQLite.Core": "1.0.112.2"
         },
         "runtime": {
           "Phenix.Core.dll": {}
@@ -24,7 +24,7 @@
           }
         }
       },
-      "Oracle.ManagedDataAccess.Core/2.19.60": {
+      "Oracle.ManagedDataAccess.Core/2.19.70": {
         "runtime": {
           "lib/netstandard2.0/Oracle.ManagedDataAccess.dll": {
             "assemblyVersion": "2.0.19.1",
@@ -32,15 +32,20 @@
           }
         }
       },
-      "System.Data.SQLite.Core/1.0.112": {
+      "System.Data.SQLite.Core/1.0.112.2": {
         "runtime": {
-          "lib/netstandard2.0/System.Data.SQLite.dll": {
-            "assemblyVersion": "1.0.112.0",
-            "fileVersion": "1.0.112.0"
+          "lib/netstandard2.1/System.Data.SQLite.dll": {
+            "assemblyVersion": "1.0.112.1",
+            "fileVersion": "1.0.112.1"
           }
         },
         "runtimeTargets": {
           "runtimes/linux-x64/native/netstandard2.0/SQLite.Interop.dll": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/netstandard2.1/SQLite.Interop.dll": {
             "rid": "linux-x64",
             "assetType": "native",
             "fileVersion": "0.0.0.0"
@@ -50,22 +55,37 @@
             "assetType": "native",
             "fileVersion": "0.0.0.0"
           },
+          "runtimes/osx-x64/native/netstandard2.1/SQLite.Interop.dll": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
           "runtimes/win-x64/native/netstandard2.0/SQLite.Interop.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "1.0.112.0"
+            "fileVersion": "1.0.112.1"
+          },
+          "runtimes/win-x64/native/netstandard2.1/SQLite.Interop.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "1.0.112.1"
           },
           "runtimes/win-x86/native/netstandard2.0/SQLite.Interop.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "1.0.112.0"
+            "fileVersion": "1.0.112.1"
+          },
+          "runtimes/win-x86/native/netstandard2.1/SQLite.Interop.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "1.0.112.1"
           }
         }
       }
     }
   },
   "libraries": {
-    "Phenix.Core/7.3.29": {
+    "Phenix.Core/7.3.30": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -77,19 +97,19 @@
       "path": "newtonsoft.json/12.0.3",
       "hashPath": "newtonsoft.json.12.0.3.nupkg.sha512"
     },
-    "Oracle.ManagedDataAccess.Core/2.19.60": {
+    "Oracle.ManagedDataAccess.Core/2.19.70": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-hQqREt883jwr0LYrYgOtkqgZ3TbEyCGm/eekwA1Vth66aD66752PRKBbTvM9b1a71ewuvaXRy2T9KVwlSMYaTw==",
-      "path": "oracle.manageddataaccess.core/2.19.60",
-      "hashPath": "oracle.manageddataaccess.core.2.19.60.nupkg.sha512"
+      "sha512": "sha512-bpsnNrSc/dtKx5KSrnG1CTYlAzNzWV0BVmb5HbcPDgMY5FfGLKi5W96e7UHtSq6vniKIt7ptTie9uWGUqOyj4A==",
+      "path": "oracle.manageddataaccess.core/2.19.70",
+      "hashPath": "oracle.manageddataaccess.core.2.19.70.nupkg.sha512"
     },
-    "System.Data.SQLite.Core/1.0.112": {
+    "System.Data.SQLite.Core/1.0.112.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-3wA9v/K2ncZWsWfEBTiQppsi2014IJMXsZ1md3pk5bEXAJyuTthSrHF4bIWm5MG+C5g5XLhA2H7XfnSq1PXCeQ==",
-      "path": "system.data.sqlite.core/1.0.112",
-      "hashPath": "system.data.sqlite.core.1.0.112.nupkg.sha512"
+      "sha512": "sha512-iYj32NThg9oSr/0IvG0HEIVi5/x5qqdqAU4wu8sSYe94e8F+QbrXmsrP/tvWTre4ugkgTgdmPsJdtxDP4TIsEg==",
+      "path": "system.data.sqlite.core/1.0.112.2",
+      "hashPath": "system.data.sqlite.core.1.0.112.2.nupkg.sha512"
     }
   }
 }

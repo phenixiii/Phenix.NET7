@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Net.Http;
 using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
 using Phenix.Core.Data.Model;
+using Phenix.Core.Data.Schema;
+using Phenix.Core.Net.Api;
 using Phenix.Core.Reflection;
 using Phenix.Core.Security.Auth;
 using Phenix.Core.Security.Cryptography;
@@ -47,13 +52,26 @@ namespace Phenix.Client.Security
             _disabledTime = disabledTime;
         }
 
-        internal User(string name, string password)
+        internal User(Identity owner, string name, string password)
         {
+            _owner = owner;
             _name = name;
-            _password = password;
+            _password = MD5CryptoTextProvider.ComputeHash(password);
         }
 
         #region 属性
+
+        [NonSerialized]
+        private Identity _owner;
+
+        /// <summary>
+        /// Identity
+        /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
+        public Identity Owner
+        {
+            get { return _owner; }
+        }
 
         private readonly string _name;
 
@@ -65,7 +83,7 @@ namespace Phenix.Client.Security
             get { return _name; }
         }
 
-        private readonly string _phone;
+        private string _phone;
 
         /// <summary>
         /// 手机
@@ -73,9 +91,10 @@ namespace Phenix.Client.Security
         public string Phone
         {
             get { return _phone; }
+            set { _phone = value; }
         }
 
-        private readonly string _eMail;
+        private string _eMail;
 
         /// <summary>
         /// 邮箱
@@ -83,6 +102,7 @@ namespace Phenix.Client.Security
         public string EMail
         {
             get { return _eMail; }
+            set { _eMail = value; }
         }
 
         private readonly string _regAlias;
@@ -135,7 +155,7 @@ namespace Phenix.Client.Security
             get { return _requestFailureTime; }
         }
 
-        private readonly long? _rootTeamsId;
+        private long? _rootTeamsId;
 
         /// <summary>
         /// 所属顶层团体ID
@@ -145,14 +165,14 @@ namespace Phenix.Client.Security
             get { return _rootTeamsId; }
         }
 
-        private readonly Teams _rootTeams;
+        private Teams _rootTeams;
 
         /// <summary>
-        /// 顶层团体
+        /// 所属顶层团体
         /// </summary>
         public Teams RootTeams
         {
-            get { return _rootTeams; }
+            get { return _rootTeams ?? (_rootTeams = Teams.Fetch(this)); }
         }
 
         private readonly long? _teamsId;
@@ -162,7 +182,7 @@ namespace Phenix.Client.Security
         /// </summary>
         public long? TeamsId
         {
-            get { return _teamsId; }
+            get { return _teamsId ?? _rootTeamsId; }
         }
 
         [NonSerialized]
@@ -174,12 +194,7 @@ namespace Phenix.Client.Security
         [Newtonsoft.Json.JsonIgnore]
         public Teams Teams
         {
-            get
-            {
-                if (_teams == null && _teamsId.HasValue)
-                    _teams = RootTeams.FindInBranch(p => p.Id == _teamsId.Value);
-                return _teams;
-            }
+            get { return _teams ?? (_teams = _teamsId.HasValue ? RootTeams.FindInBranch(p => p.Id == _teamsId.Value) : RootTeams); }
         }
 
         private readonly long? _positionId;
@@ -192,14 +207,14 @@ namespace Phenix.Client.Security
             get { return _positionId; }
         }
 
-        private readonly Position _position;
+        private Position _position;
 
         /// <summary>
         /// 担任岗位
         /// </summary>
         public Position Position
         {
-            get { return _position; }
+            get { return _position ?? (_position = Position.Fetch(this)); }
         }
 
         private readonly bool _locked;
@@ -252,7 +267,27 @@ namespace Phenix.Client.Security
         public string Password
         {
             get { return _password; }
-            set { _password = value; }
+        }
+
+        /// <summary>
+        /// 是否公司管理员?
+        /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
+        public bool IsCompanyAdmin
+        {
+            get { return _teamsId == _rootTeamsId; }
+        }
+
+        [NonSerialized]
+        private bool _isAuthenticated;
+
+        /// <summary>
+        /// 已身份验证?
+        /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
+        public bool IsAuthenticated
+        {
+            get { return _isAuthenticated && !_disabled && !_locked; }
         }
 
         #endregion
@@ -267,7 +302,7 @@ namespace Phenix.Client.Security
         /// <returns>密文(Base64字符串)</returns>
         public string Encrypt(object data)
         {
-            return RijndaelCryptoTextProvider.Encrypt(Password, data is string ds ? ds : Utilities.JsonSerialize(data));
+            return RijndaelCryptoTextProvider.Encrypt(_password, data is string ds ? ds : Utilities.JsonSerialize(data));
         }
 
         /// <summary>
@@ -280,7 +315,7 @@ namespace Phenix.Client.Security
         {
             try
             {
-                return RijndaelCryptoTextProvider.Decrypt(Password, cipherText);
+                return RijndaelCryptoTextProvider.Decrypt(_password, cipherText);
             }
             catch (CryptographicException)
             {
@@ -294,7 +329,66 @@ namespace Phenix.Client.Security
         public string FormatComplexAuthorization()
         {
             string timestamp = String.Format("{0}{1}", new Random().Next(100000000, 1000000000), DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
-            return String.Format("{0},{1},{2}", Uri.EscapeDataString(Name), timestamp, Encrypt(timestamp));
+            return String.Format("{0},{1},{2}", Uri.EscapeDataString(_name), timestamp, Encrypt(timestamp));
+        }
+
+        internal async Task LogonAsync(string tag)
+        {
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, ApiConfig.ApiSecurityGatePath))
+            {
+                request.Content = new StringContent(Encrypt(tag ?? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")), Encoding.UTF8);
+                using (HttpResponseMessage response = await _owner.HttpClient.SendAsync(request))
+                {
+                    await response.ThrowIfFailedAsync();
+                    _isAuthenticated = true;
+                }
+            }
+        }
+
+        internal async Task<User> ReFetchAsync()
+        {
+            User result = await _owner.HttpClient.CallAsync<User>(HttpMethod.Get, ApiConfig.ApiSecurityMyselfPath, true);
+            if (result != null)
+            {
+                result._owner = _owner;
+                result._password = _password;
+                result._isAuthenticated = _isAuthenticated;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 修改登录口令
+        /// </summary>
+        /// <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
+        public async Task ChangePasswordAsync(string password)
+        {
+            await _owner.HttpClient.CallAsync(HttpMethod.Put, ApiConfig.ApiSecurityMyselfPasswordPath, password, true);
+            _password = MD5CryptoTextProvider.ComputeHash(password);
+        }
+
+        /// <summary>
+        /// 更新自己
+        /// </summary>
+        public int UpdateSelf()
+        {
+            return _owner.HttpClient.CallAsync<int>(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfPath,
+                NameValue.ToArray(
+                    NameValue.Set<User>(p => p.Phone, Phone),
+                    NameValue.Set<User>(p => p.EMail, EMail)), true).Result;
+        }
+
+        /// <summary>
+        /// 更新顶层团体
+        /// </summary>
+        /// <param name="name">公司名</param>
+        public async Task PatchRootTeamsAsync(string name)
+        {
+            _rootTeamsId = await _owner.HttpClient.CallAsync<long>(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfRootTeamsPath,
+                NameValue.Set<Teams>(p => p.Name, name));
+            _rootTeams = null;
+            _teams = null;
         }
 
         #endregion

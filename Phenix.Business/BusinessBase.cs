@@ -165,7 +165,7 @@ namespace Phenix.Business
         /// <summary>
         /// 级联保存
         /// </summary>
-        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
+        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
         public void SaveDepth(bool checkTimestamp = true)
         {
             Database.Execute((Action<DbTransaction, bool>) SaveDepth, checkTimestamp);
@@ -175,7 +175,7 @@ namespace Phenix.Business
         /// 级联保存
         /// </summary>
         /// <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
+        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
         public void SaveDepth(DbConnection connection, bool checkTimestamp = true)
         {
             DbConnectionHelper.Execute(connection, SaveDepth, checkTimestamp);
@@ -185,7 +185,7 @@ namespace Phenix.Business
         /// 级联保存
         /// </summary>
         /// <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
+        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
         public virtual void SaveDepth(DbTransaction transaction, bool checkTimestamp = true)
         {
             if (IsNew)

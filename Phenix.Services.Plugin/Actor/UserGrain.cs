@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Security;
 using System.Threading.Tasks;
 using Orleans;
 using Phenix.Actor;
-using Phenix.Core.Data;
 using Phenix.Core.Data.Schema;
 using Phenix.Core.Security;
 using Phenix.Core.Security.Auth;
@@ -41,7 +41,7 @@ namespace Phenix.Services.Plugin.Actor
         /// </summary>
         protected override User Kernel
         {
-            get { return _kernel ?? (_kernel = User.FetchRoot(Database.Default, p => p.Name == Name)); }
+            get { return _kernel ?? (_kernel = User.FetchRoot(Database, p => p.Name == Name)); }
             set { _kernel = value; }
         }
 
@@ -65,7 +65,7 @@ namespace Phenix.Services.Plugin.Actor
             {
                 string initialPassword = User.BuildPassword(name);
                 string dynamicPassword = User.BuildDynamicPassword();
-                user = User.New(Database.Default,
+                user = User.New(Database,
                     NameValue.Set<User>(p => p.Name, name),
                     NameValue.Set<User>(p => p.Phone, phone),
                     NameValue.Set<User>(p => p.EMail, eMail),
@@ -96,14 +96,6 @@ namespace Phenix.Services.Plugin.Actor
              * 可利用客户端传过来的 tag 扩展出系统自己的用户登录功能
              */
             return Task.CompletedTask;
-        }
-
-        Task<bool> IUserGrain.IsInRole(string role)
-        {
-            if (Kernel == null)
-                throw new UserNotFoundException();
-
-            return Task.FromResult(Kernel.IsInRole(role));
         }
 
         Task<string> IUserGrain.Encrypt(string sourceText)
@@ -144,6 +136,20 @@ namespace Phenix.Services.Plugin.Actor
                 throw new UserNotFoundException();
 
             return Task.FromResult(Kernel.ChangePassword(newPassword, throwIfNotConform));
+        }
+
+        Task<long> IUserGrain.PatchRootTeams(string name)
+        {
+            if (Kernel == null)
+                throw new UserNotFoundException();
+            if (!Kernel.IsCompanyAdmin)
+                throw new SecurityException("仅允许公司管理员设置自己公司的组织架构!");
+
+            long result = Kernel.RootTeamsId.HasValue ? Kernel.RootTeamsId.Value : Database.Sequence.Value;
+            ClusterClient.Default.GetGrain<ITeamsGrain>(result).PatchKernel(NameValue.Set<Teams>(p => p.Name, name));
+            if (!Kernel.RootTeamsId.HasValue)
+                Kernel.UpdateSelf(Kernel.SetProperty(p => p.RootTeamsId, result));
+            return Task.FromResult(result);
         }
 
         #endregion

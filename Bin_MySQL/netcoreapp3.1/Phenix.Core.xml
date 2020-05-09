@@ -21,6 +21,13 @@
             </summary>
             <returns>根实体对象</returns>
         </member>
+        <member name="M:Phenix.Core.Actor.IEntityGrainProxy`1.PatchKernel(Phenix.Core.Data.Schema.NameValue[])">
+            <summary>
+            更新根实体对象
+            </summary>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>是否成功</returns>
+        </member>
         <member name="M:Phenix.Core.Actor.IEntityGrainProxy`1.GetKernelProperty``1(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
             <summary>
             获取根实体对象属性值
@@ -28,19 +35,41 @@
             <param name="propertyLambda">含类属性的 lambda 表达式</param>
             <returns>属性值</returns>
         </member>
-        <member name="M:Phenix.Core.Actor.IEntityGrainProxy`1.SetKernelProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Object)">
+        <member name="T:Phenix.Core.Actor.ITreeEntityGrainProxy`1">
             <summary>
-            设置根实体对象属性值
+            实体Grain代理接口
             </summary>
-            <param name="propertyLambda">含类属性的 lambda 表达式</param>
-            <param name="newValue">新值</param>
         </member>
-        <member name="M:Phenix.Core.Actor.IEntityGrainProxy`1.UpdateKernelProperty(Phenix.Core.Data.Schema.NameValue[])">
+        <member name="M:Phenix.Core.Actor.ITreeEntityGrainProxy`1.AddChildNode(System.Int64,Phenix.Core.Data.Schema.NameValue[])">
             <summary>
-            更新根实体对象属性值
+            添加子节点
             </summary>
+            <param name="parentId">父节点ID</param>
             <param name="propertyValues">待更新属性值队列</param>
-            <returns>是否成功</returns>
+            <returns>子节点ID</returns>
+        </member>
+        <member name="M:Phenix.Core.Actor.ITreeEntityGrainProxy`1.ChangeParentNode(System.Int64,System.Int64)">
+            <summary>
+            更改父节点
+            </summary>
+            <param name="id">节点ID</param>
+            <param name="parentId">父节点ID</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Actor.ITreeEntityGrainProxy`1.UpdateNode(System.Int64,Phenix.Core.Data.Schema.NameValue[])">
+            <summary>
+            更新节点
+            </summary>
+            <param name="id">节点ID</param>
+            <param name="propertyValues">待更新属性值队列</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Actor.ITreeEntityGrainProxy`1.DeleteNode(System.Int64)">
+            <summary>
+            删除节点枝杈
+            </summary>
+            <param name="id">节点ID</param>
+            <returns>更新记录数</returns>
         </member>
         <member name="T:Phenix.Core.AppRun">
             <summary>
@@ -3110,6 +3139,11 @@
             根数据
             </summary>
         </member>
+        <member name="P:Phenix.Core.Data.Model.DataBase`1.IsRoot">
+            <summary>
+            是根实体
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Data.Model.DataBase`1.Master">
             <summary>
             主数据
@@ -3152,7 +3186,16 @@
             新增实体对象(自动填充主键和保留字段)
             </summary>
             <param name="database">数据库入口</param>
-            <param name="propertyValues">待更新属性值队列</param>
+            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
+            <returns>实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.New(Phenix.Core.Data.Database,System.Int64,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            新增实体对象(自动填充保留字段)
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="id">主键</param>
+            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
             <returns>实体对象</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.New(Phenix.Core.Data.Database,Phenix.Core.Data.Schema.NameValue[])">
@@ -3160,7 +3203,16 @@
             新增实体对象(自动填充主键和保留字段)
             </summary>
             <param name="database">数据库入口</param>
-            <param name="propertyValues">待更新属性值队列</param>
+            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
+            <returns>实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.New(Phenix.Core.Data.Database,System.Int64,Phenix.Core.Data.Schema.NameValue[])">
+            <summary>
+            新增实体对象(自动填充保留字段)
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="id">主键</param>
+            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
             <returns>实体对象</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{`0})">
@@ -3232,6 +3284,11 @@
         <member name="P:Phenix.Core.Data.Model.EntityBase`1.Root">
             <summary>
             根实体
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.EntityBase`1.IsRoot">
+            <summary>
+            是根实体
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Model.EntityBase`1.Master">
@@ -3443,15 +3500,15 @@
             <summary>
             更新自己
             </summary>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
             更新自己
             </summary>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbConnection,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3459,7 +3516,7 @@
             更新自己
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbConnection,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3467,8 +3524,8 @@
             更新自己
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbTransaction,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3476,7 +3533,7 @@
             更新自己
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbTransaction,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3484,8 +3541,8 @@
             更新自己
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3493,7 +3550,7 @@
             更新自己
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3501,8 +3558,8 @@
             更新自己
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3510,7 +3567,7 @@
             更新自己
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3518,8 +3575,8 @@
             更新自己
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3528,7 +3585,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3537,8 +3594,8 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3547,7 +3604,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3556,8 +3613,8 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3566,7 +3623,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3575,8 +3632,8 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3585,7 +3642,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3594,15 +3651,15 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(Phenix.Core.Data.Schema.NameValue[])">
             <summary>
             更新自己
             </summary>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbConnection,Phenix.Core.Data.Schema.NameValue[])">
@@ -3610,7 +3667,7 @@
             更新自己
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbTransaction,Phenix.Core.Data.Schema.NameValue[])">
@@ -3618,7 +3675,7 @@
             更新自己
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Schema.NameValue[])">
@@ -3626,7 +3683,7 @@
             更新自己
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.NameValue[])">
@@ -3634,7 +3691,7 @@
             更新自己
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Schema.NameValue[])">
@@ -3643,7 +3700,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.NameValue[])">
@@ -3652,7 +3709,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Schema.NameValue[])">
@@ -3661,7 +3718,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.NameValue[])">
@@ -3670,7 +3727,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.AppendCriteriaForDeleteSelf(Phenix.Core.Data.Expressions.CriteriaExpression)">
@@ -3728,6 +3785,11 @@
             主数据
             </summary>
         </member>
+        <member name="P:Phenix.Core.Data.Model.IData.Id">
+            <summary>
+            主键属性(映射表XX_ID字段)
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Data.Model.IEntity">
             <summary>
             实体接口
@@ -3751,6 +3813,11 @@
         <member name="P:Phenix.Core.Data.Model.IEntity.Master">
             <summary>
             主实体
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.IEntity.Id">
+            <summary>
+            主键属性(映射表XX_ID字段)
             </summary>
         </member>
         <member name="T:Phenix.Core.Data.Model.TreeDataBase`1">
@@ -3798,6 +3865,16 @@
             主数据
             </summary>
         </member>
+        <member name="F:Phenix.Core.Data.Model.TreeDataBase`1._children">
+            <summary>
+            儿孙
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.TreeDataBase`1.Children">
+            <summary>
+            儿孙
+            </summary>
+        </member>
         <member name="F:Phenix.Core.Data.Model.TreeDataBase`1._allChildren">
             <summary>
             全部儿孙对象
@@ -3808,16 +3885,35 @@
             全部儿孙对象
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeDataBase`1.GetChildren">
+        <member name="M:Phenix.Core.Data.Model.TreeDataBase`1.AddChild(System.Func{`0},System.Func{`0,System.Int64})">
             <summary>
-            获取子对象
+            添加子节点
             </summary>
+            <param name="doCreate">调用本函数新增(子节点)</param>
+            <param name="doInsert">调用本函数持久化(子节点,子节点ID)</param>
+            <returns>子节点</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeDataBase`1.ChangeParent(`0,System.Func{System.Int32})">
+            <summary>
+            更改父节点
+            </summary>
+            <param name="parentNode">父节点</param>
+            <param name="doUpdateSelf">调用本函数持久化(更新记录数)</param>
+            <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.TreeDataBase`1.FindInBranch(System.Func{`0,System.Boolean})">
             <summary>
-            在枝杈中寻找
+            在本枝杈中寻找
             </summary>
-            <param name="criteria">匹配条件</param>
+            <param name="criteria">匹配条件(节点,是否匹配)</param>
+            <returns>节点</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeDataBase`1.DeleteBranch(System.Func{System.Int32})">
+            <summary>
+            删除本枝杈
+            </summary>
+            <param name="doDeleteBranch">调用本函数持久化(更新记录数)</param>
+            <returns>更新记录数</returns>
         </member>
         <member name="T:Phenix.Core.Data.Model.TreeEntityBase`1">
             <summary>
@@ -3846,7 +3942,16 @@
             新增根实体对象(自动填充主键和保留字段)
             </summary>
             <param name="database">数据库入口</param>
-            <param name="propertyValues">待更新属性值队列</param>
+            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.NewRoot(Phenix.Core.Data.Database,System.Int64,Phenix.Core.Data.Schema.PropertyValue[])">
+            <summary>
+            新增根实体对象(自动填充保留字段)
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="id">主键</param>
+            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
             <returns>根实体对象</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.NewRoot(Phenix.Core.Data.Database,Phenix.Core.Data.Schema.NameValue[])">
@@ -3854,7 +3959,16 @@
             新增根实体对象(自动填充主键和保留字段)
             </summary>
             <param name="database">数据库入口</param>
-            <param name="propertyValues">待更新属性值队列</param>
+            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.NewRoot(Phenix.Core.Data.Database,System.Int64,Phenix.Core.Data.Schema.NameValue[])">
+            <summary>
+            新增根实体对象(自动填充保留字段)
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="id">主键</param>
+            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
             <returns>根实体对象</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{`0})">
@@ -3895,27 +4009,27 @@
         </member>
         <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._rootId">
             <summary>
-            根ID
+            根节点ID
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.RootId">
             <summary>
-            根ID(映射表XX_Root_ID字段)
+            根节点ID(映射表XX_Root_ID字段)
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.Root">
             <summary>
-            根实体
+            根节点实体
             </summary>
         </member>
         <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._parentId">
             <summary>
-            父ID
+            父节点ID
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.ParentId">
             <summary>
-            父ID(映射表XX_Parent_ID字段)
+            父节点ID(映射表XX_Parent_ID字段)
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.Master">
@@ -3923,69 +4037,160 @@
             主实体
             </summary>
         </member>
+        <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._children">
+            <summary>
+            儿孙
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.Children">
+            <summary>
+            儿孙
+            </summary>
+        </member>
         <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._allChildren">
             <summary>
-            全部儿孙对象
+            全部儿孙
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.AllChildren">
             <summary>
-            全部儿孙对象
+            全部儿孙
             </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.GetChildren">
-            <summary>
-            获取子对象
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FindInBranch(System.Func{`0,System.Boolean})">
-            <summary>
-            在枝杈中寻找
-            </summary>
-            <param name="criteria">匹配条件</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.ChangeMaster(`0)">
-            <summary>
-            更改父对象
-            </summary>
-            <param name="master">父对象</param>
         </member>
         <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.AddChild(System.Func{`0})">
             <summary>
             添加子对象
             </summary>
-            <param name="doCreate">调用本函数新增并自动持久化</param>
+            <param name="doCreate">调用本函数新增(子节点)</param>
+            <returns>子节点</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.AddChild(System.Data.Common.DbConnection,System.Func{`0})">
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.ChangeParent(`0)">
             <summary>
-            添加子对象
+            更改父节点
             </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="doCreate">调用本函数新增并自动持久化</param>
+            <param name="parentNode">父节点</param>
+            <returns>更新记录数</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.AddChild(System.Data.Common.DbTransaction,System.Func{`0})">
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FindInBranch(System.Func{`0,System.Boolean})">
             <summary>
-            添加子对象
+            在本枝杈中寻找
             </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="doCreate">调用本函数新增并自动持久化</param>
+            <param name="criteria">匹配条件(节点,是否匹配)</param>
+            <returns>节点</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.DeleteBranch">
             <summary>
-            删除枝杈
+            删除本枝杈
+            </summary>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="T:Phenix.Core.Data.Rule.AssociationDataException">
+            <summary>
+            关联数据异常
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.DeleteBranch(System.Data.Common.DbConnection)">
+        <member name="M:Phenix.Core.Data.Rule.AssociationDataException.#ctor">
             <summary>
-            删除枝杈
+            关联数据异常
             </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.DeleteBranch(System.Data.Common.DbTransaction)">
+        <member name="M:Phenix.Core.Data.Rule.AssociationDataException.#ctor(System.String,System.Exception)">
             <summary>
-            删除枝杈
+            关联数据异常
             </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.AssociationDataException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            序列化
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Data.Rule.IValidation">
+            <summary>
+            验证接口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.IValidation.Validate(Phenix.Core.Data.Schema.ExecuteAction,System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            验证上下文
+            </summary>
+            <param name="executeAction">执行动作</param>
+            <param name="validationContext">上下文</param>
+            <returns>包含失败的验证信息</returns>
+        </member>
+        <member name="T:Phenix.Core.Data.Rule.OutdatedDataException">
+            <summary>
+            数据过时异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.OutdatedDataException.#ctor">
+            <summary>
+            数据过时异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.OutdatedDataException.#ctor(System.String,System.Exception)">
+            <summary>
+            数据过时异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.OutdatedDataException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            序列化
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Data.Rule.UniqueConstraintException">
+            <summary>
+            唯一约束异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.UniqueConstraintException.#ctor">
+            <summary>
+            唯一约束异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.UniqueConstraintException.#ctor(System.String,System.Exception)">
+            <summary>
+            唯一约束异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.UniqueConstraintException.#ctor(System.String,System.String,System.Object)">
+            <summary>
+            唯一约束异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.UniqueConstraintException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            序列化
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Data.Rule.ValidationResult">
+            <summary>
+            验证请求结果
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.ValidationResult.#ctor(System.String)">
+            <summary>
+            验证请求结果
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.ValidationResult.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String},System.Object)">
+            <summary>
+            验证请求结果
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.ValidationResult.#ctor(System.Collections.Generic.IEnumerable{System.String},System.Object,System.String)">
+            <summary>
+            验证请求结果
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.ValidationResult.#ctor(Phenix.Core.Data.Rule.ValidationResult)">
+            <summary>
+            验证请求结果
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Rule.ValidationResult.Value">
+            <summary>
+            值
+            </summary>
         </member>
         <member name="T:Phenix.Core.Data.Schema.Column">
             <summary>
@@ -4668,6 +4873,29 @@
             值
             </summary>
         </member>
+        <member name="M:Phenix.Core.Data.Schema.NameValue.Get``1(Phenix.Core.Data.Schema.Sheet,``0)">
+            <summary>
+            提取属性值
+            </summary>
+            <param name="sheet">单子</param>
+            <param name="entity">实体</param>
+            <returns>属性值队列</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.NameValue.Set``1(Phenix.Core.Data.Schema.Sheet,``0,Phenix.Core.Data.Schema.NameValue[])">
+            <summary>
+            设置属性值
+            </summary>
+            <param name="sheet">单子</param>
+            <param name="entity">实体</param>
+            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.NameValue.ToArray(Phenix.Core.Data.Schema.NameValue[])">
+            <summary>
+            转换为数组
+            </summary>
+            <param name="propertyValues">属性值队列</param>
+            <returns>Name-Value</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.NameValue.ToDictionary(Phenix.Core.Data.Schema.NameValue[])">
             <summary>
             转换为数据字典
@@ -4808,12 +5036,12 @@
             值/OperationExpression
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.PropertyValue.ChangeFields``1(``0,Phenix.Core.Data.Schema.PropertyValue[])">
+        <member name="M:Phenix.Core.Data.Schema.PropertyValue.Set``1(``0,Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
-            更新字段值
+            设置属性值
             </summary>
             <param name="entity">实体</param>
-            <param name="propertyValues">待更新属性值队列</param>
+            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.PropertyValue.ToDictionary(Phenix.Core.Data.Schema.PropertyValue[])">
             <summary>
@@ -5232,7 +5460,7 @@
             更新记录
             </summary>
             <param name="entity">实体</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5240,8 +5468,8 @@
             更新记录
             </summary>
             <param name="entity">实体</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5250,7 +5478,7 @@
             </summary>
             <param name="entity">实体</param>
             <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表取类的名为"Id"的属性)</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5259,8 +5487,8 @@
             </summary>
             <param name="entity">实体</param>
             <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表取类的名为"Id"的属性)</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5269,7 +5497,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5278,8 +5506,8 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5289,7 +5517,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表取类的名为"Id"的属性)</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5299,8 +5527,8 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表取类的名为"Id"的属性)</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5309,7 +5537,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5318,8 +5546,8 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5329,7 +5557,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表取类的名为"Id"的属性)</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5339,8 +5567,8 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表取类的名为"Id"的属性)</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbCommand,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5350,8 +5578,8 @@
             <param name="command">DbCommand(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="primaryKeyPropertyLambda">含类主键属性的 lambda 表达式(null代表取类的名为"Id"的属性)</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5360,7 +5588,7 @@
             </summary>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5369,8 +5597,8 @@
             </summary>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5379,7 +5607,7 @@
             </summary>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5388,8 +5616,8 @@
             </summary>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5399,7 +5627,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5409,8 +5637,8 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5420,7 +5648,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5430,8 +5658,8 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5441,7 +5669,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5451,8 +5679,8 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5462,7 +5690,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5472,8 +5700,8 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbCommand,``0,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5483,8 +5711,8 @@
             <param name="command">DbCommand(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Schema.NameValue[])">
@@ -5493,7 +5721,7 @@
             </summary>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.NameValue[])">
@@ -5502,7 +5730,7 @@
             </summary>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Schema.NameValue[])">
@@ -5512,7 +5740,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.NameValue[])">
@@ -5522,7 +5750,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Schema.NameValue[])">
@@ -5532,7 +5760,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.NameValue[])">
@@ -5542,7 +5770,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbCommand,``0,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Schema.NameValue[])">
@@ -5552,7 +5780,7 @@
             <param name="command">DbCommand(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="propertyValues">待更新属性值队列(提交后自动更新字段，null代表提交实体里的属性)</param>
+            <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Schema.PropertyValue[])">
@@ -5568,7 +5796,7 @@
             更新记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -5585,7 +5813,7 @@
             更新记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -5604,7 +5832,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -5623,7 +5851,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -5642,7 +5870,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -5661,7 +5889,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -5671,7 +5899,7 @@
             </summary>
             <param name="command">DbCommand(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Validity.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -6777,114 +7005,6 @@
             小于999999999999999
             </summary>
         </member>
-        <member name="T:Phenix.Core.Data.Validity.AssociationDataException">
-            <summary>
-            关联数据异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Validity.AssociationDataException.#ctor">
-            <summary>
-            关联数据异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Validity.AssociationDataException.#ctor(System.String,System.Exception)">
-            <summary>
-            关联数据异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Validity.AssociationDataException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            序列化
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Data.Validity.IValidation">
-            <summary>
-            验证接口
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Validity.IValidation.Validate(Phenix.Core.Data.Schema.ExecuteAction,System.ComponentModel.DataAnnotations.ValidationContext)">
-            <summary>
-            验证上下文
-            </summary>
-            <param name="executeAction">执行动作</param>
-            <param name="validationContext">上下文</param>
-            <returns>包含失败的验证信息</returns>
-        </member>
-        <member name="T:Phenix.Core.Data.Validity.OutdatedDataException">
-            <summary>
-            数据过时异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Validity.OutdatedDataException.#ctor">
-            <summary>
-            数据过时异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Validity.OutdatedDataException.#ctor(System.String,System.Exception)">
-            <summary>
-            数据过时异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Validity.OutdatedDataException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            序列化
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Data.Validity.UniqueConstraintException">
-            <summary>
-            唯一约束异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Validity.UniqueConstraintException.#ctor">
-            <summary>
-            唯一约束异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Validity.UniqueConstraintException.#ctor(System.String,System.Exception)">
-            <summary>
-            唯一约束异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Validity.UniqueConstraintException.#ctor(System.String,System.String,System.Object)">
-            <summary>
-            唯一约束异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Validity.UniqueConstraintException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            序列化
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Data.Validity.ValidationResult">
-            <summary>
-            验证请求结果
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Validity.ValidationResult.#ctor(System.String)">
-            <summary>
-            验证请求结果
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Validity.ValidationResult.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String},System.Object)">
-            <summary>
-            验证请求结果
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Validity.ValidationResult.#ctor(System.Collections.Generic.IEnumerable{System.String},System.Object,System.String)">
-            <summary>
-            验证请求结果
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Validity.ValidationResult.#ctor(Phenix.Core.Data.Validity.ValidationResult)">
-            <summary>
-            验证请求结果
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Validity.ValidationResult.Value">
-            <summary>
-            值
-            </summary>
-        </member>
         <member name="T:Phenix.Core.DisposableBase`1">
             <summary>
             释放资源基类
@@ -7141,6 +7261,12 @@
             存储目录
             </summary>
         </member>
+        <member name="P:Phenix.Core.Log.EventLog.BreakRepeatIntensityPerMinute">
+            <summary>
+            中断重复日志强度阈值(每分钟次数)
+            缺省为 6000(>=6000)
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Log.EventLog.Database">
             <summary>
             数据库入口
@@ -7310,6 +7436,71 @@
             </summary>
             <param name="content">消息内容</param>
         </member>
+        <member name="T:Phenix.Core.Net.Api.ApiConfig">
+            <summary>
+            WebAPI配置信息
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityGatePath">
+            <summary>
+            /api/Security/Gate
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfPath">
+            <summary>
+            /api/security/myself
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfPasswordPath">
+            <summary>
+            /api/security/myself/password
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfRootTeamsPath">
+            <summary>
+            /api/security/myself/root-teams
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfRootTeamsNodePath">
+            <summary>
+            /api/security/myself/root-teams-node
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfPositionPath">
+            <summary>
+            /api/security/myself/position
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiDataSequencePath">
+            <summary>
+            /api/data/sequence
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiDataIncrementPath">
+            <summary>
+            /api/data/increment
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiMessageUserMessagePath">
+            <summary>
+            /api/message/user-message
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiMessageUserMessageHubPath">
+            <summary>
+            /api/message/user-message-hub
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiInoutFilePath">
+            <summary>
+            /api/inout/file
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiLogEventLogPath">
+            <summary>
+            /api/log/event-log
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Net.Api.ControllerBase">
             <summary>
             控制器基类
@@ -7327,53 +7518,6 @@
             对应 phAjax.decrypt 函数
             </summary>
             <param name="data">需加密的对象/字符串</param>
-        </member>
-        <member name="T:Phenix.Core.Net.Api.Data.IncrementController">
-            <summary>
-            64位增量
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Data.IncrementController.Get(System.String,System.Int64)">
-            <summary>
-            获取64位增量值
-            </summary>
-            <param name="key">键</param>
-            <param name="initialValue">初值</param>
-            <returns>下一个值</returns>
-        </member>
-        <member name="T:Phenix.Core.Net.Api.Data.SequenceController">
-            <summary>
-            64位序号
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Data.SequenceController.Get">
-            <summary>
-            获取64位序号
-            </summary>
-            <returns>64位序号</returns>
-        </member>
-        <member name="T:Phenix.Core.Net.Api.Inout.FileController">
-            <summary>
-            文件存取控制器
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Inout.FileController.#ctor(Phenix.Core.Net.Api.Inout.IFileService)">
-            <summary>
-            初始化
-            </summary>
-            <param name="fileService">依赖注入的文件服务</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Inout.FileController.UploadFileChunk(System.Threading.CancellationToken)">
-            <summary>
-            上传文件块
-            </summary>
-            <returns>完成上传时返回消息</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Inout.FileController.DownloadFileChunk(System.Threading.CancellationToken)">
-            <summary>
-            下载文件块
-            </summary>
-            <returns>文件块信息</returns>
         </member>
         <member name="T:Phenix.Core.Net.Api.Inout.IFileService">
             <summary>
@@ -7411,44 +7555,6 @@
             <param name="message">上传消息</param>
             <param name="sourcePath">读取路径</param>
         </member>
-        <member name="T:Phenix.Core.Net.Api.Log.EventLogController">
-            <summary>
-            事件日志控制器
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Log.EventLogController.Post">
-            <summary>
-            保存
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Net.Api.Message.UserMessageController">
-            <summary>
-            用户消息控制器
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Message.UserMessageController.Receive">
-            <summary>
-            接收（PULL）
-            </summary>
-            <returns>结果集(消息ID-消息内容)</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Message.UserMessageController.Send(System.Int64,System.String)">
-            <summary>
-            发送
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Message.UserMessageController.Send(System.String)">
-            <summary>
-            发送
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Message.UserMessageController.AffirmReceived(System.Int64,System.Boolean)">
-            <summary>
-            确认收到
-            </summary>
-            <param name="id">消息ID</param>
-            <param name="burn">是否销毁</param>
-        </member>
         <member name="T:Phenix.Core.Net.Api.Message.UserMessageHub">
             <summary>
             用户消息中间件
@@ -7467,42 +7573,6 @@
         <member name="M:Phenix.Core.Net.Api.Message.UserMessageHub.OnDisconnectedAsync(System.Exception)">
             <summary>
             断开
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Net.Api.Security.GateController">
-            <summary>
-            系统入口控制器
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Security.GateController.CheckIn(System.String,System.String,System.String,System.String)">
-            <summary>
-            登记/注册(获取动态口令)
-            </summary>
-            <param name="name">登录名(未注册则自动注册)</param>
-            <param name="phone">手机(注册用可为空)</param>
-            <param name="eMail">邮箱(注册用可为空)</param>
-            <param name="regAlias">注册昵称(注册用可为空)</param>
-            <returns>返回信息</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Security.GateController.Logon">
-            <summary>
-            登录
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Net.Api.Security.MyselfController">
-            <summary>
-            用户自己控制器
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Security.MyselfController.Get">
-            <summary>
-            获取自己资料
-            </summary>
-            <returns>自己资料</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Security.MyselfController.ChangePassword">
-            <summary>
-            修改登录口令
             </summary>
         </member>
         <member name="T:Phenix.Core.Net.Filters.AuthorizationFilter">
@@ -7537,6 +7607,18 @@
             激活
             </summary>
         </member>
+        <member name="T:Phenix.Core.Net.Filters.AuthorizationFilterAttribute">
+            <summary>
+            访问授权过滤器标签
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Filters.AuthorizationFilterAttribute.CheckValidity(Phenix.Core.Security.Identity,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            检查有效性
+            </summary>
+            <param name="identity">用户身份</param>
+            <param name="context">HttpContext</param>
+        </member>
         <member name="T:Phenix.Core.Net.Filters.ControllerRole">
             <summary>
             控制器的授权角色
@@ -7551,7 +7633,7 @@
             <summary>
             获取控制器的授权角色
             </summary>
-            <param name="controllerActionDescriptor">ControllerActionDescriptor</param>
+            <param name="descriptor">ControllerActionDescriptor</param>
             <returns>控制器的授权角色</returns>
         </member>
         <member name="F:Phenix.Core.Net.Filters.ControllerRole._controllerName">
@@ -7587,6 +7669,18 @@
             多个角色用‘|’分隔，互相为 or 关系
             多组角色个用‘,’分隔，互相为 and 关系
             </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Filters.ControllerRole.Filters">
+            <summary>
+            访问授权过滤器
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Filters.ControllerRole.CheckValidity(Phenix.Core.Security.Identity,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            检查有效性
+            </summary>
+            <param name="identity">用户身份</param>
+            <param name="context">HttpContext</param>
         </member>
         <member name="T:Phenix.Core.Net.Middleware.AuthenticationMiddleware">
             <summary>
@@ -7635,46 +7729,6 @@
         <member name="F:Phenix.Core.Net.NetConfig.AuthorizationHeaderName">
             <summary>
             Phenix-Authorization
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Net.NetConfig.ApiSecurityGatePath">
-            <summary>
-            /api/Security/Gate
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Net.NetConfig.ApiSecurityMyselfPath">
-            <summary>
-            /api/security/myself
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Net.NetConfig.ApiDataSequencePath">
-            <summary>
-            /api/data/sequence
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Net.NetConfig.ApiDataIncrementPath">
-            <summary>
-            /api/data/increment
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Net.NetConfig.ApiMessageUserMessagePath">
-            <summary>
-            /api/message/user-message
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Net.NetConfig.ApiMessageUserMessageHubPath">
-            <summary>
-            /api/message/user-message-hub
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Net.NetConfig.ApiInoutFilePath">
-            <summary>
-            /api/inout/file
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Net.NetConfig.ApiLogEventLogPath">
-            <summary>
-            /api/log/event-log
             </summary>
         </member>
         <member name="P:Phenix.Core.Net.NetConfig.LocalAddress">
@@ -8963,6 +9017,16 @@
             用户资料代理
             </summary>
         </member>
+        <member name="P:Phenix.Core.Security.Identity.RootTeamsProxy">
+            <summary>
+            团队资料代理
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Identity.PositionProxy">
+            <summary>
+            岗位资料代理
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.Identity.Id">
             <summary>
             主键属性(映射表XX_ID字段)
@@ -8978,31 +9042,22 @@
             身份验证类型
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.Identity.IsValidLogonAsync(System.String,System.String,System.String,System.Boolean)">
+        <member name="T:Phenix.Core.Security.IPositionProxy">
             <summary>
-            核对登录有效性
+            岗位资料代理接口
             </summary>
-            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-            <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
-            <param name="requestAddress">服务请求方IP地址</param>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
-            <returns>是否正确</returns>
         </member>
-        <member name="M:Phenix.Core.Security.Identity.IsValidAsync(System.String,System.String,System.String,System.Boolean)">
-            <summary>
-            核对有效性
-            </summary>
-            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-            <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
-            <param name="requestAddress">服务请求方IP地址</param>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
-            <returns>是否正确</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.Identity.IsInRole(System.String)">
+        <member name="M:Phenix.Core.Security.IPositionProxy.IsInRole(System.String)">
             <summary>
             确定是否属于指定的角色
             </summary>
             <param name="role">角色</param>
+            <returns>属于指定的角色</returns>
+        </member>
+        <member name="T:Phenix.Core.Security.ITeamsProxy">
+            <summary>
+            团体资料代理接口
+            </summary>
         </member>
         <member name="T:Phenix.Core.Security.IUserProxy">
             <summary>
@@ -9046,12 +9101,6 @@
             </summary>
             <param name="tag">捎带数据(默认是客户端当前时间)</param>
         </member>
-        <member name="M:Phenix.Core.Security.IUserProxy.IsInRole(System.String)">
-            <summary>
-            确定是否属于指定的角色
-            </summary>
-            <param name="role">角色</param>
-        </member>
         <member name="M:Phenix.Core.Security.IUserProxy.Encrypt(System.Object)">
             <summary>
             加密
@@ -9074,16 +9123,35 @@
             <param name="throwIfNotConform">如果为 true, 账号无效或口令不规范会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserPasswordComplexityException异常而不是返回false</param>
             <returns>是否成功</returns>
         </member>
+        <member name="M:Phenix.Core.Security.IUserProxy.PatchRootTeams(System.String)">
+            <summary>
+            更新顶层团体
+            </summary>
+            <param name="name">名称</param>
+            <returns>顶层团体主键</returns>
+        </member>
         <member name="T:Phenix.Core.Security.IUserProxyFactory">
             <summary>
             用户资料代理工厂接口
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.IUserProxyFactory.Fetch(System.String)">
+        <member name="M:Phenix.Core.Security.IUserProxyFactory.FetchUserProxy(System.String)">
             <summary>
             获取用户资料代理
             </summary>
             <param name="name">名称</param>
+        </member>
+        <member name="M:Phenix.Core.Security.IUserProxyFactory.FetchTeamsProxy(System.Int64)">
+            <summary>
+            获取团体资料代理
+            </summary>
+            <param name="id">主键</param>
+        </member>
+        <member name="M:Phenix.Core.Security.IUserProxyFactory.FetchPositionProxy(System.Int64)">
+            <summary>
+            获取岗位资料代理
+            </summary>
+            <param name="id">主键</param>
         </member>
         <member name="T:Phenix.Core.Security.Position">
             <summary>
@@ -9146,6 +9214,7 @@
             确定是否属于指定的角色
             </summary>
             <param name="role">角色</param>
+            <returns>属于指定的角色</returns>
         </member>
         <member name="T:Phenix.Core.Security.Teams">
             <summary>
@@ -9167,6 +9236,11 @@
             名称
             </summary>
         </member>
+        <member name="M:Phenix.Core.Security.Teams.AppendCriteriaForDeleteSelf(Phenix.Core.Data.Expressions.CriteriaExpression)">
+            <summary>
+            为删除自己追加条件表达式
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Security.User">
             <summary>
             用户资料
@@ -9182,9 +9256,9 @@
             Guest登录名
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.User.AdminUserName">
+        <member name="F:Phenix.Core.Security.User.SystemAdminUserName">
             <summary>
-            管理员登录名
+            系统管理员登录名
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.RequestFailureCountMaximum">
@@ -9209,6 +9283,12 @@
             <summary>
             服务请求超时时限(与服务端时钟差值)
             缺省为 30(分钟>=10)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.User.BreakRequestIntensityPerMinute">
+            <summary>
+            中断服务请求强度阈值(每分钟次数)
+            缺省为 6000(>=6000)
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.PasswordLengthMinimum">
@@ -9319,16 +9399,6 @@
             所属顶层团体ID
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.User._rootTeams">
-            <summary>
-            顶层团体
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User.RootTeams">
-            <summary>
-            顶层团体
-            </summary>
-        </member>
         <member name="F:Phenix.Core.Security.User._teamsId">
             <summary>
             所属团体ID
@@ -9339,11 +9409,6 @@
             所属团体ID
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.Teams">
-            <summary>
-            所属团体
-            </summary>
-        </member>
         <member name="F:Phenix.Core.Security.User._positionId">
             <summary>
             担任岗位ID
@@ -9352,16 +9417,6 @@
         <member name="P:Phenix.Core.Security.User.PositionId">
             <summary>
             担任岗位ID
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User._position">
-            <summary>
-            担任岗位
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User.Position">
-            <summary>
-            担任岗位
             </summary>
         </member>
         <member name="F:Phenix.Core.Security.User._locked">
@@ -9436,14 +9491,19 @@
             动态口令生成时间
             </summary>
         </member>
+        <member name="P:Phenix.Core.Security.User.IsSystemAdmin">
+            <summary>
+            是否系统管理员?
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.User.IsCompanyAdmin">
+            <summary>
+            是否公司管理员?
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User.IsAuthenticated">
             <summary>
             已身份验证?
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User.RequestRecentTime">
-            <summary>
-            服务请求最近时间
             </summary>
         </member>
         <member name="M:Phenix.Core.Security.User.InitializeSelf">
@@ -9466,12 +9526,6 @@
             </summary>
             <param name="cipherText">密文(Base64字符串)</param>
             <returns>原文</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.User.IsInRole(System.String)">
-            <summary>
-            确定是否属于指定的角色
-            </summary>
-            <param name="role">角色</param>
         </member>
         <member name="M:Phenix.Core.Security.User.IsValidLogon(System.String,System.String,System.String,System.Boolean)">
             <summary>
@@ -11252,19 +11306,25 @@
             <param name="cancellationToken">取消</param>
             <returns>完成上传时返回消息</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.Inout.IFileService)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,System.String,System.String,System.Int32,Phenix.Core.Net.Api.Inout.IFileService)">
             <summary>
             处理下载文件块
             </summary>
             <param name="request">HttpRequest</param>
+            <param name="message">上传消息</param>
+            <param name="fileName">下载文件名</param>
+            <param name="chunkNumber">块号</param>
             <param name="fileService">文件服务</param>
             <returns>文件块信息</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.Inout.IFileService,System.Threading.CancellationToken)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,System.String,System.String,System.Int32,Phenix.Core.Net.Api.Inout.IFileService,System.Threading.CancellationToken)">
             <summary>
             处理下载文件块
             </summary>
             <param name="request">HttpRequest</param>
+            <param name="message">上传消息</param>
+            <param name="fileName">下载文件名</param>
+            <param name="chunkNumber">块号</param>
             <param name="fileService">文件服务</param>
             <param name="cancellationToken">取消</param>
             <returns>文件块信息</returns>

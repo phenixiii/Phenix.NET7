@@ -46,7 +46,7 @@ namespace Phenix.Services.Host
             };
 
             /*
-             * 注册用户资料工厂，以打通封装在Phenix.Services.Plugin的UserGrain中的用户身份验证等功能
+             * 注册用户资料代理工厂，将身份验证等功能模块部署到Orleans服务集群
              */
             Phenix.Core.Security.Identity.RegisterFactory(new Phenix.Services.Plugin.UserProxyFactory());
 

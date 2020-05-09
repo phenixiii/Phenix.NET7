@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Phenix.Actor;
 using Phenix.Core.Reflection;
 using Phenix.Core.Security;
@@ -8,10 +7,9 @@ using Phenix.Services.Plugin.Actor;
 namespace Phenix.Services.Plugin
 {
     /// <summary>
-    /// 用户资料
+    /// 用户资料代理
     /// </summary>
-    [Serializable]
-    public class UserProxy : EntityGrainProxyBase<UserProxy, User, IUserGrain>, IUserProxy
+    public sealed class UserProxy : EntityGrainProxyBase<UserProxy, User, IUserGrain>, IUserProxy
     {
         #region 方法
 
@@ -35,11 +33,6 @@ namespace Phenix.Services.Plugin
             return Grain.Logon(tag);
         }
 
-        Task<bool> IUserProxy.IsInRole(string role)
-        {
-            return Grain.IsInRole(role);
-        }
-
         Task<string> IUserProxy.Encrypt(object data)
         {
             return Grain.Encrypt(data is string ds ? ds : Utilities.JsonSerialize(data));
@@ -53,6 +46,11 @@ namespace Phenix.Services.Plugin
         Task<bool> IUserProxy.ChangePassword(string newPassword, bool throwIfNotConform)
         {
             return Grain.ChangePassword(newPassword, throwIfNotConform);
+        }
+
+        Task<long> IUserProxy.PatchRootTeams(string name)
+        {
+            return Grain.PatchRootTeams(name);
         }
 
         #endregion

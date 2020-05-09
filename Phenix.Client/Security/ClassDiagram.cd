@@ -6,7 +6,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAABAAAECAAAABAACAAAAAQgAAAAAIAAAAAAAIACAAA=</HashCode>
+      <HashCode>AAABAAAEAAAAAAAACBAAAIQgCAAAAIAAAAAAAAAAAAA=</HashCode>
       <FileName>Security\Identity.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -16,14 +16,17 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.Client.Security.Position">
-    <Position X="2.75" Y="4.25" Width="1.75" />
+    <Position X="3" Y="4.5" Width="1.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAIAAAAAAAAAAAAAAAAAQAAgAAAAAAAAABAAAAAAA=</HashCode>
+      <HashCode>AAAAoACACAAAAAAAAAEAAAQAAgAAAAAAAAABAAAAAAA=</HashCode>
       <FileName>Security\Position.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Owner" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Phenix.Client.Security.Principal">
     <Position X="0.5" Y="0.5" Width="1.75" />
@@ -41,28 +44,32 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.Client.Security.Teams">
-    <Position X="0.75" Y="3.5" Width="1.75" />
+    <Position X="1" Y="3.5" Width="1.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAIAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAoACAAAAAEAAAAAEAAAQAAAAABAAAAAAAAAIBAAA=</HashCode>
       <FileName>Security\Teams.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Owner" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Phenix.Client.Security.User">
-    <Position X="5.5" Y="0.5" Width="2.5" />
+    <Position X="5.75" Y="0.5" Width="2.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>UQQKagAggACAQABwAACEAAQAASKAgEAGAqACoASAABE=</HashCode>
+      <HashCode>UQQK6gCggACAQABwIACEAIQgESKAgEAGAqACoISBABE=</HashCode>
       <FileName>Security\User.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="RootTeams" />
       <Property Name="Teams" />
       <Property Name="Position" />
+      <Property Name="Owner" />
     </ShowAsAssociation>
   </Class>
   <Font Name="Microsoft YaHei UI" Size="9" />

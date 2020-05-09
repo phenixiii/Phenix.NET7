@@ -23,18 +23,18 @@ namespace Phenix.Actor
         Task<TKernel> FetchKernel();
 
         /// <summary>
+        /// 更新根实体对象
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        /// <returns>更新记录数</returns>
+        Task<int> PatchKernel(params NameValue[] propertyValues);
+
+        /// <summary>
         /// 获取根实体对象属性值
         /// </summary>
         /// <param name="propertyName">属性名</param>
         /// <returns>属性值</returns>
         Task<object> GetKernelProperty(string propertyName);
-
-        /// <summary>
-        /// 更新根实体对象属性值
-        /// </summary>
-        /// <param name="propertyValues">待更新属性值队列</param>
-        /// <returns>是否成功</returns>
-        Task<bool> UpdateKernelProperty(NameValue[] propertyValues);
 
         #endregion
     }

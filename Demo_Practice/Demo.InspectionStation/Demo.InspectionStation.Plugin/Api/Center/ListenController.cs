@@ -13,11 +13,10 @@ namespace Demo.InspectionStation.Plugin.Api.Center
     /// 侦听Controller
     /// </summary>
     [EnableCors]
-    [Route(NetConfig.ApiCenterListenPath)]
+    [Route(ApiConfig.ApiCenterListenPath)]
     [ApiController]
     public sealed class ListenController : Phenix.Core.Net.Api.ControllerBase
     {
-        // GET: /api/inspection-station/center/listen
         /// <summary>
         /// 获取监控的作业点
         /// </summary>
@@ -29,7 +28,6 @@ namespace Demo.InspectionStation.Plugin.Api.Center
             return await ClusterClient.Default.GetGrain<ICenterGrain>(User.Identity.Name).FetchOperationPoint();
         }
 
-        // PUT: /api/inspection-station/center/listen
         /// <summary>
         /// 监控指定的作业点
         /// </summary>

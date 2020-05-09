@@ -11,11 +11,10 @@ namespace Demo.InspectionStation.Plugin.Api.OperationPoint
     /// 磅秤Controller
     /// </summary>
     [EnableCors]
-    [Route(NetConfig.ApiOperationPointWeighbridgePath)]
+    [Route(ApiConfig.ApiOperationPointWeighbridgePath)]
     [ApiController]
     public sealed class WeighbridgeController : Phenix.Core.Net.Api.ControllerBase
     {
-        // GET: /api/inspection-station/operation-point/weighbridge?operationPointName=道口1
         /// <summary>
         /// 获取
         /// </summary>
@@ -28,26 +27,24 @@ namespace Demo.InspectionStation.Plugin.Api.OperationPoint
             return await ClusterClient.Default.GetGrain<IOperationPointGrain>(operationPointName).GetWeighbridge();
         }
 
-        // PUT: /api/inspection-station/operation-point/weighbridge?operationPointName=道口1
         /// <summary>
         /// 设置
         /// </summary>
         /// <param name="operationPointName">作业点名称</param>
         [Authorize]
         [HttpPut]
-        public async Task Put(string operationPointName)
+        public async Task Set(string operationPointName)
         {
             await ClusterClient.Default.GetGrain<IOperationPointGrain>(operationPointName).SetWeighbridge(await Request.ReadBodyAsync<int>());
         }
 
-        // POST: /api/inspection-station/operation-point/weighbridge?operationPointName=道口1
         /// <summary>
         /// 心跳(每10秒至少2次)
         /// </summary>
         /// <param name="operationPointName">作业点名称</param>
         [Authorize]
         [HttpPost]
-        public async Task Post(string operationPointName)
+        public async Task Alive(string operationPointName)
         {
             await ClusterClient.Default.GetGrain<IOperationPointGrain>(operationPointName).WeighbridgeAlive();
         }

@@ -1,6 +1,6 @@
-using System;
 using System.Security.Principal;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Phenix.Client.Security
 {
@@ -9,9 +9,10 @@ namespace Phenix.Client.Security
     /// </summary>
     public sealed class Identity : IIdentity
     {
-        internal Identity(User user)
+        internal Identity(HttpClient httpClient, string name, string password)
         {
-            _user = user;
+            _httpClient = httpClient;
+            _user = new User(this, name, password);
         }
 
         #region 工厂
@@ -29,15 +30,15 @@ namespace Phenix.Client.Security
 
         #region 属性
 
-        /// <summary>
-        /// Guest登录名
-        /// </summary>
-        public const string GuestUserName = "GUEST";
+        private readonly HttpClient _httpClient;
 
         /// <summary>
-        /// 管理员登录名
+        /// HttpClient
         /// </summary>
-        public const string AdminUserName = "ADMIN";
+        public HttpClient HttpClient
+        {
+            get { return _httpClient; }
+        }
 
         private User _user;
 
@@ -47,7 +48,6 @@ namespace Phenix.Client.Security
         public User User
         {
             get { return _user; }
-            internal set { _user = value; }
         }
 
         /// <summary>
@@ -58,15 +58,12 @@ namespace Phenix.Client.Security
             get { return _user.Name; }
         }
 
-        private bool _isAuthenticated;
-
         /// <summary>
         /// 已身份验证?
         /// </summary>
         public bool IsAuthenticated
         {
-            get { return _isAuthenticated && !_user.Disabled && !_user.Locked; }
-            internal set { _isAuthenticated = value; }
+            get { return _user.IsAuthenticated; }
         }
 
         /// <summary>
@@ -81,16 +78,19 @@ namespace Phenix.Client.Security
 
         #region 方法
 
-        /// <summary>
-        /// 确定是否属于指定的角色
-        /// </summary>
-        /// <param name="role">角色</param>
-        public bool IsInRole(string role)
+        internal async Task LogonAsync(string tag)
         {
-            if (!IsAuthenticated)
-                return false;
-            return User.Position != null && User.Position.Roles.Contains(role) ||
-                   String.CompareOrdinal(User.Name, AdminUserName) == 0;
+            await _user.LogonAsync(tag);
+            _user = await ReFetchUserAsync();
+        }
+
+        /// <summary>
+        /// 重新获取用户资料
+        /// </summary>
+        public async Task<User> ReFetchUserAsync()
+        {
+            _user = await _user.ReFetchAsync();
+            return _user;
         }
 
         #endregion

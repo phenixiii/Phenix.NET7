@@ -15,6 +15,14 @@ namespace Phenix.Actor
     {
         #region 属性
 
+        /// <summary>
+        /// 数据库入口
+        /// </summary>
+        protected virtual Database Database
+        {
+            get { return _kernel != null ? _kernel.Database : Database.Default; }
+        }
+
         private long? _id;
 
         /// <summary>
@@ -37,7 +45,7 @@ namespace Phenix.Actor
         /// </summary>
         protected virtual TKernel Kernel
         {
-            get { return _kernel ?? (_kernel = EntityBase<TKernel>.FetchRoot(Database.Default, p => p.Id == Id)); }
+            get { return _kernel ?? (_kernel = EntityBase<TKernel>.FetchRoot(Database, p => p.Id == Id)); }
             set { _kernel = value; }
         }
 
@@ -55,14 +63,18 @@ namespace Phenix.Actor
             return Task.FromResult(Kernel);
         }
 
+        Task<int> IEntityGrain<TKernel>.PatchKernel(params NameValue[] propertyValues)
+        {
+            return Task.FromResult(Kernel != null
+                ? Kernel.UpdateSelf(propertyValues)
+                : this is IGrainWithIntegerKey
+                    ? EntityBase<TKernel>.New(Database, Id, propertyValues).InsertSelf()
+                    : EntityBase<TKernel>.New(Database, propertyValues).InsertSelf());
+        }
+
         Task<object> IEntityGrain<TKernel>.GetKernelProperty(string propertyName)
         {
             return Task.FromResult(Utilities.GetMemberValue(Kernel, propertyName));
-        }
-
-        Task<bool> IEntityGrain<TKernel>.UpdateKernelProperty(NameValue[] propertyValues)
-        {
-            return Task.FromResult(Kernel != null ? Kernel.UpdateSelf(propertyValues) == 1 : EntityBase<TKernel>.New(Database.Default, propertyValues).InsertSelf() == 1);
         }
 
         #endregion

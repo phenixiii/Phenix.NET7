@@ -7,9 +7,9 @@ using Phenix.Core.Data.Model;
 namespace Phenix.Actor
 {
     /// <summary>
-    /// 数据流Grain基类
+    /// 数据流实体Grain基类
     /// </summary>
-    public abstract class StreamGrainBase<TKernel, TEvent> : EntityGrainBase<TKernel>
+    public abstract class StreamEntityGrainBase<TKernel, TEvent> : EntityGrainBase<TKernel>
         where TKernel : EntityBase<TKernel>
     {
         #region 属性

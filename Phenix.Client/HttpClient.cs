@@ -14,9 +14,9 @@ using Phenix.Core;
 using Phenix.Core.Data.Schema;
 using Phenix.Core.IO;
 using Phenix.Core.Net;
+using Phenix.Core.Net.Api;
 using Phenix.Core.Reflection;
 using Phenix.Core.Security.Auth;
-using Phenix.Core.Security.Cryptography;
 
 namespace Phenix.Client
 {
@@ -81,7 +81,7 @@ namespace Phenix.Client
 
         #region 方法
 
-        #region CheckIn
+        #region Security
 
         /// <summary>
         /// 登记/注册(获取动态口令)
@@ -94,7 +94,7 @@ namespace Phenix.Client
         public async Task<string> CheckInAsync(string name, string phone = null, string eMail = null, string regAlias = null)
         {
             using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get,
-                String.Format("{0}?name={1}&phone={2}&eMail={3}&regAlias={4}", NetConfig.ApiSecurityGatePath, name, phone, eMail, regAlias)))
+                String.Format("{0}?name={1}&phone={2}&eMail={3}&regAlias={4}", ApiConfig.ApiSecurityGatePath, name, phone, eMail, regAlias)))
             {
                 using (HttpResponseMessage response = await SendAsync(request))
                 {
@@ -103,10 +103,6 @@ namespace Phenix.Client
                 }
             }
         }
-
-        #endregion
-
-        #region Logon
 
         /// <summary>
         /// 登录
@@ -117,45 +113,14 @@ namespace Phenix.Client
         /// <returns>用户身份</returns>
         public async Task<Identity> LogonAsync(string name, string password, string tag = null)
         {
-            password = MD5CryptoTextProvider.ComputeHash(password);
-            Identity = new Identity(new User(name, password));
-            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, NetConfig.ApiSecurityGatePath))
-            {
-                request.Content = new StringContent(Identity.User.Encrypt(tag ?? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")), Encoding.UTF8);
-                using (HttpResponseMessage response = await SendAsync(request))
-                {
-                    await response.ThrowIfFailedAsync();
-                }
-            }
-
-            Identity.IsAuthenticated = true;
-            Identity.User = await CallAsync<User>(HttpMethod.Get, NetConfig.ApiSecurityMyselfPath, true);
-            Identity.User.Password = password;
+            Identity = new Identity(this, name, password);
+            await Identity.LogonAsync(tag);
             return Identity;
         }
 
         #endregion
 
-        #region ChangePassword
-
-        /// <summary>
-        /// 修改登录口令
-        /// </summary>
-        /// <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
-        public async Task ChangePasswordAsync(string password)
-        {
-            if (Identity == null)
-                throw new AuthenticationException();
-            if (!Identity.IsAuthenticated)
-                throw new UserVerifyException();
-
-            await CallAsync(HttpMethod.Patch, NetConfig.ApiSecurityMyselfPath, password, true);
-            Identity.User.Password = MD5CryptoTextProvider.ComputeHash(password);
-        }
-
-        #endregion
-
-        #region Sequence
+        #region Data
 
         /// <summary>
         /// 获取64位序号
@@ -163,12 +128,8 @@ namespace Phenix.Client
         /// <returns>64位序号</returns>
         public async Task<long> GetSequenceAsync()
         {
-            return await CallAsync<long>(HttpMethod.Get, NetConfig.ApiDataSequencePath);
+            return await CallAsync<long>(HttpMethod.Get, ApiConfig.ApiDataSequencePath);
         }
-
-        #endregion
-
-        #region Increment
 
         /// <summary>
         /// 获取64位增量
@@ -178,7 +139,9 @@ namespace Phenix.Client
         /// <returns>64位增量</returns>
         public async Task<long> GetIncrementAsync(string key, long initialValue = 1)
         {
-            return await CallAsync<long>(HttpMethod.Get, NetConfig.ApiDataIncrementPath, NameValue.Set("key", key), NameValue.Set("initialValue", initialValue));
+            return await CallAsync<long>(HttpMethod.Get, ApiConfig.ApiDataIncrementPath, 
+                NameValue.Set("key", key), 
+                NameValue.Set("initialValue", initialValue));
         }
 
         #endregion
@@ -191,7 +154,7 @@ namespace Phenix.Client
         /// <returns>结果集(消息ID-消息内容)</returns>
         public async Task<IDictionary<long, string>> ReceiveMessageAsync()
         {
-            return await CallAsync<IDictionary<long, string>>(HttpMethod.Get, NetConfig.ApiMessageUserMessagePath);
+            return await CallAsync<IDictionary<long, string>>(HttpMethod.Get, ApiConfig.ApiMessageUserMessagePath);
         }
 
         /// <summary>
@@ -202,7 +165,9 @@ namespace Phenix.Client
         /// <param name="content">消息内容</param>
         public async Task SendMessageAsync(long id, string receiver, string content)
         {
-            await CallAsync(HttpMethod.Put, NetConfig.ApiMessageUserMessagePath, content, NameValue.Set("id", id), NameValue.Set("receiver", receiver));
+            await CallAsync(HttpMethod.Put, ApiConfig.ApiMessageUserMessagePath, content, 
+                NameValue.Set("id", id), 
+                NameValue.Set("receiver", receiver));
         }
 
         /// <summary>
@@ -212,7 +177,8 @@ namespace Phenix.Client
         /// <param name="content">消息内容</param>
         public async Task SendMessageAsync(string receiver, string content)
         {
-            await CallAsync(HttpMethod.Post, NetConfig.ApiMessageUserMessagePath, content, NameValue.Set("receiver", receiver));
+            await CallAsync(HttpMethod.Post, ApiConfig.ApiMessageUserMessagePath, content, 
+                NameValue.Set("receiver", receiver));
         }
 
         /// <summary>
@@ -222,7 +188,9 @@ namespace Phenix.Client
         /// <param name="burn">是否销毁</param>
         public async Task AffirmReceivedMessageAsync(long id, bool burn = false)
         {
-            await CallAsync(HttpMethod.Patch, NetConfig.ApiMessageUserMessagePath, NameValue.Set("id", id), NameValue.Set("burn", burn));
+            await CallAsync(HttpMethod.Delete, ApiConfig.ApiMessageUserMessagePath, 
+                NameValue.Set("id", id), 
+                NameValue.Set("burn", burn));
         }
 
         /// <summary>
@@ -238,18 +206,88 @@ namespace Phenix.Client
                 throw new UserVerifyException();
 
             HubConnection result = new HubConnectionBuilder()
-                .WithUrl(BaseAddress.OriginalString + NetConfig.ApiMessageUserMessageHubPath, options => { options.AccessTokenProvider = () => Task.FromResult(Identity.User.FormatComplexAuthorization()); })
+                .WithUrl(BaseAddress.OriginalString + ApiConfig.ApiMessageUserMessageHubPath, 
+                    options => { options.AccessTokenProvider = () => Task.FromResult(Identity.User.FormatComplexAuthorization()); })
                 .AddMessagePackProtocol()
                 .WithAutomaticReconnect()
                 .Build();
 
-            result.On<string>("onReceived", (message) => { onReceived(Utilities.JsonDeserialize<IDictionary<long, string>>(message)); });
+            result.On<string>("onReceived", 
+                message => { onReceived(Utilities.JsonDeserialize<IDictionary<long, string>>(message)); });
             return result;
         }
 
         #endregion
 
-        #region UploadFile
+        #region InoutFile
+
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="message">上传消息</param>
+        /// <param name="targetPath">写入路径(文件名被上传)</param>
+        /// <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止下载</param>
+        public async Task DownloadFileAsync(string message, string targetPath, Func<FileChunkInfo, bool> doProgress)
+        {
+            if (String.IsNullOrEmpty(targetPath))
+                throw new ArgumentNullException(nameof(targetPath));
+
+            try
+            {
+                using (FileStream fileStream = new FileStream(targetPath, FileMode.Create, FileAccess.Write))
+                {
+                    await DownloadFileAsync(message, Path.GetFileName(targetPath), fileStream, doProgress);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                if (File.Exists(targetPath))
+                    File.Delete(targetPath);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="message">上传消息</param>
+        /// <param name="fileName">下载文件名</param>
+        /// <param name="targetStream">写入文件流</param>
+        /// <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止下载</param>
+        public async Task DownloadFileAsync(string message, string fileName, Stream targetStream, Func<FileChunkInfo, bool> doProgress)
+        {
+            if (targetStream == null)
+                throw new ArgumentNullException(nameof(targetStream));
+
+            for (int i = 1; i < Int32.MaxValue; i++)
+            {
+                FileChunkInfo chunkInfo = await DownloadFileChunkAsync(message, fileName, i);
+                if (doProgress != null && !doProgress(chunkInfo))
+                    break;
+                if (chunkInfo == null)
+                    break;
+                targetStream.Seek(chunkInfo.MaxChunkSize * (chunkInfo.ChunkNumber - 1), SeekOrigin.Begin);
+                await targetStream.WriteAsync(chunkInfo.ChunkBody);
+                await targetStream.FlushAsync();
+                if (chunkInfo.Over)
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="message">上传消息</param>
+        /// <param name="fileName">下载文件名</param>
+        /// <param name="chunkNumber">下载文件块号</param>
+        /// <returns>下载的文件块信息</returns>
+        public async Task<FileChunkInfo> DownloadFileChunkAsync(string message, string fileName, int chunkNumber)
+        {
+            return await CallAsync<FileChunkInfo>(HttpMethod.Get, ApiConfig.ApiInoutFilePath, 
+                NameValue.Set("message", message),
+                NameValue.Set("fileName", fileName), 
+                NameValue.Set("chunkNumber", chunkNumber));
+        }
 
         /// <summary>
         /// 上传文件
@@ -316,88 +354,13 @@ namespace Phenix.Client
             {
                 formDataContent.Add(new StringContent(message, Encoding.UTF8), "message");
                 formDataContent.Add(new StringContent(Utilities.JsonSerialize(chunkInfo), Encoding.UTF8), "chunkInfo");
-                return await CallAsync<string>(HttpMethod.Post, NetConfig.ApiInoutFilePath, formDataContent);
+                return await CallAsync<string>(HttpMethod.Put, ApiConfig.ApiInoutFilePath, formDataContent);
             }
         }
 
         #endregion
 
-        #region DownloadFile
-
-        /// <summary>
-        /// 下载文件
-        /// </summary>
-        /// <param name="message">上传消息</param>
-        /// <param name="targetPath">写入路径(文件名被上传)</param>
-        /// <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止下载</param>
-        public async Task DownloadFileAsync(string message, string targetPath, Func<FileChunkInfo, bool> doProgress)
-        {
-            if (String.IsNullOrEmpty(targetPath))
-                throw new ArgumentNullException(nameof(targetPath));
-
-            try
-            {
-                using (FileStream fileStream = new FileStream(targetPath, FileMode.Create, FileAccess.Write))
-                {
-                    await DownloadFileAsync(message, Path.GetFileName(targetPath), fileStream, doProgress);
-                }
-            }
-            catch (OperationCanceledException)
-            {
-                if (File.Exists(targetPath))
-                    File.Delete(targetPath);
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// 下载文件
-        /// </summary>
-        /// <param name="message">上传消息</param>
-        /// <param name="fileName">下载文件名</param>
-        /// <param name="targetStream">写入文件流</param>
-        /// <param name="doProgress">执行进度的回调函数, 回调函数返回值如为false则中止下载</param>
-        public async Task DownloadFileAsync(string message, string fileName, Stream targetStream, Func<FileChunkInfo, bool> doProgress)
-        {
-            if (targetStream == null)
-                throw new ArgumentNullException(nameof(targetStream));
-
-            for (int i = 1; i < Int32.MaxValue; i++)
-            {
-                FileChunkInfo chunkInfo = await DownloadFileChunkAsync(message, fileName, i);
-                if (doProgress != null && !doProgress(chunkInfo))
-                    break;
-                if (chunkInfo == null)
-                    break;
-                targetStream.Seek(chunkInfo.MaxChunkSize * (chunkInfo.ChunkNumber - 1), SeekOrigin.Begin);
-                await targetStream.WriteAsync(chunkInfo.ChunkBody);
-                await targetStream.FlushAsync();
-                if (chunkInfo.Over)
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// 下载文件
-        /// </summary>
-        /// <param name="message">上传消息</param>
-        /// <param name="fileName">下载文件名</param>
-        /// <param name="chunkNumber">下载文件块号</param>
-        /// <returns>下载的文件块信息</returns>
-        public async Task<FileChunkInfo> DownloadFileChunkAsync(string message, string fileName, int chunkNumber)
-        {
-            using (MultipartFormDataContent formDataContent = new MultipartFormDataContent())
-            {
-                formDataContent.Add(new StringContent(message, Encoding.UTF8), "message");
-                formDataContent.Add(new StringContent(fileName, Encoding.UTF8), "fileName");
-                formDataContent.Add(new StringContent(chunkNumber.ToString(), Encoding.UTF8), "chunkNumber");
-                return await CallAsync<FileChunkInfo>(HttpMethod.Put, NetConfig.ApiInoutFilePath, formDataContent);
-            }
-        }
-
-        #endregion
-
-        #region EventLog
+        #region Log
 
         /// <summary>
         /// 保存错误日志
@@ -435,7 +398,7 @@ namespace Phenix.Client
         /// <param name="info">事件资料</param>
         public async Task SaveEventLogAsync(Phenix.Core.Log.EventInfo info)
         {
-            await CallAsync(HttpMethod.Post, NetConfig.ApiLogEventLogPath, info);
+            await CallAsync(HttpMethod.Post, ApiConfig.ApiLogEventLogPath, info);
         }
 
         #endregion

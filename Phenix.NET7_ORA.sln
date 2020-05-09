@@ -31,8 +31,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Data.Seque
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Data.Increment", "Demo_ORA\Demo.Phenix.Core.Data.Increment\Demo.Phenix.Core.Data.Increment.csproj", "{0FE74B3F-00AC-4876-AD44-91CDE0F981DB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Client", "Phenix.Client\Phenix.Client.csproj", "{3CC12232-04DB-4926-9CE9-35EAE9AF58E1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Client.HttpClient_Message", "Demo_Client\Demo.Phenix.Client.HttpClient_Message\Demo.Phenix.Client.HttpClient_Message.csproj", "{E5395651-B15C-44AD-A166-0E4530E24823}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Client.HttpClient_File", "Demo_Client\Demo.Phenix.Client.HttpClient_File\Demo.Phenix.Client.HttpClient_File.csproj", "{17E0DC62-4AC7-4FEB-A13B-9C57217B0731}"
@@ -47,15 +45,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Extend_ORA"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem", "Demo_ORA\Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem\Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem.csproj", "{F2C70441-C9A8-4FEA-81E1-C7C20005167B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo_Practice", "Demo_Practice", "{6ADF1332-5B28-4AF1-8E60-AC6A2F1D34C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Client", "Phenix.Client\Phenix.Client.csproj", "{6640E3F1-7D13-4760-A60D-41A17AA7350E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo.InspectionStation", "Demo.InspectionStation", "{06026AD5-640D-4252-B77F-4528FBB6919F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo_Practice", "Demo_Practice", "{3AFD27EB-4B2F-4C20-B95B-DD580280113A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.InspectionStation.Plugin_ORA", "Demo_Practice\Demo.InspectionStation\Demo.InspectionStation.Plugin\Demo.InspectionStation.Plugin_ORA.csproj", "{87083954-C65B-461D-AB9D-88B4AC7CB946}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo.InspectionStation", "Demo.InspectionStation", "{6963B6F7-3FC1-46E8-B8C4-5242078293A1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo.InventoryControl", "Demo.InventoryControl", "{48F3047D-1FF7-4F02-85A1-AB7D5143E48E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.InspectionStation.Plugin_ORA", "Demo_Practice\Demo.InspectionStation\Demo.InspectionStation.Plugin\Demo.InspectionStation.Plugin_ORA.csproj", "{1F38182D-2616-4BD8-B5B7-DA2F8637FC91}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.InventoryControl.Plugin_ORA", "Demo_Practice\Demo.InventoryControl\Demo.InventoryControl.Plugin\Demo.InventoryControl.Plugin_ORA.csproj", "{A8E560ED-D458-4C50-8E40-D96C2777709C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo.InventoryControl", "Demo.InventoryControl", "{7D5829E1-7E06-41BF-8A9B-00FE7B86E3C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.InventoryControl.Plugin_ORA", "Demo_Practice\Demo.InventoryControl\Demo.InventoryControl.Plugin\Demo.InventoryControl.Plugin_ORA.csproj", "{CC2339FA-4C44-447D-97BE-008C1ED1703B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Client.Security.Identity_MyselfRootTeams", "Demo_Client\Demo.Phenix.Client.Security.Identity_MyselfRootTeams\Demo.Phenix.Client.Security.Identity_MyselfRootTeams.csproj", "{B3CD0086-392B-411C-8E5E-C492D442EA1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,10 +109,6 @@ Global
 		{0FE74B3F-00AC-4876-AD44-91CDE0F981DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FE74B3F-00AC-4876-AD44-91CDE0F981DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FE74B3F-00AC-4876-AD44-91CDE0F981DB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3CC12232-04DB-4926-9CE9-35EAE9AF58E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3CC12232-04DB-4926-9CE9-35EAE9AF58E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3CC12232-04DB-4926-9CE9-35EAE9AF58E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3CC12232-04DB-4926-9CE9-35EAE9AF58E1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E5395651-B15C-44AD-A166-0E4530E24823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E5395651-B15C-44AD-A166-0E4530E24823}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5395651-B15C-44AD-A166-0E4530E24823}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -139,14 +137,22 @@ Global
 		{F2C70441-C9A8-4FEA-81E1-C7C20005167B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2C70441-C9A8-4FEA-81E1-C7C20005167B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2C70441-C9A8-4FEA-81E1-C7C20005167B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{87083954-C65B-461D-AB9D-88B4AC7CB946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{87083954-C65B-461D-AB9D-88B4AC7CB946}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{87083954-C65B-461D-AB9D-88B4AC7CB946}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{87083954-C65B-461D-AB9D-88B4AC7CB946}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A8E560ED-D458-4C50-8E40-D96C2777709C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A8E560ED-D458-4C50-8E40-D96C2777709C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A8E560ED-D458-4C50-8E40-D96C2777709C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A8E560ED-D458-4C50-8E40-D96C2777709C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6640E3F1-7D13-4760-A60D-41A17AA7350E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6640E3F1-7D13-4760-A60D-41A17AA7350E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6640E3F1-7D13-4760-A60D-41A17AA7350E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6640E3F1-7D13-4760-A60D-41A17AA7350E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F38182D-2616-4BD8-B5B7-DA2F8637FC91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F38182D-2616-4BD8-B5B7-DA2F8637FC91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F38182D-2616-4BD8-B5B7-DA2F8637FC91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F38182D-2616-4BD8-B5B7-DA2F8637FC91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC2339FA-4C44-447D-97BE-008C1ED1703B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC2339FA-4C44-447D-97BE-008C1ED1703B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC2339FA-4C44-447D-97BE-008C1ED1703B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC2339FA-4C44-447D-97BE-008C1ED1703B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3CD0086-392B-411C-8E5E-C492D442EA1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3CD0086-392B-411C-8E5E-C492D442EA1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3CD0086-392B-411C-8E5E-C492D442EA1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3CD0086-392B-411C-8E5E-C492D442EA1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -164,10 +170,11 @@ Global
 		{E5395651-B15C-44AD-A166-0E4530E24823} = {4CBF1077-F885-4AEB-8014-ABC3D79F320E}
 		{17E0DC62-4AC7-4FEB-A13B-9C57217B0731} = {4CBF1077-F885-4AEB-8014-ABC3D79F320E}
 		{F2C70441-C9A8-4FEA-81E1-C7C20005167B} = {1140EBB7-3D04-4936-B893-FC46D34B8D01}
-		{06026AD5-640D-4252-B77F-4528FBB6919F} = {6ADF1332-5B28-4AF1-8E60-AC6A2F1D34C5}
-		{87083954-C65B-461D-AB9D-88B4AC7CB946} = {06026AD5-640D-4252-B77F-4528FBB6919F}
-		{48F3047D-1FF7-4F02-85A1-AB7D5143E48E} = {6ADF1332-5B28-4AF1-8E60-AC6A2F1D34C5}
-		{A8E560ED-D458-4C50-8E40-D96C2777709C} = {48F3047D-1FF7-4F02-85A1-AB7D5143E48E}
+		{6963B6F7-3FC1-46E8-B8C4-5242078293A1} = {3AFD27EB-4B2F-4C20-B95B-DD580280113A}
+		{1F38182D-2616-4BD8-B5B7-DA2F8637FC91} = {6963B6F7-3FC1-46E8-B8C4-5242078293A1}
+		{7D5829E1-7E06-41BF-8A9B-00FE7B86E3C6} = {3AFD27EB-4B2F-4C20-B95B-DD580280113A}
+		{CC2339FA-4C44-447D-97BE-008C1ED1703B} = {7D5829E1-7E06-41BF-8A9B-00FE7B86E3C6}
+		{B3CD0086-392B-411C-8E5E-C492D442EA1D} = {4CBF1077-F885-4AEB-8014-ABC3D79F320E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9C8CF59-EE51-4301-9EAC-22750A624DD2}

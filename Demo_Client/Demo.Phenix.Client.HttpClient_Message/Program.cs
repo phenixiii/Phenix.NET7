@@ -17,7 +17,7 @@ namespace Demo
             Console.WriteLine();
 
             Console.WriteLine("在接下来的演示之前，请启动 Phenix.Services.Host 程序，并保证其正确连接到你的测试库。");
-            Console.WriteLine("Phenix.Services.Host 程序的数据库连接配置信息，存放在其所在目录 SQLite 库 Phenix.Core.db 文件的 PH7_Database 表中，配置方法见其示例记录的 Remark 字段内容。");
+            Console.WriteLine("数据库连接配置信息，存放在 Phenix.Services.Host 程序所在目录 SQLite 库 Phenix.Core.db 文件的 PH7_Database 表中，配置方法见其示例记录的 Remark 字段内容。");
             Console.Write("准备好之后，请按任意键继续");
             Console.ReadKey();
             Console.WriteLine();
@@ -43,8 +43,9 @@ namespace Demo
                     Console.WriteLine();
                 }
 
-            Console.WriteLine("Phenix.Client.HttpClient.Default 缺省为第一个调用LogonAsync成功的HttpClient对象：{0}", Phenix.Client.HttpClient.Default == httpClient ? "ok" : "error");
-            Console.WriteLine("当前用户身份：{0} {1}", Phenix.Core.Reflection.Utilities.JsonSerialize(Phenix.Client.Security.Identity.CurrentIdentity), Phenix.Client.Security.Identity.CurrentIdentity == httpClient.Identity ? "ok" : "error");
+            Console.WriteLine("Phenix.Client.HttpClient.Default 缺省为第一个调用 LogonAsync 成功的 HttpClient 对象：{0}", Phenix.Client.HttpClient.Default == httpClient ? "ok" : "error");
+            Console.WriteLine("Phenix.Client.HttpClient.Default.Identity 缺省为 Phenix.Client.Security.Identity.CurrentIdentity 对象：{0}", Phenix.Client.HttpClient.Default.Identity == Phenix.Client.Security.Identity.CurrentIdentity ? "ok" : "error");
+            Console.WriteLine("当前用户资料：{0}", Phenix.Core.Reflection.Utilities.JsonSerialize(Phenix.Client.Security.Identity.CurrentIdentity.User));
             Console.Write("请按任意键继续");
             Console.ReadKey();
             Console.WriteLine();
@@ -53,13 +54,13 @@ namespace Demo
             Console.WriteLine("启动消息的订阅...");
             int i = 0;
             string prevMessage = String.Empty;
-            long messageId = httpClient.GetSequenceAsync().Result;
-            HubConnection connection = httpClient.SubscribeMessage(messages =>
+            long messageId = Phenix.Client.HttpClient.Default.GetSequenceAsync().Result;
+            HubConnection connection = Phenix.Client.HttpClient.Default.SubscribeMessage(messages =>
             {
                 foreach (KeyValuePair<long, string> kvp in messages)
                 {
                     Console.WriteLine("收到消息：{0} — '{1}'", kvp.Key, kvp.Value);
-                    httpClient.AffirmReceivedMessageAsync(kvp.Key, i == 0).Wait();
+                    Phenix.Client.HttpClient.Default.AffirmReceivedMessageAsync(kvp.Key, i == 0).Wait();
                     Console.WriteLine("确认收到消息：{0}({1})", kvp.Key, i == 0 ? "阅后即焚" : "不阅后即焚");
                 }
 
@@ -71,14 +72,14 @@ namespace Demo
                 {
                     i = i + 1;
                     message = String.Format("{0}[同一ID({1})第{2}次]", message, messageId, i);
-                    httpClient.SendMessageAsync(messageId, Phenix.Client.Security.Identity.CurrentIdentity.User.Name, message).Wait();
+                    Phenix.Client.HttpClient.Default.SendMessageAsync(messageId, Phenix.Client.Security.Identity.CurrentIdentity.User.Name, message).Wait();
                     Console.WriteLine("向自己发送刷新消息：{0}", message);
                 }
                 else
                 {
                     i = 0;
                     prevMessage = message;
-                    httpClient.SendMessageAsync(Phenix.Client.Security.Identity.CurrentIdentity.User.Name, message).Wait();
+                    Phenix.Client.HttpClient.Default.SendMessageAsync(Phenix.Client.Security.Identity.CurrentIdentity.User.Name, message).Wait();
                     Console.WriteLine("向自己发送一条消息：{0}", message);
                 }
             });
@@ -99,7 +100,7 @@ namespace Demo
             };
             connection.StartAsync().Wait();
             Console.WriteLine("订阅成功：{0}", connection.State);
-            httpClient.SendMessageAsync(Phenix.Client.Security.Identity.CurrentIdentity.User.Name, "第一条消息!").Wait();
+            Phenix.Client.HttpClient.Default.SendMessageAsync(Phenix.Client.Security.Identity.CurrentIdentity.User.Name, "第一条消息!").Wait();
             Console.WriteLine("向自己首发一条消息");
 
             while (true) Thread.Sleep(100);

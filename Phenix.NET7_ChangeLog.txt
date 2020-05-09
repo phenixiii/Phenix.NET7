@@ -131,7 +131,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 
 20200213
-1，为Phenix.Actor工程封装Orleans Streams功能，见StreamProvider、StreamGrainBase类
+1，为Phenix.Actor工程封装Orleans Streams功能，见StreamProvider类
 2，Demo.InventoryControl.Plugin_MySQL工程，添加Demo.InventoryControl.Plugin.oom设计文档
 3，添加Demo.InspectionStation检查站作业演练项目到Demo_Practice目录
 4，InspectionStation演练第一步，完成各作业点的地磅和车牌号的数据上报和读取、闸口的放行，作业点动态信息的发布和订阅，见Demo.InspectionStation.Plugin_MySQL工程
@@ -139,7 +139,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 20200217
 1，升级用户消息发布和订阅功能，允许在单一的消息ID上持续发送消息，可用于数据监控等业务场景，示例代码见：Demo.Phenix.Client.HttpClient_Message
-2，改造Phenix.Actor工程的Orleans Streams功能，StreamGrainBase类可支持网格化的消息发布和订阅机制
+2，为Phenix.Actor工程添加StreamEntityGrainBase类可支持网格化的消息发布和订阅机制
 3，InspectionStation演练第二步，中控的WebAPI客户端可订阅指定的多个作业点的动态信息，通过SignalR的推送机制实时获取到最新数据，见Demo.InspectionStation.Plugin_MySQL工程
 
 
@@ -182,9 +182,12 @@ Copyright © 2007, 2020 Phenixヾ Studio
 2，微调Phenix.Services.Plugin工程的代码
 
 
-20200407
-1，添加Phenix.Security目录，用于存放权限管理模块的工程代码
-2，提供Phenix.Security.Plugin工程，包含注册用户自建团队成为超级管理员，或作为普通成员加入到某个团队等功能
-
+20200408
+1，修订《Phenix.Services.Host.部署方法.doc》的"服务组件的开发和部署"章节
+2，添加《Phenix.Core.Data.持久层开发接口.doc》的"用DataReader获取实体对象/JSON的Sheet方法"章节
+3，修订Phenix.Core.Log.EventLog功能，可防止连续写同一message造成本地日志瞬时暴涨的问题，中断重复日志强度阈值由静态属性BreakRepeatIntensityPerMinute控制，缺省为重复日志超过每分钟6000次
+4，修订用户身份验证功能，可防止同一用户高频访问服务，中断服务请求强度阈值由Phenix.Core.Security.User的BreakRequestIntensityPerMinute静态属性控制，缺省为服务请求超过每分钟6000次
+5，为Phenix.Actor工程添加TreeEntityGrainBase、StreamTreeEntityGrainBase、TreeEntityGrainProxyBase类以支持树状结构Kernel的处理
+6，丰富Phenix.Services.Plugin工程功能，注册用户可搭建起组织架构成为公司管理员，示例见Demo.Phenix.Client.Security.Identity_MyselfRootTeams
 
 
