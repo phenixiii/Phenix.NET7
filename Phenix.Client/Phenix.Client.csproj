@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>7.3.30</Version>
-    <AssemblyVersion>7.3.30.0408</AssemblyVersion>
-    <FileVersion>7.3.30.0408</FileVersion>
+    <Version>7.3.31</Version>
+    <AssemblyVersion>7.3.31.0510</AssemblyVersion>
+    <FileVersion>7.3.31.0510</FileVersion>
     <Description>Phenix Framework 7 for .NET Core 3 + Orleans 3</Description>
     <Authors>ming</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -15,24 +15,24 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\Bin_MySQL\</OutputPath>
-    <DocumentationFile>..\Bin_MySQL\Phenix.Client.xml</DocumentationFile>
+    <OutputPath>..\Bin_PgSQL\</OutputPath>
+    <DocumentationFile>..\Bin_PgSQL\Phenix.Client.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\Bin_MySQL\</OutputPath>
-    <DocumentationFile>..\Bin_MySQL\Phenix.Client.xml</DocumentationFile>
+    <OutputPath>..\Bin_PgSQL\</OutputPath>
+    <DocumentationFile>..\Bin_PgSQL\Phenix.Client.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="3.1.4" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Phenix.Core">
-      <HintPath>..\Bin_MySQL\netcoreapp3.1\Phenix.Core.dll</HintPath>
+      <HintPath>..\Bin_PgSQL\netcoreapp3.1\Phenix.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

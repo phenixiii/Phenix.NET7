@@ -66,7 +66,7 @@ namespace Phenix.Services.Host
                 /*
                  * 启动Orleans服务集群
                  * 请事先在数据库中手工添加Orleans配置库，默认是Phenix.Core.Data.Database.Default指向的数据库
-                 * Orleans配置库的脚本文件，见Orleans Database Script目录，分为MySQL和Oracle两组，建议按需顺序执行
+                 * Orleans配置库的脚本文件，见Orleans Database Script目录，分为PostgreSQL、MySQL、Oracle三组，建议按需顺序批处理执行
                  */
                 .UseOrleans((context, builder) => builder
                     /*

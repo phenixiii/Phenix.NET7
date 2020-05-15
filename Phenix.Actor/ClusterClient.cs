@@ -67,6 +67,9 @@ namespace Phenix.Actor
                     .UseAdoNetClustering(options =>
                     {
                         options.ConnectionString = connectionString;
+#if PgSQL
+                        options.Invariant = "Npgsql";
+#endif
 #if MySQL
                         options.Invariant = "MySql.Data.MySqlClient";
 #endif

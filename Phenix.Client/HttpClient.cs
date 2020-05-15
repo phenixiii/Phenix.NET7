@@ -380,25 +380,23 @@ namespace Phenix.Client
         /// <param name="error">错误</param>
         public async Task SaveEventLogAsync(MethodBase method, string message, Exception error = null)
         {
-            if (AppRun.Debugging)
+            if (!await SaveEventLogAsync(new Phenix.Core.Log.EventInfo(await GetSequenceAsync(), DateTime.Now,
+                method != null ? (method.ReflectedType ?? method.DeclaringType).FullName : null,
+                method != null ? method.Name : null,
+                message,
+                error != null ? error.GetType().FullName : null,
+                error != null ? AppRun.GetErrorMessage(error) : null,
+                Identity.CurrentIdentity != null ? Identity.CurrentIdentity.User.Name : null, NetConfig.LocalAddress)))
                 Phenix.Core.Log.EventLog.SaveLocal(method, message, error);
-            else
-                await SaveEventLogAsync(new Phenix.Core.Log.EventInfo(await GetSequenceAsync(), DateTime.Now,
-                    method != null ? (method.ReflectedType ?? method.DeclaringType).FullName : null,
-                    method != null ? method.Name : null,
-                    message,
-                    error != null ? error.GetType().FullName : null,
-                    error != null ? AppRun.GetErrorMessage(error) : null,
-                    Identity.CurrentIdentity != null ? Identity.CurrentIdentity.User.Name : null, NetConfig.LocalAddress));
         }
 
         /// <summary>
         /// 保存对象日志
         /// </summary>
         /// <param name="info">事件资料</param>
-        public async Task SaveEventLogAsync(Phenix.Core.Log.EventInfo info)
+        public async Task<bool> SaveEventLogAsync(Phenix.Core.Log.EventInfo info)
         {
-            await CallAsync(HttpMethod.Post, ApiConfig.ApiLogEventLogPath, info);
+            return await CallAsync<bool>(HttpMethod.Post, ApiConfig.ApiLogEventLogPath, info);
         }
 
         #endregion

@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>7.3.31</Version>
+    <AssemblyVersion>7.3.31.0510</AssemblyVersion>
+    <FileVersion>7.3.31.0510</FileVersion>
+    <Description>Phenix Framework 7 for .NET Core 3 + Orleans 3</Description>
+    <Authors>ming</Authors>
+    <DefineConstants>TRACE;PgSQL</DefineConstants>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <AssemblyName>Phenix.Actor</AssemblyName>
+    <RootNamespace>Phenix.Actor</RootNamespace>
+    <Copyright>Copyright © 2007, 2020 Phenixヾ Studio</Copyright>
+    <Company />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\Bin_PgSQL\</OutputPath>
+    <DocumentationFile>..\Bin_PgSQL\Phenix.Actor.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\Bin_PgSQL\</OutputPath>
+    <DocumentationFile>..\Bin_PgSQL\Phenix.Actor.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.Orleans.Client" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.1.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Orleans.OrleansCodeGenerator" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Orleans.Reminders.AdoNet" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Orleans.Server" Version="3.1.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Phenix.Core">
+      <HintPath>..\Bin_PgSQL\netcoreapp3.1\Phenix.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties Reactor_Enabled="1" /></VisualStudio></ProjectExtensions>
+
+</Project>

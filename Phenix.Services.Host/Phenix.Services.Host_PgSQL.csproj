@@ -1,0 +1,80 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>7.3.31</Version>
+    <AssemblyVersion>7.3.31.0510</AssemblyVersion>
+    <FileVersion>7.3.31.0510</FileVersion>
+    <Description>Phenix Framework 7 for .NET Core 3 + Orleans 3</Description>
+    <Authors>ming</Authors>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <AssemblyName>Phenix.Services.Host</AssemblyName>
+    <RootNamespace>Phenix.Services.Host</RootNamespace>
+    <Copyright>Copyright © 2007, 2020 Phenixヾ Studio</Copyright>
+    <Product>Phenix.Services.Host</Product>
+    <PackageId>Phenix.Services.Host</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\Bin_PgSQL\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\Bin_PgSQL\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ServerGarbageCollection>true</ServerGarbageCollection>
+    <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="3.1.4" />
+    <PackageReference Include="Microsoft.Orleans.Client" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.1.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Orleans.OrleansCodeGenerator" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Orleans.Reminders.AdoNet" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Orleans.Server" Version="3.1.6" />
+    <PackageReference Include="Npgsql" Version="4.1.3.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="OrleansDashboard" Version="3.1.0" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.112.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Phenix.Actor">
+      <HintPath>..\Bin_PgSQL\netcoreapp3.1\Phenix.Actor.dll</HintPath>
+    </Reference>
+    <Reference Include="Phenix.Core">
+      <HintPath>..\Bin_PgSQL\netcoreapp3.1\Phenix.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Phenix.Services">
+      <HintPath>..\Bin_PgSQL\netcoreapp3.1\Phenix.Services.Extend.dll</HintPath>
+    </Reference>
+    <Reference Include="Phenix.Services.Plugin">
+      <HintPath>..\Bin_PgSQL\netcoreapp3.1\Phenix.Services.Plugin.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DockerBuild.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="DockerRun.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Phenix.Core.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

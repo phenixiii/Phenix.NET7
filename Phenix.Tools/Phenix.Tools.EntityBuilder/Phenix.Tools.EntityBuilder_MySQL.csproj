@@ -4,7 +4,6 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Phenix.Tools.EntityBuilder</AssemblyName>
-    <DefineConstants>TRACE;MySQL</DefineConstants>
     <RootNamespace>Phenix.Tools.EntityBuilder</RootNamespace>
     <Version>7.3.28</Version>
     <AssemblyVersion>7.3.28.0402</AssemblyVersion>

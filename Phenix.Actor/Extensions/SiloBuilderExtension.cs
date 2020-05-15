@@ -54,6 +54,9 @@ namespace Orleans.Hosting
                 .UseAdoNetClustering(options =>
                 {
                     options.ConnectionString = connectionString;
+#if PgSQL
+                    options.Invariant = "Npgsql";
+#endif
 #if MySQL
                     options.Invariant = "MySql.Data.MySqlClient";
 #endif
@@ -64,6 +67,9 @@ namespace Orleans.Hosting
                 .AddAdoNetGrainStorageAsDefault(options =>
                 {
                     options.ConnectionString = connectionString;
+#if PgSQL
+                    options.Invariant = "Npgsql";
+#endif
 #if MySQL
                     options.Invariant = "MySql.Data.MySqlClient";
 #endif
@@ -74,6 +80,9 @@ namespace Orleans.Hosting
                 .UseAdoNetReminderService(options =>
                 {
                     options.ConnectionString = connectionString;
+#if PgSQL
+                    options.Invariant = "Npgsql";
+#endif
 #if MySQL
                     options.Invariant = "MySql.Data.MySqlClient";
 #endif

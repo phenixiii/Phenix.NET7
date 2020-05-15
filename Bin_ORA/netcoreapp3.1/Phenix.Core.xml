@@ -969,11 +969,6 @@
             构建存储过程 DbCommand
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.Tidy(System.Data.Common.DbCommand)">
-            <summary>
-            整理 DbCommand
-            </summary>
-        </member>
         <member name="M:Phenix.Core.Data.Common.DbCommandHelper.ExecuteNonQuery(System.Data.Common.DbCommand,System.Nullable{System.Boolean})">
             <summary>
             执行 DbCommand
@@ -1592,21 +1587,21 @@
             </summary>
             <param name="name">名称</param>
             <param name="value">值</param>
-            <param name="dbType">OracleDbType</param>
+            <param name="dbType">参数类型</param>
         </member>
         <member name="M:Phenix.Core.Data.Common.ParamValue.Output(System.String,Oracle.ManagedDataAccess.Client.OracleDbType)">
             <summary>
             输出参数
             </summary>
             <param name="name">名称</param>
-            <param name="dbType">OracleDbType</param>
+            <param name="dbType">参数类型</param>
         </member>
         <member name="M:Phenix.Core.Data.Common.ParamValue.ReturnValue(System.String,Oracle.ManagedDataAccess.Client.OracleDbType)">
             <summary>
             返回值
             </summary>
             <param name="name">名称</param>
-            <param name="dbType">OracleDbType</param>
+            <param name="dbType">参数类型</param>
         </member>
         <member name="P:Phenix.Core.Data.Common.ParamValue.Name">
             <summary>
@@ -1620,7 +1615,7 @@
         </member>
         <member name="P:Phenix.Core.Data.Common.ParamValue.DbType">
             <summary>
-            OracleDbType
+            参数类型
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Common.ParamValue.Direction">
@@ -7292,6 +7287,7 @@
             保存对象日志
             </summary>
             <param name="info">事件资料</param>
+            <returns>返回对象</returns>
         </member>
         <member name="M:Phenix.Core.Log.EventLog.SaveLocal(System.String,System.String)">
             <summary>
@@ -8098,11 +8094,12 @@
             <param name="value">值</param>
             <param name="resultType">返回值的类型</param>
         </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.ConvertToDbValue(System.Object)">
+        <member name="M:Phenix.Core.Reflection.Utilities.ConvertToDbValue(System.Object,System.Boolean)">
             <summary>
             返回与数据库字段类型匹配的值
             </summary>
             <param name="value">值</param>
+            <param name="nullToDBNull">Null转换为DBNull</param>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.FindDetailListType(System.Type,System.String,System.Int32)">
             <summary>

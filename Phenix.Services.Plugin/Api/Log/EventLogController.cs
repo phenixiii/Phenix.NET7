@@ -19,9 +19,9 @@ namespace Phenix.Services.Plugin.Api.Log
         /// </summary>
         [Authorize]
         [HttpPost]
-        public async Task Save()
+        public async Task<bool> Save()
         {
-            EventLog.Save(await Request.ReadBodyAsync<EventInfo>());
+            return EventLog.Save(await Request.ReadBodyAsync<EventInfo>());
         }
     }
 }

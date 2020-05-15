@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Phenix.Core.Data.Model;
@@ -275,7 +274,7 @@ namespace Phenix.Client.Security
         [Newtonsoft.Json.JsonIgnore]
         public bool IsCompanyAdmin
         {
-            get { return _teamsId == _rootTeamsId; }
+            get { return TeamsId == RootTeamsId; }
         }
 
         [NonSerialized]
@@ -317,7 +316,7 @@ namespace Phenix.Client.Security
             {
                 return RijndaelCryptoTextProvider.Decrypt(_password, cipherText);
             }
-            catch (CryptographicException)
+            catch (SystemException) //FormatException & CryptographicException
             {
                 throw new PasswordException();
             }
