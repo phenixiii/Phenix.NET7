@@ -14,5 +14,12 @@
       <FileName>Api\Security\MyselfController.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Phenix.Services.Plugin.Api.Security.PositionController">
+    <Position X="4" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Api\Security\PositionController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Microsoft YaHei UI" Size="9" />
 </ClassDiagram>

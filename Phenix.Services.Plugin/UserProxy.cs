@@ -13,11 +13,6 @@ namespace Phenix.Services.Plugin
     {
         #region 方法
 
-        Task<string> IUserProxy.CheckIn(string name, string phone, string eMail, string regAlias, string requestAddress)
-        {
-            return Grain.CheckIn(name, phone, eMail, regAlias, requestAddress);
-        }
-
         Task<bool> IUserProxy.IsValidLogon(string timestamp, string signature, string requestAddress, bool throwIfNotConform)
         {
             return Grain.IsValidLogon(timestamp, signature, requestAddress, throwIfNotConform);
@@ -28,11 +23,6 @@ namespace Phenix.Services.Plugin
             return Grain.IsValid(timestamp, signature, requestAddress, throwIfNotConform);
         }
 
-        Task IUserProxy.Logon(string tag)
-        {
-            return Grain.Logon(tag);
-        }
-
         Task<string> IUserProxy.Encrypt(object data)
         {
             return Grain.Encrypt(data is string ds ? ds : Utilities.JsonSerialize(data));
@@ -41,16 +31,6 @@ namespace Phenix.Services.Plugin
         Task<string> IUserProxy.Decrypt(string cipherText)
         {
             return Grain.Decrypt(cipherText);
-        }
-
-        Task<bool> IUserProxy.ChangePassword(string newPassword, bool throwIfNotConform)
-        {
-            return Grain.ChangePassword(newPassword, throwIfNotConform);
-        }
-
-        Task<long> IUserProxy.PatchRootTeams(string name)
-        {
-            return Grain.PatchRootTeams(name);
         }
 
         #endregion

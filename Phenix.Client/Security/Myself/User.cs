@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ using Phenix.Core.Reflection;
 using Phenix.Core.Security.Auth;
 using Phenix.Core.Security.Cryptography;
 
-namespace Phenix.Client.Security
+namespace Phenix.Client.Security.Myself
 {
     /// <summary>
     /// 用户资料
@@ -51,9 +52,9 @@ namespace Phenix.Client.Security
             _disabledTime = disabledTime;
         }
 
-        internal User(Identity owner, string name, string password)
+        internal User(HttpClient httpClient, string name, string password)
         {
-            _owner = owner;
+            _httpClient = httpClient;
             _name = name;
             _password = MD5CryptoTextProvider.ComputeHash(password);
         }
@@ -61,15 +62,23 @@ namespace Phenix.Client.Security
         #region 属性
 
         [NonSerialized]
-        private Identity _owner;
+        private HttpClient _httpClient;
+
+        [NonSerialized]
+        private bool? _isMyself;
 
         /// <summary>
-        /// Identity
+        /// 是否登录用户
         /// </summary>
         [Newtonsoft.Json.JsonIgnore]
-        public Identity Owner
+        public bool IsMyself
         {
-            get { return _owner; }
+            get
+            {
+                if (!_isMyself.HasValue)
+                    _isMyself = _httpClient != null && String.CompareOrdinal(_httpClient.Identity.Name, Name) == 0;
+                return _isMyself.Value;
+            }
         }
 
         private readonly string _name;
@@ -90,7 +99,11 @@ namespace Phenix.Client.Security
         public string Phone
         {
             get { return _phone; }
-            set { _phone = value; }
+            set
+            {
+                if (Patch(NameValue.Set<User>(p => p.Phone, value)) == 1)
+                    _phone = value;
+            }
         }
 
         private string _eMail;
@@ -101,10 +114,14 @@ namespace Phenix.Client.Security
         public string EMail
         {
             get { return _eMail; }
-            set { _eMail = value; }
+            set
+            {
+                if (Patch(NameValue.Set<User>(p => p.EMail, value)) == 1)
+                    _eMail = value;
+            }
         }
 
-        private readonly string _regAlias;
+        private string _regAlias;
 
         /// <summary>
         /// 注册昵称
@@ -112,6 +129,11 @@ namespace Phenix.Client.Security
         public string RegAlias
         {
             get { return _regAlias; }
+            set
+            {
+                if (Patch(NameValue.Set<User>(p => p.RegAlias, value)) == 1)
+                    _regAlias = value;
+            }
         }
 
         private readonly DateTime _regTime;
@@ -171,10 +193,10 @@ namespace Phenix.Client.Security
         /// </summary>
         public Teams RootTeams
         {
-            get { return _rootTeams ?? (_rootTeams = Teams.Fetch(this)); }
+            get { return _rootTeams ?? (_rootTeams = Teams.Fetch(_httpClient)); }
         }
 
-        private readonly long? _teamsId;
+        private long? _teamsId;
 
         /// <summary>
         /// 所属团体ID
@@ -194,9 +216,17 @@ namespace Phenix.Client.Security
         public Teams Teams
         {
             get { return _teams ?? (_teams = _teamsId.HasValue ? RootTeams.FindInBranch(p => p.Id == _teamsId.Value) : RootTeams); }
+            set
+            {
+                if (Patch(NameValue.Set<User>(p => p.TeamsId, value != null ? value.Id : (long?) null)) == 1)
+                {
+                    _teamsId = value != null ? value.Id : (long?) null;
+                    _teams = value;
+                }
+            }
         }
 
-        private readonly long? _positionId;
+        private long? _positionId;
 
         /// <summary>
         /// 担任岗位ID
@@ -213,10 +243,28 @@ namespace Phenix.Client.Security
         /// </summary>
         public Position Position
         {
-            get { return _position ?? (_position = Position.Fetch(this)); }
+            get
+            {
+                if (_position == null)
+                {
+                    if (_positionId.HasValue)
+                        _position = _httpClient.CallAsync<Position>(HttpMethod.Get, ApiConfig.ApiSecurityPositionPath, false,
+                            NameValue.Set<Position>(p => p.Id, _positionId.Value)).Result;
+                }
+
+                return _position;
+            }
+            set
+            {
+                if (Patch(NameValue.Set<User>(p => p.PositionId, value != null ? value.Id : (long?) null)) == 1)
+                {
+                    _positionId = value != null ? value.Id : (long?) null;
+                    _position = value;
+                }
+            }
         }
 
-        private readonly bool _locked;
+        private bool _locked;
 
         /// <summary>
         /// 是否锁定
@@ -224,9 +272,18 @@ namespace Phenix.Client.Security
         public bool Locked
         {
             get { return _locked; }
+            set
+            {
+                if (Patch(NameValue.Set<User>(p => p.Locked, value),
+                        NameValue.Set<User>(p => p.LockedTime, DateTime.Now)) == 1)
+                {
+                    _locked = value;
+                    _lockedTime = DateTime.Now;
+                }
+            }
         }
 
-        private readonly DateTime? _lockedTime;
+        private DateTime? _lockedTime;
 
         /// <summary>
         /// 锁定时间
@@ -236,7 +293,7 @@ namespace Phenix.Client.Security
             get { return _lockedTime; }
         }
 
-        private readonly bool _disabled;
+        private bool _disabled;
 
         /// <summary>
         /// 是否注销
@@ -244,9 +301,18 @@ namespace Phenix.Client.Security
         public bool Disabled
         {
             get { return _disabled; }
+            set
+            {
+                if (Patch(NameValue.Set<User>(p => p.Disabled, value),
+                        NameValue.Set<User>(p => p.DisabledTime, DateTime.Now)) == 1)
+                {
+                    _disabled = value;
+                    _disabledTime = DateTime.Now;
+                }
+            }
         }
 
-        private readonly DateTime? _disabledTime;
+        private DateTime? _disabledTime;
 
         /// <summary>
         /// 注销时间
@@ -336,7 +402,7 @@ namespace Phenix.Client.Security
             using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, ApiConfig.ApiSecurityGatePath))
             {
                 request.Content = new StringContent(Encrypt(tag ?? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")), Encoding.UTF8);
-                using (HttpResponseMessage response = await _owner.HttpClient.SendAsync(request))
+                using (HttpResponseMessage response = await _httpClient.SendAsync(request))
                 {
                     await response.ThrowIfFailedAsync();
                     _isAuthenticated = true;
@@ -346,10 +412,10 @@ namespace Phenix.Client.Security
 
         internal async Task<User> ReFetchAsync()
         {
-            User result = await _owner.HttpClient.CallAsync<User>(HttpMethod.Get, ApiConfig.ApiSecurityMyselfPath, true);
+            User result = await _httpClient.CallAsync<User>(HttpMethod.Get, ApiConfig.ApiSecurityMyselfPath, true);
             if (result != null)
             {
-                result._owner = _owner;
+                result._httpClient = _httpClient;
                 result._password = _password;
                 result._isAuthenticated = _isAuthenticated;
             }
@@ -363,32 +429,77 @@ namespace Phenix.Client.Security
         /// <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
         public async Task ChangePasswordAsync(string password)
         {
-            await _owner.HttpClient.CallAsync(HttpMethod.Put, ApiConfig.ApiSecurityMyselfPasswordPath, password, true);
+            await _httpClient.CallAsync(HttpMethod.Put, ApiConfig.ApiSecurityMyselfPasswordPath, password, true);
             _password = MD5CryptoTextProvider.ComputeHash(password);
         }
 
-        /// <summary>
-        /// 更新自己
-        /// </summary>
-        public int UpdateSelf()
-        {
-            return _owner.HttpClient.CallAsync<int>(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfPath,
-                NameValue.ToArray(
-                    NameValue.Set<User>(p => p.Phone, Phone),
-                    NameValue.Set<User>(p => p.EMail, EMail)), true).Result;
-        }
+        #region CompanyAdmin 操作功能
 
         /// <summary>
         /// 更新顶层团体
         /// </summary>
-        /// <param name="name">公司名</param>
-        public async Task PatchRootTeamsAsync(string name)
+        /// <param name="teamsName">公司名</param>
+        public async Task PatchRootTeamsAsync(string teamsName)
         {
-            _rootTeamsId = await _owner.HttpClient.CallAsync<long>(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfRootTeamsPath,
-                NameValue.Set<Teams>(p => p.Name, name));
+            if (String.IsNullOrEmpty(teamsName))
+                throw new ArgumentNullException(nameof(teamsName));
+
+            _rootTeamsId = await _httpClient.CallAsync<long>(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfRootTeamsPath,
+                NameValue.Set<Teams>(p => p.Name, teamsName));
             _rootTeams = null;
             _teams = null;
         }
+
+        /// <summary>
+        /// 获取公司用户资料
+        /// </summary>
+        public async Task<IList<User>> FetchCompanyUsersAsync()
+        {
+            IList<User> result = await _httpClient.CallAsync<IList<User>>(HttpMethod.Get, ApiConfig.ApiSecurityMyselfCompanyUserPath, true);
+            if (result != null)
+                foreach (User item in result)
+                    item._httpClient = _httpClient;
+            return result;
+        }
+
+        /// <summary>
+        /// 登记/注册公司用户
+        /// </summary>
+        /// <param name="name">登录名</param>
+        /// <param name="phone">手机(注册用可为空)</param>
+        /// <param name="eMail">邮箱(注册用可为空)</param>
+        /// <param name="regAlias">注册昵称(注册用可为空)</param>
+        /// <param name="teams">所属团体</param>
+        /// <param name="position">担任岗位</param>
+        /// <returns>返回信息</returns>
+        public async Task<string> RegisterCompanyUserAsync(string name, string phone, string eMail, string regAlias, Teams teams, Position position)
+        {
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException(nameof(name));
+            if (teams == null)
+                throw new ArgumentNullException(nameof(teams));
+            if (position == null)
+                throw new ArgumentNullException(nameof(position));
+
+            return await _httpClient.CallAsync<string>(HttpMethod.Put, ApiConfig.ApiSecurityMyselfCompanyUserPath, false,
+                NameValue.Set<User>(p => p.Name, name),
+                NameValue.Set<User>(p => p.Phone, phone),
+                NameValue.Set<User>(p => p.EMail, eMail),
+                NameValue.Set<User>(p => p.RegAlias, regAlias),
+                NameValue.Set<User>(p => p.TeamsId, teams.Id),
+                NameValue.Set<User>(p => p.PositionId, position.Id));
+        }
+
+        private int Patch(params NameValue[] propertyValues)
+        {
+            return IsMyself
+                ? _httpClient.CallAsync<int>(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfPath,
+                    propertyValues, true).Result
+                : _httpClient.CallAsync<int>(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfCompanyUserPath,
+                    propertyValues, true, NameValue.Set<User>(p => p.Name, Name)).Result;
+        }
+
+        #endregion
 
         #endregion
     }

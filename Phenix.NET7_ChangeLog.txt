@@ -34,11 +34,6 @@ Copyright © 2007, 2020 Phenixヾ Studio
 2，提供《Phenix.Services.Host.部署方法.doc》文档
 
 
-20190809
-1，提供Phenix.Core.Data.Schema.Table配置项ClassNameByTrimTableName，可根据自己Build Entity的需要，规定ClassName属性的取值是否取自被整理的表名(如果第4位是"_"则剔去其及之前的字符)，默认是false
-2，提供Phenix.Core.Data.Schema.View配置项ClassNameByTrimViewName，可根据自己Build Entity的需要，规定ClassName属性的取值是否取自被整理的视图名(如果第4位是"_"则剔去其及之前的字符, 如果倒数第2位是"_"则剔去其及之后的字符)，默认是false
-
-
 20190813
 1，Phenix.Core.Data.Database和Phenix.Core.Data.Common.DbCommandHelper的调用存储过程函数ExecuteStoredProc，返回值改为IDictionary<string, object>类型，为存储过程的调用结果集"参数名-参数值"，如需转换为JSON格式请调用Phenix.Core.Reflection.Utilities.JsonSerialize(result)
 2，增补Phenix.Core.Data.Schema.Table、Phenix.Core.Data.Schema.View、Phenix.Core.Data.Model.EntityBase<T>的查询函数，可读取DataReader内容返回实体对象或JSON格式的查询结果
@@ -75,9 +70,8 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 
 20191021
-1，重构Phenix.Client.HttpClient类
-2，phenix7.js和Phenix.Client.HttpClient类的Call函数，补充'是否加密上传数据'、'是否解密返回数据'参数
-3，提供业务类代码生成工具Phenix.Tools.BusinessBuilder工程源码
+1，phenix7.js和Phenix.Client.HttpClient类的Call函数，补充'是否加密上传数据'、'是否解密返回数据'参数
+2，提供业务类代码生成工具Phenix.Tools.BusinessBuilder工程源码
 
 
 20191030
@@ -132,7 +126,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 20200213
 1，为Phenix.Actor工程封装Orleans Streams功能，见StreamProvider类
-2，Demo.InventoryControl.Plugin_MySQL工程，添加Demo.InventoryControl.Plugin.oom设计文档
+2，为Demo.InventoryControl.Plugin_MySQL工程添加Demo.InventoryControl.Plugin.oom设计文档
 3，添加Demo.InspectionStation检查站作业演练项目到Demo_Practice目录
 4，InspectionStation演练第一步，完成各作业点的地磅和车牌号的数据上报和读取、闸口的放行，作业点动态信息的发布和订阅，见Demo.InspectionStation.Plugin_MySQL工程
 
@@ -152,8 +146,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 20200224
 1，重构Phenix.Core持久层框架，强调聚合和聚合根的领域对象模型，在采取分库分表策略的数据库部署场景下，一棵聚合树里的所有对象都随聚合根对象一起锁定在某个分库上进行持久化，持久化的路由算法是取自聚合根对象里一个映射'_RU'后缀字段的属性值经HASH取余得到具体的分库ID
 2，重构Phenix.Core权限控制模块，借助Phenix.Services.Plugin工程实现分布式部署
-3，重构Phenix.Services.Plugin工程，精简UserGrain仅限于身份验证和口令管理功能
-4，重构Phenix.Actor工程，精简EntityGrainProxyBase仅限于实体Grain的代理功能
+3，重构Phenix.Actor工程，精简EntityGrainProxyBase仅限于实体Grain的代理功能
 
 
 20200303
@@ -164,22 +157,8 @@ Copyright © 2007, 2020 Phenixヾ Studio
 20200315
 1，为Phenix.Services.Host工程添加Dashboard插件，可在浏览器上打开可视化Silo监控工具：http://localhost:8080/
 2，完善Phenix.Core.AppSettings功能，类似Phenix.Core.Data.Database.Fetch()函数会自动加密Phenix.Core.db库文件PH7_Database表Password字段值，ReadValue()函数也会加密PH7_AppSettings表Value字段值
-3，修订《Phenix.Services.Host.部署方法.doc》、《Phenix.Core.Data.持久层开发接口.doc》
-
-
-20200318
-1，增补Phenix.Core.Plugin插件模块，用于动态加载和管理包含有实现了IPlugin接口的插件类的程序集
-2，修订《Phenix.Core.Data.持久层开发接口.doc》
-
-
-20200402
-1，修订Phenix.Tools.EntityBuilder、Phenix.Tools.BusinessBuilder代码生成问题，增补'protected override void InitializeSelf()'函数代码生成功能，用于填充表字段默认值
-2，修订《Phenix.Core.Data.持久层开发接口.doc》
-
-
-20200405
-1，微调Phenix.Actor工程的功能
-2，微调Phenix.Services.Plugin工程的代码
+3，为Phenix.Core工程添加Plugin功能（命名空间为Phenix.Core.Plugin），用于动态加载和管理包含有实现了IPlugin接口的插件类的程序集
+2，修订Phenix.Tools.EntityBuilder、Phenix.Tools.BusinessBuilder代码生成问题，增补'protected override void InitializeSelf()'函数代码生成功能，用于填充表字段默认值
 
 
 20200408
@@ -192,6 +171,19 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 
 20200510
-1，丰富Phenix.Algorithm工程ZeroOneKnapsackProblem类、BunchKnapsackProblem的功能，可支持超大规格（容量）背包的运算
+1，丰富Phenix.Algorithm工程ZeroOneKnapsackProblem、BunchKnapsackProblem的功能，可支持超大规格（容量）背包的运算
 2，持久化引擎支持PostgreSQL，解决方案Phenix.NET7_PgSQL.sln，程序集输出目录Bin_PgSQL，配置库Phenix.Core.db已升级
+
+
+20200516
+1，提供Phenix.Core.Data.Schema.Table配置项ClassNameByTrimTableName(默认false)，可根据自己Build Entity的需要设置类名取自被整理(如果第PrefixCount(默认3)位后是"_"则剔去其及之前的字符)的表名
+2，提供Phenix.Core.Data.Schema.View配置项ClassNameByTrimViewName(默认false)，可根据自己Build Entity的需要设置类名取自被整理(如果第PrefixCount(默认3)位后是"_"则剔去其及之前的字符, 如果第SuffixCount(默认1)位前是"_"则剔去其及之后的字符)的视图名
+3，提供Phenix.Core.Data.Schema.Column配置项FieldNameByTrimColumnName(默认true)，可根据自己Build Entity的需要设置类的字段名和属性名取自被整理(如果第PrefixCount(默认2)位后是"_"则剔去其及之前的字符)的表/视图字段名
+4，丰富Phenix.Services.Plugin工程功能，公司管理员可为自己员工注册用户，为其配上所在团队（自己公司组织架构上的某个节点）、所担岗位，锁定/解锁、注销/恢复
+
+
+20200523
+1，丰富Phenix.Services.Plugin工程功能，系统管理员（用户名ADMIN，默认密码ADMIN）可增删改系统的岗位定义
+2，适配双活数据中心的Actor状态跨域同步机制
+
 

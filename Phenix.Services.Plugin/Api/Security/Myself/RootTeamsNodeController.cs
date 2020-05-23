@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Phenix.Actor;
 using Phenix.Core.Data.Schema;
 using Phenix.Core.Security;
+using Phenix.Services.Plugin.Actor;
 
 namespace Phenix.Services.Plugin.Api.Security.Myself
 {
@@ -28,7 +30,7 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         {
             return User.Identity.RootTeamsProxy != null
                 ? await User.Identity.RootTeamsProxy.AddChildNode(parentId, NameValue.Set<Teams>(p => p.Name, name))
-                : await User.Identity.UserProxy.PatchRootTeams(name);
+                : await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).PatchRootTeams(name);
         }
 
         /// <summary>

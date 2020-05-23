@@ -4192,6 +4192,18 @@
             字段
             </summary>
         </member>
+        <member name="P:Phenix.Core.Data.Schema.Column.FieldNameByTrimColumnName">
+            <summary>
+            字段名是否取自被整理的字段名(如果第PrefixCount位后是"_"则剔去其及之前的字符)
+            缺省为 true
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Schema.Column.PrefixCount">
+            <summary>
+            前缀字符数
+            缺省为 2
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Data.Schema.Column.Owner">
             <summary>
             Owner
@@ -6796,63 +6808,71 @@
             是否缺省"枚举/布尔"的 ColumnName（字段类型需是整型2位/1位精度）
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Standards.TrimTableName(System.String)">
+        <member name="M:Phenix.Core.Data.Schema.Standards.TrimTableName(System.String,System.Int32)">
             <summary>
             整理表名
-            如果第4位是"_"则剔去其及之前的字符
+            如果第prefixCount位后是"_"则剔去其及之前的字符
             </summary>
             <param name="tableName">表名</param>
+            <param name="prefixCount">前缀字符数</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Standards.GetPascalCasingByTableName(System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.Standards.GetPascalCasingByTableName(System.String,System.Boolean,System.Int32)">
             <summary>
             取PascalCasing名
             </summary>
             <param name="tableName">表名</param>
-            <param name="trim">整理</param>
+            <param name="trim">是否整理</param>
+            <param name="prefixCount">前缀字符数</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Standards.GetPrefixByTableName(System.String)">
+        <member name="M:Phenix.Core.Data.Schema.Standards.GetPrefixByTableName(System.String,System.Int32)">
             <summary>
             取前缀
-            如果第4位是"_"则取之前的字符
             </summary>
             <param name="tableName">表名</param>
+            <param name="prefixCount">前缀字符数</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Standards.TrimViewName(System.String)">
+        <member name="M:Phenix.Core.Data.Schema.Standards.TrimViewName(System.String,System.Int32,System.Int32)">
             <summary>
             整理视图名
-            如果第4位是"_"则剔去其及之前的字符
-            如果倒数第2位是"_"则剔去其及之后的字符
+            如果第prefixCount位后是"_"则剔去其及之前的字符
+            如果第suffixCount位前是"_"则剔去其及之后的字符
             </summary>
             <param name="viewName">视图名</param>
+            <param name="prefixCount">前缀字符数</param>
+            <param name="suffixCount">后缀字符数</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Standards.GetPascalCasingByViewName(System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.Standards.GetPascalCasingByViewName(System.String,System.Boolean,System.Int32,System.Int32)">
             <summary>
             取PascalCasing名
             </summary>
             <param name="viewName">视图名</param>
-            <param name="trim">整理</param>
+            <param name="trim">是否整理</param>
+            <param name="prefixCount">前缀字符数</param>
+            <param name="suffixCount">后缀字符数</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Standards.GetPrefixByViewName(System.String)">
+        <member name="M:Phenix.Core.Data.Schema.Standards.GetPrefixByViewName(System.String,System.Int32)">
             <summary>
             取前缀
-            如果第4位是"_"则取之前的字符
             </summary>
             <param name="viewName">表名</param>
+            <param name="prefixCount">前缀字符数</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Standards.TrimColumnName(System.String)">
+        <member name="M:Phenix.Core.Data.Schema.Standards.TrimColumnName(System.String,System.Int32)">
             <summary>
             整理字段名
-            如果第3位是"_"则剔去其及之前的字符
-            如果后缀是DefaultEnumColumnName则剔除
+            如果第prefixCount位后是"_"则剔去其及之前的字符
+            剔除DefaultWatermarkColumnName、DefaultEnumColumnName后缀
             </summary>
             <param name="columnName">字段名</param>
+            <param name="prefixCount">前缀字符数</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Standards.GetPascalCasingByColumnName(System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.Standards.GetPascalCasingByColumnName(System.String,System.Boolean,System.Int32)">
             <summary>
             取PascalCasing名
             </summary>
             <param name="columnName">字段名</param>
-            <param name="trim">整理</param>
+            <param name="trim">是否整理</param>
+            <param name="prefixCount">前缀字符数</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Standards.GetPropertyNameByFieldName(System.String)">
             <summary>
@@ -6879,8 +6899,14 @@
         </member>
         <member name="P:Phenix.Core.Data.Schema.Table.ClassNameByTrimTableName">
             <summary>
-            类名是否取自被整理的表名(如果第4位是"_"则剔去其及之前的字符)
+            类名是否取自被整理的表名(如果第PrefixCount位后是"_"则剔去其及之前的字符)
             缺省为 false
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Schema.Table.PrefixCount">
+            <summary>
+            前缀字符数
+            缺省为 3
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Schema.Table.Owner">
@@ -6932,8 +6958,20 @@
         </member>
         <member name="P:Phenix.Core.Data.Schema.View.ClassNameByTrimViewName">
             <summary>
-            类名是否取自被整理的视图名(如果第4位是"_"则剔去其及之前的字符, 如果倒数第2位是"_"则剔去其及之后的字符)
+            类名是否取自被整理的视图名(如果第PrefixCount位后是"_"则剔去其及之前的字符, 如果第SuffixCount位前是"_"则剔去其及之后的字符)
             缺省为 false
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Schema.View.PrefixCount">
+            <summary>
+            前缀字符数
+            缺省为 3
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Schema.View.SuffixCount">
+            <summary>
+            后缀字符数
+            缺省为 1
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Schema.View.ViewText">
@@ -7462,9 +7500,14 @@
             /api/security/myself/root-teams-node
             </summary>
         </member>
-        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfPositionPath">
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfCompanyUserPath">
             <summary>
-            /api/security/myself/position
+            /api/security/myself/company-user
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityPositionPath">
+            <summary>
+            /api/security/position
             </summary>
         </member>
         <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiDataSequencePath">
@@ -9061,17 +9104,6 @@
             用户资料代理接口
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.IUserProxy.CheckIn(System.String,System.String,System.String,System.String,System.String)">
-            <summary>
-            登记/注册
-            </summary>
-            <param name="name">登录名</param>
-            <param name="phone">手机(注册用可为空)</param>
-            <param name="eMail">邮箱(注册用可为空)</param>
-            <param name="regAlias">注册昵称(注册用可为空)</param>
-            <param name="requestAddress">服务请求方IP地址</param>
-            <returns>返回信息</returns>
-        </member>
         <member name="M:Phenix.Core.Security.IUserProxy.IsValidLogon(System.String,System.String,System.String,System.Boolean)">
             <summary>
             核对登录有效性
@@ -9092,12 +9124,6 @@
             <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
             <returns>是否正确</returns>
         </member>
-        <member name="M:Phenix.Core.Security.IUserProxy.Logon(System.String)">
-            <summary>
-            登录
-            </summary>
-            <param name="tag">捎带数据(默认是客户端当前时间)</param>
-        </member>
         <member name="M:Phenix.Core.Security.IUserProxy.Encrypt(System.Object)">
             <summary>
             加密
@@ -9111,21 +9137,6 @@
              Key/IV=登录口令/动态口令
             </summary>
             <param name="cipherText">密文(Base64字符串)</param>
-        </member>
-        <member name="M:Phenix.Core.Security.IUserProxy.ChangePassword(System.String,System.Boolean)">
-            <summary>
-            修改登录口令
-            </summary>
-            <param name="newPassword">新登录口令</param>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令不规范会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserPasswordComplexityException异常而不是返回false</param>
-            <returns>是否成功</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.IUserProxy.PatchRootTeams(System.String)">
-            <summary>
-            更新顶层团体
-            </summary>
-            <param name="name">名称</param>
-            <returns>顶层团体主键</returns>
         </member>
         <member name="T:Phenix.Core.Security.IUserProxyFactory">
             <summary>
@@ -9581,6 +9592,22 @@
             <param name="requestAddress">服务请求方IP地址</param>
             <param name="throwIfNotConform">如果为 true, 核对有效性不符会抛出UserNotFoundException/UserLockedException异常而不是返回false</param>
             <returns>动态口令(6位数字一般作为验证码用短信发送给到用户)</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.User.Register(Phenix.Core.Data.Database,System.String,System.String,System.String,System.String,System.String,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int64},System.String@,System.String@)">
+            <summary>
+            登记/注册
+            </summary>
+            <param name="database">Database</param>
+            <param name="name">登录名</param>
+            <param name="phone">手机(注册用可为空)</param>
+            <param name="eMail">邮箱(注册用可为空)</param>
+            <param name="regAlias">注册昵称(注册用可为空)</param>
+            <param name="rootTeamsId">所属顶层团体ID</param>
+            <param name="teamsId">所属团体ID</param>
+            <param name="positionId">担任岗位ID</param>
+            <param name="requestAddress">服务请求方IP地址</param>
+            <param name="initialPassword">初始口令</param>
+            <param name="dynamicPassword">动态口令</param>
         </member>
         <member name="T:Phenix.Core.SyncCollections.CachedObject`1">
             <summary>

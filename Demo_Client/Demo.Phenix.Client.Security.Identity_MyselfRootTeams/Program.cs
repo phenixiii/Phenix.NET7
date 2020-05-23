@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Phenix.Client.Security;
+using Phenix.Client.Security.Myself;
 using Phenix.Core.Reflection;
 
 namespace Demo
@@ -53,7 +54,6 @@ namespace Demo
 
             Console.WriteLine("更新用户资料...");
             Phenix.Client.HttpClient.Default.Identity.User.Phone = "我的手机号";
-            Phenix.Client.HttpClient.Default.Identity.User.UpdateSelf();
             User user = Phenix.Client.HttpClient.Default.Identity.ReFetchUserAsync().Result;
             Console.WriteLine("服务端已更新用户资料：{0}", Phenix.Core.Reflection.Utilities.JsonSerialize(user));
             Console.WriteLine();

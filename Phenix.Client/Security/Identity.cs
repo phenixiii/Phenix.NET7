@@ -1,6 +1,7 @@
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
+using Phenix.Client.Security.Myself;
 
 namespace Phenix.Client.Security
 {
@@ -12,7 +13,7 @@ namespace Phenix.Client.Security
         internal Identity(HttpClient httpClient, string name, string password)
         {
             _httpClient = httpClient;
-            _user = new User(this, name, password);
+            _user = new User(httpClient, name, password);
         }
 
         #region ¹¤³§

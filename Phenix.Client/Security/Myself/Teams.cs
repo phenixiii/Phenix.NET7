@@ -5,7 +5,7 @@ using Phenix.Core.Data.Model;
 using Phenix.Core.Data.Schema;
 using Phenix.Core.Net.Api;
 
-namespace Phenix.Client.Security
+namespace Phenix.Client.Security.Myself
 {
     /// <summary>
     /// 团体资料
@@ -28,19 +28,19 @@ namespace Phenix.Client.Security
             _name = name;
         }
 
-        private Teams(User owner, string name)
+        private Teams(HttpClient httpClient, string name)
         {
-            _owner = owner;
+            _httpClient = httpClient;
             _name = name;
         }
 
         #region 工厂
 
-        internal static Teams Fetch(User owner)
+        internal static Teams Fetch(HttpClient httpClient)
         {
-            Teams result = owner.Owner.HttpClient.CallAsync<Teams>(HttpMethod.Get, ApiConfig.ApiSecurityMyselfRootTeamsPath, false).Result;
+            Teams result = httpClient.CallAsync<Teams>(HttpMethod.Get, ApiConfig.ApiSecurityMyselfRootTeamsPath, false).Result;
             if (result != null)
-                result._owner = owner;
+                result._httpClient = httpClient;
             return result;
         }
 
@@ -49,16 +49,7 @@ namespace Phenix.Client.Security
         #region 属性
 
         [NonSerialized]
-        private User _owner;
-
-        /// <summary>
-        /// User
-        /// </summary>
-        [Newtonsoft.Json.JsonIgnore]
-        public User Owner
-        {
-            get { return _owner; }
-        }
+        private HttpClient _httpClient;
 
         private string _name;
 
@@ -81,8 +72,8 @@ namespace Phenix.Client.Security
         /// <param name="name">名称</param>
         public Teams AddChild(string name)
         {
-            return AddChild(() => new Teams(_owner, name),
-                node => _owner.Owner.HttpClient.CallAsync<long>(HttpMethod.Put, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
+            return AddChild(() => new Teams(_httpClient, name),
+                node => _httpClient.CallAsync<long>(HttpMethod.Put, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
                     NameValue.Set<Teams>(p => p.Name, node.Name),
                     NameValue.Set<Teams>(p => p.ParentId, node.ParentId)).Result);
         }
@@ -95,7 +86,7 @@ namespace Phenix.Client.Security
         public int ChangeParent(Teams parentNode)
         {
             return ChangeParent(parentNode,
-                () => _owner.Owner.HttpClient.CallAsync<int>(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
+                () => _httpClient.CallAsync<int>(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
                     NameValue.Set<Teams>(p => p.Id, Id),
                     NameValue.Set<Teams>(p => p.ParentId, parentNode.Id)).Result);
         }
@@ -106,7 +97,7 @@ namespace Phenix.Client.Security
         /// <returns>更新记录数</returns>
         public int UpdateSelf()
         {
-            return _owner.Owner.HttpClient.CallAsync<int>(HttpMethod.Post, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
+            return _httpClient.CallAsync<int>(HttpMethod.Post, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
                 NameValue.Set<Teams>(p => p.Id, Id),
                 NameValue.Set<Teams>(p => p.Name, Name)).Result;
         }
@@ -117,7 +108,7 @@ namespace Phenix.Client.Security
         /// <returns>更新记录数</returns>
         public int DeleteBranch()
         {
-            return DeleteBranch(() => _owner.Owner.HttpClient.CallAsync<int>(HttpMethod.Delete, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
+            return DeleteBranch(() => _httpClient.CallAsync<int>(HttpMethod.Delete, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
                 NameValue.Set<Teams>(p => p.Id, Id)).Result);
         }
 

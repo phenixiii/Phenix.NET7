@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Orleans;
 using Phenix.Actor;
 using Phenix.Core.Data.Schema;
@@ -14,13 +15,12 @@ namespace Phenix.Services.Plugin.Actor
         /// <summary>
         /// 登记/注册
         /// </summary>
-        /// <param name="name">登录名</param>
         /// <param name="phone">手机(注册用可为空)</param>
         /// <param name="eMail">邮箱(注册用可为空)</param>
         /// <param name="regAlias">注册昵称(注册用可为空)</param>
         /// <param name="requestAddress">服务请求方IP地址</param>
         /// <returns>返回信息</returns>
-        Task<string> CheckIn(string name, string phone, string eMail, string regAlias, string requestAddress);
+        Task<string> CheckIn(string phone, string eMail, string regAlias, string requestAddress);
 
         /// <summary>
         /// 核对登录有效性
@@ -77,5 +77,53 @@ namespace Phenix.Services.Plugin.Actor
         /// <param name="name">名称</param>
         /// <returns>顶层团体主键</returns>
         Task<long> PatchRootTeams(string name);
+
+        /// <summary>
+        /// 获取公司用户资料
+        /// </summary>
+        /// <returns>公司用户资料</returns>
+        Task<IList<User>> FetchCompanyUsers();
+
+        /// <summary>
+        /// 登记/注册公司用户
+        /// </summary>
+        /// <param name="name">登录名</param>
+        /// <param name="phone">手机(注册用可为空)</param>
+        /// <param name="eMail">邮箱(注册用可为空)</param>
+        /// <param name="regAlias">注册昵称(注册用可为空)</param>
+        /// <param name="teamsId">所属团体ID</param>
+        /// <param name="positionId">担任岗位ID</param>
+        /// <param name="requestAddress">服务请求方IP地址</param>
+        /// <returns>返回信息</returns>
+        Task<string> RegisterCompanyUser(string name, string phone, string eMail, string regAlias, string requestAddress, long teamsId, long positionId);
+
+        /// <summary>
+        /// 登记/注册
+        /// </summary>
+        /// <param name="phone">手机(注册用可为空)</param>
+        /// <param name="eMail">邮箱(注册用可为空)</param>
+        /// <param name="regAlias">注册昵称(注册用可为空)</param>
+        /// <param name="rootTeamsId">所属顶层团体ID</param>
+        /// <param name="teamsId">所属团体ID</param>
+        /// <param name="positionId">担任岗位ID</param>
+        /// <param name="requestAddress">服务请求方IP地址</param>
+        /// <returns>返回信息</returns>
+        Task<string> Register(string phone, string eMail, string regAlias, string requestAddress, long rootTeamsId, long teamsId, long positionId);
+
+        /// <summary>
+        /// 更新公司用户
+        /// </summary>
+        /// <param name="name">登录名</param>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        /// <returns>更新记录数</returns>
+        Task<int> PatchCompanyUser(string name, params NameValue[] propertyValues);
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="rootTeamsId">所属顶层团体ID</param>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        /// <returns>更新记录数</returns>
+        Task<int> Patch(long rootTeamsId, params NameValue[] propertyValues);
     }
 }

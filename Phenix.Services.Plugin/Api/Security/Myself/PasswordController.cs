@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Phenix.Actor;
+using Phenix.Services.Plugin.Actor;
 
 namespace Phenix.Services.Plugin.Api.Security.Myself
 {
@@ -21,7 +23,7 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         [HttpPut]
         public async Task<bool> Put()
         {
-            return await User.Identity.UserProxy.ChangePassword(await Request.ReadBodyAsStringAsync(true), true);
+            return await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).ChangePassword(await Request.ReadBodyAsStringAsync(true), true);
         }
     }
 }

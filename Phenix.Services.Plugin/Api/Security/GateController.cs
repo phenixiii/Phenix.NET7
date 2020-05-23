@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Phenix.Core.Security;
+using Phenix.Actor;
+using Phenix.Services.Plugin.Actor;
 
 namespace Phenix.Services.Plugin.Api.Security
 {
@@ -29,7 +30,7 @@ namespace Phenix.Services.Plugin.Api.Security
         [HttpGet]
         public async Task<string> CheckIn(string name, string phone, string eMail, string regAlias)
         {
-            return await Identity.UserProxyFactory.FetchUserProxy(name).CheckIn(name, phone, eMail, regAlias, Request.GetRemoteAddress());
+            return await ClusterClient.Default.GetGrain<IUserGrain>(name).CheckIn(phone, eMail, regAlias, Request.GetRemoteAddress());
         }
 
         // phAjax.logon()
@@ -40,7 +41,7 @@ namespace Phenix.Services.Plugin.Api.Security
         [HttpPost]
         public async Task Logon()
         {
-            await User.Identity.UserProxy.Logon(await Request.ReadBodyAsStringAsync(true));
+            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).Logon(await Request.ReadBodyAsStringAsync(true));
         }
 
         #endregion

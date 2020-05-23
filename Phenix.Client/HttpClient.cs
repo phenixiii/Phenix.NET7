@@ -495,7 +495,12 @@ namespace Phenix.Client
                     if (data is HttpContent httpContent)
                         request.Content = httpContent;
                     else
+                    {
+                        if (data is NameValue nameValue)
+                            data = NameValue.ToArray(nameValue);
                         request.Content = new StringContent(encryptData ? Identity.User.Encrypt(Utilities.JsonSerialize(data)) : Utilities.JsonSerialize(data), Encoding.UTF8);
+                    }
+
                 using (HttpResponseMessage response = await SendAsync(request))
                 {
                     await response.ThrowIfFailedAsync();
@@ -551,7 +556,12 @@ namespace Phenix.Client
                     if (data is HttpContent httpContent)
                         request.Content = httpContent;
                     else
+                    {
+                        if (data is NameValue nameValue)
+                            data = NameValue.ToArray(nameValue);
                         request.Content = new StringContent(encryptData ? Identity.User.Encrypt(Utilities.JsonSerialize(data)) : Utilities.JsonSerialize(data), Encoding.UTF8);
+                    }
+
                 using (HttpResponseMessage response = await SendAsync(request))
                 {
                     await response.ThrowIfFailedAsync();

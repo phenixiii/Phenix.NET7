@@ -11,6 +11,14 @@ namespace Phenix.Actor
         #region 方法
 
         /// <summary>
+        /// 是否存在节点
+        /// </summary>
+        /// <param name="id">节点ID</param>
+        /// <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+        /// <returns>是否存在节点</returns>
+        Task<bool> HaveNode(long id, bool throwIfNotFound);
+
+        /// <summary>
         /// 添加子节点
         /// </summary>
         /// <param name="parentId">父节点ID</param>

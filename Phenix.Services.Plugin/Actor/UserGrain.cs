@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security;
 using System.Threading.Tasks;
 using Orleans;
@@ -49,43 +50,39 @@ namespace Phenix.Services.Plugin.Actor
 
         #region 方法
 
-        Task<string> IUserGrain.CheckIn(string name, string phone, string eMail, string regAlias, string requestAddress)
+        private string Register(string phone, string eMail, string regAlias, string requestAddress, long? rootTeamsId, long? teamsId, long? positionId)
         {
-            User user = Kernel;
-            if (user != null)
-            {
-                string dynamicPassword = user.ApplyDynamicPassword(requestAddress, true);
-                /*
-                 * 以下代码供你自己测试用
-                 * 生产环境下，请替换为通过第三方渠道（邮箱或短信）推送给到用户
-                 */
-                Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0} 的动态口令是'{1}'(有效期 {2} 分钟)", user.Name, dynamicPassword, User.DynamicPasswordValidityMinutes));
-            }
-            else
-            {
-                string initialPassword = User.BuildPassword(name);
-                string dynamicPassword = User.BuildDynamicPassword();
-                user = User.New(Database,
-                    NameValue.Set<User>(p => p.Name, name),
-                    NameValue.Set<User>(p => p.Phone, phone),
-                    NameValue.Set<User>(p => p.EMail, eMail),
-                    NameValue.Set<User>(p => p.RegAlias, regAlias),
-                    NameValue.Set<User>(p => p.RequestAddress, requestAddress),
-                    NameValue.Set<User>(p => p.Password, initialPassword),
-                    NameValue.Set<User>(p => p.DynamicPassword, dynamicPassword));
-                user.InsertSelf();
-                /*
-                 * 以下代码供你自己测试用
-                 * 生产环境下，请替换为通过第三方渠道（邮箱或短信）推送给到用户
-                 */
-                Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0} 的初始口令是'{1}'，动态口令是'{2}'(有效期 {3} 分钟)", user.Name, initialPassword, dynamicPassword, User.DynamicPasswordValidityMinutes));
-            }
-
+            Kernel = User.Register(Database, Name, phone, eMail, regAlias, requestAddress, rootTeamsId, teamsId, positionId, out string initialPassword, out string dynamicPassword);
+            /*
+             * 以下代码供你自己测试用
+             * 生产环境下，请替换为通过第三方渠道（邮箱或短信）推送给到用户
+             */
+            Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0} 的初始口令是'{1}'，动态口令是'{2}'(有效期 {3} 分钟)", Name, initialPassword, dynamicPassword, User.DynamicPasswordValidityMinutes));
             /*
              * 以下代码供你自己测试用
              * 生产环境下，请替换为提示用户留意查看邮箱或短信以收取动态口令
              */
-            return Task.FromResult(String.Format("{0} 的动态口令存放于 {1} 目录下的日志文件里", user.Name, Phenix.Core.Log.EventLog.LocalDirectory));
+            return String.Format("{0} 的动态口令存放于 {1} 目录下的日志文件里", Name, Phenix.Core.Log.EventLog.LocalDirectory);
+        }
+
+        Task<string> IUserGrain.CheckIn(string phone, string eMail, string regAlias, string requestAddress)
+        {
+            if (Kernel != null)
+            {
+                string dynamicPassword = Kernel.ApplyDynamicPassword(requestAddress, true);
+                /*
+                 * 以下代码供你自己测试用
+                 * 生产环境下，请替换为通过第三方渠道（邮箱或短信）推送给到用户
+                 */
+                Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0} 的动态口令是'{1}'(有效期 {2} 分钟)", Name, dynamicPassword, User.DynamicPasswordValidityMinutes));
+                /*
+                 * 以下代码供你自己测试用
+                 * 生产环境下，请替换为提示用户留意查看邮箱或短信以收取动态口令
+                 */
+                return Task.FromResult(String.Format("{0} 的动态口令存放于 {1} 目录下的日志文件里", Name, Phenix.Core.Log.EventLog.LocalDirectory));
+            }
+
+            return Task.FromResult(Register(phone, eMail, regAlias, requestAddress, null, null, null));
         }
 
         Task IUserGrain.Logon(string tag)
@@ -138,12 +135,37 @@ namespace Phenix.Services.Plugin.Actor
             return Task.FromResult(Kernel.ChangePassword(newPassword, throwIfNotConform));
         }
 
-        Task<long> IUserGrain.PatchRootTeams(string name)
+        #region CompanyAdmin 操作功能
+
+        private void CheckCompanyAdmin()
         {
             if (Kernel == null)
                 throw new UserNotFoundException();
             if (!Kernel.IsCompanyAdmin)
-                throw new SecurityException("仅允许公司管理员设置自己公司的组织架构!");
+                throw new SecurityException("仅可供公司管理员操作!");
+        }
+
+        private void CheckCompanyTeams()
+        {
+            if (Kernel == null)
+                throw new UserNotFoundException();
+            if (!Kernel.IsCompanyAdmin)
+                throw new SecurityException("仅可供公司管理员操作!");
+            if (Kernel.RootTeamsId == null)
+                throw new SecurityException("需事先搭建自己公司的组织架构!");
+        }
+
+        private void CheckCompanyTeams(long rootTeamsId)
+        {
+            if (Kernel == null)
+                throw new UserNotFoundException();
+            if (Kernel.RootTeamsId != rootTeamsId)
+                throw new SecurityException("不允许管理其他公司的用户资料!");
+        }
+
+        Task<long> IUserGrain.PatchRootTeams(string name)
+        {
+            CheckCompanyAdmin();
 
             long result = Kernel.RootTeamsId.HasValue ? Kernel.RootTeamsId.Value : Database.Sequence.Value;
             ClusterClient.Default.GetGrain<ITeamsGrain>(result).PatchKernel(NameValue.Set<Teams>(p => p.Name, name));
@@ -151,6 +173,46 @@ namespace Phenix.Services.Plugin.Actor
                 Kernel.UpdateSelf(Kernel.SetProperty(p => p.RootTeamsId, result));
             return Task.FromResult(result);
         }
+
+        Task<IList<User>> IUserGrain.FetchCompanyUsers()
+        {
+            CheckCompanyTeams();
+
+            return Task.FromResult(User.FetchAll(Database, p => p.RootTeamsId == Kernel.RootTeamsId.Value && p.RootTeamsId != p.TeamsId));
+        }
+
+        Task<string> IUserGrain.RegisterCompanyUser(string name, string phone, string eMail, string regAlias, string requestAddress, long teamsId, long positionId)
+        {
+            CheckCompanyTeams();
+
+            return ClusterClient.Default.GetGrain<IUserGrain>(name).Register(phone, eMail, regAlias, requestAddress, Kernel.RootTeamsId.Value, teamsId, positionId);
+        }
+
+        async Task<string> IUserGrain.Register(string phone, string eMail, string regAlias, string requestAddress, long rootTeamsId, long teamsId, long positionId)
+        {
+            if (Kernel != null)
+                throw new SecurityException("登录名已被他人注册!");
+
+            if (await ClusterClient.Default.GetGrain<ITeamsGrain>(rootTeamsId).HaveNode(teamsId, true))
+                return Register(phone, eMail, regAlias, requestAddress, null, null, null);
+            return null;
+        }
+
+        Task<int> IUserGrain.PatchCompanyUser(string name, params NameValue[] propertyValues)
+        {
+            CheckCompanyTeams();
+
+            return ClusterClient.Default.GetGrain<IUserGrain>(name).Patch(Kernel.RootTeamsId.Value, propertyValues);
+        }
+
+        Task<int> IUserGrain.Patch(long rootTeamsId, params NameValue[] propertyValues)
+        {
+            CheckCompanyTeams(rootTeamsId);
+
+            return Task.FromResult(Kernel.UpdateSelf(propertyValues));
+        }
+
+        #endregion
 
         #endregion
     }

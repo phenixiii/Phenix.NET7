@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Net.Http;
 using Phenix.Core.Data.Model;
-using Phenix.Core.Net.Api;
 
-namespace Phenix.Client.Security
+namespace Phenix.Client.Security.Myself
 {
     /// <summary>
     /// 岗位资料
@@ -29,31 +27,7 @@ namespace Phenix.Client.Security
             _roles = roles != null ? new ReadOnlyCollection<string>(roles) : null;
         }
 
-        #region 工厂
-
-        internal static Position Fetch(User owner)
-        {
-            Position result = owner.Owner.HttpClient.CallAsync<Position>(HttpMethod.Get, ApiConfig.ApiSecurityMyselfPositionPath, false).Result;
-            if (result != null)
-                result._owner = owner;
-            return result;
-        }
-
-        #endregion
-
         #region 属性
-
-        [NonSerialized]
-        private User _owner;
-
-        /// <summary>
-        /// User
-        /// </summary>
-        [Newtonsoft.Json.JsonIgnore]
-        public User Owner
-        {
-            get { return _owner; }
-        }
 
         private readonly string _name;
 
