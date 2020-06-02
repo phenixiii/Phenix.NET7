@@ -72,7 +72,7 @@ var phAjax = (function($) {
         } catch (e) {
             result = $.cookie(userKeyCookieName);
         }
-        return typeof result != "undefined" && result != null ? result : CryptoJS.MD5("GUEST").toString().toUpperCase();;
+        return typeof result != "undefined" && result != null ? result : CryptoJS.MD5("GUEST").toString().toUpperCase();
     };
     var setUserKey = function(value) {
         try {
@@ -111,6 +111,7 @@ var phAjax = (function($) {
             var defaults = {
                 baseAddress: phAjax.baseAddress, //"http://localhost:5000"
                 name: "ADMIN", //登录名(未注册则自动注册)
+                hashName: false, //登录名需Hash
                 phone: null, //手机(注册用可为空)
                 eMail: null, //邮箱(注册用可为空)
                 regAlias: null, //注册昵称(注册用可为空)
@@ -118,6 +119,8 @@ var phAjax = (function($) {
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
             };
             options = $.extend(defaults, options);
+            if (options.hashName && options.name != "ADMIN" && options.name != "GUEST")
+                options.name = CryptoJS.MD5(options.name).toString().toUpperCase();
             $.ajax({
                 type: "GET",
                 url: options.baseAddress + "/api/security/gate" +
@@ -150,11 +153,14 @@ var phAjax = (function($) {
                 baseAddress: phAjax.baseAddress, //"http://localhost:5000"
                 name: "ADMIN", //登录名
                 password: "ADMIN", //登录口令/动态口令
+                hashName: false, //登录名需Hash
                 tag: new Date().toISOString(), //捎带数据(默认是客户端当前时间)
                 onComplete: null, //调用完整的回调函数, 参数(XMLHttpRequest, textStatus)
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
             };
             options = $.extend(defaults, options);
+            if (options.hashName && options.name != "ADMIN" && options.name != "GUEST")
+                options.name = CryptoJS.MD5(options.name).toString().toUpperCase();
             var userKey = CryptoJS.MD5(options.password).toString().toUpperCase();
             $.ajax({
                 type: "POST",

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Core.Data;
 
@@ -8,7 +7,6 @@ namespace Phenix.Services.Plugin.Api.Data
     /// <summary>
     /// 64位增量
     /// </summary>
-    [EnableCors]
     [Route(Phenix.Core.Net.Api.ApiConfig.ApiDataIncrementPath)]
     [ApiController]
     public sealed class IncrementController : Phenix.Core.Net.Api.ControllerBase

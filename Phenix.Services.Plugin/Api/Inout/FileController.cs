@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Core.IO;
 
@@ -10,7 +9,6 @@ namespace Phenix.Services.Plugin.Api.Inout
     /// <summary>
     /// 文件存取控制器
     /// </summary>
-    [EnableCors]
     [Route(Phenix.Core.Net.Api.ApiConfig.ApiInoutFilePath)]
     [ApiController]
     public sealed class FileController : Phenix.Core.Net.Api.ControllerBase

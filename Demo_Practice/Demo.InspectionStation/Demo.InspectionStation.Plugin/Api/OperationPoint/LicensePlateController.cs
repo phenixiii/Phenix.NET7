@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Demo.InspectionStation.Plugin.Actor;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 
@@ -10,7 +9,6 @@ namespace Demo.InspectionStation.Plugin.Api.OperationPoint
     /// <summary>
     /// 车牌Controller
     /// </summary>
-    [EnableCors]
     [Route(ApiConfig.ApiOperationPointLicensePlatePath)]
     [ApiController]
     public sealed class LicensePlateController : Phenix.Core.Net.Api.ControllerBase

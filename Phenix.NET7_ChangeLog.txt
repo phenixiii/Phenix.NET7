@@ -144,14 +144,14 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 
 20200224
-1，重构Phenix.Core持久层框架，强调聚合和聚合根的领域对象模型，在采取分库分表策略的数据库部署场景下，一棵聚合树里的所有对象都随聚合根对象一起锁定在某个分库上进行持久化，持久化的路由算法是取自聚合根对象里一个映射'_RU'后缀字段的属性值经HASH取余得到具体的分库ID
+1，重构Phenix.Core持久化引擎，强调聚合和聚合根的领域对象模型，在采取分库分表策略的数据库部署场景下，一棵聚合树里的所有对象都随聚合根对象一起锁定在某个分库上进行持久化，持久化的路由算法是取自聚合根对象里一个映射'_RU'后缀字段的属性值经HASH取余得到具体的分库ID
 2，重构Phenix.Core权限控制模块，借助Phenix.Services.Plugin工程实现分布式部署
 3，重构Phenix.Actor工程，精简EntityGrainProxyBase仅限于实体Grain的代理功能
 
 
 20200303
-1，梳理Phenix.Core持久层框架
-2，提供《Phenix.Core.Data.持久层开发接口.doc》，讲解Phenix.Core持久层框架的数据库集群、主库+分库、分库分表策略、使用接口和持久层开发方法
+1，梳理Phenix.Core持久化引擎
+2，提供《Phenix.Core.Data.持久层开发接口.doc》，讲解Phenix.Core持久化引擎的数据库集群、主库+分库、分库分表策略、使用接口和持久层开发方法
 
 
 20200315
@@ -183,7 +183,18 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 
 20200523
-1，丰富Phenix.Services.Plugin工程功能，系统管理员（用户名ADMIN，默认密码ADMIN）可增删改系统的岗位定义
-2，适配双活数据中心的Actor状态跨域同步机制
+1，修复跨域问题
+2，修复系统管理员（用户名ADMIN，默认密码ADMIN）第一次无法登录注册的问题，并可增删改系统的岗位定义
+3，提供Phenix.Core.Data.Rule.ValidationException数据验证异常类，用于把ValidationMessage对象抛到客户端，客户端利用ValidationMessage.StatusCode属性（取100以上的整型值）分类处理系统的业务事件ValidationMessage.ErrorMessage
+4，增补Phenix.Core.Net.Api.ControllerBase的SelectRecord()函数，直接打包到分页查询结果DataPageInfo对象，DataPageInfo的DataName为实体类名，DataSize为数据量，PageNo为页码，PageSize为分页大小，PageBody为当前页JSON格式的记录数据
+
+
+
+
+待开发：
+1，为持久化引擎添加动态查询功能，可在UpdateEntity、UpdateRecord、DeleteRecord、SelectEntity、SelectRecord时传入查询对象参数
+2，添加《Phenix.Core.Data.持久层开发接口.doc》的"查询条件类"章节
+3，添加《Phenix.Core.Security.身份验证方法.doc》
+3，适配双活数据中心的Actor状态跨地域同步机制
 
 

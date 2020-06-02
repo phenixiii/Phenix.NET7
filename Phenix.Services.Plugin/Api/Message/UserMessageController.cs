@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Core.Message;
 using Phenix.Core.Reflection;
@@ -10,7 +9,6 @@ namespace Phenix.Services.Plugin.Api.Message
     /// <summary>
     /// 用户消息控制器
     /// </summary>
-    [EnableCors]
     [Route(Phenix.Core.Net.Api.ApiConfig.ApiMessageUserMessagePath)]
     [ApiController]
     public sealed class UserMessageController : Phenix.Core.Net.Api.ControllerBase

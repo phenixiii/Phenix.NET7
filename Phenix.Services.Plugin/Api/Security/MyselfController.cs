@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Core.Data.Schema;
 
@@ -9,7 +8,6 @@ namespace Phenix.Services.Plugin.Api.Security
     /// <summary>
     /// 用户自己控制器
     /// </summary>
-    [EnableCors]
     [Route(Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfPath)]
     [ApiController]
     public sealed class MyselfController : Phenix.Core.Net.Api.ControllerBase

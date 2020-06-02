@@ -30,8 +30,7 @@ namespace Phenix.Services.Host
                 options.AddDefaultPolicy(builder => builder
                     .SetIsOriginAllowed(origin => true)
                     .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
+                    .AllowAnyHeader());
             });
 
             /*

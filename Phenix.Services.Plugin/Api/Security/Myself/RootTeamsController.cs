@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Security;
@@ -11,7 +10,6 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
     /// <summary>
     /// 用户顶层团体控制器
     /// </summary>
-    [EnableCors]
     [Route(Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfRootTeamsPath)]
     [ApiController]
     public sealed class RootTeamsController : Phenix.Core.Net.Api.ControllerBase

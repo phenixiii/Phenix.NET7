@@ -50,19 +50,21 @@ namespace Phenix.Services.Plugin.Actor
 
         #region 方法
 
-        private string Register(string phone, string eMail, string regAlias, string requestAddress, long? rootTeamsId, long? teamsId, long? positionId)
+        private string Register(string phone, string eMail, string regAlias, string requestAddress, 
+            string initialPassword = null, string dynamicPassword = null,
+            long? rootTeamsId = null, long? teamsId = null, long? positionId = null)
         {
-            Kernel = User.Register(Database, Name, phone, eMail, regAlias, requestAddress, rootTeamsId, teamsId, positionId, out string initialPassword, out string dynamicPassword);
+            Kernel = User.Register(Database, Name, phone, eMail, regAlias, requestAddress, rootTeamsId, teamsId, positionId, ref initialPassword, ref dynamicPassword);
             /*
              * 以下代码供你自己测试用
              * 生产环境下，请替换为通过第三方渠道（邮箱或短信）推送给到用户
              */
-            Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0} 的初始口令是'{1}'，动态口令是'{2}'(有效期 {3} 分钟)", Name, initialPassword, dynamicPassword, User.DynamicPasswordValidityMinutes));
+            Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0}({1}) 的初始口令是'{2}'，动态口令是'{3}'(有效期 {4} 分钟)", Kernel.RegAlias, Kernel.Name, initialPassword, dynamicPassword, User.DynamicPasswordValidityMinutes));
             /*
              * 以下代码供你自己测试用
              * 生产环境下，请替换为提示用户留意查看邮箱或短信以收取动态口令
              */
-            return String.Format("{0} 的动态口令存放于 {1} 目录下的日志文件里", Name, Phenix.Core.Log.EventLog.LocalDirectory);
+            return String.Format("{0}({1}) 的动态口令存放于 {2} 目录下的日志文件里", Kernel.RegAlias, Kernel.Name, Phenix.Core.Log.EventLog.LocalDirectory);
         }
 
         Task<string> IUserGrain.CheckIn(string phone, string eMail, string regAlias, string requestAddress)
@@ -74,15 +76,15 @@ namespace Phenix.Services.Plugin.Actor
                  * 以下代码供你自己测试用
                  * 生产环境下，请替换为通过第三方渠道（邮箱或短信）推送给到用户
                  */
-                Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0} 的动态口令是'{1}'(有效期 {2} 分钟)", Name, dynamicPassword, User.DynamicPasswordValidityMinutes));
+                Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0}({1}) 的动态口令是'{2}'(有效期 {2} 分钟)", Kernel.RegAlias, Kernel.Name, dynamicPassword, User.DynamicPasswordValidityMinutes));
                 /*
                  * 以下代码供你自己测试用
                  * 生产环境下，请替换为提示用户留意查看邮箱或短信以收取动态口令
                  */
-                return Task.FromResult(String.Format("{0} 的动态口令存放于 {1} 目录下的日志文件里", Name, Phenix.Core.Log.EventLog.LocalDirectory));
+                return Task.FromResult(String.Format("{0}({1}) 的动态口令存放于 {2} 目录下的日志文件里", Kernel.RegAlias, Kernel.Name, Phenix.Core.Log.EventLog.LocalDirectory));
             }
 
-            return Task.FromResult(Register(phone, eMail, regAlias, requestAddress, null, null, null));
+            return Task.FromResult(Register(phone, eMail, regAlias, requestAddress));
         }
 
         Task IUserGrain.Logon(string tag)
@@ -114,7 +116,16 @@ namespace Phenix.Services.Plugin.Actor
         Task<bool> IUserGrain.IsValidLogon(string timestamp, string signature, string requestAddress, bool throwIfNotConform)
         {
             if (Kernel == null)
+            {
+                string userName = this.GetPrimaryKeyString();
+                if (User.IsReservedUserName(userName))
+                {
+                    Register(null, null, userName, requestAddress, userName);
+                    return Task.FromResult(true);
+                }
+
                 throw new UserNotFoundException();
+            }
 
             return Task.FromResult(Kernel.IsValidLogon(timestamp, signature, requestAddress, throwIfNotConform));
         }
@@ -194,7 +205,7 @@ namespace Phenix.Services.Plugin.Actor
                 throw new SecurityException("登录名已被他人注册!");
 
             if (await ClusterClient.Default.GetGrain<ITeamsGrain>(rootTeamsId).HaveNode(teamsId, true))
-                return Register(phone, eMail, regAlias, requestAddress, null, null, null);
+                return Register(phone, eMail, regAlias, requestAddress);
             return null;
         }
 

@@ -2,7 +2,6 @@
 using Demo.InspectionStation.Plugin.Actor;
 using Demo.InspectionStation.Plugin.Business;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 
@@ -11,7 +10,6 @@ namespace Demo.InspectionStation.Plugin.Api.OperationPoint
     /// <summary>
     /// 道闸Controller
     /// </summary>
-    [EnableCors]
     [Route(ApiConfig.ApiOperationPointGatePath)]
     [ApiController]
     public sealed class GateController : Phenix.Core.Net.Api.ControllerBase

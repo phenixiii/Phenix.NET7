@@ -10,7 +10,6 @@ namespace Phenix.Services.Plugin.Api.Security
     /// <summary>
     /// 系统入口控制器
     /// </summary>
-    [EnableCors]
     [Route(Phenix.Core.Net.Api.ApiConfig.ApiSecurityGatePath)]
     [ApiController]
     public sealed class GateController : Phenix.Core.Net.Api.ControllerBase

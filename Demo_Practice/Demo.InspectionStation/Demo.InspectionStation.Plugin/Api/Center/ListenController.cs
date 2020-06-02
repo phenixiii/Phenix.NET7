@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Demo.InspectionStation.Plugin.Actor;
 using Demo.InspectionStation.Plugin.Business;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 
@@ -12,7 +11,6 @@ namespace Demo.InspectionStation.Plugin.Api.Center
     /// <summary>
     /// 侦听Controller
     /// </summary>
-    [EnableCors]
     [Route(ApiConfig.ApiCenterListenPath)]
     [ApiController]
     public sealed class ListenController : Phenix.Core.Net.Api.ControllerBase

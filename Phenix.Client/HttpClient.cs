@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
-using Phenix.Client.Security;
 using Phenix.Core;
 using Phenix.Core.Data.Schema;
 using Phenix.Core.IO;
@@ -17,6 +16,8 @@ using Phenix.Core.Net;
 using Phenix.Core.Net.Api;
 using Phenix.Core.Reflection;
 using Phenix.Core.Security.Auth;
+using Phenix.Core.Security.Cryptography;
+using Phenix.Client.Security;
 
 namespace Phenix.Client
 {
@@ -86,15 +87,18 @@ namespace Phenix.Client
         /// <summary>
         /// 登记/注册(获取动态口令)
         /// </summary>
-        /// <param name="name">名称</param>
+        /// <param name="name">登录名</param>
+        /// <param name="hashName">登录名需Hash</param>
         /// <param name="phone">手机</param>
         /// <param name="eMail">邮箱</param>
         /// <param name="regAlias">注册昵称</param>
         /// <returns>提示信息</returns>
-        public async Task<string> CheckInAsync(string name, string phone = null, string eMail = null, string regAlias = null)
+        public async Task<string> CheckInAsync(string name, bool hashName = false, string phone = null, string eMail = null, string regAlias = null)
         {
             using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get,
-                String.Format("{0}?name={1}&phone={2}&eMail={3}&regAlias={4}", ApiConfig.ApiSecurityGatePath, name, phone, eMail, regAlias)))
+                String.Format("{0}?name={1}&phone={2}&eMail={3}&regAlias={4}", ApiConfig.ApiSecurityGatePath,
+                    hashName && !Phenix.Core.Security.User.IsReservedUserName(name) ? MD5CryptoTextProvider.ComputeHash(name) : name, 
+                    phone, eMail, regAlias)))
             {
                 using (HttpResponseMessage response = await SendAsync(request))
                 {
@@ -107,13 +111,14 @@ namespace Phenix.Client
         /// <summary>
         /// 登录
         /// </summary>
-        /// <param name="name">名称</param>
+        /// <param name="name">登录名</param>
         /// <param name="password">登录口令/动态口令(一般通过邮箱发送给到用户)</param>
+        /// <param name="hashName">登录名需Hash</param>
         /// <param name="tag">tag</param>
         /// <returns>用户身份</returns>
-        public async Task<Identity> LogonAsync(string name, string password, string tag = null)
+        public async Task<Identity> LogonAsync(string name, string password, bool hashName = false, string tag = null)
         {
-            Identity = new Identity(this, name, password);
+            Identity = new Identity(this, hashName && !Phenix.Core.Security.User.IsReservedUserName(name) ? MD5CryptoTextProvider.ComputeHash(name) : name, password);
             await Identity.LogonAsync(tag);
             return Identity;
         }
@@ -139,8 +144,8 @@ namespace Phenix.Client
         /// <returns>64位增量</returns>
         public async Task<long> GetIncrementAsync(string key, long initialValue = 1)
         {
-            return await CallAsync<long>(HttpMethod.Get, ApiConfig.ApiDataIncrementPath, 
-                NameValue.Set("key", key), 
+            return await CallAsync<long>(HttpMethod.Get, ApiConfig.ApiDataIncrementPath,
+                NameValue.Set("key", key),
                 NameValue.Set("initialValue", initialValue));
         }
 
@@ -165,8 +170,8 @@ namespace Phenix.Client
         /// <param name="content">消息内容</param>
         public async Task SendMessageAsync(long id, string receiver, string content)
         {
-            await CallAsync(HttpMethod.Put, ApiConfig.ApiMessageUserMessagePath, content, 
-                NameValue.Set("id", id), 
+            await CallAsync(HttpMethod.Put, ApiConfig.ApiMessageUserMessagePath, content,
+                NameValue.Set("id", id),
                 NameValue.Set("receiver", receiver));
         }
 
@@ -177,7 +182,7 @@ namespace Phenix.Client
         /// <param name="content">消息内容</param>
         public async Task SendMessageAsync(string receiver, string content)
         {
-            await CallAsync(HttpMethod.Post, ApiConfig.ApiMessageUserMessagePath, content, 
+            await CallAsync(HttpMethod.Post, ApiConfig.ApiMessageUserMessagePath, content,
                 NameValue.Set("receiver", receiver));
         }
 
@@ -188,8 +193,8 @@ namespace Phenix.Client
         /// <param name="burn">是否销毁</param>
         public async Task AffirmReceivedMessageAsync(long id, bool burn = false)
         {
-            await CallAsync(HttpMethod.Delete, ApiConfig.ApiMessageUserMessagePath, 
-                NameValue.Set("id", id), 
+            await CallAsync(HttpMethod.Delete, ApiConfig.ApiMessageUserMessagePath,
+                NameValue.Set("id", id),
                 NameValue.Set("burn", burn));
         }
 
@@ -206,13 +211,13 @@ namespace Phenix.Client
                 throw new UserVerifyException();
 
             HubConnection result = new HubConnectionBuilder()
-                .WithUrl(BaseAddress.OriginalString + ApiConfig.ApiMessageUserMessageHubPath, 
+                .WithUrl(BaseAddress.OriginalString + ApiConfig.ApiMessageUserMessageHubPath,
                     options => { options.AccessTokenProvider = () => Task.FromResult(Identity.User.FormatComplexAuthorization()); })
                 .AddMessagePackProtocol()
                 .WithAutomaticReconnect()
                 .Build();
 
-            result.On<string>("onReceived", 
+            result.On<string>("onReceived",
                 message => { onReceived(Utilities.JsonDeserialize<IDictionary<long, string>>(message)); });
             return result;
         }
@@ -283,9 +288,9 @@ namespace Phenix.Client
         /// <returns>下载的文件块信息</returns>
         public async Task<FileChunkInfo> DownloadFileChunkAsync(string message, string fileName, int chunkNumber)
         {
-            return await CallAsync<FileChunkInfo>(HttpMethod.Get, ApiConfig.ApiInoutFilePath, 
+            return await CallAsync<FileChunkInfo>(HttpMethod.Get, ApiConfig.ApiInoutFilePath,
                 NameValue.Set("message", message),
-                NameValue.Set("fileName", fileName), 
+                NameValue.Set("fileName", fileName),
                 NameValue.Set("chunkNumber", chunkNumber));
         }
 

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Core.Log;
 
@@ -9,7 +8,6 @@ namespace Phenix.Services.Plugin.Api.Log
     /// <summary>
     /// 事件日志控制器
     /// </summary>
-    [EnableCors]
     [Route(Phenix.Core.Net.Api.ApiConfig.ApiLogEventLogPath)]
     [ApiController]
     public sealed class EventLogController : Phenix.Core.Net.Api.ControllerBase

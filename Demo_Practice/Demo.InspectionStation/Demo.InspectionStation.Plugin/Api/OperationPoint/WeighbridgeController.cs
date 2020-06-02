@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Demo.InspectionStation.Plugin.Actor;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 
@@ -10,7 +9,6 @@ namespace Demo.InspectionStation.Plugin.Api.OperationPoint
     /// <summary>
     /// 磅秤Controller
     /// </summary>
-    [EnableCors]
     [Route(ApiConfig.ApiOperationPointWeighbridgePath)]
     [ApiController]
     public sealed class WeighbridgeController : Phenix.Core.Net.Api.ControllerBase
