@@ -1,16 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Phenix.Services.Plugin.Actor.UserGrain">
-    <Position X="2.75" Y="0.5" Width="2.75" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
-    <TypeIdentifier>
-      <HashCode>gAACIAAAAIBAAAYAAAIAGEQAAAgBAAAQAIAAAwAAQAI=</HashCode>
-      <FileName>Actor\UserGrain.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
   <Class Name="Phenix.Services.Plugin.Actor.TeamsGrain">
     <Position X="7.75" Y="0.5" Width="2" />
     <Compartments>
@@ -27,6 +16,28 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Actor\PositionGrain.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Services.Plugin.Actor.UserGrain">
+    <Position X="2.75" Y="0.5" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>wAACIAAAAIBAAAYAAAIAGEQAAAgBAAAQAIAAAwAAQAo=</HashCode>
+      <FileName>Actor\UserGrain.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Services.Plugin.Actor.OneOffKeyPairGrain">
+    <Position X="7.75" Y="3.75" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAIAIBAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Actor\OneOffKeyPairGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
@@ -49,6 +60,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Actor\IPositionGrain.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Phenix.Services.Plugin.Actor.IOneOffKeyPairGrain">
+    <Position X="5.75" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Actor\IOneOffKeyPairGrain.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Microsoft YaHei UI" Size="9" />

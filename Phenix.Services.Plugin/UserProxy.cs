@@ -13,9 +13,9 @@ namespace Phenix.Services.Plugin
     {
         #region 方法
 
-        Task<bool> IUserProxy.IsValidLogon(string timestamp, string signature, string requestAddress, bool throwIfNotConform)
+        Task<bool> IUserProxy.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, bool throwIfNotConform)
         {
-            return Grain.IsValidLogon(timestamp, signature, requestAddress, throwIfNotConform);
+            return Grain.IsValidLogon(timestamp, signature, tag, requestAddress, throwIfNotConform);
         }
 
         Task<bool> IUserProxy.IsValid(string timestamp, string signature, string requestAddress, bool throwIfNotConform)

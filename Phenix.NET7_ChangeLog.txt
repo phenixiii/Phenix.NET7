@@ -189,10 +189,13 @@ Copyright © 2007, 2020 Phenixヾ Studio
 4，增补Phenix.Core.Net.Api.ControllerBase的SelectRecord()函数，直接打包到分页查询结果DataPageInfo对象，DataPageInfo的DataName为实体类名，DataSize为数据量，PageNo为页码，PageSize为分页大小，PageBody为当前页JSON格式的记录数据
 
 
+20200603
+1，为持久化引擎添加动态查询功能，可在Phenix.Core.Data.Schema.Sheet的UpdateEntity、UpdateRecord、DeleteRecord、SelectEntity、SelectRecord、RecordCount时传入查询对象参数，Phenix.Core.Data.Model.EntityBase<T>、Phenix.Core.Net.Api.ControllerBase也提供了相同功能
+2，Phenix.Core.Data.Schema.Sheet、Phenix.Core.Net.Api.ControllerBase的SelectRecord可按照接口定义返回指定的属性值记录
+3，借助Phenix.NET6实现用户登录身份验证
 
 
 待开发：
-1，为持久化引擎添加动态查询功能，可在UpdateEntity、UpdateRecord、DeleteRecord、SelectEntity、SelectRecord时传入查询对象参数
 2，添加《Phenix.Core.Data.持久层开发接口.doc》的"查询条件类"章节
 3，添加《Phenix.Core.Security.身份验证方法.doc》
 3，适配双活数据中心的Actor状态跨地域同步机制

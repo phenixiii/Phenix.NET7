@@ -2,7 +2,6 @@
 using Demo.InventoryControl.Plugin.Business;
 using Orleans;
 using Phenix.Actor;
-using Phenix.Core.Data;
 using Phenix.Core.Data.Schema;
 
 namespace Demo.InventoryControl.Plugin.Actor
@@ -19,7 +18,7 @@ namespace Demo.InventoryControl.Plugin.Actor
         /// <summary>
         /// 名称
         /// </summary>
-        public string Name
+        protected string Name
         {
             get { return _name ?? (_name = this.GetPrimaryKeyString()); }
         }

@@ -4,6 +4,7 @@ using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
 using Orleans.Runtime.Messaging;
+using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.SyncCollections;
 
@@ -16,8 +17,47 @@ namespace Phenix.Actor
     {
         #region 属性
 
-        private static readonly SynchronizedDictionary<string, IClusterClient> _cache =
-            new SynchronizedDictionary<string, IClusterClient>(StringComparer.Ordinal);
+        #region 配置项
+
+        private static string _clusterId;
+
+        /// <summary>
+        /// 集群的唯一ID
+        /// 默认：Database.Default.DataSourceKey
+        /// </summary>
+        public static string ClusterId
+        {
+            get { return AppSettings.GetProperty(ref _clusterId, Database.Default.DataSourceKey); }
+            set { AppSettings.SetProperty(ref _clusterId, value); }
+        }
+
+        private static string _serviceId;
+
+        /// <summary>
+        /// 服务的唯一ID
+        /// 默认：Database.Default.DataSourceKey
+        /// </summary>
+        public static string ServiceId
+        {
+            get { return AppSettings.GetProperty(ref _serviceId, Database.Default.DataSourceKey); }
+            set { AppSettings.SetProperty(ref _serviceId, value); }
+        }
+
+        private static string _connectionString;
+
+        /// <summary>
+        /// 数据库连接串
+        /// 默认：Database.Default.ConnectionString
+        /// </summary>
+        public static string ConnectionString
+        {
+            get { return AppSettings.GetProperty(ref _connectionString, Database.Default.ConnectionString, true); }
+            set { AppSettings.SetProperty(ref _connectionString, value, true); }
+        }
+
+        #endregion
+
+        private static readonly SynchronizedDictionary<string, IClusterClient> _cache = new SynchronizedDictionary<string, IClusterClient>(StringComparer.Ordinal);
 
         private static IClusterClient _default;
 
@@ -42,7 +82,7 @@ namespace Phenix.Actor
         /// <returns>Orleans服务集群客户端</returns>
         public static IClusterClient Fetch()
         {
-            return Fetch(Database.Default.DataSourceKey, Database.Default.DataSourceKey, Database.Default.ConnectionString);
+            return Fetch(ClusterId, ServiceId, ConnectionString);
         }
 
         /// <summary>

@@ -30,6 +30,18 @@ namespace Phenix.Services.Host
             set { AppSettings.SetProperty(ref _serviceId, value); }
         }
 
+        private static string _connectionString;
+
+        /// <summary>
+        /// 数据库连接串
+        /// 默认：Database.Default.ConnectionString
+        /// </summary>
+        public static string ConnectionString
+        {
+            get { return AppSettings.GetProperty(ref _connectionString, Database.Default.ConnectionString, true); }
+            set { AppSettings.SetProperty(ref _connectionString, value, true); }
+        }
+
         private static int? _defaultSiloPort; //注意: 需将字段定义为Nullable<T>类型，以便AppSettings区分是否曾被自己初始化
 
         /// <summary>
@@ -94,11 +106,11 @@ namespace Phenix.Services.Host
 
         /// <summary>
         /// Dashboard绑定http访问的端口
-        /// 默认：8080
+        /// 默认：8088
         /// </summary>
         public static int DashboardPort
         {
-            get { return AppSettings.GetProperty(ref _dashboardPort, 8080); }
+            get { return AppSettings.GetProperty(ref _dashboardPort, 8088); }
             set { AppSettings.SetProperty(ref _dashboardPort, value); }
         }
 

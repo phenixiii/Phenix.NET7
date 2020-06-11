@@ -2,7 +2,6 @@
 using Orleans.Configuration;
 using Orleans.Runtime.Messaging;
 using Phenix.Actor;
-using Phenix.Core.Data;
 
 namespace Orleans.Hosting
 {
@@ -11,28 +10,6 @@ namespace Orleans.Hosting
     /// </summary>
     public static class SiloBuilderExtension
     {
-        /// <summary>
-        /// 配置Orleans服务集群
-        /// </summary>
-        /// <param name="builder">ISiloBuilder</param>
-        /// <returns>ISiloBuilder</returns>
-        public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder)
-        {
-            return ConfigureCluster(builder, Database.Default.DataSourceKey, Database.Default.DataSourceKey, Database.Default.ConnectionString);
-        }
-
-        /// <summary>
-        /// 配置Orleans服务集群
-        /// </summary>
-        /// <param name="builder">ISiloBuilder</param>
-        /// <param name="clusterId">Orleans集群的唯一ID</param>
-        /// <param name="serviceId">Orleans服务的唯一ID</param>
-        /// <returns>ISiloBuilder</returns>
-        public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder, string clusterId, string serviceId)
-        {
-            return ConfigureCluster(builder, clusterId, serviceId, Database.Default.ConnectionString);
-        }
-
         /// <summary>
         /// 配置Orleans服务集群
         /// </summary>

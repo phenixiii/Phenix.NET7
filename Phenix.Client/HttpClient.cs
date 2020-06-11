@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
+using Phenix.Client.Security;
 using Phenix.Core;
 using Phenix.Core.Data.Schema;
 using Phenix.Core.IO;
@@ -17,7 +18,6 @@ using Phenix.Core.Net.Api;
 using Phenix.Core.Reflection;
 using Phenix.Core.Security.Auth;
 using Phenix.Core.Security.Cryptography;
-using Phenix.Client.Security;
 
 namespace Phenix.Client
 {
@@ -34,6 +34,18 @@ namespace Phenix.Client
 
         #region 工厂
 
+        private static HttpClient _default;
+
+        /// <summary>
+        /// 缺省HttpClient
+        /// 缺省为第一个调用LogonAsync成功的HttpClient对象
+        /// </summary>
+        public static HttpClient Default
+        {
+            get { return _default; }
+            set { _default = value; }
+        }
+
         /// <summary>
         /// 新增HttpClient
         /// </summary>
@@ -49,18 +61,6 @@ namespace Phenix.Client
         #endregion
 
         #region 属性
-
-        private static HttpClient _default;
-
-        /// <summary>
-        /// 缺省HttpClient
-        /// 缺省为第一个调用LogonAsync成功的HttpClient对象
-        /// </summary>
-        public static HttpClient Default
-        {
-            get { return _default; }
-            set { _default = value; }
-        }
 
         private Identity _identity;
 
@@ -114,13 +114,24 @@ namespace Phenix.Client
         /// <param name="name">登录名</param>
         /// <param name="password">登录口令/动态口令(一般通过邮箱发送给到用户)</param>
         /// <param name="hashName">登录名需Hash</param>
-        /// <param name="tag">tag</param>
+        /// <param name="tag">捎带数据(默认是客户端当前时间)</param>
         /// <returns>用户身份</returns>
         public async Task<Identity> LogonAsync(string name, string password, bool hashName = false, string tag = null)
         {
             Identity = new Identity(this, hashName && !Phenix.Core.Security.User.IsReservedUserName(name) ? MD5CryptoTextProvider.ComputeHash(name) : name, password);
             await Identity.LogonAsync(tag);
             return Identity;
+        }
+
+        /// <summary>
+        /// 获取一次性公钥
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <returns>公钥</returns>
+        public async Task<string> GetOneOffPublicKeyAsync(string name)
+        {
+            return await CallAsync<string>(HttpMethod.Get, ApiConfig.ApiSecurityOneOffKeyPairPath, 
+                NameValue.Set(nameof(name), name));
         }
 
         #endregion
@@ -145,8 +156,8 @@ namespace Phenix.Client
         public async Task<long> GetIncrementAsync(string key, long initialValue = 1)
         {
             return await CallAsync<long>(HttpMethod.Get, ApiConfig.ApiDataIncrementPath,
-                NameValue.Set("key", key),
-                NameValue.Set("initialValue", initialValue));
+                NameValue.Set(nameof(key), key),
+                NameValue.Set(nameof(initialValue), initialValue));
         }
 
         #endregion
@@ -171,8 +182,8 @@ namespace Phenix.Client
         public async Task SendMessageAsync(long id, string receiver, string content)
         {
             await CallAsync(HttpMethod.Put, ApiConfig.ApiMessageUserMessagePath, content,
-                NameValue.Set("id", id),
-                NameValue.Set("receiver", receiver));
+                NameValue.Set(nameof(id), id),
+                NameValue.Set(nameof(receiver), receiver));
         }
 
         /// <summary>
@@ -183,7 +194,7 @@ namespace Phenix.Client
         public async Task SendMessageAsync(string receiver, string content)
         {
             await CallAsync(HttpMethod.Post, ApiConfig.ApiMessageUserMessagePath, content,
-                NameValue.Set("receiver", receiver));
+                NameValue.Set(nameof(receiver), receiver));
         }
 
         /// <summary>
@@ -194,8 +205,8 @@ namespace Phenix.Client
         public async Task AffirmReceivedMessageAsync(long id, bool burn = false)
         {
             await CallAsync(HttpMethod.Delete, ApiConfig.ApiMessageUserMessagePath,
-                NameValue.Set("id", id),
-                NameValue.Set("burn", burn));
+                NameValue.Set(nameof(id), id),
+                NameValue.Set(nameof(burn), burn));
         }
 
         /// <summary>
@@ -289,9 +300,9 @@ namespace Phenix.Client
         public async Task<FileChunkInfo> DownloadFileChunkAsync(string message, string fileName, int chunkNumber)
         {
             return await CallAsync<FileChunkInfo>(HttpMethod.Get, ApiConfig.ApiInoutFilePath,
-                NameValue.Set("message", message),
-                NameValue.Set("fileName", fileName),
-                NameValue.Set("chunkNumber", chunkNumber));
+                NameValue.Set(nameof(message), message),
+                NameValue.Set(nameof(fileName), fileName),
+                NameValue.Set(nameof(chunkNumber), chunkNumber));
         }
 
         /// <summary>

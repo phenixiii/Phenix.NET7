@@ -23,8 +23,7 @@ namespace Phenix.Actor
 
         #endregion
 
-        private static readonly SynchronizedDictionary<string, IStreamProvider> _cache =
-            new SynchronizedDictionary<string, IStreamProvider>(StringComparer.Ordinal);
+        private static readonly SynchronizedDictionary<string, IStreamProvider> _cache = new SynchronizedDictionary<string, IStreamProvider>(StringComparer.Ordinal);
 
         private static IStreamProvider _default;
 
@@ -46,7 +45,7 @@ namespace Phenix.Actor
         /// <returns>Orleans流提供者</returns>
         public static IStreamProvider Fetch()
         {
-            return ClusterClient.Fetch().GetStreamProvider(Name);
+            return _cache.GetValue(Name, () => ClusterClient.Fetch().GetStreamProvider(Name));
         }
 
         /// <summary>

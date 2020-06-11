@@ -81,7 +81,7 @@ namespace Phenix.Services.Host
                      * 插件程序集的命名，都应该统一采用"*.Plugin.dll"作为文件名的后缀
                      * 用户的身份验证和访问授权等功能，由Actor插件Phenix.Services.Plugin中的UserGrain提供
                      */
-                    .ConfigureCluster(OrleansConfig.ClusterId, OrleansConfig.ServiceId)
+                    .ConfigureCluster(OrleansConfig.ClusterId, OrleansConfig.ServiceId, OrleansConfig.ConnectionString)
                     /*
                      * 设置Silo端口：EndpointOptions.DEFAULT_SILO_PORT
                      * 设置Gateway端口：EndpointOptions.DEFAULT_SILO_PORT
@@ -97,7 +97,7 @@ namespace Phenix.Services.Host
                         options.Username = OrleansConfig.DashboardUsername; //设置用于访问Dashboard的用户名（基本身份验证）
                         options.Password = OrleansConfig.DashboardPassword; //设置用于访问Dashboard的用户口令（基本身份验证）
                         options.Host = OrleansConfig.DashboardHost; //将Web服务器绑定到的主机名（默认为*）
-                        options.Port = OrleansConfig.DashboardPort; //设置Dashboard可视化页面访问的端口（默认为8080）
+                        options.Port = OrleansConfig.DashboardPort; //设置Dashboard可视化页面访问的端口（默认为8088）
                         options.HostSelf = OrleansConfig.DashboardHostSelf; //将Dashboard设置为托管自己的http服务器（默认为true）
                         options.CounterUpdateIntervalMs = OrleansConfig.DashboardCounterUpdateIntervalMs; //采样计数器之间的更新间隔（以毫秒为单位，默认为1000）
                     }))

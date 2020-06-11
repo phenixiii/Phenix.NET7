@@ -5,7 +5,7 @@ using Phenix.Core.Data;
 namespace Phenix.Services.Plugin.Api.Data
 {
     /// <summary>
-    /// 64位增量
+    /// 64位增量控制器
     /// </summary>
     [Route(Phenix.Core.Net.Api.ApiConfig.ApiDataIncrementPath)]
     [ApiController]

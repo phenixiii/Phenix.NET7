@@ -14,13 +14,13 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAQAAAAAAAAAAAAAAgAJAEAAAAAAACAAA=</HashCode>
+      <HashCode>AAACAAAAAAAAQAAAAAAAAAAAAAAgAIAAAAAAAAAAAAA=</HashCode>
       <FileName>UserProxy.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.Services.Plugin.TeamsProxy">
-    <Position X="3.25" Y="3.25" Width="3.25" />
+    <Position X="6.25" Y="0.5" Width="3.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>TeamsProxy.cs</FileName>
@@ -28,7 +28,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.Services.Plugin.PositionProxy">
-    <Position X="3.25" Y="4.75" Width="3.25" />
+    <Position X="6.25" Y="1.75" Width="3.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>PositionProxy.cs</FileName>

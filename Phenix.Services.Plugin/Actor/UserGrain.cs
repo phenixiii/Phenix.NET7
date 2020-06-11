@@ -4,6 +4,7 @@ using System.Security;
 using System.Threading.Tasks;
 using Orleans;
 using Phenix.Actor;
+using Phenix.Core;
 using Phenix.Core.Data.Schema;
 using Phenix.Core.Security;
 using Phenix.Core.Security.Auth;
@@ -16,6 +17,22 @@ namespace Phenix.Services.Plugin.Actor
     public class UserGrain : EntityGrainBase<User>, IUserGrain
     {
         #region 属性
+
+        #region 配置项
+
+        private static long? _keyPairDiscardIntervalSeconds;
+
+        /// <summary>
+        /// 公钥私钥对丢弃间隔(秒)
+        /// 默认：60
+        /// </summary>
+        public static long KeyPairDiscardIntervalSeconds
+        {
+            get { return AppSettings.GetProperty(ref _keyPairDiscardIntervalSeconds, 60); }
+            set { AppSettings.SetProperty(ref _keyPairDiscardIntervalSeconds, value); }
+        }
+
+        #endregion
 
         private string _name;
 
@@ -51,10 +68,10 @@ namespace Phenix.Services.Plugin.Actor
         #region 方法
 
         private string Register(string phone, string eMail, string regAlias, string requestAddress, 
-            string initialPassword = null, string dynamicPassword = null,
+            string initialPassword = null, string dynamicPassword = null, bool hashPassword = true,
             long? rootTeamsId = null, long? teamsId = null, long? positionId = null)
         {
-            Kernel = User.Register(Database, Name, phone, eMail, regAlias, requestAddress, rootTeamsId, teamsId, positionId, ref initialPassword, ref dynamicPassword);
+            Kernel = User.Register(Database, Name, phone, eMail, regAlias, requestAddress, rootTeamsId, teamsId, positionId, ref initialPassword, ref dynamicPassword, hashPassword);
             /*
              * 以下代码供你自己测试用
              * 生产环境下，请替换为通过第三方渠道（邮箱或短信）推送给到用户
@@ -65,6 +82,25 @@ namespace Phenix.Services.Plugin.Actor
              * 生产环境下，请替换为提示用户留意查看邮箱或短信以收取动态口令
              */
             return String.Format("{0}({1}) 的动态口令存放于 {2} 目录下的日志文件里", Kernel.RegAlias, Kernel.Name, Phenix.Core.Log.EventLog.LocalDirectory);
+        }
+
+        private async Task<bool> ThirdPartyLogonAsync(string timestamp, string signature, string tag, string requestAddress, Exception error)
+        {
+            Phenix.Services.Plugin.P6C.HttpClient httpClient = Phenix.Services.Plugin.P6C.HttpClient.Default;
+            if (httpClient == null)
+                throw error;
+
+            string password = await ClusterClient.Default.GetGrain<IOneOffKeyPairGrain>(KeyPairDiscardIntervalSeconds).Decrypt(Name, await httpClient.LogonAsync(Name, timestamp, signature, tag), true);
+            if (!String.IsNullOrEmpty(password))
+            {
+                if (Kernel == null)
+                    Register(null, null, Name, requestAddress, password, null, false);
+                else
+                    Kernel.ChangePassword(password, false);
+                return true;
+            }
+
+            throw new UserVerifyException();
         }
 
         Task<string> IUserGrain.CheckIn(string phone, string eMail, string regAlias, string requestAddress)
@@ -113,21 +149,27 @@ namespace Phenix.Services.Plugin.Actor
             return Task.FromResult(Kernel.Decrypt(cipherText));
         }
 
-        Task<bool> IUserGrain.IsValidLogon(string timestamp, string signature, string requestAddress, bool throwIfNotConform)
+        async Task<bool> IUserGrain.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, bool throwIfNotConform)
         {
             if (Kernel == null)
             {
-                string userName = this.GetPrimaryKeyString();
-                if (User.IsReservedUserName(userName))
+                if (User.IsReservedUserName(Name))
                 {
-                    Register(null, null, userName, requestAddress, userName);
-                    return Task.FromResult(true);
+                    Register(null, null, Name, requestAddress, Name);
+                    return true;
                 }
 
-                throw new UserNotFoundException();
+                return await ThirdPartyLogonAsync(timestamp, signature, tag, requestAddress, new UserNotFoundException());
             }
 
-            return Task.FromResult(Kernel.IsValidLogon(timestamp, signature, requestAddress, throwIfNotConform));
+            try
+            {
+                return Kernel.IsValidLogon(timestamp, signature, requestAddress, throwIfNotConform);
+            }
+            catch (Exception ex)
+            {
+                return await ThirdPartyLogonAsync(timestamp, signature, tag, requestAddress, ex);
+            }
         }
 
         Task<bool> IUserGrain.IsValid(string timestamp, string signature, string requestAddress, bool throwIfNotConform)
@@ -143,7 +185,7 @@ namespace Phenix.Services.Plugin.Actor
             if (Kernel == null)
                 throw new UserNotFoundException();
 
-            return Task.FromResult(Kernel.ChangePassword(newPassword, throwIfNotConform));
+            return Task.FromResult(Kernel.ChangePassword(newPassword, true, throwIfNotConform));
         }
 
         #region CompanyAdmin 操作功能

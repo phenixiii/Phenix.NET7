@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 
 namespace Phenix.Services.Host
 {
@@ -102,7 +103,12 @@ namespace Phenix.Services.Host
                      */
                     parts.AddPluginPart();
                 })
-                .AddNewtonsoftJson();
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    options.SerializerSettings.DateFormatString = "yyyy'-'MM'-'dd' 'HH':'mm':'ss";
+                    options.UseMemberCasing();
+                });
 
             /*
              * 配置转接头中间件（代理服务器和负载均衡器）

@@ -2,7 +2,6 @@
 using Demo.InventoryControl.Plugin.Business;
 using Orleans;
 using Phenix.Actor;
-using Phenix.Core.Data;
 using Phenix.Core.Data.Schema;
 
 namespace Demo.InventoryControl.Plugin.Actor
@@ -19,7 +18,7 @@ namespace Demo.InventoryControl.Plugin.Actor
         /// <summary>
         /// 库区
         /// </summary>
-        public string Area
+        protected string Area
         {
             get { return _area ?? (_area = AppConfig.ExtractArea(this.GetPrimaryKeyString())); }
         }
@@ -29,7 +28,7 @@ namespace Demo.InventoryControl.Plugin.Actor
         /// <summary>
         /// 巷道
         /// </summary>
-        public string Alley
+        protected string Alley
         {
             get { return _alley ?? (_alley = AppConfig.ExtractAlley(this.GetPrimaryKeyString())); }
         }
@@ -39,7 +38,7 @@ namespace Demo.InventoryControl.Plugin.Actor
         /// <summary>
         /// 序号
         /// </summary>
-        public string Ordinal
+        protected string Ordinal
         {
             get { return _ordinal ?? (_ordinal = AppConfig.ExtractOrdinal(this.GetPrimaryKeyString())); }
         }
