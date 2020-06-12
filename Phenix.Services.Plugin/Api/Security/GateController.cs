@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Services.Plugin.Actor;
@@ -38,9 +37,8 @@ namespace Phenix.Services.Plugin.Api.Security
         /// </summary>
         [Authorize]
         [HttpPost]
-        public async Task Logon()
+        public void Logon()
         {
-            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).Logon(await Request.ReadBodyAsStringAsync(true));
         }
 
         #endregion

@@ -123,16 +123,6 @@ namespace Phenix.Services.Plugin.Actor
             return Task.FromResult(Register(phone, eMail, regAlias, requestAddress));
         }
 
-        Task IUserGrain.Logon(string tag)
-        {
-            Kernel = null;
-            /*
-             * 本函数被执行到，说明当前用户 user 已经登录成功
-             * 可利用客户端传过来的 tag 扩展出系统自己的用户登录功能
-             */
-            return Task.CompletedTask;
-        }
-
         Task<string> IUserGrain.Encrypt(string sourceText)
         {
             if (Kernel == null)
@@ -151,6 +141,8 @@ namespace Phenix.Services.Plugin.Actor
 
         async Task<bool> IUserGrain.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, bool throwIfNotConform)
         {
+            bool result = false;
+
             if (Kernel == null)
             {
                 if (User.IsReservedUserName(Name))
@@ -159,17 +151,27 @@ namespace Phenix.Services.Plugin.Actor
                     return true;
                 }
 
-                return await ThirdPartyLogonAsync(timestamp, signature, tag, requestAddress, new UserNotFoundException());
+                result = await ThirdPartyLogonAsync(timestamp, signature, tag, requestAddress, new UserNotFoundException());
             }
 
             try
             {
-                return Kernel.IsValidLogon(timestamp, signature, requestAddress, throwIfNotConform);
+                result = Kernel.IsValidLogon(timestamp, signature, requestAddress, throwIfNotConform);
             }
             catch (Exception ex)
             {
-                return await ThirdPartyLogonAsync(timestamp, signature, tag, requestAddress, ex);
+                result = await ThirdPartyLogonAsync(timestamp, signature, tag, requestAddress, ex);
             }
+
+            if (result)
+            {
+                /*
+                * 本函数被执行到，说明当前用户 user 已经登录成功
+                * 可利用客户端传过来的 tag 扩展出系统自己的用户登录功能
+                */
+                tag = Kernel.Decrypt(tag);
+            }
+            return result;
         }
 
         Task<bool> IUserGrain.IsValid(string timestamp, string signature, string requestAddress, bool throwIfNotConform)

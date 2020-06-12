@@ -44,12 +44,6 @@ namespace Phenix.Services.Plugin.Actor
         Task<bool> IsValid(string timestamp, string signature, string requestAddress, bool throwIfNotConform);
 
         /// <summary>
-        /// 登录
-        /// </summary>
-        /// <param name="tag">捎带数据(默认是客户端当前时间)</param>
-        Task Logon(string tag);
-
-        /// <summary>
         /// 加密
         /// Key/IV=登录口令/动态口令
         /// </summary>
