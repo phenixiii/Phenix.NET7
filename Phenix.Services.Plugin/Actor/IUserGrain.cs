@@ -114,7 +114,7 @@ namespace Phenix.Services.Plugin.Actor
         Task<int> PatchCompanyUser(string name, params NameValue[] propertyValues);
 
         /// <summary>
-        /// 更新
+        /// 更新属性
         /// </summary>
         /// <param name="rootTeamsId">所属顶层团体ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>

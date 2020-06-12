@@ -39,6 +39,7 @@ namespace Phenix.Services.Plugin.Api.Security
         [HttpPost]
         public void Logon()
         {
+            // ignored
         }
 
         #endregion
