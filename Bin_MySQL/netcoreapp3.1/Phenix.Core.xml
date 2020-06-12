@@ -10697,27 +10697,27 @@
             序列化
             </summary>
         </member>
-        <member name="T:Phenix.Core.Security.Auth.TimestampRepeatingException">
+        <member name="T:Phenix.Core.Security.Auth.TimestampException">
             <summary>
-            时间戳重发禁止异常
+            时间戳异常
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.Auth.TimestampRepeatingException.#ctor">
+        <member name="M:Phenix.Core.Security.Auth.TimestampException.#ctor">
             <summary>
-            时间戳重发禁止异常
+            时间戳异常
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.Auth.TimestampRepeatingException.#ctor(System.String,System.Exception)">
+        <member name="M:Phenix.Core.Security.Auth.TimestampException.#ctor(System.String,System.Exception)">
             <summary>
-            时间戳重发禁止异常
+            时间戳异常
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.Auth.TimestampRepeatingException.#ctor(System.String)">
+        <member name="M:Phenix.Core.Security.Auth.TimestampException.#ctor(System.String)">
             <summary>
-            时间戳重发禁止异常
+            时间戳异常
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.Auth.TimestampRepeatingException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+        <member name="M:Phenix.Core.Security.Auth.TimestampException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
             <summary>
             序列化
             </summary>
@@ -11495,6 +11495,12 @@
             <summary>
             动态口令有效周期
             默认：10(分钟>=3)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.User.AllowRepeatTimestamp">
+            <summary>
+            允许时间戳重发
+            默认：false
             </summary>
         </member>
         <member name="F:Phenix.Core.Security.User._name">
