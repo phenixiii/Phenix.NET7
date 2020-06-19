@@ -4833,12 +4833,12 @@
         </member>
         <member name="P:Phenix.Core.Data.Schema.Column.PropertyName">
             <summary>
-            属性名
+            类属性名
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Schema.Column.FieldName">
             <summary>
-            字段名
+            类字段名
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Schema.Column.ParameterName">
@@ -4852,6 +4852,12 @@
             </summary>
             <param name="entityType">实体类</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Column.IsMatch(System.String)">
+            <summary>
+            是否匹配(比对分隔符之前字符串)
+            </summary>
+            <param name="binderName">类属性名/类字段名/参数名</param>
         </member>
         <member name="T:Phenix.Core.Data.Schema.EnumCaptionAttribute">
             <summary>
@@ -5746,7 +5752,7 @@
             <summary>
             检索字段
             </summary>
-            <param name="binderName">字段名/类属性名/类字段名</param>
+            <param name="binderName">字段名/类属性名/类字段名/参数名</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>字段</returns>
         </member>
@@ -8912,21 +8918,21 @@
         </member>
         <member name="M:Phenix.Core.Data.Schema.Standards.GetPropertyNameByFieldName(System.String)">
             <summary>
-            取属性名
+            取类属性名
             </summary>
-            <param name="fieldName">字段名</param>
+            <param name="fieldName">类字段名</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Standards.GetFieldNameByPropertyName(System.String)">
             <summary>
-            取字段名
+            取类字段名
             </summary>
-            <param name="propertyName">属性名</param>
+            <param name="propertyName">类属性名</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Standards.GetParameterNameByPropertyName(System.String)">
             <summary>
             取参数名
             </summary>
-            <param name="propertyName">属性名</param>
+            <param name="propertyName">类属性名</param>
         </member>
         <member name="T:Phenix.Core.Data.Schema.Table">
             <summary>

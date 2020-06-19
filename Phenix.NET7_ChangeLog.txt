@@ -183,21 +183,25 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 
 20200523
-1，修复跨域问题
-2，修复系统管理员（用户名ADMIN，默认密码ADMIN）第一次无法登录注册的问题，并可增删改系统的岗位定义
-3，提供Phenix.Core.Data.Rule.ValidationException数据验证异常类，用于把ValidationMessage对象抛到客户端，客户端利用ValidationMessage.StatusCode属性（取100以上的整型值）分类处理系统的业务事件ValidationMessage.ErrorMessage
-4，增补Phenix.Core.Net.Api.ControllerBase的SelectRecord()函数，直接打包到分页查询结果DataPageInfo对象，DataPageInfo的DataName为实体类名，DataSize为数据量，PageNo为页码，PageSize为分页大小，PageBody为当前页JSON格式的记录数据
+1，修复系统管理员（用户名ADMIN，默认密码ADMIN）第一次无法登录注册的问题，并可增删改系统的岗位定义
+2，提供Phenix.Core.Data.Rule.ValidationException数据验证异常类，用于将其ValidationMessage属性抛到客户端，客户端利用ValidationMessage属性的MessageType、StatusCode（取100以上的整型值）分类处理异常消息ErrorMessage
+3，增补Phenix.Core.Net.Api.ControllerBase的SelectRecord()函数，直接打包到分页查询结果DataPageInfo对象，DataPageInfo的DataName为实体类名，DataSize为数据量，PageNo为页码，PageSize为分页大小，PageBody为当前页JSON格式的记录数据
 
 
 20200603
-1，为持久化引擎添加动态查询功能，可在Phenix.Core.Data.Schema.Sheet的UpdateEntity、UpdateRecord、DeleteRecord、SelectEntity、SelectRecord、RecordCount时传入查询对象参数，Phenix.Core.Data.Model.EntityBase<T>、Phenix.Core.Net.Api.ControllerBase也提供了相同功能
-2，Phenix.Core.Data.Schema.Sheet、Phenix.Core.Net.Api.ControllerBase的SelectRecord可按照接口定义返回指定的属性值记录
+1，为持久化引擎添加条件表达式动态传参的功能，涉及Phenix.Core.Data.Schema.Sheet的UpdateEntity、UpdateRecord、DeleteRecord、SelectEntity、SelectRecord、RecordCount等函数，以及Phenix.Core.Data.Model.EntityBase<T>、Phenix.Core.Net.Api.ControllerBase的相关功能，紧随着条件表达式（criteriaLambda/criteriaExpression）后面都会有一个条件对象（criteria）参数
+2，Phenix.Core.Data.Schema.Sheet、Phenix.Core.Net.Api.ControllerBase的SelectRecord可按照接口定义返回指定的属性值记录，而不是整个实体对象打包到JSON中
 3，借助Phenix.NET6实现用户登录身份验证
 
 
+20200613
+1，修复身份验证失败（比如登录口令输错）时浏览器F12提示"Origin null is not allowed by Access-Control-Allow-Origin"的问题
+2，修订《Phenix.Core.Data.持久层开发接口.doc》，补充条件对象的使用方法
+
+
+
 待开发：
-2，添加《Phenix.Core.Data.持久层开发接口.doc》的"查询条件类"章节
-3，添加《Phenix.Core.Security.身份验证方法.doc》
+2，添加《Phenix.Core.Security.身份验证方法.doc》
 3，适配双活数据中心的Actor状态跨地域同步机制
 
 

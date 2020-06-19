@@ -110,7 +110,7 @@ namespace Phenix.Actor
         /// <returns>属性值</returns>
         public async Task<TValue> GetKernelPropertyAsync<TValue>(Expression<Func<TKernel, object>> propertyLambda)
         {
-            return (TValue) Utilities.ChangeType(await Grain.GetKernelProperty(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name), typeof(TValue));
+            return await Grain.GetKernelProperty<TValue>(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
         }
 
         Task<TValue> IEntityGrainProxy<TKernel>.GetKernelProperty<TValue>(Expression<Func<TKernel, object>> propertyLambda)

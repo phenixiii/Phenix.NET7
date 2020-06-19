@@ -77,6 +77,11 @@ namespace Phenix.Actor
             return Task.FromResult(Utilities.GetMemberValue(Kernel, propertyName));
         }
 
+        Task<TValue> IEntityGrain<TKernel>.GetKernelProperty<TValue>(string propertyName)
+        {
+            return Task.FromResult((TValue) Utilities.ChangeType(Utilities.GetMemberValue(Kernel, propertyName), typeof(TValue)));
+        }
+
         #endregion
     }
 }
