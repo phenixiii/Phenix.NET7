@@ -75,7 +75,7 @@ namespace Demo
 
             long id = position.Id;
 
-            position = Position.FetchRoot(Database.Default, p => p.Id == id);
+            position = Position.FetchRoot(Database.Default, p => p.Id == id); 
             Console.WriteLine("获取 Position 对象：{0}", Utilities.JsonSerialize(position));
             Console.WriteLine("状态：IsNew = {0}，IsSelfDirty = {1}，IsSelfDeleted = {2}，IsFetched = {3}，{4}",
                 position.IsNew, position.IsSelfDirty, position.IsSelfDeleted, position.IsFetched,

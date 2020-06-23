@@ -899,11 +899,6 @@
             </summary>
             <param name="ordinal">序号</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DataReader.SelectRecord">
-            <summary>
-            获取记录(JSON格式(属性名为数据源的表/视图的字段名/别名))
-            </summary>
-        </member>
         <member name="M:Phenix.Core.Data.Common.DataReader.CreateParameter(System.Object)">
             <summary>
             构建 DbParameter
@@ -1858,12 +1853,10 @@
             实际操作的数据库入口(0为主库序号，1-N为分库序号)
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Database.FetchMetaData(System.Int32)">
+        <member name="M:Phenix.Core.Data.Database.ResetMetaData">
             <summary>
-            获取元数据
+            重置元数据
             </summary>
-            <param name="resetHoursLater">多少小时后重置(0为不重置、负数为即刻重置)</param>
-            <returns>元数据</returns>
         </member>
         <member name="M:Phenix.Core.Data.Database.GetConnection">
             <summary>
@@ -2801,8 +2794,7 @@
         </member>
         <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.None">
             <summary>
-            无
-            不参与SQL的拼装但参与参数定义和赋值
+            无(不参与SQL的拼装但参与参数定义和赋值)
             </summary>
         </member>
         <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.Embed">
@@ -2845,19 +2837,19 @@
             像
             </summary>
         </member>
+        <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.LikeLeft">
+            <summary>
+            像左侧
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.LikeRight">
+            <summary>
+            像右侧
+            </summary>
+        </member>
         <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.Unlike">
             <summary>
             不像
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.IsNull">
-            <summary>
-            是空值
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.IsNotNull">
-            <summary>
-            非空值
             </summary>
         </member>
         <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.In">
@@ -2868,6 +2860,16 @@
         <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.NotIn">
             <summary>
             不包含(支持Array)
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.IsNull">
+            <summary>
+            是空值
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.IsNotNull">
+            <summary>
+            非空值
             </summary>
         </member>
         <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.Exists">
@@ -3225,7 +3227,7 @@
             </summary>
             <param name="database">数据库入口</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
             <returns>根实体对象</returns>
         </member>
@@ -3244,7 +3246,7 @@
             </summary>
             <param name="database">数据库入口</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
             <returns>根实体对象</returns>
         </member>
@@ -3263,7 +3265,7 @@
             </summary>
             <param name="selfSheet">操作单子</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
             <returns>根实体对象</returns>
         </member>
@@ -3282,7 +3284,7 @@
             </summary>
             <param name="selfSheet">操作单子</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
             <returns>根实体对象</returns>
         </member>
@@ -3298,7 +3300,7 @@
             </summary>
             <param name="database">数据库入口</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
             <summary>
@@ -3306,7 +3308,7 @@
             </summary>
             <param name="database">数据库入口</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
         </member>
         <member name="P:Phenix.Core.Data.Model.EntityBase`1.Database">
             <summary>
@@ -3427,7 +3429,7 @@
             获取从实体对象
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchDetails``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -3435,7 +3437,7 @@
             获取从实体对象
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -3467,14 +3469,14 @@
             获取从实体对象
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchDetails``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取从实体对象
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchDetails``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -3482,7 +3484,7 @@
             获取从实体对象
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -3619,7 +3621,7 @@
             更新自己
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3627,7 +3629,7 @@
             更新自己
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -3636,7 +3638,7 @@
             更新自己
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
@@ -3670,7 +3672,7 @@
             更新自己
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3678,7 +3680,7 @@
             更新自己
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -3687,7 +3689,7 @@
             更新自己
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
@@ -3725,7 +3727,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3734,7 +3736,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -3744,7 +3746,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
@@ -3782,7 +3784,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3791,7 +3793,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -3801,7 +3803,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
@@ -3839,7 +3841,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3848,7 +3850,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -3858,7 +3860,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
@@ -3896,7 +3898,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -3905,7 +3907,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -3915,7 +3917,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
@@ -3940,7 +3942,7 @@
             更新自己
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -3957,7 +3959,7 @@
             更新自己
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -3984,7 +3986,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -4003,7 +4005,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -4030,7 +4032,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -4049,7 +4051,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -4309,7 +4311,7 @@
             </summary>
             <param name="database">数据库入口</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
             <returns>根实体对象</returns>
         </member>
@@ -4328,7 +4330,7 @@
             </summary>
             <param name="database">数据库入口</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
             <returns>根实体对象</returns>
         </member>
@@ -4347,7 +4349,7 @@
             </summary>
             <param name="selfSheet">操作单子</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
             <returns>根实体对象</returns>
         </member>
@@ -4366,7 +4368,7 @@
             </summary>
             <param name="selfSheet">操作单子</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
             <returns>根实体对象</returns>
         </member>
@@ -5174,11 +5176,6 @@
         <member name="P:Phenix.Core.Data.Schema.MetaData.Database">
             <summary>
             数据库入口
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Schema.MetaData.InvalidTime">
-            <summary>
-            失效时间
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Schema.MetaData.Tables">
@@ -6090,7 +6087,7 @@
             </summary>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -6099,7 +6096,7 @@
             </summary>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -6109,7 +6106,7 @@
             </summary>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
@@ -6147,7 +6144,7 @@
             </summary>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(``0,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -6156,7 +6153,7 @@
             </summary>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -6166,7 +6163,7 @@
             </summary>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
@@ -6208,7 +6205,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -6218,7 +6215,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -6229,7 +6226,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
@@ -6271,7 +6268,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbConnection,``0,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -6281,7 +6278,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -6292,7 +6289,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
@@ -6334,7 +6331,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -6344,7 +6341,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -6355,7 +6352,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
@@ -6397,7 +6394,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateEntity``1(System.Data.Common.DbTransaction,``0,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -6407,7 +6404,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -6418,7 +6415,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
@@ -6430,7 +6427,7 @@
             <param name="command">DbCommand(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
@@ -6458,7 +6455,7 @@
             </summary>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -6477,7 +6474,7 @@
             </summary>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -6507,7 +6504,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -6528,7 +6525,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -6558,7 +6555,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -6579,7 +6576,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -6590,7 +6587,7 @@
             <param name="command">DbCommand(注意跨库风险未作校验)</param>
             <param name="entity">实体</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列(提交后自动更新，null代表提交实体里的属性，如果没有set语句的话就直接更新字段)</param>
             <returns>更新记录数</returns>
         </member>
@@ -6623,7 +6620,7 @@
             更新记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -6631,7 +6628,7 @@
             更新记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -6640,7 +6637,7 @@
             更新记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
@@ -6674,7 +6671,7 @@
             更新记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -6682,7 +6679,7 @@
             更新记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -6691,7 +6688,7 @@
             更新记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
@@ -6729,7 +6726,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -6738,7 +6735,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -6748,7 +6745,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
@@ -6786,7 +6783,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -6795,7 +6792,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -6805,7 +6802,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
@@ -6843,7 +6840,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -6852,7 +6849,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -6862,7 +6859,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
@@ -6900,7 +6897,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.UpdateRecord(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Schema.PropertyValue[])">
@@ -6909,7 +6906,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -6920,7 +6917,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -6930,7 +6927,7 @@
             </summary>
             <param name="command">DbCommand(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当propertyValues含映射时间戳字段时有效）</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
@@ -6948,7 +6945,7 @@
             更新记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -6965,7 +6962,7 @@
             更新记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -6984,7 +6981,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -7003,7 +7000,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -7022,7 +7019,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -7041,7 +7038,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -7051,7 +7048,7 @@
             </summary>
             <param name="command">DbCommand(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>更新记录数</returns>
         </member>
@@ -7115,7 +7112,7 @@
             删除记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>删除记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.DeleteRecord(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
@@ -7123,7 +7120,7 @@
             删除记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>删除记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.DeleteRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object)">
@@ -7132,7 +7129,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>删除记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.DeleteRecord(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
@@ -7141,7 +7138,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>删除记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.DeleteRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object)">
@@ -7150,7 +7147,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>删除记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.DeleteRecord(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
@@ -7159,7 +7156,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>删除记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.DeleteRecord(System.Data.Common.DbCommand,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
@@ -7168,7 +7165,7 @@
             </summary>
             <param name="command">DbCommand(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>删除记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1">
@@ -7226,14 +7223,14 @@
             获取记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -7241,7 +7238,7 @@
             获取记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -7250,7 +7247,7 @@
             获取记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -7290,14 +7287,14 @@
             获取记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -7305,7 +7302,7 @@
             获取记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -7314,7 +7311,7 @@
             获取记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -7382,7 +7379,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -7391,7 +7388,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -7401,7 +7398,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -7446,7 +7443,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -7454,7 +7451,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -7463,7 +7460,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -7473,7 +7470,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -7541,7 +7538,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -7550,7 +7547,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -7560,7 +7557,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -7605,7 +7602,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -7613,7 +7610,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -7622,7 +7619,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -7632,7 +7629,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -7643,7 +7640,7 @@
             </summary>
             <param name="command">DbCommand(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="first">是否返回第一条记录</param>
@@ -7710,14 +7707,14 @@
             获取记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -7725,7 +7722,7 @@
             获取记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -7734,7 +7731,7 @@
             获取记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -7774,14 +7771,14 @@
             获取记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -7789,7 +7786,7 @@
             获取记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -7798,7 +7795,7 @@
             获取记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -7866,7 +7863,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -7875,7 +7872,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -7885,7 +7882,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -7930,7 +7927,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -7938,7 +7935,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -7947,7 +7944,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -7957,7 +7954,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -8025,7 +8022,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -8034,7 +8031,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -8044,7 +8041,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -8089,7 +8086,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8097,7 +8094,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -8106,7 +8103,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -8116,7 +8113,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -8127,7 +8124,7 @@
             </summary>
             <param name="command">DbCommand(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="first">是否返回第一条记录</param>
@@ -8188,14 +8185,14 @@
             获取记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -8203,7 +8200,7 @@
             获取记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -8212,7 +8209,7 @@
             获取记录
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -8252,14 +8249,14 @@
             获取记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -8267,7 +8264,7 @@
             获取记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -8276,7 +8273,7 @@
             获取记录
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -8344,7 +8341,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -8353,7 +8350,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -8363,7 +8360,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -8408,7 +8405,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8416,7 +8413,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -8425,7 +8422,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -8435,7 +8432,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -8503,7 +8500,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -8512,7 +8509,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -8522,7 +8519,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -8567,7 +8564,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8575,7 +8572,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
@@ -8584,7 +8581,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
@@ -8594,7 +8591,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -8605,7 +8602,7 @@
             </summary>
             <param name="command">DbCommand(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="first">是否返回第一条记录</param>
@@ -8624,7 +8621,7 @@
             获取记录数
             </summary>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.RecordCount(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
@@ -8632,7 +8629,7 @@
             获取记录数
             </summary>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.RecordCount``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object)">
@@ -8641,7 +8638,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.RecordCount(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
@@ -8650,7 +8647,7 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.RecordCount``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object)">
@@ -8659,7 +8656,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.RecordCount(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
@@ -8668,7 +8665,7 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.RecordCount(System.Data.Common.DbCommand,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
@@ -8677,8 +8674,19 @@
             </summary>
             <param name="command">DbCommand(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <returns>记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.Equals(System.Object)">
+            <summary>
+            比较对象
+            </summary>
+            <param name="obj">对象</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.GetHashCode">
+            <summary>
+            取哈希值(注意字符串在32位和64位系统有不同的算法得到不同的结果) 
+            </summary>
         </member>
         <member name="T:Phenix.Core.Data.Schema.Standards">
             <summary>
@@ -8798,6 +8806,12 @@
             <summary>
             缺省"枚举/布尔"的 ColumnName
             默认：^*_FG$
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Schema.Standards.IsNullSign">
+            <summary>
+            is null 标识
+            默认：null
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Standards.IsDefaultKeyColumnName(System.String)">
@@ -8933,6 +8947,12 @@
             取参数名
             </summary>
             <param name="propertyName">类属性名</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Standards.GetMappingName(System.String)">
+            <summary>
+            取映射名
+            </summary>
+            <param name="binderName">类属性名/类字段名/参数名</param>
         </member>
         <member name="T:Phenix.Core.Data.Schema.Table">
             <summary>
@@ -9623,7 +9643,7 @@
             </summary>
             <param name="database">数据库入口</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -9646,7 +9666,7 @@
             </summary>
             <param name="database">数据库入口</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -9669,7 +9689,7 @@
             </summary>
             <param name="database">数据库入口</param>
             <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -9692,7 +9712,7 @@
             </summary>
             <param name="database">数据库入口</param>
             <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象</param>
+            <param name="criteria">条件对象/JSON格式属性值</param>
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
@@ -10180,6 +10200,11 @@
             工具集
             </summary>
         </member>
+        <member name="F:Phenix.Core.Reflection.Utilities.JsonDateFormatString">
+            <summary>
+            Json时间格式
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Reflection.Utilities.LoadAssembly(System.String,System.Boolean)">
             <summary>
             加载程序集
@@ -10501,6 +10526,14 @@
             <param name="instance">实例</param>
             <returns>序列化文本(JSON格式)</returns>
         </member>
+        <member name="M:Phenix.Core.Reflection.Utilities.JsonSerialize(System.Data.Common.DbDataReader,System.Boolean)">
+            <summary>
+            序列化(属性名为数据源的表/视图的字段名/别名)
+            </summary>
+            <param name="reader">DbDataReader</param>
+            <param name="first">是否返回第一条记录</param>
+            <returns>序列化文本(JSON格式)</returns>
+        </member>
         <member name="M:Phenix.Core.Reflection.Utilities.JsonDeserialize``1(System.String)">
             <summary>
             反序列化
@@ -10515,6 +10548,20 @@
             <param name="serializedText">序列化文本(JSON格式)</param>
             <param name="objectType">对象类型</param>
             <returns>对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Reflection.Utilities.JsonDeserialize(System.String)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="serializedText">序列化文本(JSON格式)</param>
+            <returns>对象PropertyName-Value字典</returns>
+        </member>
+        <member name="M:Phenix.Core.Reflection.Utilities.JsonDeserializeList(System.String)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="serializedText">序列化文本(JSON格式)</param>
+            <returns>对象PropertyName-Value字典List</returns>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.IsZero(System.String)">
             <summary>

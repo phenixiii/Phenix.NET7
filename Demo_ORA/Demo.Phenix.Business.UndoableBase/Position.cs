@@ -13,6 +13,9 @@ namespace Demo
     [Serializable]
     public sealed class Position : BusinessBase<Position>
     {
+        /// <summary>
+        /// for CreateInstance
+        /// </summary>
         private Position()
         {
             //禁止添加代码

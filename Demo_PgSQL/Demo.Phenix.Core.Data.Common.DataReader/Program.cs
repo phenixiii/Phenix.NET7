@@ -31,7 +31,7 @@ namespace Demo
             View view;
             while (true)
             {
-                MetaData metaData = Database.Default.FetchMetaData(-1); //负数为即刻重置, 一般情况下用Database.Default.MetaData属性就能满足需要
+                MetaData metaData = Database.Default.MetaData;
                 if (metaData.Views.Count > 0)
                 {
                     List<View> views = new List<View>(metaData.Views.Values);
@@ -42,6 +42,7 @@ namespace Demo
                 Console.WriteLine("数据库中还未有视图，请新建一个用于演示!");
                 Console.Write("如已准备好，请按任意键继续");
                 Console.ReadKey();
+                Database.Default.ResetMetaData();
             }
             Console.WriteLine();
 
