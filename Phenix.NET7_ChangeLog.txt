@@ -6,7 +6,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 
 20190522
-1，发布轻量级的持久化引擎，支持Oracle、MySQL，封装ADO.NET，可同时操作多个（主库+分库）数据库
+1，发布轻量级的持久化引擎，支持Oracle、MySQL（202005可支持PostgreSQL），封装ADO.NET，可同时操作多个（主库+分库）数据库
 2，提供数据库的数据字典的查看方法，示例见Demo.Phenix.Core.Data.Schema
 3，提供存放日志到本地或数据库的通用方法，示例见Demo.Phenix.Core.Log.EventLog
 4，提供系统唯一的序列号，支持多线程、多进程、分布式应用，示例见Demo.Phenix.Core.Data.Sequence
@@ -19,7 +19,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
       以下默认规范会自动添加，不必手工打标签：
           System.ComponentModel.DataAnnotations.RequiredAttribute，如果属性值不允许为空的规范是按照表字段NOT NULL的话；
           System.ComponentModel.DataAnnotations.StringLengthAttribute，如果字符串属性值长度要求是按照表字段长度规范的话；
-     一旦手工打上标签，可覆盖它们
+     一旦手工打上标签，以上默认规范会被覆盖掉
 2，持久化引擎支持在实体上实现System.ComponentModel.DataAnnotations.IValidatableObject接口，也可以实现Phenix.Core.Data.Validity.IValidation接口，提交对象时自动完成对象的有效性验证（验证失败抛出ValidationException）
 3，提供实体类代码生成工具Phenix.Tools.EntityBuilder工程源码
 
@@ -37,7 +37,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 20190813
 1，Phenix.Core.Data.Database和Phenix.Core.Data.Common.DbCommandHelper的调用存储过程函数ExecuteStoredProc，返回值改为IDictionary<string, object>类型，为存储过程的调用结果集"参数名-参数值"，如需转换为JSON格式请调用Phenix.Core.Reflection.Utilities.JsonSerialize(result)
 2，增补Phenix.Core.Data.Schema.Table、Phenix.Core.Data.Schema.View、Phenix.Core.Data.Model.EntityBase<T>的查询函数，可读取DataReader内容返回实体对象或JSON格式的查询结果
-3，增补Phenix.Core.Data.Common.DataReader的SelectRecord()函数，直接导出JSON格式的查询结果，JSON格式的属性名为数据源的表/视图的字段名/别名
+3，增补Phenix.Core.Reflection.Utilities的JsonSerialize()函数，直接将DbDataReader导出JSON格式的查询结果，JSON格式的属性名为数据源的表/视图的字段名/别名
 
 
 20190905
@@ -197,6 +197,11 @@ Copyright © 2007, 2020 Phenixヾ Studio
 20200613
 1，修复身份验证失败（比如登录口令输错）时浏览器F12提示"Origin null is not allowed by Access-Control-Allow-Origin"的问题
 2，修订《Phenix.Core.Data.持久层开发接口.doc》，补充条件对象的使用方法
+
+
+20200624
+1，添加Demo.IDOS智能仓储作业系统演练项目到Demo_Practice目录
+2，修订《Phenix.Core.Data.持久层开发接口.doc》，补充Phenix.Core.Data.Database的功能介绍
 
 
 

@@ -299,6 +299,42 @@
             <param name="needSaveLog">是否保存日志</param>
             <param name="paramValues">参数值</param>
         </member>
+        <member name="M:Phenix.Core.Data.Common.DataReader.#ctor(Phenix.Core.Data.Database,System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            初始化
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="sql">SQL 语句</param>
+            <param name="paramValues">参数值</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.DataReader.#ctor(Phenix.Core.Data.Database,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            初始化
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="sql">SQL 语句</param>
+            <param name="needSaveLog">是否保存日志</param>
+            <param name="paramValues">参数值</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.DataReader.#ctor(Phenix.Core.Data.Database,System.String,System.Data.CommandBehavior,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            初始化
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="sql">SQL 语句</param>
+            <param name="behavior">CommandBehavior</param>
+            <param name="paramValues">参数值</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.DataReader.#ctor(Phenix.Core.Data.Database,System.String,System.Data.CommandBehavior,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            初始化
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="sql">SQL 语句</param>
+            <param name="behavior">CommandBehavior</param>
+            <param name="needSaveLog">是否保存日志</param>
+            <param name="paramValues">参数值</param>
+        </member>
         <member name="P:Phenix.Core.Data.Common.DataReader.Database">
             <summary>
             数据库入口
@@ -2547,6 +2583,26 @@
         <member name="M:Phenix.Core.Data.Database.CreateDataReader(System.String,System.Data.CommandBehavior,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             构建 DataReader
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.ReadJsonData(System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            读取JSON格式数据(属性名为数据源的表/视图的字段名/别名)
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.ReadJsonData(System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            读取JSON格式数据(属性名为数据源的表/视图的字段名/别名)
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.ReadJsonData(System.String,System.Data.CommandBehavior,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            读取JSON格式数据(属性名为数据源的表/视图的字段名/别名)
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.ReadJsonData(System.String,System.Data.CommandBehavior,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            读取JSON格式数据(属性名为数据源的表/视图的字段名/别名)
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Database.FillDataSet(System.String,Phenix.Core.Data.Common.ParamValue[])">
@@ -4855,11 +4911,12 @@
             <param name="entityType">实体类</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Column.IsMatch(System.String)">
+        <member name="M:Phenix.Core.Data.Schema.Column.IsMatch(System.String,System.StringComparison)">
             <summary>
-            是否匹配(比对分隔符之前字符串)
+            是否匹配(剔除后缀比对)
             </summary>
             <param name="binderName">类属性名/类字段名/参数名</param>
+            <param name="comparisonType">比对方法</param>
         </member>
         <member name="T:Phenix.Core.Data.Schema.EnumCaptionAttribute">
             <summary>
@@ -8948,9 +9005,9 @@
             </summary>
             <param name="propertyName">类属性名</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Standards.GetMappingName(System.String)">
+        <member name="M:Phenix.Core.Data.Schema.Standards.GetStandardPropertyName(System.String)">
             <summary>
-            取映射名
+            取标准属性名(剔除后缀)
             </summary>
             <param name="binderName">类属性名/类字段名/参数名</param>
         </member>
@@ -10526,11 +10583,11 @@
             <param name="instance">实例</param>
             <returns>序列化文本(JSON格式)</returns>
         </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.JsonSerialize(System.Data.Common.DbDataReader,System.Boolean)">
+        <member name="M:Phenix.Core.Reflection.Utilities.JsonSerialize(System.Data.IDataReader,System.Boolean)">
             <summary>
             序列化(属性名为数据源的表/视图的字段名/别名)
             </summary>
-            <param name="reader">DbDataReader</param>
+            <param name="reader">IDataReader</param>
             <param name="first">是否返回第一条记录</param>
             <returns>序列化文本(JSON格式)</returns>
         </member>
