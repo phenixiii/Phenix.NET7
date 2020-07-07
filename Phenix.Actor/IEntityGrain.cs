@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Phenix.Core.Data.Model;
 using Phenix.Core.Data.Schema;
 
 namespace Phenix.Actor
@@ -7,6 +8,7 @@ namespace Phenix.Actor
     /// 实体Grain接口
     /// </summary>
     public interface IEntityGrain<TKernel>
+        where TKernel : EntityBase<TKernel>
     {
         #region 方法
 
@@ -23,7 +25,7 @@ namespace Phenix.Actor
         Task<TKernel> FetchKernel();
 
         /// <summary>
-        /// 更新根实体对象
+        /// 更新根实体对象(如不存在则新增)
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <returns>更新记录数</returns>

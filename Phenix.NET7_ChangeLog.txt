@@ -59,14 +59,9 @@ Copyright © 2007, 2020 Phenixヾ Studio
 3，提供用户消息PULL和PUSH两套方法，具体见测试网页user-message.html
 
 
-20191011
+20191013
 1，升级至for .net core3.0，开发工具 Visual Studio 2019 16.3.x及以上版本
 2，提供服务接口IFileService以扩展系统自身的个性化的文件上传下载功能，框架代码见Phenix.Services.Extend工程里的FileService类，注入方法见Phenix.Services.Host工程Startup类里的AddFileService()代码行，用法见测试网页file.html
-
-
-20191013
-1，修订《Phenix.Services.Host.部署方法.doc》
-2，调通Phenix.Services.Host部署在Docker的方法
 
 
 20191021
@@ -92,36 +87,21 @@ Copyright © 2007, 2020 Phenixヾ Studio
          Phenix.Core.Security.Identity.RegisterFactory(new Phenix.Services.Plugin.UserProxyFactory());
 
 
-20191216
-1，升级至for .net core3.1 + SignalR3.1 + Orleans3.1
-2，调通Phenix.Services.Host\wwwroot\test目录的测试网页
-
-
 20191227
 1，提供《Phenix.Services.Host.分布式服务架构.pptx》，讲解WebAPI（应用）服务和Orleans（领域）服务的搭建和部署方法
 2，提供Phenix.Core.AppSettings应用系统配置工具，配置项定义方法参考Phenix.Services.Host的OrleansConfig类，系统实施时可直接在Phenix.Core.db库文件PH7_AppSettings表里做配置
 
 
 20200107
-1，微调Phenix.Actor工程的功能
-2，添加Demo_Practice目录，用于存放实战演练项目的代码
-3，添加Demo.InventoryControl库存管控演练项目到Demo_Practice目录
-4，InventoryControl演练第一步，完成货架装卸货物的记录功能，见Demo.InventoryControl.Plugin_MySQL工程
-
-
-20200113
-1，提供Phenix.Algorithm工程源码，含ZeroOneKnapsackProblem类的0-1背包算法，用法见Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem工程
-2，完善Phenix.Core.AppSettings类的功能
-
-
-20200116
-1，丰富Phenix.Algorithm工程ZeroOneKnapsackProblem类的功能，添加"打包至少占有一定容量"、"打包至少占有一定容量且不低于一定价值"、"趋向最小规格且不考虑打包价值/只要满足最低打包价值"等约束条件
-2，丰富Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem工程的演示代码
+1，添加Demo_Practice目录，用于存放实战演练项目的代码
+2，添加Demo.InventoryControl库存管控演练项目到Demo_Practice目录
+3，InventoryControl演练第一步，完成货架装卸货物的记录功能，见Demo.InventoryControl.Plugin_MySQL工程
 
 
 20200205
-1，为Phenix.Algorithm工程添加BunchKnapsackProblem类，从M支集束的N个物品中挑选出一个尽可能整支和价值高的子集使其装满容量为W且允许有一定超载范围的背包
-2，InventoryControl演练第二步，完成从Area-Alley-Location逐层自动挑货的标记功能，见Demo.InventoryControl.Plugin_MySQL工程
+1，提供Phenix.Algorithm工程源码，含ZeroOneKnapsackProblem类的0-1背包算法，支持"打包至少占有一定容量"、"打包至少占有一定容量且不低于一定价值"、"趋向最小规格且不考虑打包价值/只要满足最低打包价值"等约束条件，用法见Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem工程
+2，为Phenix.Algorithm工程添加BunchKnapsackProblem类，从M支集束的N个物品中挑选出一个尽可能整支和价值高的子集使其装满容量为W且允许有一定超载范围的背包
+3，InventoryControl演练第二步，完成从Area-Alley-Location逐层自动挑货的标记功能，见Demo.InventoryControl.Plugin_MySQL工程
 
 
 20200213
@@ -139,8 +119,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 20200220
 1，修订《Phenix.Services.Host.部署方法.doc》，补充'开发环境的搭建'等章节
-2，补充和修订Demo.InspectionStation和Demo.InventoryControl的设计文档
-3，提供《Phenix.Services.Host.分布式服务插件.pptx》，讲解WebAPI（应用）服务和Orleans（领域）服务的设计和开发方法
+2，提供《Phenix.Services.Host.分布式服务插件.pptx》，讲解WebAPI（应用）服务和Orleans（领域）服务的设计和开发方法
 
 
 20200224
@@ -149,30 +128,25 @@ Copyright © 2007, 2020 Phenixヾ Studio
 3，重构Phenix.Actor工程，精简EntityGrainProxyBase仅限于实体Grain的代理功能
 
 
-20200303
-1，梳理Phenix.Core持久化引擎
-2，提供《Phenix.Core.Data.持久层开发接口.doc》，讲解Phenix.Core持久化引擎的数据库集群、主库+分库、分库分表策略、使用接口和持久层开发方法
-
-
 20200315
-1，为Phenix.Services.Host工程添加Dashboard插件，可在浏览器上打开可视化Silo监控工具：http://localhost:8080/
-2，完善Phenix.Core.AppSettings功能，类似Phenix.Core.Data.Database.Fetch()函数会自动加密Phenix.Core.db库文件PH7_Database表Password字段值，ReadValue()函数也会加密PH7_AppSettings表Value字段值
-3，为Phenix.Core工程添加Plugin功能（命名空间为Phenix.Core.Plugin），用于动态加载和管理包含有实现了IPlugin接口的插件类的程序集
-2，修订Phenix.Tools.EntityBuilder、Phenix.Tools.BusinessBuilder代码生成问题，增补'protected override void InitializeSelf()'函数代码生成功能，用于填充表字段默认值
+1，提供《Phenix.Core.Data.持久层开发接口.doc》，讲解Phenix.Core持久化引擎的数据库集群、主库+分库、分库分表策略、使用接口和持久层开发方法
+2，为Phenix.Services.Host工程添加Dashboard插件，可在浏览器上打开可视化Silo监控工具：http://localhost:8080/
+3，完善Phenix.Core.AppSettings功能，类似Phenix.Core.Data.Database.Fetch()函数会自动加密Phenix.Core.db库文件PH7_Database表Password字段值，ReadValue()函数也会加密PH7_AppSettings表Value字段值
+4，为Phenix.Core工程添加Plugin功能（命名空间为Phenix.Core.Plugin），用于动态加载和管理包含有实现了IPlugin接口的插件类的程序集
 
 
 20200408
 1，修订《Phenix.Services.Host.部署方法.doc》的"服务组件的开发和部署"章节
 2，添加《Phenix.Core.Data.持久层开发接口.doc》的"用DataReader获取实体对象/JSON的Sheet方法"章节
-3，修订Phenix.Core.Log.EventLog功能，可防止连续写同一message造成本地日志瞬时暴涨的问题，中断重复日志强度阈值由静态属性BreakRepeatIntensityPerMinute控制，缺省为重复日志超过每分钟6000次
-4，修订用户身份验证功能，可防止同一用户高频访问服务，中断服务请求强度阈值由Phenix.Core.Security.User的BreakRequestIntensityPerMinute静态属性控制，缺省为服务请求超过每分钟6000次
+3，完善Phenix.Core.Log.EventLog功能，可防止连续写同一message造成本地日志瞬时暴涨的问题，中断重复日志强度阈值由静态属性BreakRepeatIntensityPerMinute控制，缺省为重复日志超过每分钟6000次
+4，完善用户身份验证功能，可防止同一用户高频访问服务，中断服务请求强度阈值由Phenix.Core.Security.User的BreakRequestIntensityPerMinute静态属性控制，缺省为服务请求超过每分钟6000次
 5，为Phenix.Actor工程添加TreeEntityGrainBase、StreamTreeEntityGrainBase、TreeEntityGrainProxyBase类，以支持树状结构Kernel的处理
 6，丰富Phenix.Services.Plugin工程功能，注册用户可搭建起组织架构成为公司管理员，示例见Demo.Phenix.Client.Security.Identity_MyselfRootTeams
 
 
 20200510
 1，丰富Phenix.Algorithm工程ZeroOneKnapsackProblem、BunchKnapsackProblem的功能，可支持超大规格（容量）背包的运算
-2，持久化引擎支持PostgreSQL，解决方案Phenix.NET7_PgSQL.sln，程序集输出目录Bin_PgSQL，配置库Phenix.Core.db已升级
+2，持久化引擎支持PostgreSQL，解决方案Phenix.NET7_PgSQL.sln，程序集输出目录Bin_PgSQL，配置库Phenix.Core.db需升级至最新版
 
 
 20200516
@@ -183,7 +157,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 
 20200523
-1，修复系统管理员（用户名ADMIN，默认密码ADMIN）第一次无法登录注册的问题，并可增删改系统的岗位定义
+1，修正系统管理员（用户名ADMIN，默认密码ADMIN）第一次无法登录注册的问题，并可增删改系统的岗位定义
 2，提供Phenix.Core.Data.Rule.ValidationException数据验证异常类，用于将其ValidationMessage属性抛到客户端，客户端利用ValidationMessage属性的MessageType、StatusCode（取100以上的整型值）分类处理异常消息ErrorMessage
 3，增补Phenix.Core.Net.Api.ControllerBase的SelectRecord()函数，直接打包到分页查询结果DataPageInfo对象，DataPageInfo的DataName为实体类名，DataSize为数据量，PageNo为页码，PageSize为分页大小，PageBody为当前页JSON格式的记录数据
 
@@ -195,13 +169,14 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 
 20200613
-1，修复身份验证失败（比如登录口令输错）时浏览器F12提示"Origin null is not allowed by Access-Control-Allow-Origin"的问题
+1，修正身份验证失败（比如登录口令输错）时浏览器F12提示"Origin null is not allowed by Access-Control-Allow-Origin"的问题
 2，修订《Phenix.Core.Data.持久层开发接口.doc》，补充条件对象的使用方法
 
 
 20200624
-1，添加Demo.IDOS智能仓储作业系统演练项目到Demo_Practice目录
-2，修订《Phenix.Core.Data.持久层开发接口.doc》，补充Phenix.Core.Data.Database的功能介绍
+1，修订《Phenix.Core.Data.持久层开发接口.doc》，补充Phenix.Core.Data.Database的功能介绍
+2，添加Demo.IDOS智能仓储作业系统演练项目到Demo_Practice目录，仅限于Phenix.NET7_PgSQL解决方案可见
+3，修正Phenix.Tools.EntityBuilder、Phenix.Tools.BusinessBuilder代码生成填充表字段默认值时无法转换bool类型的问题
 
 
 

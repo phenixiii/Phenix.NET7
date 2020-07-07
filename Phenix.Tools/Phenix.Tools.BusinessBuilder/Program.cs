@@ -5,6 +5,7 @@ using System.Text;
 using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Schema;
+using Phenix.Core.Reflection;
 
 namespace Phenix.Tools.BusinessBuilder
 {
@@ -100,7 +101,6 @@ namespace Phenix.Tools.BusinessBuilder
 
             StringBuilder codeBuilder = new StringBuilder("using System;");
             codeBuilder.Append(String.Format(@"
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Phenix.Business;
@@ -132,7 +132,7 @@ namespace {3}
             ",
                 Environment.UserName, DateTime.Now, sheet.Name, sheet.Owner.Database.DatabaseName, sheet.Description, sheet.ClassName));
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
-                codeBuilder.Append(String.Format("{0} {1}, ", kvp.Value.FieldTypeName, kvp.Value.ParameterName));
+                codeBuilder.Append(String.Format("{0} {1}, ", kvp.Value.MappingTypeName, kvp.Value.ParameterName));
             codeBuilder[codeBuilder.Length - 2] = ')';
             codeBuilder.Append(@"
         : base(isNew, isSelfDeleted, isSelfDirty, oldPropertyValues, dirtyPropertyNames)
@@ -148,10 +148,10 @@ namespace {3}
         {");
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
                 if (!String.IsNullOrEmpty(kvp.Value.DataDefault) &&
-                    kvp.Value.TableColumn != null && kvp.Value.Owner.PrimaryKeyColumn != null && kvp.Value.TableColumn.Owner == kvp.Value.Owner.PrimaryKeyColumn.TableColumn.Owner)
+                    kvp.Value.TableColumn != null && kvp.Value.Owner.PrimaryKeyColumn != null && object.Equals(kvp.Value.TableColumn.Owner, kvp.Value.Owner.PrimaryKeyColumn.TableColumn.Owner))
                     codeBuilder.Append(String.Format(@"
             {0} = {1}{2}{1};",
-                        kvp.Value.FieldName, kvp.Value.FieldTypeName == "string" ? "\"" : null, kvp.Value.DataDefault));
+                        kvp.Value.FieldName, kvp.Value.MappingType == typeof(string) ? "\"" : null, Utilities.ChangeType(Utilities.ChangeType(kvp.Value.DataDefault, kvp.Value.MappingType), typeof(string))));
             codeBuilder.Append(@"
         }
 ");
@@ -173,7 +173,7 @@ namespace {3}
             set {{ {1} = value; }}
         }}
 ",
-                    kvp.Value.FieldTypeName, kvp.Value.FieldName, kvp.Value.Description, kvp.Value.PropertyName));
+                    kvp.Value.MappingTypeName, kvp.Value.FieldName, kvp.Value.Description, kvp.Value.PropertyName));
             }
 
             codeBuilder.Append(@"

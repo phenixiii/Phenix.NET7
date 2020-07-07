@@ -23,7 +23,7 @@
         </member>
         <member name="M:Phenix.Core.Actor.IEntityGrainProxy`1.PatchKernel(Phenix.Core.Data.Schema.NameValue[])">
             <summary>
-            更新根实体对象
+            更新根实体对象(如不存在则新增)
             </summary>
             <param name="propertyValues">待更新属性值队列</param>
             <returns>是否成功</returns>
@@ -4525,6 +4525,52 @@
             序列化
             </summary>
         </member>
+        <member name="T:Phenix.Core.Data.Rule.DivisibleAttribute">
+            <summary>
+            可整除某数
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.DivisibleAttribute.#ctor(System.Int32)">
+            <summary>
+            可整除某数
+            </summary>
+            <param name="into">某数</param>
+        </member>
+        <member name="P:Phenix.Core.Data.Rule.DivisibleAttribute.Into">
+            <summary>
+            某数
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.DivisibleAttribute.IsValid(System.Object)">
+            <summary>
+            检查有效性
+            </summary>
+            <param name="value">值</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="T:Phenix.Core.Data.Rule.DivisibleByAttribute">
+            <summary>
+            能被某数整除
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.DivisibleByAttribute.#ctor(System.Int32)">
+            <summary>
+            能被某数整除
+            </summary>
+            <param name="by">某数</param>
+        </member>
+        <member name="P:Phenix.Core.Data.Rule.DivisibleByAttribute.By">
+            <summary>
+            某数
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Rule.DivisibleByAttribute.IsValid(System.Object)">
+            <summary>
+            检查有效性
+            </summary>
+            <param name="value">值</param>
+            <returns>是否成功</returns>
+        </member>
         <member name="T:Phenix.Core.Data.Rule.IValidation">
             <summary>
             验证接口
@@ -4798,9 +4844,14 @@
             不存在则返回 String.Empty
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Schema.Column.FieldTypeName">
+        <member name="P:Phenix.Core.Data.Schema.Column.MappingType">
             <summary>
-            FieldTypeName
+            映射类型
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Schema.Column.MappingTypeName">
+            <summary>
+            映射类型名
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Schema.Column.IsUnicode">
@@ -5524,6 +5575,7 @@
             <param name="entity">实体</param>
             <param name="valueLambda">值 lambda 表达式</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到Set函数时引发 InvalidOperationException; 如果为 false, 则在找不到Set函数时返回 false</param>
+            <returns>是否成功</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Property.Set``1(``0,System.Object,System.Boolean)">
             <summary>
@@ -5532,6 +5584,7 @@
             <param name="entity">实体</param>
             <param name="value">值/OperationExpression</param>
             <param name="throwIfNotFound">如果为 true, 则会在找不到Set函数时引发 InvalidOperationException; 如果为 false, 则在找不到Set函数时返回 false</param>
+            <returns>是否成功</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Property.Validate(System.Object)">
             <summary>
@@ -8974,7 +9027,7 @@
             <summary>
             整理字段名
             如果第prefixCount位后是"_"则剔去其及之前的字符
-            剔除DefaultWatermarkColumnName、DefaultEnumColumnName后缀
+            剔除DefaultRouteColumnName、DefaultWatermarkColumnName、DefaultEnumColumnName后缀
             </summary>
             <param name="columnName">字段名</param>
             <param name="prefixCount">前缀字符数</param>
@@ -9630,6 +9683,11 @@
             /api/security/position
             </summary>
         </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityRolePath">
+            <summary>
+            /api/security/role
+            </summary>
+        </member>
         <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityOneOffKeyPairPath">
             <summary>
             /api/security/one-off-key-pair
@@ -9915,6 +9973,18 @@
             <param name="identity">用户身份</param>
             <param name="context">HttpContext</param>
         </member>
+        <member name="T:Phenix.Core.Net.Filters.CompanyAdminFilterAttribute">
+            <summary>
+            公司管理员过滤器
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Filters.CompanyAdminFilterAttribute.CheckValidity(Phenix.Core.Security.Identity,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            检查有效性
+            </summary>
+            <param name="identity">用户身份</param>
+            <param name="context">HttpContext</param>
+        </member>
         <member name="T:Phenix.Core.Net.Filters.ControllerRole">
             <summary>
             控制器的授权角色
@@ -9972,6 +10042,18 @@
             </summary>
         </member>
         <member name="M:Phenix.Core.Net.Filters.ControllerRole.CheckValidity(Phenix.Core.Security.Identity,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            检查有效性
+            </summary>
+            <param name="identity">用户身份</param>
+            <param name="context">HttpContext</param>
+        </member>
+        <member name="T:Phenix.Core.Net.Filters.SystemAdminFilterAttribute">
+            <summary>
+            系统管理员过滤器
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Filters.SystemAdminFilterAttribute.CheckValidity(Phenix.Core.Security.Identity,Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
             检查有效性
             </summary>

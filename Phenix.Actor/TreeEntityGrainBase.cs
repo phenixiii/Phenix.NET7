@@ -29,13 +29,18 @@ namespace Phenix.Actor
 
         #region 方法
 
-        Task<int> IEntityGrain<TKernel>.PatchKernel(params NameValue[] propertyValues)
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        /// <returns>更新记录数</returns>
+        protected override int PatchKernel(params NameValue[] propertyValues)
         {
-            return Task.FromResult(Kernel != null
+            return Kernel != null
                 ? Kernel.UpdateSelf(propertyValues)
                 : this is IGrainWithIntegerKey
                     ? TreeEntityBase<TKernel>.NewRoot(Database, Id, propertyValues).InsertSelf()
-                    : TreeEntityBase<TKernel>.NewRoot(Database, propertyValues).InsertSelf());
+                    : TreeEntityBase<TKernel>.NewRoot(Database, propertyValues).InsertSelf();
         }
 
         private TKernel GetNode(long id, bool throwIfNotFound = true)
@@ -52,31 +57,85 @@ namespace Phenix.Actor
             return null;
         }
 
+        /// <summary>
+        /// 是否存在节点
+        /// </summary>
+        /// <param name="id">节点ID</param>
+        /// <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+        /// <returns>是否存在节点</returns>
+        protected virtual bool HaveNode(long id, bool throwIfNotFound)
+        {
+            return GetNode(id, throwIfNotFound) != null;
+        }
+
         Task<bool> ITreeEntityGrain<TKernel>.HaveNode(long id, bool throwIfNotFound)
         {
-            return Task.FromResult(GetNode(id, throwIfNotFound) != null);
+            return Task.FromResult(HaveNode(id, throwIfNotFound));
+        }
+
+        /// <summary>
+        /// 添加子节点
+        /// </summary>
+        /// <param name="parentId">父节点ID</param>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        /// <returns>子节点ID</returns>
+        protected virtual long AddChildNode(long parentId, params NameValue[] propertyValues)
+        {
+            long result = Database.Sequence.Value;
+            GetNode(parentId).AddChild(() => TreeEntityBase<TKernel>.New(Database, result, propertyValues));
+            return result;
         }
 
         Task<long> ITreeEntityGrain<TKernel>.AddChildNode(long parentId, params NameValue[] propertyValues)
         {
-            long result = Database.Sequence.Value;
-            GetNode(parentId).AddChild(() => TreeEntityBase<TKernel>.New(Database, result, propertyValues));
-            return Task.FromResult(result);
+            return Task.FromResult(AddChildNode(parentId, propertyValues));
+        }
+
+        /// <summary>
+        /// 更改父节点
+        /// </summary>
+        /// <param name="id">节点ID</param>
+        /// <param name="parentId">父节点ID</param>
+        /// <returns>更新记录数</returns>
+        protected virtual int ChangeParentNode(long id, long parentId)
+        {
+            return GetNode(id).ChangeParent(GetNode(parentId));
         }
 
         Task<int> ITreeEntityGrain<TKernel>.ChangeParentNode(long id, long parentId)
         {
-            return Task.FromResult(GetNode(id).ChangeParent(GetNode(parentId)));
+            return Task.FromResult(ChangeParentNode(id, parentId));
+        }
+
+        /// <summary>
+        /// 更新节点
+        /// </summary>
+        /// <param name="id">节点ID</param>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        /// <returns>更新记录数</returns>
+        protected virtual int UpdateNode(long id, params NameValue[] propertyValues)
+        {
+            return GetNode(id).UpdateSelf(propertyValues);
         }
 
         Task<int> ITreeEntityGrain<TKernel>.UpdateNode(long id, params NameValue[] propertyValues)
         {
-            return Task.FromResult(GetNode(id).UpdateSelf(propertyValues));
+            return Task.FromResult(UpdateNode(id, propertyValues));
+        }
+
+        /// <summary>
+        /// 删除节点枝杈
+        /// </summary>
+        /// <param name="id">节点ID</param>
+        /// <returns>更新记录数</returns>
+        protected virtual int DeleteBranch(long id)
+        {
+            return GetNode(id).DeleteBranch();
         }
 
         Task<int> ITreeEntityGrain<TKernel>.DeleteBranch(long id)
         {
-            return Task.FromResult(GetNode(id).DeleteBranch());
+            return Task.FromResult(DeleteBranch(id));
         }
 
         #endregion

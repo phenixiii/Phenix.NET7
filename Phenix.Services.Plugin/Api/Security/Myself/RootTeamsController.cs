@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
+using Phenix.Core.Net.Filters;
 using Phenix.Core.Security;
 using Phenix.Services.Plugin.Actor;
 

@@ -89,7 +89,7 @@ namespace Phenix.Actor
         }
 
         /// <summary>
-        /// 更新根实体对象
+        /// 更新根实体对象(如不存在则新增)
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <returns>是否成功</returns>

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Schema;
+using Phenix.Core.Net.Filters;
 using Phenix.Services.Plugin.Actor;
 
 namespace Phenix.Services.Plugin.Api.Security
@@ -40,7 +41,7 @@ namespace Phenix.Services.Plugin.Api.Security
         }
 
         /// <summary>
-        /// 更新岗位资料
+        /// 更新岗位资料(如不存在则新增)
         /// </summary>
         /// <param name="id">ID</param>
         /// <returns>更新记录数</returns>

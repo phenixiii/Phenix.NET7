@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Data.Schema;
+using Phenix.Core.Net.Filters;
 using Phenix.Services.Plugin.Actor;
 
 namespace Phenix.Services.Plugin.Api.Security.Myself

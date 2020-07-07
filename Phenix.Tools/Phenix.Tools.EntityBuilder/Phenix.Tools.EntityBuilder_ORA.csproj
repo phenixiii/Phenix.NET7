@@ -5,9 +5,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Phenix.Tools.EntityBuilder</AssemblyName>
     <RootNamespace>Phenix.Tools.EntityBuilder</RootNamespace>
-    <Version>7.3.28</Version>
-    <AssemblyVersion>7.3.28.0402</AssemblyVersion>
-    <FileVersion>7.3.28.0402</FileVersion>
+    <Version>7.3.35</Version>
+    <AssemblyVersion>7.3.35.0624</AssemblyVersion>
+    <FileVersion>7.3.35.0624</FileVersion>
     <Authors>ming</Authors>
     <Description>Phenix Framework 7 for .NET Core 3 + Orleans 3</Description>
     <Copyright>Copyright © 2007, 2020 Phenixヾ Studio</Copyright>
@@ -24,7 +24,7 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.70" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.112.2" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.1" />
   </ItemGroup>
 
   <ItemGroup>

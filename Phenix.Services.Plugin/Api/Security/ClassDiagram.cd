@@ -28,5 +28,12 @@
       <FileName>Api\Security\OneOffKeyPairController.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Phenix.Services.Plugin.Api.Security.RoleController">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Api\Security\RoleController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Microsoft YaHei UI" Size="9" />
 </ClassDiagram>

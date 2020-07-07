@@ -6,6 +6,15 @@ using Phenix.Core.Data.Model;
 
 namespace Phenix.Actor
 {
+
+    /// <summary>
+    /// 数据流树实体Grain基类
+    /// </summary>
+    public abstract class StreamTreeEntityGrainBase<TKernel> : StreamTreeEntityGrainBase<TKernel, TKernel>
+        where TKernel : TreeEntityBase<TKernel>
+    {
+    }
+
     /// <summary>
     /// 数据流树实体Grain基类
     /// </summary>

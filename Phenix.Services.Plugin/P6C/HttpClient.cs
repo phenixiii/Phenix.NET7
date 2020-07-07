@@ -82,7 +82,7 @@ namespace Phenix.Services.Plugin.P6C
 
         #endregion
 
-        private const string SECURITY_URI = "/api/Security";
+        private const string SecurityUri = "/api/Security";
 
         #endregion
 
@@ -100,7 +100,7 @@ namespace Phenix.Services.Plugin.P6C
         /// <returns>提示信息</returns>
         public async Task<string> LogonAsync(string userName, string timestamp, string signature, string tag)
         {
-            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, SECURITY_URI))
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, SecurityUri))
             {
                 request.Headers.Add(NetConfig.AuthorizationHeaderName, String.Format("{0},{1},{2}", Uri.EscapeDataString(userName), timestamp, signature));
                 request.Content = new StringContent(tag, Encoding.UTF8);

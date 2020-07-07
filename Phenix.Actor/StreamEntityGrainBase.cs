@@ -9,6 +9,14 @@ namespace Phenix.Actor
     /// <summary>
     /// 数据流实体Grain基类
     /// </summary>
+    public abstract class StreamEntityGrainBase<TKernel> : StreamEntityGrainBase<TKernel, TKernel>
+        where TKernel : EntityBase<TKernel>
+    {
+    }
+
+    /// <summary>
+    /// 数据流实体Grain基类
+    /// </summary>
     public abstract class StreamEntityGrainBase<TKernel, TEvent> : EntityGrainBase<TKernel>
         where TKernel : EntityBase<TKernel>
     {

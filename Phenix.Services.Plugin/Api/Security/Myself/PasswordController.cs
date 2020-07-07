@@ -7,7 +7,7 @@ using Phenix.Services.Plugin.Actor;
 namespace Phenix.Services.Plugin.Api.Security.Myself
 {
     /// <summary>
-    /// 用户密码控制器
+    /// 登录口令控制器
     /// </summary>
     [Route(Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfPasswordPath)]
     [ApiController]

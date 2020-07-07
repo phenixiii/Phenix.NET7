@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Phenix.Core.Data.Model;
 using Phenix.Core.Data.Schema;
 
 namespace Phenix.Actor
@@ -7,6 +8,7 @@ namespace Phenix.Actor
     /// 树实体Grain接口
     /// </summary>
     public interface ITreeEntityGrain<TKernel> : IEntityGrain<TKernel>
+        where TKernel : EntityBase<TKernel>
     {
         #region 方法
 
