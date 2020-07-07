@@ -179,6 +179,11 @@ Copyright © 2007, 2020 Phenixヾ Studio
 3，修正Phenix.Tools.EntityBuilder、Phenix.Tools.BusinessBuilder代码生成填充表字段默认值时无法转换bool类型的问题
 
 
+20200707
+1，持久化引擎支持SQL Server，解决方案Phenix.NET7_MsSQL.sln，程序集输出目录Bin_MsSQL，配置库Phenix.Core.db需升级至最新版
+2，为Demo.IDOS添加功能
+
+
 
 待开发：
 2，添加《Phenix.Core.Security.身份验证方法.doc》
