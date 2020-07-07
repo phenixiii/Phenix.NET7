@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using Phenix.Client.Security;
 using Phenix.Client.Security.Myself;
-using Phenix.Core.Reflection;
 
 namespace Demo
 {

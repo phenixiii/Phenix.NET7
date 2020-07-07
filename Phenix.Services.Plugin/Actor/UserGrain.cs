@@ -141,34 +141,30 @@ namespace Phenix.Services.Plugin.Actor
 
         async Task<bool> IUserGrain.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, bool throwIfNotConform)
         {
-            bool result;
+            bool result = false;
 
             if (Kernel == null)
-            {
                 if (User.IsReservedUserName(Name))
+                    Register(null, null, Name, requestAddress);
+                else
+                    result = await ThirdPartyLogonAsync(timestamp, signature, tag, requestAddress, new UserNotFoundException());
+
+            if (Kernel != null)
+                try
                 {
-                    Register(null, null, Name, requestAddress, Name);
-                    result = true;
+                    result = Kernel.IsValidLogon(timestamp, signature, requestAddress, throwIfNotConform);
                 }
-
-                result = await ThirdPartyLogonAsync(timestamp, signature, tag, requestAddress, new UserNotFoundException());
-            }
-
-            try
-            {
-                result = Kernel.IsValidLogon(timestamp, signature, requestAddress, throwIfNotConform);
-            }
-            catch (Exception ex)
-            {
-                result = await ThirdPartyLogonAsync(timestamp, signature, tag, requestAddress, ex);
-            }
+                catch (Exception ex)
+                {
+                    result = await ThirdPartyLogonAsync(timestamp, signature, tag, requestAddress, ex);
+                }
 
             if (result)
             {
                 /*
                  * 可利用客户端传过来的 tag 扩展出系统自己的用户登录功能
                  */
-                tag = Kernel.Decrypt(tag);
+                tag = Kernel != null ? Kernel.Decrypt(tag) : null;
             }
 
             return result;

@@ -37,10 +37,6 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="P6C\" />
-  </ItemGroup>
-
   <ProjectExtensions><VisualStudio><UserProperties Reactor_Enabled="1" /></VisualStudio></ProjectExtensions>
 
 </Project>
