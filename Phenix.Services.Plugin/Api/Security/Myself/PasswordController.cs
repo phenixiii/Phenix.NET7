@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
+using Phenix.Core.Data.Schema;
 using Phenix.Services.Plugin.Actor;
 
 namespace Phenix.Services.Plugin.Api.Security.Myself
@@ -21,7 +22,8 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         [HttpPut]
         public async Task<bool> Put()
         {
-            return await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).ChangePassword(await Request.ReadBodyAsStringAsync(true), true);
+            string[] passwords = (await Request.ReadBodyAsStringAsync(true)).Split(Standards.RowSeparator);
+            return await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).ChangePassword(passwords[0], passwords[1], true);
         }
     }
 }

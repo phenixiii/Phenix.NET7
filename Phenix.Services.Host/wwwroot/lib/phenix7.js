@@ -210,8 +210,9 @@ var phAjax = (function($) {
         },
 
         // 修改登录口令
+        // password: 登录口令
         // newPassword: 新登录口令
-        changePassword: function(newPassword, options) {
+        changePassword: function (password, newPassword, options) {
             var defaults = {
                 onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
@@ -220,7 +221,7 @@ var phAjax = (function($) {
             phAjax.call({
                 type: "PUT",
                 path: "/api/security/myself/password",
-                data: newPassword,
+                data: password + '\u0004' + newPassword,
                 encryptData: true,
                 onSuccess: function(result) {
                     setUserKey(CryptoJS.MD5(newPassword).toString().toUpperCase());

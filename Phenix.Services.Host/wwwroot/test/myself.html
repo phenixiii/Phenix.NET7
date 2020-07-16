@@ -40,8 +40,8 @@
             });
         };
 
-        function changePassword(newPassword) {
-            phAjax.changePassword(newPassword,
+        function changePassword(password, newPassword) {
+            phAjax.changePassword(password, newPassword,
                 {
                     onSuccess: function (result) {
                         alert("成功修改口令");
@@ -72,7 +72,7 @@
     <input name="getMyselfButton" onclick="getMyself();" type="button" value="获取自己资料" /><br />
     <br />
     新登录口令<input id="newPassword" type="text" value="" />
-    <input name="changePasswordButton" onclick="changePassword(newPassword.value);" type="button" value="修改登录口令" /><br />
+    <input name="changePasswordButton" onclick="changePassword(userPassword.value, newPassword.value);" type="button" value="修改登录口令" /><br />
     <br />
 </body>
 </html>

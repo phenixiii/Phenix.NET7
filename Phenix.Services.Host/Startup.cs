@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using Phenix.Core.Reflection;
 
 namespace Phenix.Services.Host
 {
@@ -83,6 +84,13 @@ namespace Phenix.Services.Host
                      * 验证失败的话返回 context.Response.StatusCode = 403 Forbidden
                      */
                     options.Filters.AddAuthorizationFilter();
+                    /*
+                     * 注册数据验证过滤器
+                     * 与 Action 参数上的数据验证（[Required]、[StringLength] 等 ValidationAttribute）标签配合完成服务访问参数校验功能
+                     *
+                     * 验证失败的话返回 context.Response.StatusCode = 400 BadRequest，context.Response.Content 是 ValidationMessage 对象，其 StatusCode 属性为 400，ErrorMessage 属性为验证错误消息
+                     */
+                    options.Filters.AddValidationFilter();
                 })
                 .ConfigureApplicationPartManager(parts =>
                 {
@@ -106,7 +114,7 @@ namespace Phenix.Services.Host
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    options.SerializerSettings.DateFormatString = "yyyy'-'MM'-'dd' 'HH':'mm':'ss";
+                    options.SerializerSettings.DateFormatString = Utilities.JsonDateFormatString;
                     options.UseMemberCasing();
                 });
 

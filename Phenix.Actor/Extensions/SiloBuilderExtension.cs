@@ -34,6 +34,9 @@ namespace Orleans.Hosting
 #if PgSQL
                     options.Invariant = "Npgsql";
 #endif
+#if MsSQL
+                    options.Invariant = "System.Data.SqlClient";
+#endif
 #if MySQL
                     options.Invariant = "MySql.Data.MySqlClient";
 #endif
@@ -47,6 +50,9 @@ namespace Orleans.Hosting
 #if PgSQL
                     options.Invariant = "Npgsql";
 #endif
+#if MsSQL
+                    options.Invariant = "System.Data.SqlClient";
+#endif
 #if MySQL
                     options.Invariant = "MySql.Data.MySqlClient";
 #endif
@@ -59,6 +65,9 @@ namespace Orleans.Hosting
                     options.ConnectionString = connectionString;
 #if PgSQL
                     options.Invariant = "Npgsql";
+#endif
+#if MsSQL
+                    options.Invariant = "System.Data.SqlClient";
 #endif
 #if MySQL
                     options.Invariant = "MySql.Data.MySqlClient";

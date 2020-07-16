@@ -84,25 +84,6 @@ namespace Phenix.Services.Plugin.Actor
             return String.Format("{0}({1}) 的动态口令存放于 {2} 目录下的日志文件里", Kernel.RegAlias, Kernel.Name, Phenix.Core.Log.EventLog.LocalDirectory);
         }
 
-        private async Task<bool> ThirdPartyLogonAsync(string timestamp, string signature, string tag, string requestAddress, Exception error)
-        {
-            Phenix.Services.Plugin.P6C.HttpClient httpClient = Phenix.Services.Plugin.P6C.HttpClient.Default;
-            if (httpClient == null)
-                throw error;
-
-            string password = await ClusterClient.Default.GetGrain<IOneOffKeyPairGrain>(KeyPairDiscardIntervalSeconds).Decrypt(Name, await httpClient.LogonAsync(Name, timestamp, signature, tag), true);
-            if (!String.IsNullOrEmpty(password))
-            {
-                if (Kernel == null)
-                    Register(null, null, Name, requestAddress, password, null, false);
-                else
-                    Kernel.ChangePassword(password, false);
-                return true;
-            }
-
-            throw new UserVerifyException();
-        }
-
         Task<string> IUserGrain.CheckIn(string phone, string eMail, string regAlias, string requestAddress)
         {
             if (Kernel != null)
@@ -141,24 +122,38 @@ namespace Phenix.Services.Plugin.Actor
 
         async Task<bool> IUserGrain.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, bool throwIfNotConform)
         {
-            bool result = false;
+            Phenix.Services.Plugin.P6C.HttpClient httpClient = Phenix.Services.Plugin.P6C.HttpClient.Default;
+            if (httpClient != null)
+            {
+                string password = await ClusterClient.Default.GetGrain<IOneOffKeyPairGrain>(KeyPairDiscardIntervalSeconds).Decrypt(Name, await httpClient.LogonAsync(Name, timestamp, signature, tag), true);
+                if (String.IsNullOrEmpty(password))
+                {
+                    if (Kernel != null)
+                        Kernel.Disable();
+                    throw new UserNotFoundException();
+                }
+
+                if (Kernel != null)
+                {
+                    Kernel.Activate();
+                    Kernel.ChangePassword(Kernel.Password, password, false);
+                }
+                else
+                    Register(null, null, Name, requestAddress, password, null, false);
+
+                return true;
+            }
 
             if (Kernel == null)
                 if (User.IsReservedUserName(Name))
+                {
                     Register(null, null, Name, requestAddress);
+                    return true;
+                }
                 else
-                    result = await ThirdPartyLogonAsync(timestamp, signature, tag, requestAddress, new UserNotFoundException());
+                    throw new UserNotFoundException();
 
-            if (Kernel != null)
-                try
-                {
-                    result = Kernel.IsValidLogon(timestamp, signature, requestAddress, throwIfNotConform);
-                }
-                catch (Exception ex)
-                {
-                    result = await ThirdPartyLogonAsync(timestamp, signature, tag, requestAddress, ex);
-                }
-
+            bool result = Kernel.IsValidLogon(timestamp, signature, requestAddress, throwIfNotConform);
             if (result)
             {
                 /*
@@ -178,12 +173,12 @@ namespace Phenix.Services.Plugin.Actor
             return Task.FromResult(Kernel.IsValid(timestamp, signature, requestAddress, throwIfNotConform));
         }
 
-        Task<bool> IUserGrain.ChangePassword(string newPassword, bool throwIfNotConform)
+        Task<bool> IUserGrain.ChangePassword(string password, string newPassword, bool throwIfNotConform)
         {
             if (Kernel == null)
                 throw new UserNotFoundException();
 
-            return Task.FromResult(Kernel.ChangePassword(newPassword, true, throwIfNotConform));
+            return Task.FromResult(Kernel.ChangePassword(password, newPassword, true, throwIfNotConform));
         }
 
         #region CompanyAdmin 操作功能

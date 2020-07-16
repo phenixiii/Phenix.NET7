@@ -426,11 +426,13 @@ namespace Phenix.Client.Security.Myself
         /// <summary>
         /// 修改登录口令
         /// </summary>
-        /// <param name="password">登录口令(一般通过邮箱发送给到用户)</param>
-        public async Task ChangePasswordAsync(string password)
+        /// <param name="password">登录口令</param>
+        /// <param name="newPassword">新登录口令</param>
+        public async Task ChangePasswordAsync(string password, string newPassword)
         {
-            await _httpClient.CallAsync(HttpMethod.Put, ApiConfig.ApiSecurityMyselfPasswordPath, password, true);
-            _password = MD5CryptoTextProvider.ComputeHash(password);
+            await _httpClient.CallAsync(HttpMethod.Put, ApiConfig.ApiSecurityMyselfPasswordPath, 
+                String.Format("{0}{1}{2}", password, Standards.RowSeparator, newPassword), true);
+            _password = MD5CryptoTextProvider.ComputeHash(newPassword);
         }
 
         #region CompanyAdmin 操作功能

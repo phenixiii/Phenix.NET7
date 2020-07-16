@@ -11,7 +11,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
     {
         #region 属性
 
-        private const int ARRAY_MAX_SIZE = 10000;
+        private const int ArrayMaxSize = 10000;
 
         #endregion
 
@@ -60,7 +60,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
 
             int precision = (int) Math.Pow(10, zeroCount);
             int knapsackSizeP = knapsackSize / precision;
-            if (knapsackSizeP >= ARRAY_MAX_SIZE)
+            if (knapsackSizeP >= ArrayMaxSize)
                 return PackBig(goodsList, knapsackSize);
             int minSizeP = minGoodsSize / precision;
             int[] matrixL = new int[knapsackSizeP + 1];
@@ -153,13 +153,13 @@ namespace Phenix.Algorithm.CombinatorialOptimization
             int precision = (int)Math.Pow(10, zeroCount);
             int knapsackSizeP = knapsackSize / precision;
             int minSizeP = minGoodsSize / precision;
-            int matrixCount = knapsackSizeP % ARRAY_MAX_SIZE > 0 ? knapsackSizeP / ARRAY_MAX_SIZE + 1 : knapsackSizeP / ARRAY_MAX_SIZE;
+            int matrixCount = knapsackSizeP % ArrayMaxSize > 0 ? knapsackSizeP / ArrayMaxSize + 1 : knapsackSizeP / ArrayMaxSize;
             List<int[]> matrixL = new List<int[]>(matrixCount);
             for (int i = 1; i <= matrixCount; i++)
-                matrixL.Add(i == matrixCount ? new int[knapsackSizeP % ARRAY_MAX_SIZE + 1] : new int[ARRAY_MAX_SIZE]);
+                matrixL.Add(i == matrixCount ? new int[knapsackSizeP % ArrayMaxSize + 1] : new int[ArrayMaxSize]);
             List<int[]> matrixR = new List<int[]>(matrixCount);
             for (int i = 1; i <= matrixCount; i++)
-                matrixR.Add(i == matrixCount ? new int[knapsackSizeP % ARRAY_MAX_SIZE + 1] : new int[ARRAY_MAX_SIZE]);
+                matrixR.Add(i == matrixCount ? new int[knapsackSizeP % ArrayMaxSize + 1] : new int[ArrayMaxSize]);
             Stack<SortedSet<int>> putinSizeStack = new Stack<SortedSet<int>>(goodsList.Count);
             foreach (IGoods goods in goodsList)
             {
@@ -167,12 +167,12 @@ namespace Phenix.Algorithm.CombinatorialOptimization
                 int goodsSizeP = goods.Size / precision;
                 for (int s = minSizeP; s <= knapsackSizeP; s++)
                 {
-                    int s1 = s % ARRAY_MAX_SIZE;
-                    int s2 = s / ARRAY_MAX_SIZE;
+                    int s1 = s % ArrayMaxSize;
+                    int s2 = s / ArrayMaxSize;
                     int marginSizeP = s - goodsSizeP; //s规格的背包放入goods后的余量是marginSize
                     if (marginSizeP >= 0) //s规格的背包放得下goods
                     {
-                        int value = matrixL[marginSizeP / ARRAY_MAX_SIZE][marginSizeP % ARRAY_MAX_SIZE] + goods.Value; //与前轮（第0...i-1件）规划得到的marginSize规格的背包合拼
+                        int value = matrixL[marginSizeP / ArrayMaxSize][marginSizeP % ArrayMaxSize] + goods.Value; //与前轮（第0...i-1件）规划得到的marginSize规格的背包合拼
                         if (value > matrixL[s2][s1]) //放下后的价值更高
                         {
                             matrixR[s2][s1] = value;
@@ -256,7 +256,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
 
             int precision = (int) Math.Pow(10, zeroCount);
             int knapsackSizeP = knapsackSize / precision;
-            if (knapsackSizeP >= ARRAY_MAX_SIZE)
+            if (knapsackSizeP >= ArrayMaxSize)
                 return PackBig(goodsList, knapsackSize, minPackSize, aimForMinSize);
             int minPackSizeP = minPackSize / precision;
             int minSizeP = minGoodsSize / precision;
@@ -402,13 +402,13 @@ namespace Phenix.Algorithm.CombinatorialOptimization
             int knapsackSizeP = knapsackSize / precision;
             int minPackSizeP = minPackSize / precision;
             int minSizeP = minGoodsSize / precision;
-            int matrixCount = knapsackSizeP % ARRAY_MAX_SIZE > 0 ? knapsackSizeP / ARRAY_MAX_SIZE + 1 : knapsackSizeP / ARRAY_MAX_SIZE;
+            int matrixCount = knapsackSizeP % ArrayMaxSize > 0 ? knapsackSizeP / ArrayMaxSize + 1 : knapsackSizeP / ArrayMaxSize;
             List<int[]> matrixL = new List<int[]>(matrixCount);
             for (int i = 1; i <= matrixCount; i++)
-                matrixL.Add(i == matrixCount ? new int[knapsackSizeP % ARRAY_MAX_SIZE + 1] : new int[ARRAY_MAX_SIZE]);
+                matrixL.Add(i == matrixCount ? new int[knapsackSizeP % ArrayMaxSize + 1] : new int[ArrayMaxSize]);
             List<int[]> matrixR = new List<int[]>(matrixCount);
             for (int i = 1; i <= matrixCount; i++)
-                matrixR.Add(i == matrixCount ? new int[knapsackSizeP % ARRAY_MAX_SIZE + 1] : new int[ARRAY_MAX_SIZE]);
+                matrixR.Add(i == matrixCount ? new int[knapsackSizeP % ArrayMaxSize + 1] : new int[ArrayMaxSize]);
             Dictionary<int, SortedSet<int>> putinSizeDictionary = new Dictionary<int, SortedSet<int>>(goodsList.Count);
             for (int i = 0; i < goodsList.Count; i++)
             {
@@ -417,12 +417,12 @@ namespace Phenix.Algorithm.CombinatorialOptimization
                 int goodsSizeP = goods.Size / precision;
                 for (int s = minSizeP; s <= knapsackSizeP; s++)
                 {
-                    int s1 = s % ARRAY_MAX_SIZE;
-                    int s2 = s / ARRAY_MAX_SIZE;
+                    int s1 = s % ArrayMaxSize;
+                    int s2 = s / ArrayMaxSize;
                     int marginSizeP = s - goodsSizeP; //s规格的背包放入goods后的余量是marginSize
                     if (marginSizeP >= 0) //s规格的背包放得下goods
                     {
-                        int value = matrixL[marginSizeP / ARRAY_MAX_SIZE][marginSizeP % ARRAY_MAX_SIZE] + goods.Value; //与前轮（第0...i-1件）规划得到的marginSize规格的背包合拼
+                        int value = matrixL[marginSizeP / ArrayMaxSize][marginSizeP % ArrayMaxSize] + goods.Value; //与前轮（第0...i-1件）规划得到的marginSize规格的背包合拼
                         if (value > matrixL[s2][s1]) //放下后的价值更高
                         {
                             matrixR[s2][s1] = value;
@@ -559,7 +559,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
 
             int precision = (int) Math.Pow(10, zeroCount);
             int knapsackSizeP = knapsackSize / precision;
-            if (knapsackSizeP >= ARRAY_MAX_SIZE)
+            if (knapsackSizeP >= ArrayMaxSize)
                 return PackBig(goodsList, knapsackSize, minPackSize, minPackValue, aimForMinSize);
             int minPackSizeP = minPackSize / precision;
             int minSizeP = minGoodsSize / precision;
@@ -732,13 +732,13 @@ namespace Phenix.Algorithm.CombinatorialOptimization
             int knapsackSizeP = knapsackSize / precision;
             int minPackSizeP = minPackSize / precision;
             int minSizeP = minGoodsSize / precision;
-            int matrixCount = knapsackSizeP % ARRAY_MAX_SIZE > 0 ? knapsackSizeP / ARRAY_MAX_SIZE + 1 : knapsackSizeP / ARRAY_MAX_SIZE;
+            int matrixCount = knapsackSizeP % ArrayMaxSize > 0 ? knapsackSizeP / ArrayMaxSize + 1 : knapsackSizeP / ArrayMaxSize;
             List<int[]> matrixL = new List<int[]>(matrixCount);
             for (int i = 1; i <= matrixCount; i++)
-                matrixL.Add(i == matrixCount ? new int[knapsackSizeP % ARRAY_MAX_SIZE + 1] : new int[ARRAY_MAX_SIZE]);
+                matrixL.Add(i == matrixCount ? new int[knapsackSizeP % ArrayMaxSize + 1] : new int[ArrayMaxSize]);
             List<int[]> matrixR = new List<int[]>(matrixCount);
             for (int i = 1; i <= matrixCount; i++)
-                matrixR.Add(i == matrixCount ? new int[knapsackSizeP % ARRAY_MAX_SIZE + 1] : new int[ARRAY_MAX_SIZE]);
+                matrixR.Add(i == matrixCount ? new int[knapsackSizeP % ArrayMaxSize + 1] : new int[ArrayMaxSize]);
             Dictionary<int, SortedSet<int>> putinSizeDictionary = new Dictionary<int, SortedSet<int>>(goodsList.Count);
             for (int i = 0; i < goodsList.Count; i++)
             {
@@ -747,12 +747,12 @@ namespace Phenix.Algorithm.CombinatorialOptimization
                 int goodsSizeP = goods.Size / precision;
                 for (int s = minSizeP; s <= knapsackSizeP; s++)
                 {
-                    int s1 = s % ARRAY_MAX_SIZE;
-                    int s2 = s / ARRAY_MAX_SIZE;
+                    int s1 = s % ArrayMaxSize;
+                    int s2 = s / ArrayMaxSize;
                     int marginSizeP = s - goodsSizeP; //s规格的背包放入goods后的余量是marginSize
                     if (marginSizeP >= 0) //s规格的背包放得下goods
                     {
-                        int value = matrixL[marginSizeP / ARRAY_MAX_SIZE][marginSizeP % ARRAY_MAX_SIZE] + goods.Value; //与前轮（第0...i-1件）规划得到的marginSize规格的背包合拼
+                        int value = matrixL[marginSizeP / ArrayMaxSize][marginSizeP % ArrayMaxSize] + goods.Value; //与前轮（第0...i-1件）规划得到的marginSize规格的背包合拼
                         if (value > matrixL[s2][s1]) //放下后的价值更高
                         {
                             matrixR[s2][s1] = value;

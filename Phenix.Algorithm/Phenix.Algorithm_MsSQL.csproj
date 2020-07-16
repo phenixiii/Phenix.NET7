@@ -2,38 +2,35 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>7.3.35</Version>
-    <AssemblyVersion>7.3.35.0624</AssemblyVersion>
-    <FileVersion>7.3.35.0624</FileVersion>
+    <Version>7.3.31</Version>
+    <AssemblyVersion>7.3.31.0510</AssemblyVersion>
+    <FileVersion>7.3.31.0510</FileVersion>
     <Description>Phenix Framework 7 for .NET Core 3 + Orleans 3</Description>
     <Authors>ming</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <AssemblyName>Demo.IDOS.Plugin</AssemblyName>
-    <RootNamespace>Demo.IDOS.Plugin</RootNamespace>
+    <AssemblyName>Phenix.Algorithm</AssemblyName>
+    <RootNamespace>Phenix.Algorithm</RootNamespace>
     <Copyright>Copyright © 2007, 2020 Phenixヾ Studio</Copyright>
     <Company />
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\..\Bin_PgSQL\</OutputPath>
+    <OutputPath>..\Bin_MsSQL\</OutputPath>
+    <DocumentationFile>..\Bin_MsSQL\Phenix.Algorithm.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\..\Bin_PgSQL\</OutputPath>
+    <OutputPath>..\Bin_MsSQL\</OutputPath>
+    <DocumentationFile>..\Bin_MsSQL\Phenix.Algorithm.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.Orleans.Client" Version="3.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Phenix.Actor">
-      <HintPath>..\..\..\Bin_PgSQL\netcoreapp3.1\Phenix.Actor.dll</HintPath>
-    </Reference>
     <Reference Include="Phenix.Core">
-      <HintPath>..\..\..\Bin_PgSQL\netcoreapp3.1\Phenix.Core.dll</HintPath>
+      <HintPath>..\Bin_MsSQL\netcoreapp3.1\Phenix.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

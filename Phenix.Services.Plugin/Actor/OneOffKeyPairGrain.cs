@@ -10,7 +10,7 @@ namespace Phenix.Services.Plugin.Actor
     /// <summary>
     /// 一次性公钥私钥对Grain
     /// </summary>
-    public class OneOffKeyPairGrain : IOneOffKeyPairGrain
+    public class OneOffKeyPairGrain : Grain, IOneOffKeyPairGrain
     {
         #region 属性
 
