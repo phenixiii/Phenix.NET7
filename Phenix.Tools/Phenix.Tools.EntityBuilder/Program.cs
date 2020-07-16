@@ -127,15 +127,18 @@ namespace {3}
         }}
 
         [Newtonsoft.Json.JsonConstructor]
-        public {5}(",
+        public {5}(string dataSourceKey, long id, ",
                 Environment.UserName, DateTime.Now, sheet.Name, sheet.Owner.Database.DatabaseName, sheet.Description, sheet.ClassName));
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
-                codeBuilder.Append(String.Format("{0} {1}, ", kvp.Value.MappingTypeName, kvp.Value.ParameterName));
+                if (kvp.Value != kvp.Value.Owner.PrimaryKeyColumn)
+                    codeBuilder.Append(String.Format("{0} {1}, ", kvp.Value.MappingTypeName, kvp.Value.ParameterName));
             codeBuilder[codeBuilder.Length - 2] = ')';
             codeBuilder.Append(@"
+            : base(dataSourceKey, id)
         {");
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
-                codeBuilder.Append(String.Format(@"
+                if (kvp.Value != kvp.Value.Owner.PrimaryKeyColumn)
+                    codeBuilder.Append(String.Format(@"
             {0} = {1};",
                     kvp.Value.FieldName, kvp.Value.ParameterName));
             codeBuilder.Append(@"

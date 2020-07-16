@@ -170,18 +170,21 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 20200613
 1，修正身份验证失败（比如登录口令输错）时浏览器F12提示"Origin null is not allowed by Access-Control-Allow-Origin"的问题
-2，修订《Phenix.Core.Data.持久层开发接口.doc》，补充条件对象的使用方法
-
-
-20200624
-1，修订《Phenix.Core.Data.持久层开发接口.doc》，补充Phenix.Core.Data.Database的功能介绍
-2，添加Demo.IDOS智能仓储作业系统演练项目到Demo_Practice目录，仅限于Phenix.NET7_PgSQL解决方案可见
-3，修正Phenix.Tools.EntityBuilder、Phenix.Tools.BusinessBuilder代码生成填充表字段默认值时无法转换bool类型的问题
+2，修订《Phenix.Core.Data.持久层开发接口.doc》，补充条件对象的使用方法，补充Phenix.Core.Data.Database的功能介绍
+3，添加Demo.IDOS智能仓储作业系统演练项目到Demo_Practice目录，仅限于Phenix.NET7_PgSQL解决方案可见
+4，修正Phenix.Tools.EntityBuilder、Phenix.Tools.BusinessBuilder代码生成填充表字段默认值时无法转换bool类型的问题
 
 
 20200707
 1，持久化引擎支持SQL Server，解决方案Phenix.NET7_MsSQL.sln，程序集输出目录Bin_MsSQL，配置库Phenix.Core.db需升级至最新版
 2，添加对WebAPI传入参数的验证，返回客户端HTTP状态为400的报文体是ValidationMessage对象，其StatusCode属性为400，Hint属性为验证消息
+3，Phenix.Core.Data.Model.EntityBase<T>支持跨域持久化，旧版实体类需升级（为初始函数添加 dataSourceKey 和 id 参数）或重新生成代码，类似这样：
+        [Newtonsoft.Json.JsonConstructor]
+        private User(string dataSourceKey, long id,  string name)
+            : base(dataSourceKey, id)
+        {
+            _name = name;
+        }
 
 
 

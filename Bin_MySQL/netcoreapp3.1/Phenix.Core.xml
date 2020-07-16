@@ -3227,6 +3227,11 @@
             for CreateInstance
             </summary>
         </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.#ctor(System.String,System.Int64)">
+            <summary>
+            for Newtonsoft.Json.JsonConstructor
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.New(Phenix.Core.Data.Database)">
             <summary>
             新增实体对象(自动填充主键和保留字段)
@@ -3365,6 +3370,16 @@
             <param name="database">数据库入口</param>
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式属性值</param>
+        </member>
+        <member name="F:Phenix.Core.Data.Model.EntityBase`1._dataSourceKey">
+            <summary>
+            数据源键
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.EntityBase`1.DataSourceKey">
+            <summary>
+            数据源键
+            </summary>
         </member>
         <member name="P:Phenix.Core.Data.Model.EntityBase`1.Database">
             <summary>
@@ -4306,7 +4321,7 @@
             for CreateInstance
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.#ctor(System.Int64,System.Int64,System.Int64,System.Collections.Generic.IList{`0})">
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.#ctor(System.String,System.Int64,System.Int64,System.Int64,System.Collections.Generic.IList{`0})">
             <summary>
             for Newtonsoft.Json.JsonConstructor
             </summary>

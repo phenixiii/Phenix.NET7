@@ -28,8 +28,9 @@ namespace Phenix.Business
         /// <summary>
         /// for Newtonsoft.Json.JsonConstructor
         /// </summary>
-        protected UndoableBase(bool? isNew, bool? isSelfDeleted, bool? isSelfDirty,
+        protected UndoableBase(string dataSourceKey, long id, bool? isNew, bool? isSelfDeleted, bool? isSelfDirty,
             IDictionary<string, object> oldPropertyValues, IDictionary<string, bool?> dirtyPropertyNames)
+            : base(dataSourceKey, id)
         {
             if (isNew.HasValue)
                 _executeAction = _executeAction | ExecuteAction.Insert;

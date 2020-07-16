@@ -25,9 +25,9 @@ namespace Phenix.Business
         /// <summary>
         /// for Newtonsoft.Json.JsonConstructor
         /// </summary>
-        protected BusinessBase(bool? isNew, bool? isSelfDeleted, bool? isSelfDirty,
+        protected BusinessBase(string dataSourceKey, long id, bool? isNew, bool? isSelfDeleted, bool? isSelfDirty,
             IDictionary<string, object> oldPropertyValues, IDictionary<string, bool?> dirtyPropertyNames)
-            : base(isNew, isSelfDeleted, isSelfDirty, oldPropertyValues, dirtyPropertyNames)
+            : base(dataSourceKey, id, isNew, isSelfDeleted, isSelfDirty, oldPropertyValues, dirtyPropertyNames)
         {
         }
 
