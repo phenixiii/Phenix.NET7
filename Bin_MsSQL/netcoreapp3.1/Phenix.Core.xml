@@ -950,7 +950,7 @@
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DataReader.CreateParameter(System.String,System.Object,NpgsqlTypes.NpgsqlDbType,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Data.Common.DataReader.CreateParameter(System.String,System.Object,System.Data.SqlDbType,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
             </summary>
@@ -1176,22 +1176,22 @@
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,NpgsqlTypes.NpgsqlDbType,System.Data.ParameterDirection)">
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Data.SqlDbType,System.Data.ParameterDirection)">
             <summary>
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,NpgsqlTypes.NpgsqlDbType,System.Data.ParameterDirection,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Data.SqlDbType,System.Data.ParameterDirection,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,NpgsqlTypes.NpgsqlDbType,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,System.Data.SqlDbType,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,NpgsqlTypes.NpgsqlDbType,System.Data.ParameterDirection,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,System.Data.SqlDbType,System.Data.ParameterDirection,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
             </summary>
@@ -1612,7 +1612,7 @@
             <param name="name">名称</param>
             <param name="value">值</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.ParamValue.InputOutput(System.String,System.Object,NpgsqlTypes.NpgsqlDbType)">
+        <member name="M:Phenix.Core.Data.Common.ParamValue.InputOutput(System.String,System.Object,System.Data.SqlDbType)">
             <summary>
             输入输出参数
             </summary>
@@ -1620,14 +1620,14 @@
             <param name="value">值</param>
             <param name="dbType">参数类型</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.ParamValue.Output(System.String,NpgsqlTypes.NpgsqlDbType)">
+        <member name="M:Phenix.Core.Data.Common.ParamValue.Output(System.String,System.Data.SqlDbType)">
             <summary>
             输出参数
             </summary>
             <param name="name">名称</param>
             <param name="dbType">参数类型</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.ParamValue.ReturnValue(System.String,NpgsqlTypes.NpgsqlDbType)">
+        <member name="M:Phenix.Core.Data.Common.ParamValue.ReturnValue(System.String,System.Data.SqlDbType)">
             <summary>
             返回值
             </summary>
@@ -3227,6 +3227,11 @@
             for CreateInstance
             </summary>
         </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.#ctor(System.String,System.Int64)">
+            <summary>
+            for Newtonsoft.Json.JsonConstructor
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.New(Phenix.Core.Data.Database)">
             <summary>
             新增实体对象(自动填充主键和保留字段)
@@ -3365,6 +3370,16 @@
             <param name="database">数据库入口</param>
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式属性值</param>
+        </member>
+        <member name="F:Phenix.Core.Data.Model.EntityBase`1._dataSourceKey">
+            <summary>
+            数据源键
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.Model.EntityBase`1.DataSourceKey">
+            <summary>
+            数据源键
+            </summary>
         </member>
         <member name="P:Phenix.Core.Data.Model.EntityBase`1.Database">
             <summary>
@@ -4306,7 +4321,7 @@
             for CreateInstance
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.#ctor(System.Int64,System.Int64,System.Int64,System.Collections.Generic.IList{`0})">
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.#ctor(System.String,System.Int64,System.Int64,System.Int64,System.Collections.Generic.IList{`0})">
             <summary>
             for Newtonsoft.Json.JsonConstructor
             </summary>
@@ -4510,7 +4525,7 @@
             关联数据异常
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Rule.AssociationDataException.#ctor">
+        <member name="M:Phenix.Core.Data.Rule.AssociationDataException.#ctor(System.Exception)">
             <summary>
             关联数据异常
             </summary>
@@ -4589,7 +4604,7 @@
             数据过时异常
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Rule.OutdatedDataException.#ctor">
+        <member name="M:Phenix.Core.Data.Rule.OutdatedDataException.#ctor(System.Exception)">
             <summary>
             数据过时异常
             </summary>
@@ -4609,7 +4624,7 @@
             唯一约束异常
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Rule.UniqueConstraintException.#ctor">
+        <member name="M:Phenix.Core.Data.Rule.UniqueConstraintException.#ctor(System.Exception)">
             <summary>
             唯一约束异常
             </summary>
@@ -4634,17 +4649,20 @@
             数据验证异常
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Rule.ValidationException.#ctor(System.Int32)">
+        <member name="M:Phenix.Core.Data.Rule.ValidationException.#ctor(System.String,System.Int32,System.Exception)">
             <summary>
             数据验证异常
             </summary>
-            <param name="statusCode">状态码(100以下为保留值)</param>
+            <param name="key">键值</param>
+            <param name="statusCode">状态码(1000以下为保留值)</param>
+            <param name="innerException">内嵌异常</param>
         </member>
-        <member name="M:Phenix.Core.Data.Rule.ValidationException.#ctor(System.Int32,System.String,System.Exception)">
+        <member name="M:Phenix.Core.Data.Rule.ValidationException.#ctor(System.String,System.Int32,System.String,System.Exception)">
             <summary>
             数据验证异常
             </summary>
-            <param name="statusCode">状态码(100以下为保留值)</param>
+            <param name="key">键值</param>
+            <param name="statusCode">状态码(1000以下为保留值)</param>
             <param name="message">错误消息</param>
             <param name="innerException">内嵌异常</param>
         </member>
@@ -4655,20 +4673,22 @@
             <param name="validationMessage">数据验证消息</param>
             <param name="innerException">内嵌异常</param>
         </member>
-        <member name="M:Phenix.Core.Data.Rule.ValidationException.#ctor(System.Int32,System.ComponentModel.DataAnnotations.ValidationResult,System.ComponentModel.DataAnnotations.ValidationAttribute,System.Object)">
+        <member name="M:Phenix.Core.Data.Rule.ValidationException.#ctor(System.String,System.Int32,System.ComponentModel.DataAnnotations.ValidationResult,System.ComponentModel.DataAnnotations.ValidationAttribute,System.Object)">
             <summary>
             数据验证异常
             </summary>
-            <param name="statusCode">状态码(100以下为保留值)</param>
+            <param name="key">键值</param>
+            <param name="statusCode">状态码(1000以下为保留值)</param>
             <param name="validationResult">数据验证结果</param>
             <param name="validatingAttribute">数据验证标签</param>
             <param name="value">值</param>
         </member>
-        <member name="M:Phenix.Core.Data.Rule.ValidationException.#ctor(System.Int32,System.String,System.ComponentModel.DataAnnotations.ValidationAttribute,System.Object)">
+        <member name="M:Phenix.Core.Data.Rule.ValidationException.#ctor(System.String,System.Int32,System.String,System.ComponentModel.DataAnnotations.ValidationAttribute,System.Object)">
             <summary>
             数据验证异常
             </summary>
-            <param name="statusCode">状态码(100以下为保留值)</param>
+            <param name="key">键值</param>
+            <param name="statusCode">状态码(1000以下为保留值)</param>
             <param name="message">错误消息</param>
             <param name="validatingAttribute">数据验证标签</param>
             <param name="value">值</param>
@@ -4693,22 +4713,28 @@
             数据验证消息
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Rule.ValidationMessage.#ctor(System.Int32,System.String,Phenix.Core.Data.Rule.ValidationMessageType)">
+        <member name="M:Phenix.Core.Data.Rule.ValidationMessage.#ctor(System.String,System.Int32,System.String,Phenix.Core.Data.Rule.ValidationMessageType)">
             <summary>
             数据验证消息
             </summary>
-            <param name="statusCode">状态码(100以下为保留值)</param>
-            <param name="errorMessage">错误消息</param>
+            <param name="key">键值</param>
+            <param name="statusCode">状态码(1000以下为保留值)</param>
+            <param name="hint">提示</param>
             <param name="messageType">消息类型</param>
+        </member>
+        <member name="P:Phenix.Core.Data.Rule.ValidationMessage.Key">
+            <summary>
+            键值
+            </summary>
         </member>
         <member name="P:Phenix.Core.Data.Rule.ValidationMessage.StatusCode">
             <summary>
-            状态码(100以下为保留值)
+            状态码(1000以下为保留值)
             </summary>
         </member>
-        <member name="P:Phenix.Core.Data.Rule.ValidationMessage.ErrorMessage">
+        <member name="P:Phenix.Core.Data.Rule.ValidationMessage.Hint">
             <summary>
-            错误消息
+            提示
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Rule.ValidationMessage.MessageType">
@@ -10060,6 +10086,23 @@
             <param name="identity">用户身份</param>
             <param name="context">HttpContext</param>
         </member>
+        <member name="T:Phenix.Core.Net.Filters.ValidationFilter">
+            <summary>
+            数据验证过滤器标签
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Filters.ValidationFilter.OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext)">
+            <summary>
+            处理数据验证
+            </summary>
+            <param name="context">上下文</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Filters.ValidationFilter.OnActionExecuted(Microsoft.AspNetCore.Mvc.Filters.ActionExecutedContext)">
+            <summary>
+            处理数据验证
+            </summary>
+            <param name="context">上下文</param>
+        </member>
         <member name="T:Phenix.Core.Net.Middleware.AuthenticationMiddleware">
             <summary>
             身份验证中间件
@@ -11944,10 +11987,11 @@
             <param name="name">名称</param>
             <returns>登录口令</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User.ChangePassword(System.String,System.Boolean,System.Boolean)">
+        <member name="M:Phenix.Core.Security.User.ChangePassword(System.String,System.String,System.Boolean,System.Boolean)">
             <summary>
             修改登录口令
             </summary>
+            <param name="password">登录口令</param>
             <param name="newPassword">新登录口令</param>
             <param name="hashPassword">登录口令需Hash</param>
             <param name="throwIfNotConform">如果为 true, 账号无效或口令不规范会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserPasswordComplexityException异常而不是返回false</param>
@@ -11966,6 +12010,16 @@
             <param name="requestAddress">服务请求方IP地址</param>
             <param name="throwIfNotConform">如果为 true, 核对有效性不符会抛出UserNotFoundException/UserLockedException异常而不是返回false</param>
             <returns>动态口令(6位数字一般作为验证码用短信发送给到用户)</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.User.Activate">
+            <summary>
+            激活
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Security.User.Disable">
+            <summary>
+            注销
+            </summary>
         </member>
         <member name="M:Phenix.Core.Security.User.Register(Phenix.Core.Data.Database,System.String,System.String,System.String,System.String,System.String,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int64},System.String@,System.String@,System.Boolean)">
             <summary>
@@ -13773,6 +13827,13 @@
         <member name="M:Microsoft.Extensions.DependencyInjection.FilterCollectionExtension.AddAuthorizationFilter(Microsoft.AspNetCore.Mvc.Filters.FilterCollection)">
             <summary>
             注册访问授权过滤器
+            </summary>
+            <param name="filters">FilterCollection</param>
+            <returns>IFilterMetadata</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.FilterCollectionExtension.AddValidationFilter(Microsoft.AspNetCore.Mvc.Filters.FilterCollection)">
+            <summary>
+            注册数据验证过滤器
             </summary>
             <param name="filters">FilterCollection</param>
             <returns>IFilterMetadata</returns>
