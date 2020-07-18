@@ -112,23 +112,27 @@ using Phenix.Core.Data.Model;
    mapping to: {2}
 */
 
-namespace {3}
+namespace {3}{4}{5}
 {{
     /// <summary>
-    /// {4}
+    /// {6}
     /// </summary>
     [System.Serializable]
-    [System.ComponentModel.DataAnnotations.Display(Description = ""{4}"")]
-    public class {5} : EntityBase<{5}>
+    [System.ComponentModel.DataAnnotations.Display(Description = ""{6}"")]
+    public class {7} : EntityBase<{7}>
     {{
-        private {5}()
+        private {7}()
         {{
             // used to fetch object, do not add code
         }}
 
         [Newtonsoft.Json.JsonConstructor]
-        public {5}(string dataSourceKey, long id, ",
-                Environment.UserName, DateTime.Now, sheet.Name, sheet.Owner.Database.DatabaseName, sheet.Description, sheet.ClassName));
+        public {7}(string dataSourceKey, long id,
+            ",
+                Environment.UserName, DateTime.Now, sheet.Name, sheet.Owner.Database.DatabaseName,
+                !String.IsNullOrEmpty(sheet.Prefix) ? "." : null,
+                !String.IsNullOrEmpty(sheet.Prefix) ? sheet.Prefix.ToUpper() : null,
+                sheet.Description, sheet.ClassName));
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
                 if (kvp.Value != kvp.Value.Owner.PrimaryKeyColumn)
                     codeBuilder.Append(String.Format("{0} {1}, ", kvp.Value.MappingTypeName, kvp.Value.ParameterName));
@@ -149,9 +153,19 @@ namespace {3}
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
                 if (!String.IsNullOrEmpty(kvp.Value.DataDefault) &&
                     kvp.Value.TableColumn != null && kvp.Value.Owner.PrimaryKeyColumn != null && object.Equals(kvp.Value.TableColumn.Owner, kvp.Value.Owner.PrimaryKeyColumn.TableColumn.Owner))
-                    codeBuilder.Append(String.Format(@"
+                    try
+                    {
+                        codeBuilder.Append(String.Format(@"
             {0} = {1}{2}{1};",
-                        kvp.Value.FieldName, kvp.Value.MappingType == typeof(string) ? "\"" : null, Utilities.ChangeType(Utilities.ChangeType(kvp.Value.DataDefault, kvp.Value.MappingType), typeof(string))));
+                            kvp.Value.FieldName, kvp.Value.MappingType == typeof(string) ? "\"" : null, Utilities.ChangeType(Utilities.ChangeType(kvp.Value.DataDefault, kvp.Value.MappingType), typeof(string))));
+                    }
+                    catch (Exception)
+                    {
+                        codeBuilder.Append(String.Format(@"
+            {0} = {1}{2}{1};",
+                            kvp.Value.FieldName, kvp.Value.MappingType == typeof(string) ? "\"" : null, kvp.Value.DataDefault));
+                    }
+
             codeBuilder.Append(@"
         }
 ");
@@ -163,16 +177,16 @@ namespace {3}
                 codeBuilder.Append(String.Format(@"
         private {0} {1};
         /// <summary>
-        /// {2}
+        /// {3}
         /// </summary>
-        [System.ComponentModel.DataAnnotations.Display(Description = ""{2}"")]
-        public {0} {3}
+        [System.ComponentModel.DataAnnotations.Display(Description = {2}""{3}"")]
+        public {0} {4}
         {{
             get {{ return {1}; }}
             set {{ {1} = value; }}
         }}
 ",
-                    kvp.Value.MappingTypeName, kvp.Value.FieldName, kvp.Value.Description, kvp.Value.PropertyName));
+                    kvp.Value.MappingTypeName, kvp.Value.FieldName, "@", kvp.Value.Description, kvp.Value.PropertyName));
             }
 
             codeBuilder.Append(@"
