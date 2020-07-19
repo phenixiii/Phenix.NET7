@@ -1612,7 +1612,31 @@
             <param name="name">名称</param>
             <param name="value">值</param>
         </member>
+        <member name="M:Phenix.Core.Data.Common.ParamValue.Input(System.String,System.Object,System.Data.SqlDbType)">
+            <summary>
+            输入输出参数
+            </summary>
+            <param name="name">名称</param>
+            <param name="value">值</param>
+            <param name="dbType">参数类型</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.ParamValue.Input(System.String,System.Data.SqlDbType,System.Object)">
+            <summary>
+            输入输出参数
+            </summary>
+            <param name="name">名称</param>
+            <param name="value">值</param>
+            <param name="dbType">参数类型</param>
+        </member>
         <member name="M:Phenix.Core.Data.Common.ParamValue.InputOutput(System.String,System.Object,System.Data.SqlDbType)">
+            <summary>
+            输入输出参数
+            </summary>
+            <param name="name">名称</param>
+            <param name="value">值</param>
+            <param name="dbType">参数类型</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.ParamValue.InputOutput(System.String,System.Data.SqlDbType,System.Object)">
             <summary>
             输入输出参数
             </summary>
@@ -2701,7 +2725,13 @@
             <summary>
             Exists
             </summary>
-            <param name="detailCriteriaLambda">从类条件表达式</param>
+            <param name="insideCriteriaLambda">内条件表达式</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Expressions.CriteriaExpression.Exists(Phenix.Core.Data.Expressions.CriteriaExpression)">
+            <summary>
+            Exists
+            </summary>
+            <param name="insideCriteriaExpression">内条件表达式</param>
         </member>
         <member name="M:Phenix.Core.Data.Expressions.CriteriaExpression.NotExists``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
             <summary>
@@ -2713,7 +2743,13 @@
             <summary>
             NotExists
             </summary>
-            <param name="detailCriteriaLambda">从类条件表达式</param>
+            <param name="insideCriteriaLambda">内条件表达式</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Expressions.CriteriaExpression.NotExists(Phenix.Core.Data.Expressions.CriteriaExpression)">
+            <summary>
+            NotExists
+            </summary>
+            <param name="insideCriteriaExpression">内条件表达式</param>
         </member>
         <member name="P:Phenix.Core.Data.Expressions.CriteriaExpression.OwnerType">
             <summary>
@@ -2908,16 +2944,6 @@
             不像
             </summary>
         </member>
-        <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.In">
-            <summary>
-            包含(支持Array)
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.NotIn">
-            <summary>
-            不包含(支持Array)
-            </summary>
-        </member>
         <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.IsNull">
             <summary>
             是空值
@@ -2926,6 +2952,16 @@
         <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.IsNotNull">
             <summary>
             非空值
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.In">
+            <summary>
+            包含(适用于关联关系也支持Array)
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.NotIn">
+            <summary>
+            不包含(适用于关联关系也支持Array)
             </summary>
         </member>
         <member name="F:Phenix.Core.Data.Expressions.CriteriaOperator.Exists">
@@ -2948,6 +2984,34 @@
             运算表达式
             </summary>
             <param name="valueLambda">值 lambda 表达式</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Expressions.OperationExpression.In``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            In
+            </summary>
+            <param name="insidePropertyLambda">内实体属性的 lambda 表达式</param>
+            <param name="insideCriteriaLambda">内条件表达式</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Expressions.OperationExpression.In``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},Phenix.Core.Data.Expressions.CriteriaExpression)">
+            <summary>
+            In
+            </summary>
+            <param name="insidePropertyLambda">内实体属性的 lambda 表达式</param>
+            <param name="insideCriteriaExpression">内条件表达式</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Expressions.OperationExpression.NotIn``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            NotIn
+            </summary>
+            <param name="insidePropertyLambda">内实体属性的 lambda 表达式</param>
+            <param name="insideCriteriaLambda">内条件表达式</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Expressions.OperationExpression.NotIn``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},Phenix.Core.Data.Expressions.CriteriaExpression)">
+            <summary>
+            NotIn
+            </summary>
+            <param name="insidePropertyLambda">内实体属性的 lambda 表达式</param>
+            <param name="insideCriteriaExpression">内条件表达式</param>
         </member>
         <member name="P:Phenix.Core.Data.Expressions.OperationExpression.OwnerTypeAssemblyQualifiedName">
             <summary>
@@ -3349,27 +3413,46 @@
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
             <returns>根实体对象</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Database)">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
             <param name="database">数据库入口</param>
+            <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object)">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
             <param name="database">数据库入口</param>
             <param name="criteriaLambda">条件表达式</param>
             <param name="criteria">条件对象/JSON格式属性值</param>
+            <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
             <param name="database">数据库入口</param>
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式属性值</param>
+            <param name="orderBys">排序队列</param>
         </member>
         <member name="F:Phenix.Core.Data.Model.EntityBase`1._dataSourceKey">
             <summary>
@@ -3582,17 +3665,23 @@
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.SetProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
             <summary>
-            设置属性值
+            设置属性值(旧值由entity提供)
             </summary>
             <param name="propertyLambda">含类属性的 lambda 表达式</param>
             <param name="newValueLambda">新值 lambda 表达式</param>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.SetProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Object)">
             <summary>
-            设置属性值
+            设置属性值(旧值由entity提供)
             </summary>
             <param name="propertyLambda">含类属性的 lambda 表达式</param>
             <param name="newValue">新值</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.SetProperty(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
+            <summary>
+            设置属性值(新旧值都由entity提供)
+            </summary>
+            <param name="propertyLambda">含类属性的 lambda 表达式</param>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf">
             <summary>
@@ -5651,7 +5740,7 @@
         </member>
         <member name="M:Phenix.Core.Data.Schema.PropertyValue.Set``1(Phenix.Core.Data.Schema.Sheet,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
             <summary>
-            设置属性值
+            设置属性值(旧值由entity提供)
             </summary>
             <param name="sheet">单子</param>
             <param name="entity">实体</param>
@@ -5660,12 +5749,20 @@
         </member>
         <member name="M:Phenix.Core.Data.Schema.PropertyValue.Set``1(Phenix.Core.Data.Schema.Sheet,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Object)">
             <summary>
-            设置属性值
+            设置属性值(旧值由entity提供)
             </summary>
             <param name="sheet">单子</param>
             <param name="entity">实体</param>
             <param name="propertyLambda">含类属性的 lambda 表达式</param>
             <param name="newValue">新值/OperationExpression</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.PropertyValue.Set``1(Phenix.Core.Data.Schema.Sheet,``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            设置属性值(新旧值都由entity提供)
+            </summary>
+            <param name="sheet">单子</param>
+            <param name="entity">实体</param>
+            <param name="propertyLambda">含类属性的 lambda 表达式</param>
         </member>
         <member name="P:Phenix.Core.Data.Schema.PropertyValue.Property">
             <summary>
@@ -5929,7 +6026,7 @@
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SetProperty``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
             <summary>
-            设置属性值
+            设置属性值(旧值由entity提供)
             </summary>
             <param name="entity">实体</param>
             <param name="propertyLambda">含类属性的 lambda 表达式</param>
@@ -5937,11 +6034,18 @@
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SetProperty``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Object)">
             <summary>
-            设置属性值
+            设置属性值(旧值由entity提供)
             </summary>
             <param name="entity">实体</param>
             <param name="propertyLambda">含类属性的 lambda 表达式</param>
             <param name="newValue">新值</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SetProperty``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            设置属性值(新旧值都由entity提供)
+            </summary>
+            <param name="entity">实体</param>
+            <param name="propertyLambda">含类属性的 lambda 表达式</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.InsertEntity``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
             <summary>
@@ -7782,11 +7886,11 @@
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Common.DataReader)">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.IDataReader)">
             <summary>
             获取记录
             </summary>
-            <param name="reader">DataReader</param>
+            <param name="reader">IDataReader</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1">
             <summary>
@@ -8744,11 +8848,11 @@
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord(Phenix.Core.Data.Common.DataReader,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord(System.Data.IDataReader,System.Boolean)">
             <summary>
             获取记录(JSON格式(仅返回匹配上本字段清单的属性值))
             </summary>
-            <param name="reader">DataReader</param>
+            <param name="reader">IDataReader</param>
             <param name="first">是否返回第一条记录</param>
             <returns>记录(JSON格式)</returns>
         </member>
