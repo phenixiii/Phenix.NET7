@@ -191,9 +191,10 @@ Copyright © 2007, 2020 Phenixヾ Studio
 1，调整表名/视图名/字段名映射规则，只要名称里出现的第一个'_'是在第1-4位之间，'_'及其前面的字符串都算作是前缀
 2，修订《Phenix.Core.Data.持久层开发接口.doc》，补充对实体持久化UpdateSelf方法传参的用处，允许通过propertyValues参数申明提交的是实体对象里指定的某些属性值
 3，提供《Phenix.Core.Data.持久层开发接口.他方ORM框架的系统代码迁移指南》
+4，提供统一的服务访问入口：/api/service/portal，能让客户端直接访问继承自Command<T>的对象的公共函数，访问授权的控制方法与控制器上的保持一致，同样可以在这些函数上打[AllowAnonymous]（或实现IAllowAnonymous的标签）、[Authorize]（或实现IAuthorizeData的标签）、继承自Phenix.Core.Net.Filters.AuthorizationFilter的标签，访问授权的角色配置是在第一次被访问时自动保存在PH7_Controller_Role表中，获取方法参考Phenix.Services.Plugin.Api.Security.RoleController，角色的动态配置可自行开发功能来编辑PH7_Controller_Role表
 
 
-待开发：
+待完成：
 2，添加《Phenix.Core.Security.身份验证方法.doc》
 3，适配双活数据中心的Actor状态跨地域同步机制
 

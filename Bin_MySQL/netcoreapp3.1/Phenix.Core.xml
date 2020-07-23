@@ -955,6 +955,19 @@
             构建 DbParameter
             </summary>
         </member>
+        <member name="M:Phenix.Core.Data.Common.DataReader.SelectEntity``1(System.Boolean)">
+            <summary>
+            获取记录
+            </summary>
+            <param name="first">是否返回第一条记录</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.DataReader.SelectRecord(System.Boolean)">
+            <summary>
+            获取记录(JSON格式)
+            </summary>
+            <param name="first">是否返回第一条记录</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
         <member name="T:Phenix.Core.Data.Common.DbCommandHelper">
             <summary>
             DbCommand 助手
@@ -2607,6 +2620,26 @@
         <member name="M:Phenix.Core.Data.Database.CreateDataReader(System.String,System.Data.CommandBehavior,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             构建 DataReader
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.ReadEntityData``1(System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            读取实体对象数据(属性名为数据源的表/视图的字段名/别名)
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.ReadEntityData``1(System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            读取实体对象数据(属性名为数据源的表/视图的字段名/别名)
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.ReadEntityData``1(System.String,System.Data.CommandBehavior,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            读取实体对象数据(属性名为数据源的表/视图的字段名/别名)
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.ReadEntityData``1(System.String,System.Data.CommandBehavior,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            读取实体对象数据(属性名为数据源的表/视图的字段名/别名)
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Database.ReadJsonData(System.String,Phenix.Core.Data.Common.ParamValue[])">
@@ -9778,9 +9811,14 @@
             WebAPI配置信息
             </summary>
         </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiServicePortalPath">
+            <summary>
+            /api/service/portal
+            </summary>
+        </member>
         <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityGatePath">
             <summary>
-            /api/Security/Gate
+            /api/security/gate
             </summary>
         </member>
         <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfPath">
@@ -10059,6 +10097,31 @@
             断开
             </summary>
         </member>
+        <member name="T:Phenix.Core.Net.Api.Service.CommandBase`1">
+            <summary>
+            指令基类
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Api.Service.CommandBase`1.Default">
+            <summary>
+            单例
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Net.Api.Service.ICommand">
+            <summary>
+            指令接口
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Net.Api.Service.PortalController">
+            <summary>
+            门户控制器
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Net.Api.Service.PortalController.Post(System.String,System.String,System.String)">
+            <summary>
+            提交
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Net.Filters.AuthorizationFilter">
             <summary>
             访问授权过滤器
@@ -10125,12 +10188,23 @@
             for CreateInstance
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Filters.ControllerRole.Fetch(Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor)">
+        <member name="M:Phenix.Core.Net.Filters.ControllerRole.Fetch(System.Reflection.TypeInfo,System.Reflection.MethodInfo)">
             <summary>
             获取控制器的授权角色
             </summary>
-            <param name="descriptor">ControllerActionDescriptor</param>
+            <param name="typeInfo">TypeInfo</param>
+            <param name="methodInfo">MethodInfo</param>
             <returns>控制器的授权角色</returns>
+        </member>
+        <member name="P:Phenix.Core.Net.Filters.ControllerRole.TypeInfo">
+            <summary>
+            方法所在类
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Net.Filters.ControllerRole.MethodInfo">
+            <summary>
+            方法信息
+            </summary>
         </member>
         <member name="F:Phenix.Core.Net.Filters.ControllerRole._controllerName">
             <summary>
@@ -10177,6 +10251,12 @@
             </summary>
             <param name="identity">用户身份</param>
             <param name="context">HttpContext</param>
+        </member>
+        <member name="M:Phenix.Core.Net.Filters.ControllerRole.Execute(System.Object[])">
+            <summary>
+            执行函数
+            </summary>
+            <param name="args">参数值</param>
         </member>
         <member name="T:Phenix.Core.Net.Filters.SystemAdminFilterAttribute">
             <summary>
@@ -10471,16 +10551,6 @@
             动态执行字段的set函数
             </summary>
         </member>
-        <member name="T:Phenix.Core.Reflection.IFactory">
-            <summary>
-            工厂接口
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Reflection.IFactory.CreateInstance">
-            <summary>
-            构建实体
-            </summary>
-        </member>
         <member name="T:Phenix.Core.Reflection.Utilities">
             <summary>
             工具集
@@ -10648,19 +10718,21 @@
             检索第一个抽象类
             </summary>
         </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.FindPropertyInfo(System.Type,System.String)">
+        <member name="M:Phenix.Core.Reflection.Utilities.FindPropertyInfo(System.Type,System.String,System.Reflection.BindingFlags)">
             <summary>
             检索属性信息
             </summary>
             <param name="objectType">类</param>
             <param name="propertyName">属性名</param>
+            <param name="bindingAttr">BindingFlags</param>
         </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.FindFieldInfo(System.Type,System.String)">
+        <member name="M:Phenix.Core.Reflection.Utilities.FindFieldInfo(System.Type,System.String,System.Reflection.BindingFlags)">
             <summary>
             检索字段信息
             </summary>
             <param name="objectType">类</param>
             <param name="fieldName">字段名</param>
+            <param name="bindingAttr">BindingFlags</param>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.FindMemberInfo(System.Type,System.String,System.Boolean)">
             <summary>
