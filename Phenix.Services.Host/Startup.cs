@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -117,6 +118,11 @@ namespace Phenix.Services.Host
                     options.SerializerSettings.DateFormatString = Utilities.JsonDateFormatString;
                     options.UseMemberCasing();
                 });
+             
+            /*
+             * 关闭自动验证——模型验证
+             */
+            services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
             /*
              * 配置转接头中间件（代理服务器和负载均衡器）
