@@ -11,12 +11,12 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.Actor.EntityGrainBase&lt;TKernel&gt;">
-    <Position X="0.5" Y="3.5" Width="3.75" />
+    <Position X="2.5" Y="3.5" Width="3.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>QFACAAAIAVIAAAAAgABAEAAAAAgIAAAAAAABAgAAAAA=</HashCode>
+      <HashCode>QFAAAAAIAUIAAAAAgAAAEAAAAAgAAAAAAAAAAgAAAAA=</HashCode>
       <FileName>EntityGrainBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -31,14 +31,15 @@
       <FileName>StreamProvider.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Phenix.Actor.StreamEntityGrainBase&lt;TKernel, TEvent&gt;">
-    <Position X="0.5" Y="8" Width="3" />
+  <Class Name="Phenix.Actor.StreamGrainBase&lt;TEvent&gt;">
+    <Position X="0.5" Y="8" Width="2.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AIAAAEAQAQAQAAAAAEEAAAAABAAAAQBABAAAAAAAjgA=</HashCode>
-      <FileName>StreamEntityGrainBase.cs</FileName>
+      <FileName>StreamGrainBase.cs</FileName>
+      <NewMemberFileName>StreamEntityGrainBase.cs</NewMemberFileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.Actor.TreeEntityGrainProxyBase&lt;T, TKernel, TGrainInterface&gt;">
@@ -54,7 +55,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.Actor.TreeEntityGrainBase&lt;TKernel&gt;">
-    <Position X="4.5" Y="3.5" Width="3.5" />
+    <Position X="6.5" Y="3.5" Width="3.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -65,7 +66,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.Actor.StreamTreeEntityGrainBase&lt;TKernel, TEvent&gt;">
-    <Position X="7" Y="8" Width="3.25" />
+    <Position X="9.75" Y="8" Width="3.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -86,17 +87,37 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.Actor.StreamTreeEntityGrainBase&lt;TKernel&gt;">
-    <Position X="3.75" Y="9.25" Width="3" />
+    <Position X="6.5" Y="9.25" Width="3" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>StreamTreeEntityGrainBase.cs</FileName>
       <NewMemberFileName>StreamEntityGrainBase.cs</NewMemberFileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Phenix.Actor.GrainBase">
+    <Position X="0.5" Y="3.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAFAAAAAAAABAAAAAAAAIAAAAAAABAAAAAAA=</HashCode>
+      <FileName>GrainBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="Phenix.Actor.StreamEntityGrainBase&lt;TKernel&gt;">
-    <Position X="3.75" Y="8" Width="2.75" />
+    <Position X="6.5" Y="8" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>StreamEntityGrainBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Actor.StreamEntityGrainBase&lt;TKernel, TEvent&gt;">
+    <Position X="3.25" Y="8" Width="3" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AIAAAEAQAQAQAAAAAEEAAAAABAAAAQBABAAAAAAAjgA=</HashCode>
       <FileName>StreamEntityGrainBase.cs</FileName>
     </TypeIdentifier>
   </Class>

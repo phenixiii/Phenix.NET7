@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Orleans;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Model;
@@ -11,7 +10,7 @@ namespace Phenix.Actor
     /// <summary>
     /// 实体Grain基类
     /// </summary>
-    public abstract class EntityGrainBase<TKernel> : Grain, IEntityGrain<TKernel>
+    public abstract class EntityGrainBase<TKernel> : GrainBase, IEntityGrain<TKernel>
         where TKernel : EntityBase<TKernel>
     {
         #region 属性
@@ -19,39 +18,9 @@ namespace Phenix.Actor
         /// <summary>
         /// 数据库入口
         /// </summary>
-        protected virtual Database Database
+        protected override Database Database
         {
             get { return _kernel != null ? _kernel.Database : Database.Default; }
-        }
-
-        private long? _id;
-
-        /// <summary>
-        /// ID(默认映射表主键XX_ID字段或获取自复合主键Key以默认映射AB关联表外键XX_A_ID字段之一)
-        /// </summary>
-        protected virtual long Id
-        {
-            get
-            {
-                if (!_id.HasValue)
-                    _id = GetPrimaryKeyLong(out _idExtension);
-                return _id.Value;
-            }
-        }
-
-        private long? _idExtension;
-
-        /// <summary>
-        /// ID扩展(如不为空说明获取自复合主键KeyExtension以默认映射AB关联表外键XX_B_ID字段之一)
-        /// </summary>
-        protected virtual long? IdExtension
-        {
-            get
-            {
-                if (!_idExtension.HasValue)
-                    _id = GetPrimaryKeyLong(out _idExtension);
-                return _idExtension;
-            }
         }
 
         private TKernel _kernel;
@@ -68,17 +37,6 @@ namespace Phenix.Actor
         #endregion
 
         #region 方法
-
-        private long GetPrimaryKeyLong(out long? idExtension)
-        {
-            string keyExtension;
-            long result = this.GetPrimaryKeyLong(out keyExtension);
-            if (!String.IsNullOrEmpty(keyExtension))
-                idExtension = Int64.Parse(keyExtension);
-            else
-                idExtension = null;
-            return result;
-        }
 
         /// <summary>
         /// 存在根实体对象

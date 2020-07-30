@@ -8,7 +8,7 @@ using Phenix.Core.Net.Filters;
 namespace Phenix.Services.Plugin.Api.Security
 {
     /// <summary>
-    /// 用户角色控制器
+    /// 角色控制器
     /// </summary>
     [Route(Phenix.Core.Net.Api.ApiConfig.ApiSecurityRolePath)]
     [ApiController]

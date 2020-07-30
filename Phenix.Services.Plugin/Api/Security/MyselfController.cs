@@ -32,7 +32,7 @@ namespace Phenix.Services.Plugin.Api.Security
         [HttpPatch]
         public async Task<int> Patch()
         {
-            return await User.Identity.UserProxy.PatchKernel(await Request.ReadBodyAsync<NameValue[]>(true));
+            return await User.Identity.UserProxy.PatchKernel(await Request.ReadBodyAsNameValuesAsync(true));
         }
     }
 }

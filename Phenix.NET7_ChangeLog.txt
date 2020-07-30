@@ -194,6 +194,11 @@ Copyright © 2007, 2020 Phenixヾ Studio
 4，提供统一的服务访问入口：/api/service/portal，能让客户端直接访问继承自Command<T>的对象的公共函数，访问授权的控制方法与控制器上的保持一致，同样可以在这些函数上打[AllowAnonymous]（或实现IAllowAnonymous的标签）、[Authorize]（或实现IAuthorizeData的标签）、继承自Phenix.Core.Net.Filters.AuthorizationFilter的标签，访问授权的角色配置是在第一次被访问时自动保存在PH7_Controller_Role表中，获取方法参考Phenix.Services.Plugin.Api.Security.RoleController，角色的动态配置可自行开发功能来编辑PH7_Controller_Role表
 
 
+20200728
+1，为Phenix.Actor工程添加GrainBase、StreamGrainBase类，以提供最基本的通用功能
+2，为Phenix.Core.Data.Database添加AppSettings属性，可将应用系统配置项持久化到数据库中
+
+
 待完成：
 2，添加《Phenix.Core.Security.身份验证方法.doc》
 3，适配双活数据中心的Actor状态跨地域同步机制

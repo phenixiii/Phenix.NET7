@@ -1,5 +1,4 @@
 ﻿using Orleans.Configuration;
-using Phenix.Core;
 using Phenix.Core.Data;
 
 namespace Phenix.Services.Host
@@ -14,8 +13,8 @@ namespace Phenix.Services.Host
         /// </summary>
         public static string ClusterId
         {
-            get { return AppSettings.GetProperty(ref _clusterId, Database.Default.DataSourceKey); }
-            set { AppSettings.SetProperty(ref _clusterId, value); }
+            get { return Phenix.Core.AppSettings.GetProperty(ref _clusterId, Database.Default.DataSourceKey); }
+            set { Phenix.Core.AppSettings.SetProperty(ref _clusterId, value); }
         }
 
         private static string _serviceId;
@@ -26,8 +25,8 @@ namespace Phenix.Services.Host
         /// </summary>
         public static string ServiceId
         {
-            get { return AppSettings.GetProperty(ref _serviceId, Database.Default.DataSourceKey); }
-            set { AppSettings.SetProperty(ref _serviceId, value); }
+            get { return Phenix.Core.AppSettings.GetProperty(ref _serviceId, Database.Default.DataSourceKey); }
+            set { Phenix.Core.AppSettings.SetProperty(ref _serviceId, value); }
         }
 
         private static string _connectionString;
@@ -38,8 +37,8 @@ namespace Phenix.Services.Host
         /// </summary>
         public static string ConnectionString
         {
-            get { return AppSettings.GetProperty(ref _connectionString, Database.Default.ConnectionString, true); }
-            set { AppSettings.SetProperty(ref _connectionString, value, true); }
+            get { return Phenix.Core.AppSettings.GetProperty(ref _connectionString, Database.Default.ConnectionString, true); }
+            set { Phenix.Core.AppSettings.SetProperty(ref _connectionString, value, true); }
         }
 
         private static int? _defaultSiloPort; //注意: 需将字段定义为Nullable<T>类型，以便AppSettings区分是否曾被自己初始化
@@ -50,8 +49,8 @@ namespace Phenix.Services.Host
         /// </summary>
         public static int DefaultSiloPort
         {
-            get { return AppSettings.GetProperty(ref _defaultSiloPort, EndpointOptions.DEFAULT_SILO_PORT); }
-            set { AppSettings.SetProperty(ref _defaultSiloPort, value); }
+            get { return Phenix.Core.AppSettings.GetProperty(ref _defaultSiloPort, EndpointOptions.DEFAULT_SILO_PORT); }
+            set { Phenix.Core.AppSettings.SetProperty(ref _defaultSiloPort, value); }
         }
 
         private static int? _defaultGatewayPort; //注意: 需将字段定义为Nullable<T>类型，以便AppSettings区分是否曾被自己初始化
@@ -62,8 +61,8 @@ namespace Phenix.Services.Host
         /// </summary>
         public static int DefaultGatewayPort
         {
-            get { return AppSettings.GetProperty(ref _defaultGatewayPort, EndpointOptions.DEFAULT_GATEWAY_PORT); }
-            set { AppSettings.SetProperty(ref _defaultGatewayPort, value); }
+            get { return Phenix.Core.AppSettings.GetProperty(ref _defaultGatewayPort, EndpointOptions.DEFAULT_GATEWAY_PORT); }
+            set { Phenix.Core.AppSettings.SetProperty(ref _defaultGatewayPort, value); }
         }
 
         private static string _dashboardUsername;
@@ -74,8 +73,8 @@ namespace Phenix.Services.Host
         /// </summary>
         public static string DashboardUsername
         {
-            get { return AppSettings.GetProperty(ref _dashboardUsername, (string) null); }
-            set { AppSettings.SetProperty(ref _dashboardUsername, value); }
+            get { return Phenix.Core.AppSettings.GetProperty(ref _dashboardUsername, (string) null); }
+            set { Phenix.Core.AppSettings.SetProperty(ref _dashboardUsername, value); }
         }
 
         private static string _dashboardPassword;
@@ -86,8 +85,8 @@ namespace Phenix.Services.Host
         /// </summary>
         public static string DashboardPassword
         {
-            get { return AppSettings.GetProperty(ref _dashboardPassword, (string) null, true); }
-            set { AppSettings.SetProperty(ref _dashboardPassword, value, true); }
+            get { return Phenix.Core.AppSettings.GetProperty(ref _dashboardPassword, (string) null, true); }
+            set { Phenix.Core.AppSettings.SetProperty(ref _dashboardPassword, value, true); }
         }
 
         private static string _dashboardHost;
@@ -98,8 +97,8 @@ namespace Phenix.Services.Host
         /// </summary>
         public static string DashboardHost
         {
-            get { return AppSettings.GetProperty(ref _dashboardHost, "*"); }
-            set { AppSettings.SetProperty(ref _dashboardHost, value); }
+            get { return Phenix.Core.AppSettings.GetProperty(ref _dashboardHost, "*"); }
+            set { Phenix.Core.AppSettings.SetProperty(ref _dashboardHost, value); }
         }
 
         private static int? _dashboardPort; //注意: 需将字段定义为Nullable<T>类型，以便AppSettings区分是否曾被自己初始化
@@ -110,8 +109,8 @@ namespace Phenix.Services.Host
         /// </summary>
         public static int DashboardPort
         {
-            get { return AppSettings.GetProperty(ref _dashboardPort, 8088); }
-            set { AppSettings.SetProperty(ref _dashboardPort, value); }
+            get { return Phenix.Core.AppSettings.GetProperty(ref _dashboardPort, 8088); }
+            set { Phenix.Core.AppSettings.SetProperty(ref _dashboardPort, value); }
         }
 
         private static bool? _dashboardHostSelf; //注意: 需将字段定义为Nullable<T>类型，以便AppSettings区分是否曾被自己初始化
@@ -122,8 +121,8 @@ namespace Phenix.Services.Host
         /// </summary>
         public static bool DashboardHostSelf
         {
-            get { return AppSettings.GetProperty(ref _dashboardHostSelf, true); }
-            set { AppSettings.SetProperty(ref _dashboardHostSelf, value); }
+            get { return Phenix.Core.AppSettings.GetProperty(ref _dashboardHostSelf, true); }
+            set { Phenix.Core.AppSettings.SetProperty(ref _dashboardHostSelf, value); }
         }
 
         private static int? _dashboardCounterUpdateIntervalMs; //注意: 需将字段定义为Nullable<T>类型，以便AppSettings区分是否曾被自己初始化
@@ -134,8 +133,8 @@ namespace Phenix.Services.Host
         /// </summary>
         public static int DashboardCounterUpdateIntervalMs
         {
-            get { return AppSettings.GetProperty(ref _dashboardCounterUpdateIntervalMs, 10000); }
-            set { AppSettings.SetProperty(ref _dashboardCounterUpdateIntervalMs, value); }
+            get { return Phenix.Core.AppSettings.GetProperty(ref _dashboardCounterUpdateIntervalMs, 10000); }
+            set { Phenix.Core.AppSettings.SetProperty(ref _dashboardCounterUpdateIntervalMs, value); }
         }
     }
 }

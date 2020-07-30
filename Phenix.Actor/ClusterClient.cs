@@ -4,7 +4,6 @@ using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
 using Orleans.Runtime.Messaging;
-using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.SyncCollections;
 
@@ -27,8 +26,8 @@ namespace Phenix.Actor
         /// </summary>
         public static string ClusterId
         {
-            get { return AppSettings.GetProperty(ref _clusterId, Database.Default.DataSourceKey); }
-            set { AppSettings.SetProperty(ref _clusterId, value); }
+            get { return Phenix.Core.AppSettings.GetProperty(ref _clusterId, Database.Default.DataSourceKey); }
+            set { Phenix.Core.AppSettings.SetProperty(ref _clusterId, value); }
         }
 
         private static string _serviceId;
@@ -39,8 +38,8 @@ namespace Phenix.Actor
         /// </summary>
         public static string ServiceId
         {
-            get { return AppSettings.GetProperty(ref _serviceId, Database.Default.DataSourceKey); }
-            set { AppSettings.SetProperty(ref _serviceId, value); }
+            get { return Phenix.Core.AppSettings.GetProperty(ref _serviceId, Database.Default.DataSourceKey); }
+            set { Phenix.Core.AppSettings.SetProperty(ref _serviceId, value); }
         }
 
         private static string _connectionString;
@@ -51,8 +50,8 @@ namespace Phenix.Actor
         /// </summary>
         public static string ConnectionString
         {
-            get { return AppSettings.GetProperty(ref _connectionString, Database.Default.ConnectionString, true); }
-            set { AppSettings.SetProperty(ref _connectionString, value, true); }
+            get { return Phenix.Core.AppSettings.GetProperty(ref _connectionString, Database.Default.ConnectionString, true); }
+            set { Phenix.Core.AppSettings.SetProperty(ref _connectionString, value, true); }
         }
 
         #endregion

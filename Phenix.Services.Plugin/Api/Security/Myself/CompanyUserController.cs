@@ -55,7 +55,7 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         [HttpPatch]
         public async Task<int> Patch(string name)
         {
-            return await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).PatchCompanyUser(name, await Request.ReadBodyAsync<NameValue[]>(true));
+            return await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).PatchCompanyUser(name, await Request.ReadBodyAsNameValuesAsync(true));
         }
     }
 }

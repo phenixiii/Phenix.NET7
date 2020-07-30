@@ -11,7 +11,7 @@ using Phenix.Services.Plugin.Actor;
 namespace Phenix.Services.Plugin.Api.Security
 {
     /// <summary>
-    /// 用户岗位控制器
+    /// 岗位控制器
     /// </summary>
     [Route(Phenix.Core.Net.Api.ApiConfig.ApiSecurityPositionPath)]
     [ApiController]
@@ -47,10 +47,10 @@ namespace Phenix.Services.Plugin.Api.Security
         /// <returns>更新记录数</returns>
         [SystemAdminFilter]
         [Authorize]
-        [HttpPost]
-        public async Task<int> Post(long id)
+        [HttpPut]
+        public async Task<int> Put(long id)
         {
-            return await ClusterClient.Default.GetGrain<IPositionGrain>(id).PatchKernel(await Request.ReadBodyAsync<NameValue[]>());
+            return await ClusterClient.Default.GetGrain<IPositionGrain>(id).PatchKernel(await Request.ReadBodyAsNameValuesAsync());
         }
     }
 }

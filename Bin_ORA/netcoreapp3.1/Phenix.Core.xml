@@ -141,7 +141,7 @@
         </member>
         <member name="T:Phenix.Core.AppSettings">
             <summary>
-            应用系统配置工具(配套Phenix.Core.db的PH7_AppSettings表)
+            应用配置(配套Phenix.Core.db的PH7_AppSettings表)
             </summary>
         </member>
         <member name="M:Phenix.Core.AppSettings.SaveValue(System.String,System.String,System.Boolean)">
@@ -190,6 +190,71 @@
             <param name="allowSave">允许保存状态信息?</param>
         </member>
         <member name="M:Phenix.Core.AppSettings.GetProperty``2(System.String,``0@,``1,System.Boolean,System.Boolean)">
+            <summary>
+            获取属性值
+            </summary>
+            <param name="key">键</param>
+            <param name="field">属性字段</param>
+            <param name="defaultValue">缺省值</param>
+            <param name="inEncrypt">是否加密</param>
+            <param name="allowSave">允许保存状态信息?</param>
+        </member>
+        <member name="T:Phenix.Core.Data.AppSettings">
+            <summary>
+            应用配置
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Data.AppSettings.Database">
+            <summary>
+            数据库入口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.AppSettings.SaveValue(System.String,System.String,System.Boolean)">
+            <summary>
+            保存信息
+            </summary>
+            <param name="key">键</param>
+            <param name="value">值</param>
+            <param name="inEncrypt">是否加密</param>
+        </member>
+        <member name="M:Phenix.Core.Data.AppSettings.ReadValue(System.String,System.Boolean)">
+            <summary>
+            读取信息
+            </summary>
+            <param name="key">键</param>
+            <param name="inEncrypt">是否加密</param>
+        </member>
+        <member name="M:Phenix.Core.Data.AppSettings.SetProperty``2(``0@,``1,System.Boolean,System.Boolean)">
+            <summary>
+            设置属性值
+            key = null
+            </summary>
+            <param name="field">属性字段</param>
+            <param name="newValue">新值</param>
+            <param name="inEncrypt">是否加密</param>
+            <param name="allowSave">允许保存状态信息?</param>
+        </member>
+        <member name="M:Phenix.Core.Data.AppSettings.SetProperty``2(System.String,``0@,``1,System.Boolean,System.Boolean)">
+            <summary>
+            设置属性值
+            </summary>
+            <param name="key">键</param>
+            <param name="field">属性字段</param>
+            <param name="newValue">新值</param>
+            <param name="inEncrypt">是否加密</param>
+            <param name="allowSave">允许保存状态信息?</param>
+        </member>
+        <member name="M:Phenix.Core.Data.AppSettings.GetProperty``2(``0@,``1,System.Boolean,System.Boolean)">
+            <summary>
+            获取属性值
+            key = null
+            </summary>
+            <param name="field">属性字段</param>
+            <param name="defaultValue">缺省值</param>
+            <param name="inEncrypt">是否加密</param>
+            <param name="allowSave">允许保存状态信息?</param>
+        </member>
+        <member name="M:Phenix.Core.Data.AppSettings.GetProperty``2(System.String,``0@,``1,System.Boolean,System.Boolean)">
             <summary>
             获取属性值
             </summary>
@@ -1911,6 +1976,11 @@
             元数据
             </summary>
         </member>
+        <member name="P:Phenix.Core.Data.Database.AppSettings">
+            <summary>
+            应用配置
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Data.Database.Sequence">
             <summary>
             64位序号
@@ -1930,6 +2000,13 @@
             <summary>
             重置元数据
             </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.GetHandle(System.Object)">
+            <summary>
+            获取实际操作的数据库入口
+            </summary>
+            <param name="routeKey">路由键</param>
+            <returns>Handles[routeKey != null ? Math.Abs(routeKey.GetHashCode()) % (Handles.Count + 1) : 0]</returns>
         </member>
         <member name="M:Phenix.Core.Data.Database.GetConnection">
             <summary>
@@ -3548,13 +3625,6 @@
             <summary>
             初始化自己
             </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.GetHandle(Phenix.Core.Data.Schema.Sheet)">
-            <summary>
-            获取实际操作的单子(取Root映射RouteColumns[0]的属性值作为路由键)
-            </summary>
-            <param name="sheet">单子</param>
-            <returns>表/视图</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.NewDetail``1">
             <summary>
@@ -5911,6 +5981,13 @@
             获取实际操作的单子
             </summary>
             <param name="routeKey">路由键</param>
+            <returns>Handles[routeKey != null ? Math.Abs(routeKey.GetHashCode()) % (Handles.Count + 1) : 0]</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.GetHandle``1(``0)">
+            <summary>
+            获取实际操作的单子(取实体的路由字段值作为路由键)
+            </summary>
+            <param name="entity">实体</param>
             <returns>Handles[routeKey != null ? Math.Abs(routeKey.GetHashCode()) % (Handles.Count + 1) : 0]</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.GetFields(System.Type,System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
@@ -10245,7 +10322,7 @@
             访问授权过滤器
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Filters.ControllerRole.CheckValidity(Phenix.Core.Security.Identity,Microsoft.AspNetCore.Http.HttpContext)">
+        <member name="M:Phenix.Core.Net.Filters.ControllerRole.CheckValidityAsync(Phenix.Core.Security.Identity,Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
             检查有效性
             </summary>
@@ -11807,6 +11884,13 @@
             <summary>
             用户身份
             </summary>
+        </member>
+        <member name="M:Phenix.Core.Security.Principal.IsInRoleAsync(System.String)">
+            <summary>
+            确定是否属于指定的角色
+            </summary>
+            <param name="role">角色</param>
+            <returns>属于指定的角色</returns>
         </member>
         <member name="M:Phenix.Core.Security.Principal.IsInRole(System.String)">
             <summary>
@@ -13910,6 +13994,14 @@
             <returns>报文主体</returns>
         </member>
         <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.ReadBodyAsync``1(Microsoft.AspNetCore.Http.HttpRequest,System.Boolean)">
+            <summary>
+            获取报文主体
+            </summary>
+            <param name="request">HttpRequest</param>
+            <param name="decrypt">需要解密</param>
+            <returns>报文主体</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.ReadBodyAsNameValuesAsync(Microsoft.AspNetCore.Http.HttpRequest,System.Boolean)">
             <summary>
             获取报文主体
             </summary>
