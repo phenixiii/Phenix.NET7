@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Phenix.Core.Actor;
@@ -91,14 +92,41 @@ namespace Phenix.Actor
         /// <summary>
         /// 更新根实体对象(如不存在则新增)
         /// </summary>
-        /// <param name="propertyValues">待更新属性值队列</param>
-        /// <returns>是否成功</returns>
-        public async Task<int> PatchKernelAsync(params NameValue[] propertyValues)
+        /// <param name="source">数据源</param>
+        public async Task PatchKernelAsync(TKernel source)
         {
-            return await Grain.PatchKernel(propertyValues);
+            await Grain.PatchKernel(source);
         }
 
-        Task<int> IEntityGrainProxy<TKernel>.PatchKernel(params NameValue[] propertyValues)
+        Task IEntityGrainProxy<TKernel>.PatchKernel(TKernel source)
+        {
+            return PatchKernelAsync(source);
+        }
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        public async Task PatchKernelAsync(params NameValue[] propertyValues)
+        {
+            await Grain.PatchKernel(propertyValues);
+        }
+
+        Task IEntityGrainProxy<TKernel>.PatchKernel(params NameValue[] propertyValues)
+        {
+            return PatchKernelAsync(propertyValues);
+        }
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        public async Task PatchKernelAsync(IDictionary<string, object> propertyValues)
+        {
+            await Grain.PatchKernel(propertyValues);
+        }
+
+        Task IEntityGrainProxy<TKernel>.PatchKernel(IDictionary<string, object> propertyValues)
         {
             return PatchKernelAsync(propertyValues);
         }

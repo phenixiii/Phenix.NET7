@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Data;
-using Phenix.Core.Data.Schema;
 using Phenix.Core.Net.Filters;
 
 namespace Demo.IDOS.Plugin.Api.DepotNorm
@@ -44,14 +43,13 @@ namespace Demo.IDOS.Plugin.Api.DepotNorm
         /// <summary>
         /// 更新仓库资料(如不存在则新增)
         /// </summary>
-        /// <param name="id">仓库ID</param>
-        /// <returns>更新记录数</returns>
+        /// <param name="depot">仓库</param>
         [CompanyAdminFilter]
         [Authorize]
-        [HttpPost]
-        public async Task<int> Post(long id)
+        [HttpPatch]
+        public async Task Patch([FromBody] DdnDepot depot)
         {
-            return await ClusterClient.Default.GetGrain<IDepotGrain>(id).PatchKernel(await Request.ReadBodyAsync<NameValue[]>());
+            await ClusterClient.Default.GetGrain<IDepotGrain>(depot.Id).PatchKernel(depot);
         }
     }
 }

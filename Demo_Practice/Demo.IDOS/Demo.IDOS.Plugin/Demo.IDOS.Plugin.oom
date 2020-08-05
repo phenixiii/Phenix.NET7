@@ -1369,7 +1369,7 @@ Shadow=0</a:DisplayPreferences>
 <o:TransitionSymbol Id="o5">
 <a:CreationDate>1581421983</a:CreationDate>
 <a:ModificationDate>1593438789</a:ModificationDate>
-<a:Rect>((-18010,2239), (1270,3756))</a:Rect>
+<a:Rect>((-18010,2239), (1270,3763))</a:Rect>
 <a:ListOfPoints>((-17610,2864),(870,2864))</a:ListOfPoints>
 <a:CornerStyle>2</a:CornerStyle>
 <a:ArrowStyle>1</a:ArrowStyle>
@@ -1390,7 +1390,7 @@ DESTINATION 0 新宋体,8,N</a:FontList>
 <o:TransitionSymbol Id="o9">
 <a:CreationDate>1581421985</a:CreationDate>
 <a:ModificationDate>1593438791</a:ModificationDate>
-<a:Rect>((3469,2239), (17590,3759))</a:Rect>
+<a:Rect>((3469,2239), (17590,3763))</a:Rect>
 <a:ListOfPoints>((3869,2864),(17190,2864))</a:ListOfPoints>
 <a:CornerStyle>2</a:CornerStyle>
 <a:ArrowStyle>1</a:ArrowStyle>
@@ -1454,7 +1454,7 @@ DESTINATION 0 新宋体,8,N</a:FontList>
 <o:TransitionSymbol Id="o17">
 <a:CreationDate>1593438267</a:CreationDate>
 <a:ModificationDate>1593438912</a:ModificationDate>
-<a:Rect>((-11120,1959), (4269,9679))</a:Rect>
+<a:Rect>((-11120,1964), (4269,9679))</a:Rect>
 <a:ListOfPoints>((3869,2864),(-10495,2864),(-10495,9279))</a:ListOfPoints>
 <a:CornerStyle>2</a:CornerStyle>
 <a:ArrowStyle>1</a:ArrowStyle>
@@ -1551,11 +1551,11 @@ LABL 0 Arial,8,N</a:FontList>
 <o:NoteSymbol Id="o23">
 <a:Text>{\rtf1\ansi\ansicpg936\deff0\nouicompat\deflang1033\deflangfe2052{\fonttbl{\f0\froman\fcharset134 \&#39;ce\&#39;a2\&#39;c8\&#39;ed\&#39;d1\&#39;c5\&#39;ba\&#39;da;}{\f1\fnil\fcharset0 Microsoft Sans Serif;}{\f2\fnil\fcharset2 Symbol;}}
 {\*\generator Riched20 10.0.18362}\viewkind4\uc1 
-\pard{\pntext\f2\&#39;B7\tab}{\*\pn\pnlvlblt\pnf2\pnindent250{\pntxtb\&#39;B7}}\li250\f0\fs20\lang2052\&#39;bd\&#39;f6\f1\lang1033 Plan\f0\&#39;d7\&#39;b4\&#39;cc\&#39;ac\lang2052\&#39;cf\&#39;c2\lang1033\&#39;d4\&#39;ca\&#39;d0\&#39;ed\&#39;d0\&#39;de\&#39;b8\&#39;c4\&#39;d4\&#39;a4\&#39;d4\&#39;bc\&#39;b5\&#39;a5\&#39;c4\&#39;da\&#39;c8\&#39;dd\f1\lang2052\par
+\pard{\pntext\f2\&#39;B7\tab}{\*\pn\pnlvlblt\pnf2\pnindent250{\pntxtb\&#39;B7}}\li250\f0\fs20\lang2052\&#39;bd\&#39;f6\f1\lang1033 Plannig\f0\&#39;d7\&#39;b4\&#39;cc\&#39;ac\lang2052\&#39;cf\&#39;c2\lang1033\&#39;d4\&#39;ca\&#39;d0\&#39;ed\&#39;d0\&#39;de\&#39;b8\&#39;c4\&#39;d4\&#39;a4\&#39;d4\&#39;bc\&#39;b5\&#39;a5\&#39;c4\&#39;da\&#39;c8\&#39;dd\f1\lang2052\par
 }
 </a:Text>
 <a:CreationDate>1593438493</a:CreationDate>
-<a:ModificationDate>1593479452</a:ModificationDate>
+<a:ModificationDate>1596617749</a:ModificationDate>
 <a:Rect>((11309,-10531), (-11095,-1985))</a:Rect>
 <a:TextStyle>4113</a:TextStyle>
 <a:AutoAdjustToText>0</a:AutoAdjustToText>

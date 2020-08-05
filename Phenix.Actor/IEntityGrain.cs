@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Phenix.Core.Data.Model;
 using Phenix.Core.Data.Schema;
 
@@ -27,9 +28,20 @@ namespace Phenix.Actor
         /// <summary>
         /// 更新根实体对象(如不存在则新增)
         /// </summary>
+        /// <param name="source">数据源</param>
+        Task PatchKernel(TKernel source);
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
-        /// <returns>更新记录数</returns>
-        Task<int> PatchKernel(params NameValue[] propertyValues);
+        Task PatchKernel(params NameValue[] propertyValues);
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        Task PatchKernel(IDictionary<string, object> propertyValues);
 
         /// <summary>
         /// 获取根实体对象属性值

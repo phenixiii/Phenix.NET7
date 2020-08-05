@@ -1,5 +1,4 @@
 using Phenix.Core.Data.Model;
-using Phenix.Core.Data.Rule;
 
 /* 
    builder:    phenixiii
@@ -22,9 +21,10 @@ namespace Demo.IDOS.Plugin.Business.DepotNorm
         }
 
         [Newtonsoft.Json.JsonConstructor]
-        public DdnDepot(long id, string name, short unitNumber, short blockNumber, short platformNumber, short maxTier, short maxRow, short maxBay, short bookingTimeInterval, bool shut) 
+        public DdnDepot(string dataSourceKey, long id, 
+            string name, short unitNumber, short blockNumber, short platformNumber, short maxTier, short maxRow, short maxBay, bool shut)
+            : base(dataSourceKey, id)
         {
-            _id = id;
             _name = name;
             _unitNumber = unitNumber;
             _blockNumber = blockNumber;
@@ -32,7 +32,6 @@ namespace Demo.IDOS.Plugin.Business.DepotNorm
             _maxTier = maxTier;
             _maxRow = maxRow;
             _maxBay = maxBay;
-            _bookingTimeInterval = bookingTimeInterval;
             _shut = shut;
         }
 
@@ -44,7 +43,6 @@ namespace Demo.IDOS.Plugin.Business.DepotNorm
             _maxTier = 8;
             _maxRow = 10;
             _maxBay = 20;
-            _bookingTimeInterval = 3;
             _shut = false;
         }
 
@@ -123,18 +121,6 @@ namespace Demo.IDOS.Plugin.Business.DepotNorm
         {
             get { return _maxBay; }
             set { _maxBay = value; }
-        }
-
-        private short _bookingTimeInterval;
-        /// <summary>
-        /// 预约时间间隔(小时)
-        /// </summary>
-        [Divisible(24)] //从0时计起将一天切为N等份，X取值范围仅允许24小时被X整除
-        [System.ComponentModel.DataAnnotations.Display(Description = "预约时间间隔(小时)")]
-        public short BookingTimeInterval
-        {
-            get { return _bookingTimeInterval; }
-            set { _bookingTimeInterval = value; }
         }
 
         private bool _shut;

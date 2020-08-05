@@ -43,7 +43,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.Actor.TreeEntityGrainProxyBase&lt;T, TKernel, TGrainInterface&gt;">
-    <Position X="4.75" Y="13" Width="3.75" />
+    <Position X="4.75" Y="13" Width="4.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -55,7 +55,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.Actor.TreeEntityGrainBase&lt;TKernel&gt;">
-    <Position X="6.5" Y="3.5" Width="3.5" />
+    <Position X="6.5" Y="3.5" Width="3.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>

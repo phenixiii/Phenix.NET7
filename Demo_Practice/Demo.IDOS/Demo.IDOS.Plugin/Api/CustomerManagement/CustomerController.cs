@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Data;
-using Phenix.Core.Data.Schema;
 using Phenix.Core.Net.Filters;
 
 namespace Demo.IDOS.Plugin.Api.CustomerManagement
@@ -22,6 +21,7 @@ namespace Demo.IDOS.Plugin.Api.CustomerManagement
         /// 获取客户资料
         /// </summary>
         /// <returns>客户资料</returns>
+        [CompanyAdminFilter]
         [Authorize]
         [HttpGet]
         public IList<DcmCustomer> Get()
@@ -34,6 +34,7 @@ namespace Demo.IDOS.Plugin.Api.CustomerManagement
         /// </summary>
         /// <param name="id">客户ID</param>
         /// <returns>客户资料</returns>
+        [CompanyAdminFilter]
         [Authorize]
         [HttpGet]
         public async Task<DcmCustomer> Get(long id)
@@ -44,14 +45,13 @@ namespace Demo.IDOS.Plugin.Api.CustomerManagement
         /// <summary>
         /// 更新客户资料(如不存在则新增)
         /// </summary>
-        /// <param name="id">客户ID</param>
-        /// <returns>更新记录数</returns>
+        /// <param name="customer">客户</param>
         [CompanyAdminFilter]
         [Authorize]
-        [HttpPost]
-        public async Task<int> Post(long id)
+        [HttpPatch]
+        public async Task Patch([FromBody] DcmCustomer customer)
         {
-            return await ClusterClient.Default.GetGrain<ICustomerGrain>(id).PatchKernel(await Request.ReadBodyAsync<NameValue[]>());
+            await ClusterClient.Default.GetGrain<ICustomerGrain>(customer.Id).PatchKernel(customer);
         }
     }
 }

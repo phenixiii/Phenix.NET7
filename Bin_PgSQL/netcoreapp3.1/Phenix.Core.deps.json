@@ -9,7 +9,7 @@
       "Phenix.Core/7.3.38": {
         "dependencies": {
           "Newtonsoft.Json": "12.0.3",
-          "Npgsql": "4.1.3.1",
+          "Npgsql": "4.1.4",
           "System.Data.SQLite.Core": "1.0.113.1"
         },
         "runtime": {
@@ -24,14 +24,14 @@
           }
         }
       },
-      "Npgsql/4.1.3.1": {
+      "Npgsql/4.1.4": {
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "4.6.0"
         },
         "runtime": {
           "lib/netcoreapp3.0/Npgsql.dll": {
-            "assemblyVersion": "4.1.3.1",
-            "fileVersion": "4.1.3.1"
+            "assemblyVersion": "4.1.4.0",
+            "fileVersion": "4.1.4.0"
           }
         }
       },
@@ -101,12 +101,12 @@
       "path": "newtonsoft.json/12.0.3",
       "hashPath": "newtonsoft.json.12.0.3.nupkg.sha512"
     },
-    "Npgsql/4.1.3.1": {
+    "Npgsql/4.1.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-354pl/Picmt5/AIrm8urFwtxfK4n4NbmfBnLA9yvP8VtILSQF3/sFo3+lGuz+q4iyD18QeNFy0NMNBzsocFVlw==",
-      "path": "npgsql/4.1.3.1",
-      "hashPath": "npgsql.4.1.3.1.nupkg.sha512"
+      "sha512": "sha512-qLwnSF7GAAxxrNFH3EprG352CJbhTCIDkk9PJ3/6aBeMOZBq+QMI1Yxsi9aUrBJwE51PaMLIYw0eq/bv9CGQTw==",
+      "path": "npgsql/4.1.4",
+      "hashPath": "npgsql.4.1.4.nupkg.sha512"
     },
     "System.Data.SQLite.Core/1.0.113.1": {
       "type": "package",

@@ -21,9 +21,10 @@ namespace Demo.IDOS.Plugin.Business.CustomerManagement
         }
 
         [Newtonsoft.Json.JsonConstructor]
-        public DcmCustomer(long id, string code, string shortName, string name, bool disabled) 
+        public DcmCustomer(string dataSourceKey, long id, 
+            string code, string shortName, string name, bool disabled)
+            : base(dataSourceKey, id)
         {
-            _id = id;
             _code = code;
             _shortName = shortName;
             _name = name;

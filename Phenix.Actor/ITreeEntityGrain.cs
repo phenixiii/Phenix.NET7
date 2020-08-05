@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Phenix.Core.Data.Model;
 using Phenix.Core.Data.Schema;
 
@@ -29,26 +30,38 @@ namespace Phenix.Actor
         Task<long> AddChildNode(long parentId, params NameValue[] propertyValues);
 
         /// <summary>
+        /// 添加子节点
+        /// </summary>
+        /// <param name="parentId">父节点ID</param>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        /// <returns>子节点ID</returns>
+        Task<long> AddChildNode(long parentId, IDictionary<string, object> propertyValues);
+
+        /// <summary>
         /// 更改父节点
         /// </summary>
         /// <param name="id">节点ID</param>
         /// <param name="parentId">父节点ID</param>
-        /// <returns>更新记录数</returns>
-        Task<int> ChangeParentNode(long id, long parentId);
+        Task ChangeParentNode(long id, long parentId);
 
         /// <summary>
         /// 更新节点
         /// </summary>
         /// <param name="id">节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        /// <returns>更新记录数</returns>
-        Task<int> UpdateNode(long id, params NameValue[] propertyValues);
+        Task UpdateNode(long id, params NameValue[] propertyValues);
+
+        /// <summary>
+        /// 更新节点
+        /// </summary>
+        /// <param name="id">节点ID</param>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        Task UpdateNode(long id, IDictionary<string, object> propertyValues);
 
         /// <summary>
         /// 删除节点枝杈
         /// </summary>
         /// <param name="id">节点ID</param>
-        /// <returns>更新记录数</returns>
         Task<int> DeleteBranch(long id);
 
         #endregion

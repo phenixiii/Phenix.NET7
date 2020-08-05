@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Core.Message;
-using Phenix.Core.Reflection;
 
 namespace Phenix.Services.Plugin.Api.Message
 {
@@ -20,9 +20,9 @@ namespace Phenix.Services.Plugin.Api.Message
         /// <returns>结果集(消息ID-消息内容)</returns>
         [Authorize]
         [HttpGet]
-        public string Receive()
+        public IDictionary<long, string> Receive()
         {
-            return Utilities.JsonSerialize(UserMessage.Receive(User.Identity.Name));
+            return UserMessage.Receive(User.Identity.Name);
         }
 
         // phAjax.sendMessage()

@@ -136,7 +136,7 @@ namespace Phenix.Services.Plugin.Actor
                 if (Kernel != null)
                 {
                     Kernel.Activate();
-                    Kernel.ChangePassword(Kernel.Password, password, false);
+                    Kernel.ChangePassword(Kernel.Password, password, false, requestAddress);
                 }
                 else
                     Register(null, null, Name, requestAddress, password, null, false);
@@ -173,12 +173,12 @@ namespace Phenix.Services.Plugin.Actor
             return Task.FromResult(Kernel.IsValid(timestamp, signature, requestAddress, throwIfNotConform));
         }
 
-        Task<bool> IUserGrain.ChangePassword(string password, string newPassword, bool throwIfNotConform)
+        Task<bool> IUserGrain.ChangePassword(string password, string newPassword, string requestAddress, bool throwIfNotConform)
         {
             if (Kernel == null)
                 throw new UserNotFoundException();
 
-            return Task.FromResult(Kernel.ChangePassword(password, newPassword, true, throwIfNotConform));
+            return Task.FromResult(Kernel.ChangePassword(password, newPassword, true, requestAddress, throwIfNotConform));
         }
 
         #region CompanyAdmin 操作功能
@@ -201,7 +201,7 @@ namespace Phenix.Services.Plugin.Actor
                 throw new SecurityException("需事先搭建自己公司的组织架构!");
         }
 
-        private void CheckCompanyTeams(long rootTeamsId)
+        private void CheckCompanyTeams(long? rootTeamsId)
         {
             if (Kernel == null)
                 throw new UserNotFoundException();
@@ -244,18 +244,20 @@ namespace Phenix.Services.Plugin.Actor
             return null;
         }
 
-        Task<int> IUserGrain.PatchCompanyUser(string name, params NameValue[] propertyValues)
+        Task IUserGrain.PatchCompanyUser(string name, IDictionary<string, object> propertyValues)
         {
             CheckCompanyTeams();
 
-            return ClusterClient.Default.GetGrain<IUserGrain>(name).Patch(Kernel.RootTeamsId.Value, propertyValues);
+            ClusterClient.Default.GetGrain<IUserGrain>(name).Patch(Kernel.RootTeamsId, propertyValues);
+            return Task.CompletedTask;
         }
 
-        Task<int> IUserGrain.Patch(long rootTeamsId, params NameValue[] propertyValues)
+        Task IUserGrain.Patch(long? rootTeamsId, IDictionary<string, object> propertyValues)
         {
             CheckCompanyTeams(rootTeamsId);
 
-            return Task.FromResult(Kernel.UpdateSelf(propertyValues));
+            Kernel.UpdateSelf(propertyValues);
+            return Task.CompletedTask;
         }
 
         #endregion

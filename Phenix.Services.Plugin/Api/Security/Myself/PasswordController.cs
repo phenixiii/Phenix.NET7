@@ -23,7 +23,7 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         public async Task<bool> Put()
         {
             string[] passwords = (await Request.ReadBodyAsStringAsync(true)).Split(Standards.RowSeparator);
-            return await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).ChangePassword(passwords[0], passwords[1], true);
+            return await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).ChangePassword(passwords[0], passwords[1], Request.GetRemoteAddress(), true);
         }
     }
 }

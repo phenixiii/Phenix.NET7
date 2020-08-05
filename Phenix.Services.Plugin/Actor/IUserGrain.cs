@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Orleans;
 using Phenix.Actor;
-using Phenix.Core.Data.Schema;
 using Phenix.Core.Security;
 
 namespace Phenix.Services.Plugin.Actor
@@ -63,9 +62,10 @@ namespace Phenix.Services.Plugin.Actor
         /// </summary>
         /// <param name="password">登录口令</param>
         /// <param name="newPassword">新登录口令</param>
+        /// <param name="requestAddress">服务请求方IP地址</param>
         /// <param name="throwIfNotConform">如果为 true, 账号无效或口令不规范会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserPasswordComplexityException异常而不是返回false</param>
         /// <returns>是否成功</returns>
-        Task<bool> ChangePassword(string password, string newPassword, bool throwIfNotConform);
+        Task<bool> ChangePassword(string password, string newPassword, string requestAddress, bool throwIfNotConform);
 
         /// <summary>
         /// 更新顶层团体
@@ -111,15 +111,13 @@ namespace Phenix.Services.Plugin.Actor
         /// </summary>
         /// <param name="name">登录名</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        /// <returns>更新记录数</returns>
-        Task<int> PatchCompanyUser(string name, params NameValue[] propertyValues);
+        Task PatchCompanyUser(string name, IDictionary<string, object> propertyValues);
 
         /// <summary>
         /// 更新属性
         /// </summary>
         /// <param name="rootTeamsId">所属顶层团体ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        /// <returns>更新记录数</returns>
-        Task<int> Patch(long rootTeamsId, params NameValue[] propertyValues);
+        Task Patch(long? rootTeamsId, IDictionary<string, object> propertyValues);
     }
 }

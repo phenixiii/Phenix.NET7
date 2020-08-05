@@ -101,8 +101,8 @@ namespace Phenix.Client.Security.Myself
             get { return _phone; }
             set
             {
-                if (Patch(NameValue.Set<User>(p => p.Phone, value)) == 1)
-                    _phone = value;
+                Patch(NameValue.Set<User>(p => p.Phone, value));
+                _phone = value;
             }
         }
 
@@ -116,8 +116,8 @@ namespace Phenix.Client.Security.Myself
             get { return _eMail; }
             set
             {
-                if (Patch(NameValue.Set<User>(p => p.EMail, value)) == 1)
-                    _eMail = value;
+                Patch(NameValue.Set<User>(p => p.EMail, value));
+                _eMail = value;
             }
         }
 
@@ -131,8 +131,8 @@ namespace Phenix.Client.Security.Myself
             get { return _regAlias; }
             set
             {
-                if (Patch(NameValue.Set<User>(p => p.RegAlias, value)) == 1)
-                    _regAlias = value;
+                Patch(NameValue.Set<User>(p => p.RegAlias, value));
+                _regAlias = value;
             }
         }
 
@@ -218,11 +218,9 @@ namespace Phenix.Client.Security.Myself
             get { return _teams ?? (_teams = _teamsId.HasValue ? RootTeams.FindInBranch(p => p.Id == _teamsId.Value) : RootTeams); }
             set
             {
-                if (Patch(NameValue.Set<User>(p => p.TeamsId, value != null ? value.Id : (long?) null)) == 1)
-                {
-                    _teamsId = value != null ? value.Id : (long?) null;
-                    _teams = value;
-                }
+                Patch(NameValue.Set<User>(p => p.TeamsId, value != null ? value.Id : (long?) null));
+                _teamsId = value != null ? value.Id : (long?) null;
+                _teams = value;
             }
         }
 
@@ -256,11 +254,9 @@ namespace Phenix.Client.Security.Myself
             }
             set
             {
-                if (Patch(NameValue.Set<User>(p => p.PositionId, value != null ? value.Id : (long?) null)) == 1)
-                {
-                    _positionId = value != null ? value.Id : (long?) null;
-                    _position = value;
-                }
+                Patch(NameValue.Set<User>(p => p.PositionId, value != null ? value.Id : (long?) null));
+                _positionId = value != null ? value.Id : (long?) null;
+                _position = value;
             }
         }
 
@@ -274,12 +270,10 @@ namespace Phenix.Client.Security.Myself
             get { return _locked; }
             set
             {
-                if (Patch(NameValue.Set<User>(p => p.Locked, value),
-                        NameValue.Set<User>(p => p.LockedTime, DateTime.Now)) == 1)
-                {
-                    _locked = value;
-                    _lockedTime = DateTime.Now;
-                }
+                Patch(NameValue.Set<User>(p => p.Locked, value),
+                    NameValue.Set<User>(p => p.LockedTime, DateTime.Now));
+                _locked = value;
+                _lockedTime = DateTime.Now;
             }
         }
 
@@ -303,12 +297,10 @@ namespace Phenix.Client.Security.Myself
             get { return _disabled; }
             set
             {
-                if (Patch(NameValue.Set<User>(p => p.Disabled, value),
-                        NameValue.Set<User>(p => p.DisabledTime, DateTime.Now)) == 1)
-                {
-                    _disabled = value;
-                    _disabledTime = DateTime.Now;
-                }
+                Patch(NameValue.Set<User>(p => p.Disabled, value),
+                    NameValue.Set<User>(p => p.DisabledTime, DateTime.Now));
+                _disabled = value;
+                _disabledTime = DateTime.Now;
             }
         }
 
@@ -430,7 +422,7 @@ namespace Phenix.Client.Security.Myself
         /// <param name="newPassword">新登录口令</param>
         public async Task ChangePasswordAsync(string password, string newPassword)
         {
-            await _httpClient.CallAsync(HttpMethod.Put, ApiConfig.ApiSecurityMyselfPasswordPath, 
+            await _httpClient.CallAsync(HttpMethod.Put, ApiConfig.ApiSecurityMyselfPasswordPath,
                 String.Format("{0}{1}{2}", password, Standards.RowSeparator, newPassword), true);
             _password = MD5CryptoTextProvider.ComputeHash(newPassword);
         }
@@ -492,13 +484,14 @@ namespace Phenix.Client.Security.Myself
                 NameValue.Set<User>(p => p.PositionId, position.Id));
         }
 
-        private int Patch(params NameValue[] propertyValues)
+        private void Patch(params NameValue[] propertyValues)
         {
-            return IsMyself
-                ? _httpClient.CallAsync<int>(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfPath,
-                    propertyValues, true).Result
-                : _httpClient.CallAsync<int>(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfCompanyUserPath,
-                    propertyValues, true, NameValue.Set<User>(p => p.Name, Name)).Result;
+            if (IsMyself)
+                _httpClient.CallAsync(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfPath,
+                    propertyValues, true).Wait();
+            else
+                _httpClient.CallAsync(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfCompanyUserPath,
+                    propertyValues, true, NameValue.Set<User>(p => p.Name, Name)).Wait();
         }
 
         #endregion

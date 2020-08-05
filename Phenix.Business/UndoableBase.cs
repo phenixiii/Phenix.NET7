@@ -84,7 +84,7 @@ namespace Phenix.Business
                 {
                     _executeAction = _executeAction | ExecuteAction.Insert;
 
-                    FillReservedFields(true, true);
+                    FillReservedFields(ExecuteAction.Insert);
                 }
                 else if (!value && IsNew)
                     _executeAction = _executeAction & (ExecuteAction.Update | ExecuteAction.Delete);
@@ -117,37 +117,29 @@ namespace Phenix.Business
                 if (value && !IsSelfDirty)
                 {
                     Dictionary<string, object> oldPropertyValues = new Dictionary<string, object>(StringComparer.Ordinal);
-                    foreach (KeyValuePair<string, Property> kvp in SelfSheet.GetProperties(this.GetType()))
-                    {
-                        if (kvp.Value.Column.TableColumn == null)
-                            continue;
-                        if (kvp.Value.Column.TableColumn.IsWatermarkColumn)
-                            continue;
-
-                        oldPropertyValues.Add(kvp.Key, kvp.Value.Field.GetValue(this));
-                    }
-
+                    foreach (KeyValuePair<string, Property> kvp in SelfSheet.GetProperties(this.GetType(), TargetTable, false))
+                        oldPropertyValues.Add(kvp.Key, kvp.Value.Field != null ? kvp.Value.Field.GetValue(this) : kvp.Value.GetValue(this));
                     _oldPropertyValues = oldPropertyValues;
                     _dirtyPropertyNames = null;
                     _executeAction = _executeAction | ExecuteAction.Update;
 
-                    FillReservedFields(false, true);
+                    FillReservedFields(ExecuteAction.Update);
                 }
                 else if (!value && IsSelfDirty)
                 {
-                    if (_oldPropertyValues != null)
-                    {
-                        foreach (KeyValuePair<string, object> kvp in _oldPropertyValues)
-                        {
-                            Property property = SelfSheet.GetProperty(this.GetType(), kvp.Key);
-                            property.Field.Set(this, kvp.Value);
-                        }
-
-                        _oldPropertyValues = null;
-                    }
-
+                    IDictionary<string, object> oldPropertyValues = _oldPropertyValues;
+                    _oldPropertyValues = null;
                     _dirtyPropertyNames = null;
                     _executeAction = _executeAction & (ExecuteAction.Insert | ExecuteAction.Delete);
+                    if (oldPropertyValues != null)
+                        foreach (KeyValuePair<string, object> kvp in oldPropertyValues)
+                        {
+                            Property property = SelfSheet.GetProperty(this.GetType(), kvp.Key);
+                            if (property.Field != null)
+                                property.Field.Set(this, kvp.Value);
+                            else
+                                property.Set(this, kvp.Value);
+                        }
                 }
             }
         }
@@ -230,6 +222,10 @@ namespace Phenix.Business
                 MarkFetched();
         }
 
+        #endregion
+
+        #region DirtyValues
+
         /// <summary>
         /// 获取旧值
         /// </summary>
@@ -278,7 +274,10 @@ namespace Phenix.Business
         {
             IsSelfDirty = true;
             Property property = SelfSheet.GetProperty(this.GetType(), Utilities.GetPropertyInfo<T>(propertyLambda).Name);
-            property.Field.Set(this, newValue);
+            if (property.Field != null)
+                property.Field.Set(this, newValue);
+            else
+                property.Set(this, newValue);
             DirtyPropertyNames[property.PropertyInfo.Name] = true;
         }
 
@@ -294,20 +293,18 @@ namespace Phenix.Business
             bool result = false;
             Dictionary<string, object> oldPropertyValues = new Dictionary<string, object>(StringComparer.Ordinal);
             Dictionary<string, bool?> dirtyPropertyNames = new Dictionary<string, bool?>(StringComparer.Ordinal);
-            foreach (KeyValuePair<string, Property> kvp in SelfSheet.GetProperties(this.GetType()))
+            foreach (KeyValuePair<string, Property> kvp in SelfSheet.GetProperties(this.GetType(), TargetTable, false))
             {
-                if (kvp.Value.Column.TableColumn == null)
-                    continue;
-                if (kvp.Value.Column.TableColumn.IsWatermarkColumn)
-                    continue;
-
-                object value = kvp.Value.Field.GetValue(this);
+                object value = kvp.Value.Field != null ? kvp.Value.Field.GetValue(this) : kvp.Value.GetValue(this);
                 oldPropertyValues.Add(kvp.Key, value);
-                object sourceValue = kvp.Value.Field.GetValue(source);
+                object sourceValue = kvp.Value.Field != null ? kvp.Value.Field.GetValue(source) : kvp.Value.GetValue(source);
                 if (!object.Equals(value, sourceValue))
                 {
                     result = true;
-                    kvp.Value.Field.Set(this, sourceValue);
+                    if (kvp.Value.Field != null)
+                        kvp.Value.Field.Set(this, sourceValue);
+                    else
+                        kvp.Value.Set(this, sourceValue);
                     dirtyPropertyNames.Add(kvp.Key, true);
                 }
             }
@@ -318,7 +315,7 @@ namespace Phenix.Business
                 _dirtyPropertyNames = dirtyPropertyNames;
                 _executeAction = _executeAction | ExecuteAction.Update;
 
-                FillReservedFields(false, true);
+                FillReservedFields(ExecuteAction.Update);
             }
 
             return result;
@@ -327,33 +324,30 @@ namespace Phenix.Business
         /// <summary>
         /// 提取脏属性值
         /// </summary>
-        protected PropertyValue[] GetDirtValues()
+        protected IDictionary<string, object> GetDirtValues()
         {
             if (_oldPropertyValues == null)
                 return null;
 
-            List<PropertyValue> result = new List<PropertyValue>(_oldPropertyValues.Count);
-            Sheet targetTable = SelfSheet.GetProperty<T>(p => p.Id).Column.TableColumn.Owner;
-            foreach (KeyValuePair<string, Property> kvp in SelfSheet.GetProperties(this.GetType(), targetTable))
-            {
-                if (kvp.Value.Column.TableColumn.IsWatermarkColumn)
-                    continue;
-
+            Dictionary<string, object> result = new Dictionary<string, object>(_oldPropertyValues.Count);
+            foreach (KeyValuePair<string, Property> kvp in SelfSheet.GetProperties(this.GetType(), TargetTable, false))
                 if (_oldPropertyValues.TryGetValue(kvp.Key, out object oldValue))
                     if (DirtyPropertyNames.TryGetValue(kvp.Key, out bool? isDirty) && isDirty.HasValue)
                     {
                         if (isDirty.Value)
-                            result.Add(new PropertyValue(kvp.Value, oldValue, kvp.Value.Field.GetValue(this)));
+                        {
+                            object value = kvp.Value.Field != null ? kvp.Value.Field.GetValue(this) : kvp.Value.GetValue(this);
+                            result.Add(kvp.Key, value);
+                        }
                     }
                     else
                     {
-                        object newValue = kvp.Value.Field.GetValue(this);
-                        if (!object.Equals(oldValue, newValue))
-                            result.Add(new PropertyValue(kvp.Value, oldValue, newValue));
+                        object value = kvp.Value.Field != null ? kvp.Value.Field.GetValue(this) : kvp.Value.GetValue(this);
+                        if (!object.Equals(oldValue, value))
+                            result.Add(kvp.Key, value);
                     }
-            }
 
-            return result.ToArray();
+            return result;
         }
 
         #endregion
@@ -363,7 +357,7 @@ namespace Phenix.Business
         /// <summary>
         /// 保存自己
         /// </summary>
-        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
+        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException）</param>
         public int SaveSelf(bool checkTimestamp = true)
         {
             return Database.ExecuteGet((Func<DbTransaction, bool, int>) SaveSelf, checkTimestamp);
@@ -373,7 +367,7 @@ namespace Phenix.Business
         /// 保存自己
         /// </summary>
         /// <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
+        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException）</param>
         public int SaveSelf(DbConnection connection, bool checkTimestamp = true)
         {
             return DbConnectionHelper.ExecuteGet(connection, SaveSelf, checkTimestamp);
@@ -383,7 +377,7 @@ namespace Phenix.Business
         /// 保存自己
         /// </summary>
         /// <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException，仅当属性含映射时间戳字段时有效）</param>
+        /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException）</param>
         public virtual int SaveSelf(DbTransaction transaction, bool checkTimestamp = true)
         {
             int result = 0;
@@ -393,7 +387,7 @@ namespace Phenix.Business
             else if (IsSelfDeleted && !IsNew)
                 result = DeleteSelf(transaction);
             else if (IsSelfDirty && !IsSelfDeleted)
-                result = UpdateSelf(transaction, checkTimestamp, GetDirtValues());
+                result = UpdateSelf(transaction, GetDirtValues(), checkTimestamp);
             ApplyEdit();
 
             return result;

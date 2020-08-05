@@ -21,9 +21,10 @@ namespace Demo.IDOS.Plugin.Business.CustomerSecurity
         }
 
         [Newtonsoft.Json.JsonConstructor]
-        public DcsCustomerUser(long id, long cmId, long usId, bool disabled) 
+        public DcsCustomerUser(string dataSourceKey, long id, 
+            long cmId, long usId, bool disabled)
+            : base(dataSourceKey, id)
         {
-            _id = id;
             _cmId = cmId;
             _usId = usId;
             _disabled = disabled;

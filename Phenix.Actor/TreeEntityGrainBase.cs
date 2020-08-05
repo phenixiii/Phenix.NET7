@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans;
 using Phenix.Core.Data.Model;
@@ -33,14 +34,14 @@ namespace Phenix.Actor
         /// 更新根实体对象(如不存在则新增)
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
-        /// <returns>更新记录数</returns>
-        protected override int PatchKernel(params NameValue[] propertyValues)
+        protected override void PatchKernel(IDictionary<string, object> propertyValues)
         {
-            return Kernel != null
-                ? Kernel.UpdateSelf(propertyValues)
-                : this is IGrainWithIntegerKey
-                    ? TreeEntityBase<TKernel>.NewRoot(Database, Id, propertyValues).InsertSelf()
-                    : TreeEntityBase<TKernel>.NewRoot(Database, propertyValues).InsertSelf();
+            if (Kernel != null)
+                Kernel.UpdateSelf(propertyValues);
+            else if (this is IGrainWithIntegerKey)
+                TreeEntityBase<TKernel>.NewRoot(Database, Id, propertyValues).InsertSelf();
+            else
+                TreeEntityBase<TKernel>.NewRoot(Database, propertyValues).InsertSelf();
         }
 
         private TKernel GetNode(long id, bool throwIfNotFound = true)
@@ -92,19 +93,37 @@ namespace Phenix.Actor
         }
 
         /// <summary>
+        /// 添加子节点
+        /// </summary>
+        /// <param name="parentId">父节点ID</param>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        /// <returns>子节点ID</returns>
+        protected virtual long AddChildNode(long parentId, IDictionary<string, object> propertyValues)
+        {
+            long result = Database.Sequence.Value;
+            GetNode(parentId).AddChild(() => TreeEntityBase<TKernel>.New(Database, result, propertyValues));
+            return result;
+        }
+
+        Task<long> ITreeEntityGrain<TKernel>.AddChildNode(long parentId, IDictionary<string, object> propertyValues)
+        {
+            return Task.FromResult(AddChildNode(parentId, propertyValues));
+        }
+
+        /// <summary>
         /// 更改父节点
         /// </summary>
         /// <param name="id">节点ID</param>
         /// <param name="parentId">父节点ID</param>
-        /// <returns>更新记录数</returns>
-        protected virtual int ChangeParentNode(long id, long parentId)
+        protected virtual void ChangeParentNode(long id, long parentId)
         {
-            return GetNode(id).ChangeParent(GetNode(parentId));
+            GetNode(id).ChangeParent(GetNode(parentId));
         }
 
-        Task<int> ITreeEntityGrain<TKernel>.ChangeParentNode(long id, long parentId)
+        Task ITreeEntityGrain<TKernel>.ChangeParentNode(long id, long parentId)
         {
-            return Task.FromResult(ChangeParentNode(id, parentId));
+            ChangeParentNode(id, parentId);
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -112,15 +131,31 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="id">节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        /// <returns>更新记录数</returns>
-        protected virtual int UpdateNode(long id, params NameValue[] propertyValues)
+        protected virtual void UpdateNode(long id, params NameValue[] propertyValues)
         {
-            return GetNode(id).UpdateSelf(propertyValues);
+            GetNode(id).UpdateSelf(propertyValues);
         }
 
-        Task<int> ITreeEntityGrain<TKernel>.UpdateNode(long id, params NameValue[] propertyValues)
+        Task ITreeEntityGrain<TKernel>.UpdateNode(long id, params NameValue[] propertyValues)
         {
-            return Task.FromResult(UpdateNode(id, propertyValues));
+            UpdateNode(id, propertyValues);
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// 更新节点
+        /// </summary>
+        /// <param name="id">节点ID</param>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        protected virtual void UpdateNode(long id, IDictionary<string, object> propertyValues)
+        {
+            GetNode(id).UpdateSelf(propertyValues);
+        }
+
+        Task ITreeEntityGrain<TKernel>.UpdateNode(long id, IDictionary<string, object> propertyValues)
+        {
+            UpdateNode(id, propertyValues);
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -130,7 +165,7 @@ namespace Phenix.Actor
         /// <returns>更新记录数</returns>
         protected virtual int DeleteBranch(long id)
         {
-            return GetNode(id).DeleteBranch();
+           return GetNode(id).DeleteBranch();
         }
 
         Task<int> ITreeEntityGrain<TKernel>.DeleteBranch(long id)

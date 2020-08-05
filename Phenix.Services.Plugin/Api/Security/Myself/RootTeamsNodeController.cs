@@ -24,7 +24,7 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         /// <returns>子节点ID</returns>
         [CompanyAdminFilter]
         [Authorize]
-        [HttpPut]
+        [HttpPost]
         public async Task<long> AddChild(string name, long parentId)
         {
             return User.Identity.RootTeamsProxy != null
@@ -37,15 +37,12 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         /// </summary>
         /// <param name="id">节点ID</param>
         /// <param name="parentId">父节点ID</param>
-        /// <returns>更新记录数</returns>
         [CompanyAdminFilter]
         [Authorize]
-        [HttpPatch]
-        public async Task<int> ChangeParent(long id, long parentId)
+        [HttpPut]
+        public async Task ChangeParent(long id, long parentId)
         {
-            return User.Identity.RootTeamsProxy != null 
-                ? await User.Identity.RootTeamsProxy.ChangeParentNode(id, parentId) 
-                : -1;
+            await User.Identity.RootTeamsProxy.ChangeParentNode(id, parentId);
         }
 
         /// <summary>
@@ -53,30 +50,24 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         /// </summary>
         /// <param name="id">节点ID</param>
         /// <param name="name">名称</param>
-        /// <returns>更新记录数</returns>
         [CompanyAdminFilter]
         [Authorize]
-        [HttpPost]
-        public async Task<int> Update(long id, string name)
+        [HttpPatch]
+        public async Task Update(long id, string name)
         {
-            return User.Identity.RootTeamsProxy != null
-                ? await User.Identity.RootTeamsProxy.UpdateNode(id, NameValue.Set<Teams>(p => p.Name, name))
-                : -1;
+            await User.Identity.RootTeamsProxy.UpdateNode(id, NameValue.Set<Teams>(p => p.Name, name));
         }
 
         /// <summary>
         /// 删除节点枝杈
         /// </summary>
         /// <param name="id">节点ID</param>
-        /// <returns>更新记录数</returns>
         [CompanyAdminFilter]
         [Authorize]
         [HttpDelete]
         public async Task<int> Delete(long id)
         {
-            return User.Identity.RootTeamsProxy != null
-                ? await User.Identity.RootTeamsProxy.DeleteNode(id)
-                : -1;
+            return await User.Identity.RootTeamsProxy.DeleteNode(id);
         }
     }
 }

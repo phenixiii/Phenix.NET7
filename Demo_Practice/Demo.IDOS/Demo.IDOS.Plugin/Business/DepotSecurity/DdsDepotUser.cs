@@ -21,9 +21,10 @@ namespace Demo.IDOS.Plugin.Business.DepotSecurity
         }
 
         [Newtonsoft.Json.JsonConstructor]
-        public DdsDepotUser(long id, long dpId, long usId, bool disabled) 
+        public DdsDepotUser(string dataSourceKey, long id, 
+            long dpId, long usId, bool disabled)
+            : base(dataSourceKey, id)
         {
-            _id = id;
             _dpId = dpId;
             _usId = usId;
             _disabled = disabled;

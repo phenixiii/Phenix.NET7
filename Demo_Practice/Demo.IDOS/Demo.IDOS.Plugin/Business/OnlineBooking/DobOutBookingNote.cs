@@ -23,12 +23,15 @@ namespace Demo.IDOS.Plugin.Business.OnlineBooking
         }
 
         [Newtonsoft.Json.JsonConstructor]
-        public DobOutBookingNote(long id, long bdId, string bookingNumber, BookingStatus bookingStatus, long cmId, string goodsType, GoodsSize goodsSize, string goodsClass, string licensePlate, long originator, DateTime originateTime, long updater, DateTime updateTime) 
+        public DobOutBookingNote(string dataSourceKey, long id,
+            DateTime date, short dateTimeSlot, string bookingNumber, BookingStatus bookingStatus, long dpId, long cmId, string goodsType, GoodsSize goodsSize, string goodsClass, string licensePlate, long originator, DateTime originateTime, long updater, DateTime updateTime)
+            : base(dataSourceKey, id)
         {
-            _id = id;
-            _bdId = bdId;
+            _date = date;
+            _dateTimeSlot = dateTimeSlot;
             _bookingNumber = bookingNumber;
             _bookingStatus = bookingStatus;
+            _dpId = dpId;
             _cmId = cmId;
             _goodsType = goodsType;
             _goodsSize = goodsSize;
@@ -45,15 +48,26 @@ namespace Demo.IDOS.Plugin.Business.OnlineBooking
             _bookingStatus = 0;
         }
 
-        private long _bdId;
+        private DateTime _date;
         /// <summary>
-        /// 分时预约
+        /// 日期
         /// </summary>
-        [System.ComponentModel.DataAnnotations.Display(Description = "分时预约")]
-        public long BdId
+        [System.ComponentModel.DataAnnotations.Display(Description = "日期")]
+        public DateTime Date
         {
-            get { return _bdId; }
-            set { _bdId = value; }
+            get { return _date; }
+            set { _date = value; }
+        }
+
+        private short _dateTimeSlot;
+        /// <summary>
+        /// 时间段
+        /// </summary>
+        [System.ComponentModel.DataAnnotations.Display(Description = "时间段")]
+        public short DateTimeSlot
+        {
+            get { return _dateTimeSlot; }
+            set { _dateTimeSlot = value; }
         }
 
         private string _bookingNumber;
@@ -76,6 +90,17 @@ namespace Demo.IDOS.Plugin.Business.OnlineBooking
         {
             get { return _bookingStatus; }
             set { _bookingStatus = value; }
+        }
+
+        private long _dpId;
+        /// <summary>
+        /// 仓库
+        /// </summary>
+        [System.ComponentModel.DataAnnotations.Display(Description = "仓库")]
+        public long DpId
+        {
+            get { return _dpId; }
+            set { _dpId = value; }
         }
 
         private long _cmId;

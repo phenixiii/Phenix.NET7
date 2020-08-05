@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Orleans;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Model;
@@ -69,20 +70,48 @@ namespace Phenix.Actor
         /// <summary>
         /// 更新根实体对象(如不存在则新增)
         /// </summary>
-        /// <param name="propertyValues">待更新属性值队列</param>
-        /// <returns>更新记录数</returns>
-        protected virtual int PatchKernel(params NameValue[] propertyValues)
+        /// <param name="source">数据源</param>
+        protected virtual void PatchKernel(TKernel source)
         {
-            return Kernel != null
-                ? Kernel.UpdateSelf(propertyValues)
-                : this is IGrainWithIntegerKey
-                    ? EntityBase<TKernel>.New(Database, Id, propertyValues).InsertSelf()
-                    : EntityBase<TKernel>.New(Database, propertyValues).InsertSelf();
+            if (Kernel != null)
+                Kernel.UpdateSelf(source);
+            else
+            {
+                source.InsertSelf();
+                Kernel = source;
+            }
         }
 
-        Task<int> IEntityGrain<TKernel>.PatchKernel(params NameValue[] propertyValues)
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        protected virtual void PatchKernel(IDictionary<string, object> propertyValues)
         {
-            return Task.FromResult(PatchKernel(propertyValues));
+            if (Kernel != null)
+                Kernel.UpdateSelf(propertyValues);
+            else if (this is IGrainWithIntegerKey || this is IGrainWithIntegerCompoundKey)
+                EntityBase<TKernel>.New(Database, Id, propertyValues).InsertSelf();
+            else
+                EntityBase<TKernel>.New(Database, propertyValues).InsertSelf();
+        }
+
+        Task IEntityGrain<TKernel>.PatchKernel(TKernel source)
+        {
+            PatchKernel(source);
+            return Task.CompletedTask;
+        }
+
+        Task IEntityGrain<TKernel>.PatchKernel(params NameValue[] propertyValues)
+        {
+            PatchKernel(NameValue.ToDictionary(propertyValues));
+            return Task.CompletedTask;
+        }
+
+        Task IEntityGrain<TKernel>.PatchKernel(IDictionary<string, object> propertyValues)
+        {
+            PatchKernel(propertyValues);
+            return Task.CompletedTask;
         }
 
         /// <summary>

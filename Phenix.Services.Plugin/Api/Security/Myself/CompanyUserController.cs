@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
-using Phenix.Core.Data.Schema;
 using Phenix.Core.Net.Filters;
 using Phenix.Services.Plugin.Actor;
 
@@ -49,13 +48,12 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         /// 更新公司用户资料
         /// </summary>
         /// <param name="name">登录名</param>
-        /// <returns>更新记录数</returns>
         [CompanyAdminFilter]
         [Authorize]
         [HttpPatch]
-        public async Task<int> Patch(string name)
+        public async Task Patch(string name)
         {
-            return await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).PatchCompanyUser(name, await Request.ReadBodyAsNameValuesAsync(true));
+            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).PatchCompanyUser(name, await Request.ReadBodyAsDictionaryAsync(true));
         }
     }
 }

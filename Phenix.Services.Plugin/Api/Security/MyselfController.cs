@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Phenix.Core.Data.Schema;
 
 namespace Phenix.Services.Plugin.Api.Security
 {
@@ -27,12 +26,11 @@ namespace Phenix.Services.Plugin.Api.Security
         /// <summary>
         /// 更新自己资料
         /// </summary>
-        /// <returns>更新记录数</returns>
         [Authorize]
         [HttpPatch]
-        public async Task<int> Patch()
+        public async Task Patch()
         {
-            return await User.Identity.UserProxy.PatchKernel(await Request.ReadBodyAsNameValuesAsync(true));
+            await User.Identity.UserProxy.PatchKernel(await Request.ReadBodyAsDictionaryAsync(true));
         }
     }
 }

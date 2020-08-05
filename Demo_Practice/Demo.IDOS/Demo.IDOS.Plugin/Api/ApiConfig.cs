@@ -24,5 +24,16 @@
         /// /api/customer-security/customer-user
         /// </summary>
         public const string ApiCustomerSecurityCustomerUserPath = "/api/customer-security/customer-user";
+
+        /// <summary>
+        /// /api/online-booking/in-booking-note
+        /// </summary>
+        public const string ApiOnlineBookingInBookingNotePath = "/api/online-booking/in-booking-note";
+
+
+        /// <summary>
+        /// /api/online-booking/out-booking-note
+        /// </summary>
+        public const string ApiOnlineBookingOutBookingNotePath = "/api/online-booking/out-booking-note";
     }
 }

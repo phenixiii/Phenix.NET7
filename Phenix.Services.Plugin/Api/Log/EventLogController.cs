@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Core.Log;
 
@@ -17,9 +16,9 @@ namespace Phenix.Services.Plugin.Api.Log
         /// </summary>
         [Authorize]
         [HttpPost]
-        public async Task<bool> Save()
+        public bool Save([FromBody] EventInfo eventInfo)
         {
-            return EventLog.Save(await Request.ReadBodyAsync<EventInfo>());
+            return EventLog.Save(eventInfo);
         }
     }
 }

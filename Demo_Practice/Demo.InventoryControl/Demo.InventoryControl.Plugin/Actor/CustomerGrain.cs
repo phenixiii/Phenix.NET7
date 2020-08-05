@@ -24,7 +24,7 @@ namespace Demo.InventoryControl.Plugin.Actor
         }
 
         /// <summary>
-        /// ID(映射表XX_ID字段)
+        /// ID(映射表ID字段)
         /// </summary>
         protected override long Id
         {

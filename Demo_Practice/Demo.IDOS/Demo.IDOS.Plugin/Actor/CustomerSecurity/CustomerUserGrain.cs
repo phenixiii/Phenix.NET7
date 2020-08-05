@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Demo.IDOS.Plugin.Business.CustomerSecurity;
 using Phenix.Actor;
-using Phenix.Core.Data.Model;
 using Phenix.Core.Data.Schema;
 
 namespace Demo.IDOS.Plugin.Actor.CustomerSecurity
@@ -21,7 +21,7 @@ namespace Demo.IDOS.Plugin.Actor.CustomerSecurity
         /// </summary>
         protected override DcsCustomerUser Kernel
         {
-            get { return _kernel ?? (_kernel = EntityBase<DcsCustomerUser>.FetchRoot(Database, 
+            get { return _kernel ?? (_kernel = DcsCustomerUser.FetchRoot(Database, 
                              p => p.CmId == Id && p.UsId == IdExtension.Value,
                              () => DcsCustomerUser.New(Database,
                                  NameValue.Set<DcsCustomerUser>(p => p.CmId, Id),
@@ -32,13 +32,21 @@ namespace Demo.IDOS.Plugin.Actor.CustomerSecurity
         #endregion
 
         #region 方法
-        
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="source">数据源</param>
+        protected override void PatchKernel(DcsCustomerUser source)
+        {
+            throw new NotImplementedException("请用ICustomerUserGrain提供的接口间接操作Kernel对象");
+        }
+
         /// <summary>
         /// 更新根实体对象(如不存在则新增)
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
-        /// <returns>更新记录数</returns>
-        protected override int PatchKernel(params NameValue[] propertyValues)
+        protected override void PatchKernel(IDictionary<string, object> propertyValues)
         {
             throw new NotImplementedException("请用ICustomerUserGrain提供的接口间接操作Kernel对象");
         }

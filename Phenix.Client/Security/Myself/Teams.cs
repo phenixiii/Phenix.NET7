@@ -22,8 +22,8 @@ namespace Phenix.Client.Security.Myself
         }
 
         [Newtonsoft.Json.JsonConstructor]
-        private Teams(long id, string name, long rootId, long parentId, IList<Teams> allChildren)
-            : base(id, rootId, parentId, allChildren)
+        private Teams(string dataSourceKey, long id, string name, long rootId, long parentId, IList<Teams> allChildren)
+            : base(dataSourceKey, id, rootId, parentId, allChildren)
         {
             _name = name;
         }
@@ -73,7 +73,7 @@ namespace Phenix.Client.Security.Myself
         public Teams AddChild(string name)
         {
             return AddChild(() => new Teams(_httpClient, name),
-                node => _httpClient.CallAsync<long>(HttpMethod.Put, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
+                node => _httpClient.CallAsync<long>(HttpMethod.Post, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
                     NameValue.Set<Teams>(p => p.Name, node.Name),
                     NameValue.Set<Teams>(p => p.ParentId, node.ParentId)).Result);
         }
@@ -82,24 +82,22 @@ namespace Phenix.Client.Security.Myself
         /// 更改父节点
         /// </summary>
         /// <param name="parentNode">父节点</param>
-        /// <returns>更新记录数</returns>
-        public int ChangeParent(Teams parentNode)
+        public void ChangeParent(Teams parentNode)
         {
-            return ChangeParent(parentNode,
-                () => _httpClient.CallAsync<int>(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
+            ChangeParent(parentNode,
+                () => _httpClient.CallAsync(HttpMethod.Put, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
                     NameValue.Set<Teams>(p => p.Id, Id),
-                    NameValue.Set<Teams>(p => p.ParentId, parentNode.Id)).Result);
+                    NameValue.Set<Teams>(p => p.ParentId, parentNode.Id)).Wait());
         }
 
         /// <summary>
         /// 更新自己
         /// </summary>
-        /// <returns>更新记录数</returns>
-        public int UpdateSelf()
+        public void UpdateSelf()
         {
-            return _httpClient.CallAsync<int>(HttpMethod.Post, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
+            _httpClient.CallAsync(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
                 NameValue.Set<Teams>(p => p.Id, Id),
-                NameValue.Set<Teams>(p => p.Name, Name)).Result;
+                NameValue.Set<Teams>(p => p.Name, Name)).Wait();
         }
 
         /// <summary>

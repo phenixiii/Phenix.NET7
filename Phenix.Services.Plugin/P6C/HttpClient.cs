@@ -116,15 +116,14 @@ namespace Phenix.Services.Plugin.P6C
 
         #region Call
 
-        private string BuildPathAndQuery(string path, NameValue[] queryValues)
+        private string BuildUri(string path, NameValue[] paramValues)
         {
-            if (queryValues != null && queryValues.Length > 0)
+            if (paramValues != null && paramValues.Length > 0)
             {
-                StringBuilder queryBuilder = new StringBuilder();
-                foreach (NameValue item in queryValues)
-                    queryBuilder.AppendFormat("{0}={1}&", item.Name, item.Value);
-                queryBuilder.Remove(queryBuilder.Length - 1, 1);
-                return String.Format("{0}?{1}", path, queryBuilder.ToString());
+                StringBuilder result = new StringBuilder();
+                foreach (NameValue item in paramValues)
+                    result.AppendFormat("{0}={1}&", item.Name, item.Value);
+                return String.Format("{0}?{1}", path, result.Remove(result.Length - 1, 1));
             }
 
             return path;
@@ -135,11 +134,11 @@ namespace Phenix.Services.Plugin.P6C
         /// </summary>
         /// <param name="method">HttpMethod</param>
         /// <param name="path">资源路径(比如"/api/security/myself")</param>
-        /// <param name="queryValues">查询条件值</param>
+        /// <param name="paramValues">参数值</param>
         /// <returns>返回对象</returns>
-        public async Task<T> CallAsync<T>(HttpMethod method, string path, params NameValue[] queryValues)
+        public async Task<T> CallAsync<T>(HttpMethod method, string path, params NameValue[] paramValues)
         {
-            return await CallAsync<T>(method, path, null, false, false, queryValues);
+            return await CallAsync<T>(method, path, null, false, false, paramValues);
         }
 
         /// <summary>
@@ -148,11 +147,11 @@ namespace Phenix.Services.Plugin.P6C
         /// <param name="method">HttpMethod</param>
         /// <param name="path">资源路径(比如"/api/security/myself")</param>
         /// <param name="decryptResult">是否解密返回数据（服务端的控制器代码请用Encrypt(result)加密）</param>
-        /// <param name="queryValues">查询条件值</param>
+        /// <param name="paramValues">参数值</param>
         /// <returns>返回对象</returns>
-        public async Task<T> CallAsync<T>(HttpMethod method, string path, bool decryptResult, params NameValue[] queryValues)
+        public async Task<T> CallAsync<T>(HttpMethod method, string path, bool decryptResult, params NameValue[] paramValues)
         {
-            return await CallAsync<T>(method, path, null, false, decryptResult, queryValues);
+            return await CallAsync<T>(method, path, null, false, decryptResult, paramValues);
         }
 
         /// <summary>
@@ -161,11 +160,11 @@ namespace Phenix.Services.Plugin.P6C
         /// <param name="method">HttpMethod</param>
         /// <param name="path">资源路径(比如"/api/security/myself")</param>
         /// <param name="data">上传数据</param>
-        /// <param name="queryValues">查询条件值</param>
+        /// <param name="paramValues">参数值</param>
         /// <returns>返回对象</returns>
-        public async Task<T> CallAsync<T>(HttpMethod method, string path, object data, params NameValue[] queryValues)
+        public async Task<T> CallAsync<T>(HttpMethod method, string path, object data, params NameValue[] paramValues)
         {
-            return await CallAsync<T>(method, path, data, false, false, queryValues);
+            return await CallAsync<T>(method, path, data, false, false, paramValues);
         }
 
         /// <summary>
@@ -175,11 +174,11 @@ namespace Phenix.Services.Plugin.P6C
         /// <param name="path">资源路径(比如"/api/security/myself")</param>
         /// <param name="data">上传数据</param>
         /// <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）</param>
-        /// <param name="queryValues">查询条件值</param>
+        /// <param name="paramValues">参数值</param>
         /// <returns>返回对象</returns>
-        public async Task<T> CallAsync<T>(HttpMethod method, string path, object data, bool encryptData, params NameValue[] queryValues)
+        public async Task<T> CallAsync<T>(HttpMethod method, string path, object data, bool encryptData, params NameValue[] paramValues)
         {
-            return await CallAsync<T>(method, path, data, encryptData, false, queryValues);
+            return await CallAsync<T>(method, path, data, encryptData, false, paramValues);
         }
 
         /// <summary>
@@ -190,9 +189,9 @@ namespace Phenix.Services.Plugin.P6C
         /// <param name="data">上传数据</param>
         /// <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）(如果data是HttpContent则忽略)</param>
         /// <param name="decryptResult">是否解密返回数据（服务端的控制器代码请用Encrypt(result)加密）</param>
-        /// <param name="queryValues">查询条件值</param>
+        /// <param name="paramValues">参数值</param>
         /// <returns>返回对象</returns>
-        public async Task<T> CallAsync<T>(HttpMethod method, string path, object data, bool encryptData, bool decryptResult, params NameValue[] queryValues)
+        public async Task<T> CallAsync<T>(HttpMethod method, string path, object data, bool encryptData, bool decryptResult, params NameValue[] paramValues)
         {
             if (String.IsNullOrEmpty(path))
                 throw new ArgumentNullException(nameof(path));
@@ -203,15 +202,15 @@ namespace Phenix.Services.Plugin.P6C
             if (!identity.IsAuthenticated)
                 throw new UserVerifyException();
 
-            using (HttpRequestMessage request = new HttpRequestMessage(method, BuildPathAndQuery(path, queryValues)))
+            using (HttpRequestMessage request = new HttpRequestMessage(method, BuildUri(path, paramValues)))
             {
                 if (data != null)
                     if (data is HttpContent httpContent)
                         request.Content = httpContent;
                     else
                     {
-                        if (data is NameValue nameValue)
-                            data = NameValue.ToArray(nameValue);
+                        if (data is NameValue[] nameValues)
+                            data = NameValue.ToDictionary(nameValues);
                         request.Content = new StringContent(encryptData ? await identity.UserProxy.Encrypt(Utilities.JsonSerialize(data)) : Utilities.JsonSerialize(data), Encoding.UTF8);
                     }
 
@@ -228,10 +227,10 @@ namespace Phenix.Services.Plugin.P6C
         /// </summary>
         /// <param name="method">HttpMethod</param>
         /// <param name="path">资源路径(比如"/api/security/myself")</param>
-        /// <param name="queryValues">查询条件值</param>
-        public async Task CallAsync(HttpMethod method, string path, params NameValue[] queryValues)
+        /// <param name="paramValues">参数值</param>
+        public async Task CallAsync(HttpMethod method, string path, params NameValue[] paramValues)
         {
-            await CallAsync(method, path, null, false, queryValues);
+            await CallAsync(method, path, null, false, paramValues);
         }
 
         /// <summary>
@@ -240,10 +239,10 @@ namespace Phenix.Services.Plugin.P6C
         /// <param name="method">HttpMethod</param>
         /// <param name="path">资源路径(比如"/api/security/myself")</param>
         /// <param name="data">上传数据</param>
-        /// <param name="queryValues">查询条件值</param>
-        public async Task CallAsync(HttpMethod method, string path, object data, params NameValue[] queryValues)
+        /// <param name="paramValues">参数值</param>
+        public async Task CallAsync(HttpMethod method, string path, object data, params NameValue[] paramValues)
         {
-            await CallAsync(method, path, data, false, queryValues);
+            await CallAsync(method, path, data, false, paramValues);
         }
 
         /// <summary>
@@ -253,8 +252,8 @@ namespace Phenix.Services.Plugin.P6C
         /// <param name="path">资源路径(比如"/api/security/myself")</param>
         /// <param name="data">上传数据</param>
         /// <param name="encryptData">是否加密上传数据（服务端的控制器代码请用Request.ReadBodyXXX(true)解密）(如果data是HttpContent则忽略)</param>
-        /// <param name="queryValues">查询条件值</param>
-        public async Task CallAsync(HttpMethod method, string path, object data, bool encryptData, params NameValue[] queryValues)
+        /// <param name="paramValues">参数值</param>
+        public async Task CallAsync(HttpMethod method, string path, object data, bool encryptData, params NameValue[] paramValues)
         {
             if (String.IsNullOrEmpty(path))
                 throw new ArgumentNullException(nameof(path));
@@ -265,15 +264,15 @@ namespace Phenix.Services.Plugin.P6C
             if (!identity.IsAuthenticated)
                 throw new UserVerifyException();
 
-            using (HttpRequestMessage request = new HttpRequestMessage(method, BuildPathAndQuery(path, queryValues)))
+            using (HttpRequestMessage request = new HttpRequestMessage(method, BuildUri(path, paramValues)))
             {
                 if (data != null)
                     if (data is HttpContent httpContent)
                         request.Content = httpContent;
                     else
                     {
-                        if (data is NameValue nameValue)
-                            data = NameValue.ToArray(nameValue);
+                        if (data is NameValue[] nameValues)
+                            data = NameValue.ToDictionary(nameValues);
                         request.Content = new StringContent(encryptData ? await identity.UserProxy.Encrypt(Utilities.JsonSerialize(data)) : Utilities.JsonSerialize(data), Encoding.UTF8);
                     }
 
