@@ -112,9 +112,9 @@ var phAjax = (function($) {
                 baseAddress: phAjax.baseAddress, //"http://localhost:5000"
                 name: "ADMIN", //登录名(未注册则自动注册)
                 hashName: false, //登录名需Hash
-                phone: null, //手机(注册用可为空)
-                eMail: null, //邮箱(注册用可为空)
-                regAlias: null, //注册昵称(注册用可为空)
+                phone: "", //手机(注册用可为空)
+                eMail: "", //邮箱(注册用可为空)
+                regAlias: "", //注册昵称(注册用可为空)
                 onComplete: null, //调用完整的回调函数, 参数(XMLHttpRequest, textStatus)
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
             };

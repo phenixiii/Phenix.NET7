@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Demo.IDOS.Plugin.Business.DepotSecurity;
 using Phenix.Actor;
-using Phenix.Core.Data.Schema;
 
 namespace Demo.IDOS.Plugin.Actor.DepotSecurity
 {
@@ -24,8 +23,8 @@ namespace Demo.IDOS.Plugin.Actor.DepotSecurity
             get { return _kernel ?? (_kernel = DdsDepotUser.FetchRoot(Database, 
                              p => p.DpId == Id && p.UsId == IdExtension.Value,
                              () => DdsDepotUser.New(Database,
-                                 NameValue.Set<DdsDepotUser>(p => p.DpId, Id),
-                                 NameValue.Set<DdsDepotUser>(p => p.UsId, IdExtension)))); }
+                                 DdsDepotUser.Set(p => p.DpId, Id).
+                                     Set(p => p.UsId, IdExtension)))); }
             set { _kernel = value; }
         }
 
@@ -58,15 +57,13 @@ namespace Demo.IDOS.Plugin.Actor.DepotSecurity
 
         Task IDepotUserGrain.Able()
         {
-            Kernel.UpdateSelf(
-                NameValue.Set<DdsDepotUser>(p => p.Disabled, false));
+            Kernel.UpdateSelf(Kernel.SetProperty(p => p.Disabled, false));
             return Task.CompletedTask;
         }
 
         Task IDepotUserGrain.Disable()
         {
-            Kernel.UpdateSelf(
-                NameValue.Set<DdsDepotUser>(p => p.Disabled, true));
+            Kernel.UpdateSelf(Kernel.SetProperty(p => p.Disabled, true));
             return Task.CompletedTask;
         }
 

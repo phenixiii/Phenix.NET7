@@ -194,9 +194,9 @@ namespace Demo.InventoryControl.Plugin.Business
         /// <param name="locations">所属货架号</param>
         public void MarkPicked(DbTransaction transaction, long pickMarks, ref IList<string> locations)
         {
-            UpdateSelf(transaction,
-                SetProperty(p => p.CustomerInventoryStatus, CustomerInventoryStatus.Picked),
-                SetProperty(p => p.PickMarks, pickMarks));
+            UpdateSelf(transaction, 
+                SetProperty(p => p.CustomerInventoryStatus, CustomerInventoryStatus.Picked).
+                Set(p => p.PickMarks, pickMarks));
             if (!locations.Contains(Location))
                 locations.Add(Location);
         }
@@ -207,7 +207,7 @@ namespace Demo.InventoryControl.Plugin.Business
         /// <param name="transaction">DbTransaction</param>
         public void Unload(DbTransaction transaction)
         {
-            UpdateSelf(transaction,
+            UpdateSelf(transaction, 
                 SetProperty(p => p.CustomerInventoryStatus, CustomerInventoryStatus.NotStored));
         }
 

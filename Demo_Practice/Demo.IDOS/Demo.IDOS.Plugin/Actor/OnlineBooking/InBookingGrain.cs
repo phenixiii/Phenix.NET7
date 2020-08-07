@@ -43,24 +43,16 @@ namespace Demo.IDOS.Plugin.Actor.OnlineBooking
         {
             get
             {
-                //允许操作的前一个时间段及其之后的预约记录
-                int dateTimeSlot = DateTime.Now.Hour / TimeInterval;
-                DateTime startDate = dateTimeSlot > 0 ? DateTime.Today : DateTime.Today.AddDays(-1);
-                if (dateTimeSlot == 0)
-                    dateTimeSlot = 23;
                 if (_kernel == null)
                 {
+                    //仅关注计划中、执行中的预约单
                     _kernel = new Dictionary<string, DobInBookingNote>();
                     foreach (DobInBookingNote item in DobInBookingNote.FetchAll(Database, p =>
-                            p.DpId == Id && (p.Date == startDate && p.DateTimeSlot >= dateTimeSlot || p.Date > startDate),
+                            p.DpId == Id && (p.BookingStatus == BookingStatus.Planning || p.BookingStatus == BookingStatus.Operating),
                         DobInBookingNote.Ascending(p => p.Date),
                         DobInBookingNote.Ascending(p => p.DateTimeSlot)))
                         _kernel.Add(item.BookingNumber, item);
                 }
-                else
-                    foreach (DobInBookingNote item in new List<DobInBookingNote>(_kernel.Values))
-                        if (item.Date < startDate || item.Date == startDate && item.DateTimeSlot < dateTimeSlot)
-                            _kernel.Remove(item.BookingNumber);
 
                 return _kernel;
             }
@@ -74,7 +66,7 @@ namespace Demo.IDOS.Plugin.Actor.OnlineBooking
         {
             if (Kernel.TryGetValue(bookingNumber, out DobInBookingNote note))
                 return note;
-            throw new ArgumentException(String.Format("预约单不存在: {0}", bookingNumber), nameof(bookingNumber));
+            throw new ArgumentException(String.Format("预约单不存在或已取消/完成: {0}", bookingNumber), nameof(bookingNumber));
         }
 
         Task<DobInBookingNote> IInBookingGrain.GetNote(string bookingNumber)
@@ -119,6 +111,7 @@ namespace Demo.IDOS.Plugin.Actor.OnlineBooking
             if (note.BookingStatus != BookingStatus.Planning && note.BookingStatus != BookingStatus.Operating)
                 throw new ArgumentException(String.Format("当前状态下不允许取消预约单: {0}-{1}", note.BookingStatus, note.Id), nameof(bookingNumber));
             note.UpdateSelf(note.SetProperty(p => p.BookingStatus, BookingStatus.Cancelled));
+            Kernel.Remove(note.BookingNumber);
             return Task.CompletedTask;
         }
 
@@ -137,6 +130,7 @@ namespace Demo.IDOS.Plugin.Actor.OnlineBooking
             if (note.BookingStatus != BookingStatus.Operating)
                 throw new ArgumentException(String.Format("当前状态下不允许完成预约单: {0}-{1}", note.BookingStatus, note.Id), nameof(bookingNumber));
             note.UpdateSelf(note.SetProperty(p => p.BookingStatus, BookingStatus.Finish));
+            Kernel.Remove(note.BookingNumber);
             return Task.CompletedTask;
         }
 

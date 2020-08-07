@@ -147,7 +147,7 @@ namespace Phenix.Services.Host
             /*
              * 使用异常处理中间件
              * 拦截异常并转译成 context.Response.StatusCode，异常详情见报文体：
-             *   System.InvalidOperationException 转译为 400 BadRequest
+             *   System.ArgumentException/System.InvalidOperationException 转译为 400 BadRequest
              *   System.Security.Authentication.AuthenticationException 转译为 401 Unauthorized
              *   System.Security.SecurityException 转译为 403 Forbidden
              *   System.ComponentModel.DataAnnotations.ValidationException 转译为 409 Conflict

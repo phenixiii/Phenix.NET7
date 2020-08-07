@@ -2,7 +2,6 @@
 using Demo.InventoryControl.Plugin.Business;
 using Orleans;
 using Phenix.Actor;
-using Phenix.Core.Data.Schema;
 
 namespace Demo.InventoryControl.Plugin.Actor
 {
@@ -63,9 +62,9 @@ namespace Demo.InventoryControl.Plugin.Actor
                 return _kernel ?? (_kernel = IcLocation.FetchRoot(Database,
                            p => p.Area == Area && p.Alley == Alley && p.Ordinal == Ordinal,
                            () => IcLocation.New(Database,
-                               NameValue.Set<IcLocation>(p => p.Area, Area),
-                               NameValue.Set<IcLocation>(p => p.Alley, Alley),
-                               NameValue.Set<IcLocation>(p => p.Ordinal, Ordinal))));
+                               IcLocation.Set(p => p.Area, Area).
+                               Set(p => p.Alley, Alley).
+                               Set(p => p.Ordinal, Ordinal))));
             }
             set { _kernel = value; }
         }

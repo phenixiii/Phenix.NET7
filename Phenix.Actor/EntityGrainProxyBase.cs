@@ -146,16 +146,6 @@ namespace Phenix.Actor
             return GetKernelPropertyAsync<TValue>(propertyLambda);
         }
 
-        /// <summary>
-        /// 设置根实体对象属性值
-        /// </summary>
-        /// <param name="propertyLambda">含类属性的 lambda 表达式</param>
-        /// <param name="newValue">新值</param>
-        public NameValue SetKernelProperty(Expression<Func<TKernel, object>> propertyLambda, object newValue)
-        {
-            return NameValue.Set(propertyLambda, newValue);
-        }
-
         #endregion
     }
 }

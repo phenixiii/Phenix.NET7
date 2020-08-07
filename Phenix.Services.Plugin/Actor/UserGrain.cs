@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Orleans;
 using Phenix.Actor;
 using Phenix.Core;
-using Phenix.Core.Data.Schema;
 using Phenix.Core.Security;
 using Phenix.Core.Security.Auth;
 
@@ -214,7 +213,7 @@ namespace Phenix.Services.Plugin.Actor
             CheckCompanyAdmin();
 
             long result = Kernel.RootTeamsId.HasValue ? Kernel.RootTeamsId.Value : Database.Sequence.Value;
-            ClusterClient.Default.GetGrain<ITeamsGrain>(result).PatchKernel(NameValue.Set<Teams>(p => p.Name, name));
+            ClusterClient.Default.GetGrain<ITeamsGrain>(result).PatchKernel(Teams.Set(p => p.Name, name));
             if (!Kernel.RootTeamsId.HasValue)
                 Kernel.UpdateSelf(Kernel.SetProperty(p => p.RootTeamsId, result));
             return Task.FromResult(result);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Authentication;
 using System.Text;
@@ -121,8 +122,8 @@ namespace Phenix.Services.Plugin.P6C
             if (paramValues != null && paramValues.Length > 0)
             {
                 StringBuilder result = new StringBuilder();
-                foreach (NameValue item in paramValues)
-                    result.AppendFormat("{0}={1}&", item.Name, item.Value);
+                foreach (KeyValuePair<string, object> kvp in NameValue.ToDictionary(paramValues))
+                    result.AppendFormat("{0}={1}&", kvp.Key, kvp.Value);
                 return String.Format("{0}?{1}", path, result.Remove(result.Length - 1, 1));
             }
 

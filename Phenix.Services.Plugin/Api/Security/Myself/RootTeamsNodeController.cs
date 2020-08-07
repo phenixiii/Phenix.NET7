@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
-using Phenix.Core.Data.Schema;
 using Phenix.Core.Net.Filters;
 using Phenix.Core.Security;
 using Phenix.Services.Plugin.Actor;
@@ -28,7 +27,7 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         public async Task<long> AddChild(string name, long parentId)
         {
             return User.Identity.RootTeamsProxy != null
-                ? await User.Identity.RootTeamsProxy.AddChildNode(parentId, NameValue.Set<Teams>(p => p.Name, name))
+                ? await User.Identity.RootTeamsProxy.AddChildNode(parentId, Teams.Set(p => p.Name, name))
                 : await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).PatchRootTeams(name);
         }
 
@@ -55,7 +54,7 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         [HttpPatch]
         public async Task Update(long id, string name)
         {
-            await User.Identity.RootTeamsProxy.UpdateNode(id, NameValue.Set<Teams>(p => p.Name, name));
+            await User.Identity.RootTeamsProxy.UpdateNode(id, Teams.Set(p => p.Name, name));
         }
 
         /// <summary>

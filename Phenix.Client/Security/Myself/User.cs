@@ -101,7 +101,7 @@ namespace Phenix.Client.Security.Myself
             get { return _phone; }
             set
             {
-                Patch(NameValue.Set<User>(p => p.Phone, value));
+                Patch(Set(p => p.Phone, value));
                 _phone = value;
             }
         }
@@ -116,7 +116,7 @@ namespace Phenix.Client.Security.Myself
             get { return _eMail; }
             set
             {
-                Patch(NameValue.Set<User>(p => p.EMail, value));
+                Patch(Set(p => p.EMail, value));
                 _eMail = value;
             }
         }
@@ -131,7 +131,7 @@ namespace Phenix.Client.Security.Myself
             get { return _regAlias; }
             set
             {
-                Patch(NameValue.Set<User>(p => p.RegAlias, value));
+                Patch(Set(p => p.RegAlias, value));
                 _regAlias = value;
             }
         }
@@ -218,7 +218,7 @@ namespace Phenix.Client.Security.Myself
             get { return _teams ?? (_teams = _teamsId.HasValue ? RootTeams.FindInBranch(p => p.Id == _teamsId.Value) : RootTeams); }
             set
             {
-                Patch(NameValue.Set<User>(p => p.TeamsId, value != null ? value.Id : (long?) null));
+                Patch(Set(p => p.TeamsId, value != null ? value.Id : (long?) null));
                 _teamsId = value != null ? value.Id : (long?) null;
                 _teams = value;
             }
@@ -247,14 +247,14 @@ namespace Phenix.Client.Security.Myself
                 {
                     if (_positionId.HasValue)
                         _position = _httpClient.CallAsync<Position>(HttpMethod.Get, ApiConfig.ApiSecurityPositionPath, false,
-                            NameValue.Set<Position>(p => p.Id, _positionId.Value)).Result;
+                            Position.Set(p => p.Id, _positionId.Value)).Result;
                 }
 
                 return _position;
             }
             set
             {
-                Patch(NameValue.Set<User>(p => p.PositionId, value != null ? value.Id : (long?) null));
+                Patch(Set(p => p.PositionId, value != null ? value.Id : (long?) null));
                 _positionId = value != null ? value.Id : (long?) null;
                 _position = value;
             }
@@ -270,8 +270,8 @@ namespace Phenix.Client.Security.Myself
             get { return _locked; }
             set
             {
-                Patch(NameValue.Set<User>(p => p.Locked, value),
-                    NameValue.Set<User>(p => p.LockedTime, DateTime.Now));
+                Patch(Set(p => p.Locked, value).
+                    Set(p => p.LockedTime, DateTime.Now));
                 _locked = value;
                 _lockedTime = DateTime.Now;
             }
@@ -297,8 +297,8 @@ namespace Phenix.Client.Security.Myself
             get { return _disabled; }
             set
             {
-                Patch(NameValue.Set<User>(p => p.Disabled, value),
-                    NameValue.Set<User>(p => p.DisabledTime, DateTime.Now));
+                Patch(Set(p => p.Disabled, value).
+                    Set(p => p.DisabledTime, DateTime.Now));
                 _disabled = value;
                 _disabledTime = DateTime.Now;
             }
@@ -439,7 +439,7 @@ namespace Phenix.Client.Security.Myself
                 throw new ArgumentNullException(nameof(teamsName));
 
             _rootTeamsId = await _httpClient.CallAsync<long>(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfRootTeamsPath,
-                NameValue.Set<Teams>(p => p.Name, teamsName));
+                Set(p => p.Name, teamsName));
             _rootTeams = null;
             _teams = null;
         }
@@ -449,7 +449,7 @@ namespace Phenix.Client.Security.Myself
         /// </summary>
         public async Task<IList<User>> FetchCompanyUsersAsync()
         {
-            IList<User> result = await _httpClient.CallAsync<IList<User>>(HttpMethod.Get, ApiConfig.ApiSecurityMyselfCompanyUserPath, true);
+            List<User> result = await _httpClient.CallAsync<List<User>>(HttpMethod.Get, ApiConfig.ApiSecurityMyselfCompanyUserPath, true);
             if (result != null)
                 foreach (User item in result)
                     item._httpClient = _httpClient;
@@ -476,12 +476,12 @@ namespace Phenix.Client.Security.Myself
                 throw new ArgumentNullException(nameof(position));
 
             return await _httpClient.CallAsync<string>(HttpMethod.Put, ApiConfig.ApiSecurityMyselfCompanyUserPath, false,
-                NameValue.Set<User>(p => p.Name, name),
-                NameValue.Set<User>(p => p.Phone, phone),
-                NameValue.Set<User>(p => p.EMail, eMail),
-                NameValue.Set<User>(p => p.RegAlias, regAlias),
-                NameValue.Set<User>(p => p.TeamsId, teams.Id),
-                NameValue.Set<User>(p => p.PositionId, position.Id));
+                Set(p => p.Name, name).
+                    Set(p => p.Phone, phone).
+                    Set(p => p.EMail, eMail).
+                    Set(p => p.RegAlias, regAlias).
+                    Set(p => p.TeamsId, teams.Id).
+                    Set(p => p.PositionId, position.Id));
         }
 
         private void Patch(params NameValue[] propertyValues)
@@ -491,7 +491,7 @@ namespace Phenix.Client.Security.Myself
                     propertyValues, true).Wait();
             else
                 _httpClient.CallAsync(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfCompanyUserPath,
-                    propertyValues, true, NameValue.Set<User>(p => p.Name, Name)).Wait();
+                    propertyValues, true, Set(p => p.Name, Name)).Wait();
         }
 
         #endregion

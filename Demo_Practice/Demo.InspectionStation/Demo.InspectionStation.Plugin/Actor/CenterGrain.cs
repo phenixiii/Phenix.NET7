@@ -5,7 +5,6 @@ using Demo.InspectionStation.Plugin.Business;
 using Orleans;
 using Orleans.Streams;
 using Phenix.Actor;
-using Phenix.Core.Data.Schema;
 using Phenix.Core.Message;
 using Phenix.Core.Reflection;
 
@@ -48,7 +47,7 @@ namespace Demo.InspectionStation.Plugin.Actor
                 return _kernel ?? (_kernel = IsCenter.FetchRoot(Database,
                            p => p.Name == Name,
                            () => IsCenter.New(Database,
-                               NameValue.Set<IsCenter>(p => p.Name, Name))));
+                               IsCenter.Set(p => p.Name, Name))));
             }
             set { _kernel = value; }
         }

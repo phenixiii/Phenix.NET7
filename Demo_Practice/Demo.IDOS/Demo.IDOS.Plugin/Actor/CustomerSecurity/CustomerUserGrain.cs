@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Demo.IDOS.Plugin.Business.CustomerSecurity;
 using Phenix.Actor;
-using Phenix.Core.Data.Schema;
 
 namespace Demo.IDOS.Plugin.Actor.CustomerSecurity
 {
@@ -24,8 +23,8 @@ namespace Demo.IDOS.Plugin.Actor.CustomerSecurity
             get { return _kernel ?? (_kernel = DcsCustomerUser.FetchRoot(Database, 
                              p => p.CmId == Id && p.UsId == IdExtension.Value,
                              () => DcsCustomerUser.New(Database,
-                                 NameValue.Set<DcsCustomerUser>(p => p.CmId, Id),
-                                 NameValue.Set<DcsCustomerUser>(p => p.UsId, IdExtension)))); }
+                                 DcsCustomerUser.Set(p => p.CmId, Id).
+                                     Set(p => p.UsId, IdExtension)))); }
             set { _kernel = value; }
         }
 
@@ -58,15 +57,13 @@ namespace Demo.IDOS.Plugin.Actor.CustomerSecurity
 
         Task ICustomerUserGrain.Able()
         {
-            Kernel.UpdateSelf(
-                NameValue.Set<DcsCustomerUser>(p => p.Disabled, false));
+            Kernel.UpdateSelf(Kernel.SetProperty(p => p.Disabled, false));
             return Task.CompletedTask;
         }
 
         Task ICustomerUserGrain.Disable()
         {
-            Kernel.UpdateSelf(
-                NameValue.Set<DcsCustomerUser>(p => p.Disabled, true));
+            Kernel.UpdateSelf(Kernel.SetProperty(p => p.Disabled, true));
             return Task.CompletedTask;
         }
 

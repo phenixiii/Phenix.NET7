@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using Phenix.Core.Data.Model;
-using Phenix.Core.Data.Schema;
 using Phenix.Core.Net.Api;
 
 namespace Phenix.Client.Security.Myself
@@ -74,8 +73,8 @@ namespace Phenix.Client.Security.Myself
         {
             return AddChild(() => new Teams(_httpClient, name),
                 node => _httpClient.CallAsync<long>(HttpMethod.Post, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
-                    NameValue.Set<Teams>(p => p.Name, node.Name),
-                    NameValue.Set<Teams>(p => p.ParentId, node.ParentId)).Result);
+                    Set(p => p.Name, node.Name).
+                        Set(p => p.ParentId, node.ParentId)).Result);
         }
 
         /// <summary>
@@ -86,8 +85,8 @@ namespace Phenix.Client.Security.Myself
         {
             ChangeParent(parentNode,
                 () => _httpClient.CallAsync(HttpMethod.Put, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
-                    NameValue.Set<Teams>(p => p.Id, Id),
-                    NameValue.Set<Teams>(p => p.ParentId, parentNode.Id)).Wait());
+                    Set(p => p.Id, Id).
+                        Set(p => p.ParentId, parentNode.Id)).Wait());
         }
 
         /// <summary>
@@ -96,8 +95,8 @@ namespace Phenix.Client.Security.Myself
         public void UpdateSelf()
         {
             _httpClient.CallAsync(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
-                NameValue.Set<Teams>(p => p.Id, Id),
-                NameValue.Set<Teams>(p => p.Name, Name)).Wait();
+                Set(p => p.Id, Id).
+                    Set(p => p.Name, Name)).Wait();
         }
 
         /// <summary>
@@ -107,7 +106,7 @@ namespace Phenix.Client.Security.Myself
         public int DeleteBranch()
         {
             return DeleteBranch(() => _httpClient.CallAsync<int>(HttpMethod.Delete, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
-                NameValue.Set<Teams>(p => p.Id, Id)).Result);
+                Set(p => p.Id, Id)).Result);
         }
 
         #endregion

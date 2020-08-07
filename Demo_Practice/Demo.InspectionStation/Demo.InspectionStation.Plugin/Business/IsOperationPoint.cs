@@ -145,9 +145,8 @@ namespace Demo.InspectionStation.Plugin.Business
         /// <param name="value">值</param>
         public void SetWeighbridge(int value)
         {
-            UpdateSelf(
-                SetProperty(p => p.Weighbridge, value), 
-                SetProperty(p => p.WeighbridgeAliveTime, DateTime.Now));
+            UpdateSelf(SetProperty(p => p.Weighbridge, value). 
+                Set(p => p.WeighbridgeAliveTime, DateTime.Now));
         }
 
         /// <summary>
@@ -164,9 +163,8 @@ namespace Demo.InspectionStation.Plugin.Business
         /// <param name="value">值</param>
         public void SetLicensePlate(string value)
         {
-            UpdateSelf(
-                SetProperty(p => p.LicensePlate, value), 
-                SetProperty(p => p.LicensePlateAliveTime, DateTime.Now));
+            UpdateSelf(SetProperty(p => p.LicensePlate, value). 
+                Set(p => p.LicensePlateAliveTime, DateTime.Now));
         }
 
         /// <summary>
@@ -182,10 +180,9 @@ namespace Demo.InspectionStation.Plugin.Business
         /// </summary>
         public void PermitThrough()
         {
-            UpdateSelf(
-                SetProperty(p => p.Weighbridge, 0),
-                SetProperty(p => p.LicensePlate, 0),
-                SetProperty(p => p.PermitThroughTime, DateTime.Now));
+            UpdateSelf(SetProperty(p => p.Weighbridge, 0).
+                Set(p => p.LicensePlate, 0).
+                Set(p => p.PermitThroughTime, DateTime.Now));
             _operationPointStatus = OperationPointStatus.PermitThrough;
         }
 

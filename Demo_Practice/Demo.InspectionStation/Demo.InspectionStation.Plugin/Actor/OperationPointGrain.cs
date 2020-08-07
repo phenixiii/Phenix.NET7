@@ -4,7 +4,6 @@ using Demo.InspectionStation.Plugin.Business;
 using Orleans;
 using Orleans.Streams;
 using Phenix.Actor;
-using Phenix.Core.Data.Schema;
 
 namespace Demo.InspectionStation.Plugin.Actor
 {
@@ -45,7 +44,7 @@ namespace Demo.InspectionStation.Plugin.Actor
                 return _kernel ?? (_kernel = IsOperationPoint.FetchRoot(Database,
                            p => p.Name == Name,
                            () => IsOperationPoint.New(Database,
-                               NameValue.Set<IsOperationPoint>(p => p.Name, Name))));
+                               IsOperationPoint.Set(p => p.Name, Name))));
             }
             set { _kernel = value; }
         }

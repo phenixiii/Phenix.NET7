@@ -2,7 +2,6 @@
 using Demo.InventoryControl.Plugin.Business;
 using Orleans;
 using Phenix.Actor;
-using Phenix.Core.Data.Schema;
 
 namespace Demo.InventoryControl.Plugin.Actor
 {
@@ -43,7 +42,7 @@ namespace Demo.InventoryControl.Plugin.Actor
                 return _kernel ?? (_kernel = IcCustomer.FetchRoot(Database,
                            p => p.Name == Name,
                            () => IcCustomer.New(Database,
-                               NameValue.Set<IcCustomer>(p => p.Name, Name))));
+                               IcCustomer.Set(p => p.Name, Name))));
             }
             set { _kernel = value; }
         }

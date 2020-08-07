@@ -33,7 +33,7 @@ namespace Demo.InspectionStation.Plugin.Api.Center
         [HttpPut]
         public async Task Put()
         {
-            await ClusterClient.Default.GetGrain<ICenterGrain>(User.Identity.Name).Listen(await Request.ReadBodyAsync<IList<string>>());
+            await ClusterClient.Default.GetGrain<ICenterGrain>(User.Identity.Name).Listen(await Request.ReadBodyAsync<List<string>>());
         }
     }
 }

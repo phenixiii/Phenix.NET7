@@ -170,7 +170,7 @@ namespace Phenix.Client
         /// <returns>结果集(消息ID-消息内容)</returns>
         public async Task<IDictionary<long, string>> ReceiveMessageAsync()
         {
-            return await CallAsync<IDictionary<long, string>>(HttpMethod.Get, ApiConfig.ApiMessageUserMessagePath);
+            return await CallAsync<Dictionary<long, string>>(HttpMethod.Get, ApiConfig.ApiMessageUserMessagePath);
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace Phenix.Client
                 .Build();
 
             result.On<string>("onReceived",
-                message => { onReceived(Utilities.JsonDeserialize<IDictionary<long, string>>(message)); });
+                message => { onReceived(Utilities.JsonDeserialize<Dictionary<long, string>>(message)); });
             return result;
         }
 
@@ -424,8 +424,8 @@ namespace Phenix.Client
             if (paramValues != null && paramValues.Length > 0)
             {
                 StringBuilder result = new StringBuilder();
-                foreach (NameValue item in paramValues)
-                    result.AppendFormat("{0}={1}&", item.Name, item.Value);
+                foreach (KeyValuePair<string, object> kvp in NameValue.ToDictionary(paramValues))
+                    result.AppendFormat("{0}={1}&", kvp.Key, kvp.Value);
                 return String.Format("{0}?{1}", path, result.Remove(result.Length - 1, 1));
             }
 
