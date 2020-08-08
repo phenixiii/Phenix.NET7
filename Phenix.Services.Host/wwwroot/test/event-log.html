@@ -1,0 +1,86 @@
+﻿<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>EventLogController & EventLogCommand Client Test</title>
+
+    <script type="text/javascript" src="../lib/crypto-js/core-min.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/enc-base64-min.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/cipher-core-min.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/aes-min.js"></script>
+    <script type="text/javascript" src="../lib/crypto-js/md5-min.js"></script>
+    <script type="text/javascript" src="../lib/json2.js"></script>
+    <script type="text/javascript" src="../lib/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../lib/jquery.base64.js"></script>
+    <script type="text/javascript" src="../lib/signalr.min.js"></script>
+    <script type="text/javascript" src="../lib/phenix7.js"></script>
+
+    <script type="text/javascript">
+
+        function onComplete(XMLHttpRequest, textStatus) {
+            if (XMLHttpRequest.status === 200)
+                alert("成功! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
+            else if (XMLHttpRequest.status === 401)
+                alert("无效! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
+            else
+                alert("失败! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
+        };
+
+        function callEventLogController() {
+            phAjax.call({
+                type: "POST",
+                path: "/api/log/event-log",
+                data: {
+                    "message": "访问的是EventLogController"
+                },
+                onSuccess: function (result) {
+                    alert(result);
+                },
+                onError: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("提交日志失败! status: " +
+                        XMLHttpRequest.statusText +
+                        ", response: " +
+                        XMLHttpRequest.responseText);
+                }
+            });
+        };
+
+        function callEventLogCommand() {
+            phAjax.call({
+                type: "POST",
+                path: "/api/service/portal?nameSpace=Phenix.Services.Plugin.Api.Log&className=EventLogCommand&methodName=Save",
+                data: {
+                    "eventInfo": {
+                        "message": "访问的是EventLogCommand"
+                    }
+                },
+                onSuccess: function (result) {
+                    alert(result);
+                },
+                onError: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("提交日志失败! status: " +
+                        XMLHttpRequest.statusText +
+                        ", response: " +
+                        XMLHttpRequest.responseText);
+                }
+            });
+        };
+
+        $(function () {
+        });
+
+    </script>
+</head>
+<body>
+    请启动 Phenix.Services.Host 程序<br />
+    <br />
+    普通用户登录<br />
+    新(/已注册)的登录名<input id="userName" type="text" value="TEST" />
+    <input name="checkInButton" onclick="phAjax.checkIn({baseAddress: 'http://localhost.:5000', name: userName.value, onComplete: onComplete});" type="button" value="登记/注册" /><br />
+    动态口令/登录口令<input id="userPassword" type="text" value="请在此输入日志文件里的口令" />
+    <input name="logonButton" onclick="phAjax.logon({name: userName.value, password: userPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
+    <br />
+    <input name="callEventLogControllerButton" onclick="callEventLogController();" type="button" value="访问EventLogController提交日志" />
+    <input name="callEventLogCommandButton" onclick="callEventLogCommand();" type="button" value="访问EventLogCommand提交日志" />
+</body>
+</html>

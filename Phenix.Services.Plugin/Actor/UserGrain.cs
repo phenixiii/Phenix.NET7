@@ -92,7 +92,7 @@ namespace Phenix.Services.Plugin.Actor
                  * 以下代码供你自己测试用
                  * 生产环境下，请替换为通过第三方渠道（邮箱或短信）推送给到用户
                  */
-                Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0}({1}) 的动态口令是'{2}'(有效期 {2} 分钟)", Kernel.RegAlias, Kernel.Name, dynamicPassword, User.DynamicPasswordValidityMinutes));
+                Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0}({1}) 的动态口令是'{2}'(有效期 {3} 分钟)", Kernel.RegAlias, Kernel.Name, dynamicPassword, User.DynamicPasswordValidityMinutes));
                 /*
                  * 以下代码供你自己测试用
                  * 生产环境下，请替换为提示用户留意查看邮箱或短信以收取动态口令

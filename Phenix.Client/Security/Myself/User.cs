@@ -27,12 +27,13 @@ namespace Phenix.Client.Security.Myself
         }
 
         [Newtonsoft.Json.JsonConstructor]
-        private User(long id, string name, string phone, string eMail, string regAlias, DateTime regTime,
+        private User(string dataSourceKey, long id,
+            string name, string phone, string eMail, string regAlias, DateTime regTime,
             string requestAddress, int requestFailureCount, DateTime? requestFailureTime,
             long? rootTeamsId, Teams rootTeams, long? teamsId, long? positionId, Position position,
             bool locked, DateTime? lockedTime, bool disabled, DateTime? disabledTime)
+            : base(dataSourceKey, id)
         {
-            _id = id;
             _name = name;
             _phone = phone;
             _eMail = eMail;

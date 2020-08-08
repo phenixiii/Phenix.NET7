@@ -7,5 +7,12 @@
       <FileName>Api\Log\EventLogController.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Phenix.Services.Plugin.Api.Log.EventLogCommand">
+    <Position X="2.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Api\Log\EventLogCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Microsoft YaHei UI" Size="9" />
 </ClassDiagram>

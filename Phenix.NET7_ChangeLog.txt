@@ -6,7 +6,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 
 20190522
-1，发布轻量级的持久化引擎，支持Oracle、MySQL（202005可支持PostgreSQL），封装ADO.NET，可同时操作多个（主库+分库）数据库
+1，发布轻量级的持久化引擎，支持Oracle、MySQL（20200510后支持PostgreSQL，20200707后支持SQL Server），封装ADO.NET，可同时操作多个（主库+分库）数据库
 2，提供数据库的数据字典的查看方法，示例见Demo.Phenix.Core.Data.Schema
 3，提供存放日志到本地或数据库的通用方法，示例见Demo.Phenix.Core.Log.EventLog
 4，提供系统唯一的序列号，支持多线程、多进程、分布式应用，示例见Demo.Phenix.Core.Data.Sequence
@@ -26,7 +26,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 20190804
 1，提供WebAPI服务端Phenix.Services.Host工程源码
-2，提供WebAPI服务的phenix7.js客户端源码，见Phenix.Services.Host\wwwroot\lib目录，测试代码见Phenix.Services.Host\wwwroot\test
+2，提供WebAPI服务的phenix7.js客户端源码，见\Phenix.Services.Host\wwwroot\lib目录，测试代码见\Phenix.Services.Host\wwwroot\test目录
 
 
 20190807
@@ -77,7 +77,6 @@ Copyright © 2007, 2020 Phenixヾ Studio
 20191102
 1，提供非对称加密的公钥私钥生成工具Phenix.Tools.CreateKeyPair工程源码
 2，数据库连接串配置记录存放在Phenix.Core.db（推荐使用SQLite Expert工具打开）库文件PH7_Database表里，以便在程序运行时无需通过编写代码注册数据库入口，可直接获取Phenix.Core.Data.Database对象，具体配置方法见示例记录的Remark字段内容
-3，注释掉Phenix.Services.Host工程里的数据库入口注册代码，改用Phenix.Core.db库文件PH7_Database表做数据库连接串的配置
 
 
 20191205
@@ -131,8 +130,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 20200315
 1，提供《Phenix.Core.Data.持久层开发接口.doc》，讲解Phenix.Core持久化引擎的数据库集群、主库+分库、分库分表策略、使用接口和持久层开发方法
 2，为Phenix.Services.Host工程添加Dashboard插件，可在浏览器上打开可视化Silo监控工具：http://localhost:8080/
-3，完善Phenix.Core.AppSettings功能，类似Phenix.Core.Data.Database.Fetch()函数会自动加密Phenix.Core.db库文件PH7_Database表Password字段值，ReadValue()函数也会加密PH7_AppSettings表Value字段值
-4，为Phenix.Core工程添加Plugin功能（命名空间为Phenix.Core.Plugin），用于动态加载和管理包含有实现了IPlugin接口的插件类的程序集
+3，为Phenix.Core工程添加Plugin功能（命名空间为Phenix.Core.Plugin），用于动态加载和管理包含有实现了IPlugin接口的插件类的程序集
 
 
 20200408
@@ -146,7 +144,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 20200510
 1，丰富Phenix.Algorithm工程ZeroOneKnapsackProblem、BunchKnapsackProblem的功能，可支持超大规格（容量）背包的运算
-2，持久化引擎支持PostgreSQL，解决方案Phenix.NET7_PgSQL.sln，程序集输出目录Bin_PgSQL，配置库Phenix.Core.db需升级至最新版
+2，持久化引擎支持PostgreSQL，解决方案Phenix.NET7_PgSQL.sln，程序集输出目录Bin_PgSQL
 
 
 20200516
@@ -165,20 +163,19 @@ Copyright © 2007, 2020 Phenixヾ Studio
 20200603
 1，为持久化引擎添加条件表达式动态传参的功能，涉及Phenix.Core.Data.Schema.Sheet的UpdateEntity、UpdateRecord、DeleteRecord、SelectEntity、SelectRecord、RecordCount等函数，以及Phenix.Core.Data.Model.EntityBase<T>、Phenix.Core.Net.Api.ControllerBase的相关功能，紧随着条件表达式（criteriaLambda/criteriaExpression）后面都会有一个条件对象（criteria）参数
 2，Phenix.Core.Data.Schema.Sheet、Phenix.Core.Net.Api.ControllerBase的SelectRecord可按照接口定义返回指定的属性值记录，而不是整个实体对象打包到JSON中
-3，借助Phenix.NET6实现用户登录身份验证
+3，借助Phenix.NET6实现用户登录身份验证，可参考代码实现第三方身份验证
 
 
 20200613
 1，修正身份验证失败（比如登录口令输错）时浏览器F12提示"Origin null is not allowed by Access-Control-Allow-Origin"的问题
 2，修订《Phenix.Core.Data.持久层开发接口.doc》，补充条件对象的使用方法，补充Phenix.Core.Data.Database的功能介绍
 3，添加Demo.IDOS智能仓储作业系统演练项目到Demo_Practice目录，仅限于Phenix.NET7_PgSQL解决方案可见
-4，修正Phenix.Tools.EntityBuilder、Phenix.Tools.BusinessBuilder代码生成填充表字段默认值时无法转换bool类型的问题
 
 
 20200707
-1，持久化引擎支持SQL Server，解决方案Phenix.NET7_MsSQL.sln，程序集输出目录Bin_MsSQL，配置库Phenix.Core.db需升级至最新版
+1，持久化引擎支持SQL Server，解决方案Phenix.NET7_MsSQL.sln，程序集输出目录Bin_MsSQL
 2，添加对WebAPI传入参数的验证，返回客户端HTTP状态为400的报文体是ValidationMessage对象，其StatusCode属性为400，Hint属性为验证消息
-3，Phenix.Core.Data.Model.EntityBase<T>支持跨域持久化，旧版实体类需升级（为初始函数添加 dataSourceKey 和 id 参数）或重新生成代码，类似这样：
+3，Phenix.Core.Data.Model.EntityBase<T>支持跨域传递并持久化，旧版实体类需升级（为初始函数添加 dataSourceKey 和 id 参数）或重新生成代码，类似这样：
         [Newtonsoft.Json.JsonConstructor]
         private User(string dataSourceKey, long id,  string name)
             : base(dataSourceKey, id)
@@ -189,14 +186,17 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 20200718
 1，调整表名/视图名/字段名映射规则，只要名称里出现的第一个'_'是在第1-4位之间，'_'及其前面的字符串都算作是前缀
-2，修订《Phenix.Core.Data.持久层开发接口.doc》，补充对实体持久化UpdateSelf方法传参的用处，允许通过propertyValues参数申明提交的是实体对象里指定的某些属性值
-3，提供《Phenix.Core.Data.持久层开发接口.他方ORM框架的系统代码迁移指南》
-4，提供统一的服务访问入口：/api/service/portal，能让客户端直接访问继承自Command<T>的对象的公共函数，访问授权的控制方法与控制器上的保持一致，同样可以在这些函数上打[AllowAnonymous]（或实现IAllowAnonymous的标签）、[Authorize]（或实现IAuthorizeData的标签）、继承自Phenix.Core.Net.Filters.AuthorizationFilter的标签，访问授权的角色配置是在第一次被访问时自动保存在PH7_Controller_Role表中，获取方法参考Phenix.Services.Plugin.Api.Security.RoleController，角色的动态配置可自行开发功能来编辑PH7_Controller_Role表
+2，提供统一的服务访问入口：/api/service/portal，能让客户端直接访问继承自Command<T>的对象的公共函数，访问授权的控制方法与控制器上的保持一致，同样可以在这些函数上打[AllowAnonymous]（或实现IAllowAnonymous的标签）、[Authorize]（或实现IAuthorizeData的标签）、继承自Phenix.Core.Net.Filters.AuthorizationFilter的标签，访问授权的角色配置是在第一次被访问时自动保存在PH7_Controller_Role表中，获取方法参考Phenix.Services.Plugin.Api.Security.RoleController，角色的动态配置可自行开发功能来编辑PH7_Controller_Role表
 
 
 20200728
 1，为Phenix.Actor工程添加GrainBase、StreamGrainBase类，以提供最基本的通用功能
-2，为Phenix.Core.Data.Database添加AppSettings属性，可将应用系统配置项持久化到数据库中
+2，为Phenix.Core.Data.Database添加AppSettings属性，可将应用系统配置项持久化到数据库中，配置项定义方法与Phenix.Core.AppSettings雷同，系统实施时可直接在数据库的PH7_AppSettings表里做配置
+
+
+20200808
+1，将配置库初始化表从Phenix.Core.db迁移到Phenix.Core.Init.db
+2，添加event-log.html到\Phenix.Services.Host\wwwroot\test目录，比照Controller和Command的不同编码方法（见Phenix.Services.Plugin.Api.Log里EventLogController和EventLogCommand），测试它们的不同调用方式
 
 
 待完成：

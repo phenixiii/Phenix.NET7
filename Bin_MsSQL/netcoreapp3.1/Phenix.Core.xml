@@ -1901,6 +1901,11 @@
             数据库入口(配套Phenix.Core.db的PH7_Database表)
             </summary>
         </member>
+        <member name="P:Phenix.Core.Data.Database.ConfigFilePath">
+            <summary>
+            配置文件路径
+            </summary>
+        </member>
         <member name="F:Phenix.Core.Data.Database.DefaultDataSourceKey">
             <summary>
             缺省数据源键

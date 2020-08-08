@@ -20,9 +20,9 @@ namespace Phenix.Client.Security.Myself
         }
 
         [Newtonsoft.Json.JsonConstructor]
-        private Position(long id, string name, IList<string> roles)
+        private Position(string dataSourceKey, long id, string name, IList<string> roles)
+            : base(dataSourceKey, id)
         {
-            _id = id;
             _name = name;
             _roles = roles != null ? new ReadOnlyCollection<string>(roles) : null;
         }
