@@ -224,7 +224,7 @@
         </member>
         <member name="T:Phenix.Core.Data.AppSettings">
             <summary>
-            应用配置
+            应用配置(配套PH7_AppSettings表)
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.AppSettings.Database">
@@ -8921,6 +8921,13 @@
             </summary>
             <param name="binderName">类属性名/类字段名/参数名</param>
         </member>
+        <member name="M:Phenix.Core.Data.Schema.Standards.ExtractCultureText(System.String,System.Globalization.CultureInfo)">
+            <summary>
+            提取本地文本
+            </summary>
+            <param name="text">文本(中英文用‘|’分隔)</param>
+            <param name="cultureInfo">CultureInfo</param>
+        </member>
         <member name="T:Phenix.Core.Data.Schema.Table">
             <summary>
             表
@@ -9224,6 +9231,42 @@
             是否结束
             </summary>
         </member>
+        <member name="T:Phenix.Core.IO.IFileService">
+            <summary>
+            文件存取服务接口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.IO.IFileService.GetUploadPath(System.String,System.String)">
+            <summary>
+            获取上传文件的写入路径
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="fileName">上传文件名</param>
+            <returns>写入路径</returns>
+        </member>
+        <member name="M:Phenix.Core.IO.IFileService.AfterUploadFile(System.String,System.String)">
+            <summary>
+            当完成上传文件时触发
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="targetPath">写入路径</param>
+            <returns>完成上传时返回消息</returns>
+        </member>
+        <member name="M:Phenix.Core.IO.IFileService.GetDownloadPath(System.String,System.String)">
+            <summary>
+            获取下载文件的读取路径
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="fileName">下载文件名</param>
+            <returns>读取路径</returns>
+        </member>
+        <member name="M:Phenix.Core.IO.IFileService.AfterDownloadFile(System.String,System.String)">
+            <summary>
+            当完成下载文件时触发
+            </summary>
+            <param name="message">上传消息</param>
+            <param name="sourcePath">读取路径</param>
+        </member>
         <member name="T:Phenix.Core.IO.StreamHelper">
             <summary>
             Stream助手
@@ -9388,6 +9431,25 @@
             <param name="message">消息</param>
             <param name="error">错误</param>
             <param name="extension">后缀</param>
+        </member>
+        <member name="T:Phenix.Core.Message.IUserMessageService">
+            <summary>
+            用户消息服务接口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Message.IUserMessageService.OnConnectedAsync(Phenix.Core.Security.Identity,System.String)">
+            <summary>
+            连接
+            </summary>
+            <param name="identity">当前用户身份</param>
+            <param name="connectionId">连接ID</param>
+        </member>
+        <member name="M:Phenix.Core.Message.IUserMessageService.OnDisconnectedAsync(Phenix.Core.Security.Identity,System.Exception)">
+            <summary>
+            断开
+            </summary>
+            <param name="identity">当前用户身份</param>
+            <param name="exception">Exception</param>
         </member>
         <member name="T:Phenix.Core.Message.UserMessage">
             <summary>
@@ -9735,51 +9797,17 @@
             页体(JSON格式)
             </summary>
         </member>
-        <member name="T:Phenix.Core.Net.Api.Inout.IFileService">
-            <summary>
-            文件存取服务接口
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Inout.IFileService.GetUploadPath(System.String,System.String)">
-            <summary>
-            获取上传文件的写入路径
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="fileName">上传文件名</param>
-            <returns>写入路径</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Inout.IFileService.AfterUploadFile(System.String,System.String)">
-            <summary>
-            当完成上传文件时触发
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="targetPath">写入路径</param>
-            <returns>完成上传时返回消息</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Inout.IFileService.GetDownloadPath(System.String,System.String)">
-            <summary>
-            获取下载文件的读取路径
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="fileName">下载文件名</param>
-            <returns>读取路径</returns>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Inout.IFileService.AfterDownloadFile(System.String,System.String)">
-            <summary>
-            当完成下载文件时触发
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="sourcePath">读取路径</param>
-        </member>
         <member name="T:Phenix.Core.Net.Api.Message.UserMessageHub">
             <summary>
             用户消息中间件
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Api.Message.UserMessageHub.#ctor(Microsoft.AspNetCore.SignalR.IHubContext{Phenix.Core.Net.Api.Message.UserMessageHub})">
+        <member name="M:Phenix.Core.Net.Api.Message.UserMessageHub.#ctor(Microsoft.AspNetCore.SignalR.IHubContext{Phenix.Core.Net.Api.Message.UserMessageHub},Phenix.Core.Message.IUserMessageService)">
             <summary>
             初始化
             </summary>
+            <param name="context">上下文</param>
+            <param name="service">依赖注入的用户消息服务</param>
         </member>
         <member name="M:Phenix.Core.Net.Api.Message.UserMessageHub.OnConnectedAsync">
             <summary>
@@ -11446,6 +11474,36 @@
             </summary>
             <param name="id">主键</param>
         </member>
+        <member name="T:Phenix.Core.Security.IUserService">
+            <summary>
+            用户资料服务接口
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Security.IUserService.OnRegistered(Phenix.Core.Security.User,System.String,System.String)">
+            <summary>
+            注册成功
+            </summary>
+            <param name="user">用户资料</param>
+            <param name="initialPassword">初始口令</param>
+            <param name="dynamicPassword">动态口令</param>
+            <returns>返回消息</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.IUserService.OnCheckIn(Phenix.Core.Security.User,System.String)">
+            <summary>
+            登记处理
+            </summary>
+            <param name="user">用户资料</param>
+            <param name="dynamicPassword">动态口令</param>
+            <returns>返回消息</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.IUserService.OnLogon(Phenix.Core.Security.User,System.String)">
+            <summary>
+            登录完成
+            Key/IV=登录口令/动态口令
+            </summary>
+            <param name="user">用户资料</param>
+            <param name="tag">捎带数据(已解密, 默认是客户端当前时间)</param>
+        </member>
         <member name="T:Phenix.Core.Security.Position">
             <summary>
             岗位资料
@@ -11901,17 +11959,17 @@
         </member>
         <member name="M:Phenix.Core.Security.User.Register(Phenix.Core.Data.Database,System.String,System.String,System.String,System.String,System.String,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int64},System.String@,System.String@,System.Boolean)">
             <summary>
-            登记/注册
+            注册
             </summary>
             <param name="database">Database</param>
             <param name="name">登录名</param>
             <param name="phone">手机(注册用可为空)</param>
             <param name="eMail">邮箱(注册用可为空)</param>
             <param name="regAlias">注册昵称(注册用可为空)</param>
+            <param name="requestAddress">服务请求方IP地址</param>
             <param name="rootTeamsId">所属顶层团体ID</param>
             <param name="teamsId">所属团体ID</param>
             <param name="positionId">担任岗位ID</param>
-            <param name="requestAddress">服务请求方IP地址</param>
             <param name="initialPassword">初始口令</param>
             <param name="dynamicPassword">动态口令</param>
             <param name="hashPassword">登录口令需Hash</param>
@@ -13635,7 +13693,7 @@
             <param name="decrypt">需要解密</param>
             <returns>报文主体</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.Inout.IFileService)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.IO.IFileService)">
             <summary>
             处理上传文件块
             </summary>
@@ -13643,7 +13701,7 @@
             <param name="fileService">文件服务</param>
             <returns>完成上传时返回消息</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.Net.Api.Inout.IFileService,System.Threading.CancellationToken)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.IO.IFileService,System.Threading.CancellationToken)">
             <summary>
             处理上传文件块
             </summary>
@@ -13652,7 +13710,7 @@
             <param name="cancellationToken">取消</param>
             <returns>完成上传时返回消息</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,System.String,System.String,System.Int32,Phenix.Core.Net.Api.Inout.IFileService)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,System.String,System.String,System.Int32,Phenix.Core.IO.IFileService)">
             <summary>
             处理下载文件块
             </summary>
@@ -13663,7 +13721,7 @@
             <param name="fileService">文件服务</param>
             <returns>文件块信息</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,System.String,System.String,System.Int32,Phenix.Core.Net.Api.Inout.IFileService,System.Threading.CancellationToken)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,System.String,System.String,System.Int32,Phenix.Core.IO.IFileService,System.Threading.CancellationToken)">
             <summary>
             处理下载文件块
             </summary>
@@ -13723,26 +13781,6 @@
             </summary>
             <param name="filters">FilterCollection</param>
             <returns>IFilterMetadata</returns>
-        </member>
-        <member name="T:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtension">
-            <summary>
-            ServiceCollection扩展
-            </summary>
-        </member>
-        <member name="M:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtension.AddUserMessageHub(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
-            <summary>
-            注入用户消息服务
-            </summary>
-            <param name="services">IServiceCollection</param>
-            <returns>IServiceCollection</returns>
-        </member>
-        <member name="M:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtension.AddFileService``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.DependencyInjection.ServiceLifetime)">
-            <summary>
-            注入文件存取服务
-            </summary>
-            <param name="services">IServiceCollection</param>
-            <param name="serviceLifetime"></param>
-            <returns>IServiceCollection</returns>
         </member>
         <member name="T:System.Net.Http.HttpResponseMessageExtension">
             <summary>

@@ -33,7 +33,8 @@ namespace Phenix.Services.Host
                 options.AddDefaultPolicy(builder => builder
                     .SetIsOriginAllowed(origin => true)
                     .AllowAnyMethod()
-                    .AllowAnyHeader());
+                    .AllowAnyHeader()
+                    .AllowCredentials());
             });
 
             /*
@@ -44,12 +45,22 @@ namespace Phenix.Services.Host
             /*
              * 注入用户消息服务，响应 phAjax.phAjax.subscribeMessage() 请求 
              */
-            services.AddUserMessageHub();
+            services.AddSingleton<Phenix.Core.Net.Api.Message.UserMessageHub>();
 
             /*
-             * 注入文件存取服务
+             * 注入用户资料服务，由UserService提供扩展功能
              */
-            services.AddFileService<Phenix.Services.Extend.FileService>();
+            services.AddTransient(typeof(Phenix.Core.Security.IUserService), typeof(Phenix.Services.Extend.Actor.Security.UserService));
+
+            /*
+             * 注入文件存取服务，由FileService提供扩展功能
+             */
+            services.AddTransient(typeof(Phenix.Core.IO.IFileService), typeof(Phenix.Services.Extend.Api.Inout.FileService));
+
+            /*
+             * 注入用户消息服务，由UserMessageService提供扩展功能
+             */
+            services.AddTransient(typeof(Phenix.Core.Message.IUserMessageService), typeof(Phenix.Services.Extend.Api.Message.UserMessageService));
 
             /*
              * 配置Controller策略

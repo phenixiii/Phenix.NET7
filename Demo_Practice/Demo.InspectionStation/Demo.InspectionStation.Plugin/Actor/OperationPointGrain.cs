@@ -74,7 +74,7 @@ namespace Demo.InspectionStation.Plugin.Actor
         /// </summary>
         /// <param name="content">消息内容</param>
         /// <param name="token">StreamSequenceToken</param>
-        protected override Task OnReceive(IsOperationPoint content, StreamSequenceToken token)
+        protected override Task OnReceiving(IsOperationPoint content, StreamSequenceToken token)
         {
             throw new NotImplementedException();
         }

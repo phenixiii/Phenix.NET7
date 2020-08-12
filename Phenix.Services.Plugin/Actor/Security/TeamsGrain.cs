@@ -1,7 +1,7 @@
 ﻿using Phenix.Actor;
 using Phenix.Core.Security;
 
-namespace Phenix.Services.Plugin.Actor
+namespace Phenix.Services.Plugin.Actor.Security
 {
     /// <summary>
     /// 团队资料Grain

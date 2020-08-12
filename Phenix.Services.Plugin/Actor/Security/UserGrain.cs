@@ -8,13 +8,28 @@ using Phenix.Core;
 using Phenix.Core.Security;
 using Phenix.Core.Security.Auth;
 
-namespace Phenix.Services.Plugin.Actor
+namespace Phenix.Services.Plugin.Actor.Security
 {
     /// <summary>
     /// 用户资料Grain
     /// </summary>
     public class UserGrain : EntityGrainBase<User>, IUserGrain
     {
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        /// <param name="service">依赖注入的用户资料服务</param>
+        public UserGrain(IUserService service)
+        {
+            _service = service;
+        }
+
+        #region 属性
+
+        private readonly IUserService _service;
+
+        #endregion
+
         #region 属性
 
         #region 配置项
@@ -71,36 +86,14 @@ namespace Phenix.Services.Plugin.Actor
             long? rootTeamsId = null, long? teamsId = null, long? positionId = null)
         {
             Kernel = User.Register(Database, Name, phone, eMail, regAlias, requestAddress, rootTeamsId, teamsId, positionId, ref initialPassword, ref dynamicPassword, hashPassword);
-            /*
-             * 以下代码供你自己测试用
-             * 生产环境下，请替换为通过第三方渠道（邮箱或短信）推送给到用户
-             */
-            Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0}({1}) 的初始口令是'{2}'，动态口令是'{3}'(有效期 {4} 分钟)", Kernel.RegAlias, Kernel.Name, initialPassword, dynamicPassword, User.DynamicPasswordValidityMinutes));
-            /*
-             * 以下代码供你自己测试用
-             * 生产环境下，请替换为提示用户留意查看邮箱或短信以收取动态口令
-             */
-            return String.Format("{0}({1}) 的动态口令存放于 {2} 目录下的日志文件里", Kernel.RegAlias, Kernel.Name, Phenix.Core.Log.EventLog.LocalDirectory);
+            return _service.OnRegistered(Kernel, initialPassword, dynamicPassword);
         }
 
         Task<string> IUserGrain.CheckIn(string phone, string eMail, string regAlias, string requestAddress)
         {
-            if (Kernel != null)
-            {
-                string dynamicPassword = Kernel.ApplyDynamicPassword(requestAddress, true);
-                /*
-                 * 以下代码供你自己测试用
-                 * 生产环境下，请替换为通过第三方渠道（邮箱或短信）推送给到用户
-                 */
-                Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0}({1}) 的动态口令是'{2}'(有效期 {3} 分钟)", Kernel.RegAlias, Kernel.Name, dynamicPassword, User.DynamicPasswordValidityMinutes));
-                /*
-                 * 以下代码供你自己测试用
-                 * 生产环境下，请替换为提示用户留意查看邮箱或短信以收取动态口令
-                 */
-                return Task.FromResult(String.Format("{0}({1}) 的动态口令存放于 {2} 目录下的日志文件里", Kernel.RegAlias, Kernel.Name, Phenix.Core.Log.EventLog.LocalDirectory));
-            }
-
-            return Task.FromResult(Register(phone, eMail, regAlias, requestAddress));
+            return Task.FromResult(Kernel != null
+                ? _service.OnCheckIn(Kernel, Kernel.ApplyDynamicPassword(requestAddress, true))
+                : Register(phone, eMail, regAlias, requestAddress));
         }
 
         Task<string> IUserGrain.Encrypt(string sourceText)
@@ -152,16 +145,13 @@ namespace Phenix.Services.Plugin.Actor
                 else
                     throw new UserNotFoundException();
 
-            bool result = Kernel.IsValidLogon(timestamp, signature, requestAddress, throwIfNotConform);
-            if (result)
+            if (Kernel.IsValidLogon(timestamp, signature, requestAddress, throwIfNotConform))
             {
-                /*
-                 * 可利用客户端传过来的 tag 扩展出系统自己的用户登录功能
-                 */
-                tag = Kernel != null ? Kernel.Decrypt(tag) : null;
+                _service.OnLogon(Kernel, Kernel.Decrypt(tag));
+                return true;
             }
 
-            return result;
+            return false;
         }
 
         Task<bool> IUserGrain.IsValid(string timestamp, string signature, string requestAddress, bool throwIfNotConform)

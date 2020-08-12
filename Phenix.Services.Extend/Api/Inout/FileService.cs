@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
-using Phenix.Core.Net.Api.Inout;
+using Phenix.Core.IO;
 
-namespace Phenix.Services.Extend
+namespace Phenix.Services.Extend.Api.Inout
 {
     /// <summary>
     /// 文件存取服务
     /// </summary>
-    public class FileService : IFileService
+    public sealed class FileService : IFileService
     {
         #region 方法
 
@@ -17,7 +17,7 @@ namespace Phenix.Services.Extend
         /// <param name="message">上传消息</param>
         /// <param name="fileName">上传文件名</param>
         /// <returns>写入路径</returns>
-        public string GetUploadPath(string message, string fileName)
+        string IFileService.GetUploadPath(string message, string fileName)
         {
             return null; //默认为 Phenix.Core.AppRun.TempDirectory + fileName
         }
@@ -28,7 +28,7 @@ namespace Phenix.Services.Extend
         /// <param name="message">上传消息</param>
         /// <param name="targetPath">写入路径</param>
         /// <returns>完成上传时返回消息</returns>
-        public string AfterUploadFile(string message, string targetPath)
+        string IFileService.AfterUploadFile(string message, string targetPath)
         {
             /*
              * 本函数被执行到，说明上传文件已经按照写入路径被保存
@@ -48,7 +48,7 @@ namespace Phenix.Services.Extend
         /// <param name="message">上传消息</param>
         /// <param name="fileName">下载文件名</param>
         /// <returns>读取路径</returns>
-        public string GetDownloadPath(string message, string fileName)
+        string IFileService.GetDownloadPath(string message, string fileName)
         {
             return null; //默认为 Phenix.Core.AppRun.TempDirectory + fileName
         }
@@ -58,7 +58,7 @@ namespace Phenix.Services.Extend
         /// </summary>
         /// <param name="message">上传消息</param>
         /// <param name="sourcePath">读取路径</param>
-        public void AfterDownloadFile(string message, string sourcePath)
+        void IFileService.AfterDownloadFile(string message, string sourcePath)
         {
             /*
              * 本函数被执行到，说明文件已经按照存储路径被下载

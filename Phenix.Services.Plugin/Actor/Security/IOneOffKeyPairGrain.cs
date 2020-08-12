@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Orleans;
 
-namespace Phenix.Services.Plugin.Actor
+namespace Phenix.Services.Plugin.Actor.Security
 {
     /// <summary>
     /// 一次性公钥私钥对Grain接口

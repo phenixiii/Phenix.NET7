@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Phenix.Actor;
 using Phenix.Core.Security;
-using Phenix.Services.Plugin.Actor;
+using Phenix.Services.Plugin.Actor.Security;
 
 namespace Phenix.Services.Plugin
 {

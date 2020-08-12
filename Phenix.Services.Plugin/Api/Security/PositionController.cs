@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Data;
 using Phenix.Core.Net.Filters;
-using Phenix.Services.Plugin.Actor;
+using Phenix.Services.Plugin.Actor.Security;
 
 namespace Phenix.Services.Plugin.Api.Security
 {

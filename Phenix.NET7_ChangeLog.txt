@@ -197,7 +197,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 20200808
 1，将配置库初始化表从Phenix.Core.db迁移到Phenix.Core.Init.db
 2，添加event-log.html到\Phenix.Services.Host\wwwroot\test目录，比照Controller和Command的不同编码方法（见Phenix.Services.Plugin.Api.Log里EventLogController和EventLogCommand），测试它们的不同调用方式
-
+3，重构Phenix.Services.Extend工程，添加UserService以支持Phenix.Services.Plugin的UserGrain功能扩展，添加UserMessageService以支持UserMessage功能扩展
 
 待完成：
 2，添加《Phenix.Core.Security.身份验证方法.doc》

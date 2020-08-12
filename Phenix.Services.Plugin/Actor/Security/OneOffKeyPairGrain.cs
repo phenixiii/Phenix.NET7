@@ -5,7 +5,7 @@ using Phenix.Core.Security.Auth;
 using Phenix.Core.Security.Cryptography;
 using Phenix.Core.SyncCollections;
 
-namespace Phenix.Services.Plugin.Actor
+namespace Phenix.Services.Plugin.Actor.Security
 {
     /// <summary>
     /// 一次性公钥私钥对Grain

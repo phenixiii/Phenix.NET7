@@ -16,15 +16,15 @@ namespace Phenix.Services.Plugin.Api.Inout
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="fileService">依赖注入的文件服务</param>
-        public FileController(Phenix.Core.Net.Api.Inout.IFileService fileService)
+        /// <param name="service">依赖注入的文件存取服务</param>
+        public FileController(IFileService service)
         {
-            _fileService = fileService;
+            _service = service;
         }
 
         #region 属性
 
-        private readonly Phenix.Core.Net.Api.Inout.IFileService _fileService;
+        private readonly IFileService _service;
 
         #endregion
 
@@ -39,7 +39,7 @@ namespace Phenix.Services.Plugin.Api.Inout
         [HttpGet]
         public async Task<FileChunkInfo> DownloadFileChunk(string message, string fileName, int chunkNumber, CancellationToken cancellationToken)
         {
-            return await Request.DownloadFileChunkAsync(message, fileName, chunkNumber, _fileService, cancellationToken);
+            return await Request.DownloadFileChunkAsync(message, fileName, chunkNumber, _service, cancellationToken);
         }
 
         // phAjax.uploadFileChunk
@@ -51,7 +51,7 @@ namespace Phenix.Services.Plugin.Api.Inout
         [HttpPut]
         public async Task<string> UploadFileChunk(CancellationToken cancellationToken)
         {
-            return await Request.UploadFileChunkAsync(_fileService, cancellationToken);
+            return await Request.UploadFileChunkAsync(_service, cancellationToken);
         }
 
         #endregion
