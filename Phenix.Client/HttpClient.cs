@@ -223,7 +223,7 @@ namespace Phenix.Client
 
             HubConnection result = new HubConnectionBuilder()
                 .WithUrl(BaseAddress.OriginalString + ApiConfig.ApiMessageUserMessageHubPath,
-                    options => { options.AccessTokenProvider = () => Task.FromResult(Identity.User.FormatComplexAuthorization()); })
+                    options => { options.AccessTokenProvider = () => Task.FromResult(Identity.User.FormatComplexAuthorization(false)); })
                 .AddMessagePackProtocol()
                 .WithAutomaticReconnect()
                 .Build();

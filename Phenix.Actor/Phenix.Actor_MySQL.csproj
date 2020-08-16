@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>7.3.38</Version>
-    <AssemblyVersion>7.3.38.0728</AssemblyVersion>
-    <FileVersion>7.3.38.0728</FileVersion>
+    <Version>7.3.39</Version>
+    <AssemblyVersion>7.3.39.0808</AssemblyVersion>
+    <FileVersion>7.3.39.0808</FileVersion>
     <Description>Phenix Framework 7 for .NET Core 3 + Orleans 3</Description>
     <Authors>ming</Authors>
     <DefineConstants>TRACE;MySQL</DefineConstants>

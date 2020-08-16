@@ -3,22 +3,22 @@
   <Class Name="Demo.InspectionStation.Plugin.Api.OperationPoint.LicensePlateController">
     <Position X="2.75" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAABAAAAAAAAACAAAAAAAAAAAAAAAAAg=</HashCode>
+      <HashCode>AAAAAAAAAAAABABAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
       <FileName>Api\OperationPoint\LicensePlateController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Demo.InspectionStation.Plugin.Api.OperationPoint.WeighbridgeController">
     <Position X="0.5" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAABAAAAAAAAACAAAAAAAAAAAAAAAAAg=</HashCode>
+      <HashCode>AAAAAAAAAAAABABAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
       <FileName>Api\OperationPoint\WeighbridgeController.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Demo.InspectionStation.Plugin.Api.OperationPoint.GateController">
+  <Class Name="Demo.InspectionStation.Plugin.Api.OperationPoint.BarrierController">
     <Position X="5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
-      <FileName>Api\OperationPoint\GateController.cs</FileName>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Api\OperationPoint\BarrierController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Microsoft YaHei UI" Size="9" />

@@ -1,7 +1,9 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Phenix.Core.Net;
+using Phenix.Core.Net.Api;
 
 namespace Phenix.Client
 {
@@ -30,7 +32,8 @@ namespace Phenix.Client
             }
 
             if (Owner.Identity != null)
-                request.Headers.Add(NetConfig.AuthorizationHeaderName, Owner.Identity.User.FormatComplexAuthorization());
+                request.Headers.Add(NetConfig.AuthorizationHeaderName, Owner.Identity.User.FormatComplexAuthorization(
+                    String.Compare(request.RequestUri.AbsolutePath, ApiConfig.ApiSecurityGatePath, StringComparison.OrdinalIgnoreCase) == 0 && request.Method == HttpMethod.Post));
 
             return base.SendAsync(request, cancellationToken);
         }

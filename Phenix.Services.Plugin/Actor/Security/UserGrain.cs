@@ -112,7 +112,7 @@ namespace Phenix.Services.Plugin.Actor.Security
             return Task.FromResult(Kernel.Decrypt(cipherText));
         }
 
-        async Task<bool> IUserGrain.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, bool throwIfNotConform)
+        async Task<bool> IUserGrain.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, string requestSession, bool throwIfNotConform)
         {
             Phenix.Services.Plugin.P6C.HttpClient httpClient = Phenix.Services.Plugin.P6C.HttpClient.Default;
             if (httpClient != null)
@@ -128,7 +128,7 @@ namespace Phenix.Services.Plugin.Actor.Security
                 if (Kernel != null)
                 {
                     Kernel.Activate();
-                    Kernel.ChangePassword(Kernel.Password, password, false, requestAddress);
+                    Kernel.ChangePassword(Kernel.Password, password, false, requestAddress, requestSession);
                 }
                 else
                     Register(null, null, Name, requestAddress, password, null, false);
@@ -145,7 +145,7 @@ namespace Phenix.Services.Plugin.Actor.Security
                 else
                     throw new UserNotFoundException();
 
-            if (Kernel.IsValidLogon(timestamp, signature, requestAddress, throwIfNotConform))
+            if (Kernel.IsValidLogon(timestamp, signature, requestAddress, requestSession, throwIfNotConform))
             {
                 _service.OnLogon(Kernel, Kernel.Decrypt(tag));
                 return true;
@@ -154,12 +154,12 @@ namespace Phenix.Services.Plugin.Actor.Security
             return false;
         }
 
-        Task<bool> IUserGrain.IsValid(string timestamp, string signature, string requestAddress, bool throwIfNotConform)
+        Task<bool> IUserGrain.IsValid(string timestamp, string signature, string requestAddress, string requestSession, bool throwIfNotConform)
         {
             if (Kernel == null)
                 throw new UserNotFoundException();
 
-            return Task.FromResult(Kernel.IsValid(timestamp, signature, requestAddress, throwIfNotConform));
+            return Task.FromResult(Kernel.IsValid(timestamp, signature, requestAddress, requestSession, throwIfNotConform));
         }
 
         Task<bool> IUserGrain.ChangePassword(string password, string newPassword, string requestAddress, bool throwIfNotConform)
@@ -167,7 +167,7 @@ namespace Phenix.Services.Plugin.Actor.Security
             if (Kernel == null)
                 throw new UserNotFoundException();
 
-            return Task.FromResult(Kernel.ChangePassword(password, newPassword, true, requestAddress, throwIfNotConform));
+            return Task.FromResult(Kernel.ChangePassword(password, newPassword, true, requestAddress, Kernel.RequestSession, throwIfNotConform));
         }
 
         #region CompanyAdmin 操作功能

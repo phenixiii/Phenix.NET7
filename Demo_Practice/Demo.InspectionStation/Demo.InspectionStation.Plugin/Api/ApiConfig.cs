@@ -21,8 +21,8 @@
         public const string ApiOperationPointLicensePlatePath = "/api/inspection-station/operation-point/license-plate";
 
         /// <summary>
-        /// /api/operation-point/gate
+        /// /api/operation-point/barrier
         /// </summary>
-        public const string ApiOperationPointGatePath = "/api/inspection-station/operation-point/gate";
+        public const string ApiOperationPointBarrierPath = "/api/inspection-station/operation-point/barrier";
     }
 }

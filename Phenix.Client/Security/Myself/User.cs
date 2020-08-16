@@ -157,6 +157,19 @@ namespace Phenix.Client.Security.Myself
             get { return _requestAddress; }
         }
 
+        [NonSerialized]
+        private string _requestSession;
+
+        /// <summary>
+        /// 服务请求会话签名
+        /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
+        public string RequestSession
+        {
+            get { return _requestSession; }
+            private set { _requestSession = value; }
+        }
+
         private readonly int _requestFailureCount;
 
         /// <summary>
@@ -382,12 +395,14 @@ namespace Phenix.Client.Security.Myself
         }
 
         /// <summary>
-        /// 身份验证token: [登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)]
+        /// 身份验证token: [登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)],[会话签名]
         /// </summary>
-        public string FormatComplexAuthorization()
+        public string FormatComplexAuthorization(bool reset)
         {
             string timestamp = String.Format("{0}{1}", new Random().Next(100000000, 1000000000), DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
-            return String.Format("{0},{1},{2}", Uri.EscapeDataString(_name), timestamp, Encrypt(timestamp));
+            if (reset)
+                RequestSession = Encrypt(timestamp);
+            return String.Format("{0},{1},{2},{3}", Uri.EscapeDataString(_name), timestamp, Encrypt(timestamp), RequestSession);
         }
 
         internal async Task LogonAsync(string tag)

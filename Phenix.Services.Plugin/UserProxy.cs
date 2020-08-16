@@ -13,14 +13,14 @@ namespace Phenix.Services.Plugin
     {
         #region 方法
 
-        Task<bool> IUserProxy.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, bool throwIfNotConform)
+        Task<bool> IUserProxy.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, string requestSession, bool throwIfNotConform)
         {
-            return Grain.IsValidLogon(timestamp, signature, tag, requestAddress, throwIfNotConform);
+            return Grain.IsValidLogon(timestamp, signature, tag, requestAddress, requestSession, throwIfNotConform);
         }
 
-        Task<bool> IUserProxy.IsValid(string timestamp, string signature, string requestAddress, bool throwIfNotConform)
+        Task<bool> IUserProxy.IsValid(string timestamp, string signature, string requestAddress, string requestSession, bool throwIfNotConform)
         {
-            return Grain.IsValid(timestamp, signature, requestAddress, throwIfNotConform);
+            return Grain.IsValid(timestamp, signature, requestAddress, requestSession, throwIfNotConform);
         }
 
         Task<string> IUserProxy.Encrypt(object data)

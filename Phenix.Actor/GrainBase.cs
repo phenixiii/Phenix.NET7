@@ -29,7 +29,7 @@ namespace Phenix.Actor
             get
             {
                 if (!_id.HasValue)
-                    _id = GetPrimaryKeyLong(out _idExtension);
+                    _id = this.GetPrimaryKeyLong();
                 return _id.Value;
             }
         }
@@ -44,24 +44,28 @@ namespace Phenix.Actor
             get
             {
                 if (!_idExtension.HasValue)
-                    _id = GetPrimaryKeyLong(out _idExtension);
+                {
+                    if (!String.IsNullOrEmpty(KeyExtension))
+                        _idExtension = Int64.Parse(KeyExtension);
+                }
+
                 return _idExtension;
             }
         }
 
-        #endregion
+        private string _keyExtension;
 
-        #region 方法
-
-        private long GetPrimaryKeyLong(out long? idExtension)
+        /// <summary>
+        /// 复合主键
+        /// </summary>
+        protected virtual string KeyExtension
         {
-            string keyExtension;
-            long result = this.GetPrimaryKeyLong(out keyExtension);
-            if (!String.IsNullOrEmpty(keyExtension))
-                idExtension = Int64.Parse(keyExtension);
-            else
-                idExtension = null;
-            return result;
+            get
+            {
+                if (_keyExtension == null)
+                    _id = this.GetPrimaryKeyLong(out _keyExtension);
+                return _keyExtension;
+            }
         }
 
         #endregion

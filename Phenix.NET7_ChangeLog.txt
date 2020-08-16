@@ -17,8 +17,8 @@ Copyright © 2007, 2020 Phenixヾ Studio
 20190715
 1，持久化引擎支持在实体属性上打System.ComponentModel.DataAnnotations.ValidationAttribute派生标签，提交对象/属性时会自动完成属性的有效性验证（验证失败抛出ValidationException）
       以下默认规范会自动添加，不必手工打标签：
-          System.ComponentModel.DataAnnotations.RequiredAttribute，如果属性值不允许为空的规范是按照表字段NOT NULL的话；
-          System.ComponentModel.DataAnnotations.StringLengthAttribute，如果字符串属性值长度要求是按照表字段长度规范的话；
+          System.ComponentModel.DataAnnotations.RequiredAttribute，前提是属性值不允许为空的规范是按照表字段NOT NULL的话；
+          System.ComponentModel.DataAnnotations.StringLengthAttribute，前提是字符串属性值长度要求是按照表字段长度规范的话；
      一旦手工打上标签，以上默认规范会被覆盖掉
 2，持久化引擎支持在实体上实现System.ComponentModel.DataAnnotations.IValidatableObject接口，也可以实现Phenix.Core.Data.Validity.IValidation接口，提交对象时自动完成对象的有效性验证（验证失败抛出ValidationException）
 3，提供实体类代码生成工具Phenix.Tools.EntityBuilder工程源码
@@ -123,14 +123,14 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 20200224
 1，重构Phenix.Core持久化引擎，强调聚合和聚合根的领域对象模型，在采取分库分表策略的数据库部署场景下，一棵聚合树里的所有对象都随聚合根对象一起锁定在某个分库上进行持久化，持久化的路由算法是取自聚合根对象里一个映射'_RU'后缀字段的属性值经HASH取余得到具体的分库ID
-2，重构Phenix.Core权限控制模块，借助Phenix.Services.Plugin工程实现分布式部署
+2，重构Phenix.Core权限控制模块，借助Phenix.Services.Plugin工程Actor目录的Grain对象实现分布式部署
 3，重构Phenix.Actor工程，精简EntityGrainProxyBase仅限于实体Grain的代理功能
 
 
 20200315
 1，提供《Phenix.Core.Data.持久层开发接口.doc》，讲解Phenix.Core持久化引擎的数据库集群、主库+分库、分库分表策略、使用接口和持久层开发方法
 2，为Phenix.Services.Host工程添加Dashboard插件，可在浏览器上打开可视化Silo监控工具：http://localhost:8080/
-3，为Phenix.Core工程添加Plugin功能（命名空间为Phenix.Core.Plugin），用于动态加载和管理包含有实现了IPlugin接口的插件类的程序集
+3，为Phenix.Core工程添加Plugin功能（命名空间为Phenix.Core.Plugin），用于动态加载和管理已实现了IPlugin接口的插件类的程序集
 
 
 20200408
@@ -161,9 +161,9 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 
 20200603
-1，为持久化引擎添加条件表达式动态传参的功能，涉及Phenix.Core.Data.Schema.Sheet的UpdateEntity、UpdateRecord、DeleteRecord、SelectEntity、SelectRecord、RecordCount等函数，以及Phenix.Core.Data.Model.EntityBase<T>、Phenix.Core.Net.Api.ControllerBase的相关功能，紧随着条件表达式（criteriaLambda/criteriaExpression）后面都会有一个条件对象（criteria）参数
-2，Phenix.Core.Data.Schema.Sheet、Phenix.Core.Net.Api.ControllerBase的SelectRecord可按照接口定义返回指定的属性值记录，而不是整个实体对象打包到JSON中
-3，借助Phenix.NET6实现用户登录身份验证，可参考代码实现第三方身份验证
+1，为持久化引擎添加条件表达式动态传参的功能，涉及Phenix.Core.Data.Schema.Sheet的UpdateEntity、UpdateRecord、DeleteRecord、SelectEntity、SelectRecord、RecordCount等函数，以及Phenix.Core.Data.Model.EntityBase<T>、Phenix.Core.Net.Api.ControllerBase的相关功能，紧随着条件表达式（criteriaLambda/criteriaExpression）后面都会有一个条件对象（criteria）的参数（可为JSON格式字符串/属性-属性值Dictionary）
+2，Phenix.Core.Data.Schema.Sheet、Phenix.Core.Net.Api.ControllerBase的SelectRecord可按照接口定义（TSub）返回指定的属性值记录，而不是整个实体对象打包到JSON中
+3，借助Phenix.NET6实现用户登录身份验证，可参考代码（Phenix.Services.Plugin）实现第三方身份验证
 
 
 20200613
@@ -198,6 +198,8 @@ Copyright © 2007, 2020 Phenixヾ Studio
 1，将配置库初始化表从Phenix.Core.db迁移到Phenix.Core.Init.db
 2，添加event-log.html到\Phenix.Services.Host\wwwroot\test目录，比照Controller和Command的不同编码方法（见Phenix.Services.Plugin.Api.Log里EventLogController和EventLogCommand），测试它们的不同调用方式
 3，重构Phenix.Services.Extend工程，添加UserService以支持Phenix.Services.Plugin的UserGrain功能扩展，添加UserMessageService以支持UserMessage功能扩展
+4，完善用户身份验证功能，提供Phenix.Core.Security.User的AllowMultiSessionRequest属性（默认true，见Phenix.Core.db的PH7_AppSettings表）的配置项，可控制是否允许多处会话（进程）发起请求，与AllowMultiAddressRequest属性（默认true，见Phenix.Core.db的PH7_AppSettings表）的配置项的区别是后者控制是否允许多处终端（IP地址）发起请求
+
 
 待完成：
 2，添加《Phenix.Core.Security.身份验证方法.doc》

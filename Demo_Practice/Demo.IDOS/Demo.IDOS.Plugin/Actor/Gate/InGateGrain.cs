@@ -6,12 +6,12 @@ using Demo.IDOS.Plugin.Rule;
 using Phenix.Actor;
 using Phenix.Core.Data;
 
-namespace Demo.IDOS.Plugin.Actor.OnlineBooking
+namespace Demo.IDOS.Plugin.Actor.Gate
 {
     /// <summary>
-    /// 在线出库预约
+    /// 进场道口
     /// </summary>
-    public class OutBookingGrain : GrainBase, IOutBookingGrain
+    public class InGateGrain : GrainBase, IInGateGrain
     {
         #region 属性
 
@@ -34,23 +34,23 @@ namespace Demo.IDOS.Plugin.Actor.OnlineBooking
             get { return Database.Default.GetHandle(Id); }
         }
 
-        private Dictionary<string, DobOutBookingNote> _kernel;
+        private Dictionary<string, DobInBookingNote> _kernel;
 
         /// <summary>
         /// 根实体对象
         /// </summary>
-        protected IDictionary<string, DobOutBookingNote> Kernel
+        protected IDictionary<string, DobInBookingNote> Kernel
         {
             get
             {
                 if (_kernel == null)
                 {
                     //仅关注计划中、执行中的预约单
-                    _kernel = new Dictionary<string, DobOutBookingNote>();
-                    foreach (DobOutBookingNote item in DobOutBookingNote.FetchAll(Database, p =>
+                    _kernel = new Dictionary<string, DobInBookingNote>();
+                    foreach (DobInBookingNote item in DobInBookingNote.FetchAll(Database, p =>
                             p.DpId == Id && (p.BookingStatus == BookingStatus.Planning || p.BookingStatus == BookingStatus.Operating),
                         DobInBookingNote.Ascending(p => p.Date),
-                        DobOutBookingNote.Ascending(p => p.DateTimeSlot)))
+                        DobInBookingNote.Ascending(p => p.DateTimeSlot)))
                         _kernel.Add(item.BookingNumber, item);
                 }
 
@@ -62,19 +62,19 @@ namespace Demo.IDOS.Plugin.Actor.OnlineBooking
 
         #region 方法
 
-        private DobOutBookingNote GetNote(string bookingNumber)
+        private DobInBookingNote GetNote(string bookingNumber)
         {
-            if (Kernel.TryGetValue(bookingNumber, out DobOutBookingNote note))
+            if (Kernel.TryGetValue(bookingNumber, out DobInBookingNote note))
                 return note;
             throw new ArgumentException(String.Format("预约单不存在或已取消/完成: {0}", bookingNumber), nameof(bookingNumber));
         }
 
-        Task<DobOutBookingNote> IOutBookingGrain.GetNote(string bookingNumber)
+        Task<DobInBookingNote> IInBookingGrain.GetNote(string bookingNumber)
         {
             return Task.FromResult(GetNote(bookingNumber));
         }
 
-        Task<DobOutBookingNote> IOutBookingGrain.PostNote(DobOutBookingNote note)
+        Task<DobInBookingNote> IInBookingGrain.PostNote(DobInBookingNote note)
         {
             note.Date = note.Date.Date;
             if (note.Date < DateTime.Today || note.Date == DateTime.Today && note.DateTimeSlot < DateTime.Now.Hour / TimeInterval)
@@ -87,12 +87,12 @@ namespace Demo.IDOS.Plugin.Actor.OnlineBooking
             return Task.FromResult(note);
         }
 
-        Task<DobOutBookingNote> IOutBookingGrain.PatchNote(DobOutBookingNote note)
+        Task<DobInBookingNote> IInBookingGrain.PatchNote(DobInBookingNote note)
         {
             note.Date = note.Date.Date;
             if (note.Date < DateTime.Today || note.Date == DateTime.Today && note.DateTimeSlot < DateTime.Now.Hour / TimeInterval)
                 throw new ArgumentException(String.Format("预约时间段已过时: {0}-{1}", note.Date, note.DateTimeSlot), nameof(note));
-            DobOutBookingNote result = GetNote(note.BookingNumber);
+            DobInBookingNote result = GetNote(note.BookingNumber);
             if (result.Id != note.Id)
                 throw new ArgumentException(String.Format("预约单号不允许修改: {0}-{1}", note.BookingNumber, note.Id), nameof(note));
             if (result.BookingStatus != note.BookingStatus)
@@ -105,9 +105,9 @@ namespace Demo.IDOS.Plugin.Actor.OnlineBooking
 
         #region 纯内部调用接口
 
-        Task IOutBookingGrain.CancelNote(string bookingNumber)
+        Task IInBookingGrain.CancelNote(string bookingNumber)
         {
-            DobOutBookingNote note = GetNote(bookingNumber);
+            DobInBookingNote note = GetNote(bookingNumber);
             if (note.BookingStatus != BookingStatus.Planning && note.BookingStatus != BookingStatus.Operating)
                 throw new ArgumentException(String.Format("当前状态下不允许取消预约单: {0}-{1}", note.BookingStatus, note.Id), nameof(bookingNumber));
             note.UpdateSelf(note.SetProperty(p => p.BookingStatus, BookingStatus.Cancelled));
@@ -115,18 +115,18 @@ namespace Demo.IDOS.Plugin.Actor.OnlineBooking
             return Task.CompletedTask;
         }
 
-        Task IOutBookingGrain.OperateNote(string bookingNumber)
+        Task IInBookingGrain.OperateNote(string bookingNumber)
         {
-            DobOutBookingNote note = GetNote(bookingNumber);
+            DobInBookingNote note = GetNote(bookingNumber);
             if (note.BookingStatus != BookingStatus.Planning)
                 throw new ArgumentException(String.Format("当前状态下不允许执行预约单: {0}-{1}", note.BookingStatus, note.Id), nameof(bookingNumber));
             note.UpdateSelf(note.SetProperty(p => p.BookingStatus, BookingStatus.Operating));
             return Task.CompletedTask;
         }
 
-        Task IOutBookingGrain.FinishNote(string bookingNumber)
+        Task IInBookingGrain.FinishNote(string bookingNumber)
         {
-            DobOutBookingNote note = GetNote(bookingNumber);
+            DobInBookingNote note = GetNote(bookingNumber);
             if (note.BookingStatus != BookingStatus.Operating)
                 throw new ArgumentException(String.Format("当前状态下不允许完成预约单: {0}-{1}", note.BookingStatus, note.Id), nameof(bookingNumber));
             note.UpdateSelf(note.SetProperty(p => p.BookingStatus, BookingStatus.Finish));

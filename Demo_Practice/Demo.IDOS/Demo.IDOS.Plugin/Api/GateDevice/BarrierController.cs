@@ -1,18 +1,16 @@
 ﻿using System.Threading.Tasks;
-using Demo.InspectionStation.Plugin.Actor;
-using Demo.InspectionStation.Plugin.Business;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 
-namespace Demo.InspectionStation.Plugin.Api.OperationPoint
+namespace Demo.IDOS.Plugin.Api.GateDevice
 {
     /// <summary>
     /// 道闸Controller
     /// </summary>
     [Route(ApiConfig.ApiOperationPointGatePath)]
     [ApiController]
-    public sealed class GateController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class BarrierController : Phenix.Core.Net.Api.ControllerBase
     {
         /// <summary>
         /// 获取

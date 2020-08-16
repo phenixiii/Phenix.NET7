@@ -23,6 +23,7 @@ var phAjax = (function($) {
     var baseAddressCookieName = "P-BA";
     var userNameCookieName = "P-UN";
     var userKeyCookieName = "P-UK";
+    var sessionCookieName = "P-SS";
 
     var methodOverrideHeaderName = "X-HTTP-Method-Override";
     var authorizationHeaderName = "Phenix-Authorization";
@@ -36,7 +37,7 @@ var phAjax = (function($) {
         } catch (e) {
             result = $.cookie(baseAddressCookieName);
         }
-        return typeof result != "undefined" && result != null ? result : 'http://localhost:5000';
+        return typeof result !== undefined && result != null ? result : 'http://localhost:5000';
     };
     var setBaseAddress = function(value) {
         try {
@@ -54,7 +55,7 @@ var phAjax = (function($) {
         } catch (e) {
             result = $.cookie(userNameCookieName);
         }
-        return typeof result != "undefined" && result != null ? result : "GUEST";
+        return typeof result !== undefined && result != null ? result : "GUEST";
     };
     var setUserName = function(value) {
         try {
@@ -72,7 +73,7 @@ var phAjax = (function($) {
         } catch (e) {
             result = $.cookie(userKeyCookieName);
         }
-        return typeof result != "undefined" && result != null ? result : CryptoJS.MD5("GUEST").toString().toUpperCase();
+        return typeof result !== undefined && result != null ? result : CryptoJS.MD5("GUEST").toString().toUpperCase();
     };
     var setUserKey = function(value) {
         try {
@@ -83,10 +84,37 @@ var phAjax = (function($) {
         }
     };
 
-    // 身份验证token: [登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)]
-    var formatComplexAuthorization = function(userName, userKey) {
+    var getSession = function() {
+        var result;
+        try {
+            result = window.localStorage.getItem(sessionCookieName);
+        } catch (e) {
+            result = $.cookie(sessionCookieName);
+        }
+        return result;
+    };
+    var setSession = function(value) {
+        try {
+            window.localStorage.removeItem(sessionCookieName);
+            window.localStorage.setItem(sessionCookieName, value);
+        } catch (e) {
+            $.cookie(sessionCookieName, value, { path: '/' });
+        }
+    };
+
+    // 身份验证token: [登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)],[会话签名]
+    var initializeComplexAuthorization = function(userName, userKey, session) {
         var timestamp = phUtils.random(9) + new Date().toISOString();
-        return encodeURIComponent(userName) + "," + timestamp + "," + phUtils.encrypt(timestamp, userKey);
+        if (session === undefined || session == null) {
+            session = phUtils.encrypt(timestamp, userKey);
+            setSession(session);
+        }
+        return encodeURIComponent(userName) + "," + timestamp + "," + phUtils.encrypt(timestamp, userKey) + "," + session;
+    };
+
+    // 身份验证token: [登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)],[会话签名]
+    var formatComplexAuthorization = function() {
+        return initializeComplexAuthorization(getUserName(), getUserKey(), getSession());
     };
 
     return {
@@ -170,7 +198,7 @@ var phAjax = (function($) {
                 crossDomain: true,
                 timeout: 3000,
                 beforeSend: function(XMLHttpRequest) {
-                    XMLHttpRequest.setRequestHeader(authorizationHeaderName, formatComplexAuthorization(options.name, userKey));
+                    XMLHttpRequest.setRequestHeader(authorizationHeaderName, initializeComplexAuthorization(options.name, userKey, null));
                 },
                 data: phUtils.encrypt(options.tag, userKey),
                 complete: function(XMLHttpRequest, textStatus) {
@@ -383,7 +411,7 @@ var phAjax = (function($) {
                 .withUrl(phAjax.baseAddress + "/api/message/user-message-hub",
                     {
                         accessTokenFactory: function() {
-                            return formatComplexAuthorization(getUserName(), getUserKey());
+                            return formatComplexAuthorization();
                         }
                     })
                 .configureLogging("error")
@@ -551,7 +579,7 @@ var phAjax = (function($) {
                 timeout: options.timeout,
                 beforeSend: function(XMLHttpRequest) {
                     if (!options.anonymity)
-                        XMLHttpRequest.setRequestHeader(authorizationHeaderName, formatComplexAuthorization(getUserName(), getUserKey()));
+                        XMLHttpRequest.setRequestHeader(authorizationHeaderName, formatComplexAuthorization());
                     XMLHttpRequest.setRequestHeader(methodOverrideHeaderName, options.type);
                 },
                 data: options.encryptData ? phAjax.encrypt(options.data) : options.data,

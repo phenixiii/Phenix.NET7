@@ -114,9 +114,9 @@ namespace Phenix.Actor
             IList<StreamSubscriptionHandle<TEvent>> streamHandles = await worker.GetAllSubscriptionHandles();
             if (streamHandles != null && streamHandles.Count > 0)
                 foreach (StreamSubscriptionHandle<TEvent> item in streamHandles)
-                    await item.ResumeAsync(OnReceive, OnSubscribeError, OnSubscribeCompleted, token);
+                    await item.ResumeAsync(OnReceiving, OnSubscribeError, OnSubscribed, token);
             else
-                await worker.SubscribeAsync(OnReceive, OnSubscribeError, OnSubscribeCompleted, token);
+                await worker.SubscribeAsync(OnReceiving, OnSubscribeError, OnSubscribed, token);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="content">消息内容</param>
         /// <param name="token">StreamSequenceToken</param>
-        protected abstract Task OnReceive(TEvent content, StreamSequenceToken token);
+        protected abstract Task OnReceiving(TEvent content, StreamSequenceToken token);
 
         /// <summary>
         /// 订阅失败
@@ -176,7 +176,7 @@ namespace Phenix.Actor
         /// <summary>
         /// 订阅成功
         /// </summary>
-        protected virtual Task OnSubscribeCompleted()
+        protected virtual Task OnSubscribed()
         {
             return Task.CompletedTask;
         }
