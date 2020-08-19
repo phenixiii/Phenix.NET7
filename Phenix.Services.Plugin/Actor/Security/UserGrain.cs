@@ -86,14 +86,15 @@ namespace Phenix.Services.Plugin.Actor.Security
             long? rootTeamsId = null, long? teamsId = null, long? positionId = null)
         {
             Kernel = User.Register(Database, Name, phone, eMail, regAlias, requestAddress, rootTeamsId, teamsId, positionId, ref initialPassword, ref dynamicPassword, hashPassword);
-            return _service.OnRegistered(Kernel, initialPassword, dynamicPassword);
+            return _service != null ? _service.OnRegistered(Kernel, initialPassword, dynamicPassword) : null;
         }
 
         Task<string> IUserGrain.CheckIn(string phone, string eMail, string regAlias, string requestAddress)
         {
-            return Task.FromResult(Kernel != null
-                ? _service.OnCheckIn(Kernel, Kernel.ApplyDynamicPassword(requestAddress, true))
-                : Register(phone, eMail, regAlias, requestAddress));
+            if (Kernel == null)
+                return Task.FromResult(Register(phone, eMail, regAlias, requestAddress));
+            string dynamicPassword = Kernel.ApplyDynamicPassword(requestAddress, true);
+            return Task.FromResult(_service != null ? _service.OnCheckIn(Kernel, dynamicPassword) : null);
         }
 
         Task<string> IUserGrain.Encrypt(string sourceText)
@@ -147,7 +148,8 @@ namespace Phenix.Services.Plugin.Actor.Security
 
             if (Kernel.IsValidLogon(timestamp, signature, requestAddress, requestSession, throwIfNotConform))
             {
-                _service.OnLogon(Kernel, Kernel.Decrypt(tag));
+                if (_service != null)
+                    _service.OnLogon(Kernel, Kernel.Decrypt(tag));
                 return true;
             }
 

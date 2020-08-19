@@ -43,24 +43,24 @@ namespace Phenix.Services.Host
             services.AddSignalR(options => { options.MaximumReceiveMessageSize = Int16.MaxValue; }).AddMessagePackProtocol();
 
             /*
-             * 注入用户消息服务，响应 phAjax.phAjax.subscribeMessage() 请求 
+             * 注入用户消息服务，响应 phAjax.subscribeMessage() 请求 
              */
             services.AddSingleton<Phenix.Core.Net.Api.Message.UserMessageHub>();
 
             /*
-             * 注入用户资料服务，由UserService提供扩展功能
+             * 向 UserMessageHub 注入用户消息服务扩展
              */
-            services.AddTransient(typeof(Phenix.Core.Security.IUserService), typeof(Phenix.Services.Extend.Actor.Security.UserService));
+            services.AddTransient(typeof(Phenix.Core.Message.IUserMessageService), typeof(Phenix.Services.Extend.Api.Message.UserMessageService));
 
             /*
-             * 注入文件存取服务，由FileService提供扩展功能
+             * 向 FileController 注入文件存取服务扩展
              */
             services.AddTransient(typeof(Phenix.Core.IO.IFileService), typeof(Phenix.Services.Extend.Api.Inout.FileService));
 
             /*
-             * 注入用户消息服务，由UserMessageService提供扩展功能
+             * 向 UserGrain 注入用户资料服务扩展
              */
-            services.AddTransient(typeof(Phenix.Core.Message.IUserMessageService), typeof(Phenix.Services.Extend.Api.Message.UserMessageService));
+            services.AddTransient(typeof(Phenix.Core.Security.IUserService), typeof(Phenix.Services.Extend.Actor.Security.UserService));
 
             /*
              * 配置Controller策略
@@ -95,14 +95,14 @@ namespace Phenix.Services.Host
                      *
                      * 验证失败的话返回 context.Response.StatusCode = 403 Forbidden
                      */
-                    options.Filters.AddAuthorizationFilter();
+                    options.Filters.Add<Phenix.Core.Net.Filters.AuthorizationFilter>();
                     /*
                      * 注册数据验证过滤器
                      * 与 Action 参数上的数据验证（[Required]、[StringLength] 等 ValidationAttribute）标签配合完成服务访问参数校验功能
                      *
                      * 验证失败的话返回 context.Response.StatusCode = 400 BadRequest，context.Response.Content 是 ValidationMessage 对象，其 StatusCode 属性为 400，ErrorMessage 属性为验证错误消息
                      */
-                    options.Filters.AddValidationFilter();
+                    options.Filters.Add<Phenix.Core.Net.Filters.ValidationFilter>();
                 })
                 .ConfigureApplicationPartManager(parts =>
                 {
@@ -165,7 +165,7 @@ namespace Phenix.Services.Host
              *   System.NotSupportedException/System.NotImplementedException 转译为 501 NotImplemented
              * 除以上之外的异常都转译为 500 InternalServerError
              */
-            app.UseExceptionHandlerMiddleware();
+            app.UseMiddleware<Phenix.Core.Net.Middleware.ExceptionHandlerMiddleware>();
 
             /*
              * 使用身份验证中间件
@@ -184,7 +184,7 @@ namespace Phenix.Services.Host
              *
              * 系统管理员的登录名是‘ADMIN’，初始登录口令也是‘ADMIN’（注意是大写），系统正式运行之前请更改口令
              */
-            app.UseAuthenticationMiddleware();
+            app.UseMiddleware<Phenix.Core.Net.Middleware.AuthenticationMiddleware>();
 
             /*
              * 必要的话，请注册第三方客户端IP限流控制中间件
@@ -204,11 +204,11 @@ namespace Phenix.Services.Host
                 endpoints.MapControllers();
                 endpoints.MapDefaultControllerRoute().RequireAuthorization();
                 /*
-                 * 使用用户消息服务，响应 phAjax.phAjax.subscribeMessage() 请求
+                 * 使用用户消息服务，响应 phAjax.subscribeMessage() 请求
                  * 如果部署环境使用了 Nginx 等代理服务器或负载均衡器，类似 proxy_set_header Connection 配置项要从请求头里面获取，比如 proxy_set_header Connection $http_connection;
                  * 负载均衡器应该开启会话保持功能（客户端登录后的请求要一直落到同一台服务器上），配置会话保持类型为源IP（按访问IP的hash结果分配响应的应用服务器）
                  */
-                endpoints.MapUserMessageHub();
+                endpoints.MapHub<Phenix.Core.Net.Api.Message.UserMessageHub>(Phenix.Core.Net.Api.ApiConfig.ApiMessageUserMessageHubPath);
             });
         }
     }

@@ -13636,31 +13636,23 @@
             </summary>
             <param name="cycleTimedTask">定时任务</param>
         </member>
-        <member name="T:Microsoft.AspNetCore.Builder.ApplicationBuilderExtension">
+        <member name="T:Microsoft.Extensions.DependencyInjection.ApplicationPartManagerExtension">
             <summary>
-            ApplicationBuilder扩展
+            ApplicationPartManager扩展
             </summary>
         </member>
-        <member name="M:Microsoft.AspNetCore.Builder.ApplicationBuilderExtension.UseExceptionHandlerMiddleware(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+        <member name="M:Microsoft.Extensions.DependencyInjection.ApplicationPartManagerExtension.AddKernelPart(Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager)">
             <summary>
-            使用异常处理中间件
+            装配Controller核心
             </summary>
-            <param name="builder">IApplicationBuilder</param>
-            <returns>IApplicationBuilder</returns>
+            <param name="manager">ApplicationPartManager</param>
         </member>
-        <member name="M:Microsoft.AspNetCore.Builder.ApplicationBuilderExtension.UseAuthenticationMiddleware(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+        <member name="M:Microsoft.Extensions.DependencyInjection.ApplicationPartManagerExtension.AddPluginPart(Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager,System.String)">
             <summary>
-            使用身份验证中间件
+            装配Controller插件
             </summary>
-            <param name="builder">IApplicationBuilder</param>
-            <returns>IApplicationBuilder</returns>
-        </member>
-        <member name="M:Microsoft.AspNetCore.Builder.ApplicationBuilderExtension.MapUserMessageHub(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder)">
-            <summary>
-            使用用户消息服务
-            </summary>
-            <param name="builder">IEndpointRouteBuilder</param>
-            <returns>HubEndpointConventionBuilder</returns>
+            <param name="manager">ApplicationPartManager</param>
+            <param name="filter">装配的Controller插件所在程序集统一采用"*.Plugin.dll"作为文件名后缀</param>
         </member>
         <member name="T:Microsoft.AspNetCore.Mvc.HttpRequestExtension">
             <summary>
@@ -13764,43 +13756,6 @@
             </summary>
             <param name="response">HttpResponse</param>
             <param name="error">错误消息</param>
-        </member>
-        <member name="T:Microsoft.Extensions.DependencyInjection.ApplicationPartManagerExtension">
-            <summary>
-            ApplicationPartManager扩展
-            </summary>
-        </member>
-        <member name="M:Microsoft.Extensions.DependencyInjection.ApplicationPartManagerExtension.AddKernelPart(Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager)">
-            <summary>
-            装配Controller核心
-            </summary>
-            <param name="manager">ApplicationPartManager</param>
-        </member>
-        <member name="M:Microsoft.Extensions.DependencyInjection.ApplicationPartManagerExtension.AddPluginPart(Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager,System.String)">
-            <summary>
-            装配Controller插件
-            </summary>
-            <param name="manager">ApplicationPartManager</param>
-            <param name="filter">装配的Controller插件所在程序集统一采用"*.Plugin.dll"作为文件名后缀</param>
-        </member>
-        <member name="T:Microsoft.Extensions.DependencyInjection.FilterCollectionExtension">
-            <summary>
-            FilterCollection扩展
-            </summary>
-        </member>
-        <member name="M:Microsoft.Extensions.DependencyInjection.FilterCollectionExtension.AddAuthorizationFilter(Microsoft.AspNetCore.Mvc.Filters.FilterCollection)">
-            <summary>
-            注册访问授权过滤器
-            </summary>
-            <param name="filters">FilterCollection</param>
-            <returns>IFilterMetadata</returns>
-        </member>
-        <member name="M:Microsoft.Extensions.DependencyInjection.FilterCollectionExtension.AddValidationFilter(Microsoft.AspNetCore.Mvc.Filters.FilterCollection)">
-            <summary>
-            注册数据验证过滤器
-            </summary>
-            <param name="filters">FilterCollection</param>
-            <returns>IFilterMetadata</returns>
         </member>
         <member name="T:System.Net.Http.HttpResponseMessageExtension">
             <summary>
