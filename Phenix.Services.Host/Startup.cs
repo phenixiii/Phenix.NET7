@@ -127,6 +127,7 @@ namespace Phenix.Services.Host
                 {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     options.SerializerSettings.DateFormatString = Utilities.JsonDateFormatString;
+                    options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
                     options.UseMemberCasing();
                 });
              
