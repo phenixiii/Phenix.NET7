@@ -66,27 +66,25 @@ namespace Phenix.Services.Host
                 /*
                  * 启动Orleans服务集群
                  * 请事先在数据库中手工添加Orleans配置库，默认是Phenix.Core.Data.Database.Default指向的数据库
-                 * Orleans配置库的脚本文件，见Orleans Database Script目录，分为PostgreSQL、MySQL、Oracle三组，建议按需顺序批处理执行
+                 * Orleans配置库的脚本文件，见Orleans Database Script目录，分为PostgreSQL、MySQL、Oracle、SQLServer四组，建议按需顺序批处理执行
                  */
                 .UseOrleans((context, builder) => builder
+                    .ConfigureLogging(logging => logging.AddConsole())
                     /*
-                     * 设置集群ID：Phenix.Core.Data.Database.Default.DataSourceKey
-                     * 设置服务ID：Phenix.Core.Data.Database.Default.DataSourceKey
+                     * 配置Orleans服务集群
+                     * 配置项见Phenix.Actor.OrleansConfig
+                     * 设置集群ID、服务ID：Phenix.Core.Data.Database.Default.DataSourceKey
                      * 设置Clustering、GrainStorage、Reminder数据库：Phenix.Core.Data.Database.Default
+                     * 设置Silo端口：EndpointOptions.DEFAULT_SILO_PORT
+                     * 设置Gateway端口：EndpointOptions.DEFAULT_GATEWAY_PORT
                      * 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProvider.Name
                      *
                      * 装配Actor插件
                      * 系统的Actor都应该按照领域划分，分别开发各自的插件
                      * 插件程序集的部署，都存放在本服务容器的当前执行目录下
                      * 插件程序集的命名，都应该统一采用"*.Plugin.dll"作为文件名的后缀
-                     * 用户的身份验证和访问授权等功能，由Actor插件Phenix.Services.Plugin中的UserGrain提供
                      */
-                    .ConfigureCluster(OrleansConfig.ClusterId, OrleansConfig.ServiceId, OrleansConfig.ConnectionString)
-                    /*
-                     * 设置Silo端口：EndpointOptions.DEFAULT_SILO_PORT
-                     * 设置Gateway端口：EndpointOptions.DEFAULT_SILO_PORT
-                     */
-                    .ConfigureEndpoints(OrleansConfig.DefaultSiloPort, OrleansConfig.DefaultGatewayPort)
+                    .ConfigureCluster()
                     /*
                      * 使用Dashboard插件
                      * 本地打开可视化监控工具：http://localhost:8080/
@@ -104,32 +102,31 @@ namespace Phenix.Services.Host
                 /*
                  * 启动WebAPI服务
                  */
-                .ConfigureWebHostDefaults(builder =>
-                {
+                .ConfigureWebHostDefaults(builder => builder
+                    .ConfigureLogging(logging => logging.AddConsole())
                     /*
                      * 使用轻量级跨平台服务 KestrelServer
                      * 请根据自己系统的运行要求配置 KestrelServer 选项
                      */
-                    builder.UseKestrel(options =>
-                        {
-                            options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(2); //保持活动状态超时
-                            options.Limits.MaxConcurrentConnections = 1000; //客户端最大连接数
-                            options.Limits.MaxConcurrentUpgradedConnections = 1000; //客户端最大连接数（其他协议如Websocket）
-                            options.Limits.MaxRequestBodySize = Int32.MaxValue; //请求正文最大大小
-                            options.Limits.MaxRequestBufferSize = Int32.MaxValue; //请求缓存最大大小
-                            options.Limits.MinRequestBodyDataRate =
-                                new MinDataRate(bytesPerSecond: 240, gracePeriod: TimeSpan.FromSeconds(5)); //请求正文最小数据速率
-                            options.Limits.MaxResponseBufferSize = Int32.MaxValue; //响应缓存最大大小
-                            options.Limits.MinResponseDataRate =
-                                new MinDataRate(bytesPerSecond: 240, gracePeriod: TimeSpan.FromSeconds(5)); //响应正文最小数据速率
-                            options.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(30); //请求标头超时
-                            //options.AllowSynchronousIO = true; //是否允许对请求和响应使用同步 IO
-                        })
-                        .ConfigureLogging(logging => logging.AddConsole())
-                        .UseUrls(WebHostConfig.Urls) //不部署到IIS环境时请改写为自己系统的端口
-                        .UseIISIntegration() //当部署到IIS环境时可以自动搭接ANCM和IIS
-                        .UseStartup<Startup>();
-                });
+                    .UseKestrel(options =>
+                    {
+                        options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(2); //保持活动状态超时
+                        options.Limits.MaxConcurrentConnections = 1000; //客户端最大连接数
+                        options.Limits.MaxConcurrentUpgradedConnections = 1000; //客户端最大连接数（其他协议如Websocket）
+                        options.Limits.MaxRequestBodySize = Int32.MaxValue; //请求正文最大大小
+                        options.Limits.MaxRequestBufferSize = Int32.MaxValue; //请求缓存最大大小
+                        options.Limits.MinRequestBodyDataRate =
+                            new MinDataRate(bytesPerSecond: 240, gracePeriod: TimeSpan.FromSeconds(5)); //请求正文最小数据速率
+                        options.Limits.MaxResponseBufferSize = Int32.MaxValue; //响应缓存最大大小
+                        options.Limits.MinResponseDataRate =
+                            new MinDataRate(bytesPerSecond: 240, gracePeriod: TimeSpan.FromSeconds(5)); //响应正文最小数据速率
+                        options.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(30); //请求标头超时
+                        //options.AllowSynchronousIO = true; //是否允许对请求和响应使用同步 IO
+                    })
+                    .UseUrls(WebHostConfig.Urls) //不部署到IIS环境时请改写为自己系统的端口
+                    .UseIISIntegration() //当部署到IIS环境时可以自动搭接ANCM和IIS
+                    .UseStartup<Startup>()
+                );
         }
 
         #endregion

@@ -22,7 +22,16 @@ namespace Phenix.Actor
         /// </summary>
         protected override TKernel Kernel
         {
-            get { return _kernel ?? (_kernel = TreeEntityBase<TKernel>.FetchTree(Database, p => p.Id == Id)); }
+            get
+            {
+                if (_kernel == null)
+                {
+                    if (this is IGrainWithIntegerKey)
+                        _kernel = TreeEntityBase<TKernel>.FetchTree(Database, p => p.Id == Id);
+                }
+
+                return _kernel;
+            }
             set { _kernel = value; }
         }
 
@@ -38,8 +47,8 @@ namespace Phenix.Actor
         {
             if (Kernel != null)
                 Kernel.UpdateSelf(propertyValues);
-            else if (this is IGrainWithIntegerKey || this is IGrainWithIntegerCompoundKey)
-                TreeEntityBase<TKernel>.NewRoot(Database, Id, propertyValues).InsertSelf();
+            else if (Id.HasValue)
+                TreeEntityBase<TKernel>.NewRoot(Database, Id.Value, propertyValues).InsertSelf();
             else
                 TreeEntityBase<TKernel>.NewRoot(Database, propertyValues).InsertSelf();
         }

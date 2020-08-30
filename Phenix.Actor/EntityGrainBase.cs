@@ -31,7 +31,16 @@ namespace Phenix.Actor
         /// </summary>
         protected virtual TKernel Kernel
         {
-            get { return _kernel ?? (_kernel = EntityBase<TKernel>.FetchRoot(Database, p => p.Id == Id)); }
+            get
+            {
+                if (_kernel == null)
+                {
+                    if (this is IGrainWithIntegerKey)
+                        _kernel = EntityBase<TKernel>.FetchRoot(Database, p => p.Id == Id);
+                }
+
+                return _kernel;
+            }
             set { _kernel = value; }
         }
 
@@ -90,8 +99,8 @@ namespace Phenix.Actor
         {
             if (Kernel != null)
                 Kernel.UpdateSelf(propertyValues);
-            else if (this is IGrainWithIntegerKey || this is IGrainWithIntegerCompoundKey)
-                EntityBase<TKernel>.New(Database, Id, propertyValues).InsertSelf();
+            else if (Id.HasValue)
+                EntityBase<TKernel>.New(Database, Id.Value, propertyValues).InsertSelf();
             else
                 EntityBase<TKernel>.New(Database, propertyValues).InsertSelf();
         }

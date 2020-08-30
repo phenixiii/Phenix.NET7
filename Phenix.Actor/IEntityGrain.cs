@@ -8,7 +8,7 @@ namespace Phenix.Actor
     /// <summary>
     /// 实体Grain接口
     /// </summary>
-    public interface IEntityGrain<TKernel>
+    public interface IEntityGrain<TKernel> : ISecurityContext
         where TKernel : EntityBase<TKernel>
     {
         #region 方法

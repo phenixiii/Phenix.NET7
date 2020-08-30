@@ -65,8 +65,8 @@ namespace Phenix.Services.Plugin.P6C
         /// </summary>
         public static bool ExistThirdParty
         {
-            get { return AppSettings.GetProperty(ref _existThirdParty, false); }
-            set { AppSettings.SetProperty(ref _existThirdParty, value); }
+            get { return AppSettings.GetLocalProperty(ref _existThirdParty, false); }
+            set { AppSettings.SetLocalProperty(ref _existThirdParty, value); }
         }
 
         private static string _thirdPartyService;
@@ -77,8 +77,8 @@ namespace Phenix.Services.Plugin.P6C
         /// </summary>
         public static string ThirdPartyService
         {
-            get { return AppSettings.GetProperty(ref _thirdPartyService, "http://localhost:8080"); }
-            set { AppSettings.SetProperty(ref _thirdPartyService, value); }
+            get { return AppSettings.GetLocalProperty(ref _thirdPartyService, "http://localhost:8080"); }
+            set { AppSettings.SetLocalProperty(ref _thirdPartyService, value); }
         }
 
         #endregion

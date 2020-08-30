@@ -88,7 +88,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 20191227
 1，提供《Phenix.Services.Host.分布式服务架构.pptx》，讲解WebAPI（应用）服务和Orleans（领域）服务的搭建和部署方法
-2，提供Phenix.Core.AppSettings应用系统配置工具，配置项定义方法参考Phenix.Services.Host的OrleansConfig类，系统实施时可直接在Phenix.Core.db库文件PH7_AppSettings表里做配置
+2，提供Phenix.Core.AppSettings应用系统配置工具，配置项定义方法参考Phenix.Services.Host的OrleansConfig类，系统部署实施时可根据需要在Database.Default或Phenix.Core.db库文件PH7_AppSettings表里做配置
 
 
 20200107
@@ -119,12 +119,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 20200220
 1，修订《Phenix.Services.Host.部署方法.doc》，补充'开发环境的搭建'等章节
 2，提供《Phenix.Services.Host.分布式服务插件.pptx》，讲解WebAPI（应用）服务和Orleans（领域）服务的设计和开发方法
-
-
-20200224
-1，重构Phenix.Core持久化引擎，强调聚合和聚合根的领域对象模型，在采取分库分表策略的数据库部署场景下，一棵聚合树里的所有对象都随聚合根对象一起锁定在某个分库上进行持久化，持久化的路由算法是取自聚合根对象里一个映射'_RU'后缀字段的属性值经HASH取余得到具体的分库ID
-2，重构Phenix.Core权限控制模块，借助Phenix.Services.Plugin工程Actor目录的Grain对象实现分布式部署
-3，重构Phenix.Actor工程，精简EntityGrainProxyBase仅限于实体Grain的代理功能
+3，重构Phenix.Core持久化引擎，强调聚合和聚合根的领域对象模型，在采取分库分表策略的数据库部署场景下，一棵聚合树里的所有对象都随聚合根对象一起锁定在某个分库上进行持久化，持久化的路由算法是取自聚合根对象里一个映射'_RU'后缀字段的属性值经HASH取余得到具体的分库ID
 
 
 20200315
@@ -187,21 +182,22 @@ Copyright © 2007, 2020 Phenixヾ Studio
 20200718
 1，调整表名/视图名/字段名映射规则，只要名称里出现的第一个'_'是在第1-4位之间，'_'及其前面的字符串都算作是前缀
 2，提供统一的服务访问入口：/api/service/portal，能让客户端直接访问继承自Command<T>的对象的公共函数，访问授权的控制方法与控制器上的保持一致，同样可以在这些函数上打[AllowAnonymous]（或实现IAllowAnonymous的标签）、[Authorize]（或实现IAuthorizeData的标签）、继承自Phenix.Core.Net.Filters.AuthorizationFilter的标签，访问授权的角色配置是在第一次被访问时自动保存在PH7_Controller_Role表中，获取方法参考Phenix.Services.Plugin.Api.Security.RoleController，角色的动态配置可自行开发功能来编辑PH7_Controller_Role表
-
-
-20200728
-1，为Phenix.Actor工程添加GrainBase、StreamGrainBase类，以提供最基本的通用功能
-2，为Phenix.Core.Data.Database添加AppSettings属性，可将应用系统配置项持久化到数据库中，配置项定义方法与Phenix.Core.AppSettings雷同，系统实施时可直接在数据库的PH7_AppSettings表里做配置
+3，为Phenix.Actor工程添加GrainBase、StreamGrainBase类，以提供Grain最基本的通用功能
 
 
 20200808
 1，将配置库初始化表从Phenix.Core.db迁移到Phenix.Core.Init.db
 2，添加event-log.html到\Phenix.Services.Host\wwwroot\test目录，比照Controller和Command的不同编码方法（见Phenix.Services.Plugin.Api.Log里EventLogController和EventLogCommand），测试它们的不同调用方式
 3，重构Phenix.Services.Extend工程，添加UserService以支持Phenix.Services.Plugin的UserGrain功能扩展，添加UserMessageService以支持UserMessage功能扩展
-4，完善用户身份验证功能，提供Phenix.Core.Security.User的AllowMultiSessionRequest属性（默认true，见Phenix.Core.db的PH7_AppSettings表）的配置项，可控制是否允许多处会话（进程）发起请求，与AllowMultiAddressRequest属性（默认true，见Phenix.Core.db的PH7_AppSettings表）的配置项的区别是后者控制是否允许多处终端（IP地址）发起请求
+
+
+20200825
+1，完善用户身份验证功能，提供Phenix.Core.Security.User的AllowMultiSessionRequest属性（默认true）的配置项，可控制是否允许多处会话（进程）发起请求，与AllowMultiAddressRequest属性（默认true）的配置项的区别是后者控制是否允许多处终端（IP地址）发起请求
+2，为Phenix.Actor工程添加在Grain的调用链上传递用户身份信息、记录调用和错误日志的功能
 
 
 待完成：
+1，WebAPI客户端可订阅Grain对象的消息
 2，添加《Phenix.Core.Security.身份验证方法.doc》
 3，适配双活数据中心的Actor状态跨地域同步机制
 

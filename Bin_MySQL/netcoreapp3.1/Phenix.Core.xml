@@ -164,7 +164,13 @@
         </member>
         <member name="T:Phenix.Core.AppSettings">
             <summary>
-            应用配置(配套Phenix.Core.db的PH7_AppSettings表)
+            应用配置
+            由Database.Default的PH7_AppSettings表存储配置
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.AppSettings.Database">
+            <summary>
+            数据库入口
             </summary>
         </member>
         <member name="M:Phenix.Core.AppSettings.SaveValue(System.String,System.String,System.Boolean)">
@@ -222,34 +228,24 @@
             <param name="inEncrypt">是否加密</param>
             <param name="allowSave">允许保存状态信息?</param>
         </member>
-        <member name="T:Phenix.Core.Data.AppSettings">
+        <member name="M:Phenix.Core.AppSettings.SaveLocalValue(System.String,System.String,System.Boolean)">
             <summary>
-            应用配置(配套PH7_AppSettings表)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.AppSettings.Database">
-            <summary>
-            数据库入口
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.AppSettings.SaveValue(System.String,System.String,System.Boolean)">
-            <summary>
-            保存信息
+            保存信息到本地Phenix.Core.db的PH7_AppSettings表
             </summary>
             <param name="key">键</param>
             <param name="value">值</param>
             <param name="inEncrypt">是否加密</param>
         </member>
-        <member name="M:Phenix.Core.Data.AppSettings.ReadValue(System.String,System.Boolean)">
+        <member name="M:Phenix.Core.AppSettings.ReadLocalValue(System.String,System.Boolean)">
             <summary>
-            读取信息
+            读取信息自本地Phenix.Core.db的PH7_AppSettings表
             </summary>
             <param name="key">键</param>
             <param name="inEncrypt">是否加密</param>
         </member>
-        <member name="M:Phenix.Core.Data.AppSettings.SetProperty``2(``0@,``1,System.Boolean,System.Boolean)">
+        <member name="M:Phenix.Core.AppSettings.SetLocalProperty``2(``0@,``1,System.Boolean,System.Boolean)">
             <summary>
-            设置属性值
+            设置属性值到本地Phenix.Core.db的PH7_AppSettings表
             key = null
             </summary>
             <param name="field">属性字段</param>
@@ -257,9 +253,9 @@
             <param name="inEncrypt">是否加密</param>
             <param name="allowSave">允许保存状态信息?</param>
         </member>
-        <member name="M:Phenix.Core.Data.AppSettings.SetProperty``2(System.String,``0@,``1,System.Boolean,System.Boolean)">
+        <member name="M:Phenix.Core.AppSettings.SetLocalProperty``2(System.String,``0@,``1,System.Boolean,System.Boolean)">
             <summary>
-            设置属性值
+            设置属性值到本地Phenix.Core.db的PH7_AppSettings表
             </summary>
             <param name="key">键</param>
             <param name="field">属性字段</param>
@@ -267,9 +263,9 @@
             <param name="inEncrypt">是否加密</param>
             <param name="allowSave">允许保存状态信息?</param>
         </member>
-        <member name="M:Phenix.Core.Data.AppSettings.GetProperty``2(``0@,``1,System.Boolean,System.Boolean)">
+        <member name="M:Phenix.Core.AppSettings.GetLocalProperty``2(``0@,``1,System.Boolean,System.Boolean)">
             <summary>
-            获取属性值
+            获取属性值自本地Phenix.Core.db的PH7_AppSettings表
             key = null
             </summary>
             <param name="field">属性字段</param>
@@ -277,9 +273,9 @@
             <param name="inEncrypt">是否加密</param>
             <param name="allowSave">允许保存状态信息?</param>
         </member>
-        <member name="M:Phenix.Core.Data.AppSettings.GetProperty``2(System.String,``0@,``1,System.Boolean,System.Boolean)">
+        <member name="M:Phenix.Core.AppSettings.GetLocalProperty``2(System.String,``0@,``1,System.Boolean,System.Boolean)">
             <summary>
-            获取属性值
+            获取属性值自本地Phenix.Core.db的PH7_AppSettings表
             </summary>
             <param name="key">键</param>
             <param name="field">属性字段</param>
@@ -1872,7 +1868,8 @@
         </member>
         <member name="T:Phenix.Core.Data.Database">
             <summary>
-            数据库入口(配套Phenix.Core.db的PH7_Database表)
+            数据库入口
+            由Phenix.Core.db的PH7_Database表提供入口配置
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Database.ConfigFilePath">
@@ -1976,11 +1973,6 @@
         <member name="P:Phenix.Core.Data.Database.MetaData">
             <summary>
             元数据
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.Database.AppSettings">
-            <summary>
-            应用配置
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Database.Sequence">
@@ -9039,6 +9031,7 @@
         <member name="T:Phenix.Core.Data.Sequence">
             <summary>
             64位序号
+            由Database的PH7_SequenceMarker表保证序号的唯一性
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Sequence.ClearMarkerDeferMonths">
@@ -9275,19 +9268,14 @@
             事件资料
             </summary>
         </member>
-        <member name="M:Phenix.Core.Log.EventInfo.#ctor(System.Int64,System.DateTime,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Phenix.Core.Log.EventInfo.#ctor(System.Int64,System.Reflection.MethodBase,System.String,System.Exception)">
             <summary>
             初始化
             </summary>
             <param name="id">ID</param>
-            <param name="time">时间</param>
-            <param name="className">类名</param>
-            <param name="methodName">方法名</param>
+            <param name="method">函数的信息</param>
             <param name="message">消息</param>
-            <param name="exceptionName">错误名/消息名</param>
-            <param name="exceptionMessage">错误消息/补充消息</param>
-            <param name="user">用户</param>
-            <param name="address">IP地址</param>
+            <param name="error">错误</param>
         </member>
         <member name="P:Phenix.Core.Log.EventInfo.Id">
             <summary>
@@ -9337,6 +9325,7 @@
         <member name="T:Phenix.Core.Log.EventLog">
             <summary>
             事件日志
+            由Database.Default的PH7_EventLog表存储日志
             </summary>
         </member>
         <member name="P:Phenix.Core.Log.EventLog.ClearLogDeferMonths">
@@ -9369,10 +9358,36 @@
             <param name="message">消息</param>
             <param name="error">错误</param>
         </member>
+        <member name="M:Phenix.Core.Log.EventLog.Save(System.Reflection.MethodBase,System.Object[],System.Exception)">
+            <summary>
+            保存对象日志
+            </summary>
+            <param name="method">函数的信息</param>
+            <param name="args">参数值</param>
+            <param name="error">错误</param>
+        </member>
         <member name="M:Phenix.Core.Log.EventLog.Save(System.Reflection.MethodBase,System.String,System.Exception)">
             <summary>
             保存对象日志
             </summary>
+            <param name="method">函数的信息</param>
+            <param name="message">消息</param>
+            <param name="error">错误</param>
+        </member>
+        <member name="M:Phenix.Core.Log.EventLog.Save(System.Int64,System.Reflection.MethodBase,System.Object[],System.Exception)">
+            <summary>
+            保存对象日志
+            </summary>
+            <param name="id">ID</param>
+            <param name="method">函数的信息</param>
+            <param name="args">参数值</param>
+            <param name="error">错误</param>
+        </member>
+        <member name="M:Phenix.Core.Log.EventLog.Save(System.Int64,System.Reflection.MethodBase,System.String,System.Exception)">
+            <summary>
+            保存对象日志
+            </summary>
+            <param name="id">ID</param>
             <param name="method">函数的信息</param>
             <param name="message">消息</param>
             <param name="error">错误</param>
@@ -9386,30 +9401,47 @@
         </member>
         <member name="M:Phenix.Core.Log.EventLog.SaveLocal(System.String,System.String)">
             <summary>
-            保存错误日志
+            保存错误日志到本地LocalDirectory目录
             </summary>
             <param name="message">消息</param>
             <param name="extension">后缀</param>
         </member>
         <member name="M:Phenix.Core.Log.EventLog.SaveLocal(System.String,System.Exception,System.String)">
             <summary>
-            保存错误日志
+            保存错误日志到本地LocalDirectory目录
             </summary>
             <param name="message">消息</param>
             <param name="error">错误</param>
             <param name="extension">后缀</param>
         </member>
+        <member name="M:Phenix.Core.Log.EventLog.SaveLocal(System.Reflection.MethodBase,System.Object[],System.String)">
+            <summary>
+            保存对象日志到本地LocalDirectory目录
+            </summary>
+            <param name="method">函数的信息</param>
+            <param name="args">参数值</param>
+            <param name="extension">后缀</param>
+        </member>
         <member name="M:Phenix.Core.Log.EventLog.SaveLocal(System.Reflection.MethodBase,System.String,System.String)">
             <summary>
-            保存对象日志
+            保存对象日志到本地LocalDirectory目录
             </summary>
             <param name="method">函数的信息</param>
             <param name="message">消息</param>
             <param name="extension">后缀</param>
         </member>
+        <member name="M:Phenix.Core.Log.EventLog.SaveLocal(System.Reflection.MethodBase,System.Object[],System.Exception,System.String)">
+            <summary>
+            保存对象日志到本地LocalDirectory目录
+            </summary>
+            <param name="method">函数的信息</param>
+            <param name="args">参数值</param>
+            <param name="error">错误</param>
+            <param name="extension">后缀</param>
+        </member>
         <member name="M:Phenix.Core.Log.EventLog.SaveLocal(System.Reflection.MethodBase,System.String,System.Exception,System.String)">
             <summary>
-            保存对象日志
+            保存对象日志到本地LocalDirectory目录
             </summary>
             <param name="method">函数的信息</param>
             <param name="message">消息</param>
@@ -9438,6 +9470,7 @@
         <member name="T:Phenix.Core.Message.UserMessage">
             <summary>
             用户消息
+            由Database.Default的PH7_UserMessage表提供消息缓存
             </summary>
         </member>
         <member name="P:Phenix.Core.Message.UserMessage.ClearMessageDeferMonths">
@@ -11146,11 +11179,6 @@
             私钥
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.Cryptography.KeyPair.InvalidTime">
-            <summary>
-            失效时间
-            </summary>
-        </member>
         <member name="T:Phenix.Core.Security.Cryptography.MD5CryptoTextProvider">
             <summary>
             MD5加密字符串
@@ -11340,12 +11368,19 @@
             </summary>
             <param name="userProxyFactory">用户资料代理工厂</param>
         </member>
-        <member name="M:Phenix.Core.Security.Identity.Fetch(System.String,System.String)">
+        <member name="P:Phenix.Core.Security.Identity.CacheDiscardIntervalHours">
+            <summary>
+            缓存丢弃间隔(小时)
+            默认：1
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Security.Identity.Fetch(System.String,System.String,System.Nullable{System.Int32})">
             <summary>
             获取用户身份
             </summary>
             <param name="userName">登录名</param>
             <param name="cultureName">区域性名称</param>
+            <param name="cacheDiscardIntervalHours">缓存丢弃间隔(小时)</param>
             <returns>用户资料</returns>
         </member>
         <member name="P:Phenix.Core.Security.Identity.CurrentIdentity">
@@ -12037,6 +12072,7 @@
         <member name="T:Phenix.Core.SyncCollections.SynchronizedDictionary`2">
             <summary>
             表示键和值的集合
+            支持 ICachedObject
             </summary>
             <typeparam name="TKey">字典中的键的类型</typeparam>
             <typeparam name="TValue">字典中的值的类型</typeparam>
@@ -12960,6 +12996,34 @@
             <param name="arrayIndex">array 中从零开始的索引, 在此处开始复制</param>
             <param name="count">要复制的元素数</param>
         </member>
+        <member name="T:Phenix.Core.SyncCollections.SynchronizedMultiSortedList`1">
+            <summary>
+            表示可通过索引访问的对象的强类型列表
+            提供用于对列表进行多维搜索、排序和操作的方法
+            </summary>
+            <typeparam name="T">列表中元素的类型</typeparam>
+        </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedMultiSortedList`1.ContainsKey(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Object)">
+            <summary>
+            确定是否包含指定的键
+            </summary>
+            <param name="keyLambda">键 lambda 表达式</param>
+            <param name="key">键</param>
+        </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedMultiSortedList`1.ContainsValue(`0)">
+            <summary>
+            确定是否包含特定值
+            </summary>
+            <param name="value">要定位的值. 对于引用类型, 该值可以为 null</param>
+        </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedMultiSortedList`1.TryGetValue(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Object,`0@)">
+            <summary>
+            获取与指定的键相关联的值
+            </summary>
+            <param name="keyLambda">键 lambda 表达式</param>
+            <param name="key">键</param>
+            <param name="value">当此方法返回值时, 如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会返回 item 参数的类型默认值</param>
+        </member>
         <member name="T:Phenix.Core.SyncCollections.SynchronizedQueue`1">
             <summary>
             表示对象的先进先出集合
@@ -13073,6 +13137,7 @@
         <member name="T:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2">
             <summary>
             表示按键排序的键/值对的集合
+            支持 ICachedObject
             </summary>
             <typeparam name="TKey">字典中的键的类型</typeparam>
             <typeparam name="TValue">字典中的值的类型</typeparam>
@@ -13265,7 +13330,9 @@
         </member>
         <member name="T:Phenix.Core.SyncCollections.SynchronizedSortedList`2">
             <summary>
-            表示键/值对的集合, 这些键/值对基于关联的比较器实现按照键进行排序
+            表示键/值对的集合
+            这些键/值对基于关联的比较器实现按照键进行排序
+            支持 ICachedObject
             </summary>
             <typeparam name="TKey">集合中键的类型</typeparam>
             <typeparam name="TValue">集合中值的类型</typeparam>
@@ -13599,42 +13666,6 @@
             </summary>
             <param name="array">作为从集合中复制的元素的目标位置的一维 Array. Array 必须具有从零开始的索引</param>
             <param name="arrayIndex">array 中从零开始的索引, 在此处开始复制</param>
-        </member>
-        <member name="T:Phenix.Core.Threading.ITimedTask">
-            <summary>
-            定时任务接口
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Threading.ITimedTask.Execute">
-            <summary>
-            执行
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Threading.Timer">
-            <summary>
-            定时器
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Threading.Timer.CreateTimedTask``1(System.Int32,System.Int32)">
-            <summary>
-            构建定时执行的任务
-            </summary>
-            <param name="cycleDayMultiple">执行于每月里可被参数(2~28)除整的日期(范围以外为每天)</param>
-            <param name="cycleHourMultiple">执行于被筛选日期里可被参数(2~23)除整的小时(范围以外为每小时)</param>
-        </member>
-        <member name="M:Phenix.Core.Threading.Timer.AddTimedTask(Phenix.Core.Threading.ITimedTask,System.Int32,System.Int32)">
-            <summary>
-            添加定时执行的任务
-            </summary>
-            <param name="cycleTimedTask">定时任务</param>
-            <param name="cycleDayMultiple">执行于每月里可被参数(2~28)除整的日期(范围以外为每天)</param>
-            <param name="cycleHourMultiple">执行于被筛选日期里可被参数(2~23)除整的小时(范围以外为每小时)</param>
-        </member>
-        <member name="M:Phenix.Core.Threading.Timer.RemoveTimedTask(Phenix.Core.Threading.ITimedTask)">
-            <summary>
-            移除定时执行的任务
-            </summary>
-            <param name="cycleTimedTask">定时任务</param>
         </member>
         <member name="T:Microsoft.Extensions.DependencyInjection.ApplicationPartManagerExtension">
             <summary>

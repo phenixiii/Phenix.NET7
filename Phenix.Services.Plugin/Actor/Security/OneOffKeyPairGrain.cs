@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Orleans;
-using Phenix.Core.Security.Auth;
+using Phenix.Actor;
 using Phenix.Core.Security.Cryptography;
 using Phenix.Core.SyncCollections;
 
@@ -10,26 +9,20 @@ namespace Phenix.Services.Plugin.Actor.Security
     /// <summary>
     /// 一次性公钥私钥对Grain
     /// </summary>
-    public class OneOffKeyPairGrain : Grain, IOneOffKeyPairGrain
+    public class OneOffKeyPairGrain : GrainBase, IOneOffKeyPairGrain
     {
         #region 属性
-
-        private long? _discardIntervalSeconds;
 
         /// <summary>
         /// 丢弃间隔(秒)
         /// </summary>
         protected long DiscardIntervalSeconds
         {
-            get
-            {
-                if (!_discardIntervalSeconds.HasValue)
-                    _discardIntervalSeconds = this.GetPrimaryKeyLong();
-                return _discardIntervalSeconds.Value;
-            }
+            get { return Id.Value > 0 ? Id.Value : 60; }
         }
 
-        private static readonly SynchronizedDictionary<string, KeyPair> _cache = new SynchronizedDictionary<string, KeyPair>(StringComparer.Ordinal);
+        private static readonly SynchronizedDictionary<string, CachedObject<KeyPair>> _cache =
+            new SynchronizedDictionary<string, CachedObject<KeyPair>>(StringComparer.Ordinal);
 
         #endregion
 
@@ -38,23 +31,20 @@ namespace Phenix.Services.Plugin.Actor.Security
         Task<string> IOneOffKeyPairGrain.GetPublicKey(string name)
         {
             KeyPair keyPair = RSACryptoTextProvider.CreateKeyPair();
-            keyPair.InvalidTime = DateTime.Now.AddSeconds(DiscardIntervalSeconds);
-            _cache[name] = keyPair;
+            _cache[name] = new CachedObject<KeyPair>(keyPair, DateTime.Now.AddSeconds(DiscardIntervalSeconds));
             return Task.FromResult(keyPair.PublicKey);
         }
 
         Task<string> IOneOffKeyPairGrain.Decrypt(string name, string cipherText, bool fOAEP)
         {
-            if (_cache.TryGetValue(name, out KeyPair keyPair))
+            string result = null;
+            if (_cache.TryGetValue(name, out CachedObject<KeyPair> cachedObject))
             {
-                if (keyPair.InvalidTime < DateTime.Now)
-                    throw new OvertimeRequestException();
-                string result = RSACryptoTextProvider.Decrypt(keyPair.PrivateKey, cipherText, fOAEP);
+                result = RSACryptoTextProvider.Decrypt(cachedObject.Value.PrivateKey, cipherText, fOAEP);
                 _cache.Remove(name);
-                return Task.FromResult(result);
             }
 
-            return null;
+            return Task.FromResult(result);
         }
 
         #endregion

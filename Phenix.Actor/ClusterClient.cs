@@ -1,10 +1,10 @@
 ﻿using System;
-using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
+using Orleans.Runtime;
 using Orleans.Runtime.Messaging;
-using Phenix.Core.Data;
+using Phenix.Core.Security;
 using Phenix.Core.SyncCollections;
 
 namespace Phenix.Actor
@@ -16,47 +16,8 @@ namespace Phenix.Actor
     {
         #region 属性
 
-        #region 配置项
-
-        private static string _clusterId;
-
-        /// <summary>
-        /// 集群的唯一ID
-        /// 默认：Database.Default.DataSourceKey
-        /// </summary>
-        public static string ClusterId
-        {
-            get { return Phenix.Core.AppSettings.GetProperty(ref _clusterId, Database.Default.DataSourceKey); }
-            set { Phenix.Core.AppSettings.SetProperty(ref _clusterId, value); }
-        }
-
-        private static string _serviceId;
-
-        /// <summary>
-        /// 服务的唯一ID
-        /// 默认：Database.Default.DataSourceKey
-        /// </summary>
-        public static string ServiceId
-        {
-            get { return Phenix.Core.AppSettings.GetProperty(ref _serviceId, Database.Default.DataSourceKey); }
-            set { Phenix.Core.AppSettings.SetProperty(ref _serviceId, value); }
-        }
-
-        private static string _connectionString;
-
-        /// <summary>
-        /// 数据库连接串
-        /// 默认：Database.Default.ConnectionString
-        /// </summary>
-        public static string ConnectionString
-        {
-            get { return Phenix.Core.AppSettings.GetProperty(ref _connectionString, Database.Default.ConnectionString, true); }
-            set { Phenix.Core.AppSettings.SetProperty(ref _connectionString, value, true); }
-        }
-
-        #endregion
-
-        private static readonly SynchronizedDictionary<string, IClusterClient> _cache = new SynchronizedDictionary<string, IClusterClient>(StringComparer.Ordinal);
+        private static readonly SynchronizedDictionary<string, IClusterClient> _cache =
+            new SynchronizedDictionary<string, IClusterClient>(StringComparer.Ordinal);
 
         private static IClusterClient _default;
 
@@ -74,18 +35,19 @@ namespace Phenix.Actor
 
         /// <summary>
         /// 获取Orleans服务集群客户端
-        /// Orleans集群的唯一ID = Database.Default.DataSourceKey
-        /// Orleans服务的唯一ID = Database.Default.DataSourceKey
-        /// Orleans数据库连接串 = Database.Default.ConnectionString
+        /// 设置集群ID、服务ID：Phenix.Core.Data.Database.Default.DataSourceKey
+        /// 设置Clustering、GrainStorage、Reminder数据库：Phenix.Core.Data.Database.Default
+        /// 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProvider.Name
         /// </summary>
         /// <returns>Orleans服务集群客户端</returns>
         public static IClusterClient Fetch()
         {
-            return Fetch(ClusterId, ServiceId, ConnectionString);
+            return Fetch(OrleansConfig.ClusterId, OrleansConfig.ServiceId, OrleansConfig.ConnectionString);
         }
 
         /// <summary>
         /// 获取Orleans服务集群客户端
+        /// 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProvider.Name
         /// </summary>
         /// <param name="clusterId">Orleans集群的唯一ID</param>
         /// <param name="serviceId">Orleans服务的唯一ID</param>
@@ -96,7 +58,6 @@ namespace Phenix.Actor
             return _cache.GetValue(String.Format("{0}*{1}", clusterId, serviceId), () =>
             {
                 IClusterClient value = new ClientBuilder()
-                    .ConfigureLogging(logging => logging.AddConsole())
                     .Configure<ConnectionOptions>(options => { options.ProtocolVersion = NetworkProtocolVersion.Version2; })
                     .Configure<ClusterOptions>(options =>
                     {
@@ -119,11 +80,24 @@ namespace Phenix.Actor
                         options.Invariant = "Oracle.DataAccess.Client";
 #endif
                     })
-                    .ConfigureApplicationParts(parts =>
+                    .ConfigureApplicationParts(parts => { parts.AddPluginPart(); })
+                    .AddSimpleMessageStreamProvider(Phenix.Actor.StreamProvider.Name)
+                    .AddOutgoingGrainCallFilter(context =>
                     {
-                        parts.AddPluginPart();
+                        if (context.Grain is ISecurityContext)
+                        {
+                            Identity currentIdentity = Identity.CurrentIdentity;
+                            if (currentIdentity != null)
+                            {
+                                RequestContext.Set(ContextConfig.CurrentIdentityName, currentIdentity.Name);
+                                RequestContext.Set(ContextConfig.CurrentIdentityCultureName, currentIdentity.CultureName);
+                            }
+                        }
+
+                        if (context.Grain is ITraceLogContext)
+                            RequestContext.Set(ContextConfig.PrimaryCallerKey, RequestContext.Get(ContextConfig.PrimaryCallerKey) ?? Phenix.Core.Data.Database.Default.Sequence.Value);
+                        return context.Invoke();
                     })
-                    .AddSimpleMessageStreamProvider(StreamProvider.Name)
                     .Build();
                 value.Connect().Wait();
                 return value;

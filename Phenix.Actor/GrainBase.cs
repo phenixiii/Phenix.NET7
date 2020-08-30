@@ -16,7 +16,7 @@ namespace Phenix.Actor
         /// </summary>
         protected virtual Database Database
         {
-            get { return  Database.Default; }
+            get { return Database.Default; }
         }
 
         private long? _id;
@@ -24,13 +24,19 @@ namespace Phenix.Actor
         /// <summary>
         /// ID(默认映射表主键XX_ID字段或获取自复合主键Key以默认映射AB关联表外键XX_A_ID字段之一)
         /// </summary>
-        protected virtual long Id
+        protected virtual long? Id
         {
             get
             {
                 if (!_id.HasValue)
-                    _id = this.GetPrimaryKeyLong();
-                return _id.Value;
+                {
+                    if (this is IGrainWithIntegerKey)
+                        _id = this.GetPrimaryKeyLong();
+                    else if (this is IGrainWithIntegerCompoundKey)
+                        _id = this.GetPrimaryKeyLong(out _keyExtension);
+                }
+
+                return _id;
             }
         }
 
@@ -45,7 +51,7 @@ namespace Phenix.Actor
             {
                 if (!_idExtension.HasValue)
                 {
-                    if (!String.IsNullOrEmpty(KeyExtension))
+                    if (this is IGrainWithIntegerCompoundKey)
                         _idExtension = Int64.Parse(KeyExtension);
                 }
 
@@ -63,7 +69,11 @@ namespace Phenix.Actor
             get
             {
                 if (_keyExtension == null)
-                    _id = this.GetPrimaryKeyLong(out _keyExtension);
+                {
+                    if (this is IGrainWithIntegerCompoundKey)
+                        _id = this.GetPrimaryKeyLong(out _keyExtension);
+                }
+
                 return _keyExtension;
             }
         }

@@ -26,21 +26,15 @@ namespace Phenix.Services.Plugin.Actor.Security
 
         #region 属性
 
-        private readonly IUserService _service;
-
-        #endregion
-
-        #region 属性
-
         #region 配置项
 
-        private static long? _keyPairDiscardIntervalSeconds;
+        private static int? _keyPairDiscardIntervalSeconds;
 
         /// <summary>
         /// 公钥私钥对丢弃间隔(秒)
         /// 默认：60
         /// </summary>
-        public static long KeyPairDiscardIntervalSeconds
+        public static int KeyPairDiscardIntervalSeconds
         {
             get { return AppSettings.GetProperty(ref _keyPairDiscardIntervalSeconds, 60); }
             set { AppSettings.SetProperty(ref _keyPairDiscardIntervalSeconds, value); }
@@ -61,21 +55,20 @@ namespace Phenix.Services.Plugin.Actor.Security
         /// <summary>
         /// ID(映射表ID字段)
         /// </summary>
-        protected override long Id
+        protected override long? Id
         {
-            get { return Kernel.Id; }
+            get { return Kernel != null ? Kernel.Id : (long?) null; }
         }
-
-        private User _kernel;
 
         /// <summary>
         /// 根实体对象
         /// </summary>
         protected override User Kernel
         {
-            get { return _kernel ?? (_kernel = User.FetchRoot(Database, p => p.Name == Name)); }
-            set { _kernel = value; }
+            get { return base.Kernel ?? (base.Kernel = User.FetchRoot(Database, p => p.Name == Name)); }
         }
+
+        private readonly IUserService _service;
 
         #endregion
 
