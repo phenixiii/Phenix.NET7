@@ -43,14 +43,15 @@ namespace Phenix.Services.Host
             services.AddSignalR(options => { options.MaximumReceiveMessageSize = Int16.MaxValue; }).AddMessagePackProtocol();
 
             /*
-             * 注入用户消息服务，响应 phAjax.subscribeMessage() 请求 
+             * 注入分组/用户消息服务，响应 phAjax.subscribeMessage() 请求 
              */
-            services.AddSingleton<Phenix.Core.Net.Api.Message.UserMessageHub>();
+            services.AddSingleton<Phenix.Services.Plugin.Api.Message.GroupMessageHub>();
+            services.AddSingleton<Phenix.Services.Plugin.Api.Message.UserMessageHub>();
 
             /*
-             * 向 UserMessageHub 注入用户消息服务扩展
+             * 向 GroupMessageHub、UserMessageHub 注入分组/用户消息服务扩展
              */
-            services.AddTransient(typeof(Phenix.Core.Message.IUserMessageService), typeof(Phenix.Services.Extend.Api.Message.UserMessageService));
+            services.AddTransient(typeof(Phenix.Core.Message.IMessageService), typeof(Phenix.Services.Extend.Api.Message.MessageService));
 
             /*
              * 向 FileController 注入文件存取服务扩展
@@ -204,12 +205,14 @@ namespace Phenix.Services.Host
             {
                 endpoints.MapControllers();
                 endpoints.MapDefaultControllerRoute().RequireAuthorization();
+
                 /*
-                 * 使用用户消息服务，响应 phAjax.subscribeMessage() 请求
+                 * 使用分组/用户消息服务，响应 phAjax.subscribeMessage() 请求
                  * 如果部署环境使用了 Nginx 等代理服务器或负载均衡器，类似 proxy_set_header Connection 配置项要从请求头里面获取，比如 proxy_set_header Connection $http_connection;
                  * 负载均衡器应该开启会话保持功能（客户端登录后的请求要一直落到同一台服务器上），配置会话保持类型为源IP（按访问IP的hash结果分配响应的应用服务器）
                  */
-                endpoints.MapHub<Phenix.Core.Net.Api.Message.UserMessageHub>(Phenix.Core.Net.Api.ApiConfig.ApiMessageUserMessageHubPath);
+                endpoints.MapHub<Phenix.Services.Plugin.Api.Message.GroupMessageHub>(Phenix.Core.Net.Api.ApiConfig.ApiMessageGroupMessageHubPath);
+                endpoints.MapHub<Phenix.Services.Plugin.Api.Message.UserMessageHub>(Phenix.Core.Net.Api.ApiConfig.ApiMessageUserMessageHubPath);
             });
         }
     }

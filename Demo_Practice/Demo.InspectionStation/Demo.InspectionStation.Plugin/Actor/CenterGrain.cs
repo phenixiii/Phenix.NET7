@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Demo.InspectionStation.Plugin.Business;
-using Orleans;
 using Orleans.Streams;
 using Phenix.Actor;
 using Phenix.Core.Message;
@@ -17,20 +16,10 @@ namespace Demo.InspectionStation.Plugin.Actor
     {
         #region 属性
 
-        private string _name;
-
-        /// <summary>
-        /// 名称
-        /// </summary>
-        protected string Name
-        {
-            get { return _name ?? (_name = this.GetPrimaryKeyString()); }
-        }
-
         /// <summary>
         /// ID(映射表ID字段)
         /// </summary>
-        protected override long? Id
+        protected override long Id
         {
             get { return Kernel.Id; }
         }

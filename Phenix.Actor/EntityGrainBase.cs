@@ -99,8 +99,8 @@ namespace Phenix.Actor
         {
             if (Kernel != null)
                 Kernel.UpdateSelf(propertyValues);
-            else if (Id.HasValue)
-                EntityBase<TKernel>.New(Database, Id.Value, propertyValues).InsertSelf();
+            else if (this is IGrainWithIntegerKey || this is IGrainWithIntegerCompoundKey)
+                EntityBase<TKernel>.New(Database, Id, propertyValues).InsertSelf();
             else
                 EntityBase<TKernel>.New(Database, propertyValues).InsertSelf();
         }

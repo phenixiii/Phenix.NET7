@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Phenix.Actor;
+using Phenix.Core.Actor;
 using Phenix.Core.Message;
 
 namespace Phenix.Services.Plugin.Api.Message
@@ -47,7 +49,10 @@ namespace Phenix.Services.Plugin.Api.Message
         [HttpPost]
         public async Task Send(string receiver)
         {
-            UserMessage.Send(User.Identity.Name, receiver, await Request.ReadBodyAsStringAsync());
+            string content = await Request.ReadBodyAsStringAsync();
+            //测试分组消息的推送
+            //await ClusterClient.Default.GetStreamProvider().GetStream<string>(ActorConfig.GroupMessageStreamId, receiver).OnNextAsync(content);
+            UserMessage.Send(User.Identity.Name, receiver, content);
         }
 
         // phAjax.affirmReceivedMessage()

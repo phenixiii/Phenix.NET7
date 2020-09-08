@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Phenix.Core.Data.Model;
 using Phenix.Core.Net.Api;
+using Phenix.Core.Threading;
 
 namespace Phenix.Client.Security.Myself
 {
@@ -37,7 +38,7 @@ namespace Phenix.Client.Security.Myself
 
         internal static Teams Fetch(HttpClient httpClient)
         {
-            Teams result = httpClient.CallAsync<Teams>(HttpMethod.Get, ApiConfig.ApiSecurityMyselfRootTeamsPath, false).Result;
+            Teams result = AsyncHelper.RunSync(() => httpClient.CallAsync<Teams>(HttpMethod.Get, ApiConfig.ApiSecurityMyselfRootTeamsPath, false));
             if (result != null)
                 result._httpClient = httpClient;
             return result;
@@ -72,9 +73,9 @@ namespace Phenix.Client.Security.Myself
         public Teams AddChild(string name)
         {
             return AddChild(() => new Teams(_httpClient, name),
-                node => _httpClient.CallAsync<long>(HttpMethod.Post, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
+                node => AsyncHelper.RunSync(() => _httpClient.CallAsync<long>(HttpMethod.Post, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
                     Set(p => p.Name, node.Name).
-                        Set(p => p.ParentId, node.ParentId)).Result);
+                        Set(p => p.ParentId, node.ParentId))));
         }
 
         /// <summary>
@@ -83,10 +84,9 @@ namespace Phenix.Client.Security.Myself
         /// <param name="parentNode">父节点</param>
         public void ChangeParent(Teams parentNode)
         {
-            ChangeParent(parentNode,
-                () => _httpClient.CallAsync(HttpMethod.Put, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
-                    Set(p => p.Id, Id).
-                        Set(p => p.ParentId, parentNode.Id)).Wait());
+            ChangeParent(parentNode, () =>
+                AsyncHelper.RunSync(() => _httpClient.CallAsync(HttpMethod.Put, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
+                    Set(p => p.Id, Id).Set(p => p.ParentId, parentNode.Id))));
         }
 
         /// <summary>
@@ -94,9 +94,9 @@ namespace Phenix.Client.Security.Myself
         /// </summary>
         public void UpdateSelf()
         {
-            _httpClient.CallAsync(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
+            AsyncHelper.RunSync(() => _httpClient.CallAsync(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
                 Set(p => p.Id, Id).
-                    Set(p => p.Name, Name)).Wait();
+                    Set(p => p.Name, Name)));
         }
 
         /// <summary>
@@ -105,8 +105,8 @@ namespace Phenix.Client.Security.Myself
         /// <returns>更新记录数</returns>
         public int DeleteBranch()
         {
-            return DeleteBranch(() => _httpClient.CallAsync<int>(HttpMethod.Delete, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
-                Set(p => p.Id, Id)).Result);
+            return DeleteBranch(() => AsyncHelper.RunSync(() => _httpClient.CallAsync<int>(HttpMethod.Delete, ApiConfig.ApiSecurityMyselfRootTeamsNodePath,
+                Set(p => p.Id, Id))));
         }
 
         #endregion

@@ -4,7 +4,7 @@ using Phenix.Actor;
 using Phenix.Core.Security.Cryptography;
 using Phenix.Core.SyncCollections;
 
-namespace Phenix.Services.Plugin.Actor.Security
+namespace Phenix.Services.Plugin.Actor.Security.Cryptography
 {
     /// <summary>
     /// 一次性公钥私钥对Grain
@@ -18,7 +18,7 @@ namespace Phenix.Services.Plugin.Actor.Security
         /// </summary>
         protected long DiscardIntervalSeconds
         {
-            get { return Id.Value > 0 ? Id.Value : 60; }
+            get { return Id > 0 ? Id : 60; }
         }
 
         private static readonly SynchronizedDictionary<string, CachedObject<KeyPair>> _cache =

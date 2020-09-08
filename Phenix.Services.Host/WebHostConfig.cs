@@ -1,4 +1,6 @@
-﻿namespace Phenix.Services.Host
+﻿using Phenix.Core;
+
+namespace Phenix.Services.Host
 {
     public static class WebHostConfig
     {
@@ -9,8 +11,8 @@
         /// </summary>
         public static string Urls
         {
-            get { return Phenix.Core.AppSettings.GetLocalProperty(ref _urls, "http://*:5000"); }
-            set { Phenix.Core.AppSettings.SetLocalProperty(ref _urls, value); }
+            get { return AppSettings.GetLocalProperty(ref _urls, "http://*:5000"); }
+            set { AppSettings.SetLocalProperty(ref _urls, value); }
         }
     }
 }

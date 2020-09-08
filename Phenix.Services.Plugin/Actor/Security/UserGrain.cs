@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Security;
 using System.Threading.Tasks;
-using Orleans;
 using Phenix.Actor;
 using Phenix.Core;
 using Phenix.Core.Security;
 using Phenix.Core.Security.Auth;
+using Phenix.Services.Plugin.Actor.Security.Cryptography;
 
 namespace Phenix.Services.Plugin.Actor.Security
 {
@@ -27,7 +27,7 @@ namespace Phenix.Services.Plugin.Actor.Security
         #region 属性
 
         #region 配置项
-
+        
         private static int? _keyPairDiscardIntervalSeconds;
 
         /// <summary>
@@ -42,22 +42,12 @@ namespace Phenix.Services.Plugin.Actor.Security
 
         #endregion
 
-        private string _name;
-
-        /// <summary>
-        /// 名称
-        /// </summary>
-        public string Name
-        {
-            get { return _name ?? (_name = this.GetPrimaryKeyString()); }
-        }
-
         /// <summary>
         /// ID(映射表ID字段)
         /// </summary>
-        protected override long? Id
+        protected override long Id
         {
-            get { return Kernel != null ? Kernel.Id : (long?) null; }
+            get { return Kernel != null ? Kernel.Id : throw new UserNotFoundException(); }
         }
 
         /// <summary>

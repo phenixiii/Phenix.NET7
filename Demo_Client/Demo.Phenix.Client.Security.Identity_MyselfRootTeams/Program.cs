@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Phenix.Client.Security.Myself;
 
 namespace Demo
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Console.WriteLine("**** 演示 Demo.Phenix.Client.Security.Identity 的 Myself RootTeams 功能 ****");
             Console.WriteLine();
@@ -25,13 +26,13 @@ namespace Demo
             Console.WriteLine("构造一个 Phenix.Client.HttpClient 对象用于访问‘{0}’服务端。", httpClient.BaseAddress);
             string userName = "测试用" + Guid.NewGuid().ToString();
             Console.WriteLine("登记/注册用户：{0}", userName);
-            Console.WriteLine(httpClient.CheckInAsync(userName).Result);
+            Console.WriteLine(await httpClient.CheckInAsync(userName));
             while (true)
                 try
                 {
                     Console.Write("请依照以上提示，输入找到的动态口令/登录口令，完成后按回车确认：");
                     string password = Console.ReadLine() ?? String.Empty;
-                    Phenix.Client.Security.Identity identity = httpClient.LogonAsync(userName, password.Trim()).Result;
+                    Phenix.Client.Security.Identity identity = await httpClient.LogonAsync(userName, password.Trim());
                     Console.WriteLine("登录成功：{0}", identity.IsAuthenticated ? "ok" : "error");
                     break;
                 }
@@ -51,12 +52,12 @@ namespace Demo
 
             Console.WriteLine("更新用户资料...");
             Phenix.Client.HttpClient.Default.Identity.User.Phone = "我的手机号";
-            User user = Phenix.Client.HttpClient.Default.Identity.ReFetchUserAsync().Result;
+            User user = await Phenix.Client.HttpClient.Default.Identity.ReFetchUserAsync();
             Console.WriteLine("服务端已更新用户资料：{0}", Phenix.Core.Reflection.Utilities.JsonSerialize(user));
             Console.WriteLine();
 
             Console.WriteLine("搭建组织架构...");
-            Phenix.Client.HttpClient.Default.Identity.User.PatchRootTeamsAsync("我的公司").Wait();
+            await Phenix.Client.HttpClient.Default.Identity.User.PatchRootTeamsAsync("我的公司");
             Console.WriteLine("所属顶层团体：{0}", Phenix.Core.Reflection.Utilities.JsonSerialize(Phenix.Client.HttpClient.Default.Identity.User.RootTeams));
             Console.WriteLine("所属团体：{0}", Phenix.Core.Reflection.Utilities.JsonSerialize(Phenix.Client.HttpClient.Default.Identity.User.Teams));
             Console.WriteLine();

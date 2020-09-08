@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Demo.InventoryControl.Plugin.Business;
-using Orleans;
 using Phenix.Actor;
 
 namespace Demo.InventoryControl.Plugin.Actor
@@ -12,20 +11,10 @@ namespace Demo.InventoryControl.Plugin.Actor
     {
         #region 属性
 
-        private string _name;
-
-        /// <summary>
-        /// 名称
-        /// </summary>
-        protected string Name
-        {
-            get { return _name ?? (_name = this.GetPrimaryKeyString()); }
-        }
-
         /// <summary>
         /// ID(映射表ID字段)
         /// </summary>
-        protected override long? Id
+        protected override long Id
         {
             get { return Kernel.Id; }
         }

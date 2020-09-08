@@ -8,7 +8,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.Services.Plugin.Api.Log.EventLogCommand">
-    <Position X="2.5" Y="0.5" Width="2.5" />
+    <Position X="2.5" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Api\Log\EventLogCommand.cs</FileName>

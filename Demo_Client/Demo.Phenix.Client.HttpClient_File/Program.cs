@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Phenix.Core.Threading;
 
 namespace Demo
 {
     class Program
     {
-        [STAThreadAttribute]
+        [STAThread]
         static void Main(string[] args)
         {
             Console.WriteLine("**** 演示 Phenix.Client.HttpClient 的 UploadFile()、DownloadFile() 功能 ****");
@@ -27,13 +28,13 @@ namespace Demo
             Console.WriteLine("构造一个 Phenix.Client.HttpClient 对象用于访问‘{0}’服务端。", httpClient.BaseAddress);
             string userName = "测试用" + Guid.NewGuid().ToString();
             Console.WriteLine("登记/注册用户：{0}", userName);
-            Console.WriteLine(httpClient.CheckInAsync(userName).Result);
+            Console.WriteLine(AsyncHelper.RunSync(() => httpClient.CheckInAsync(userName)));
             while (true)
                 try
                 {
                     Console.Write("请依照以上提示，输入找到的动态口令/登录口令，完成后按回车确认：");
                     string password = Console.ReadLine() ?? String.Empty;
-                    Phenix.Client.Security.Identity identity = httpClient.LogonAsync(userName, password.Trim()).Result;
+                    Phenix.Client.Security.Identity identity = AsyncHelper.RunSync(() => httpClient.LogonAsync(userName, password.Trim()));
                     Console.WriteLine("登录成功：{0}", identity.IsAuthenticated ? "ok" : "error");
                     break;
                 }
@@ -51,14 +52,6 @@ namespace Demo
             Console.WriteLine();
             Console.WriteLine();
 
-            ExecuteAsync().Wait();
-
-            Console.Write("请按回车键结束演示");
-            Console.ReadLine();
-        }
-
-        static async Task ExecuteAsync()
-        {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.RestoreDirectory = true;
@@ -67,11 +60,11 @@ namespace Demo
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     Console.WriteLine("开始上传: " + openFileDialog.FileName);
-                    string message = await Phenix.Client.HttpClient.Default.UploadFileAsync("Hello uploadFile!", openFileDialog.FileName, fileChunkInfo =>
+                    string message = AsyncHelper.RunSync(() => Phenix.Client.HttpClient.Default.UploadFileAsync("Hello uploadFile!", openFileDialog.FileName, fileChunkInfo =>
                     {
                         Console.WriteLine("上传{0}进度：{1}/{2}", fileChunkInfo.FileName, fileChunkInfo.ChunkNumber, fileChunkInfo.ChunkCount);
                         return true; //继续上传
-                    });
+                    }));
                     Console.WriteLine("完成上传: " + message);
                     Console.Write("请按任意键继续");
                     Console.ReadKey();
@@ -79,16 +72,18 @@ namespace Demo
                     Console.WriteLine();
 
                     Console.WriteLine("开始下载刚上传文件...");
-                    await Phenix.Client.HttpClient.Default.DownloadFileAsync("Hello downloadFile!", openFileDialog.FileName, fileChunkInfo =>
+                    AsyncHelper.RunSync(() => Phenix.Client.HttpClient.Default.DownloadFileAsync("Hello downloadFile!", openFileDialog.FileName, fileChunkInfo =>
                     {
                         Console.WriteLine("下载{0}进度：{1}/{2}", fileChunkInfo.FileName, fileChunkInfo.ChunkNumber, fileChunkInfo.ChunkCount);
                         return true; //继续下载
-                    });
+                    }));
                     Console.WriteLine("完成下载: " + openFileDialog.FileName);
                 }
             }
 
             Console.WriteLine();
+            Console.Write("请按回车键结束演示");
+            Console.ReadLine();
         }
     }
 }

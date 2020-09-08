@@ -4,6 +4,16 @@
         <name>Phenix.Core</name>
     </assembly>
     <members>
+        <member name="T:Phenix.Core.Actor.ActorConfig">
+            <summary>
+             Actor配置信息
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Actor.ActorConfig.GroupMessageStreamId">
+            <summary>
+            分组消息StreamId
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Actor.IEntityGrainProxy`1">
             <summary>
             实体Grain代理接口
@@ -191,7 +201,7 @@
         <member name="M:Phenix.Core.AppSettings.SetProperty``2(``0@,``1,System.Boolean,System.Boolean)">
             <summary>
             设置属性值
-            key = null
+            key = 调用方法全名
             </summary>
             <param name="field">属性字段</param>
             <param name="newValue">新值</param>
@@ -211,7 +221,7 @@
         <member name="M:Phenix.Core.AppSettings.GetProperty``2(``0@,``1,System.Boolean,System.Boolean)">
             <summary>
             获取属性值
-            key = null
+            key = 调用方法全名
             </summary>
             <param name="field">属性字段</param>
             <param name="defaultValue">缺省值</param>
@@ -246,7 +256,7 @@
         <member name="M:Phenix.Core.AppSettings.SetLocalProperty``2(``0@,``1,System.Boolean,System.Boolean)">
             <summary>
             设置属性值到本地Phenix.Core.db的PH7_AppSettings表
-            key = null
+            key = 调用方法全名
             </summary>
             <param name="field">属性字段</param>
             <param name="newValue">新值</param>
@@ -266,7 +276,7 @@
         <member name="M:Phenix.Core.AppSettings.GetLocalProperty``2(``0@,``1,System.Boolean,System.Boolean)">
             <summary>
             获取属性值自本地Phenix.Core.db的PH7_AppSettings表
-            key = null
+            key = 调用方法全名
             </summary>
             <param name="field">属性字段</param>
             <param name="defaultValue">缺省值</param>
@@ -9268,13 +9278,14 @@
             事件资料
             </summary>
         </member>
-        <member name="M:Phenix.Core.Log.EventInfo.#ctor(System.Int64,System.Reflection.MethodBase,System.String,System.Exception)">
+        <member name="M:Phenix.Core.Log.EventInfo.#ctor(System.Int64,System.Reflection.MethodBase,System.String,System.String,System.Exception)">
             <summary>
             初始化
             </summary>
             <param name="id">ID</param>
             <param name="method">函数的信息</param>
             <param name="message">消息</param>
+            <param name="address">地址</param>
             <param name="error">错误</param>
         </member>
         <member name="P:Phenix.Core.Log.EventInfo.Id">
@@ -9319,7 +9330,7 @@
         </member>
         <member name="P:Phenix.Core.Log.EventInfo.Address">
             <summary>
-            IP地址
+            地址
             </summary>
         </member>
         <member name="T:Phenix.Core.Log.EventLog">
@@ -9358,12 +9369,12 @@
             <param name="message">消息</param>
             <param name="error">错误</param>
         </member>
-        <member name="M:Phenix.Core.Log.EventLog.Save(System.Reflection.MethodBase,System.Object[],System.Exception)">
+        <member name="M:Phenix.Core.Log.EventLog.Save(System.String,System.String,System.Exception)">
             <summary>
-            保存对象日志
+            保存错误日志
             </summary>
-            <param name="method">函数的信息</param>
-            <param name="args">参数值</param>
+            <param name="message">消息</param>
+            <param name="address">地址</param>
             <param name="error">错误</param>
         </member>
         <member name="M:Phenix.Core.Log.EventLog.Save(System.Reflection.MethodBase,System.String,System.Exception)">
@@ -9374,13 +9385,13 @@
             <param name="message">消息</param>
             <param name="error">错误</param>
         </member>
-        <member name="M:Phenix.Core.Log.EventLog.Save(System.Int64,System.Reflection.MethodBase,System.Object[],System.Exception)">
+        <member name="M:Phenix.Core.Log.EventLog.Save(System.Reflection.MethodBase,System.String,System.String,System.Exception)">
             <summary>
             保存对象日志
             </summary>
-            <param name="id">ID</param>
             <param name="method">函数的信息</param>
-            <param name="args">参数值</param>
+            <param name="message">消息</param>
+            <param name="address">地址</param>
             <param name="error">错误</param>
         </member>
         <member name="M:Phenix.Core.Log.EventLog.Save(System.Int64,System.Reflection.MethodBase,System.String,System.Exception)">
@@ -9390,6 +9401,16 @@
             <param name="id">ID</param>
             <param name="method">函数的信息</param>
             <param name="message">消息</param>
+            <param name="error">错误</param>
+        </member>
+        <member name="M:Phenix.Core.Log.EventLog.Save(System.Int64,System.Reflection.MethodBase,System.String,System.String,System.Exception)">
+            <summary>
+            保存对象日志
+            </summary>
+            <param name="id">ID</param>
+            <param name="method">函数的信息</param>
+            <param name="message">消息</param>
+            <param name="address">地址</param>
             <param name="error">错误</param>
         </member>
         <member name="M:Phenix.Core.Log.EventLog.Save(Phenix.Core.Log.EventInfo)">
@@ -9414,29 +9435,12 @@
             <param name="error">错误</param>
             <param name="extension">后缀</param>
         </member>
-        <member name="M:Phenix.Core.Log.EventLog.SaveLocal(System.Reflection.MethodBase,System.Object[],System.String)">
-            <summary>
-            保存对象日志到本地LocalDirectory目录
-            </summary>
-            <param name="method">函数的信息</param>
-            <param name="args">参数值</param>
-            <param name="extension">后缀</param>
-        </member>
         <member name="M:Phenix.Core.Log.EventLog.SaveLocal(System.Reflection.MethodBase,System.String,System.String)">
             <summary>
             保存对象日志到本地LocalDirectory目录
             </summary>
             <param name="method">函数的信息</param>
             <param name="message">消息</param>
-            <param name="extension">后缀</param>
-        </member>
-        <member name="M:Phenix.Core.Log.EventLog.SaveLocal(System.Reflection.MethodBase,System.Object[],System.Exception,System.String)">
-            <summary>
-            保存对象日志到本地LocalDirectory目录
-            </summary>
-            <param name="method">函数的信息</param>
-            <param name="args">参数值</param>
-            <param name="error">错误</param>
             <param name="extension">后缀</param>
         </member>
         <member name="M:Phenix.Core.Log.EventLog.SaveLocal(System.Reflection.MethodBase,System.String,System.Exception,System.String)">
@@ -9448,23 +9452,24 @@
             <param name="error">错误</param>
             <param name="extension">后缀</param>
         </member>
-        <member name="T:Phenix.Core.Message.IUserMessageService">
+        <member name="T:Phenix.Core.Message.IMessageService">
             <summary>
-            用户消息服务接口
+            消息服务接口
             </summary>
         </member>
-        <member name="M:Phenix.Core.Message.IUserMessageService.OnConnectedAsync(Phenix.Core.Security.Identity,System.String)">
+        <member name="M:Phenix.Core.Message.IMessageService.OnConnected(Phenix.Core.Security.Identity,System.String)">
             <summary>
             连接
             </summary>
             <param name="identity">当前用户身份</param>
             <param name="connectionId">连接ID</param>
         </member>
-        <member name="M:Phenix.Core.Message.IUserMessageService.OnDisconnectedAsync(Phenix.Core.Security.Identity,System.Exception)">
+        <member name="M:Phenix.Core.Message.IMessageService.OnDisconnected(Phenix.Core.Security.Identity,System.String,System.Exception)">
             <summary>
             断开
             </summary>
             <param name="identity">当前用户身份</param>
+            <param name="connectionId">连接ID</param>
             <param name="exception">Exception</param>
         </member>
         <member name="T:Phenix.Core.Message.UserMessage">
@@ -9584,11 +9589,6 @@
             WebAPI配置信息
             </summary>
         </member>
-        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiServicePortalPath">
-            <summary>
-            /api/service/portal
-            </summary>
-        </member>
         <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityGatePath">
             <summary>
             /api/security/gate
@@ -9644,6 +9644,11 @@
             /api/data/increment
             </summary>
         </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiMessageGroupMessageHubPath">
+            <summary>
+            /api/message/group-message-hub
+            </summary>
+        </member>
         <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiMessageUserMessagePath">
             <summary>
             /api/message/user-message
@@ -9662,6 +9667,11 @@
         <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiLogEventLogPath">
             <summary>
             /api/log/event-log
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiServicePortalPath">
+            <summary>
+            /api/service/portal
             </summary>
         </member>
         <member name="T:Phenix.Core.Net.Api.ControllerBase">
@@ -9814,53 +9824,6 @@
             页体(JSON格式)
             </summary>
         </member>
-        <member name="T:Phenix.Core.Net.Api.Message.UserMessageHub">
-            <summary>
-            用户消息中间件
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Message.UserMessageHub.#ctor(Microsoft.AspNetCore.SignalR.IHubContext{Phenix.Core.Net.Api.Message.UserMessageHub},Phenix.Core.Message.IUserMessageService)">
-            <summary>
-            初始化
-            </summary>
-            <param name="context">上下文</param>
-            <param name="service">依赖注入的用户消息服务</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Message.UserMessageHub.OnConnectedAsync">
-            <summary>
-            连接
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Message.UserMessageHub.OnDisconnectedAsync(System.Exception)">
-            <summary>
-            断开
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Net.Api.Service.CommandBase`1">
-            <summary>
-            指令基类
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Net.Api.Service.CommandBase`1.Default">
-            <summary>
-            单例
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Net.Api.Service.ICommand">
-            <summary>
-            指令接口
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Net.Api.Service.PortalController">
-            <summary>
-            门户控制器
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Api.Service.PortalController.Post(System.String,System.String,System.String)">
-            <summary>
-            提交
-            </summary>
-        </member>
         <member name="T:Phenix.Core.Net.Filters.AuthorizationFilter">
             <summary>
             访问授权过滤器
@@ -9990,12 +9953,6 @@
             </summary>
             <param name="identity">用户身份</param>
             <param name="context">HttpContext</param>
-        </member>
-        <member name="M:Phenix.Core.Net.Filters.ControllerRole.Execute(System.Object[])">
-            <summary>
-            执行函数
-            </summary>
-            <param name="args">参数值</param>
         </member>
         <member name="T:Phenix.Core.Net.Filters.SystemAdminFilterAttribute">
             <summary>
@@ -10240,52 +10197,52 @@
             动态执行set函数的委托函数
             </summary>
         </member>
-        <member name="T:Phenix.Core.Reflection.DynamicFactory">
+        <member name="T:Phenix.Core.Reflection.DynamicInstanceFactory">
             <summary>
-            动态工厂
+            动态实体工厂
             </summary>
         </member>
-        <member name="M:Phenix.Core.Reflection.DynamicFactory.Create``1">
-            <summary>
-            构造对象
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Reflection.DynamicFactory.Create(System.Type)">
+        <member name="M:Phenix.Core.Reflection.DynamicInstanceFactory.Create``1">
             <summary>
             构造对象
             </summary>
         </member>
-        <member name="M:Phenix.Core.Reflection.DynamicFactory.GetConstructor(System.Type)">
+        <member name="M:Phenix.Core.Reflection.DynamicInstanceFactory.Create(System.Type)">
+            <summary>
+            构造对象
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Reflection.DynamicInstanceFactory.GetConstructor(System.Type)">
             <summary>
             构造动态执行构建函数
             </summary>
         </member>
-        <member name="M:Phenix.Core.Reflection.DynamicFactory.CreateConstructor(System.Reflection.ConstructorInfo)">
+        <member name="M:Phenix.Core.Reflection.DynamicInstanceFactory.CreateConstructor(System.Reflection.ConstructorInfo)">
             <summary>
             动态执行构建函数
             </summary>
         </member>
-        <member name="M:Phenix.Core.Reflection.DynamicFactory.CreateMethod(System.Reflection.MethodInfo)">
+        <member name="M:Phenix.Core.Reflection.DynamicInstanceFactory.CreateMethod(System.Reflection.MethodInfo)">
             <summary>
             动态执行函数
             </summary>
         </member>
-        <member name="M:Phenix.Core.Reflection.DynamicFactory.CreatePropertyGetter(System.Reflection.PropertyInfo)">
+        <member name="M:Phenix.Core.Reflection.DynamicInstanceFactory.CreatePropertyGetter(System.Reflection.PropertyInfo)">
             <summary>
             动态执行属性的get函数
             </summary>
         </member>
-        <member name="M:Phenix.Core.Reflection.DynamicFactory.CreatePropertySetter(System.Reflection.PropertyInfo)">
+        <member name="M:Phenix.Core.Reflection.DynamicInstanceFactory.CreatePropertySetter(System.Reflection.PropertyInfo)">
             <summary>
             动态执行属性的set函数
             </summary>
         </member>
-        <member name="M:Phenix.Core.Reflection.DynamicFactory.CreateFieldGetter(System.Reflection.FieldInfo)">
+        <member name="M:Phenix.Core.Reflection.DynamicInstanceFactory.CreateFieldGetter(System.Reflection.FieldInfo)">
             <summary>
             动态执行字段的get函数
             </summary>
         </member>
-        <member name="M:Phenix.Core.Reflection.DynamicFactory.CreateFieldSetter(System.Reflection.FieldInfo)">
+        <member name="M:Phenix.Core.Reflection.DynamicInstanceFactory.CreateFieldSetter(System.Reflection.FieldInfo)">
             <summary>
             动态执行字段的set函数
             </summary>
@@ -12207,6 +12164,26 @@
             <param name="reset">如果找到该键, 是否重置的函数(null代表false)</param>
             <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
         </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.GetValue(`0,System.Func{System.Threading.Tasks.Task{`1}},System.Boolean,System.Boolean)">
+            <summary>
+            获取与指定的键相关联的值
+            </summary>
+            <param name="key">键</param>
+            <param name="doCreate">如果没有该键, 构建值的函数</param>
+            <param name="lockCreate">构建值时加锁</param>
+            <param name="reset">如果找到该键, 是否重置</param>
+            <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
+        </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.GetValue(`0,System.Func{System.Threading.Tasks.Task{`1}},System.Boolean,System.Func{`1,System.Boolean})">
+            <summary>
+            获取与指定的键相关联的值
+            </summary>
+            <param name="key">键</param>
+            <param name="doCreate">如果没有该键, 构建值的函数</param>
+            <param name="lockCreate">构建值时加锁</param>
+            <param name="reset">如果找到该键, 是否重置的函数(null代表false)</param>
+            <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
+        </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})">
             <summary>
             添加项
@@ -13256,6 +13233,26 @@
             <param name="reset">如果找到该键, 是否重置的函数(null代表false)</param>
             <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
         </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.GetValue(`0,System.Func{System.Threading.Tasks.Task{`1}},System.Boolean,System.Boolean)">
+            <summary>
+            获取与指定的键相关联的值
+            </summary>
+            <param name="key">键</param>
+            <param name="doCreate">如果没有该键, 构建值的函数</param>
+            <param name="lockCreate">构建值时加锁</param>
+            <param name="reset">如果找到该键, 是否重置</param>
+            <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
+        </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.GetValue(`0,System.Func{System.Threading.Tasks.Task{`1}},System.Boolean,System.Func{`1,System.Boolean})">
+            <summary>
+            获取与指定的键相关联的值
+            </summary>
+            <param name="key">键</param>
+            <param name="doCreate">如果没有该键, 构建值的函数</param>
+            <param name="lockCreate">构建值时加锁</param>
+            <param name="reset">如果找到该键, 是否重置的函数(null代表false)</param>
+            <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
+        </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.Add(System.Collections.Generic.KeyValuePair{`0,`1})">
             <summary>
             添加项
@@ -13471,6 +13468,26 @@
             <param name="reset">如果找到该键, 是否重置的函数(null代表false)</param>
             <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
         </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedList`2.GetValue(`0,System.Func{System.Threading.Tasks.Task{`1}},System.Boolean,System.Boolean)">
+            <summary>
+            获取与指定的键相关联的值
+            </summary>
+            <param name="key">键</param>
+            <param name="doCreate">如果没有该键, 构建值的函数</param>
+            <param name="lockCreate">构建值时加锁</param>
+            <param name="reset">如果找到该键, 是否重置</param>
+            <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
+        </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedList`2.GetValue(`0,System.Func{System.Threading.Tasks.Task{`1}},System.Boolean,System.Func{`1,System.Boolean})">
+            <summary>
+            获取与指定的键相关联的值
+            </summary>
+            <param name="key">键</param>
+            <param name="doCreate">如果没有该键, 构建值的函数</param>
+            <param name="lockCreate">构建值时加锁</param>
+            <param name="reset">如果找到该键, 是否重置的函数(null代表false)</param>
+            <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
+        </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedList`2.IndexOfKey(`0)">
             <summary>
             在整个集合中搜索指定键并返回从零开始的索引
@@ -13667,6 +13684,25 @@
             <param name="array">作为从集合中复制的元素的目标位置的一维 Array. Array 必须具有从零开始的索引</param>
             <param name="arrayIndex">array 中从零开始的索引, 在此处开始复制</param>
         </member>
+        <member name="T:Phenix.Core.Threading.AsyncHelper">
+            <summary>
+            异步帮助
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Threading.AsyncHelper.RunSync(System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            在阻塞上下文中执行异步代码
+            </summary>
+            <param name="task">Task method to execute</param>
+        </member>
+        <member name="M:Phenix.Core.Threading.AsyncHelper.RunSync``1(System.Func{System.Threading.Tasks.Task{``0}})">
+            <summary>
+            在阻塞上下文中执行异步代码
+            </summary>
+            <typeparam name="TResult">返回值类型</typeparam>
+            <param name="task">异步任务</param>
+            <returns>返回值</returns>
+        </member>
         <member name="T:Microsoft.Extensions.DependencyInjection.ApplicationPartManagerExtension">
             <summary>
             ApplicationPartManager扩展
@@ -13697,6 +13733,13 @@
             </summary>
             <param name="request">HttpRequest</param>
             <returns>远端IP地址</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.GetLocalAddressPort(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            获取本地IP地址和端口
+            </summary>
+            <param name="request">HttpRequest</param>
+            <returns>本地IP地址</returns>
         </member>
         <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.GetAcceptLanguage(Microsoft.AspNetCore.Http.HttpRequest)">
             <summary>

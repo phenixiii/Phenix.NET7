@@ -42,7 +42,7 @@ namespace Phenix.Actor
         /// </summary>
         protected IAsyncStream<TEvent> StreamWorker
         {
-            get { return _streamWorker ?? (_streamWorker = StreamProvider.Default.GetStream<TEvent>(StreamId, StreamNamespace)); }
+            get { return _streamWorker ?? (_streamWorker = ClusterClient.Default.GetStreamProvider().GetStream<TEvent>(StreamId, StreamNamespace)); }
         }
 
         #endregion
@@ -69,9 +69,10 @@ namespace Phenix.Actor
                 if (_listenStreamWorkers == null)
                 {
                     Dictionary<string, IAsyncStream<TEvent>> result = new Dictionary<string, IAsyncStream<TEvent>>(StringComparer.Ordinal);
-                    if (ListenStreamNamespaces != null)
-                        foreach (string streamNamespace in ListenStreamNamespaces)
-                            result[streamNamespace] = StreamProvider.Default.GetStream<TEvent>(StreamId, streamNamespace);
+                    IList<string> listenStreamNamespaces = ListenStreamNamespaces;
+                    if (listenStreamNamespaces != null)
+                        foreach (string streamNamespace in listenStreamNamespaces)
+                            result[streamNamespace] = ClusterClient.Default.GetStreamProvider().GetStream<TEvent>(StreamId, streamNamespace);
                     _listenStreamWorkers = result;
                 }
 
@@ -126,7 +127,7 @@ namespace Phenix.Actor
         /// <param name="token">StreamSequenceToken</param>
         protected async Task SubscribeAsync(string streamNamespaces, StreamSequenceToken token = null)
         {
-            IAsyncStream<TEvent> worker = StreamProvider.Default.GetStream<TEvent>(StreamId, streamNamespaces);
+            IAsyncStream<TEvent> worker = ClusterClient.Default.GetStreamProvider().GetStream<TEvent>(StreamId, streamNamespaces);
             await SubscribeAsync(worker, token);
             ListenStreamWorkers[streamNamespaces] = worker;
         }

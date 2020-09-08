@@ -6,6 +6,7 @@ using Orleans.Runtime;
 using Orleans.Runtime.Messaging;
 using Phenix.Core.Security;
 using Phenix.Core.SyncCollections;
+using Phenix.Core.Threading;
 
 namespace Phenix.Actor
 {
@@ -47,7 +48,6 @@ namespace Phenix.Actor
 
         /// <summary>
         /// 获取Orleans服务集群客户端
-        /// 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProvider.Name
         /// </summary>
         /// <param name="clusterId">Orleans集群的唯一ID</param>
         /// <param name="serviceId">Orleans服务的唯一ID</param>
@@ -81,7 +81,7 @@ namespace Phenix.Actor
 #endif
                     })
                     .ConfigureApplicationParts(parts => { parts.AddPluginPart(); })
-                    .AddSimpleMessageStreamProvider(Phenix.Actor.StreamProvider.Name)
+                    .AddSimpleMessageStreamProvider(StreamProviderExtension.StreamProviderName)
                     .AddOutgoingGrainCallFilter(context =>
                     {
                         if (context.Grain is ISecurityContext)
@@ -99,7 +99,7 @@ namespace Phenix.Actor
                         return context.Invoke();
                     })
                     .Build();
-                value.Connect().Wait();
+                AsyncHelper.RunSync(() => value.Connect());
                 return value;
             });
         }

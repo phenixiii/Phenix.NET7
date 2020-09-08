@@ -1,4 +1,5 @@
 ﻿using Orleans.Configuration;
+using Phenix.Core;
 using Phenix.Core.Data;
 
 namespace Phenix.Actor
@@ -16,8 +17,8 @@ namespace Phenix.Actor
         /// </summary>
         public static string ClusterId
         {
-            get { return Phenix.Core.AppSettings.GetLocalProperty(ref _clusterId, Database.Default.DataSourceKey); }
-            set { Phenix.Core.AppSettings.SetLocalProperty(ref _clusterId, value); }
+            get { return AppSettings.GetLocalProperty(ref _clusterId, Database.Default.DataSourceKey); }
+            set { AppSettings.SetLocalProperty(ref _clusterId, value); }
         }
 
         private static string _serviceId;
@@ -28,8 +29,8 @@ namespace Phenix.Actor
         /// </summary>
         public static string ServiceId
         {
-            get { return Phenix.Core.AppSettings.GetLocalProperty(ref _serviceId, Database.Default.DataSourceKey); }
-            set { Phenix.Core.AppSettings.SetLocalProperty(ref _serviceId, value); }
+            get { return AppSettings.GetLocalProperty(ref _serviceId, Database.Default.DataSourceKey); }
+            set { AppSettings.SetLocalProperty(ref _serviceId, value); }
         }
 
         private static string _connectionString;
@@ -40,8 +41,8 @@ namespace Phenix.Actor
         /// </summary>
         public static string ConnectionString
         {
-            get { return Phenix.Core.AppSettings.GetLocalProperty(ref _connectionString, Database.Default.ConnectionString, true); }
-            set { Phenix.Core.AppSettings.SetLocalProperty(ref _connectionString, value, true); }
+            get { return AppSettings.GetLocalProperty(ref _connectionString, Database.Default.ConnectionString, true); }
+            set { AppSettings.SetLocalProperty(ref _connectionString, value, true); }
         }
 
         private static int? _defaultSiloPort;
@@ -52,8 +53,8 @@ namespace Phenix.Actor
         /// </summary>
         public static int DefaultSiloPort
         {
-            get { return Phenix.Core.AppSettings.GetLocalProperty(ref _defaultSiloPort, EndpointOptions.DEFAULT_SILO_PORT); }
-            set { Phenix.Core.AppSettings.SetLocalProperty(ref _defaultSiloPort, value); }
+            get { return AppSettings.GetLocalProperty(ref _defaultSiloPort, EndpointOptions.DEFAULT_SILO_PORT); }
+            set { AppSettings.SetLocalProperty(ref _defaultSiloPort, value); }
         }
 
         private static int? _defaultGatewayPort;
@@ -64,8 +65,8 @@ namespace Phenix.Actor
         /// </summary>
         public static int DefaultGatewayPort
         {
-            get { return Phenix.Core.AppSettings.GetLocalProperty(ref _defaultGatewayPort, EndpointOptions.DEFAULT_GATEWAY_PORT); }
-            set { Phenix.Core.AppSettings.SetLocalProperty(ref _defaultGatewayPort, value); }
+            get { return AppSettings.GetLocalProperty(ref _defaultGatewayPort, EndpointOptions.DEFAULT_GATEWAY_PORT); }
+            set { AppSettings.SetLocalProperty(ref _defaultGatewayPort, value); }
         }
     }
 }

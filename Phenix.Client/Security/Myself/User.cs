@@ -9,6 +9,7 @@ using Phenix.Core.Net.Api;
 using Phenix.Core.Reflection;
 using Phenix.Core.Security.Auth;
 using Phenix.Core.Security.Cryptography;
+using Phenix.Core.Threading;
 
 namespace Phenix.Client.Security.Myself
 {
@@ -260,8 +261,8 @@ namespace Phenix.Client.Security.Myself
                 if (_position == null)
                 {
                     if (_positionId.HasValue)
-                        _position = _httpClient.CallAsync<Position>(HttpMethod.Get, ApiConfig.ApiSecurityPositionPath, false,
-                            Position.Set(p => p.Id, _positionId.Value)).Result;
+                        _position = AsyncHelper.RunSync(() => _httpClient.CallAsync<Position>(HttpMethod.Get, ApiConfig.ApiSecurityPositionPath, false,
+                            Position.Set(p => p.Id, _positionId.Value)));
                 }
 
                 return _position;
@@ -503,11 +504,11 @@ namespace Phenix.Client.Security.Myself
         private void Patch(params NameValue[] propertyValues)
         {
             if (IsMyself)
-                _httpClient.CallAsync(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfPath,
-                    propertyValues, true).Wait();
+                AsyncHelper.RunSync(() => _httpClient.CallAsync(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfPath,
+                    propertyValues, true));
             else
-                _httpClient.CallAsync(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfCompanyUserPath,
-                    propertyValues, true, Set(p => p.Name, Name)).Wait();
+                AsyncHelper.RunSync(() => _httpClient.CallAsync(HttpMethod.Patch, ApiConfig.ApiSecurityMyselfCompanyUserPath,
+                    propertyValues, true, Set(p => p.Name, Name)));
         }
 
         #endregion

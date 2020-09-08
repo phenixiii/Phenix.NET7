@@ -47,8 +47,8 @@ namespace Phenix.Actor
         {
             if (Kernel != null)
                 Kernel.UpdateSelf(propertyValues);
-            else if (Id.HasValue)
-                TreeEntityBase<TKernel>.NewRoot(Database, Id.Value, propertyValues).InsertSelf();
+            else if (this is IGrainWithIntegerKey || this is IGrainWithIntegerCompoundKey)
+                TreeEntityBase<TKernel>.NewRoot(Database, Id, propertyValues).InsertSelf();
             else
                 TreeEntityBase<TKernel>.NewRoot(Database, propertyValues).InsertSelf();
         }

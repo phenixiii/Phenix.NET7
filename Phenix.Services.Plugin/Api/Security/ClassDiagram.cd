@@ -17,15 +17,8 @@
   <Class Name="Phenix.Services.Plugin.Api.Security.PositionController">
     <Position X="4" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAABAAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
       <FileName>Api\Security\PositionController.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Phenix.Services.Plugin.Api.Security.OneOffKeyPairController">
-    <Position X="0.5" Y="2.5" Width="2" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Api\Security\OneOffKeyPairController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.Services.Plugin.Api.Security.RoleController">

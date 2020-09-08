@@ -73,19 +73,26 @@
             });
         };
 
-        function subscribeMessage() {
+        function subscribeMessage(groupName) {
             phAjax.subscribeMessage({
+                groupName: groupName,
                 onReceived: function (messages) {
-                    for (var id in messages) {
-                        alert("收到消息 id: " + id + ", content：" + messages[id]);
-                        affirmReceivedMessage(id);
-                    };
+                    if (groupName === undefined || groupName == null)
+                        for (var id in messages) {
+                            alert("收到消息 id: " + id + ", content：" + messages[id]);
+                            affirmReceivedMessage(id);
+                        }
+                    else
+                        alert("收到组名为'" + groupName + "'的消息: " + messages);
                 },
                 onThen: function (connection) {
                     alert("订阅成功!");
                 },
                 onFail: function (connection, error) {
-                    alert("订阅失败! error: " + JSON.stringify(error));
+                    if (groupName === undefined || groupName == null)
+                        alert("订阅失败! error: " + JSON.stringify(error));
+                    else
+                        alert("请恢复Phenix.Services.Plugin.Api.Message.UserMessageController中被注释掉用于推送分组消息的代码行! error: " + JSON.stringify(error));
                 },
                 onReconnecting: function (connection, error) {
                     alert("重新订阅中! error: " + JSON.stringify(error));
@@ -117,7 +124,9 @@
     <br />
     <input name="receiveMessageButton" onclick="receiveMessage();" type="button" value="拉取消息" /><br />
     <br />
-    <input name="subscribeMessageButton" onclick="subscribeMessage();" type="button" value="启动消息订阅机制" /><br />
+    <input name="subscribeUserMessageButton" onclick="subscribeMessage();" type="button" value="启动用户消息订阅机制" /><br />
+    <br />
+    <input name="subscribeGroupMessageButton" onclick="subscribeMessage(userName.value);" type="button" value="启动分组消息订阅机制" /><br />
     <br />
 </body>
 </html>

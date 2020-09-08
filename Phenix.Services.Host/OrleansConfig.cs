@@ -1,4 +1,6 @@
-﻿namespace Phenix.Services.Host
+﻿using Phenix.Core;
+
+namespace Phenix.Services.Host
 {
     public static class OrleansConfig
     {
@@ -10,8 +12,8 @@
         /// </summary>
         public static string DashboardUsername
         {
-            get { return Phenix.Core.AppSettings.GetLocalProperty(ref _dashboardUsername, (string) null); }
-            set { Phenix.Core.AppSettings.SetLocalProperty(ref _dashboardUsername, value); }
+            get { return AppSettings.GetLocalProperty(ref _dashboardUsername, (string) null); }
+            set { AppSettings.SetLocalProperty(ref _dashboardUsername, value); }
         }
 
         private static string _dashboardPassword;
@@ -22,8 +24,8 @@
         /// </summary>
         public static string DashboardPassword
         {
-            get { return Phenix.Core.AppSettings.GetLocalProperty(ref _dashboardPassword, (string) null, true); }
-            set { Phenix.Core.AppSettings.SetLocalProperty(ref _dashboardPassword, value, true); }
+            get { return AppSettings.GetLocalProperty(ref _dashboardPassword, (string) null, true); }
+            set { AppSettings.SetLocalProperty(ref _dashboardPassword, value, true); }
         }
 
         private static string _dashboardHost;
@@ -34,8 +36,8 @@
         /// </summary>
         public static string DashboardHost
         {
-            get { return Phenix.Core.AppSettings.GetLocalProperty(ref _dashboardHost, "*"); }
-            set { Phenix.Core.AppSettings.SetLocalProperty(ref _dashboardHost, value); }
+            get { return AppSettings.GetLocalProperty(ref _dashboardHost, "*"); }
+            set { AppSettings.SetLocalProperty(ref _dashboardHost, value); }
         }
 
         private static int? _dashboardPort; //注意: 需将字段定义为Nullable<T>类型，以便AppSettings区分是否曾被自己初始化
@@ -46,8 +48,8 @@
         /// </summary>
         public static int DashboardPort
         {
-            get { return Phenix.Core.AppSettings.GetLocalProperty(ref _dashboardPort, 8088); }
-            set { Phenix.Core.AppSettings.SetLocalProperty(ref _dashboardPort, value); }
+            get { return AppSettings.GetLocalProperty(ref _dashboardPort, 8088); }
+            set { AppSettings.SetLocalProperty(ref _dashboardPort, value); }
         }
 
         private static bool? _dashboardHostSelf; //注意: 需将字段定义为Nullable<T>类型，以便AppSettings区分是否曾被自己初始化
@@ -58,8 +60,8 @@
         /// </summary>
         public static bool DashboardHostSelf
         {
-            get { return Phenix.Core.AppSettings.GetLocalProperty(ref _dashboardHostSelf, true); }
-            set { Phenix.Core.AppSettings.SetLocalProperty(ref _dashboardHostSelf, value); }
+            get { return AppSettings.GetLocalProperty(ref _dashboardHostSelf, true); }
+            set { AppSettings.SetLocalProperty(ref _dashboardHostSelf, value); }
         }
 
         private static int? _dashboardCounterUpdateIntervalMs; //注意: 需将字段定义为Nullable<T>类型，以便AppSettings区分是否曾被自己初始化
@@ -70,8 +72,8 @@
         /// </summary>
         public static int DashboardCounterUpdateIntervalMs
         {
-            get { return Phenix.Core.AppSettings.GetLocalProperty(ref _dashboardCounterUpdateIntervalMs, 10000); }
-            set { Phenix.Core.AppSettings.SetLocalProperty(ref _dashboardCounterUpdateIntervalMs, value); }
+            get { return AppSettings.GetLocalProperty(ref _dashboardCounterUpdateIntervalMs, 10000); }
+            set { AppSettings.SetLocalProperty(ref _dashboardCounterUpdateIntervalMs, value); }
         }
     }
 }

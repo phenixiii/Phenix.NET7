@@ -2,6 +2,7 @@
 using Orleans.Configuration;
 using Orleans.Runtime;
 using Orleans.Runtime.Messaging;
+using Orleans.Streams;
 using Phenix.Actor;
 using Phenix.Core.Log;
 using Phenix.Core.Security;
@@ -30,7 +31,6 @@ namespace Orleans.Hosting
 
         /// <summary>
         /// 配置Orleans服务集群
-        /// 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProvider.Name
         /// </summary>
         /// <param name="builder">ISiloBuilder</param>
         /// <param name="clusterId">Orleans集群的唯一ID</param>
@@ -99,23 +99,24 @@ namespace Orleans.Hosting
                 })
                 .ConfigureEndpoints(siloPort, gatewayPort)
                 .ConfigureApplicationParts(parts => { parts.AddPluginPart(); })
-                .AddSimpleMessageStreamProvider(Phenix.Actor.StreamProvider.Name)
+                .AddSimpleMessageStreamProvider(StreamProviderExtension.StreamProviderName)
+                .AddMemoryGrainStorage("PubSubStore") //正式环境下请使用Event Hubs、ServiceBus、Azure Queues、Apache Kafka，要么自己实现PersistentStreamProvider组件
                 .AddIncomingGrainCallFilter(context =>
                 {
                     Identity.CurrentIdentity = context.Grain is ISecurityContext
                         ? Identity.Fetch((string) RequestContext.Get(ContextConfig.CurrentIdentityName), (string) RequestContext.Get(ContextConfig.CurrentIdentityCultureName))
                         : null;
 
-                    if (context.Grain is ITraceLogContext && RequestContext.Get(ContextConfig.PrimaryCallerKey) is long id)
+                    if (context.Grain is ITraceLogContext && RequestContext.Get(ContextConfig.PrimaryCallerKey) is long key)
                     {
-                        EventLog.Save(id, context.ImplementationMethod, context.Arguments);
+                        EventLog.Save(context.ImplementationMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), key.ToString());
                         try
                         {
                             return context.Invoke();
                         }
                         catch (Exception ex)
                         {
-                            EventLog.Save(id, context.ImplementationMethod, context.Arguments, ex);
+                            EventLog.Save(context.ImplementationMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), key.ToString(), ex);
                         }
                     }
 

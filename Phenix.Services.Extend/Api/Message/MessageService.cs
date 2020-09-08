@@ -7,11 +7,11 @@ namespace Phenix.Services.Extend.Api.Message
     /// <summary>
     /// 用户消息服务
     /// </summary>
-    public sealed class UserMessageService : IUserMessageService
+    public sealed class MessageService : IMessageService
     {
         #region 方法
 
-        void IUserMessageService.OnConnectedAsync(Identity identity, string connectionId)
+        void IMessageService.OnConnected(Identity identity, string connectionId)
         {
             /*
              * 本函数被执行到，说明客户端已连接到 SignalR hub 中间件
@@ -19,7 +19,7 @@ namespace Phenix.Services.Extend.Api.Message
              */
         }
 
-        void IUserMessageService.OnDisconnectedAsync(Identity identity, Exception exception)
+        void IMessageService.OnDisconnected(Identity identity, string connectionId, Exception exception)
         {
             /*
              * 本函数被执行到，说明客户端已断开 SignalR hub 中间件

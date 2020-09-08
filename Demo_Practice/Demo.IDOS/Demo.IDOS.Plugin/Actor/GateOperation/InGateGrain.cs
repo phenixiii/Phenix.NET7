@@ -21,9 +21,9 @@ namespace Demo.IDOS.Plugin.Actor.GateOperation
         /// <summary>
         /// 在线入库预约
         /// </summary>
-        public IInBookingGrain InBookingGrain
+        protected IInBookingGrain InBookingGrain
         {
-            get { return _inBookingGrain ?? (_inBookingGrain = ClusterClient.Default.GetGrain<IInBookingGrain>(Id.Value)); }
+            get { return _inBookingGrain ?? (_inBookingGrain = ClusterClient.Default.GetGrain<IInBookingGrain>(Id)); }
         }
 
         private IOutBookingGrain _outBookingGrain;
@@ -31,9 +31,9 @@ namespace Demo.IDOS.Plugin.Actor.GateOperation
         /// <summary>
         /// 在线出库预约
         /// </summary>
-        public IOutBookingGrain OutBookingGrain
+        protected IOutBookingGrain OutBookingGrain
         {
-            get { return _outBookingGrain ?? (_outBookingGrain = ClusterClient.Default.GetGrain<IOutBookingGrain>(Id.Value)); }
+            get { return _outBookingGrain ?? (_outBookingGrain = ClusterClient.Default.GetGrain<IOutBookingGrain>(Id)); }
         }
 
         private IASCCoordinateGrain _ASCCoordinateGrain;
@@ -41,9 +41,9 @@ namespace Demo.IDOS.Plugin.Actor.GateOperation
         /// <summary>
         /// ASC总控
         /// </summary>
-        public IASCCoordinateGrain ASCCoordinateGrain
+        protected IASCCoordinateGrain ASCCoordinateGrain
         {
-            get { return _ASCCoordinateGrain ?? (_ASCCoordinateGrain = ClusterClient.Default.GetGrain<IASCCoordinateGrain>(Id.Value)); }
+            get { return _ASCCoordinateGrain ?? (_ASCCoordinateGrain = ClusterClient.Default.GetGrain<IASCCoordinateGrain>(Id)); }
         }
 
         #endregion

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Demo.InventoryControl.Plugin.Business;
-using Orleans;
 using Phenix.Actor;
 
 namespace Demo.InventoryControl.Plugin.Actor
@@ -19,7 +18,7 @@ namespace Demo.InventoryControl.Plugin.Actor
         /// </summary>
         protected string Area
         {
-            get { return _area ?? (_area = AppConfig.ExtractArea(this.GetPrimaryKeyString())); }
+            get { return _area ?? (_area = AppConfig.ExtractArea(Name)); }
         }
 
         private string _alley;
@@ -29,7 +28,7 @@ namespace Demo.InventoryControl.Plugin.Actor
         /// </summary>
         protected string Alley
         {
-            get { return _alley ?? (_alley = AppConfig.ExtractAlley(this.GetPrimaryKeyString())); }
+            get { return _alley ?? (_alley = AppConfig.ExtractAlley(Name)); }
         }
 
         private string _ordinal;
@@ -39,13 +38,13 @@ namespace Demo.InventoryControl.Plugin.Actor
         /// </summary>
         protected string Ordinal
         {
-            get { return _ordinal ?? (_ordinal = AppConfig.ExtractOrdinal(this.GetPrimaryKeyString())); }
+            get { return _ordinal ?? (_ordinal = AppConfig.ExtractOrdinal(Name)); }
         }
 
         /// <summary>
         /// ID(映射表ID字段)
         /// </summary>
-        protected override long? Id
+        protected override long Id
         {
             get { return Kernel.Id; }
         }

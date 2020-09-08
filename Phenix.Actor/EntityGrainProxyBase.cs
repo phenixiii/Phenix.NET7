@@ -35,7 +35,7 @@ namespace Phenix.Actor
         /// <returns>实体Grain代理</returns>
         public static T Fetch(TGrainInterface grain)
         {
-            T result = DynamicFactory.Create<T>();
+            T result = DynamicInstanceFactory.Create<T>();
             result.Grain = grain;
             return result;
         }

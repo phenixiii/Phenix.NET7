@@ -399,6 +399,7 @@ var phAjax = (function($) {
         // 订阅消息（PUSH）
         subscribeMessage: function(options) {
             var defaults = {
+                groupName: null, //组名, 如为空是订阅UserMessage消息, 否则按组名订阅GroupMessage消息
                 onReceived: null, //处理收到消息, 参数(messages)为消息id(key)+content(array[key])数据字典集合
                 onThen: null, //连接成功的回调函数, 参数(connection)
                 onFail: null, //连接失败的回调函数, 参数(connection, error)
@@ -408,7 +409,7 @@ var phAjax = (function($) {
             };
             options = $.extend(defaults, options);
             var connection = new signalR.HubConnectionBuilder()
-                .withUrl(phAjax.baseAddress + "/api/message/user-message-hub",
+                .withUrl(options.groupName == null ? phAjax.baseAddress + "/api/message/user-message-hub" : phAjax.baseAddress + "/api/message/group-message-hub",
                     {
                         accessTokenFactory: function() {
                             return formatComplexAuthorization();
@@ -420,13 +421,15 @@ var phAjax = (function($) {
             connection.on('onReceived',
                 function(messages) {
                     if (typeof options.onReceived == "function")
-                        options.onReceived(JSON.parse(messages));
+                        options.onReceived(options.groupName == null ? JSON.parse(messages) : messages);
                 });
             connection.onreconnecting(function(error) {
                 if (typeof options.onReconnecting == "function")
                     options.onReconnecting(connection, error);
             });
             connection.onreconnected(function(connectionId) {
+                if (options.groupName != null)
+                    connection.invoke("Subscribe", options.groupName);
                 if (typeof options.onReconnected == "function")
                     options.onReconnected(connection, connectionId);
             });
@@ -439,8 +442,10 @@ var phAjax = (function($) {
                     if (typeof options.onFail == "function")
                         options.onFail(connection, error);
                 }).then(function() {
-                    if (typeof options.onConnected == "function")
-                        options.onConnected(connection);
+                    if (options.groupName != null)
+                        connection.invoke("Subscribe", options.groupName);
+                    if (typeof options.onThen == "function")
+                        options.onThen(connection);
                 });
         },
 

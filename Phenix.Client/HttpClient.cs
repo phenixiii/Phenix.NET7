@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
-using System.Reflection;
 using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Phenix.Client.Security;
-using Phenix.Core;
 using Phenix.Core.Data.Schema;
 using Phenix.Core.IO;
-using Phenix.Core.Net;
 using Phenix.Core.Net.Api;
 using Phenix.Core.Reflection;
 using Phenix.Core.Security.Auth;
@@ -123,17 +119,6 @@ namespace Phenix.Client
             return Identity;
         }
 
-        /// <summary>
-        /// 获取一次性公钥
-        /// </summary>
-        /// <param name="name">名称</param>
-        /// <returns>公钥</returns>
-        public async Task<string> GetOneOffPublicKeyAsync(string name)
-        {
-            return await CallAsync<string>(HttpMethod.Get, ApiConfig.ApiSecurityOneOffKeyPairPath, 
-                NameValue.Set(nameof(name), name));
-        }
-
         #endregion
 
         #region Data
@@ -210,12 +195,15 @@ namespace Phenix.Client
         }
 
         /// <summary>
-        /// 订阅消息（PUSH）
+        /// 订阅UserMessage消息（PUSH）
         /// </summary>
         /// <param name="onReceived">处理收到消息(消息ID-消息内容)</param>
         /// <returns>HubConnection可添加连接事件最后务必启动连接</returns>
-        public HubConnection SubscribeMessage(Action<IDictionary<long, string>> onReceived)
+        public HubConnection SubscribeMessage(Func<IDictionary<long, string>, Task> onReceived)
         {
+            if (onReceived == null)
+                throw new ArgumentNullException(nameof(onReceived));
+
             if (Identity == null)
                 throw new AuthenticationException();
             if (!Identity.IsAuthenticated)
@@ -228,8 +216,40 @@ namespace Phenix.Client
                 .WithAutomaticReconnect()
                 .Build();
 
-            result.On<string>("onReceived",
-                message => { onReceived(Utilities.JsonDeserialize<Dictionary<long, string>>(message)); });
+            result.On<string>("OnReceived",
+                async message => { await onReceived(Utilities.JsonDeserialize<Dictionary<long, string>>(message)); });
+            return result;
+        }
+
+        /// <summary>
+        /// 订阅GroupMessage消息（PUSH）
+        /// </summary>
+        /// <param name="groupName">组名</param>
+        /// <param name="onReceived">处理收到消息(消息内容)</param>
+        /// <returns>已启动连接并订阅成功的HubConnection对象</returns>
+        public async Task<HubConnection> SubscribeMessageAsync(string groupName, Func<string, Task> onReceived)
+        {
+            if (groupName == null)
+                throw new ArgumentNullException(nameof(groupName));
+            if (onReceived == null)
+                throw new ArgumentNullException(nameof(onReceived));
+
+            if (Identity == null)
+                throw new AuthenticationException();
+            if (!Identity.IsAuthenticated)
+                throw new UserVerifyException();
+
+            HubConnection result = new HubConnectionBuilder()
+                .WithUrl(BaseAddress.OriginalString + ApiConfig.ApiMessageGroupMessageHubPath,
+                    options => { options.AccessTokenProvider = () => Task.FromResult(Identity.User.FormatComplexAuthorization(false)); })
+                .AddMessagePackProtocol()
+                .WithAutomaticReconnect()
+                .Build();
+
+            result.Reconnected += connectionId => result.SendAsync("Subscribe", groupName);
+            result.On("OnReceived", onReceived);
+            await result.StartAsync();
+            await result.SendAsync("Subscribe", groupName);
             return result;
         }
 
@@ -372,47 +392,6 @@ namespace Phenix.Client
                 formDataContent.Add(new StringContent(Utilities.JsonSerialize(chunkInfo), Encoding.UTF8), "chunkInfo");
                 return await CallAsync<string>(HttpMethod.Put, ApiConfig.ApiInoutFilePath, formDataContent);
             }
-        }
-
-        #endregion
-
-        #region Log
-
-        /// <summary>
-        /// 保存错误日志
-        /// </summary>
-        /// <param name="message">消息</param>
-        /// <param name="error">错误</param>
-        public async Task SaveEventLogAsync(string message, Exception error = null)
-        {
-            await SaveEventLogAsync(new StackTrace().GetFrame(1).GetMethod(), message, error);
-        }
-
-        /// <summary>
-        /// 保存对象日志
-        /// </summary>
-        /// <param name="method">函数的信息</param>
-        /// <param name="message">消息</param>
-        /// <param name="error">错误</param>
-        public async Task SaveEventLogAsync(MethodBase method, string message, Exception error = null)
-        {
-            if (!await SaveEventLogAsync(new Phenix.Core.Log.EventInfo(await GetSequenceAsync(), DateTime.Now,
-                method != null ? (method.ReflectedType ?? method.DeclaringType).FullName : null,
-                method != null ? method.Name : null,
-                message,
-                error != null ? error.GetType().FullName : null,
-                error != null ? AppRun.GetErrorMessage(error) : null,
-                Identity.CurrentIdentity != null ? Identity.CurrentIdentity.User.Name : null, NetConfig.LocalAddress)))
-                Phenix.Core.Log.EventLog.SaveLocal(method, message, error);
-        }
-
-        /// <summary>
-        /// 保存对象日志
-        /// </summary>
-        /// <param name="info">事件资料</param>
-        public async Task<bool> SaveEventLogAsync(Phenix.Core.Log.EventInfo info)
-        {
-            return await CallAsync<bool>(HttpMethod.Post, ApiConfig.ApiLogEventLogPath, info);
         }
 
         #endregion

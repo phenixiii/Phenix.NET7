@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Services.Plugin.Actor.Security;
+using Phenix.Services.Plugin.Actor.Security.Cryptography;
 
-namespace Phenix.Services.Plugin.Api.Security
+namespace Phenix.Services.Plugin.Api.Security.Cryptography
 {
     /// <summary>
     /// 一次性公钥私钥对控制器

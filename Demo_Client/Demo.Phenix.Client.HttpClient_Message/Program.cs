@@ -8,7 +8,8 @@ namespace Demo
 {
     class Program
     {
-        static void Main(string[] args)
+        [MTAThread]
+        static async Task Main(string[] args)
         {
             Console.WriteLine("**** 演示 Phenix.Client.HttpClient 的 SubscribeMessage()、SendMessageAsync()、AffirmReceivedMessageAsync()功能 ****");
             Console.WriteLine();
@@ -27,13 +28,13 @@ namespace Demo
             Console.WriteLine("构造一个 Phenix.Client.HttpClient 对象用于访问‘{0}’服务端。", httpClient.BaseAddress);
             string userName = "测试用" + Guid.NewGuid().ToString();
             Console.WriteLine("登记/注册用户：{0}", userName);
-            Console.WriteLine(httpClient.CheckInAsync(userName).Result);
+            Console.WriteLine(await httpClient.CheckInAsync(userName));
             while (true)
                 try
                 {
                     Console.Write("请依照以上提示，输入找到的动态口令/登录口令，完成后按回车确认：");
                     string password = Console.ReadLine() ?? String.Empty;
-                    Phenix.Client.Security.Identity identity = httpClient.LogonAsync(userName, password.Trim()).Result;
+                    Phenix.Client.Security.Identity identity = await httpClient.LogonAsync(userName, password.Trim());
                     Console.WriteLine("登录成功：{0}", identity.IsAuthenticated ? "ok" : "error");
                     break;
                 }
@@ -51,16 +52,24 @@ namespace Demo
             Console.WriteLine();
             Console.WriteLine();
 
-            Console.WriteLine("启动消息的订阅...");
+            Console.WriteLine("启动分组消息的订阅（请恢复Phenix.Services.Plugin.Api.Message.UserMessageController中被注释掉用于推送分组消息的代码行）...");
+            string groupName = Phenix.Client.Security.Identity.CurrentIdentity.User.Name;
+            await Phenix.Client.HttpClient.Default.SubscribeMessageAsync(groupName, async content =>
+            {
+                await Task.Run(() => Console.WriteLine("收到组名为'{0}'的消息：{1}", groupName, content));
+            });
+            Thread.Sleep(100);
+
+            Console.WriteLine("启动用户消息的订阅...");
             int i = 0;
             string prevMessage = String.Empty;
-            long messageId = Phenix.Client.HttpClient.Default.GetSequenceAsync().Result;
-            HubConnection connection = Phenix.Client.HttpClient.Default.SubscribeMessage(messages =>
+            long messageId = await Phenix.Client.HttpClient.Default.GetSequenceAsync();
+            HubConnection connection = Phenix.Client.HttpClient.Default.SubscribeMessage(async messages =>
             {
                 foreach (KeyValuePair<long, string> kvp in messages)
                 {
                     Console.WriteLine("收到消息：{0} — '{1}'", kvp.Key, kvp.Value);
-                    Phenix.Client.HttpClient.Default.AffirmReceivedMessageAsync(kvp.Key, i == 0).Wait();
+                    await Phenix.Client.HttpClient.Default.AffirmReceivedMessageAsync(kvp.Key, i == 0);
                     Console.WriteLine("确认收到消息：{0}({1})", kvp.Key, i == 0 ? "阅后即焚" : "不阅后即焚");
                 }
 
@@ -72,14 +81,14 @@ namespace Demo
                 {
                     i = i + 1;
                     message = String.Format("{0}[同一ID({1})第{2}次]", message, messageId, i);
-                    Phenix.Client.HttpClient.Default.SendMessageAsync(messageId, Phenix.Client.Security.Identity.CurrentIdentity.User.Name, message).Wait();
+                    await Phenix.Client.HttpClient.Default.SendMessageAsync(messageId, Phenix.Client.Security.Identity.CurrentIdentity.User.Name, message);
                     Console.WriteLine("向自己发送刷新消息：{0}", message);
                 }
                 else
                 {
                     i = 0;
                     prevMessage = message;
-                    Phenix.Client.HttpClient.Default.SendMessageAsync(Phenix.Client.Security.Identity.CurrentIdentity.User.Name, message).Wait();
+                    await Phenix.Client.HttpClient.Default.SendMessageAsync(Phenix.Client.Security.Identity.CurrentIdentity.User.Name, message);
                     Console.WriteLine("向自己发送一条消息：{0}", message);
                 }
             });
@@ -98,9 +107,9 @@ namespace Demo
                 Console.WriteLine("订阅关闭：{0} — {1}", Phenix.Core.AppRun.GetErrorMessage(error), connection.State);
                 return Task.CompletedTask;
             };
-            connection.StartAsync().Wait();
+            await connection.StartAsync();
             Console.WriteLine("订阅成功：{0}", connection.State);
-            Phenix.Client.HttpClient.Default.SendMessageAsync(Phenix.Client.Security.Identity.CurrentIdentity.User.Name, "第一条消息!").Wait();
+            await Phenix.Client.HttpClient.Default.SendMessageAsync(Phenix.Client.Security.Identity.CurrentIdentity.User.Name, "第一条消息!");
             Console.WriteLine("向自己首发一条消息");
 
             while (true) Thread.Sleep(100);
