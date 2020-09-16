@@ -110,14 +110,14 @@ namespace Phenix.Actor
                             int traceOrder = RequestContext.Get(ContextConfig.traceOrder) != null ? (int) RequestContext.Get(ContextConfig.traceOrder) + 1 : 0;
                             RequestContext.Set(ContextConfig.traceOrder, traceOrder);
 
-                            await Task.Run(() => EventLog.Save(context.InterfaceMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder));
+                            Task.Run(() => EventLog.Save(context.InterfaceMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder));
                             try
                             {
                                 await context.Invoke();
                             }
                             catch (Exception ex)
                             {
-                                await Task.Run(() => EventLog.Save(context.InterfaceMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder, ex));
+                                Task.Run(() => EventLog.Save(context.InterfaceMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder, ex));
                                 throw;
                             }
                         }
