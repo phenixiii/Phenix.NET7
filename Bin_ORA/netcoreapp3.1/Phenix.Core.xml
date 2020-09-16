@@ -9288,6 +9288,17 @@
             <param name="address">地址</param>
             <param name="error">错误</param>
         </member>
+        <member name="M:Phenix.Core.Log.EventInfo.#ctor(System.Int64,System.Reflection.MethodBase,System.String,System.Int64,System.Int32,System.Exception)">
+            <summary>
+            初始化
+            </summary>
+            <param name="id">ID</param>
+            <param name="method">函数的信息</param>
+            <param name="message">消息</param>
+            <param name="traceKey">调用链键值</param>
+            <param name="traceOrder">调用链顺序</param>
+            <param name="error">错误</param>
+        </member>
         <member name="P:Phenix.Core.Log.EventInfo.Id">
             <summary>
             ID
@@ -9333,16 +9344,30 @@
             地址
             </summary>
         </member>
+        <member name="P:Phenix.Core.Log.EventInfo.traceKey">
+            <summary>
+            调用链键值
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Log.EventInfo.traceOrder">
+            <summary>
+            调用链顺序
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Log.EventLog">
             <summary>
             事件日志
-            由Database.Default的PH7_EventLog表存储日志
+            由Database.Default的PH7_EventLog_X表(按季度X为1~4)存储日志
             </summary>
         </member>
-        <member name="P:Phenix.Core.Log.EventLog.ClearLogDeferMonths">
+        <member name="P:Phenix.Core.Log.EventLog.CurrentTableName">
             <summary>
-            清理几个月前的日志
-            默认：3(>=3)
+            当前操作的表的表名
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Log.EventLog.CleanTableName">
+            <summary>
+            可被清理的表的表名
             </summary>
         </member>
         <member name="P:Phenix.Core.Log.EventLog.LocalDirectory">
@@ -9377,6 +9402,15 @@
             <param name="address">地址</param>
             <param name="error">错误</param>
         </member>
+        <member name="M:Phenix.Core.Log.EventLog.Save(System.String,System.Int64,System.Int32,System.Exception)">
+            <summary>
+            保存错误日志
+            </summary>
+            <param name="message">消息</param>
+            <param name="traceKey">调用链键值</param>
+            <param name="traceOrder">调用链顺序</param>
+            <param name="error">错误</param>
+        </member>
         <member name="M:Phenix.Core.Log.EventLog.Save(System.Reflection.MethodBase,System.String,System.Exception)">
             <summary>
             保存对象日志
@@ -9392,6 +9426,16 @@
             <param name="method">函数的信息</param>
             <param name="message">消息</param>
             <param name="address">地址</param>
+            <param name="error">错误</param>
+        </member>
+        <member name="M:Phenix.Core.Log.EventLog.Save(System.Reflection.MethodBase,System.String,System.Int64,System.Int32,System.Exception)">
+            <summary>
+            保存对象日志
+            </summary>
+            <param name="method">函数的信息</param>
+            <param name="message">消息</param>
+            <param name="traceKey">调用链键值</param>
+            <param name="traceOrder">调用链顺序</param>
             <param name="error">错误</param>
         </member>
         <member name="M:Phenix.Core.Log.EventLog.Save(System.Int64,System.Reflection.MethodBase,System.String,System.Exception)">
@@ -9411,6 +9455,17 @@
             <param name="method">函数的信息</param>
             <param name="message">消息</param>
             <param name="address">地址</param>
+            <param name="error">错误</param>
+        </member>
+        <member name="M:Phenix.Core.Log.EventLog.Save(System.Int64,System.Reflection.MethodBase,System.String,System.Int64,System.Int32,System.Exception)">
+            <summary>
+            保存对象日志
+            </summary>
+            <param name="id">ID</param>
+            <param name="method">函数的信息</param>
+            <param name="message">消息</param>
+            <param name="traceKey">调用链键值</param>
+            <param name="traceOrder">调用链顺序</param>
             <param name="error">错误</param>
         </member>
         <member name="M:Phenix.Core.Log.EventLog.Save(Phenix.Core.Log.EventInfo)">

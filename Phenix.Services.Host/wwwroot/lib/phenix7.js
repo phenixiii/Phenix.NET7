@@ -467,16 +467,16 @@ var phAjax = (function($) {
                 onSuccess: function (result) {
                     if (result == null)
                         return;
-                    result.chunkBody = $.base64.atob(result.chunkBody);
-                    chunkBuffer = chunkBuffer == null ? result.chunkBody : chunkBuffer.concat(result.chunkBody);
+                    result.ChunkBody = $.base64.atob(result.ChunkBody);
+                    chunkBuffer = chunkBuffer == null ? result.ChunkBody : chunkBuffer.concat(result.ChunkBody);
                     if (typeof onProgress == "function") {
-                        var goon = onProgress(result.fileName, result.chunkCount, result.chunkNumber, result.chunkSize, result.chunkBody, chunkBuffer);
+                        var goon = onProgress(result.FileName, result.ChunkCount, result.ChunkNumber, result.ChunkSize, result.ChunkBody, chunkBuffer);
                         if (typeof goon == "boolean" && !goon)
                             return;
                     };
-                    if (result.chunkNumber >= result.chunkCount) {
+                    if (result.ChunkNumber >= result.ChunkCount) {
                         if (typeof onSuccess == "function")
-                            onSuccess(result.fileName, new Blob([phUtils.toUint8Array(chunkBuffer)]));
+                            onSuccess(result.FileName, new Blob([phUtils.toUint8Array(chunkBuffer)]));
                         return;
                     };
                     phAjax.downloadFileChunk(message, fileName, chunkNumber + 1, chunkBuffer, onProgress, onSuccess, onError);

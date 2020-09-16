@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
 using Orleans.Runtime;
 using Orleans.Runtime.Messaging;
+using Phenix.Core.Log;
 using Phenix.Core.Security;
 using Phenix.Core.SyncCollections;
 using Phenix.Core.Threading;
@@ -82,7 +84,7 @@ namespace Phenix.Actor
                     })
                     .ConfigureApplicationParts(parts => { parts.AddPluginPart(); })
                     .AddSimpleMessageStreamProvider(StreamProviderExtension.StreamProviderName)
-                    .AddOutgoingGrainCallFilter(context =>
+                    .AddOutgoingGrainCallFilter(async context =>
                     {
                         if (context.Grain is ISecurityContext)
                         {
@@ -94,9 +96,33 @@ namespace Phenix.Actor
                             }
                         }
 
-                        if (context.Grain is ITraceLogContext)
-                            RequestContext.Set(ContextConfig.PrimaryCallerKey, RequestContext.Get(ContextConfig.PrimaryCallerKey) ?? Phenix.Core.Data.Database.Default.Sequence.Value);
-                        return context.Invoke();
+                        if ((context.Grain is ITraceLogContext))
+                        {
+                            long traceKey;
+                            if (RequestContext.Get(ContextConfig.traceKey) == null)
+                            {
+                                traceKey = Phenix.Core.Data.Database.Default.Sequence.Value;
+                                RequestContext.Set(ContextConfig.traceKey, traceKey);
+                            }
+                            else
+                                traceKey = (long) RequestContext.Get(ContextConfig.traceKey);
+
+                            int traceOrder = RequestContext.Get(ContextConfig.traceOrder) != null ? (int) RequestContext.Get(ContextConfig.traceOrder) + 1 : 0;
+                            RequestContext.Set(ContextConfig.traceOrder, traceOrder);
+
+                            await Task.Run(() => EventLog.Save(context.InterfaceMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder));
+                            try
+                            {
+                                await context.Invoke();
+                            }
+                            catch (Exception ex)
+                            {
+                                await Task.Run(() => EventLog.Save(context.InterfaceMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder, ex));
+                                throw;
+                            }
+                        }
+                        else
+                            await context.Invoke();
                     })
                     .Build();
                 AsyncHelper.RunSync(() => value.Connect());

@@ -192,11 +192,14 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 20200825
 1，完善用户身份验证功能，提供Phenix.Core.Security.User的AllowMultiSessionRequest属性（默认true）的配置项，可控制是否允许多处会话（进程）发起请求，与AllowMultiAddressRequest属性（默认true）的配置项的区别是后者控制是否允许多处终端（IP地址）发起请求
-2，为Phenix.Actor工程添加在Grain的调用链上传递用户身份信息（Grain接口需继承ISecurityContext）、记录调用和错误日志（Grain接口需继承ITraceLogContext）的功能
+2，为Phenix.Actor工程添加在Grain的调用链上传递用户身份信息的功能，Grain的接口需继承ISecurityContext才能实现本功能，ISecurityContext不能被Grain直接继承
 3，为Phenix.Services.Plugin工程添加GroupMessageHub功能，前后端（前端为SignalR.Client）可订阅Grain等服务端对象推送出来的分组消息，消息推送写法参考：
         await ClusterClient.Default.GetStreamProvider().GetStream<string>(ActorConfig.GroupMessageStreamId, 组名).OnNextAsync(消息);
 
 
+20200915
+1，为Phenix.Actor工程添加在Grain的调用链上记录调用和错误日志的功能，Grain的接口需继承ITraceLogContext才能实现本功能，ITraceLogContext不能被Grain直接继承
+2，完善Phenix.Core.Log.EventLog功能，弃用PH7_EventLog表，改为按季度分为4个表（PH7_EventLog_1~4）记录当前季度发生的日志，下一季度用的日志表在使用之前会被自动清空
 
 
 待完成：

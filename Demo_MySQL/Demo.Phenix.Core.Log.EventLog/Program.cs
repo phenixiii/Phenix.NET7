@@ -15,7 +15,7 @@ namespace Demo
             Console.WriteLine();
             Console.WriteLine("EventLog 类，为系统提供在本地磁盘或在数据库里存储日志的方法。");
             Console.WriteLine("本地日志文件存储在 {0} 目录下按日期命名的子目录 {1} 里。", AppRun.TempDirectory, EventLog.LocalDirectory);
-            Console.WriteLine("数据库日志存储在缺省数据库的 PH7_EventLog 表记录里。");
+            Console.WriteLine("数据库日志存储在缺省数据库的 PH7_EventLog_X 表（按季度X为1~4）记录里。");
             Console.WriteLine();
 
             Console.WriteLine("设为调试状态");
@@ -51,12 +51,12 @@ namespace Demo
 
             Console.WriteLine("演示存储到数据库的方法 Save()");
             EventLog.Save(message);
-            Console.WriteLine("仅传了 string message 参数，还可以传 Exception、string extension 参数。");
-            Console.WriteLine("日志保存在 PH7_EventLog 表里：");
-            using (DataReader reader = Database.Default.CreateDataReader(@"
+            Console.WriteLine("仅传了 string message 参数，还可以传 Exception error、string extension 参数。");
+            using (DataReader reader = Database.Default.CreateDataReader(String.Format(@"
 select *
-from PH7_EventLog
-order by EL_ID desc", CommandBehavior.SingleRow))
+from {0}
+order by EL_ID desc",
+                EventLog.CurrentTableName), CommandBehavior.SingleRow))
             {
                 if (reader.Read())
                 {
@@ -67,7 +67,8 @@ order by EL_ID desc", CommandBehavior.SingleRow))
                 else
                     Console.WriteLine("error：未找到日志！");
             }
-            Console.WriteLine("默认下，每月月底会清理一次 PH7_EventLog 表里 {0} 月前的日志记录。", EventLog.ClearLogDeferMonths);
+
+            Console.WriteLine("日志存放在当前季度的 {0} 表，而下一季度的 {1} 表记录会被自动清空。", EventLog.CurrentTableName, EventLog.CleanTableName);
             Console.WriteLine();
 
             Console.Write("请按回车键结束演示");

@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Orleans.Configuration;
 using Orleans.Runtime;
 using Orleans.Runtime.Messaging;
-using Orleans.Streams;
 using Phenix.Actor;
 using Phenix.Core.Log;
 using Phenix.Core.Security;
@@ -100,27 +100,28 @@ namespace Orleans.Hosting
                 .ConfigureEndpoints(siloPort, gatewayPort)
                 .ConfigureApplicationParts(parts => { parts.AddPluginPart(); })
                 .AddSimpleMessageStreamProvider(StreamProviderExtension.StreamProviderName)
-                .AddMemoryGrainStorage("PubSubStore") //正式环境下请使用Event Hubs、ServiceBus、Azure Queues、Apache Kafka，要么自己实现PersistentStreamProvider组件
-                .AddIncomingGrainCallFilter(context =>
+                .AddMemoryGrainStorage("PubSubStore") //正式环境下请使用Event Hubs、ServiceBus、Azure Queues、Apache Kafka之一，要么自己实现PersistentStreamProvider组件
+                .AddIncomingGrainCallFilter(async context =>
                 {
-                    Identity.CurrentIdentity = context.Grain is ISecurityContext
-                        ? Identity.Fetch((string) RequestContext.Get(ContextConfig.CurrentIdentityName), (string) RequestContext.Get(ContextConfig.CurrentIdentityCultureName))
+                    Identity.CurrentIdentity = context.Grain is ISecurityContext && RequestContext.Get(ContextConfig.CurrentIdentityName) is string identityName && RequestContext.Get(ContextConfig.CurrentIdentityCultureName) is string identityCultureName
+                        ? Identity.Fetch(identityName, identityCultureName)
                         : null;
 
-                    if (context.Grain is ITraceLogContext && RequestContext.Get(ContextConfig.PrimaryCallerKey) is long key)
+                    if (context.Grain is ITraceLogContext && RequestContext.Get(ContextConfig.traceKey) is long traceKey && RequestContext.Get(ContextConfig.traceOrder) is int traceOrder)
                     {
-                        EventLog.Save(context.ImplementationMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), key.ToString());
+                        await Task.Run(() => EventLog.Save(context.ImplementationMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder));
                         try
                         {
-                            return context.Invoke();
+                            await context.Invoke();
                         }
                         catch (Exception ex)
                         {
-                            EventLog.Save(context.ImplementationMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), key.ToString(), ex);
+                            await Task.Run(() => EventLog.Save(context.ImplementationMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder, ex));
+                            throw;
                         }
                     }
-
-                    return context.Invoke();
+                    else
+                        await context.Invoke();
                 });
         }
     }

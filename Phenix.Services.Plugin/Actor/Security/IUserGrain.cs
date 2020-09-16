@@ -9,7 +9,7 @@ namespace Phenix.Services.Plugin.Actor.Security
     /// <summary>
     /// 用户资料Grain接口
     /// </summary>
-    public interface IUserGrain : IEntityGrain<User>, IGrainWithStringKey, ITraceLogContext
+    public interface IUserGrain : IEntityGrain<User>, IGrainWithStringKey
     {
         /// <summary>
         /// 登记/注册

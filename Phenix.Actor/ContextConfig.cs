@@ -13,8 +13,13 @@
         public const string CurrentIdentityCultureName = "CurrentIdentity.CultureName";
 
         /// <summary>
-        /// PrimaryCaller.Key
+        /// Trace.Key
         /// </summary>
-        public const string PrimaryCallerKey = "PrimaryCaller.Key";
+        public const string traceKey = "Trace.Key";
+
+        /// <summary>
+        /// Trace.Order
+        /// </summary>
+        public const string traceOrder = "Trace.Order";
     }
 }

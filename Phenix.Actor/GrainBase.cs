@@ -7,7 +7,7 @@ namespace Phenix.Actor
     /// <summary>
     /// Grain基类
     /// </summary>
-    public abstract class GrainBase : Grain
+    public abstract class GrainBase : Grain, IGrain
     {
         #region 属性
 
