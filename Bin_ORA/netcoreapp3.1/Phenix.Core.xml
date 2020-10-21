@@ -5128,7 +5128,7 @@
         <member name="P:Phenix.Core.Data.Schema.Column.FieldNameByTrimColumnName">
             <summary>
             字段名是否取自被整理的字段名(如果第1-PrefixCount位后是"_"则剔去其及之前的字符)
-            默认：true
+            默认：false
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Schema.Column.PrefixCount">
@@ -5211,7 +5211,7 @@
         </member>
         <member name="P:Phenix.Core.Data.Schema.Column.IsPrimaryKey">
             <summary>
-            是否主键
+            是否主键（字段类型需是长整型15位以上精度，新增记录时自动填充Sequence.Default.Value）
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Schema.Column.ForeignKey">
@@ -13757,24 +13757,6 @@
             <typeparam name="TResult">返回值类型</typeparam>
             <param name="task">异步任务</param>
             <returns>返回值</returns>
-        </member>
-        <member name="T:Microsoft.Extensions.DependencyInjection.ApplicationPartManagerExtension">
-            <summary>
-            ApplicationPartManager扩展
-            </summary>
-        </member>
-        <member name="M:Microsoft.Extensions.DependencyInjection.ApplicationPartManagerExtension.AddKernelPart(Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager)">
-            <summary>
-            装配Controller核心
-            </summary>
-            <param name="manager">ApplicationPartManager</param>
-        </member>
-        <member name="M:Microsoft.Extensions.DependencyInjection.ApplicationPartManagerExtension.AddPluginPart(Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager,System.String)">
-            <summary>
-            装配Controller插件
-            </summary>
-            <param name="manager">ApplicationPartManager</param>
-            <param name="filter">装配的Controller插件所在程序集统一采用"*.Plugin.dll"作为文件名后缀</param>
         </member>
         <member name="T:Microsoft.AspNetCore.Mvc.HttpRequestExtension">
             <summary>

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,19 +52,17 @@ namespace Phenix.Services.Host
             services.AddSingleton<Phenix.Services.Plugin.Api.Message.UserMessageHub>();
 
             /*
-             * 向 GroupMessageHub、UserMessageHub 注入分组/用户消息服务扩展
+             * 装配扩展服务
+             * 扩展服务都应该用"*Service"为类名和接口名的后缀
+             * 扩展程序集都应该统一采用"*.Extend.dll"作为文件名的后缀
+             * 扩展程序集都应该部署到本服务容器的执行目录下
              */
-            services.AddTransient(typeof(Phenix.Core.Message.IMessageService), typeof(Phenix.Services.Extend.Api.Message.MessageService));
-
-            /*
-             * 向 FileController 注入文件存取服务扩展
-             */
-            services.AddTransient(typeof(Phenix.Core.IO.IFileService), typeof(Phenix.Services.Extend.Api.Inout.FileService));
-
-            /*
-             * 向 UserGrain 注入用户资料服务扩展
-             */
-            services.AddTransient(typeof(Phenix.Core.Security.IUserService), typeof(Phenix.Services.Extend.Actor.Security.UserService));
+            foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Extend.dll"))
+            foreach (Type classType in Utilities.LoadExportedClassTypes(fileName, false))
+                if (classType.Name.EndsWith("Service"))
+                    foreach (Type interfaceType in classType.GetInterfaces())
+                        if (interfaceType.Name.EndsWith("Service"))
+                            services.AddTransient(interfaceType, classType);
 
             /*
              * 配置Controller策略
@@ -108,21 +109,12 @@ namespace Phenix.Services.Host
                 .ConfigureApplicationPartManager(parts =>
                 {
                     /*
-                     * 装配Controller核心，包含：
-                     *   Phenix.Core.Net.Api.Security.GateController 响应 phAjax.checkIn()、phAjax.logon() 请求
-                     *   Phenix.Core.Net.Api.Security.MyselfController 响应 phAjax.getMyself()、phAjax.changePassword() 请求
-                     *   Phenix.Core.Net.Api.Data.SequenceController 响应 phAjax.getSequence() 请求
-                     *   Phenix.Core.Net.Api.Data.IncrementController 响应 phAjax.getIncrement() 请求
-                     *   Phenix.Core.Net.Api.Message.UserMessageController 响应 phAjax.sendMessage()、phAjax.receiveMessage()、phAjax.affirmReceivedMessage() 请求
-                     *   Phenix.Core.Net.Api.Inout.FileController 响应 phAjax.uploadFileChunk()、phAjax.downloadFileChunk() 请求
-                     */
-                    parts.AddKernelPart();
-                    /*
                      * 装配Controller插件
-                     * 系统的 Controller 都应该按照领域划分开发各自的插件程序集，部署到本服务容器的执行目录下
-                     * 插件程序集的命名，都应该统一采用"*.Plugin.dll"作为文件名的后缀
+                     * 插件程序集都应该统一采用"*.Plugin.dll"作为文件名的后缀
+                     * 插件程序集都应该被部署到本服务容器的执行目录下
                      */
-                    parts.AddPluginPart();
+                    foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
+                        parts.ApplicationParts.Add(new AssemblyPart(Assembly.LoadFrom(fileName)));
                 })
                 .AddNewtonsoftJson(options =>
                 {

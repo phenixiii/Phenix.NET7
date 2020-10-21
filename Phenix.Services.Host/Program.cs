@@ -87,7 +87,7 @@ namespace Phenix.Services.Host
                     .ConfigureCluster()
                     /*
                      * 使用Dashboard插件
-                     * 本地打开可视化监控工具：http://localhost:8080/
+                     * 本地打开可视化监控工具：http://localhost:8088/
                      * 建议仅向内网开放
                      */
                     .UseDashboard(options =>

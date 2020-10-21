@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v3.1": {
-      "Phenix.Core/7.3.41": {
+      "Phenix.Core/7.3.42": {
         "dependencies": {
           "Newtonsoft.Json": "12.0.3",
           "System.Data.SQLite.Core": "1.0.113.1",
@@ -152,7 +152,7 @@
     }
   },
   "libraries": {
-    "Phenix.Core/7.3.41": {
+    "Phenix.Core/7.3.42": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
