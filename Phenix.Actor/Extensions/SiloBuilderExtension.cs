@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using Orleans.Configuration;
 using Orleans.Runtime;
@@ -98,10 +100,21 @@ namespace Orleans.Hosting
 #endif
                 })
                 .ConfigureEndpoints(siloPort, gatewayPort)
-                .ConfigureApplicationParts(parts => { parts.AddPluginPart(); })
+                .ConfigureApplicationParts(parts =>
+                {
+                    /*
+                     * 装配Actor插件
+                     * 插件程序集都应该统一采用"*.Plugin.dll"、"*.Contract.dll"作为文件名的后缀
+                     * 插件程序集都应该被部署到本服务容器的执行目录下
+                     */
+                    foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
+                        parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
+                    foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Contract.dll"))
+                        parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
+                })
                 .AddSimpleMessageStreamProvider(StreamProviderExtension.StreamProviderName)
                 .AddMemoryGrainStorage("PubSubStore") //正式环境下请使用Event Hubs、ServiceBus、Azure Queues、Apache Kafka之一，要么自己实现PersistentStreamProvider组件
-                .AddIncomingGrainCallFilter(async context =>
+                .AddIncomingGrainCallFilter(context =>
                 {
                     Identity.CurrentIdentity = context.Grain is ISecurityContext && RequestContext.Get(ContextConfig.CurrentIdentityName) is string identityName && RequestContext.Get(ContextConfig.CurrentIdentityCultureName) is string identityCultureName
                         ? Identity.Fetch(identityName, identityCultureName)
@@ -112,7 +125,7 @@ namespace Orleans.Hosting
                         Task.Run(() => EventLog.Save(context.ImplementationMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder));
                         try
                         {
-                            await context.Invoke();
+                            return context.Invoke();
                         }
                         catch (Exception ex)
                         {
@@ -120,8 +133,8 @@ namespace Orleans.Hosting
                             throw;
                         }
                     }
-                    else
-                        await context.Invoke();
+
+                    return context.Invoke();
                 });
         }
     }

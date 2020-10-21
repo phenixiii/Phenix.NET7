@@ -204,7 +204,8 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 20201021
 1，改写Phenix.Services.Host自动加载插件服务（"*.Plugin.dll"）、扩展服务（"*.Extend.dll"）的方法
-2，修订《Phenix.Services.Host.部署方法.doc》的"服务组件的开发和部署"章节
+2，改写Phenix.Actor自动编译插件服务（"*.Plugin.dll"）、契约服务（"*.Contract.dll"）的方法
+3，修订《Phenix.Services.Host.部署方法.doc》的"服务组件的开发和部署"章节
 
 
 

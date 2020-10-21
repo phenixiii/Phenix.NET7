@@ -80,9 +80,8 @@ namespace Phenix.Services.Host
                      * 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProvider.Name
                      *
                      * 装配Actor插件
-                     * 系统的Actor都应该按照领域划分，分别开发各自的插件
-                     * 插件程序集的部署，都存放在本服务容器的当前执行目录下
-                     * 插件程序集的命名，都应该统一采用"*.Plugin.dll"作为文件名的后缀
+                     * 插件程序集都应该统一采用"*.Plugin.dll"、"*.Contract.dll"作为文件名的后缀
+                     * 插件程序集都应该被部署到本服务容器的执行目录下
                      */
                     .ConfigureCluster()
                     /*

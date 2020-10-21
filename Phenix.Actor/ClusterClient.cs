@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using Orleans;
 using Orleans.Configuration;
@@ -82,9 +84,20 @@ namespace Phenix.Actor
                         options.Invariant = "Oracle.DataAccess.Client";
 #endif
                     })
-                    .ConfigureApplicationParts(parts => { parts.AddPluginPart(); })
+                    .ConfigureApplicationParts(parts =>
+                    {
+                        /*
+                         * 装配Actor插件
+                         * 插件程序集都应该统一采用"*.Plugin.dll"、"*.Contract.dll"作为文件名的后缀
+                         * 插件程序集都应该被部署到本服务容器的执行目录下
+                         */
+                        foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
+                            parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
+                        foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Contract.dll"))
+                            parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
+                    })
                     .AddSimpleMessageStreamProvider(StreamProviderExtension.StreamProviderName)
-                    .AddOutgoingGrainCallFilter(async context =>
+                    .AddOutgoingGrainCallFilter(context =>
                     {
                         if (context.Grain is ISecurityContext)
                         {
@@ -96,7 +109,7 @@ namespace Phenix.Actor
                             }
                         }
 
-                        if ((context.Grain is ITraceLogContext))
+                        if (context.Grain is ITraceLogContext)
                         {
                             long traceKey;
                             if (RequestContext.Get(ContextConfig.traceKey) == null)
@@ -113,7 +126,7 @@ namespace Phenix.Actor
                             Task.Run(() => EventLog.Save(context.InterfaceMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder));
                             try
                             {
-                                await context.Invoke();
+                                return context.Invoke();
                             }
                             catch (Exception ex)
                             {
@@ -121,8 +134,8 @@ namespace Phenix.Actor
                                 throw;
                             }
                         }
-                        else
-                            await context.Invoke();
+
+                        return context.Invoke();
                     })
                     .Build();
                 AsyncHelper.RunSync(() => value.Connect());

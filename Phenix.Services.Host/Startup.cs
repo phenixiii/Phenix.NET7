@@ -110,10 +110,12 @@ namespace Phenix.Services.Host
                 {
                     /*
                      * 装配Controller插件
-                     * 插件程序集都应该统一采用"*.Plugin.dll"作为文件名的后缀
+                     * 插件程序集都应该统一采用"*.Plugin.dll"、"*.Extend.dll"作为文件名的后缀
                      * 插件程序集都应该被部署到本服务容器的执行目录下
                      */
                     foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
+                        parts.ApplicationParts.Add(new AssemblyPart(Assembly.LoadFrom(fileName)));
+                    foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Extend.dll"))
                         parts.ApplicationParts.Add(new AssemblyPart(Assembly.LoadFrom(fileName)));
                 })
                 .AddNewtonsoftJson(options =>
