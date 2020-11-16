@@ -57,7 +57,7 @@ namespace Phenix.Actor
             return Kernel != null;
         }
 
-        Task<bool> IEntityGrain<TKernel>.ExistKernel()
+        Task<bool> IEntityGrain.ExistKernel()
         {
             return Task.FromResult(ExistKernel());
         }
@@ -111,13 +111,13 @@ namespace Phenix.Actor
             return Task.CompletedTask;
         }
 
-        Task IEntityGrain<TKernel>.PatchKernel(params NameValue[] propertyValues)
+        Task IEntityGrain.PatchKernel(params NameValue[] propertyValues)
         {
             PatchKernel(NameValue.ToDictionary(propertyValues));
             return Task.CompletedTask;
         }
 
-        Task IEntityGrain<TKernel>.PatchKernel(IDictionary<string, object> propertyValues)
+        Task IEntityGrain.PatchKernel(IDictionary<string, object> propertyValues)
         {
             PatchKernel(propertyValues);
             return Task.CompletedTask;
@@ -133,12 +133,12 @@ namespace Phenix.Actor
             return Utilities.GetMemberValue(Kernel, propertyName);
         }
 
-        Task<object> IEntityGrain<TKernel>.GetKernelProperty(string propertyName)
+        Task<object> IEntityGrain.GetKernelProperty(string propertyName)
         {
             return Task.FromResult(GetKernelProperty(propertyName));
         }
 
-        Task<TValue> IEntityGrain<TKernel>.GetKernelProperty<TValue>(string propertyName)
+        Task<TValue> IEntityGrain.GetKernelProperty<TValue>(string propertyName)
         {
             return Task.FromResult((TValue) Utilities.ChangeType(GetKernelProperty(propertyName), typeof(TValue)));
         }

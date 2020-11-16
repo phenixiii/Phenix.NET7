@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Demo</RootNamespace>
   </PropertyGroup>
 
@@ -20,10 +20,10 @@
 
   <ItemGroup>
     <Reference Include="Phenix.Algorithm">
-      <HintPath>..\..\Bin_MySQL\netcoreapp3.1\Phenix.Algorithm.dll</HintPath>
+      <HintPath>..\..\Bin_MySQL\net5.0\Phenix.Algorithm.dll</HintPath>
     </Reference>
     <Reference Include="Phenix.Core">
-      <HintPath>..\..\Bin_MySQL\netcoreapp3.1\Phenix.Core.dll</HintPath>
+      <HintPath>..\..\Bin_MySQL\net5.0\Phenix.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

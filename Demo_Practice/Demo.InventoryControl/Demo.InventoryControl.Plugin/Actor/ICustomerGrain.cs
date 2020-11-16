@@ -1,12 +1,14 @@
 ﻿using System.Threading.Tasks;
+using Demo.InventoryControl.Plugin.Business;
 using Orleans;
+using Phenix.Actor;
 
 namespace Demo.InventoryControl.Plugin.Actor
 {
     /// <summary>
     /// 货主Grain接口
     /// </summary>
-    public interface ICustomerGrain : IGrainWithStringKey
+    public interface ICustomerGrain : IEntityGrain, IGrainWithStringKey
     {
         /// <summary>
         /// 装上货架

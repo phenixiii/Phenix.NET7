@@ -19,7 +19,7 @@ namespace Phenix.Services.Plugin.Api.Message
         /// 初始化
         /// </summary>
         /// <param name="context">上下文</param>
-        /// <param name="service">依赖注入的消息服务</param>
+        /// <param name="service">注入消息服务</param>
         public UserMessageHub(IHubContext<UserMessageHub> context, IMessageService service)
         {
             _pusher = new UserMessageHubPusher(context);

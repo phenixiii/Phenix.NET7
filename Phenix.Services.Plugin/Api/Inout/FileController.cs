@@ -16,7 +16,7 @@ namespace Phenix.Services.Plugin.Api.Inout
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="service">依赖注入的文件存取服务</param>
+        /// <param name="service">注入文件存取服务</param>
         public FileController(IFileService service)
         {
             _service = service;

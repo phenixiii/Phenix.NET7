@@ -8,16 +8,10 @@ namespace Phenix.Actor
     /// <summary>
     /// 实体Grain接口
     /// </summary>
-    public interface IEntityGrain<TKernel> : IGrain
+    public interface IEntityGrain<TKernel> : IEntityGrain
         where TKernel : EntityBase<TKernel>
     {
         #region 方法
-
-        /// <summary>
-        /// 存在根实体对象
-        /// </summary>
-        /// <returns>是否存在</returns>
-        Task<bool> ExistKernel();
 
         /// <summary>
         /// 获取根实体对象
@@ -30,6 +24,22 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="source">数据源</param>
         Task PatchKernel(TKernel source);
+
+        #endregion
+    }
+
+    /// <summary>
+    /// 实体Grain接口
+    /// </summary>
+    public interface IEntityGrain : IGrain
+    {
+        #region 方法
+
+        /// <summary>
+        /// 存在根实体对象
+        /// </summary>
+        /// <returns>是否存在</returns>
+        Task<bool> ExistKernel();
 
         /// <summary>
         /// 更新根实体对象(如不存在则新增)

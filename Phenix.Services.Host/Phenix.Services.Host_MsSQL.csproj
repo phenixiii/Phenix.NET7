@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>7.3.42</Version>
-    <AssemblyVersion>7.3.42.1021</AssemblyVersion>
-    <FileVersion>7.3.42.1021</FileVersion>
-    <Description>Phenix Framework 7 for .NET Core 3 + Orleans 3</Description>
+    <TargetFramework>net5.0</TargetFramework>
+    <Version>7.3.44</Version>
+    <AssemblyVersion>7.3.44.1109</AssemblyVersion>
+    <FileVersion>7.3.44.1109</FileVersion>
+    <Description>Phenix Framework 7 for .NET 5</Description>
     <Authors>ming</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <AssemblyName>Phenix.Services.Host</AssemblyName>
@@ -29,8 +29,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.9" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="5.0.0" />
     <PackageReference Include="Microsoft.Orleans.Client" Version="3.3.0" />
     <PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="3.3.0" />
     <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.3.0">
@@ -44,18 +44,18 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="OrleansDashboard" Version="3.1.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.1" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.6" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Phenix.Actor">
-      <HintPath>..\Bin_MsSQL\netcoreapp3.1\Phenix.Actor.dll</HintPath>
+      <HintPath>..\Bin_MsSQL\net5.0\Phenix.Actor.dll</HintPath>
     </Reference>
     <Reference Include="Phenix.Core">
-      <HintPath>..\Bin_MsSQL\netcoreapp3.1\Phenix.Core.dll</HintPath>
+      <HintPath>..\Bin_MsSQL\net5.0\Phenix.Core.dll</HintPath>
     </Reference>
     <Reference Include="Phenix.Services.Plugin">
-      <HintPath>..\Bin_MsSQL\netcoreapp3.1\Phenix.Services.Plugin.dll</HintPath>
+      <HintPath>..\Bin_MsSQL\net5.0\Phenix.Services.Plugin.dll</HintPath>
     </Reference>
   </ItemGroup>
 

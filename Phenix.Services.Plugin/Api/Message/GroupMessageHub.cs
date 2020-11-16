@@ -24,7 +24,7 @@ namespace Phenix.Services.Plugin.Api.Message
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="service">依赖注入的消息服务</param>
+        /// <param name="service">注入消息服务</param>
         public GroupMessageHub(IMessageService service)
         {
             _service = service;

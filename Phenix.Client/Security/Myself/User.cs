@@ -391,7 +391,7 @@ namespace Phenix.Client.Security.Myself
             }
             catch (SystemException) //FormatException & CryptographicException
             {
-                throw new PasswordException();
+                throw new UserVerifyException();
             }
         }
 

@@ -1,12 +1,14 @@
 ﻿using System.Threading.Tasks;
+using Demo.InventoryControl.Plugin.Business;
 using Orleans;
+using Phenix.Actor;
 
 namespace Demo.InventoryControl.Plugin.Actor
 {
     /// <summary>
     /// 货架Grain接口
     /// </summary>
-    public interface ILocationGrain : IGrainWithStringKey
+    public interface ILocationGrain : IEntityGrain, IGrainWithStringKey
     {
         /// <summary>
         /// 取LIFO序号

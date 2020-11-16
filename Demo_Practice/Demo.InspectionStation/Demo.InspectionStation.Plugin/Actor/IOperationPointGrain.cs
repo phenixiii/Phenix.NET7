@@ -1,13 +1,14 @@
 ﻿using System.Threading.Tasks;
 using Demo.InspectionStation.Plugin.Business;
 using Orleans;
+using Phenix.Actor;
 
 namespace Demo.InspectionStation.Plugin.Actor
 {
     /// <summary>
     /// 作业点Grain接口
     /// </summary>
-    public interface IOperationPointGrain : IGrainWithStringKey
+    public interface IOperationPointGrain : IEntityGrain, IGrainWithStringKey
     {
         /// <summary>
         /// 获取状态

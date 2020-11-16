@@ -78,7 +78,7 @@ namespace Phenix.Actor
             return GetNode(id, throwIfNotFound) != null;
         }
 
-        Task<bool> ITreeEntityGrain<TKernel>.HaveNode(long id, bool throwIfNotFound)
+        Task<bool> ITreeEntityGrain.HaveNode(long id, bool throwIfNotFound)
         {
             return Task.FromResult(HaveNode(id, throwIfNotFound));
         }
@@ -96,7 +96,7 @@ namespace Phenix.Actor
             return result;
         }
 
-        Task<long> ITreeEntityGrain<TKernel>.AddChildNode(long parentId, params NameValue[] propertyValues)
+        Task<long> ITreeEntityGrain.AddChildNode(long parentId, params NameValue[] propertyValues)
         {
             return Task.FromResult(AddChildNode(parentId, propertyValues));
         }
@@ -114,7 +114,7 @@ namespace Phenix.Actor
             return result;
         }
 
-        Task<long> ITreeEntityGrain<TKernel>.AddChildNode(long parentId, IDictionary<string, object> propertyValues)
+        Task<long> ITreeEntityGrain.AddChildNode(long parentId, IDictionary<string, object> propertyValues)
         {
             return Task.FromResult(AddChildNode(parentId, propertyValues));
         }
@@ -129,7 +129,7 @@ namespace Phenix.Actor
             GetNode(id).ChangeParent(GetNode(parentId));
         }
 
-        Task ITreeEntityGrain<TKernel>.ChangeParentNode(long id, long parentId)
+        Task ITreeEntityGrain.ChangeParentNode(long id, long parentId)
         {
             ChangeParentNode(id, parentId);
             return Task.CompletedTask;
@@ -145,7 +145,7 @@ namespace Phenix.Actor
             GetNode(id).UpdateSelf(propertyValues);
         }
 
-        Task ITreeEntityGrain<TKernel>.UpdateNode(long id, params NameValue[] propertyValues)
+        Task ITreeEntityGrain.UpdateNode(long id, params NameValue[] propertyValues)
         {
             UpdateNode(id, propertyValues);
             return Task.CompletedTask;
@@ -161,7 +161,7 @@ namespace Phenix.Actor
             GetNode(id).UpdateSelf(propertyValues);
         }
 
-        Task ITreeEntityGrain<TKernel>.UpdateNode(long id, IDictionary<string, object> propertyValues)
+        Task ITreeEntityGrain.UpdateNode(long id, IDictionary<string, object> propertyValues)
         {
             UpdateNode(id, propertyValues);
             return Task.CompletedTask;
@@ -177,7 +177,7 @@ namespace Phenix.Actor
            return GetNode(id).DeleteBranch();
         }
 
-        Task<int> ITreeEntityGrain<TKernel>.DeleteBranch(long id)
+        Task<int> ITreeEntityGrain.DeleteBranch(long id)
         {
             return Task.FromResult(DeleteBranch(id));
         }

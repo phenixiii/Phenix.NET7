@@ -208,6 +208,16 @@ Copyright © 2007, 2020 Phenixヾ Studio
 3，修订《Phenix.Services.Host.部署方法.doc》的"服务组件的开发和部署"章节
 
 
+20201030
+1，采取Phenix.Core.Data.Schema.Column.FieldNameByTrimColumnName为false的映射策略的话，需要把表的主键命名为ID，视图中的非主表的主键可用别名区分，这样才能正确映射到实体类的ID属性上
+2，IEntityGrain<TKernel> 分割出IEntityGrain
+3，ITreeEntityGrain<TKernel>分割出ITreeEntityGrain
+
+
+20201109
+1，升级至for .net core5，开发工具 Visual Studio 2019 16.8.x及以上版本
+2，Phenix.Core.AppSettings应用系统配置工具支持中英文切换，写入的中英文用‘|’分隔，读取时会判断Thread.CurrentThread.CurrentCulture.Name是否为'zh-'截取前半截还是后半截
+
 
 待完成：
 2，添加《Phenix.Core.Security.身份验证方法.doc》

@@ -88,12 +88,12 @@ namespace Phenix.Actor
                     {
                         /*
                          * 装配Actor插件
-                         * 插件程序集都应该统一采用"*.Plugin.dll"、"*.Contract.dll"作为文件名的后缀
+                         * 插件程序集都应该统一采用"*.Contract.dll"、"*.Plugin.dll"作为文件名的后缀
                          * 插件程序集都应该被部署到本服务容器的执行目录下
                          */
-                        foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
-                            parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
                         foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Contract.dll"))
+                            parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
+                        foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
                             parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
                     })
                     .AddSimpleMessageStreamProvider(StreamProviderExtension.StreamProviderName)

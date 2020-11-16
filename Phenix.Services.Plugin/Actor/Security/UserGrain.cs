@@ -18,7 +18,7 @@ namespace Phenix.Services.Plugin.Actor.Security
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="service">依赖注入的用户资料服务</param>
+        /// <param name="service">注入用户资料服务</param>
         public UserGrain(IUserService service)
         {
             _service = service;

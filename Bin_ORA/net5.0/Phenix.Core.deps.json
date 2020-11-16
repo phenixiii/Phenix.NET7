@@ -1,0 +1,107 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "Phenix.Core\/7.3.44": {
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.3",
+          "Oracle.ManagedDataAccess.Core": "2.19.91",
+          "System.Data.SQLite.Core": "1.0.113.6"
+        },
+        "runtime": {
+          "Phenix.Core.dll": {}
+        }
+      },
+      "Newtonsoft.Json\/12.0.3": {
+        "runtime": {
+          "lib\/netstandard2.0\/Newtonsoft.Json.dll": {
+            "assemblyVersion": "12.0.0.0",
+            "fileVersion": "12.0.3.23909"
+          }
+        }
+      },
+      "Oracle.ManagedDataAccess.Core\/2.19.91": {
+        "runtime": {
+          "lib\/netstandard2.0\/Oracle.ManagedDataAccess.dll": {
+            "assemblyVersion": "2.0.19.1",
+            "fileVersion": "2.0.19.1"
+          }
+        }
+      },
+      "Stub.System.Data.SQLite.Core.NetStandard\/1.0.113.1": {
+        "runtime": {
+          "lib\/netstandard2.1\/System.Data.SQLite.dll": {
+            "assemblyVersion": "1.0.113.0",
+            "fileVersion": "1.0.113.0"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes\/linux-x64\/native\/SQLite.Interop.dll": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes\/osx-x64\/native\/SQLite.Interop.dll": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes\/win-x64\/native\/SQLite.Interop.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "1.0.113.0"
+          },
+          "runtimes\/win-x86\/native\/SQLite.Interop.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "1.0.113.0"
+          }
+        }
+      },
+      "System.Data.SQLite.Core\/1.0.113.6": {
+        "dependencies": {
+          "Stub.System.Data.SQLite.Core.NetStandard": "1.0.113.1"
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Phenix.Core\/7.3.44": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Newtonsoft.Json\/12.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
+      "path": "newtonsoft.json\/12.0.3",
+      "hashPath": "newtonsoft.json.12.0.3.nupkg.sha512"
+    },
+    "Oracle.ManagedDataAccess.Core\/2.19.91": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Jgrn+kEbB9kWloFfxiP9Agzq8qK3tanbRDZJinICY0t94gmqkC\/OwyzlQLJf8SLymBH8urBMopkqpAIyD564ww==",
+      "path": "oracle.manageddataaccess.core\/2.19.91",
+      "hashPath": "oracle.manageddataaccess.core.2.19.91.nupkg.sha512"
+    },
+    "Stub.System.Data.SQLite.Core.NetStandard\/1.0.113.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qFjwuCuZlTz3yT06gaueDJwTykiblNeaLTx3sONXoNlLm2NJwghLvr+W9fvRevKcYcIRiKrq6WJ56QwZJq9fnQ==",
+      "path": "stub.system.data.sqlite.core.netstandard\/1.0.113.1",
+      "hashPath": "stub.system.data.sqlite.core.netstandard.1.0.113.1.nupkg.sha512"
+    },
+    "System.Data.SQLite.Core\/1.0.113.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8Iyo9b2iG29eYCGjnly6EdF+yw20q83vRTkK9zpJzip5QvQeRSs7rQPmaxg+R2oJKNL8w\/6K274F6YHXkEjq5w==",
+      "path": "system.data.sqlite.core\/1.0.113.6",
+      "hashPath": "system.data.sqlite.core.1.0.113.6.nupkg.sha512"
+    }
+  }
+}

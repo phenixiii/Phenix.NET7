@@ -2,13 +2,14 @@
 using System.Threading.Tasks;
 using Demo.InspectionStation.Plugin.Business;
 using Orleans;
+using Phenix.Actor;
 
 namespace Demo.InspectionStation.Plugin.Actor
 {
     /// <summary>
     /// 中控Grain接口
     /// </summary>
-    public interface ICenterGrain : IGrainWithStringKey
+    public interface ICenterGrain : IEntityGrain, IGrainWithStringKey
     {
         /// <summary>
         /// 获取监控的作业点

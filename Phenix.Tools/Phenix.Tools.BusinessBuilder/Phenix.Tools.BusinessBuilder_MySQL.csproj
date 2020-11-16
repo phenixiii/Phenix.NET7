@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
+    <Version>7.3.44</Version>
+    <AssemblyVersion>7.3.44.1109</AssemblyVersion>
+    <FileVersion>7.3.44.1109</FileVersion>
+    <Description>Phenix Framework 7 for .NET 5</Description>
+    <Authors>ming</Authors>
     <AssemblyName>Phenix.Tools.BusinessBuilder</AssemblyName>
     <RootNamespace>Phenix.Tools.BusinessBuilder</RootNamespace>
-    <Version>7.3.40</Version>
-    <AssemblyVersion>7.3.40.0825</AssemblyVersion>
-    <FileVersion>7.3.40.0825</FileVersion>
-    <Authors>ming</Authors>
-    <Description>Phenix Framework 7 for .NET Core 3 + Orleans 3</Description>
     <Copyright>Copyright © 2007, 2020 Phenixヾ Studio</Copyright>
   </PropertyGroup>
 
@@ -22,14 +22,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MySql.Data" Version="8.0.21" />
+    <PackageReference Include="MySql.Data" Version="8.0.22" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.1" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.6" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Phenix.Core">
-      <HintPath>..\..\Bin_MySQL\netcoreapp3.1\Phenix.Core.dll</HintPath>
+      <HintPath>..\..\Bin_MySQL\net5.0\Phenix.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

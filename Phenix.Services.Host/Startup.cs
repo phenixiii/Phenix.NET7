@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -144,6 +146,21 @@ namespace Phenix.Services.Host
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("zh"),
+                SupportedCultures = new[]
+                {
+                    new CultureInfo("zh"),
+                    new CultureInfo("en")
+                },
+                SupportedUICultures = new[]
+                {
+                    new CultureInfo("zh"),
+                    new CultureInfo("en")
+                }
+            });
 
             /*
              * 使用转接头中间件（代理服务器和负载均衡器）

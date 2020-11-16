@@ -8,8 +8,15 @@ namespace Phenix.Actor
     /// <summary>
     /// 树实体Grain接口
     /// </summary>
-    public interface ITreeEntityGrain<TKernel> : IEntityGrain<TKernel>
+    public interface ITreeEntityGrain<TKernel> : IEntityGrain<TKernel>, ITreeEntityGrain
         where TKernel : EntityBase<TKernel>
+    {
+    }
+
+    /// <summary>
+    /// 树实体Grain接口
+    /// </summary>
+    public interface ITreeEntityGrain : IEntityGrain
     {
         #region 方法
 

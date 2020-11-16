@@ -53,7 +53,7 @@ namespace Phenix.Business
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            T result = source.Clone();
+            T result = (T) source.MemberwiseClone();
             result.InitializeSelf();
             return result;
         }
