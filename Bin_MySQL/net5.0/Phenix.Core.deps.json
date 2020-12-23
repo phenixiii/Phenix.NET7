@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "Phenix.Core\/7.3.44": {
+      "Phenix.Core\/7.5.45": {
         "dependencies": {
           "MySql.Data": "8.0.22",
           "Newtonsoft.Json": "12.0.3",
@@ -1019,7 +1019,7 @@
     }
   },
   "libraries": {
-    "Phenix.Core\/7.3.44": {
+    "Phenix.Core\/7.5.45": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

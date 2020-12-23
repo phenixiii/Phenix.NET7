@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Phenix.Core.Data.Expressions;
 using Phenix.Core.Data.Model;
-using Phenix.Core.Data.Schema;
 
 namespace Phenix.Actor
 {

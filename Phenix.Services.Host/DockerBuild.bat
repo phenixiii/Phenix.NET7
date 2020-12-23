@@ -1,1 +1,1 @@
-docker build -t phenix.services.host:7.3 .
+docker build -t phenix.services.host:7.5 .

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Phenix.Core.Data.Model;
+using Phenix.Client.DataModel;
 
 namespace Phenix.Client.Security.Myself
 {
@@ -21,13 +21,24 @@ namespace Phenix.Client.Security.Myself
 
         [Newtonsoft.Json.JsonConstructor]
         private Position(string dataSourceKey, long id, string name, IList<string> roles)
-            : base(dataSourceKey, id)
+            : base(dataSourceKey)
         {
+            _id = id;
             _name = name;
             _roles = roles != null ? new ReadOnlyCollection<string>(roles) : null;
         }
 
         #region 属性
+
+        private readonly long _id;
+
+        /// <summary>
+        /// 主键
+        /// </summary>
+        public long Id
+        {
+            get { return _id; }
+        }
 
         private readonly string _name;
 

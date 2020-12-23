@@ -18,13 +18,9 @@ namespace Demo
 
             Console.WriteLine("不管是继承 EntityBase 还是直接操作 Database，持久化引擎都要求你在设计表结构和实体类时，遵循以下编写规范：");
             Console.WriteLine("1，实体类命名法为Pascal，不管是表还是视图，它们名称里的下划线，都在映射时会自动剔除掉，比如“TPT_PROJECT_INFO”表名映射的是“TptProjectInfo”类名；");
-            Console.WriteLine("   表名如带前缀，默认下映射到类名不会被自动剔除（例外：“PH7_XXX”前缀会被自动剔除）；");
-            Console.WriteLine("   如果希望“TPT_PROJECT_INFO”映射到类名是“ProjectInfo”，可通过设置Phenix.Core.Data.Schema.Table.ClassNameByTrimTableName（默认{0}）、Phenix.Core.Data.Schema.Table.PrefixCount（默认{1}）改变类名映射规则；", Phenix.Core.Data.Schema.Table.ClassNameByTrimTableName, Phenix.Core.Data.Schema.Table.PrefixCount);
-            Console.WriteLine("   视图名如带前缀，默认下映射到类名不会被自动剔除；");
-            Console.WriteLine("   如果希望“TPT_PROJECT_V”映射到类名是“Project”，可通过设置Phenix.Core.Data.Schema.View.ClassNameByTrimViewName（默认{0}）、Phenix.Core.Data.Schema.View.PrefixCount（默认{1}）、Phenix.Core.Data.Schema.View.SuffixCount（默认{2}）改变类名映射规则；", Phenix.Core.Data.Schema.View.ClassNameByTrimViewName, Phenix.Core.Data.Schema.View.PrefixCount, Phenix.Core.Data.Schema.View.SuffixCount);
+            Console.WriteLine("   表名/视图名如带前缀，映射到类名不会被自动剔除（例外：“PH7_XXX”前缀会被自动剔除）；");
             Console.WriteLine("2，实体类的属性名也是Pascal规则；字段命名法是加“_”前缀的camel规则名，比如“_projectName”；");
-            Console.WriteLine("   表/视图的字段名/别名如带前缀，映射到类的属性/字段时默认不会被剔除掉（例外：“PH7_XXX”表里的字段的前缀会被自动剔除）；");
-            Console.WriteLine("   可通过设置Phenix.Core.Data.Schema.Column.FieldNameByTrimColumnName（默认{0}）、Phenix.Core.Data.Schema.Column.PrefixCount（默认{1}）改变属性/字段映射规则；", Phenix.Core.Data.Schema.Column.FieldNameByTrimColumnName, Phenix.Core.Data.Schema.Column.PrefixCount);
+            Console.WriteLine("   表/视图的字段名/别名如带前缀，映射到类的属性/字段时不会被剔除掉（例外：“PH7_XXX”表里的字段的前缀会被自动剔除）；");
             Console.WriteLine("   表/视图的字段名/别名，命名时如不出于以下目的，请避免使用如下后缀，它们是持久层引擎的保留字：");
             Console.WriteLine("   “_ID”且是长整型15位以上精度：主键/外键；如为主键，新增记录时自动填充Sequence.Default.Value；每张表都应该有且仅一个长整型15位以上精度的主键字段，外键分物理外键（组合关系）和虚拟外键（聚合关系），命名尽可能与主键相呼应；");
             Console.WriteLine("   “_ORIGINATOR”且是字符串/长整型15位以上精度：新增记录时自动填充Identity.CurrentIdentity.User.Name/Id；");

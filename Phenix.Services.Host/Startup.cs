@@ -112,12 +112,10 @@ namespace Phenix.Services.Host
                 {
                     /*
                      * 装配Controller插件
-                     * 插件程序集都应该统一采用"*.Plugin.dll"、"*.Extend.dll"作为文件名的后缀
+                     * 插件程序集都应该统一采用"*.Plugin.dll"作为文件名的后缀
                      * 插件程序集都应该被部署到本服务容器的执行目录下
                      */
                     foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
-                        parts.ApplicationParts.Add(new AssemblyPart(Assembly.LoadFrom(fileName)));
-                    foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Extend.dll"))
                         parts.ApplicationParts.Add(new AssemblyPart(Assembly.LoadFrom(fileName)));
                 })
                 .AddNewtonsoftJson(options =>
@@ -147,20 +145,20 @@ namespace Phenix.Services.Host
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
-            app.UseRequestLocalization(new RequestLocalizationOptions
-            {
-                DefaultRequestCulture = new RequestCulture("zh"),
-                SupportedCultures = new[]
-                {
-                    new CultureInfo("zh"),
-                    new CultureInfo("en")
-                },
-                SupportedUICultures = new[]
-                {
-                    new CultureInfo("zh"),
-                    new CultureInfo("en")
-                }
-            });
+            //app.UseRequestLocalization(new RequestLocalizationOptions
+            //{
+            //    DefaultRequestCulture = new RequestCulture("zh"),
+            //    SupportedCultures = new[]
+            //    {
+            //        new CultureInfo("zh"),
+            //        new CultureInfo("en")
+            //    },
+            //    SupportedUICultures = new[]
+            //    {
+            //        new CultureInfo("zh"),
+            //        new CultureInfo("en")
+            //    }
+            //});
 
             /*
              * 使用转接头中间件（代理服务器和负载均衡器）

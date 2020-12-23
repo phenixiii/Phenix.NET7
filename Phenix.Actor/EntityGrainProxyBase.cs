@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Phenix.Core.Actor;
+using Phenix.Core.Data.Expressions;
 using Phenix.Core.Data.Model;
-using Phenix.Core.Data.Schema;
 using Phenix.Core.Reflection;
 
 namespace Phenix.Actor

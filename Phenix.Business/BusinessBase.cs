@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
-using Phenix.Core.Data.Schema;
 using Phenix.Core.SyncCollections;
 
 namespace Phenix.Business
@@ -25,9 +25,9 @@ namespace Phenix.Business
         /// <summary>
         /// for Newtonsoft.Json.JsonConstructor
         /// </summary>
-        protected BusinessBase(string dataSourceKey, long id, bool? isNew, bool? isSelfDeleted, bool? isSelfDirty,
+        protected BusinessBase(string dataSourceKey, bool? isNew, bool? isSelfDeleted, bool? isSelfDirty,
             IDictionary<string, object> oldPropertyValues, IDictionary<string, bool?> dirtyPropertyNames)
-            : base(dataSourceKey, id, isNew, isSelfDeleted, isSelfDirty, oldPropertyValues, dirtyPropertyNames)
+            : base(dataSourceKey, isNew, isSelfDeleted, isSelfDirty, oldPropertyValues, dirtyPropertyNames)
         {
         }
 

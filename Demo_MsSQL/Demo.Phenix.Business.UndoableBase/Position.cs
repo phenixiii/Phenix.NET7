@@ -14,6 +14,16 @@ namespace Demo
     public sealed class Position : BusinessBase<Position>
     {
         #region 属性
+        
+        private long _id;
+
+        /// <summary>
+        /// 主键
+        /// </summary>
+        public long Id
+        {
+            get { return _id; }
+        }
 
         private string _name;
 

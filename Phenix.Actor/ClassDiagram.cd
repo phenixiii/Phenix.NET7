@@ -90,7 +90,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAACIAAACFAAAAAAAIBAAAQAAAAIBAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAACIAAAEMAAAAAAAIBAAQQAAAAIBAAAAAAAAAAAAAA=</HashCode>
       <FileName>GrainBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -120,14 +120,14 @@
     </TypeIdentifier>
   </Class>
   <Interface Name="Phenix.Actor.IEntityGrain&lt;TKernel&gt;">
-    <Position X="2.25" Y="6.5" Width="2.5" />
+    <Position X="5" Y="4.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AEAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IEntityGrain.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Phenix.Actor.ITreeEntityGrain&lt;TKernel&gt;">
-    <Position X="5" Y="6.5" Width="2.25" />
+    <Position X="7.25" Y="4.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ITreeEntityGrain.cs</FileName>
@@ -162,7 +162,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Phenix.Actor.ITreeEntityGrain">
-    <Position X="5" Y="4.25" Width="2.25" />
+    <Position X="7.25" Y="5.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AACAAAAAAgAAAAAAAAAAAAEAAAAAAQAAAAAAAAIAAAA=</HashCode>
       <FileName>ITreeEntityGrain.cs</FileName>

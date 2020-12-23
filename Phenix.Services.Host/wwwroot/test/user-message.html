@@ -86,7 +86,8 @@
                         alert("收到组名为'" + groupName + "'的消息: " + messages);
                 },
                 onThen: function (connection) {
-                    alert("订阅成功!");
+                    if (connection.connectionStarted)
+                        alert("订阅成功!");
                 },
                 onFail: function (connection, error) {
                     if (groupName === undefined || groupName == null)

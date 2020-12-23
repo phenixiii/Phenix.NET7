@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using Phenix.Core.Data.Model;
+using Phenix.Client.DataModel;
 using Phenix.Core.Net.Api;
 using Phenix.Core.Threading;
 

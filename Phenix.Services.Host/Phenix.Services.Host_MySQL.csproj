@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <Version>7.3.44</Version>
-    <AssemblyVersion>7.3.44.1109</AssemblyVersion>
-    <FileVersion>7.3.44.1109</FileVersion>
-    <Description>Phenix Framework 7 for .NET 5</Description>
+    <Version>7.5.45</Version>
+    <AssemblyVersion>7.5.45.1210</AssemblyVersion>
+    <FileVersion>7.5.45.1210</FileVersion>
+    <Description>Phenix Framework 7.5 for .NET 5</Description>
     <Authors>ming</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <AssemblyName>Phenix.Services.Host</AssemblyName>
@@ -29,8 +29,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="5.0.1" />
     <PackageReference Include="Microsoft.Orleans.Client" Version="3.3.0" />
     <PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="3.3.0" />
     <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.3.0">

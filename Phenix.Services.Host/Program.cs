@@ -74,10 +74,11 @@ namespace Phenix.Services.Host
                      * 配置Orleans服务集群
                      * 配置项见Phenix.Actor.OrleansConfig
                      * 设置集群ID、服务ID：Phenix.Core.Data.Database.Default.DataSourceKey
+                     * 设置默认的激活体垃圾收集年龄限为2天
                      * 设置Clustering、GrainStorage、Reminder数据库：Phenix.Core.Data.Database.Default
                      * 设置Silo端口：EndpointOptions.DEFAULT_SILO_PORT
                      * 设置Gateway端口：EndpointOptions.DEFAULT_GATEWAY_PORT
-                     * 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProvider.Name
+                     * 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProviderExtension.StreamProviderName
                      *
                      * 装配Actor插件
                      * 插件程序集都应该统一采用"*.Plugin.dll"、"*.Contract.dll"作为文件名的后缀

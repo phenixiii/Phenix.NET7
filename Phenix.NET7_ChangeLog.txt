@@ -1,4 +1,4 @@
-Phenix Framework 7 for .net core 3 & Orleans 3
+Phenix Framework 7.5 for .net 5
 Copyright © 2007, 2020 Phenixヾ Studio
 
 发布地址：https://github.com/phenixiii/Phenix.NET7
@@ -31,13 +31,9 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 20190807
 1，Phenix.Services.Host可部署在KestrelServer+Docker环境中
-2，提供《Phenix.Services.Host.部署方法.doc》文档
-
-
-20190813
-1，Phenix.Core.Data.Database和Phenix.Core.Data.Common.DbCommandHelper的调用存储过程函数ExecuteStoredProc，返回值改为IDictionary<string, object>类型，为存储过程的调用结果集"参数名-参数值"，如需转换为JSON格式请调用Phenix.Core.Reflection.Utilities.JsonSerialize(result)
-2，增补Phenix.Core.Data.Schema.Table、Phenix.Core.Data.Schema.View、Phenix.Core.Data.Model.EntityBase<T>的查询函数，可读取DataReader内容返回实体对象或JSON格式的查询结果
-3，增补Phenix.Core.Reflection.Utilities的JsonSerialize()函数，直接将DbDataReader导出JSON格式的查询结果，JSON格式的属性名为数据源的表/视图的字段名/别名
+2，Phenix.Core.Data.Database和Phenix.Core.Data.Common.DbCommandHelper的调用存储过程函数ExecuteStoredProc，返回值改为IDictionary<string, object>类型，为存储过程的调用结果集"参数名-参数值"，如需转换为JSON格式请调用Phenix.Core.Reflection.Utilities.JsonSerialize(result)
+3，增补Phenix.Core.Data.Schema.Table、Phenix.Core.Data.Schema.View、Phenix.Core.Data.Model.EntityBase<T>的查询函数，可读取DataReader内容返回实体对象或JSON格式的查询结果
+4，增补Phenix.Core.Reflection.Utilities的JsonSerialize()函数，直接将DbDataReader导出JSON格式的查询结果，JSON格式的属性名为数据源的表/视图的字段名/别名
 
 
 20190905
@@ -117,23 +113,16 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 
 20200220
-1，修订《Phenix.Services.Host.部署方法.doc》，补充'开发环境的搭建'等章节
-2，提供《Phenix.Services.Host.分布式服务插件.pptx》，讲解WebAPI（应用）服务和Orleans（领域）服务的设计和开发方法
-3，重构Phenix.Core持久化引擎，强调聚合和聚合根的领域对象模型，在采取分库分表策略的数据库部署场景下，一棵聚合树里的所有对象都随聚合根对象一起锁定在某个分库上进行持久化，持久化的路由算法是取自聚合根对象里一个映射'_RU'后缀字段的属性值经HASH取余得到具体的分库ID
-
-
-20200315
-1，提供《Phenix.Core.Data.持久层开发接口.doc》，讲解Phenix.Core持久化引擎的数据库集群、主库+分库、分库分表策略、使用接口和持久层开发方法
-2，为Phenix.Services.Host工程添加Dashboard插件，可在浏览器上打开可视化Silo监控工具：http://localhost:8080/
+1，提供《Phenix.Services.Host.分布式服务插件.pptx》，讲解WebAPI（应用）服务和Orleans（领域）服务的设计和开发方法
+2，重构Phenix.Core持久化引擎，强调聚合和聚合根的领域对象模型，在采取分库分表策略的数据库部署场景下，一棵聚合树里的所有对象都随聚合根对象一起锁定在某个分库上进行持久化，持久化的路由算法是取自聚合根对象里一个映射'_RU'后缀字段的属性值经HASH取余得到具体的分库ID
 
 
 20200408
-1，修订《Phenix.Services.Host.部署方法.doc》的"服务组件的开发和部署"章节
-2，添加《Phenix.Core.Data.持久层开发接口.doc》的"用DataReader获取实体对象/JSON的Sheet方法"章节
-3，完善Phenix.Core.Log.EventLog功能，可防止连续写同一message造成本地日志瞬时暴涨的问题，中断重复日志强度阈值由静态属性BreakRepeatIntensityPerMinute控制，缺省为重复日志超过每分钟6000次
-4，完善用户身份验证功能，可防止同一用户高频访问服务，中断服务请求强度阈值由Phenix.Core.Security.User的BreakRequestIntensityPerMinute静态属性控制，缺省为服务请求超过每分钟6000次
-5，为Phenix.Actor工程添加TreeEntityGrainBase、StreamTreeEntityGrainBase、TreeEntityGrainProxyBase类，以支持树状结构Kernel的处理
-6，丰富Phenix.Services.Plugin工程功能，注册用户可搭建起组织架构成为公司管理员，示例见Demo.Phenix.Client.Security.Identity_MyselfRootTeams
+1，为Phenix.Services.Host工程添加Dashboard插件，可在浏览器上打开可视化Silo监控工具：http://localhost:8080/
+2，完善Phenix.Core.Log.EventLog功能，可防止连续写同一message造成本地日志瞬时暴涨的问题，中断重复日志强度阈值由静态属性BreakRepeatIntensityPerMinute控制，缺省为重复日志超过每分钟6000次
+3，完善用户身份验证功能，可防止同一用户高频访问服务，中断服务请求强度阈值由Phenix.Core.Security.User的BreakRequestIntensityPerMinute静态属性控制，缺省为服务请求超过每分钟6000次
+4，为Phenix.Actor工程添加TreeEntityGrainBase、StreamTreeEntityGrainBase、TreeEntityGrainProxyBase类，以支持树状结构Kernel的处理
+5，丰富Phenix.Services.Plugin工程功能，注册用户可搭建起组织架构成为公司管理员，示例见Demo.Phenix.Client.Security.Identity_MyselfRootTeams
 
 
 20200510
@@ -162,8 +151,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 20200613
 1，修正身份验证失败（比如登录口令输错）时浏览器F12提示"Origin null is not allowed by Access-Control-Allow-Origin"的问题
-2，修订《Phenix.Core.Data.持久层开发接口.doc》，补充条件对象的使用方法，补充Phenix.Core.Data.Database的功能介绍
-3，添加Demo.IDOS智能仓储作业系统演练项目到Demo_Practice目录，仅限于Phenix.NET7_PgSQL解决方案可见
+2，添加Demo.IDOS智能仓储作业系统演练项目到Demo_Practice目录，仅限于Phenix.NET7_PgSQL解决方案可见
 
 
 20200707
@@ -205,7 +193,6 @@ Copyright © 2007, 2020 Phenixヾ Studio
 20201021
 1，改写Phenix.Services.Host自动加载插件服务（"*.Plugin.dll"）、扩展服务（"*.Extend.dll"）的方法
 2，改写Phenix.Actor自动编译插件服务（"*.Plugin.dll"）、契约服务（"*.Contract.dll"）的方法
-3，修订《Phenix.Services.Host.部署方法.doc》的"服务组件的开发和部署"章节
 
 
 20201030
@@ -219,8 +206,19 @@ Copyright © 2007, 2020 Phenixヾ Studio
 2，Phenix.Core.AppSettings应用系统配置工具支持中英文切换，写入的中英文用‘|’分隔，读取时会判断Thread.CurrentThread.CurrentCulture.Name是否为'zh-'截取前半截还是后半截
 
 
+20201210
+1，提供《Phenix.NET7.搭建开发环境》
+2，提供《Phenix.NET7.服务部署方法》
+3，提供《Phenix.NET7.持久层开发方法》
+4，持久层引擎添加映射标签SheetAttribute和ColumnAttribute以支持未按规范设计的数据库表结构
+5，修改Phenix.Tools.BusinessBuilder和Phenix.Tools.EntityBuilder工程，默认都打上映射标签
+
+
+
+
 待完成：
-2，添加《Phenix.Core.Security.身份验证方法.doc》
+3，提供《Phenix.NET7.服务升级方法》
+2，提供《Phenix.NET7.身份验证方法.doc》
 3，适配双活数据中心的Actor状态跨地域同步机制
 
 

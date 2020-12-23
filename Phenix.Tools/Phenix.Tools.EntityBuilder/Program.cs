@@ -28,6 +28,7 @@ namespace Phenix.Tools.EntityBuilder
                 password = args[3];
             }
             else
+            {
                 while (true)
                 {
                     Console.WriteLine("请按照提示，输入需映射到实体对象的数据库的连接串...");
@@ -44,10 +45,9 @@ namespace Phenix.Tools.EntityBuilder
                         break;
                     Console.WriteLine();
                 }
+                Console.WriteLine();
+            }
 
-            Console.WriteLine();
-            Console.WriteLine("如需Class名称取自被整理过后的表名(如果第4位是“_”则剔去其及之前的字符)，请设置Phenix.Core.Data.Schema.Table.ClassNameByTrimTableName属性，默认是{0}；", Phenix.Core.Data.Schema.Table.ClassNameByTrimTableName);
-            Console.WriteLine("如需Class名称取自被整理过后的视图名(如果第4位是“_”则剔去其及之前的字符, 如果倒数第2位是“_”则剔去其及之后的字符)，请设置Phenix.Core.Data.Schema.View.ClassNameByTrimViewName属性，默认是{0}；", Phenix.Core.Data.Schema.View.ClassNameByTrimViewName);
             Console.WriteLine();
             string baseDirectory = Path.Combine(AppRun.BaseDirectory, DateTime.Now.ToString("yyyyMMddHHmm"));
             Console.WriteLine("生成的实体类文件将存放在目录：{0}", baseDirectory);
@@ -98,51 +98,57 @@ namespace Phenix.Tools.EntityBuilder
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
             string filePath = Path.Combine(directory, sheet.ClassName + ".cs");
+            Column primaryKeyColumn = sheet.PrimaryKeyColumns.Count > 0 ? sheet.PrimaryKeyColumns[0] : null;
 
-            StringBuilder codeBuilder = new StringBuilder("using System;");
-            codeBuilder.Append(String.Format(@"
+            StringBuilder codeBuilder = new StringBuilder();
+            codeBuilder.Append(String.Format(@"using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using Phenix.Core.Data;
+using Phenix.Core.Data.Expressions;
 using Phenix.Core.Data.Model;
+using Phenix.Core.Data.Rule;
+using Phenix.Core.Data.Schema;
 
 /* 
    builder:    {0}
    build time: {1}
-   mapping to: {2}
+   mapping to: {2} {3}
 */
 
-namespace {3}{4}{5}
+namespace {4}{5}{6}
 {{
     /// <summary>
-    /// {6}
+    /// {3}
     /// </summary>
-    [System.Serializable]
-    [System.ComponentModel.DataAnnotations.Display(Description = ""{6}"")]
-    public class {7} : EntityBase<{7}>
+    [Serializable]
+    [Display(Description = @""{3}"")]
+    [Sheet(""{7}"", PrimaryKeyName = {8})]
+    public class {9} : EntityBase<{9}>
     {{
-        private {7}()
+        private {9}()
         {{
             // used to fetch object, do not add code
         }}
 
         [Newtonsoft.Json.JsonConstructor]
-        public {7}(string dataSourceKey, long id,
+        public {9}(string dataSourceKey,
             ",
-                Environment.UserName, DateTime.Now, sheet.Name, sheet.Owner.Database.DatabaseName,
+                Environment.UserName, DateTime.Now, sheet.Name, sheet.Description, sheet.Owner.Database.DatabaseName,
                 !String.IsNullOrEmpty(sheet.Prefix) ? "." : null,
                 !String.IsNullOrEmpty(sheet.Prefix) ? sheet.Prefix.ToUpper() : null,
-                sheet.Description, sheet.ClassName));
+                sheet.Name,
+                primaryKeyColumn != null ? String.Format("\"{0}\"", primaryKeyColumn.Name) : "null",
+                sheet.ClassName));
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
-                if (kvp.Value != kvp.Value.Owner.PrimaryKeyColumn)
-                    codeBuilder.Append(String.Format("{0} {1}, ", kvp.Value.MappingTypeName, kvp.Value.ParameterName));
+                codeBuilder.Append(String.Format("{0} {1}, ", kvp.Value.MappingTypeName, kvp.Value.ParameterName));
             codeBuilder[codeBuilder.Length - 2] = ')';
             codeBuilder.Append(@"
-            : base(dataSourceKey, id)
+            : base(dataSourceKey)
         {");
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
-                if (kvp.Value != kvp.Value.Owner.PrimaryKeyColumn)
-                    codeBuilder.Append(String.Format(@"
+                codeBuilder.Append(String.Format(@"
             {0} = {1};",
                     kvp.Value.FieldName, kvp.Value.ParameterName));
             codeBuilder.Append(@"
@@ -150,43 +156,42 @@ namespace {3}{4}{5}
 
         protected override void InitializeSelf()
         {");
-            foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
-                if (!String.IsNullOrEmpty(kvp.Value.DataDefault) &&
-                    kvp.Value.TableColumn != null && kvp.Value.Owner.PrimaryKeyColumn != null && object.Equals(kvp.Value.TableColumn.Owner, kvp.Value.Owner.PrimaryKeyColumn.TableColumn.Owner))
-                    try
-                    {
-                        codeBuilder.Append(String.Format(@"
-            {0} = {1}{2}{1};",
-                            kvp.Value.FieldName, kvp.Value.MappingType == typeof(string) ? "\"" : null, Utilities.ChangeType(Utilities.ChangeType(kvp.Value.DataDefault, kvp.Value.MappingType), typeof(string))));
-                    }
-                    catch (Exception)
-                    {
-                        codeBuilder.Append(String.Format(@"
-            {0} = {1}{2}{1};",
-                            kvp.Value.FieldName, kvp.Value.MappingType == typeof(string) ? "\"" : null, kvp.Value.DataDefault));
-                    }
+            if (primaryKeyColumn != null)
+                foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
+                    if (!String.IsNullOrEmpty(kvp.Value.DataDefault) && kvp.Value.TableColumn == primaryKeyColumn.TableColumn)
+                        try
+                        {
+                            codeBuilder.Append(String.Format(@"
+                {0} = {1}{2}{1};",
+                                kvp.Value.FieldName, kvp.Value.MappingType == typeof(string) ? "\"" : null, Utilities.ChangeType(Utilities.ChangeType(kvp.Value.DataDefault, kvp.Value.MappingType), typeof(string))));
+                        }
+                        catch (Exception)
+                        {
+                            codeBuilder.Append(String.Format(@"
+                {0} = {1}{2}{1};",
+                                kvp.Value.FieldName, kvp.Value.MappingType == typeof(string) ? "\"" : null, kvp.Value.DataDefault));
+                        }
 
             codeBuilder.Append(@"
         }
 ");
+
             foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
             {
-                if (String.CompareOrdinal(kvp.Value.PropertyName, "Id") == 0)
-                    continue;
-
                 codeBuilder.Append(String.Format(@"
         private {0} {1};
         /// <summary>
-        /// {3}
+        /// {2}
         /// </summary>
-        [System.ComponentModel.DataAnnotations.Display(Description = {2}""{3}"")]
+        [Display(Description = @""{2}"")]
+        [Column(""{3}"")]
         public {0} {4}
         {{
             get {{ return {1}; }}
             set {{ {1} = value; }}
         }}
 ",
-                    kvp.Value.MappingTypeName, kvp.Value.FieldName, "@", kvp.Value.Description, kvp.Value.PropertyName));
+                    kvp.Value.MappingTypeName, kvp.Value.FieldName, kvp.Value.Description, kvp.Value.Name, kvp.Value.PropertyName));
             }
 
             codeBuilder.Append(@"

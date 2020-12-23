@@ -1,5 +1,5 @@
 #拉取runtime父镜像
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS runtime
 #设置容器工作目录
 WORKDIR /publish
 #把当前目录的所有文件copy到工作目录中

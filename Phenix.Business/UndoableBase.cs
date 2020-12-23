@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq.Expressions;
 using System.Reflection;
+using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
 using Phenix.Core.Data.Model;
 using Phenix.Core.Data.Schema;
@@ -28,9 +29,9 @@ namespace Phenix.Business
         /// <summary>
         /// for Newtonsoft.Json.JsonConstructor
         /// </summary>
-        protected UndoableBase(string dataSourceKey, long id, bool? isNew, bool? isSelfDeleted, bool? isSelfDirty,
+        protected UndoableBase(string dataSourceKey, bool? isNew, bool? isSelfDeleted, bool? isSelfDirty,
             IDictionary<string, object> oldPropertyValues, IDictionary<string, bool?> dirtyPropertyNames)
-            : base(dataSourceKey, id)
+            : base(dataSourceKey)
         {
             if (isNew.HasValue)
                 _executeAction = _executeAction | ExecuteAction.Insert;

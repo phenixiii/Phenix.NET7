@@ -1,6 +1,6 @@
 许可与担保
 
-Phenix Framework 7 for .net core 3 & Orleans 3
+Phenix Framework 7.5 for .net 5
 Copyright © 2007, 2020 Phenixヾ Studio
 
 你可以将本软件用于任何非商业目的，包括与之派生出的工作。

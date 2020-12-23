@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Phenix.Client.Security;
-using Phenix.Core.Data.Schema;
+using Phenix.Core.Data.Expressions;
 using Phenix.Core.IO;
 using Phenix.Core.Net.Api;
 using Phenix.Core.Reflection;

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Phenix.Core.Data.Model;
-using Phenix.Core.Data.Schema;
+using Phenix.Client.DataModel;
+using Phenix.Core.Data;
+using Phenix.Core.Data.Expressions;
 using Phenix.Core.Net.Api;
 using Phenix.Core.Reflection;
 using Phenix.Core.Security.Auth;
@@ -28,13 +29,14 @@ namespace Phenix.Client.Security.Myself
         }
 
         [Newtonsoft.Json.JsonConstructor]
-        private User(string dataSourceKey, long id,
-            string name, string phone, string eMail, string regAlias, DateTime regTime,
+        private User(string dataSourceKey,
+            long id, string name, string phone, string eMail, string regAlias, DateTime regTime,
             string requestAddress, int requestFailureCount, DateTime? requestFailureTime,
             long? rootTeamsId, Teams rootTeams, long? teamsId, long? positionId, Position position,
             bool locked, DateTime? lockedTime, bool disabled, DateTime? disabledTime)
-            : base(dataSourceKey, id)
+            : base(dataSourceKey)
         {
+            _id = id;
             _name = name;
             _phone = phone;
             _eMail = eMail;
@@ -81,6 +83,16 @@ namespace Phenix.Client.Security.Myself
                     _isMyself = _httpClient != null && String.CompareOrdinal(_httpClient.Identity.Name, Name) == 0;
                 return _isMyself.Value;
             }
+        }
+
+        private readonly long _id;
+
+        /// <summary>
+        /// 主键
+        /// </summary>
+        public long Id
+        {
+            get { return _id; }
         }
 
         private readonly string _name;

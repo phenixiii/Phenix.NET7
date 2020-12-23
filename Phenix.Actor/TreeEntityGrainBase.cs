@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans;
+using Phenix.Core.Data.Expressions;
 using Phenix.Core.Data.Model;
-using Phenix.Core.Data.Schema;
 
 namespace Phenix.Actor
 {
@@ -91,9 +91,8 @@ namespace Phenix.Actor
         /// <returns>子节点ID</returns>
         protected virtual long AddChildNode(long parentId, params NameValue[] propertyValues)
         {
-            long result = Database.Sequence.Value;
-            GetNode(parentId).AddChild(() => TreeEntityBase<TKernel>.New(Database, result, propertyValues));
-            return result;
+            TKernel childNode = GetNode(parentId).AddChild(() => TreeEntityBase<TKernel>.New(Database, propertyValues));
+            return childNode.Id;
         }
 
         Task<long> ITreeEntityGrain.AddChildNode(long parentId, params NameValue[] propertyValues)
@@ -109,9 +108,8 @@ namespace Phenix.Actor
         /// <returns>子节点ID</returns>
         protected virtual long AddChildNode(long parentId, IDictionary<string, object> propertyValues)
         {
-            long result = Database.Sequence.Value;
-            GetNode(parentId).AddChild(() => TreeEntityBase<TKernel>.New(Database, result, propertyValues));
-            return result;
+            TKernel childNode = GetNode(parentId).AddChild(() => TreeEntityBase<TKernel>.New(Database, propertyValues));
+            return childNode.Id;
         }
 
         Task<long> ITreeEntityGrain.AddChildNode(long parentId, IDictionary<string, object> propertyValues)

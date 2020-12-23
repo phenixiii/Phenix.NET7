@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Orleans;
 using Phenix.Core.Data;
+using Phenix.Core.Data.Expressions;
 using Phenix.Core.Data.Model;
-using Phenix.Core.Data.Schema;
 using Phenix.Core.Reflection;
 
 namespace Phenix.Actor
@@ -36,7 +36,7 @@ namespace Phenix.Actor
                 if (_kernel == null)
                 {
                     if (this is IGrainWithIntegerKey)
-                        _kernel = EntityBase<TKernel>.FetchRoot(Database, p => p.Id == Id);
+                        _kernel = EntityBase<TKernel>.FetchRoot(Database, p => p.PrimaryKeyLong == Id);
                 }
 
                 return _kernel;
