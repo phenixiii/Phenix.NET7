@@ -6,7 +6,7 @@ namespace Phenix.Actor
     /// <summary>
     /// StreamProvider扩展
     /// </summary>
-    public static class StreamProviderExtension
+    public static class StreamProviderProxy
     {
         #region 属性
 

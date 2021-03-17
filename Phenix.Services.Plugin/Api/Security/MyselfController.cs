@@ -1,6 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Phenix.Actor;
+using Phenix.Core.Security;
+using Phenix.Services.Plugin.Actor.Security;
 
 namespace Phenix.Services.Plugin.Api.Security
 {
@@ -20,7 +23,7 @@ namespace Phenix.Services.Plugin.Api.Security
         [HttpGet]
         public async Task<string> Get()
         {
-            return await EncryptAsync(await User.Identity.UserProxy.FetchKernel());
+            return await EncryptAsync(await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).FetchKernel());
         }
 
         /// <summary>
@@ -30,7 +33,7 @@ namespace Phenix.Services.Plugin.Api.Security
         [HttpPatch]
         public async Task Patch()
         {
-            await User.Identity.UserProxy.PatchKernel(await Request.ReadBodyAsDictionaryAsync(true));
+            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).PatchKernel(await Request.ReadBodyAsync<User>(true));
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using Phenix.Actor;
-using Phenix.Core.Security;
-using Phenix.Services.Plugin.Actor.Security;
+﻿using Phenix.Core.Security;
 
 namespace Phenix.Services.Plugin
 {
@@ -9,19 +7,14 @@ namespace Phenix.Services.Plugin
     /// </summary>
     public class UserProxyFactory : IUserProxyFactory
     {
-        IUserProxy IUserProxyFactory.FetchUserProxy(string name)
+        IUserProxy IUserProxyFactory.FetchUserProxy(string companyName, string userName)
         {
-            return UserProxy.Fetch(ClusterClient.Default.GetGrain<IUserGrain>(name));
-        }
-
-        ITeamsProxy IUserProxyFactory.FetchTeamsProxy(long id)
-        {
-            return TeamsProxy.Fetch(ClusterClient.Default.GetGrain<ITeamsGrain>(id));
+            return new UserProxy();
         }
 
         IPositionProxy IUserProxyFactory.FetchPositionProxy(long id)
         {
-            return PositionProxy.Fetch(ClusterClient.Default.GetGrain<IPositionGrain>(id));
+            return new PositionProxy();
         }
     }
 }

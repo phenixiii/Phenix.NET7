@@ -2,11 +2,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Hosting;
+using Phenix.Core;
+using Phenix.Core.Data;
 
 namespace Phenix.Services.Host
 {
@@ -44,16 +45,17 @@ namespace Phenix.Services.Host
                             }).Ignore();
                         }
             };
+            
+            Console.WriteLine("设为调试状态（正式环境下请注释掉）");
+            AppRun.Debugging = true;
 
-            /*
-             * 注册用户资料代理工厂，将身份验证等功能模块部署到Orleans服务集群
-             */
+            Console.WriteLine("填充缺省数据库元数据缓存");
+            Database.Default.MetaData.FillingCache();
+
+            Console.WriteLine("注册用户资料管理代理工厂");
             Phenix.Core.Security.Identity.RegisterFactory(new Phenix.Services.Plugin.UserProxyFactory());
 
-            /*
-             * 构建Host并启动服务
-             * 如第一次启动，可在wwwroot\test目录里打开测试网页，验证服务环境是否正常
-             */
+            Console.WriteLine("构建Host并启动Orleans服务和WebAPI服务");
             _host = CreateHostBuilder(args).Build();
             _host.Run();
         }
@@ -110,18 +112,18 @@ namespace Phenix.Services.Host
                      */
                     .UseKestrel(options =>
                     {
-                        options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(2); //保持活动状态超时
-                        options.Limits.MaxConcurrentConnections = 1000; //客户端最大连接数
-                        options.Limits.MaxConcurrentUpgradedConnections = 1000; //客户端最大连接数（其他协议如Websocket）
+                        options.Limits.MaxConcurrentConnections = 1000 * Environment.ProcessorCount; //客户端最大连接数
+                        options.Limits.MaxConcurrentUpgradedConnections = 1000 * Environment.ProcessorCount; //客户端最大连接数（其他协议如Websocket）
                         options.Limits.MaxRequestBodySize = Int32.MaxValue; //请求正文最大大小
                         options.Limits.MaxRequestBufferSize = Int32.MaxValue; //请求缓存最大大小
-                        options.Limits.MinRequestBodyDataRate =
-                            new MinDataRate(bytesPerSecond: 240, gracePeriod: TimeSpan.FromSeconds(5)); //请求正文最小数据速率
                         options.Limits.MaxResponseBufferSize = Int32.MaxValue; //响应缓存最大大小
-                        options.Limits.MinResponseDataRate =
-                            new MinDataRate(bytesPerSecond: 240, gracePeriod: TimeSpan.FromSeconds(5)); //响应正文最小数据速率
-                        options.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(30); //请求标头超时
+                        //options.Limits.MinRequestBodyDataRate =
+                        //    new MinDataRate(bytesPerSecond: 240, gracePeriod: TimeSpan.FromSeconds(5)); //请求正文最小数据速率
+                        //options.Limits.MinResponseDataRate =
+                        //    new MinDataRate(bytesPerSecond: 240, gracePeriod: TimeSpan.FromSeconds(5)); //响应正文最小数据速率
+                        //options.Limits.RequestHeadersTimeout = TimeSpan.FromMinutes(30); //请求标头超时
                         //options.AllowSynchronousIO = true; //是否允许对请求和响应使用同步 IO
+                        //options.Limits.KeepAliveTimeout = TimeSpan.FromMinutes(2); //保持活动状态超时
                     })
                     .UseUrls(WebHostConfig.Urls) //不部署到IIS环境时请改写为自己系统的端口
                     .UseIISIntegration() //当部署到IIS环境时可以自动搭接ANCM和IIS

@@ -23,7 +23,7 @@ namespace Phenix.Services.Plugin.P6C
             if (identity != null)
             {
                 string value = Guid.NewGuid().ToString();
-                value = String.Format("{0},{1},{2}", Uri.EscapeDataString(identity.Name), value, identity.UserProxy.Encrypt(value));
+                value = String.Format("{0},{1},{2}", Uri.EscapeDataString(identity.UserName), value, identity.UserProxy.Encrypt(value));
                 request.Headers.Add(NetConfig.AuthorizationHeaderName, value);
             }
 

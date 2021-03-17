@@ -18,7 +18,7 @@ namespace Phenix.Services.Plugin.Actor.Security.Cryptography
         /// </summary>
         protected long DiscardIntervalSeconds
         {
-            get { return Id > 0 ? Id : 60; }
+            get { return PrimaryKeyLong > 0 ? PrimaryKeyLong : 60; }
         }
 
         private static readonly SynchronizedDictionary<string, CachedObject<KeyPair>> _cache =

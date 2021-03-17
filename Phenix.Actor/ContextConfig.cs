@@ -3,9 +3,14 @@
     internal static class ContextConfig
     {
         /// <summary>
-        /// CurrentIdentity.Name
+        /// CurrentIdentity.CompanyName
         /// </summary>
-        public const string CurrentIdentityName = "CurrentIdentity.Name";
+        public const string CurrentIdentityCompanyName = "CurrentIdentity.CompanyName";
+
+        /// <summary>
+        /// CurrentIdentity.UserName
+        /// </summary>
+        public const string CurrentIdentityUserName = "CurrentIdentity.UserName";
 
         /// <summary>
         /// CurrentIdentity.CultureName

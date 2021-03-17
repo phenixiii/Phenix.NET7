@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
+using Phenix.Core.Data;
 using Phenix.Services.Plugin.Actor.Security;
 
 namespace Phenix.Services.Plugin.Api.Security
@@ -17,18 +19,24 @@ namespace Phenix.Services.Plugin.Api.Security
 
         // phAjax.checkIn()
         /// <summary>
-        /// 登记/注册(获取动态口令)
+        /// 登记(获取动态口令)/注册(静态口令即登录名)
         /// </summary>
-        /// <param name="name">登录名(未注册则自动注册)</param>
-        /// <param name="phone">手机(注册用可为空)</param>
-        /// <param name="eMail">邮箱(注册用可为空)</param>
-        /// <param name="regAlias">注册昵称(注册用可为空)</param>
+        /// <param name="companyName">公司名</param>
+        /// <param name="userName">登录名</param>
+        /// <param name="phone">手机(注册时可空)</param>
+        /// <param name="eMail">邮箱(注册时可空)</param>
+        /// <param name="regAlias">昵称(注册时可空)</param>
         /// <returns>返回信息</returns>
         [AllowAnonymous]
         [HttpGet]
-        public async Task<string> CheckIn(string name, string phone, string eMail, string regAlias)
+        public async Task<string> CheckIn(string companyName, string userName, string phone, string eMail, string regAlias)
         {
-            return await ClusterClient.Default.GetGrain<IUserGrain>(name).CheckIn(phone, eMail, regAlias, Request.GetRemoteAddress());
+            if (String.IsNullOrEmpty(companyName))
+                throw new ArgumentNullException(nameof(companyName), "公司名不允许为空!");
+            if (String.IsNullOrEmpty(userName))
+                throw new ArgumentNullException(nameof(userName), "登录名不允许为空!");
+
+            return await ClusterClient.Default.GetGrain<IUserGrain>(String.Format("{0}{1}{2}", companyName, Standards.RowSeparator, userName)).CheckIn(phone, eMail, regAlias, Request.GetRemoteAddress());
         }
 
         // phAjax.logon()

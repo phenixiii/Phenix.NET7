@@ -2,15 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <Version>7.5.45</Version>
-    <AssemblyVersion>7.5.45.1210</AssemblyVersion>
-    <FileVersion>7.5.45.1210</FileVersion>
+    <Version>7.5.47</Version>
+    <AssemblyVersion>7.5.47.0301</AssemblyVersion>
+    <FileVersion>7.5.47.0301</FileVersion>
     <Description>Phenix Framework 7.5 for .NET 5</Description>
     <Authors>ming</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <AssemblyName>Phenix.Services.Host</AssemblyName>
     <RootNamespace>Phenix.Services.Host</RootNamespace>
-    <Copyright>Copyright © 2007, 2020 Phenixヾ Studio</Copyright>
+    <Copyright>Copyright © 2007, 2021 Phenixヾ Studio</Copyright>
     <Product>Phenix.Services.Host</Product>
     <PackageId>Phenix.Services.Host</PackageId>
   </PropertyGroup>
@@ -26,11 +26,13 @@
   <PropertyGroup>
     <ServerGarbageCollection>true</ServerGarbageCollection>
     <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
+    <!-- Warning: Setting the following switch is *NOT* recommended in web apps. -->
+    <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.3" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="5.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="5.0.4" />
     <PackageReference Include="Microsoft.Orleans.Client" Version="3.4.1" />
     <PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="3.4.1" />
     <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.4.1">
@@ -40,6 +42,7 @@
     <PackageReference Include="Microsoft.Orleans.OrleansCodeGenerator" Version="3.4.1" />
     <PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="3.4.1" />
     <PackageReference Include="Microsoft.Orleans.Reminders.AdoNet" Version="3.4.1" />
+    <PackageReference Include="Microsoft.Orleans.Serialization.Bond" Version="3.4.1" />
     <PackageReference Include="Microsoft.Orleans.Server" Version="3.4.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.1" />

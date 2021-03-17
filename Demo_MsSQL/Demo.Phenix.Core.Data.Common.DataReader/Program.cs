@@ -42,7 +42,7 @@ namespace Demo
                 Console.WriteLine("数据库中还未有视图，请新建一个用于演示!");
                 Console.Write("如已准备好，请按任意键继续");
                 Console.ReadKey();
-                Database.Default.ResetMetaData();
+                Database.Default.MetaData.ClearViewCache();
             }
             Console.WriteLine();
 

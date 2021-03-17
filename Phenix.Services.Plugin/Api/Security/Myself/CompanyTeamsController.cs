@@ -9,26 +9,24 @@ using Phenix.Services.Plugin.Actor.Security;
 namespace Phenix.Services.Plugin.Api.Security.Myself
 {
     /// <summary>
-    /// 用户团体控制器
+    /// 公司团体控制器
     /// </summary>
-    [Route(Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfRootTeamsNodePath)]
+    [Route(Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfCompanyTeamsPath)]
     [ApiController]
-    public sealed class RootTeamsNodeController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class CompanyTeamsController : Phenix.Core.Net.Api.ControllerBase
     {
         /// <summary>
         /// 添加子节点
         /// </summary>
-        /// <param name="parentId">父节点ID</param>
         /// <param name="name">名称</param>
+        /// <param name="parentId">父节点ID</param>
         /// <returns>子节点ID</returns>
         [CompanyAdminFilter]
         [Authorize]
         [HttpPost]
         public async Task<long> AddChild(string name, long parentId)
         {
-            return User.Identity.RootTeamsProxy != null
-                ? await User.Identity.RootTeamsProxy.AddChildNode(parentId, Teams.Set(p => p.Name, name))
-                : await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).PatchRootTeams(name);
+            return await ClusterClient.Default.GetGrain<ITeamsGrain>(User.Identity.CompanyName).AddChildNode(parentId, Teams.Set(p => p.Name, name));
         }
 
         /// <summary>
@@ -41,7 +39,7 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         [HttpPut]
         public async Task ChangeParent(long id, long parentId)
         {
-            await User.Identity.RootTeamsProxy.ChangeParentNode(id, parentId);
+            await ClusterClient.Default.GetGrain<ITeamsGrain>(User.Identity.CompanyName).ChangeParentNode(id, parentId);
         }
 
         /// <summary>
@@ -54,7 +52,7 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         [HttpPatch]
         public async Task Update(long id, string name)
         {
-            await User.Identity.RootTeamsProxy.UpdateNode(id, Teams.Set(p => p.Name, name));
+            await ClusterClient.Default.GetGrain<ITeamsGrain>(User.Identity.CompanyName).UpdateNode(id, Teams.Set(p => p.Name, name));
         }
 
         /// <summary>
@@ -66,7 +64,7 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         [HttpDelete]
         public async Task<int> Delete(long id)
         {
-            return await User.Identity.RootTeamsProxy.DeleteNode(id);
+            return await ClusterClient.Default.GetGrain<ITeamsGrain>(User.Identity.CompanyName).DeleteBranch(id);
         }
     }
 }

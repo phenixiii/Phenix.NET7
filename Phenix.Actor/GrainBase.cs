@@ -19,135 +19,138 @@ namespace Phenix.Actor
             get { return Database.Default; }
         }
 
-        private Guid? _guid;
+        /// <summary>
+        /// Orleans服务集群客户端
+        /// </summary>
+        protected virtual IClusterClient ClusterClient
+        {
+            get { return Phenix.Actor.ClusterClient.Default; }
+        }
+
+        private string _primaryKeyString;
 
         /// <summary>
-        /// 主键
+        /// 主键String
         /// </summary>
-        protected virtual Guid Guid
+        protected virtual string PrimaryKeyString
         {
             get
             {
-                if (!_guid.HasValue)
+                if (_primaryKeyString == null)
+                {
+                    if (this is IGrainWithStringKey)
+                        SplitPrimaryKeyString();
+                    else
+                        throw new NotImplementedException("仅适用于IGrainWithStringKey接口");
+                }
+
+                return _primaryKeyString;
+            }
+        }
+
+        private Guid? _primaryKeyGuid;
+
+        /// <summary>
+        /// 主键Guid
+        /// </summary>
+        protected virtual Guid PrimaryKeyGuid
+        {
+            get
+            {
+                if (!_primaryKeyGuid.HasValue)
                 {
                     switch (this)
                     {
                         case IGrainWithGuidKey _:
-                            _guid = this.GetPrimaryKey();
+                            _primaryKeyGuid = this.GetPrimaryKey();
                             break;
                         case IGrainWithGuidCompoundKey _:
-                            _guid = this.GetPrimaryKey(out _extensionName);
+                            _primaryKeyGuid = this.GetPrimaryKey(out _primaryKeyExtension);
                             break;
                         default:
-                            throw new NotImplementedException("属性Guid仅能用于实现IGrainWithGuidKey/IGrainWithGuidCompoundKey接口的对象");
+                            throw new NotImplementedException("仅适用于IGrainWithGuidKey/IGrainWithGuidCompoundKey接口");
                     }
                 }
 
-                return _guid.Value;
+                return _primaryKeyGuid.Value;
             }
         }
 
-        private string _name;
+        private long? _primaryKeyLong;
 
         /// <summary>
-        /// 主键
+        /// 主键Long
         /// </summary>
-        protected virtual string Name
+        protected virtual long PrimaryKeyLong
         {
             get
             {
-                if (_name == null)
-                {
-                    if (this is IGrainWithStringKey)
-                        _name = this.GetPrimaryKeyString();
-                    else
-                        throw new NotImplementedException("属性Name仅能用于实现IGrainWithStringKey接口的对象");
-                }
-
-                return _name;
-            }
-        }
-
-        private long? _id;
-
-        /// <summary>
-        /// 主键
-        /// </summary>
-        protected virtual long Id
-        {
-            get
-            {
-                if (!_id.HasValue)
+                if (!_primaryKeyLong.HasValue)
                 {
                     switch (this)
                     {
                         case IGrainWithIntegerKey _:
-                            _id = this.GetPrimaryKeyLong();
+                            _primaryKeyLong = this.GetPrimaryKeyLong();
                             break;
                         case IGrainWithIntegerCompoundKey _:
-                            _id = this.GetPrimaryKeyLong(out _extensionName);
+                            _primaryKeyLong = this.GetPrimaryKeyLong(out _primaryKeyExtension);
                             break;
                         default:
-                            throw new NotImplementedException("属性ID仅能用于实现IGrainWithIntegerKey/IGrainWithIntegerCompoundKey接口的对象");
+                            throw new NotImplementedException("仅适用于IGrainWithIntegerKey/IGrainWithIntegerCompoundKey接口");
                     }
                 }
 
-                return _id.Value;
+                return _primaryKeyLong.Value;
             }
         }
 
-        private string _extensionName;
+        private string _primaryKeyExtension;
 
         /// <summary>
         /// 扩展主键
         /// </summary>
-        protected virtual string ExtensionName
+        protected virtual string PrimaryKeyExtension
         {
             get
             {
-                if (_extensionName == null)
+                if (_primaryKeyExtension == null)
                 {
                     switch (this)
                     {
+                        case IGrainWithStringKey _:
+                            SplitPrimaryKeyString();
+                            break;
                         case IGrainWithIntegerCompoundKey _:
-                            _id = this.GetPrimaryKeyLong(out _extensionName);
+                            _primaryKeyLong = this.GetPrimaryKeyLong(out _primaryKeyExtension);
                             break;
                         case IGrainWithGuidCompoundKey _:
-                            _guid = this.GetPrimaryKey(out _extensionName);
+                            _primaryKeyGuid = this.GetPrimaryKey(out _primaryKeyExtension);
                             break;
                         default:
-                            throw new NotImplementedException("属性ExtensionName仅能用于实现IGrainWithIntegerCompoundKey/IGrainWithGuidCompoundKey接口的对象");
+                            throw new NotImplementedException("仅适用于IGrainWithIntegerCompoundKey/IGrainWithGuidCompoundKey接口");
                     }
                 }
 
-                return _extensionName;
+                return _primaryKeyExtension;
             }
         }
 
-        private long? _extensionId;
+        #endregion
 
-        /// <summary>
-        /// 扩展主键
-        /// </summary>
-        protected virtual long ExtensionId
+        #region 方法
+
+        private void SplitPrimaryKeyString()
         {
-            get
+            string primaryKeyString = this.GetPrimaryKeyString();
+            string[] strings = primaryKeyString.Split(Standards.RowSeparator);
+            if (strings.Length == 2)
             {
-                if (!_extensionId.HasValue)
-                {
-                    switch (this)
-                    {
-                        case IGrainWithIntegerCompoundKey _:
-                        case IGrainWithGuidCompoundKey _:
-                            _extensionId = Int64.Parse(ExtensionName);
-                            break;
-                        default:
-                            throw new NotImplementedException("属性ExtensionId仅能用于实现IGrainWithIntegerCompoundKey/IGrainWithGuidCompoundKey接口的对象");
-                    }
-                }
+                _primaryKeyString = strings[0];
+                _primaryKeyExtension = strings[1];
 
-                return _extensionId.Value;
             }
+            else
+                _primaryKeyString = primaryKeyString;
         }
 
         #endregion

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Orleans;
+﻿using Orleans;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Expressions;
 using Phenix.Core.Data.Model;
 using Phenix.Core.Reflection;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Phenix.Actor
 {
@@ -36,7 +37,7 @@ namespace Phenix.Actor
                 if (_kernel == null)
                 {
                     if (this is IGrainWithIntegerKey)
-                        _kernel = EntityBase<TKernel>.FetchRoot(Database, p => p.PrimaryKeyLong == Id);
+                        _kernel = EntityBase<TKernel>.FetchRoot(Database, p => p.PrimaryKeyLong == PrimaryKeyLong);
                 }
 
                 return _kernel;
@@ -99,8 +100,8 @@ namespace Phenix.Actor
         {
             if (Kernel != null)
                 Kernel.UpdateSelf(propertyValues);
-            else if (this is IGrainWithIntegerKey || this is IGrainWithIntegerCompoundKey)
-                EntityBase<TKernel>.New(Database, Id, propertyValues).InsertSelf();
+            else if (this is IGrainWithIntegerKey)
+                EntityBase<TKernel>.New(Database, PrimaryKeyLong, propertyValues).InsertSelf();
             else
                 EntityBase<TKernel>.New(Database, propertyValues).InsertSelf();
         }
@@ -130,6 +131,9 @@ namespace Phenix.Actor
         /// <returns>属性值</returns>
         protected virtual object GetKernelProperty(string propertyName)
         {
+            if (Kernel == null)
+                throw new InvalidOperationException("获取不到空根实体对象的属性值!");
+
             return Utilities.GetMemberValue(Kernel, propertyName);
         }
 

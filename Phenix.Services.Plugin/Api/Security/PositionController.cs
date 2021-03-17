@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Data;
-using Phenix.Core.Net.Filters;
 using Phenix.Services.Plugin.Actor.Security;
 
 namespace Phenix.Services.Plugin.Api.Security
@@ -37,18 +36,6 @@ namespace Phenix.Services.Plugin.Api.Security
         public async Task<Phenix.Core.Security.Position> Get(long id)
         {
             return await ClusterClient.Default.GetGrain<IPositionGrain>(id).FetchKernel();
-        }
-
-        /// <summary>
-        /// 更新岗位资料(如不存在则新增)
-        /// </summary>
-        /// <param name="position">岗位资料</param>
-        [SystemAdminFilter]
-        [Authorize]
-        [HttpPatch]
-        public async Task Patch([FromBody] Phenix.Core.Security.Position position)
-        {
-            await ClusterClient.Default.GetGrain<IPositionGrain>(position.Id).PatchKernel(position);
         }
     }
 }

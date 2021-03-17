@@ -63,11 +63,11 @@
 <body>
     请启动 Phenix.Services.Host 程序<br />
     <br />
-    普通用户登录<br />
-    新(/已注册)的登录名<input id="userName" type="text" value="TEST" />
-    <input name="checkInButton" onclick="phAjax.checkIn({baseAddress: 'http://localhost.:5000', name: userName.value, onComplete: onComplete});" type="button" value="登记/注册" /><br />
-    动态口令/登录口令<input id="userPassword" type="text" value="请在此输入日志文件里的口令" />
-    <input name="logonButton" onclick="phAjax.logon({name: userName.value, password: userPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
+    登录<br />
+    公司名<input id="companyName" type="text" value="公司名不允许重复" />
+    登录名<input id="userName" type="text" value="登录名不允许重复" />
+    口令<input id="userPassword" type="text" value="口令即登录名" />
+    <input name="logonButton" onclick="phAjax.logon({companyName: companyName.value, userName: userName.value, password: userPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
     <br />
     <input name="getMyselfButton" onclick="getMyself();" type="button" value="获取自己资料" /><br />
     <br />

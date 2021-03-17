@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Phenix.Actor;
-using Phenix.Core.Actor;
 using Phenix.Core.Message;
 
 namespace Phenix.Services.Plugin.Api.Message
@@ -24,7 +22,7 @@ namespace Phenix.Services.Plugin.Api.Message
         [HttpGet]
         public IDictionary<long, string> Receive()
         {
-            return UserMessage.Receive(User.Identity.Name);
+            return UserMessage.Receive(User.Identity.UserName);
         }
 
         // phAjax.sendMessage()
@@ -37,7 +35,7 @@ namespace Phenix.Services.Plugin.Api.Message
         [HttpPut]
         public async Task Send(long id, string receiver)
         {
-            UserMessage.Send(new UserMessageInfo(id, User.Identity.Name, receiver, await Request.ReadBodyAsStringAsync()));
+            UserMessage.Send(new UserMessageInfo(id, User.Identity.UserName, receiver, await Request.ReadBodyAsStringAsync()));
         }
 
         // phAjax.sendMessage()
@@ -52,7 +50,7 @@ namespace Phenix.Services.Plugin.Api.Message
             string content = await Request.ReadBodyAsStringAsync();
             //测试分组消息的推送
             //await ClusterClient.Default.GetStreamProvider().GetStream<string>(ActorConfig.GroupMessageStreamId, receiver).OnNextAsync(content);
-            UserMessage.Send(User.Identity.Name, receiver, content);
+            UserMessage.Send(User.Identity.UserName, receiver, content);
         }
 
         // phAjax.affirmReceivedMessage()

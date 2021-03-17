@@ -27,7 +27,7 @@ namespace Phenix.Actor
                 if (_kernel == null)
                 {
                     if (this is IGrainWithIntegerKey)
-                        _kernel = TreeEntityBase<TKernel>.FetchTree(Database, p => p.Id == Id);
+                        _kernel = TreeEntityBase<TKernel>.FetchTree(Database, p => p.Id == PrimaryKeyLong);
                 }
 
                 return _kernel;
@@ -47,8 +47,8 @@ namespace Phenix.Actor
         {
             if (Kernel != null)
                 Kernel.UpdateSelf(propertyValues);
-            else if (this is IGrainWithIntegerKey || this is IGrainWithIntegerCompoundKey)
-                TreeEntityBase<TKernel>.NewRoot(Database, Id, propertyValues).InsertSelf();
+            else if (this is IGrainWithIntegerKey)
+                TreeEntityBase<TKernel>.NewRoot(Database, PrimaryKeyLong, propertyValues).InsertSelf();
             else
                 TreeEntityBase<TKernel>.NewRoot(Database, propertyValues).InsertSelf();
         }

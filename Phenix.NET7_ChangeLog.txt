@@ -1,5 +1,5 @@
 Phenix Framework 7.5 for .net 5
-Copyright © 2007, 2020 Phenixヾ Studio
+Copyright © 2007, 2021 Phenixヾ Studio
 
 发布地址：https://github.com/phenixiii/Phenix.NET7
 技术交流群：206648373
@@ -192,7 +192,7 @@ Copyright © 2007, 2020 Phenixヾ Studio
 
 20201021
 1，改写Phenix.Services.Host自动加载插件服务（"*.Plugin.dll"）、扩展服务（"*.Extend.dll"）的方法
-2，改写Phenix.Actor自动编译插件服务（"*.Plugin.dll"）、契约服务（"*.Contract.dll"）的方法
+2，改写Phenix.Actor工程中自动编译插件服务（"*.Plugin.dll"）、契约服务（"*.Contract.dll"）的方法
 
 
 20201030
@@ -214,11 +214,8 @@ Copyright © 2007, 2020 Phenixヾ Studio
 5，修改Phenix.Tools.BusinessBuilder和Phenix.Tools.EntityBuilder工程，默认都打上映射标签
 
 
-
-
-待完成：
-3，提供《Phenix.NET7.服务升级方法》
-2，提供《Phenix.NET7.身份验证方法.doc》
-3，适配双活数据中心的Actor状态跨地域同步机制
+20210301
+1，提供适配企业级SaaS系统的权限管理模块，包括企业会员的注册功能、管理自己公司的组织架构、添加和编辑自己员工的登录权限
+2，优化用户身份验证功能
 
 

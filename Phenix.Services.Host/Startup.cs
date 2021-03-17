@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -182,7 +180,7 @@ namespace Phenix.Services.Host
              * 使用身份验证中间件
              * 与客户端接口 phenix.js 一起实现用户的身份验证功能
              * 你也可以开发自己的客户端接口（比如桌面端、APP应用端），仅需在报文上添加身份验证 Header
-             * 身份验证 Header 格式为 Phenix-Authorization=[登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)]
+             * 身份验证 Header 格式为 Phenix-Authorization=[公司名],[登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)]
              * 登录口令/动态口令应该通过第三方渠道（邮箱或短信）推送给到用户，由用户输入到系统提供的客户端登录界面上，用于加密时间戳生成报文的签名
              * 用户登录成功后，客户端程序要将二次MD5登录口令/动态口令缓存在本地，以便每次向服务端发起 call 时都能为报文添加上 Phenix-Authorization
              * 如果报文上没有 Phenix-Authorization 身份验证 Header，会被 Phenix.Core.Net.AuthenticationMiddleware 当作是匿名用户
@@ -190,8 +188,6 @@ namespace Phenix.Services.Host
              *
              * 验证失败的话 context.Response.StatusCode = 401 Unauthorized，失败详情见报文体
              * 验证成功的话 Phenix.Core.Security.Identity.CurrentIdentity.IsAuthenticated = true 且 context.User 会被赋值为 new ClaimsPrincipal(Phenix.Core.Security.Identity.CurrentIdentity)
-             *
-             * 鉴于登录名及注册时传递的手机号、邮箱等都是明文传输，建议为 WebAPI 服务前置的 Nginx 服务/负载均衡服务器挂上 SSL 证书，启用 HTTPS 协议
              *
              * 系统管理员的登录名是‘ADMIN’，初始登录口令也是‘ADMIN’（注意是大写），系统正式运行之前请更改口令
              */

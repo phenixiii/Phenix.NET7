@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
+using Phenix.Core.Data;
 using Phenix.Core.Net.Filters;
+using Phenix.Core.Security;
 using Phenix.Services.Plugin.Actor.Security;
 
 namespace Phenix.Services.Plugin.Api.Security.Myself
@@ -23,16 +26,16 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         [HttpGet]
         public async Task<string> Get()
         {
-            return await EncryptAsync(await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).FetchCompanyUsers());
+            return await EncryptAsync(await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).FetchCompanyUsers());
         }
 
         /// <summary>
-        /// 登记/注册公司用户
+        /// 注册公司用户资料
         /// </summary>
         /// <param name="name">登录名</param>
-        /// <param name="phone">手机(注册用可为空)</param>
-        /// <param name="eMail">邮箱(注册用可为空)</param>
-        /// <param name="regAlias">注册昵称(注册用可为空)</param>
+        /// <param name="phone">手机(注册时可空)</param>
+        /// <param name="eMail">邮箱(注册时可空)</param>
+        /// <param name="regAlias">昵称(注册时可空)</param>
         /// <param name="teamsId">所属团体ID</param>
         /// <param name="positionId">担任岗位ID</param>
         /// <returns>返回信息</returns>
@@ -41,7 +44,10 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         [HttpPut]
         public async Task<string> Put(string name, string phone, string eMail, string regAlias, long teamsId, long positionId)
         {
-            return await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).RegisterCompanyUser(name, phone, eMail, regAlias, Request.GetRemoteAddress(), teamsId, positionId);
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException(nameof(name), "登录名不允许为空!");
+
+            return await ClusterClient.Default.GetGrain<IUserGrain>(String.Format("{0}{1}{2}", User.Identity.CompanyName, Standards.RowSeparator, name)).Register(phone, eMail, regAlias, Request.GetRemoteAddress(), teamsId, positionId);
         }
 
         /// <summary>
@@ -53,7 +59,10 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
         [HttpPatch]
         public async Task Patch(string name)
         {
-            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.Name).PatchCompanyUser(name, await Request.ReadBodyAsDictionaryAsync(true));
+            if (String.IsNullOrEmpty(name))
+                throw new ArgumentNullException(nameof(name), "登录名不允许为空!");
+            
+            await ClusterClient.Default.GetGrain<IUserGrain>(String.Format("{0}{1}{2}", User.Identity.CompanyName, Standards.RowSeparator, name)).PatchKernel(await Request.ReadBodyAsync<User>(true));
         }
     }
 }

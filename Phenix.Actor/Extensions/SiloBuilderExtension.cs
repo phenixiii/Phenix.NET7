@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Orleans.Configuration;
 using Orleans.Runtime;
 using Orleans.Runtime.Messaging;
+using Orleans.Serialization;
 using Phenix.Actor;
 using Phenix.Core.Log;
 using Phenix.Core.Security;
@@ -34,7 +35,7 @@ namespace Orleans.Hosting
         public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder)
         {
             return ConfigureCluster(builder, OrleansConfig.ClusterId, OrleansConfig.ServiceId,
-               OrleansConfig.DefaultGrainCollectionAgeMinutes, OrleansConfig.ConnectionString, OrleansConfig.DefaultSiloPort, OrleansConfig.DefaultGatewayPort);
+                OrleansConfig.DefaultGrainCollectionAgeMinutes, OrleansConfig.ConnectionString, OrleansConfig.DefaultSiloPort, OrleansConfig.DefaultGatewayPort);
         }
 
         /// <summary>
@@ -48,10 +49,15 @@ namespace Orleans.Hosting
         /// <param name="siloPort">Silo端口</param>
         /// <param name="gatewayPort">Gateway端口</param>
         /// <returns>ISiloBuilder</returns>
-        public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder, string clusterId, string serviceId, 
+        public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder, string clusterId, string serviceId,
             int grainCollectionAgeMinutes, string connectionString, int siloPort, int gatewayPort)
         {
             return builder
+                .Configure<SerializationProviderOptions>(options =>
+                {
+                    options.SerializationProviders.Add(typeof(BondSerializer));
+                    options.FallbackSerializationProvider = typeof(BondSerializer);
+                })
                 .Configure<ConnectionOptions>(options => { options.ProtocolVersion = NetworkProtocolVersion.Version2; })
                 .Configure<ClusterOptions>(options =>
                 {
@@ -120,12 +126,15 @@ namespace Orleans.Hosting
                     foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
                         parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
                 })
-                .AddSimpleMessageStreamProvider(StreamProviderExtension.StreamProviderName)
+                .AddSimpleMessageStreamProvider(StreamProviderProxy.StreamProviderName)
                 .AddMemoryGrainStorage("PubSubStore") //正式环境下请使用Event Hubs、ServiceBus、Azure Queues、Apache Kafka之一，要么自己实现PersistentStreamProvider组件
                 .AddIncomingGrainCallFilter(context =>
                 {
-                    Identity.CurrentIdentity = context.Grain is ISecurityContext && RequestContext.Get(ContextConfig.CurrentIdentityName) is string identityName && RequestContext.Get(ContextConfig.CurrentIdentityCultureName) is string identityCultureName
-                        ? Identity.Fetch(identityName, identityCultureName)
+                    Identity.CurrentIdentity = context.Grain is ISecurityContext &&
+                                               RequestContext.Get(ContextConfig.CurrentIdentityCompanyName) is string companyName &&
+                                               RequestContext.Get(ContextConfig.CurrentIdentityUserName) is string userName &&
+                                               RequestContext.Get(ContextConfig.CurrentIdentityCultureName) is string cultureName
+                        ? Identity.Fetch(companyName, userName, cultureName)
                         : null;
 
                     if (context.Grain is ITraceLogContext && RequestContext.Get(ContextConfig.traceKey) is long traceKey && RequestContext.Get(ContextConfig.traceOrder) is int traceOrder)

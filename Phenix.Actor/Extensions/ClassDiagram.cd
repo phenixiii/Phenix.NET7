@@ -7,11 +7,18 @@
       <FileName>Extensions\SiloBuilderExtension.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Phenix.Actor.StreamProviderExtension">
-    <Position X="3" Y="0.5" Width="2.25" />
+  <Class Name="Phenix.Actor.StreamProviderProxy">
+    <Position X="3" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Extensions\StreamProviderExtension.cs</FileName>
+      <FileName>Extensions\StreamProviderProxy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Actor.GrainProxy">
+    <Position X="5.25" Y="0.5" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAQAAAAAAAAAAQAAAAAgAQAAAAIAAAAAQCA=</HashCode>
+      <FileName>Extensions\GrainProxy.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Microsoft YaHei UI" Size="9" />

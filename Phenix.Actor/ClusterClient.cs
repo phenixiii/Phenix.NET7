@@ -7,6 +7,7 @@ using Orleans.Configuration;
 using Orleans.Hosting;
 using Orleans.Runtime;
 using Orleans.Runtime.Messaging;
+using Orleans.Serialization;
 using Phenix.Core.Log;
 using Phenix.Core.Security;
 using Phenix.Core.SyncCollections;
@@ -62,6 +63,11 @@ namespace Phenix.Actor
             return _cache.GetValue(String.Format("{0}*{1}", clusterId, serviceId), () =>
             {
                 IClusterClient value = new ClientBuilder()
+                    .Configure<SerializationProviderOptions>(options =>
+                    {
+                        options.SerializationProviders.Add(typeof(BondSerializer));
+                        options.FallbackSerializationProvider = typeof(BondSerializer);
+                    })
                     .Configure<ConnectionOptions>(options => { options.ProtocolVersion = NetworkProtocolVersion.Version2; })
                     .Configure<ClusterOptions>(options =>
                     {
@@ -96,7 +102,7 @@ namespace Phenix.Actor
                         foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
                             parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
                     })
-                    .AddSimpleMessageStreamProvider(StreamProviderExtension.StreamProviderName)
+                    .AddSimpleMessageStreamProvider(StreamProviderProxy.StreamProviderName)
                     .AddOutgoingGrainCallFilter(context =>
                     {
                         if (context.Grain is ISecurityContext)
@@ -104,7 +110,8 @@ namespace Phenix.Actor
                             Identity currentIdentity = Identity.CurrentIdentity;
                             if (currentIdentity != null)
                             {
-                                RequestContext.Set(ContextConfig.CurrentIdentityName, currentIdentity.Name);
+                                RequestContext.Set(ContextConfig.CurrentIdentityCompanyName, currentIdentity.CompanyName);
+                                RequestContext.Set(ContextConfig.CurrentIdentityUserName, currentIdentity.UserName);
                                 RequestContext.Set(ContextConfig.CurrentIdentityCultureName, currentIdentity.CultureName);
                             }
                         }

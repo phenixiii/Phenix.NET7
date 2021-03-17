@@ -4,106 +4,6 @@
         <name>Phenix.Core</name>
     </assembly>
     <members>
-        <member name="T:Phenix.Core.Actor.ActorConfig">
-            <summary>
-             Actor配置信息
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Actor.ActorConfig.GroupMessageStreamId">
-            <summary>
-            分组消息StreamId
-            </summary>
-        </member>
-        <member name="T:Phenix.Core.Actor.IEntityGrainProxy`1">
-            <summary>
-            实体Grain代理接口
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Actor.IEntityGrainProxy`1.ExistKernel">
-            <summary>
-            存在根实体对象
-            </summary>
-            <returns>是否存在</returns>
-        </member>
-        <member name="M:Phenix.Core.Actor.IEntityGrainProxy`1.FetchKernel">
-            <summary>
-            获取根实体对象
-            </summary>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Actor.IEntityGrainProxy`1.PatchKernel(`0)">
-            <summary>
-            更新根实体对象(如不存在则新增)
-            </summary>
-            <param name="source">数据源</param>
-        </member>
-        <member name="M:Phenix.Core.Actor.IEntityGrainProxy`1.PatchKernel(Phenix.Core.Data.Expressions.NameValue[])">
-            <summary>
-            更新根实体对象(如不存在则新增)
-            </summary>
-            <param name="propertyValues">待更新属性值队列</param>
-        </member>
-        <member name="M:Phenix.Core.Actor.IEntityGrainProxy`1.PatchKernel(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            更新根实体对象(如不存在则新增)
-            </summary>
-            <param name="propertyValues">待更新属性值队列</param>
-        </member>
-        <member name="M:Phenix.Core.Actor.IEntityGrainProxy`1.GetKernelProperty``1(System.Linq.Expressions.Expression{System.Func{`0,System.Object}})">
-            <summary>
-            获取根实体对象属性值
-            </summary>
-            <param name="propertyLambda">含类属性的 lambda 表达式</param>
-            <returns>属性值</returns>
-        </member>
-        <member name="T:Phenix.Core.Actor.ITreeEntityGrainProxy`1">
-            <summary>
-            实体Grain代理接口
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Actor.ITreeEntityGrainProxy`1.AddChildNode(System.Int64,Phenix.Core.Data.Expressions.NameValue[])">
-            <summary>
-            添加子节点
-            </summary>
-            <param name="parentId">父节点ID</param>
-            <param name="propertyValues">待更新属性值队列</param>
-            <returns>子节点ID</returns>
-        </member>
-        <member name="M:Phenix.Core.Actor.ITreeEntityGrainProxy`1.AddChildNode(System.Int64,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            添加子节点
-            </summary>
-            <param name="parentId">父节点ID</param>
-            <param name="propertyValues">待更新属性值队列</param>
-            <returns>子节点ID</returns>
-        </member>
-        <member name="M:Phenix.Core.Actor.ITreeEntityGrainProxy`1.ChangeParentNode(System.Int64,System.Int64)">
-            <summary>
-            更改父节点
-            </summary>
-            <param name="id">节点ID</param>
-            <param name="parentId">父节点ID</param>
-        </member>
-        <member name="M:Phenix.Core.Actor.ITreeEntityGrainProxy`1.UpdateNode(System.Int64,Phenix.Core.Data.Expressions.NameValue[])">
-            <summary>
-            更新节点
-            </summary>
-            <param name="id">节点ID</param>
-            <param name="propertyValues">待更新属性值队列</param>
-        </member>
-        <member name="M:Phenix.Core.Actor.ITreeEntityGrainProxy`1.UpdateNode(System.Int64,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            更新节点
-            </summary>
-            <param name="id">节点ID</param>
-            <param name="propertyValues">待更新属性值队列</param>
-        </member>
-        <member name="M:Phenix.Core.Actor.ITreeEntityGrainProxy`1.DeleteNode(System.Int64)">
-            <summary>
-            删除节点枝杈
-            </summary>
-            <param name="id">节点ID</param>
-        </member>
         <member name="T:Phenix.Core.AppRun">
             <summary>
             应用系统执行
@@ -2032,11 +1932,6 @@
         <member name="P:Phenix.Core.Data.Database.Handles">
             <summary>
             实际操作的数据库入口(0为主库序号，1-N为分库序号)
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Database.ResetMetaData">
-            <summary>
-            重置元数据
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Database.GetHandle(System.Object)">
@@ -5321,7 +5216,7 @@
         <member name="P:Phenix.Core.Data.Schema.Column.FieldNameByTrimColumnName">
             <summary>
             字段名是否取自被整理的字段名(如果第1-PrefixCount位后是"_"则剔去其及之前的字符)
-            默认：false
+            默认：true
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Schema.Column.PrefixCount">
@@ -5654,9 +5549,19 @@
             视图清单
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.MetaData.RefreshCache">
+        <member name="M:Phenix.Core.Data.Schema.MetaData.ClearTableCache">
             <summary>
             刷新缓存
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.MetaData.ClearViewCache">
+            <summary>
+            刷新缓存
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.MetaData.FillingCache">
+            <summary>
+            填充缓存
             </summary>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheet(System.String,System.Boolean)">
@@ -9686,14 +9591,14 @@
             /api/security/myself/password
             </summary>
         </member>
-        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfRootTeamsPath">
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfCompanyPath">
             <summary>
-            /api/security/myself/root-teams
+            /api/security/myself/company
             </summary>
         </member>
-        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfRootTeamsNodePath">
+        <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfCompanyTeamsPath">
             <summary>
-            /api/security/myself/root-teams-node
+            /api/security/myself/company-teams
             </summary>
         </member>
         <member name="F:Phenix.Core.Net.Api.ApiConfig.ApiSecurityMyselfCompanyUserPath">
@@ -10040,18 +9945,6 @@
             </summary>
         </member>
         <member name="M:Phenix.Core.Net.Filters.ControllerRole.CheckValidityAsync(Phenix.Core.Security.Identity,Microsoft.AspNetCore.Http.HttpContext)">
-            <summary>
-            检查有效性
-            </summary>
-            <param name="identity">用户身份</param>
-            <param name="context">HttpContext</param>
-        </member>
-        <member name="T:Phenix.Core.Net.Filters.SystemAdminFilterAttribute">
-            <summary>
-            系统管理员过滤器
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Net.Filters.SystemAdminFilterAttribute.CheckValidity(Phenix.Core.Security.Identity,Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
             检查有效性
             </summary>
@@ -11354,10 +11247,11 @@
             默认：1
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.Identity.Fetch(System.String,System.String,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Security.Identity.Fetch(System.String,System.String,System.String,System.Nullable{System.Int32})">
             <summary>
             获取用户身份
             </summary>
+            <param name="companyName">公司名</param>
             <param name="userName">登录名</param>
             <param name="cultureName">区域性名称</param>
             <param name="cacheDiscardIntervalHours">缓存丢弃间隔(小时)</param>
@@ -11368,7 +11262,17 @@
             当前用户身份
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.Identity.Name">
+        <member name="P:Phenix.Core.Security.Identity.PrimaryKey">
+            <summary>
+            PrimaryKey
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Identity.CompanyName">
+            <summary>
+            公司名
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Identity.UserName">
             <summary>
             登录名
             </summary>
@@ -11383,16 +11287,6 @@
             用户资料代理
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.Identity.RootTeamsProxy">
-            <summary>
-            团队资料代理
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.Identity.PositionProxy">
-            <summary>
-            岗位资料代理
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Security.Identity.Id">
             <summary>
             主键属性(映射表ID字段)
@@ -11401,6 +11295,26 @@
         <member name="P:Phenix.Core.Security.Identity.IsAuthenticated">
             <summary>
             已身份验证?
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Identity.RootTeamsId">
+            <summary>
+            所属公司ID
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Identity.TeamsId">
+            <summary>
+            所属部门ID
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Identity.PositionId">
+            <summary>
+            岗位资料ID
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Identity.PositionProxy">
+            <summary>
+            岗位资料代理
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.Identity.AuthenticationType">
@@ -11420,20 +11334,17 @@
             <param name="role">角色</param>
             <returns>属于指定的角色</returns>
         </member>
-        <member name="T:Phenix.Core.Security.ITeamsProxy">
-            <summary>
-            团体资料代理接口
-            </summary>
-        </member>
         <member name="T:Phenix.Core.Security.IUserProxy">
             <summary>
             用户资料代理接口
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.IUserProxy.IsValidLogon(System.String,System.String,System.String,System.String,System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Security.IUserProxy.IsValidLogon(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean)">
             <summary>
             核对登录有效性
             </summary>
+            <param name="companyName">公司名</param>
+            <param name="userName">登录名</param>
             <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
             <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
             <param name="tag">捎带数据(未解密, 默认是客户端当前时间)</param>
@@ -11442,10 +11353,12 @@
             <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
             <returns>是否正确</returns>
         </member>
-        <member name="M:Phenix.Core.Security.IUserProxy.IsValid(System.String,System.String,System.String,System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Security.IUserProxy.IsValid(System.String,System.String,System.String,System.String,System.String,System.String,System.Boolean)">
             <summary>
             核对有效性
             </summary>
+            <param name="companyName">公司名</param>
+            <param name="userName">登录名</param>
             <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
             <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
             <param name="requestAddress">服务请求方IP地址</param>
@@ -11467,22 +11380,24 @@
             </summary>
             <param name="cipherText">密文(Base64字符串)</param>
         </member>
+        <member name="M:Phenix.Core.Security.IUserProxy.GetKernelProperty``1(System.Linq.Expressions.Expression{System.Func{Phenix.Core.Security.User,System.Object}})">
+            <summary>
+            获取根实体对象属性值
+            </summary>
+            <param name="propertyLambda">含类属性的 lambda 表达式</param>
+            <returns>属性值</returns>
+        </member>
         <member name="T:Phenix.Core.Security.IUserProxyFactory">
             <summary>
             用户资料代理工厂接口
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.IUserProxyFactory.FetchUserProxy(System.String)">
+        <member name="M:Phenix.Core.Security.IUserProxyFactory.FetchUserProxy(System.String,System.String)">
             <summary>
             获取用户资料代理
             </summary>
-            <param name="name">名称</param>
-        </member>
-        <member name="M:Phenix.Core.Security.IUserProxyFactory.FetchTeamsProxy(System.Int64)">
-            <summary>
-            获取团体资料代理
-            </summary>
-            <param name="id">主键</param>
+            <param name="companyName">公司名</param>
+            <param name="userName">登录名</param>
         </member>
         <member name="M:Phenix.Core.Security.IUserProxyFactory.FetchPositionProxy(System.Int64)">
             <summary>
@@ -11495,13 +11410,12 @@
             用户资料服务接口
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.IUserService.OnRegistered(Phenix.Core.Security.User,System.String,System.String)">
+        <member name="M:Phenix.Core.Security.IUserService.OnRegistered(Phenix.Core.Security.User,System.String)">
             <summary>
             注册成功
             </summary>
             <param name="user">用户资料</param>
             <param name="initialPassword">初始口令</param>
-            <param name="dynamicPassword">动态口令</param>
             <returns>返回消息</returns>
         </member>
         <member name="M:Phenix.Core.Security.IUserService.OnCheckIn(Phenix.Core.Security.User,System.String)">
@@ -11530,29 +11444,14 @@
             for CreateInstance
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.Position._id">
-            <summary>
-            主键
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Security.Position.Id">
             <summary>
             主键
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.Position._name">
-            <summary>
-            名称
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Security.Position.Name">
             <summary>
             名称
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.Position._roles">
-            <summary>
-            角色清单
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.Position.Roles">
@@ -11610,11 +11509,6 @@
             for CreateInstance
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.Teams._name">
-            <summary>
-            名称
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Security.Teams.Name">
             <summary>
             名称
@@ -11633,16 +11527,6 @@
         <member name="M:Phenix.Core.Security.User.#ctor">
             <summary>
             for CreateInstance
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User.GuestUserName">
-            <summary>
-            Guest登录名
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User.SystemAdminUserName">
-            <summary>
-            系统管理员登录名
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.RequestFailureCountMaximum">
@@ -11705,19 +11589,9 @@
             默认：false
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.User._id">
-            <summary>
-            主键
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Security.User.Id">
             <summary>
             主键
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User._name">
-            <summary>
-            登录名
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.Name">
@@ -11725,19 +11599,9 @@
             登录名
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.User._phone">
-            <summary>
-            手机
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Security.User.Phone">
             <summary>
             手机
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User._eMail">
-            <summary>
-            邮箱
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.EMail">
@@ -11745,19 +11609,9 @@
             邮箱
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.User._regAlias">
-            <summary>
-            注册昵称
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Security.User.RegAlias">
             <summary>
             注册昵称
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User._regTime">
-            <summary>
-            注册时间
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.RegTime">
@@ -11765,19 +11619,9 @@
             注册时间
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.User._requestAddress">
-            <summary>
-            服务请求方IP地址
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Security.User.RequestAddress">
             <summary>
             服务请求方IP地址
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User._requestSession">
-            <summary>
-            服务请求会话签名
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.RequestSession">
@@ -11785,19 +11629,9 @@
             服务请求会话签名
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.User._requestFailureCount">
-            <summary>
-            服务请求失败次数
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Security.User.RequestFailureCount">
             <summary>
             服务请求失败次数
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User._requestFailureTime">
-            <summary>
-            服务请求失败时间
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.RequestFailureTime">
@@ -11805,29 +11639,14 @@
             服务请求失败时间
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.User._rootTeamsId">
-            <summary>
-            所属顶层团体ID
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Security.User.RootTeamsId">
             <summary>
-            所属顶层团体ID
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User._teamsId">
-            <summary>
-            所属团体ID
+            所属公司ID
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.TeamsId">
             <summary>
-            所属团体ID
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User._positionId">
-            <summary>
-            担任岗位ID
+            所属部门ID
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.PositionId">
@@ -11835,19 +11654,9 @@
             担任岗位ID
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.User._locked">
-            <summary>
-            是否锁定
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Security.User.Locked">
             <summary>
             是否锁定
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User._lockedTime">
-            <summary>
-            锁定时间
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.LockedTime">
@@ -11855,19 +11664,9 @@
             锁定时间
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.User._disabled">
-            <summary>
-            是否注销
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Security.User.Disabled">
             <summary>
             是否注销
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User._disabledTime">
-            <summary>
-            注销时间
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.DisabledTime">
@@ -11875,20 +11674,9 @@
             注销时间
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.User._password">
-            <summary>
-            登录口令(散列值)
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Security.User.Password">
             <summary>
             登录口令(散列值)
-            </summary>
-        </member>
-        <member name="F:Phenix.Core.Security.User._dynamicPassword">
-            <summary>
-            动态口令(散列值)
-            为空时用登录口令
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.DynamicPassword">
@@ -11897,19 +11685,9 @@
             为空时用登录口令
             </summary>
         </member>
-        <member name="F:Phenix.Core.Security.User._dynamicPasswordCreateTime">
-            <summary>
-            动态口令生成时间
-            </summary>
-        </member>
         <member name="P:Phenix.Core.Security.User.DynamicPasswordCreateTime">
             <summary>
             动态口令生成时间
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User.IsSystemAdmin">
-            <summary>
-            是否系统管理员?
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.IsCompanyAdmin">
@@ -12020,29 +11798,20 @@
             注销
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.User.Register(Phenix.Core.Data.Database,System.String,System.String,System.String,System.String,System.String,System.Nullable{System.Int64},System.Nullable{System.Int64},System.Nullable{System.Int64},System.String@,System.String@,System.Boolean)">
+        <member name="M:Phenix.Core.Security.User.Register(Phenix.Core.Data.Database,System.String,System.String,System.String,System.String,System.String,System.Int64,System.Int64,System.Nullable{System.Int64},System.String@)">
             <summary>
             注册
             </summary>
             <param name="database">Database</param>
             <param name="name">登录名</param>
-            <param name="phone">手机(注册用可为空)</param>
-            <param name="eMail">邮箱(注册用可为空)</param>
-            <param name="regAlias">注册昵称(注册用可为空)</param>
+            <param name="phone">手机(注册时可空)</param>
+            <param name="eMail">邮箱(注册时可空)</param>
+            <param name="regAlias">注册昵称(注册时可空)</param>
             <param name="requestAddress">服务请求方IP地址</param>
-            <param name="rootTeamsId">所属顶层团体ID</param>
-            <param name="teamsId">所属团体ID</param>
+            <param name="rootTeamsId">所属公司ID</param>
+            <param name="teamsId">所属部门ID</param>
             <param name="positionId">担任岗位ID</param>
-            <param name="initialPassword">初始口令</param>
-            <param name="dynamicPassword">动态口令</param>
-            <param name="hashPassword">登录口令需Hash</param>
-        </member>
-        <member name="M:Phenix.Core.Security.User.IsReservedUserName(System.String)">
-            <summary>
-            是否保留登录名
-            </summary>
-            <param name="userName">登录名</param>
-            <returns>保留登录名</returns>
+            <param name="initialPassword">初始口令(空时自动生成)</param>
         </member>
         <member name="T:Phenix.Core.SyncCollections.CachedObject`1">
             <summary>

@@ -1,6 +1,6 @@
 ﻿/*
-    Phenix Framework 7 for .NET Core 3 & Orleans 3
-    Copyright © 2007, 2020 Phenixヾ Studio All rights reserved.
+    Phenix Framework 7.5 for .NET 5
+    Copyright © 2007, 2021 Phenixヾ Studio All rights reserved.
 
     <script type="text/javascript" src="../lib/crypto-js/core-min.js"></script>
     <script type="text/javascript" src="../lib/crypto-js/enc-base64-min.js"></script>
@@ -21,6 +21,7 @@ $.support.cors = true;
 
 var phAjax = (function($) {
     var baseAddressCookieName = "P-BA";
+    var companyNameCookieName = "P-CN";
     var userNameCookieName = "P-UN";
     var userKeyCookieName = "P-UK";
     var sessionCookieName = "P-SS";
@@ -48,6 +49,24 @@ var phAjax = (function($) {
         }
     };
 
+    var getCompanyName = function() {
+        var result;
+        try {
+            result = window.localStorage.getItem(companyNameCookieName);
+        } catch (e) {
+            result = $.cookie(companyNameCookieName);
+        }
+        return typeof result !== undefined && result != null ? result : "";
+    };
+    var setCompanyName = function(value) {
+        try {
+            window.localStorage.removeItem(companyNameCookieName);
+            window.localStorage.setItem(companyNameCookieName, value);
+        } catch (e) {
+            $.cookie(companyNameCookieName, value, { path: '/' });
+        }
+    };
+
     var getUserName = function() {
         var result;
         try {
@@ -55,7 +74,7 @@ var phAjax = (function($) {
         } catch (e) {
             result = $.cookie(userNameCookieName);
         }
-        return typeof result !== undefined && result != null ? result : "GUEST";
+        return typeof result !== undefined && result != null ? result : "";
     };
     var setUserName = function(value) {
         try {
@@ -73,7 +92,7 @@ var phAjax = (function($) {
         } catch (e) {
             result = $.cookie(userKeyCookieName);
         }
-        return typeof result !== undefined && result != null ? result : CryptoJS.MD5("GUEST").toString().toUpperCase();
+        return typeof result !== undefined && result != null ? result : CryptoJS.MD5("******").toString().toUpperCase();
     };
     var setUserKey = function(value) {
         try {
@@ -102,24 +121,28 @@ var phAjax = (function($) {
         }
     };
 
-    // 身份验证token: [登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)],[会话签名]
-    var initializeComplexAuthorization = function(userName, userKey, session) {
+    // 身份验证token: [公司名],[登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)],[会话签名]
+    var initializeComplexAuthorization = function(companyName, userName, userKey, session) {
         var timestamp = phUtils.random(9) + new Date().toISOString();
         if (session === undefined || session == null) {
             session = phUtils.encrypt(timestamp, userKey);
             setSession(session);
         }
-        return encodeURIComponent(userName) + "," + timestamp + "," + phUtils.encrypt(timestamp, userKey) + "," + session;
+        return encodeURIComponent(companyName) + "," + encodeURIComponent(userName) + "," + timestamp + "," + phUtils.encrypt(timestamp, userKey) + "," + session;
     };
 
-    // 身份验证token: [登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)],[会话签名]
+    // 身份验证token: [公司名],[登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)],[会话签名]
     var formatComplexAuthorization = function() {
-        return initializeComplexAuthorization(getUserName(), getUserKey(), getSession());
+        return initializeComplexAuthorization(getCompanyName(), getUserName(), getUserKey(), getSession());
     };
 
     return {
         get baseAddress() {
             return getBaseAddress();
+        },
+
+        get companyName() {
+            return getCompanyName();
         },
 
         get userName() {
@@ -134,12 +157,13 @@ var phAjax = (function($) {
             return phUtils.decrypt(cipherText, getUserKey());
         },
 
-        // 登记/注册(获取动态口令)
+        // 登记(获取动态口令)/注册(静态口令即登录名)
         checkIn: function(options) {
             var defaults = {
                 baseAddress: phAjax.baseAddress, //"http://localhost:5000"
-                name: "ADMIN", //登录名(未注册则自动注册)
-                hashName: false, //登录名需Hash
+                companyName: "", //公司名
+                userName: "", //登录名
+                hashName: false, //Hash登录名
                 phone: "", //手机(注册用可为空)
                 eMail: "", //邮箱(注册用可为空)
                 regAlias: "", //注册昵称(注册用可为空)
@@ -147,24 +171,26 @@ var phAjax = (function($) {
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
             };
             options = $.extend(defaults, options);
-            if (options.hashName && options.name != "ADMIN" && options.name != "GUEST")
-                options.name = CryptoJS.MD5(options.name).toString().toUpperCase();
+            if (options.hashName)
+                options.userName = CryptoJS.MD5(options.userName).toString().toUpperCase();
             $.ajax({
                 type: "GET",
                 url: options.baseAddress + "/api/security/gate" +
-                    "?name=" + encodeURIComponent(options.name) +
+                    "?companyName=" + encodeURIComponent(options.companyName) +
+                    "&userName=" + encodeURIComponent(options.userName) +
                     "&phone=" + options.phone +
                     "&eMail=" + options.eMail +
                     "&regAlias=" + encodeURIComponent(options.regAlias),
                 contentType: "application/json;charset=utf-8",
                 cache: false,
                 crossDomain: true,
-                timeout: 3000,
+                timeout: 30000,
                 data: null,
                 complete: function(XMLHttpRequest, textStatus) {
                     if (XMLHttpRequest.status == 200) {
                         setBaseAddress(options.baseAddress);
-                        setUserName(options.name);
+                        setCompanyName(options.companyName);
+                        setUserName(options.userName);
                     } else {
                         if (typeof options.onError == "function")
                             options.onError(XMLHttpRequest, textStatus, new Error(XMLHttpRequest.responseText));
@@ -179,16 +205,17 @@ var phAjax = (function($) {
         logon: function(options) {
             var defaults = {
                 baseAddress: phAjax.baseAddress, //"http://localhost:5000"
-                name: "ADMIN", //登录名
-                password: "ADMIN", //登录口令/动态口令
-                hashName: false, //登录名需Hash
+                companyName: "", //公司名
+                userName: "", //登录名
+                password: "", //登录口令/动态口令
+                hashName: false, //Hash登录名
                 tag: new Date().toISOString(), //捎带数据(默认是客户端当前时间)
                 onComplete: null, //调用完整的回调函数, 参数(XMLHttpRequest, textStatus)
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
             };
             options = $.extend(defaults, options);
-            if (options.hashName && options.name != "ADMIN" && options.name != "GUEST")
-                options.name = CryptoJS.MD5(options.name).toString().toUpperCase();
+            if (options.hashName)
+                options.userName = CryptoJS.MD5(options.userName).toString().toUpperCase();
             var userKey = CryptoJS.MD5(options.password).toString().toUpperCase();
             $.ajax({
                 type: "POST",
@@ -196,15 +223,16 @@ var phAjax = (function($) {
                 contentType: "application/json;charset=utf-8",
                 cache: false,
                 crossDomain: true,
-                timeout: 3000,
+                timeout: 30000,
                 beforeSend: function(XMLHttpRequest) {
-                    XMLHttpRequest.setRequestHeader(authorizationHeaderName, initializeComplexAuthorization(options.name, userKey, null));
+                    XMLHttpRequest.setRequestHeader(authorizationHeaderName, initializeComplexAuthorization(options.companyName, options.userName, userKey, null));
                 },
                 data: phUtils.encrypt(options.tag, userKey),
                 complete: function(XMLHttpRequest, textStatus) {
                     if (XMLHttpRequest.status == 200) {
                         setBaseAddress(options.baseAddress);
-                        setUserName(options.name);
+                        setCompanyName(options.companyName);
+                        setUserName(options.userName);
                         setUserKey(userKey);
                     } else {
                         if (typeof options.onError == "function")
