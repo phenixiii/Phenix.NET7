@@ -33,7 +33,6 @@ namespace Phenix.Business
 
         #region  Ù–‘
 
-        [NonSerialized]
         private readonly SynchronizedDictionary<Type, List<IBusiness>> _details = new SynchronizedDictionary<Type, List<IBusiness>>();
 
         /// <summary>

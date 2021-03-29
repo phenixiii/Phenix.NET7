@@ -28,6 +28,7 @@
     <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
     <!-- Warning: Setting the following switch is *NOT* recommended in web apps. -->
     <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+    <UserSecretsId>4bbfcbb3-1606-4370-8c9f-a746c6b10d6c</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -57,6 +58,9 @@
     <Reference Include="Phenix.Core">
       <HintPath>..\Bin_ORA\net5.0\Phenix.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Phenix.Services.Extend">
+      <HintPath>..\Bin_ORA\net5.0\Phenix.Services.Extend.dll</HintPath>
+    </Reference>
     <Reference Include="Phenix.Services.Plugin">
       <HintPath>..\Bin_ORA\net5.0\Phenix.Services.Plugin.dll</HintPath>
     </Reference>
@@ -73,7 +77,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Phenix.Core.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Phenix.Core.Init.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

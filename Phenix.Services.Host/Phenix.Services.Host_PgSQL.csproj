@@ -57,6 +57,9 @@
     <Reference Include="Phenix.Core">
       <HintPath>..\Bin_PgSQL\net5.0\Phenix.Core.dll</HintPath>
     </Reference>
+	<Reference Include="Phenix.Services.Extend">
+	  <HintPath>..\Bin_PgSQL\net5.0\Phenix.Services.Extend.dll</HintPath>
+	</Reference>
     <Reference Include="Phenix.Services.Plugin">
       <HintPath>..\Bin_PgSQL\net5.0\Phenix.Services.Plugin.dll</HintPath>
     </Reference>
@@ -73,7 +76,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Phenix.Core.db">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Phenix.Core.Init.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

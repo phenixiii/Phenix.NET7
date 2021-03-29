@@ -141,6 +141,10 @@ var phAjax = (function($) {
             return getBaseAddress();
         },
 
+        set baseAddress(value) {
+            setBaseAddress(value);
+        },
+
         get companyName() {
             return getCompanyName();
         },
@@ -164,9 +168,9 @@ var phAjax = (function($) {
                 companyName: "", //公司名
                 userName: "", //登录名
                 hashName: false, //Hash登录名
-                phone: "", //手机(注册用可为空)
-                eMail: "", //邮箱(注册用可为空)
-                regAlias: "", //注册昵称(注册用可为空)
+                phone: "", //手机(注册时可空)
+                eMail: "", //邮箱(注册时可空)
+                regAlias: "", //注册昵称(注册时可空)
                 onComplete: null, //调用完整的回调函数, 参数(XMLHttpRequest, textStatus)
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
             };
@@ -265,10 +269,30 @@ var phAjax = (function($) {
             });
         },
 
+        // 获取自己公司资料
+        getMyselfCompany: function(options) {
+            var defaults = {
+                onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
+            };
+            options = $.extend(defaults, options);
+            phAjax.call({
+                path: "/api/security/myself/company",
+                onSuccess: function(result) {
+                    if (typeof options.onSuccess == "function")
+                        options.onSuccess(result); //Teams
+                },
+                onError: function (XMLHttpRequest, textStatus, errorThrown) {
+                    if (typeof options.onError == "function")
+                        options.onError(XMLHttpRequest, textStatus, errorThrown);
+                },
+            });
+        },
+
         // 修改登录口令
         // password: 登录口令
         // newPassword: 新登录口令
-        changePassword: function (password, newPassword, options) {
+        changePassword: function(password, newPassword, options) {
             var defaults = {
                 onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
@@ -588,9 +612,9 @@ var phAjax = (function($) {
                 type: "GET", //HttpMethod(GET/POST/PUT/PATCH/DELETE)
                 path: null, //"/api/security/myself"
                 data: null, //上传数据
-                encryptData: false, //默认不加密上传数据（否则服务端的控制器代码请用Request.ReadBodyAsync(true)解密）
-                decryptResult: false, //默认不解密返回数据（否则服务端的控制器代码请用this.EncryptAsync(result)加密）
                 processData: true, //默认对data参数进行序列化处理
+                encryptData: false, //默认不加密上传数据（否则服务端请用Request.ReadBodyAsync(true)解密）
+                decryptResult: false, //默认不解密返回数据（否则服务端请用this.EncryptAsync(result)加密, 下载经解密后可在onSuccess事件里用JSON.parse(result)还原为JavaScript对象）
                 contentType: "application/json;charset=utf-8", 
                 cache: false, //默认不缓存
                 timeout: 30000, //默认超时30秒

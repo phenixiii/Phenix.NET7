@@ -40,6 +40,20 @@
             });
         };
 
+        function getMyselfCompany() {
+            phAjax.getMyselfCompany({
+                onSuccess: function (result) {
+                    alert(JSON.stringify(result));
+                },
+                onError: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("获取自己公司资料失败! status: " +
+                        XMLHttpRequest.statusText +
+                        ", response: " +
+                        XMLHttpRequest.responseText);
+                }
+            });
+        };
+
         function changePassword(password, newPassword) {
             phAjax.changePassword(password, newPassword,
                 {
@@ -70,6 +84,8 @@
     <input name="logonButton" onclick="phAjax.logon({companyName: companyName.value, userName: userName.value, password: userPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
     <br />
     <input name="getMyselfButton" onclick="getMyself();" type="button" value="获取自己资料" /><br />
+    <br />
+    <input name="getMyselfCompanyButton" onclick="getMyselfCompany();" type="button" value="获取自己公司资料" /><br />
     <br />
     新登录口令<input id="newPassword" type="text" value="" />
     <input name="changePasswordButton" onclick="changePassword(userPassword.value, newPassword.value);" type="button" value="修改登录口令" /><br />

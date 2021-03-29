@@ -15,6 +15,7 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
     [ApiController]
     public sealed class CompanyController : Phenix.Core.Net.Api.ControllerBase
     {
+        // phAjax.getMyselfCompany()
         /// <summary>
         /// 获取公司资料
         /// </summary>

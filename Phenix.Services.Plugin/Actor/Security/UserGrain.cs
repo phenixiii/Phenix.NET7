@@ -143,6 +143,14 @@ namespace Phenix.Services.Plugin.Actor.Security
             return Task.FromResult(Kernel.IsValid(timestamp, signature, requestAddress, requestSession, throwIfNotConform));
         }
 
+        Task<bool> IUserGrain.ResetPassword()
+        {
+            if (Kernel == null)
+                throw new UserNotFoundException();
+
+            return Task.FromResult(Kernel.ResetPassword());
+        }
+
         Task<bool> IUserGrain.ChangePassword(string password, string newPassword, string requestAddress, bool throwIfNotConform)
         {
             if (Kernel == null)

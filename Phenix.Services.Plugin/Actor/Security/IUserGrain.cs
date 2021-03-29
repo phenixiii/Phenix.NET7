@@ -45,6 +45,12 @@ namespace Phenix.Services.Plugin.Actor.Security
         Task<bool> IsValid(string timestamp, string signature, string requestAddress, string requestSession, bool throwIfNotConform);
 
         /// <summary>
+        /// 重置登录口令(静态口令即登录名)
+        /// </summary>
+        /// <returns>是否成功</returns>
+        Task<bool> ResetPassword();
+
+        /// <summary>
         /// 修改登录口令
         /// </summary>
         /// <param name="password">登录口令</param>
