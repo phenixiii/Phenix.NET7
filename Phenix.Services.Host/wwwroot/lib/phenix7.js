@@ -124,7 +124,7 @@ var phAjax = (function($) {
     // 身份验证token: [公司名],[登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)],[会话签名]
     var initializeComplexAuthorization = function(companyName, userName, userKey, session) {
         var timestamp = phUtils.random(9) + new Date().toISOString();
-        if (session === undefined || session == null) {
+        if (typeof session === undefined || session == null) {
             session = phUtils.encrypt(timestamp, userKey);
             setSession(session);
         }
@@ -610,7 +610,7 @@ var phAjax = (function($) {
             var defaults = {
                 anonymity: false, //是否匿名访问
                 type: "GET", //HttpMethod(GET/POST/PUT/PATCH/DELETE)
-                path: null, //"/api/security/myself"
+                path: null, //JSON对象需转参数可调用phUtils.addUrlParam("/api/data/increment",{"key": key, "initialValue": initialValue})
                 data: null, //上传数据
                 processData: true, //默认对data参数进行序列化处理
                 encryptData: false, //默认不加密上传数据（否则服务端请用Request.ReadBodyAsync(true)解密）
@@ -708,6 +708,24 @@ var phUtils = (function() {
                 result[i] = byteStr.charCodeAt(i);
             }
             return result;
+        },
+
+        toUrlParam: function(data) {
+            var result = "";
+            for (var k in data) {
+                let value = data[k];
+                if (typeof value === undefined || value == null)
+                    value = "";
+                result += "&" + k.substring(0, 1).toLowerCase() + k.substring(1) + "=" + encodeURIComponent(value);
+            }
+            return result == "" ? result : result.substring(1);
+        },
+
+        addUrlParam: function(url, data) {
+            var param = phUtils.toUrlParam(data);
+            if (param != "")
+                url += (url.indexOf('?') < 0 ? '?' : '') + param;
+            return url;
         },
     }
 })();

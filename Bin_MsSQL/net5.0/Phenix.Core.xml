@@ -2720,7 +2720,7 @@
         </member>
         <member name="M:Phenix.Core.Data.EnumCaptionAttribute.#ctor(System.String)">
             <summary>
-            枚举字段标签
+            初始化
             </summary>
             <param name="caption">标签(中英文用‘|’分隔)</param>
         </member>
@@ -2889,11 +2889,6 @@
             </summary>
         </member>
         <member name="T:Phenix.Core.Data.Expressions.CriteriaExpression">
-            <summary>
-            条件表达式
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.Expressions.CriteriaExpression.#ctor(Phenix.Core.Data.Expressions.CriteriaExpressionType,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.CriteriaLogical,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OperationExpression,Phenix.Core.Data.Expressions.CriteriaOperator,Phenix.Core.Data.Expressions.OperationExpression,System.Boolean,System.Object,System.Boolean,System.Boolean)">
             <summary>
             条件表达式
             </summary>
@@ -5081,7 +5076,7 @@
         </member>
         <member name="M:Phenix.Core.Data.Rule.ValidationMessage.#ctor(System.String,System.Int32,System.String,Phenix.Core.Data.Rule.ValidationMessageType)">
             <summary>
-            数据验证消息
+            初始化
             </summary>
             <param name="key">键值</param>
             <param name="statusCode">状态码(1000以下为保留值)</param>
@@ -9699,10 +9694,8 @@
         </member>
         <member name="M:Phenix.Core.Net.Filters.ValidationResult.#ctor(System.Int32,System.Collections.Generic.List{Phenix.Core.Data.Rule.ValidationMessage})">
             <summary>
-            数据验证结果
+            初始化
             </summary>
-            <param name="code">状态码(见StatusCodes)</param>
-            <param name="errors">错误消息队列</param>
         </member>
         <member name="P:Phenix.Core.Net.Filters.ValidationResult.Code">
             <summary>
@@ -11251,6 +11244,11 @@
         <member name="M:Phenix.Core.Security.User.#ctor">
             <summary>
             for CreateInstance
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Security.User.#ctor(System.String,System.Int64,System.String,System.String,System.String,System.String,System.DateTime,System.String,System.Int32,System.Nullable{System.DateTime},System.Int64,System.Int64,System.Nullable{System.Int64},System.Boolean,System.Nullable{System.DateTime},System.Boolean,System.Nullable{System.DateTime})">
+            <summary>
+            初始化
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User.RequestFailureCountMaximum">
