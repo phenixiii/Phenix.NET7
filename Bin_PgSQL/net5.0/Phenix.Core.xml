@@ -4059,13 +4059,10 @@
             </summary>
             <param name="source">数据源</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(`0,System.Boolean)">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.AppendCriteriaForUpdateSelf(Phenix.Core.Data.Expressions.CriteriaExpression)">
             <summary>
-            更新记录
+            为更新自己追加条件表达式
             </summary>
-            <param name="source">数据源</param>
-            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException）</param>
-            <returns>更新记录数</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(Phenix.Core.Data.Expressions.NameValue[])">
             <summary>
@@ -4345,6 +4342,14 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段，null代表提交的是实体本身)</param>
+            <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException）</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.UpdateSelf(`0,System.Boolean)">
+            <summary>
+            更新记录
+            </summary>
+            <param name="source">数据源</param>
             <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException）</param>
             <returns>更新记录数</returns>
         </member>
