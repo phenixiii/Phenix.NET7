@@ -3753,6 +3753,272 @@
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
             <returns>根实体对象</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{`0})">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,System.Func{`0})">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{`0})">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Func{`0})">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{`0})">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,System.Func{`0})">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{`0})">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Func{`0})">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="dataSourceKey">数据源键</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="dataSourceKey">数据源键</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.String,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="dataSourceKey">数据源键</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.String,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="dataSourceKey">数据源键</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="selfSheet">操作单子</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="selfSheet">操作单子</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="selfSheet">操作单子</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="selfSheet">操作单子</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取根实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.String,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
@@ -3831,6 +4097,129 @@
             获取全部实体对象
             </summary>
             <param name="database">数据库入口</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="selfSheet">操作单子</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="selfSheet">操作单子</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="selfSheet">操作单子</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="selfSheet">操作单子</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="selfSheet">操作单子</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
@@ -4833,6 +5222,234 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{`0})">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,System.Func{`0})">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{`0})">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Func{`0})">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{`0})">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,System.Func{`0})">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{`0})">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Func{`0})">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="selfSheet">操作单子</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="selfSheet">操作单子</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="selfSheet">操作单子</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="selfSheet">操作单子</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+            <summary>
+            获取整颗树
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
             <returns>根实体对象</returns>
         </member>
         <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.Id">

@@ -8,30 +8,30 @@
     ".NETCoreApp,Version=v5.0": {
       "Phenix.Core/7.5.47": {
         "dependencies": {
-          "Newtonsoft.Json": "12.0.3",
-          "Npgsql": "5.0.3",
+          "Newtonsoft.Json": "13.0.1",
+          "Npgsql": "5.0.4",
           "System.Data.SQLite.Core": "1.0.113.7"
         },
         "runtime": {
           "Phenix.Core.dll": {}
         }
       },
-      "Newtonsoft.Json/12.0.3": {
+      "Newtonsoft.Json/13.0.1": {
         "runtime": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {
-            "assemblyVersion": "12.0.0.0",
-            "fileVersion": "12.0.3.23909"
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.1.25517"
           }
         }
       },
-      "Npgsql/5.0.3": {
+      "Npgsql/5.0.4": {
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "4.6.0"
         },
         "runtime": {
           "lib/net5.0/Npgsql.dll": {
-            "assemblyVersion": "5.0.3.0",
-            "fileVersion": "5.0.3.0"
+            "assemblyVersion": "5.0.4.0",
+            "fileVersion": "5.0.4.0"
           }
         }
       },
@@ -79,19 +79,19 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Newtonsoft.Json/12.0.3": {
+    "Newtonsoft.Json/13.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-6mgjfnRB4jKMlzHSl+VD+oUc1IebOZabkbyWj2RiTgWwYPPuaK1H97G1sHqGwPlS5npiF5Q0OrxN1wni2n5QWg==",
-      "path": "newtonsoft.json/12.0.3",
-      "hashPath": "newtonsoft.json.12.0.3.nupkg.sha512"
+      "sha512": "sha512-ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A==",
+      "path": "newtonsoft.json/13.0.1",
+      "hashPath": "newtonsoft.json.13.0.1.nupkg.sha512"
     },
-    "Npgsql/5.0.3": {
+    "Npgsql/5.0.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-IDx2tijhyXGz7tVXQH0iGnCnW0ReSUy3UC99ytSklJKscob5WV8eLZWuT/jqYBq0l07RmZOSrdjUEDEetsgDIA==",
-      "path": "npgsql/5.0.3",
-      "hashPath": "npgsql.5.0.3.nupkg.sha512"
+      "sha512": "sha512-wuJUsrhOKaR41ZB9Ecw9ZEpQzMQ5bRahl7w+pt4noVMDkDPbw4cMHV8UfNKeZSPLXaN4yWXPR2QgJ+2vG/85VQ==",
+      "path": "npgsql/5.0.4",
+      "hashPath": "npgsql.5.0.4.nupkg.sha512"
     },
     "Stub.System.Data.SQLite.Core.NetStandard/1.0.113.2": {
       "type": "package",
