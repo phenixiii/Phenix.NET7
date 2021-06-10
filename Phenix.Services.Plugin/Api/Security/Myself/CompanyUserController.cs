@@ -3,9 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
-using Phenix.Core.Data;
 using Phenix.Core.Net.Filters;
-using Phenix.Core.Security;
 using Phenix.Services.Plugin.Actor.Security;
 
 namespace Phenix.Services.Plugin.Api.Security.Myself
@@ -47,7 +45,7 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name), "登录名不允许为空!");
 
-            return await ClusterClient.Default.GetGrain<IUserGrain>(String.Format("{0}{1}{2}", User.Identity.CompanyName, Standards.RowSeparator, name)).Register(phone, eMail, regAlias, Request.GetRemoteAddress(), teamsId, positionId);
+            return await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.FormatPrimaryKey(name)).Register(phone, eMail, regAlias, Request.GetRemoteAddress(), teamsId, positionId);
         }
 
         /// <summary>
@@ -62,7 +60,7 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name), "登录名不允许为空!");
             
-            await ClusterClient.Default.GetGrain<IUserGrain>(String.Format("{0}{1}{2}", User.Identity.CompanyName, Standards.RowSeparator, name)).PatchKernel(await Request.ReadBodyAsync<User>(true));
+            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.FormatPrimaryKey(name)).PatchKernel(await Request.ReadBodyAsync<Phenix.Services.Business.Security.User>(true));
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Orleans;
 using Phenix.Actor;
-using Phenix.Core.Security;
+using Phenix.Services.Business.Security;
 
 namespace Phenix.Services.Plugin.Actor.Security
 {

@@ -45,18 +45,6 @@ namespace Phenix.Actor
             set { AppSettings.SetLocalProperty(ref _defaultGrainCollectionAgeMinutes, value); }
         }
 
-        private static string _connectionString;
-
-        /// <summary>
-        /// 数据库连接串
-        /// 默认：Database.Default.ConnectionString
-        /// </summary>
-        public static string ConnectionString
-        {
-            get { return AppSettings.GetLocalProperty(ref _connectionString, Database.Default.ConnectionString, true); }
-            set { AppSettings.SetLocalProperty(ref _connectionString, value, true); }
-        }
-
         private static int? _defaultSiloPort;
 
         /// <summary>

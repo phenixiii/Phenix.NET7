@@ -1,5 +1,6 @@
 ﻿using System;
-using Phenix.Core.Security;
+using Phenix.Services.Business.Security;
+using Phenix.Services.Contract.Security;
 
 namespace Phenix.Services.Extend.Actor.Security
 {

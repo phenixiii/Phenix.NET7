@@ -188,8 +188,6 @@ namespace Phenix.Services.Host
              *
              * 验证失败的话 context.Response.StatusCode = 401 Unauthorized，失败详情见报文体
              * 验证成功的话 Phenix.Core.Security.Identity.CurrentIdentity.IsAuthenticated = true 且 context.User 会被赋值为 new ClaimsPrincipal(Phenix.Core.Security.Identity.CurrentIdentity)
-             *
-             * 系统管理员的登录名是‘ADMIN’，初始登录口令也是‘ADMIN’（注意是大写），系统正式运行之前请更改口令
              */
             app.UseMiddleware<Phenix.Core.Net.Middleware.AuthenticationMiddleware>();
 

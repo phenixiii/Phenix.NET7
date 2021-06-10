@@ -7,6 +7,7 @@ using Orleans.Runtime;
 using Orleans.Runtime.Messaging;
 using Orleans.Serialization;
 using Phenix.Actor;
+using Phenix.Core.Data;
 using Phenix.Core.Log;
 using Phenix.Core.Security;
 
@@ -31,11 +32,12 @@ namespace Orleans.Hosting
         /// 插件程序集都应该被部署到本服务容器的执行目录下
         /// </summary>
         /// <param name="builder">ISiloBuilder</param>
+        /// <param name="database">数据库入口</param>
         /// <returns>ISiloBuilder</returns>
-        public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder)
+        public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder, Database database)
         {
-            return ConfigureCluster(builder, OrleansConfig.ClusterId, OrleansConfig.ServiceId,
-                OrleansConfig.DefaultGrainCollectionAgeMinutes, OrleansConfig.ConnectionString, OrleansConfig.DefaultSiloPort, OrleansConfig.DefaultGatewayPort);
+            return ConfigureCluster(builder, OrleansConfig.ClusterId, OrleansConfig.ServiceId, database.ConnectionString,
+                OrleansConfig.DefaultGrainCollectionAgeMinutes, OrleansConfig.DefaultSiloPort, OrleansConfig.DefaultGatewayPort);
         }
 
         /// <summary>
@@ -44,13 +46,13 @@ namespace Orleans.Hosting
         /// <param name="builder">ISiloBuilder</param>
         /// <param name="clusterId">Orleans集群的唯一ID</param>
         /// <param name="serviceId">Orleans服务的唯一ID</param>
-        /// <param name="grainCollectionAgeMinutes">默认的激活体垃圾收集年龄限(分钟)</param>
         /// <param name="connectionString">Orleans数据库连接串</param>
+        /// <param name="grainCollectionAgeMinutes">默认的激活体垃圾收集年龄限(分钟)</param>
         /// <param name="siloPort">Silo端口</param>
         /// <param name="gatewayPort">Gateway端口</param>
         /// <returns>ISiloBuilder</returns>
-        public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder, string clusterId, string serviceId,
-            int grainCollectionAgeMinutes, string connectionString, int siloPort, int gatewayPort)
+        public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder, string clusterId, string serviceId, string connectionString,
+            int grainCollectionAgeMinutes, int siloPort, int gatewayPort)
         {
             return builder
                 .Configure<SerializationProviderOptions>(options =>
@@ -121,6 +123,8 @@ namespace Orleans.Hosting
                      * 插件程序集都应该统一采用"*.Contract.dll"、"*.Plugin.dll"作为文件名的后缀
                      * 插件程序集都应该被部署到本服务容器的执行目录下
                      */
+                    foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Business.dll"))
+                        parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
                     foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Contract.dll"))
                         parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
                     foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))

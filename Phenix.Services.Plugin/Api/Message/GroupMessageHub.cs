@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.SignalR;
 using Orleans.Streams;
 using Phenix.Actor;
 using Phenix.Core.Log;
-using Phenix.Core.Message;
 using Phenix.Core.Security;
 using Phenix.Core.SyncCollections;
+using Phenix.Services.Contract.Message;
 using Phenix.Services.Plugin.Actor;
 
 namespace Phenix.Services.Plugin.Api.Message

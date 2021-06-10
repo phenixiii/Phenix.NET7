@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Core_MySQL", "Phenix.Core\Phenix.Core_MySQL.csproj", "{EB09C083-59A9-4C00-BB4C-8185F8D09B68}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo_MySQL", "Demo_MySQL", "{B7AA29AA-B690-4002-8703-AC8C7DD37E2C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Data.Schema", "Demo_MySQL\Demo.Phenix.Core.Data.Schema\Demo.Phenix.Core.Data.Schema.csproj", "{AE48AC17-C7EE-4028-A6C1-C27B48FB0C9F}"
@@ -41,16 +39,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Extend_MySQ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem", "Demo_MySQL\Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem\Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem.csproj", "{9B1E5903-BDA2-4D11-9E57-7F437B6A4C8A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Business_MySQL", "Phenix.Services.Business\Phenix.Services.Business_MySQL.csproj", "{E5523C72-BBE7-4CDE-A8AA-7C09532496A0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Contract_MySQL", "Phenix.Services.Contract\Phenix.Services.Contract_MySQL.csproj", "{A12DCD21-E189-43B4-B489-6F359C76A8E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EB09C083-59A9-4C00-BB4C-8185F8D09B68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB09C083-59A9-4C00-BB4C-8185F8D09B68}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB09C083-59A9-4C00-BB4C-8185F8D09B68}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB09C083-59A9-4C00-BB4C-8185F8D09B68}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AE48AC17-C7EE-4028-A6C1-C27B48FB0C9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AE48AC17-C7EE-4028-A6C1-C27B48FB0C9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE48AC17-C7EE-4028-A6C1-C27B48FB0C9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -115,6 +113,14 @@ Global
 		{9B1E5903-BDA2-4D11-9E57-7F437B6A4C8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B1E5903-BDA2-4D11-9E57-7F437B6A4C8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B1E5903-BDA2-4D11-9E57-7F437B6A4C8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5523C72-BBE7-4CDE-A8AA-7C09532496A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5523C72-BBE7-4CDE-A8AA-7C09532496A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5523C72-BBE7-4CDE-A8AA-7C09532496A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5523C72-BBE7-4CDE-A8AA-7C09532496A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A12DCD21-E189-43B4-B489-6F359C76A8E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A12DCD21-E189-43B4-B489-6F359C76A8E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A12DCD21-E189-43B4-B489-6F359C76A8E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A12DCD21-E189-43B4-B489-6F359C76A8E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

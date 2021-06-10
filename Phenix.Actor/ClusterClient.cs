@@ -8,6 +8,7 @@ using Orleans.Hosting;
 using Orleans.Runtime;
 using Orleans.Runtime.Messaging;
 using Orleans.Serialization;
+using Phenix.Core.Data;
 using Phenix.Core.Log;
 using Phenix.Core.Security;
 using Phenix.Core.SyncCollections;
@@ -32,7 +33,7 @@ namespace Phenix.Actor
         /// </summary>
         public static IClusterClient Default
         {
-            get { return _default ?? (_default = Fetch()); }
+            get { return _default ?? (_default = Fetch(Database.Default)); }
         }
 
         #endregion
@@ -45,10 +46,11 @@ namespace Phenix.Actor
         /// 设置Clustering、GrainStorage、Reminder数据库：Phenix.Core.Data.Database.Default
         /// 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProvider.Name
         /// </summary>
+        /// <param name="database">数据库入口</param>
         /// <returns>Orleans服务集群客户端</returns>
-        public static IClusterClient Fetch()
+        public static IClusterClient Fetch(Database database)
         {
-            return Fetch(OrleansConfig.ClusterId, OrleansConfig.ServiceId, OrleansConfig.ConnectionString);
+            return Fetch(OrleansConfig.ClusterId, OrleansConfig.ServiceId, database.ConnectionString);
         }
 
         /// <summary>
@@ -97,6 +99,8 @@ namespace Phenix.Actor
                          * 插件程序集都应该统一采用"*.Contract.dll"、"*.Plugin.dll"作为文件名的后缀
                          * 插件程序集都应该被部署到本服务容器的执行目录下
                          */
+                        foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Business.dll"))
+                            parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
                         foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Contract.dll"))
                             parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
                         foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))

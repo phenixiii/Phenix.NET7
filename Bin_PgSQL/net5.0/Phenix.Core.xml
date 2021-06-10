@@ -977,6 +977,12 @@
             构建 DbParameter
             </summary>
         </member>
+        <member name="M:Phenix.Core.Data.Common.DataReader.SelectEntity``2(System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            获取记录
+            </summary>
+            <param name="keyLambda">键 lambda 表达式</param>
+        </member>
         <member name="M:Phenix.Core.Data.Common.DataReader.SelectEntity``1(System.Boolean)">
             <summary>
             获取记录
@@ -2648,6 +2654,16 @@
             构建 DataReader
             </summary>
         </member>
+        <member name="M:Phenix.Core.Data.Database.ReadEntityData``2(System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            读取实体对象数据
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.ReadEntityData``2(System.Linq.Expressions.Expression{System.Func{``0,``1}},System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            读取实体对象数据
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Data.Database.ReadEntityData``1(System.String,Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             读取实体对象数据
@@ -3571,41 +3587,15 @@
             for Newtonsoft.Json.JsonConstructor
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.New(System.String,Phenix.Core.Data.Expressions.NameValue[])">
-            <summary>
-            新增实体对象(自动填充主键和保留字段)
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
-            <returns>实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.New(System.String,System.Int64,Phenix.Core.Data.Expressions.NameValue[])">
-            <summary>
-            新增实体对象(自动填充保留字段)
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="primaryKeyLong">主键值</param>
-            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
-            <returns>实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.New(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            新增实体对象(自动填充主键和保留字段)
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
-            <returns>实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.New(System.String,System.Int64,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            新增实体对象(自动填充保留字段)
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="primaryKeyLong">主键值</param>
-            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
-            <returns>实体对象</returns>
-        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.New(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.NameValue[])">
+            <summary>
+            新增实体对象(自动填充主键和保留字段)
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
+            <returns>实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.New(Phenix.Core.Data.Database,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
             新增实体对象(自动填充主键和保留字段)
             </summary>
@@ -3622,14 +3612,6 @@
             <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
             <returns>实体对象</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.New(Phenix.Core.Data.Database,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            新增实体对象(自动填充主键和保留字段)
-            </summary>
-            <param name="database">数据库入口</param>
-            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
-            <returns>实体对象</returns>
-        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.New(Phenix.Core.Data.Database,System.Int64,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
             新增实体对象(自动填充保留字段)
@@ -3638,44 +3620,6 @@
             <param name="primaryKeyLong">主键值</param>
             <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
             <returns>实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{`0})">
-            <summary>
-            获取根实体对象
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,System.Func{`0})">
-            <summary>
-            获取根实体对象
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.String,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{`0})">
-            <summary>
-            获取根实体对象
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.String,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Func{`0})">
-            <summary>
-            获取根实体对象
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
-            <returns>根实体对象</returns>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{`0})">
             <summary>
@@ -3710,44 +3654,6 @@
             获取根实体对象
             </summary>
             <param name="database">数据库入口</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{`0})">
-            <summary>
-            获取根实体对象
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,System.Func{`0})">
-            <summary>
-            获取根实体对象
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{`0})">
-            <summary>
-            获取根实体对象
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Func{`0})">
-            <summary>
-            获取根实体对象
-            </summary>
-            <param name="selfSheet">操作单子</param>
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
@@ -3829,44 +3735,6 @@
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
             <returns>根实体对象</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取根实体对象
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="orderBys">排序队列</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取根实体对象
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.String,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取根实体对象
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="orderBys">排序队列</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(System.String,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取根实体对象
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
-            <returns>根实体对象</returns>
-        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取根实体对象
@@ -3900,44 +3768,6 @@
             获取根实体对象
             </summary>
             <param name="database">数据库入口</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取根实体对象
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="orderBys">排序队列</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取根实体对象
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取根实体对象
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="orderBys">排序队列</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchRoot(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取根实体对象
-            </summary>
-            <param name="selfSheet">操作单子</param>
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
@@ -4019,55 +3849,68 @@
             <param name="orderBys">排序队列</param>
             <returns>根实体对象</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.String,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchKeyValues``1(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object)">
             <summary>
             获取全部实体对象
             </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取全部实体对象
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.String,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取全部实体对象
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
+            <param name="database">数据库入口</param>
+            <param name="keyLambda">键 lambda 表达式</param>
             <param name="criteriaLambda">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.String,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchKeyValues``1(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,``0}},Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
             <summary>
             获取全部实体对象
             </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.String,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取全部实体对象
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
+            <param name="database">数据库入口</param>
+            <param name="keyLambda">键 lambda 表达式</param>
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchKeyValues``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object)">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="keyLambda">键 lambda 表达式</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchKeyValues``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,``0}},Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="keyLambda">键 lambda 表达式</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchKeyValues``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object)">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="keyLambda">键 lambda 表达式</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchKeyValues``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,``0}},Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
+            <summary>
+            获取全部实体对象
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="keyLambda">键 lambda 表达式</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchList(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
             <param name="database">数据库入口</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchList(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
@@ -4075,7 +3918,7 @@
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchList(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
@@ -4084,7 +3927,7 @@
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchList(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
@@ -4092,7 +3935,7 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchList(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
@@ -4101,55 +3944,14 @@
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取全部实体对象
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取全部实体对象
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取全部实体对象
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取全部实体对象
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取全部实体对象
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchList(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchList(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
@@ -4157,7 +3959,7 @@
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchList(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
@@ -4166,7 +3968,7 @@
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchList(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
@@ -4174,7 +3976,7 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchList(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
@@ -4183,14 +3985,14 @@
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchList(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchList(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
@@ -4198,7 +4000,7 @@
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchList(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
@@ -4207,7 +4009,7 @@
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchList(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
@@ -4215,7 +4017,7 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchAll(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.FetchList(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
             <summary>
             获取全部实体对象
             </summary>
@@ -5080,41 +4882,15 @@
             for Newtonsoft.Json.JsonConstructor
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.NewRoot(System.String,Phenix.Core.Data.Expressions.NameValue[])">
-            <summary>
-            新增根实体对象(自动填充主键和保留字段)
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.NewRoot(System.String,System.Int64,Phenix.Core.Data.Expressions.NameValue[])">
-            <summary>
-            新增根实体对象(自动填充保留字段)
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="id">主键值</param>
-            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.NewRoot(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            新增根实体对象(自动填充主键和保留字段)
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.NewRoot(System.String,System.Int64,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            新增根实体对象(自动填充保留字段)
-            </summary>
-            <param name="dataSourceKey">数据源键</param>
-            <param name="id">主键值</param>
-            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
-            <returns>根实体对象</returns>
-        </member>
         <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.NewRoot(Phenix.Core.Data.Database,Phenix.Core.Data.Expressions.NameValue[])">
+            <summary>
+            新增根实体对象(自动填充主键和保留字段)
+            </summary>
+            <param name="database">数据库入口</param>
+            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
+            <returns>根实体对象</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.NewRoot(Phenix.Core.Data.Database,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
             新增根实体对象(自动填充主键和保留字段)
             </summary>
@@ -5128,14 +4904,6 @@
             </summary>
             <param name="database">数据库入口</param>
             <param name="id">主键值</param>
-            <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.NewRoot(Phenix.Core.Data.Database,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            新增根实体对象(自动填充主键和保留字段)
-            </summary>
-            <param name="database">数据库入口</param>
             <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
             <returns>根实体对象</returns>
         </member>
@@ -5181,44 +4949,6 @@
             获取整颗树
             </summary>
             <param name="database">数据库入口</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Func{`0})">
-            <summary>
-            获取整颗树
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,System.Func{`0})">
-            <summary>
-            获取整颗树
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,System.Func{`0})">
-            <summary>
-            获取整颗树
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Func{`0})">
-            <summary>
-            获取整颗树
-            </summary>
-            <param name="selfSheet">操作单子</param>
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="doCreate">如果没有该条件的实体对象则调用本函数新增并自动持久化</param>
@@ -5333,44 +5063,6 @@
             获取整颗树
             </summary>
             <param name="database">数据库入口</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取整颗树
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="orderBys">排序队列</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Schema.Sheet,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取整颗树
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取整颗树
-            </summary>
-            <param name="selfSheet">操作单子</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="orderBys">排序队列</param>
-            <returns>根实体对象</returns>
-        </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.FetchTree(Phenix.Core.Data.Schema.Sheet,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{`0}[])">
-            <summary>
-            获取整颗树
-            </summary>
-            <param name="selfSheet">操作单子</param>
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
@@ -7451,6 +7143,25 @@
             <param name="cascade">是否级联</param>
             <returns>删除记录数</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.DeleteEntity``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Boolean)">
+            <summary>
+            删除记录
+            </summary>
+            <param name="entity">实体</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="cascade">是否级联</param>
+            <returns>删除记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.DeleteEntity``1(``0,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Boolean)">
+            <summary>
+            删除记录
+            </summary>
+            <param name="entity">实体</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="cascade">是否级联</param>
+            <returns>删除记录数</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.DeleteEntity``1(``0,Phenix.Core.Data.Expressions.CriteriaExpression,System.Boolean)">
             <summary>
             删除记录
@@ -7633,13 +7344,111 @@
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <returns>删除记录数</returns>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``2(System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object)">
+            <summary>
+            获取记录
+            </summary>
+            <param name="keyLambda">键 lambda 表达式</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``2(System.Linq.Expressions.Expression{System.Func{``0,``1}},Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
+            <summary>
+            获取记录
+            </summary>
+            <param name="keyLambda">键 lambda 表达式</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``2(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object)">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="keyLambda">键 lambda 表达式</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``2(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,``1}},Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="keyLambda">键 lambda 表达式</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``2(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,``1}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object)">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="keyLambda">键 lambda 表达式</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``2(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,``1}},Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="keyLambda">键 lambda 表达式</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``2(System.Data.Common.DbCommand,System.Linq.Expressions.Expression{System.Func{``0,``1}},Phenix.Core.Data.Expressions.CriteriaExpression,System.Object)">
+            <summary>
+            获取记录
+            </summary>
+            <param name="command">DbCommand(注意跨库风险未作校验)</param>
+            <param name="keyLambda">键 lambda 表达式</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``2(System.Data.IDataReader,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            获取记录
+            </summary>
+            <param name="reader">IDataReader</param>
+            <param name="keyLambda">键 lambda 表达式</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -7660,13 +7469,6 @@
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="orderBys">排序队列</param>
-        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
@@ -7677,14 +7479,6 @@
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -7709,13 +7503,6 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="orderBys">排序队列</param>
-        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
@@ -7733,14 +7520,6 @@
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
-        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
@@ -7751,14 +7530,48 @@
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -7782,14 +7595,6 @@
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="orderBys">排序队列</param>
-        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
@@ -7801,15 +7606,6 @@
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -7837,14 +7633,6 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="orderBys">排序队列</param>
-        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
@@ -7864,15 +7652,6 @@
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
-        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
@@ -7884,14 +7663,48 @@
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -7915,14 +7728,6 @@
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="orderBys">排序队列</param>
-        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
@@ -7934,15 +7739,6 @@
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -7970,14 +7766,6 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="orderBys">排序队列</param>
-        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
@@ -7989,15 +7777,6 @@
             <param name="orderBys">排序队列</param>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstEntity``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
@@ -8036,17 +7815,53 @@
             <param name="reader">IDataReader</param>
             <param name="first">是否返回第一条记录</param>
         </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="orderBys">排序队列</param>
-        </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8055,6 +7870,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8062,13 +7878,7 @@
             </summary>
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8078,6 +7888,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8086,14 +7897,7 @@
             <param name="criteriaLambda">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8104,6 +7908,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8111,13 +7916,7 @@
             </summary>
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8127,6 +7926,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8135,14 +7935,7 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8153,13 +7946,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8167,6 +7954,53 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8176,6 +8010,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8184,14 +8019,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8202,6 +8030,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8211,15 +8040,7 @@
             <param name="criteriaLambda">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8231,6 +8052,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8239,14 +8061,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8257,6 +8072,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8266,15 +8082,7 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8286,13 +8094,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8300,6 +8102,53 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8309,6 +8158,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8317,14 +8167,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8335,6 +8178,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8344,15 +8188,7 @@
             <param name="criteriaLambda">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8364,6 +8200,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8372,14 +8209,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8390,6 +8220,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8399,15 +8230,7 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8419,6 +8242,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``1(System.Data.Common.DbCommand,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Int32,System.Int32,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8431,18 +8255,55 @@
             <param name="pageSize">分页大小</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
             获取记录
             </summary>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8451,6 +8312,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8458,13 +8320,7 @@
             </summary>
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8474,6 +8330,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8482,14 +8339,7 @@
             <param name="criteriaLambda">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8500,6 +8350,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8507,13 +8358,7 @@
             </summary>
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8523,6 +8368,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8531,14 +8377,7 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8549,13 +8388,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8563,6 +8396,53 @@
             </summary>
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbConnection,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8572,6 +8452,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8580,14 +8461,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8598,6 +8472,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8607,15 +8482,7 @@
             <param name="criteriaLambda">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbConnection,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8627,6 +8494,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8635,14 +8503,7 @@
             <param name="connection">DbConnection(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8653,6 +8514,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8662,15 +8524,7 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbConnection,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8682,13 +8536,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8696,6 +8544,53 @@
             </summary>
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaLambda">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="criteriaExpression">条件表达式</param>
+            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
+            <summary>
+            获取记录
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbTransaction,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8705,6 +8600,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8713,14 +8609,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaLambda">条件表达式</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8731,6 +8620,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8740,15 +8630,7 @@
             <param name="criteriaLambda">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="criteriaLambda">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbTransaction,System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Object,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8760,6 +8642,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8768,14 +8651,7 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <param name="criteriaExpression">条件表达式</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8786,6 +8662,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8795,15 +8672,7 @@
             <param name="criteriaExpression">条件表达式</param>
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Schema.Sheet.SelectFirstRecord``2(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
-            <summary>
-            获取记录
-            </summary>
-            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
-            <param name="criteriaExpression">条件表达式</param>
-            <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
-            <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbTransaction,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Int32,System.Int32,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8815,6 +8684,7 @@
             <param name="pageNo">页码(1..N, 0为不分页)</param>
             <param name="pageSize">分页大小</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord``2(System.Data.Common.DbCommand,Phenix.Core.Data.Expressions.CriteriaExpression,System.Object,System.Int32,System.Int32,System.Boolean,Phenix.Core.Data.Expressions.OrderBy{``0}[])">
             <summary>
@@ -8827,6 +8697,7 @@
             <param name="pageSize">分页大小</param>
             <param name="first">是否返回第一条记录</param>
             <param name="orderBys">排序队列</param>
+            <returns>记录(JSON格式)</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.SelectRecord(System.Data.IDataReader,System.Boolean)">
             <summary>
@@ -9764,26 +9635,6 @@
             <param name="message">消息</param>
             <param name="error">错误</param>
             <param name="extension">后缀</param>
-        </member>
-        <member name="T:Phenix.Core.Message.IMessageService">
-            <summary>
-            消息服务接口
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Message.IMessageService.OnConnected(Phenix.Core.Security.Identity,System.String)">
-            <summary>
-            连接
-            </summary>
-            <param name="identity">当前用户身份</param>
-            <param name="connectionId">连接ID</param>
-        </member>
-        <member name="M:Phenix.Core.Message.IMessageService.OnDisconnected(Phenix.Core.Security.Identity,System.String,System.Exception)">
-            <summary>
-            断开
-            </summary>
-            <param name="identity">当前用户身份</param>
-            <param name="connectionId">连接ID</param>
-            <param name="exception">Exception</param>
         </member>
         <member name="T:Phenix.Core.Message.UserMessage">
             <summary>
@@ -11661,6 +11512,16 @@
             身份验证类型
             </summary>
         </member>
+        <member name="M:Phenix.Core.Security.Identity.FormatPrimaryKey(System.String)">
+            <summary>
+            格式化PrimaryKey
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Security.Identity.FormatPrimaryKey(System.String,System.String)">
+            <summary>
+            格式化PrimaryKey
+            </summary>
+        </member>
         <member name="T:Phenix.Core.Security.IPositionProxy">
             <summary>
             岗位资料代理接口
@@ -11719,7 +11580,7 @@
             </summary>
             <param name="cipherText">密文(Base64字符串)</param>
         </member>
-        <member name="M:Phenix.Core.Security.IUserProxy.GetKernelProperty``1(System.Linq.Expressions.Expression{System.Func{Phenix.Core.Security.User,System.Object}})">
+        <member name="M:Phenix.Core.Security.IUserProxy.GetKernelProperty``1(System.Linq.Expressions.Expression{System.Func{Phenix.Core.Security.User,``0}})">
             <summary>
             获取根实体对象属性值
             </summary>
@@ -11744,56 +11605,37 @@
             </summary>
             <param name="id">主键</param>
         </member>
-        <member name="T:Phenix.Core.Security.IUserService">
-            <summary>
-            用户资料服务接口
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Security.IUserService.OnRegistered(Phenix.Core.Security.User,System.String)">
-            <summary>
-            注册成功
-            </summary>
-            <param name="user">用户资料</param>
-            <param name="initialPassword">初始口令</param>
-            <returns>返回消息</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.IUserService.OnCheckIn(Phenix.Core.Security.User,System.String)">
-            <summary>
-            登记处理
-            </summary>
-            <param name="user">用户资料</param>
-            <param name="dynamicPassword">动态口令</param>
-            <returns>返回消息</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.IUserService.OnLogon(Phenix.Core.Security.User,System.String)">
-            <summary>
-            登录完成
-            Key/IV=登录口令/动态口令
-            </summary>
-            <param name="user">用户资料</param>
-            <param name="tag">捎带数据(已解密, 默认是客户端当前时间)</param>
-        </member>
         <member name="T:Phenix.Core.Security.Position">
+            <summary>
+            用户资料
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Security.Position`1">
             <summary>
             岗位资料
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.Position.#ctor">
+        <member name="M:Phenix.Core.Security.Position`1.#ctor">
             <summary>
             for CreateInstance
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.Position.Id">
+        <member name="M:Phenix.Core.Security.Position`1.#ctor(System.String,System.Int64,System.String,System.Collections.Generic.IList{System.String})">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Position`1.Id">
             <summary>
             主键
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.Position.Name">
+        <member name="P:Phenix.Core.Security.Position`1.Name">
             <summary>
             名称
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.Position.Roles">
+        <member name="P:Phenix.Core.Security.Position`1.Roles">
             <summary>
             角色清单
             </summary>
@@ -11863,188 +11705,193 @@
             用户资料
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.User.#ctor">
+        <member name="T:Phenix.Core.Security.User`1">
+            <summary>
+            用户资料
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Security.User`1.#ctor">
             <summary>
             for CreateInstance
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.User.#ctor(System.String,System.Int64,System.String,System.String,System.String,System.String,System.DateTime,System.String,System.Int32,System.Nullable{System.DateTime},System.Int64,System.Int64,System.Nullable{System.Int64},System.Boolean,System.Nullable{System.DateTime},System.Boolean,System.Nullable{System.DateTime})">
+        <member name="M:Phenix.Core.Security.User`1.#ctor(System.String,System.Int64,System.String,System.String,System.String,System.String,System.DateTime,System.String,System.Int32,System.Nullable{System.DateTime},System.Int64,System.Int64,System.Nullable{System.Int64},System.Boolean,System.Nullable{System.DateTime},System.Boolean,System.Nullable{System.DateTime})">
             <summary>
             初始化
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.RequestFailureCountMaximum">
+        <member name="P:Phenix.Core.Security.User`1.RequestFailureCountMaximum">
             <summary>
             服务请求失败次数极限
             默认：5(次>=3)
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.RequestFailureLockedMinutes">
+        <member name="P:Phenix.Core.Security.User`1.RequestFailureLockedMinutes">
             <summary>
             服务请求失败锁定周期
             默认：30(分钟>=10)
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.AllowMultiAddressRequest">
+        <member name="P:Phenix.Core.Security.User`1.AllowMultiAddressRequest">
             <summary>
             允许多处终端发起请求
             默认：true
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.AllowMultiSessionRequest">
+        <member name="P:Phenix.Core.Security.User`1.AllowMultiSessionRequest">
             <summary>
             允许多处会话发起请求
             默认：true
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.RequestOvertimeLimitMinutes">
+        <member name="P:Phenix.Core.Security.User`1.RequestOvertimeLimitMinutes">
             <summary>
             服务请求超时时限(与服务端时钟差值)
             默认：30(分钟>=10)
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.BreakRequestIntensityPerMinute">
+        <member name="P:Phenix.Core.Security.User`1.BreakRequestIntensityPerMinute">
             <summary>
             中断服务请求强度阈值(每分钟次数)
             默认：6000(>=6000)
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.PasswordLengthMinimum">
+        <member name="P:Phenix.Core.Security.User`1.PasswordLengthMinimum">
             <summary>
             口令长度最小值
             默认：6(个>=6)
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.PasswordComplexityMinimum">
+        <member name="P:Phenix.Core.Security.User`1.PasswordComplexityMinimum">
             <summary>
             口令复杂度最小值(含数字、大写字母、小写字母、特殊字符的种类)
             默认：3(个>=1)
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.DynamicPasswordValidityMinutes">
+        <member name="P:Phenix.Core.Security.User`1.DynamicPasswordValidityMinutes">
             <summary>
             动态口令有效周期
             默认：10(分钟>=3)
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.AllowRepeatTimestamp">
+        <member name="P:Phenix.Core.Security.User`1.AllowRepeatTimestamp">
             <summary>
             允许时间戳重发
             默认：false
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.Id">
+        <member name="P:Phenix.Core.Security.User`1.Id">
             <summary>
             主键
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.Name">
+        <member name="P:Phenix.Core.Security.User`1.Name">
             <summary>
             登录名
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.Phone">
+        <member name="P:Phenix.Core.Security.User`1.Phone">
             <summary>
             手机
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.EMail">
+        <member name="P:Phenix.Core.Security.User`1.EMail">
             <summary>
             邮箱
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.RegAlias">
+        <member name="P:Phenix.Core.Security.User`1.RegAlias">
             <summary>
             注册昵称
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.RegTime">
+        <member name="P:Phenix.Core.Security.User`1.RegTime">
             <summary>
             注册时间
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.RequestAddress">
+        <member name="P:Phenix.Core.Security.User`1.RequestAddress">
             <summary>
             服务请求方IP地址
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.RequestSession">
+        <member name="P:Phenix.Core.Security.User`1.RequestSession">
             <summary>
             服务请求会话签名
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.RequestFailureCount">
+        <member name="P:Phenix.Core.Security.User`1.RequestFailureCount">
             <summary>
             服务请求失败次数
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.RequestFailureTime">
+        <member name="P:Phenix.Core.Security.User`1.RequestFailureTime">
             <summary>
             服务请求失败时间
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.RootTeamsId">
+        <member name="P:Phenix.Core.Security.User`1.RootTeamsId">
             <summary>
             所属公司ID
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.TeamsId">
+        <member name="P:Phenix.Core.Security.User`1.TeamsId">
             <summary>
             所属部门ID
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.PositionId">
+        <member name="P:Phenix.Core.Security.User`1.PositionId">
             <summary>
             担任岗位ID
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.Locked">
+        <member name="P:Phenix.Core.Security.User`1.Locked">
             <summary>
             是否锁定
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.LockedTime">
+        <member name="P:Phenix.Core.Security.User`1.LockedTime">
             <summary>
             锁定时间
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.Disabled">
+        <member name="P:Phenix.Core.Security.User`1.Disabled">
             <summary>
             是否注销
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.DisabledTime">
+        <member name="P:Phenix.Core.Security.User`1.DisabledTime">
             <summary>
             注销时间
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.Password">
+        <member name="P:Phenix.Core.Security.User`1.Password">
             <summary>
             登录口令(散列值)
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.DynamicPassword">
+        <member name="P:Phenix.Core.Security.User`1.DynamicPassword">
             <summary>
             动态口令(散列值)
             为空时用登录口令
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.DynamicPasswordCreateTime">
+        <member name="P:Phenix.Core.Security.User`1.DynamicPasswordCreateTime">
             <summary>
             动态口令生成时间
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.IsCompanyAdmin">
+        <member name="P:Phenix.Core.Security.User`1.IsCompanyAdmin">
             <summary>
             是否公司管理员?
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User.IsAuthenticated">
+        <member name="P:Phenix.Core.Security.User`1.IsAuthenticated">
             <summary>
             已身份验证?
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.User.Encrypt(System.Object)">
+        <member name="M:Phenix.Core.Security.User`1.Encrypt(System.Object)">
             <summary>
             加密
             Key/IV=登录口令/动态口令
@@ -12052,7 +11899,7 @@
             <param name="data">需加密的对象/字符串</param>
             <returns>密文(Base64字符串)</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User.Decrypt(System.String)">
+        <member name="M:Phenix.Core.Security.User`1.Decrypt(System.String)">
             <summary>
             解密
              Key/IV=登录口令/动态口令
@@ -12060,7 +11907,7 @@
             <param name="cipherText">密文(Base64字符串)</param>
             <returns>原文</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User.IsValid(System.String,System.String,System.String,System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Security.User`1.IsValid(System.String,System.String,System.String,System.String,System.Boolean)">
             <summary>
             核对有效性
             </summary>
@@ -12071,7 +11918,7 @@
             <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
             <returns>是否正确</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User.IsValidLogon(System.String,System.String,System.String,System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Security.User`1.IsValidLogon(System.String,System.String,System.String,System.String,System.Boolean)">
             <summary>
             核对登录有效性
             </summary>
@@ -12082,7 +11929,7 @@
             <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
             <returns>是否正确</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User.EqualityNamePassword(System.String,System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Security.User`1.EqualityNamePassword(System.String,System.String,System.Boolean)">
             <summary>
             比对登录名与口令
             </summary>
@@ -12091,7 +11938,7 @@
             <param name="throwIfNotConform">如果为 true, 登录口令无效时会抛出PasswordComplexityException异常而不是返回false</param>
             <returns>是否正确</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User.IsValidPasswordComplexity(System.String,System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Security.User`1.IsValidPasswordComplexity(System.String,System.String,System.Boolean)">
             <summary>
             登录口令是否有效
             </summary>
@@ -12100,19 +11947,19 @@
             <param name="throwIfNotConform">如果为 true, 登录口令无效时会抛出PasswordComplexityException异常而不是返回false</param>
             <returns>是否正确</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User.BuildPassword">
+        <member name="M:Phenix.Core.Security.User`1.BuildPassword">
             <summary>
             构建登录口令
             </summary>
             <returns>登录口令</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User.ResetPassword">
+        <member name="M:Phenix.Core.Security.User`1.ResetPassword">
             <summary>
             重置登录口令
             </summary>
             <returns>是否成功</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User.ChangePassword(System.String,System.String,System.Boolean,System.String,System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Security.User`1.ChangePassword(System.String,System.String,System.Boolean,System.String,System.String,System.Boolean)">
             <summary>
             修改登录口令
             </summary>
@@ -12124,13 +11971,13 @@
             <param name="throwIfNotConform">如果为 true, 账号无效或口令不规范会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserPasswordComplexityException异常而不是返回false</param>
             <returns>是否成功</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User.BuildDynamicPassword">
+        <member name="M:Phenix.Core.Security.User`1.BuildDynamicPassword">
             <summary>
             构建动态口令
             </summary>
             <returns>动态口令</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User.ApplyDynamicPassword(System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Security.User`1.ApplyDynamicPassword(System.String,System.Boolean)">
             <summary>
             申请动态口令
             </summary>
@@ -12138,17 +11985,17 @@
             <param name="throwIfNotConform">如果为 true, 核对有效性不符会抛出UserNotFoundException/UserLockedException异常而不是返回false</param>
             <returns>动态口令(6位数字一般作为验证码用短信发送给到用户)</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User.Activate">
+        <member name="M:Phenix.Core.Security.User`1.Activate">
             <summary>
             激活
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.User.Disable">
+        <member name="M:Phenix.Core.Security.User`1.Disable">
             <summary>
             注销
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.User.Register(Phenix.Core.Data.Database,System.String,System.String,System.String,System.String,System.String,System.Int64,System.Int64,System.Nullable{System.Int64},System.String@)">
+        <member name="M:Phenix.Core.Security.User`1.Register(Phenix.Core.Data.Database,System.String,System.String,System.String,System.String,System.String,System.Int64,System.Int64,System.Nullable{System.Int64},System.String@)">
             <summary>
             注册
             </summary>

@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Phenix.Actor;
-using Phenix.Core.Data;
 using Phenix.Core.Reflection;
 using Phenix.Core.Security;
 using Phenix.Services.Plugin.Actor.Security;
@@ -18,12 +17,12 @@ namespace Phenix.Services.Plugin
 
         Task<bool> IUserProxy.IsValidLogon(string companyName, string userName, string timestamp, string signature, string tag, string requestAddress, string requestSession, bool throwIfNotConform)
         {
-            return ClusterClient.Default.GetGrain<IUserGrain>(String.Format("{0}{1}{2}", companyName, Standards.RowSeparator, userName)).IsValidLogon(timestamp, signature, tag, requestAddress, requestSession, throwIfNotConform);
+            return ClusterClient.Default.GetGrain<IUserGrain>(Identity.FormatPrimaryKey(companyName, userName)).IsValidLogon(timestamp, signature, tag, requestAddress, requestSession, throwIfNotConform);
         }
 
         Task<bool> IUserProxy.IsValid(string companyName, string userName, string timestamp, string signature, string requestAddress, string requestSession, bool throwIfNotConform)
         {
-            return ClusterClient.Default.GetGrain<IUserGrain>(String.Format("{0}{1}{2}", companyName, Standards.RowSeparator, userName)).IsValid(timestamp, signature, requestAddress, requestSession, throwIfNotConform);
+            return ClusterClient.Default.GetGrain<IUserGrain>(Identity.FormatPrimaryKey(companyName, userName)).IsValid(timestamp, signature, requestAddress, requestSession, throwIfNotConform);
         }
 
         Task<string> IUserProxy.Encrypt(object data)
@@ -36,9 +35,9 @@ namespace Phenix.Services.Plugin
             return ClusterClient.Default.GetGrain<IUserGrain>(Identity.CurrentIdentity.PrimaryKey).Decrypt(cipherText);
         }
 
-        Task<TValue> IUserProxy.GetKernelProperty<TValue>(Expression<Func<User, object>> propertyLambda)
+        Task<TValue> IUserProxy.GetKernelProperty<TValue>(Expression<Func<User, TValue>> propertyLambda)
         {
-            return ClusterClient.Default.GetKernelPropertyAsync<IUserGrain, User, TValue>(Identity.CurrentIdentity.PrimaryKey, propertyLambda);
+            return ClusterClient.Default.GetGrain<IUserGrain>(Identity.CurrentIdentity.PrimaryKey).GetKernelProperty<TValue>(Utilities.GetPropertyInfo<User>(propertyLambda).Name);
         }
 
         #endregion

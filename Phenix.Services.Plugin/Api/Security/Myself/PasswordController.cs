@@ -40,7 +40,7 @@ namespace Phenix.Services.Plugin.Api.Security.Myself
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name), "登录名不允许为空!");
 
-            await ClusterClient.Default.GetGrain<IUserGrain>(String.Format("{0}{1}{2}", User.Identity.CompanyName, Standards.RowSeparator, name)).ResetPassword();
+            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.FormatPrimaryKey(name)).ResetPassword();
         }
     }
 }

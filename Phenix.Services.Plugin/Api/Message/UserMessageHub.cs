@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.SignalR;
-using Phenix.Core.Message;
 using Phenix.Core.Security;
+using Phenix.Services.Contract.Message;
 
 namespace Phenix.Services.Plugin.Api.Message
 {

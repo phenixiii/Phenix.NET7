@@ -23,7 +23,7 @@ namespace Phenix.Services.Plugin.Api.Security
         [HttpGet("all")]
         public IList<Core.Security.Position> Get()
         {
-            return Phenix.Core.Security.Position.FetchAll(Database.Default);
+            return Phenix.Core.Security.Position.FetchList(Database.Default);
         }
 
         /// <summary>

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Phenix.Actor;
 using Phenix.Core;
-using Phenix.Core.Security;
 using Phenix.Core.Security.Auth;
 using Phenix.Core.Threading;
-using Phenix.Services.Plugin.Actor.Security.Cryptography;
+using Phenix.Services.Business.Security;
+using Phenix.Services.Contract.Security;
 
 namespace Phenix.Services.Plugin.Actor.Security
 {
@@ -65,7 +65,7 @@ namespace Phenix.Services.Plugin.Actor.Security
         /// </summary>
         protected long RootTeamsId
         {
-            get { return _rootTeamsId ??= AsyncHelper.RunSync(() => ClusterClient.GetKernelPropertyAsync<ITeamsGrain, Teams, long>(CompanyName, p => p.Id)); }
+            get { return _rootTeamsId ??= AsyncHelper.RunSync(() => ClusterClient.GetKernelPropertyAsync<ITeamsGrain, Phenix.Core.Security.Teams, long>(CompanyName, p => p.Id)); }
         }
 
         /// <summary>
@@ -100,28 +100,8 @@ namespace Phenix.Services.Plugin.Actor.Security
             return Task.FromResult(result);
         }
 
-        async Task<bool> IUserGrain.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, string requestSession, bool throwIfNotConform)
+        Task<bool> IUserGrain.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, string requestSession, bool throwIfNotConform)
         {
-            Phenix.Services.Plugin.P6C.HttpClient httpClient = Phenix.Services.Plugin.P6C.HttpClient.Default;
-            if (httpClient != null)
-            {
-                string password = await ClusterClient.GetGrain<IOneOffKeyPairGrain>(KeyPairDiscardIntervalSeconds).Decrypt(UserName, await httpClient.LogonAsync(UserName, timestamp, signature, tag), true);
-                if (String.IsNullOrEmpty(password))
-                {
-                    if (Kernel != null)
-                        Kernel.Disable();
-                    throw new UserNotFoundException();
-                }
-
-                if (Kernel != null)
-                {
-                    Kernel.Activate();
-                    Kernel.ChangePassword(Kernel.Password, password, false, requestAddress, requestSession);
-                }
-   
-                return true;
-            }
-
             if (Kernel == null)
                 throw new UserNotFoundException();
 
@@ -129,10 +109,10 @@ namespace Phenix.Services.Plugin.Actor.Security
             {
                 if (_service != null)
                     _service.OnLogon(Kernel, Kernel.Decrypt(tag));
-                return true;
+                return Task.FromResult(true);
             }
 
-            return false;
+            return Task.FromResult(false);
         }
 
         Task<bool> IUserGrain.IsValid(string timestamp, string signature, string requestAddress, string requestSession, bool throwIfNotConform)
@@ -177,12 +157,12 @@ namespace Phenix.Services.Plugin.Actor.Security
 
         #region CompanyAdmin 操作功能
 
-        Task<IList<User>> IUserGrain.FetchCompanyUsers()
+        async Task<IList<User>> IUserGrain.FetchCompanyUsers()
         {
             if (Kernel == null)
                 throw new UserNotFoundException();
 
-            return Task.FromResult(User.FetchAll(Database, p => p.RootTeamsId == Kernel.RootTeamsId && p.RootTeamsId != p.TeamsId));
+            return Kernel.FetchCompanyUsers(await ClusterClient.GetGrain<ITeamsGrain>(CompanyName).FetchKernel());
         }
 
         async Task<string> IUserGrain.Register(string phone, string eMail, string regAlias, string requestAddress, long teamsId, long positionId)
@@ -191,7 +171,7 @@ namespace Phenix.Services.Plugin.Actor.Security
                 throw new InvalidOperationException("登录名已被他人注册!");
 
             if (!await ClusterClient.GetGrain<ITeamsGrain>(CompanyName).HaveNode(teamsId, false))
-                throw new InvalidOperationException("设置的团队不存在!");
+                throw new InvalidOperationException("注册用户的团队不存在!");
 
             string initialPassword = UserName;
             Kernel = User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, teamsId, positionId, ref initialPassword);

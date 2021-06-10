@@ -1,6 +1,6 @@
 ﻿using System;
-using Phenix.Core.Message;
 using Phenix.Core.Security;
+using Phenix.Services.Contract.Message;
 
 namespace Phenix.Services.Extend.Api.Message
 {

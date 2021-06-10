@@ -15,7 +15,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.Actor.GrainProxy">
-    <Position X="5.25" Y="0.5" Width="4.25" />
+    <Position X="5.25" Y="0.5" Width="4" />
     <TypeIdentifier>
       <HashCode>AAAAAAABAAQAAAAAAAAAAQAAAAAgAQAAAAIAAAAAQCA=</HashCode>
       <FileName>Extensions\GrainProxy.cs</FileName>

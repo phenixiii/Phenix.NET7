@@ -123,17 +123,32 @@ namespace {4}{5}{6}
     /// {3}
     /// </summary>
     [Serializable]
+    public class {9} : {9}<{9}>
+    {{
+    }}
+
+    /// <summary>
+    /// {3}
+    /// </summary>
+    [Serializable]
     [Display(Description = @""{3}"")]
     [Sheet(""{7}"", PrimaryKeyName = {8})]
-    public class {9} : EntityBase<{9}>
+    public abstract class {9}<T> : EntityBase<T>
+        where T : {9}<T>
     {{
-        private {9}()
+        /// <summary>
+        /// for CreateInstance
+        /// </summary>
+        protected {9}()
         {{
             // used to fetch object, do not add code
         }}
 
+        /// <summary>
+        /// {3}
+        /// </summary>
         [Newtonsoft.Json.JsonConstructor]
-        public {9}(string dataSourceKey,
+        protected {9}(string dataSourceKey,
             ",
                 Environment.UserName, DateTime.Now, sheet.Name, sheet.Description, sheet.Owner.Database.DatabaseName,
                 !String.IsNullOrEmpty(sheet.Prefix) ? "." : null,

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
-using Phenix.Core.Data;
+using Phenix.Core.Security;
 using Phenix.Services.Plugin.Actor.Security;
 
 namespace Phenix.Services.Plugin.Api.Security
@@ -36,7 +36,7 @@ namespace Phenix.Services.Plugin.Api.Security
             if (String.IsNullOrEmpty(userName))
                 throw new ArgumentNullException(nameof(userName), "登录名不允许为空!");
 
-            return await ClusterClient.Default.GetGrain<IUserGrain>(String.Format("{0}{1}{2}", companyName, Standards.RowSeparator, userName)).CheckIn(phone, eMail, regAlias, Request.GetRemoteAddress());
+            return await ClusterClient.Default.GetGrain<IUserGrain>(Identity.FormatPrimaryKey(companyName, userName)).CheckIn(phone, eMail, regAlias, Request.GetRemoteAddress());
         }
 
         // phAjax.logon()

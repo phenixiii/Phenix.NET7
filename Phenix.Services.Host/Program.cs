@@ -86,7 +86,7 @@ namespace Phenix.Services.Host
                      * 插件程序集都应该统一采用"*.Plugin.dll"、"*.Contract.dll"作为文件名的后缀
                      * 插件程序集都应该被部署到本服务容器的执行目录下
                      */
-                    .ConfigureCluster()
+                    .ConfigureCluster(Database.Default)
                     /*
                      * 使用Dashboard插件
                      * 本地打开可视化监控工具：http://localhost:8088/

@@ -23,7 +23,7 @@ namespace Phenix.Services.Plugin.Api.Security
         public IList<string> Get()
         {
             List<string> result = new List<string>();
-            foreach (ControllerRole controllerRole in ControllerRole.FetchAll(Database.Default))
+            foreach (ControllerRole controllerRole in ControllerRole.FetchList(Database.Default))
             foreach (string role in controllerRole.Roles)
             foreach (string s in role.Split(new char[] {'|', ','}, StringSplitOptions.RemoveEmptyEntries))
                 if (!result.Contains(s))

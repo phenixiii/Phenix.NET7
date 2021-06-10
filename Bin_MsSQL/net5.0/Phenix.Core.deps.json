@@ -6,10 +6,10 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "Phenix.Core/7.5.47": {
+      "Phenix.Core/7.5.48": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.1",
-          "System.Data.SQLite.Core": "1.0.113.7",
+          "System.Data.SQLite.Core": "1.0.114.2",
           "System.Data.SqlClient": "4.8.2"
         },
         "runtime": {
@@ -65,11 +65,11 @@
           }
         }
       },
-      "Stub.System.Data.SQLite.Core.NetStandard/1.0.113.2": {
+      "Stub.System.Data.SQLite.Core.NetStandard/1.0.114.2": {
         "runtime": {
           "lib/netstandard2.1/System.Data.SQLite.dll": {
-            "assemblyVersion": "1.0.113.0",
-            "fileVersion": "1.0.113.0"
+            "assemblyVersion": "1.0.114.0",
+            "fileVersion": "1.0.114.0"
           }
         },
         "runtimeTargets": {
@@ -86,12 +86,12 @@
           "runtimes/win-x64/native/SQLite.Interop.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "1.0.113.0"
+            "fileVersion": "1.0.114.0"
           },
           "runtimes/win-x86/native/SQLite.Interop.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "1.0.113.0"
+            "fileVersion": "1.0.114.0"
           }
         }
       },
@@ -122,9 +122,9 @@
           }
         }
       },
-      "System.Data.SQLite.Core/1.0.113.7": {
+      "System.Data.SQLite.Core/1.0.114.2": {
         "dependencies": {
-          "Stub.System.Data.SQLite.Core.NetStandard": "1.0.113.2"
+          "Stub.System.Data.SQLite.Core.NetStandard": "1.0.114.2"
         }
       },
       "System.Security.AccessControl/4.7.0": {
@@ -137,7 +137,7 @@
     }
   },
   "libraries": {
-    "Phenix.Core/7.5.47": {
+    "Phenix.Core/7.5.48": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -191,12 +191,12 @@
       "path": "runtime.win-x86.runtime.native.system.data.sqlclient.sni/4.4.0",
       "hashPath": "runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512"
     },
-    "Stub.System.Data.SQLite.Core.NetStandard/1.0.113.2": {
+    "Stub.System.Data.SQLite.Core.NetStandard/1.0.114.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-yGIM9xFyPHl79HluNTSQarvAOIJ68pmzmlMayVN6Nivu/7TiaHt7WqptolvwmuKdAXei8OzENh9RNdh7d6evjQ==",
-      "path": "stub.system.data.sqlite.core.netstandard/1.0.113.2",
-      "hashPath": "stub.system.data.sqlite.core.netstandard.1.0.113.2.nupkg.sha512"
+      "sha512": "sha512-B3cE0lO8HlDiJWHZnkAVi5G7euplvVZjbycXHl/yhnUUJnCawXGZmj/nCBOl6t8PzZoqgWc9Jule9g9o2JFZMw==",
+      "path": "stub.system.data.sqlite.core.netstandard/1.0.114.2",
+      "hashPath": "stub.system.data.sqlite.core.netstandard.1.0.114.2.nupkg.sha512"
     },
     "System.Data.SqlClient/4.8.2": {
       "type": "package",
@@ -205,12 +205,12 @@
       "path": "system.data.sqlclient/4.8.2",
       "hashPath": "system.data.sqlclient.4.8.2.nupkg.sha512"
     },
-    "System.Data.SQLite.Core/1.0.113.7": {
+    "System.Data.SQLite.Core/1.0.114.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-2DKMIxfZpIVzdMfx1dj9qvTm+0m0Mx6sN6CZXMQDNytU7Sk/JKo0Ox6mvHAicfHrQgqZbUZMzMMtLXD0kwmFfg==",
-      "path": "system.data.sqlite.core/1.0.113.7",
-      "hashPath": "system.data.sqlite.core.1.0.113.7.nupkg.sha512"
+      "sha512": "sha512-LvDUyvg8uq4gPUvMvxGNanT/a4Jnjx8EEJj/Qc8V/bUusoB8rEB/aPginvkvrKUXV8QkIEmX/jppUDnp6c/+nw==",
+      "path": "system.data.sqlite.core/1.0.114.2",
+      "hashPath": "system.data.sqlite.core.1.0.114.2.nupkg.sha512"
     },
     "System.Security.AccessControl/4.7.0": {
       "type": "package",
