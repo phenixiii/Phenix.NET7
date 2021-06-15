@@ -206,7 +206,7 @@ namespace {4}{5}{6}
             set {{ {1} = value; }}
         }}
 ",
-                    kvp.Value.MappingTypeName, kvp.Value.FieldName, kvp.Value.Description, kvp.Value.Name, kvp.Value.PropertyName));
+                    kvp.Value.MappingTypeName, kvp.Value.FieldName, kvp.Value.Description.Replace(@"""", @""""""), kvp.Value.Name, kvp.Value.PropertyName));
             }
 
             codeBuilder.Append(@"

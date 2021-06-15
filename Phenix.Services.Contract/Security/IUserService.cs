@@ -1,4 +1,5 @@
-﻿using Phenix.Services.Business.Security;
+﻿using System.Threading.Tasks;
+using Phenix.Services.Business.Security;
 
 namespace Phenix.Services.Contract.Security
 {
@@ -15,7 +16,7 @@ namespace Phenix.Services.Contract.Security
         /// <param name="user">用户资料</param>
         /// <param name="initialPassword">初始口令</param>
         /// <returns>返回消息</returns>
-        string OnRegistered(User user, string initialPassword);
+        Task<string> OnRegistered(User user, string initialPassword);
 
         /// <summary>
         /// 登记处理
@@ -23,14 +24,14 @@ namespace Phenix.Services.Contract.Security
         /// <param name="user">用户资料</param>
         /// <param name="dynamicPassword">动态口令</param>
         /// <returns>返回消息</returns>
-        string OnCheckIn(User user, string dynamicPassword);
+        Task<string> OnCheckIn(User user, string dynamicPassword);
 
         /// <summary>
         /// 登录完成
         /// </summary>
         /// <param name="user">用户资料</param>
         /// <param name="tag">捎带数据(已解密, 默认是客户端当前时间)</param>
-        void OnLogon(User user, string tag);
+        Task OnLogon(User user, string tag);
 
         #endregion
     }

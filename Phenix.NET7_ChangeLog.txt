@@ -65,12 +65,7 @@ Copyright © 2007, 2021 Phenixヾ Studio
 2，提供业务类代码生成工具Phenix.Tools.BusinessBuilder工程源码
 
 
-20191030
-1，新增Phenix.Core.Threading.Timer类，提供定时执行任务功能，通过AddTimedTask()函数添加已实现Phenix.Core.Threading.ITimedTask接口的对象，会自动按照指定周期在一个独立线程里执行这个对象的Execute()函数
-2，Phenix.Core.SyncCollections命名空间的集合类，都已实现Phenix.Core.Threading.ITimedTask接口，只要通过AddTimedTask()函数加入到Phenix.Core.Threading.Timer的定时执行任务队列里，会自动按照指定周期清理集合对象里过期的集合项，前提条件是集合项对象需实现Phenix.Core.SyncCollections.ICachedObject接口，指定它的失效时间以自动被从集合中剔除出去
-
-
-20191102
+20191101
 1，提供非对称加密的公钥私钥生成工具Phenix.Tools.CreateKeyPair工程源码
 2，数据库连接串配置记录存放在Phenix.Core.db（推荐使用SQLite Expert工具打开）库文件PH7_Database表里，以便在程序运行时无需通过编写代码注册数据库入口，可直接获取Phenix.Core.Data.Database对象，具体配置方法见示例记录的Remark字段内容
 
@@ -87,29 +82,14 @@ Copyright © 2007, 2021 Phenixヾ Studio
 2，提供Phenix.Core.AppSettings应用系统配置工具，配置项定义方法参考Phenix.Services.Host的OrleansConfig类，系统部署实施时可根据需要在Database.Default或Phenix.Core.db库文件PH7_AppSettings表里做配置
 
 
-20200107
-1，添加Demo_Practice目录，用于存放实战演练项目的代码
-2，添加Demo.InventoryControl库存管控演练项目到Demo_Practice目录
-3，InventoryControl演练第一步，完成货架装卸货物的记录功能，见Demo.InventoryControl.Plugin_MySQL工程
-
-
 20200205
 1，提供Phenix.Algorithm工程源码，含ZeroOneKnapsackProblem类的0-1背包算法，支持"打包至少占有一定容量"、"打包至少占有一定容量且不低于一定价值"、"趋向最小规格且不考虑打包价值/只要满足最低打包价值"等约束条件，用法见Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem工程
 2，为Phenix.Algorithm工程添加BunchKnapsackProblem类，从M支集束的N个物品中挑选出一个尽可能整支和价值高的子集使其装满容量为W且允许有一定超载范围的背包
-3，InventoryControl演练第二步，完成从Area-Alley-Location逐层自动挑货的标记功能，见Demo.InventoryControl.Plugin_MySQL工程
-
-
-20200213
-1，为Phenix.Actor工程封装Orleans Streams功能，见StreamProvider类
-2，为Demo.InventoryControl.Plugin_MySQL工程添加Demo.InventoryControl.Plugin.oom设计文档
-3，添加Demo.InspectionStation检查站作业演练项目到Demo_Practice目录
-4，InspectionStation演练第一步，完成各作业点的地磅和车牌号的数据上报和读取、闸口的放行，作业点动态信息的发布和订阅，见Demo.InspectionStation.Plugin_MySQL工程
 
 
 20200217
-1，升级用户消息发布和订阅功能，允许在单一的消息ID上持续发送消息，可用于数据监控等业务场景，示例代码见：Demo.Phenix.Client.HttpClient_Message
+1，为Phenix.Actor工程封装Orleans Streams功能，见StreamProviderProxy类
 2，为Phenix.Actor工程添加StreamEntityGrainBase类，可支持网格化的消息发布和订阅机制
-3，InspectionStation演练第二步，中控的WebAPI客户端可订阅指定的多个作业点的动态信息，通过SignalR的推送机制实时获取到最新数据，见Demo.InspectionStation.Plugin_MySQL工程
 
 
 20200220
@@ -121,8 +101,8 @@ Copyright © 2007, 2021 Phenixヾ Studio
 1，为Phenix.Services.Host工程添加Dashboard插件，可在浏览器上打开可视化Silo监控工具：http://localhost:8080/
 2，完善Phenix.Core.Log.EventLog功能，可防止连续写同一message造成本地日志瞬时暴涨的问题，中断重复日志强度阈值由静态属性BreakRepeatIntensityPerMinute控制，缺省为重复日志超过每分钟6000次
 3，完善用户身份验证功能，可防止同一用户高频访问服务，中断服务请求强度阈值由Phenix.Core.Security.User的BreakRequestIntensityPerMinute静态属性控制，缺省为服务请求超过每分钟6000次
-4，为Phenix.Actor工程添加TreeEntityGrainBase、StreamTreeEntityGrainBase、TreeEntityGrainProxyBase类，以支持树状结构Kernel的处理
-5，丰富Phenix.Services.Plugin工程功能，注册用户可搭建起组织架构成为公司管理员，示例见Demo.Phenix.Client.Security.Identity_MyselfRootTeams
+4，为Phenix.Actor工程添加TreeEntityGrainBase、StreamTreeEntityGrainBase类，以支持树状结构Kernel的处理
+5，丰富Phenix.Services.Plugin工程功能，注册用户可搭建起组织架构成为公司管理员
 
 
 20200510
@@ -131,27 +111,19 @@ Copyright © 2007, 2021 Phenixヾ Studio
 
 
 20200516
-1，提供Phenix.Core.Data.Schema.Table配置项ClassNameByTrimTableName(默认false)，可根据自己Build Entity的需要设置类名取自被整理(如果第PrefixCount(默认3)位后是"_"则剔去其及之前的字符)的表名
-2，提供Phenix.Core.Data.Schema.View配置项ClassNameByTrimViewName(默认false)，可根据自己Build Entity的需要设置类名取自被整理(如果第PrefixCount(默认3)位后是"_"则剔去其及之前的字符, 如果第SuffixCount(默认1)位前是"_"则剔去其及之后的字符)的视图名
-3，提供Phenix.Core.Data.Schema.Column配置项FieldNameByTrimColumnName(默认true)，可根据自己Build Entity的需要设置类的字段名和属性名取自被整理(如果第PrefixCount(默认2)位后是"_"则剔去其及之前的字符)的表/视图字段名
-4，丰富Phenix.Services.Plugin工程功能，公司管理员可为自己员工注册用户，为其配上所在团队（自己公司组织架构上的某个节点）、所担岗位，锁定/解锁、注销/恢复
+1，提供Phenix.Core.Data.Schema.Column配置项FieldNameByTrimColumnName(默认true)，可根据自己Build Entity的需要设置类的字段名和属性名取自被整理(如果第PrefixCount(默认2)位后是"_"则剔去其及之前的字符)的表/视图字段名
+2，丰富Phenix.Services.Plugin工程功能，公司管理员可为自己员工注册用户，为其配上所在团队（自己公司组织架构上的某个节点）、所担岗位，锁定/解锁、注销/恢复
 
 
 20200523
-1，修正系统管理员（用户名ADMIN，默认密码ADMIN）第一次无法登录注册的问题，并可增删改系统的岗位定义
-2，提供Phenix.Core.Data.Rule.ValidationException数据验证异常类，用于将其ValidationMessage属性抛到客户端，客户端在拦截到HTTP状态409后，利用ValidationMessage属性的MessageType、StatusCode（取1000以上的整型值）分类处理异常消息Hint
-3，增补Phenix.Core.Net.Api.ControllerBase的SelectRecord()函数，直接打包到分页查询结果DataPageInfo对象，DataPageInfo的DataName为实体类名，DataSize为数据量，PageNo为页码，PageSize为分页大小，PageBody为当前页JSON格式的记录数据
+1，提供Phenix.Core.Data.Rule.ValidationException数据验证异常类，用于将其ValidationMessage属性抛到客户端，客户端在拦截到HTTP状态409后，利用ValidationMessage属性的MessageType、StatusCode（取1000以上的整型值）分类处理异常消息Hint
+2，增补Phenix.Core.Net.Api.ControllerBase的SelectRecord()函数，直接打包到分页查询结果DataPageInfo对象，DataPageInfo的DataName为实体类名，DataSize为数据量，PageNo为页码，PageSize为分页大小，PageBody为当前页JSON格式的记录数据
 
 
 20200603
 1，为持久化引擎添加条件表达式动态传参的功能，涉及Phenix.Core.Data.Schema.Sheet的UpdateEntity、UpdateRecord、DeleteRecord、SelectEntity、SelectRecord、RecordCount等函数，以及Phenix.Core.Data.Model.EntityBase<T>、Phenix.Core.Net.Api.ControllerBase的相关功能，紧随着条件表达式（criteriaLambda/criteriaExpression）后面都会有一个条件对象（criteria）的参数（可为JSON格式字符串/属性-属性值Dictionary）
 2，Phenix.Core.Data.Schema.Sheet、Phenix.Core.Net.Api.ControllerBase的SelectRecord可按照接口定义（TSub）返回指定的属性值记录，而不是整个实体对象打包到JSON中
-3，借助Phenix.NET6实现用户登录身份验证，可参考代码（Phenix.Services.Plugin）实现第三方身份验证
-
-
-20200613
-1，修正身份验证失败（比如登录口令输错）时浏览器F12提示"Origin null is not allowed by Access-Control-Allow-Origin"的问题
-2，添加Demo.IDOS智能仓储作业系统演练项目到Demo_Practice目录，仅限于Phenix.NET7_PgSQL解决方案可见
+3，修正身份验证失败（比如登录口令输错）时浏览器F12提示"Origin null is not allowed by Access-Control-Allow-Origin"的问题
 
 
 20200707
@@ -195,12 +167,6 @@ Copyright © 2007, 2021 Phenixヾ Studio
 2，改写Phenix.Actor工程中自动编译插件服务（"*.Plugin.dll"）、契约服务（"*.Contract.dll"）的方法
 
 
-20201030
-1，采取Phenix.Core.Data.Schema.Column.FieldNameByTrimColumnName为false的映射策略的话，需要把表的主键命名为ID，视图中的非主表的主键可用别名区分，这样才能正确映射到实体类的ID属性上
-2，IEntityGrain<TKernel> 分割出IEntityGrain
-3，ITreeEntityGrain<TKernel>分割出ITreeEntityGrain
-
-
 20201109
 1，升级至for .net core5，开发工具 Visual Studio 2019 16.8.x及以上版本
 2，Phenix.Core.AppSettings应用系统配置工具支持中英文切换，写入的中英文用‘|’分隔，读取时会判断Thread.CurrentThread.CurrentCulture.Name是否为'zh-'截取前半截还是后半截
@@ -211,11 +177,16 @@ Copyright © 2007, 2021 Phenixヾ Studio
 2，提供《Phenix.NET7.服务部署方法》
 3，提供《Phenix.NET7.持久层开发方法》
 4，持久层引擎添加映射标签SheetAttribute和ColumnAttribute以支持未按规范设计的数据库表结构
-5，修改Phenix.Tools.BusinessBuilder和Phenix.Tools.EntityBuilder工程，默认都打上映射标签
+5，优化Phenix.Tools.BusinessBuilder和Phenix.Tools.EntityBuilder工程，默认都为实体或业务类打上映射标签
 
 
 20210301
 1，提供适配企业级SaaS系统的权限管理模块，包括企业会员的注册功能、管理自己公司的组织架构、添加和编辑自己员工的登录权限
+2，优化用户身份验证功能
+
+
+20210415
+1，优化Phenix.Tools.BusinessBuilder和Phenix.Tools.EntityBuilder工程，实体或业务类都继承自抽象基类，由抽象基类映射数据库表/视图结构
 2，优化用户身份验证功能
 
 

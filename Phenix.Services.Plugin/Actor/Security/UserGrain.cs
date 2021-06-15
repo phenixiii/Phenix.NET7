@@ -82,25 +82,25 @@ namespace Phenix.Services.Plugin.Actor.Security
 
         #region 方法
 
-        Task<string> IUserGrain.CheckIn(string phone, string eMail, string regAlias, string requestAddress)
+        async Task<string> IUserGrain.CheckIn(string phone, string eMail, string regAlias, string requestAddress)
         {
             string result;
             if (Kernel == null)
             {
                 string initialPassword = UserName;
                 Kernel = User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, RootTeamsId, null, ref initialPassword);
-                result = _service != null ? _service.OnRegistered(Kernel, initialPassword) : null;
+                result = _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
             }
             else
             {
                 string dynamicPassword = Kernel.ApplyDynamicPassword(requestAddress);
-                result = _service != null ? _service.OnCheckIn(Kernel, dynamicPassword) : null;
+                result = _service != null ? await _service.OnCheckIn(Kernel, dynamicPassword) : null;
             }
 
-            return Task.FromResult(result);
+            return result;
         }
 
-        Task<bool> IUserGrain.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, string requestSession, bool throwIfNotConform)
+        async Task<bool> IUserGrain.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, string requestSession, bool throwIfNotConform)
         {
             if (Kernel == null)
                 throw new UserNotFoundException();
@@ -108,11 +108,11 @@ namespace Phenix.Services.Plugin.Actor.Security
             if (Kernel.IsValidLogon(timestamp, signature, requestAddress, requestSession, throwIfNotConform))
             {
                 if (_service != null)
-                    _service.OnLogon(Kernel, Kernel.Decrypt(tag));
-                return Task.FromResult(true);
+                    await _service.OnLogon(Kernel, Kernel.Decrypt(tag));
+                return true;
             }
 
-            return Task.FromResult(false);
+            return false;
         }
 
         Task<bool> IUserGrain.IsValid(string timestamp, string signature, string requestAddress, string requestSession, bool throwIfNotConform)
@@ -174,8 +174,8 @@ namespace Phenix.Services.Plugin.Actor.Security
                 throw new InvalidOperationException("注册用户的团队不存在!");
 
             string initialPassword = UserName;
-            Kernel = User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, teamsId, positionId, ref initialPassword);
-            return _service != null ? _service.OnRegistered(Kernel, initialPassword) : null;
+            Kernel = User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, teamsId, teamsId, positionId, ref initialPassword);
+            return _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
         }
 
         #endregion

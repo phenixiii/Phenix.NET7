@@ -49,13 +49,13 @@ namespace Phenix.Services.Host
             Console.WriteLine("设为调试状态（正式环境下请注释掉）");
             AppRun.Debugging = true;
 
-            Console.WriteLine("填充缺省数据库元数据缓存");
+            Console.WriteLine("填充缺省数据库元数据缓存...");
             Database.Default.MetaData.FillingCache();
 
             Console.WriteLine("注册用户资料管理代理工厂");
             Phenix.Core.Security.Identity.RegisterFactory(new Phenix.Services.Plugin.UserProxyFactory());
 
-            Console.WriteLine("构建Host并启动Orleans服务和WebAPI服务");
+            Console.WriteLine("构建Host并启动Orleans服务和WebAPI服务...");
             _host = CreateHostBuilder(args).Build();
             _host.Run();
         }

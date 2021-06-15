@@ -43,7 +43,7 @@ namespace Phenix.Services.Plugin.Api.Message
             if (Identity.CurrentIdentity != null)
                 _pusher.AddConnectedInfo(Identity.CurrentIdentity.UserName, Context.ConnectionId);
             if (_service != null)
-                _service.OnConnected(Identity.CurrentIdentity, Context.ConnectionId);
+                await _service.OnConnected(Identity.CurrentIdentity, Context.ConnectionId);
             await base.OnConnectedAsync();
         }
 
@@ -55,7 +55,7 @@ namespace Phenix.Services.Plugin.Api.Message
             if (Identity.CurrentIdentity != null)
                 _pusher.RemoveConnectedInfo(Identity.CurrentIdentity.UserName);
             if (_service != null)
-                _service.OnDisconnected(Identity.CurrentIdentity, Context.ConnectionId, exception);
+                await _service.OnDisconnected(Identity.CurrentIdentity, Context.ConnectionId, exception);
             await base.OnDisconnectedAsync(exception);
         }
 

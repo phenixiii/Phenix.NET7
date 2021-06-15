@@ -9302,10 +9302,15 @@
             初始化
             </summary>
         </member>
-        <member name="M:Phenix.Core.IO.FileChunkInfo.#ctor(System.String)">
+        <member name="M:Phenix.Core.IO.FileChunkInfo.CreateAsync(System.IO.Stream,System.String,System.Int32,System.Int32)">
             <summary>
-            初始化
+            构造文件块
             </summary>
+            <param name="sourceStream">数据源</param>
+            <param name="fileName">文件名</param>
+            <param name="chunkNumber">块号</param>
+            <param name="maxChunkSize">块最大值</param>
+            <returns>文件块信息</returns>
         </member>
         <member name="P:Phenix.Core.IO.FileChunkInfo.FileName">
             <summary>
@@ -9342,46 +9347,16 @@
             是否终止
             </summary>
         </member>
-        <member name="P:Phenix.Core.IO.FileChunkInfo.Over">
+        <member name="P:Phenix.Core.IO.FileChunkInfo.Done">
             <summary>
-            是否结束
+            是否完成
             </summary>
         </member>
-        <member name="T:Phenix.Core.IO.IFileService">
+        <member name="M:Phenix.Core.IO.FileChunkInfo.WriteAsync(System.IO.Stream)">
             <summary>
-            文件存取服务接口
+            写入数据
             </summary>
-        </member>
-        <member name="M:Phenix.Core.IO.IFileService.GetUploadPath(System.String,System.String)">
-            <summary>
-            获取上传文件的写入路径
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="fileName">上传文件名</param>
-            <returns>写入路径</returns>
-        </member>
-        <member name="M:Phenix.Core.IO.IFileService.AfterUploadFile(System.String,System.String)">
-            <summary>
-            当完成上传文件时触发
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="targetPath">写入路径</param>
-            <returns>完成上传时返回消息</returns>
-        </member>
-        <member name="M:Phenix.Core.IO.IFileService.GetDownloadPath(System.String,System.String)">
-            <summary>
-            获取下载文件的读取路径
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="fileName">下载文件名</param>
-            <returns>读取路径</returns>
-        </member>
-        <member name="M:Phenix.Core.IO.IFileService.AfterDownloadFile(System.String,System.String)">
-            <summary>
-            当完成下载文件时触发
-            </summary>
-            <param name="message">上传消息</param>
-            <param name="sourcePath">读取路径</param>
+            <param name="targetStream">目的流</param>
         </member>
         <member name="T:Phenix.Core.IO.StreamHelper">
             <summary>
@@ -13778,45 +13753,20 @@
             <param name="decrypt">需要解密</param>
             <returns>报文主体</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.IO.IFileService)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.ReadBodyAsFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest)">
             <summary>
-            处理上传文件块
+            获取文件块
             </summary>
             <param name="request">HttpRequest</param>
-            <param name="fileService">文件服务</param>
-            <returns>完成上传时返回消息</returns>
+            <returns>文件块</returns>
         </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.UploadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,Phenix.Core.IO.IFileService,System.Threading.CancellationToken)">
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.ReadBodyAsFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,System.Threading.CancellationToken)">
             <summary>
-            处理上传文件块
+            获取文件块
             </summary>
             <param name="request">HttpRequest</param>
-            <param name="fileService">文件服务</param>
             <param name="cancellationToken">取消</param>
-            <returns>完成上传时返回消息</returns>
-        </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,System.String,System.String,System.Int32,Phenix.Core.IO.IFileService)">
-            <summary>
-            处理下载文件块
-            </summary>
-            <param name="request">HttpRequest</param>
-            <param name="message">上传消息</param>
-            <param name="fileName">下载文件名</param>
-            <param name="chunkNumber">块号</param>
-            <param name="fileService">文件服务</param>
-            <returns>文件块信息</returns>
-        </member>
-        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.DownloadFileChunkAsync(Microsoft.AspNetCore.Http.HttpRequest,System.String,System.String,System.Int32,Phenix.Core.IO.IFileService,System.Threading.CancellationToken)">
-            <summary>
-            处理下载文件块
-            </summary>
-            <param name="request">HttpRequest</param>
-            <param name="message">上传消息</param>
-            <param name="fileName">下载文件名</param>
-            <param name="chunkNumber">块号</param>
-            <param name="fileService">文件服务</param>
-            <param name="cancellationToken">取消</param>
-            <returns>文件块信息</returns>
+            <returns>文件块</returns>
         </member>
         <member name="T:Microsoft.AspNetCore.Http.HttpResponseExtension">
             <summary>

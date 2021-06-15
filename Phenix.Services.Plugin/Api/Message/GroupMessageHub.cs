@@ -95,7 +95,7 @@ namespace Phenix.Services.Plugin.Api.Message
         public override async Task OnConnectedAsync()
         {
             if (_service != null)
-                _service.OnConnected(Identity.CurrentIdentity, Context.ConnectionId);
+                await _service.OnConnected(Identity.CurrentIdentity, Context.ConnectionId);
             await base.OnConnectedAsync();
         }
 
@@ -126,7 +126,7 @@ namespace Phenix.Services.Plugin.Api.Message
                     await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
            
             if (_service != null)
-                _service.OnDisconnected(Identity.CurrentIdentity, Context.ConnectionId, exception);
+                await _service.OnDisconnected(Identity.CurrentIdentity, Context.ConnectionId, exception);
             await base.OnDisconnectedAsync(exception);
         }
 

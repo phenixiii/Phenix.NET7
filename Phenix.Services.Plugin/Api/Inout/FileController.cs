@@ -1,8 +1,10 @@
-﻿using System.Threading;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Phenix.Actor;
 using Phenix.Core.IO;
+using Phenix.Services.Plugin.Actor.Inout;
 
 namespace Phenix.Services.Plugin.Api.Inout
 {
@@ -13,21 +15,6 @@ namespace Phenix.Services.Plugin.Api.Inout
     [ApiController]
     public sealed class FileController : Phenix.Core.Net.Api.ControllerBase
     {
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="service">注入文件存取服务</param>
-        public FileController(IFileService service)
-        {
-            _service = service;
-        }
-
-        #region 属性
-
-        private readonly IFileService _service;
-
-        #endregion
-
         #region 方法
 
         // phAjax.downloadFileChunk
@@ -37,9 +24,9 @@ namespace Phenix.Services.Plugin.Api.Inout
         /// <returns>文件块信息</returns>
         [Authorize]
         [HttpGet]
-        public async Task<FileChunkInfo> DownloadFileChunk(string message, string fileName, int chunkNumber, CancellationToken cancellationToken)
+        public async Task<FileChunkInfo> DownloadFileChunk(string message, string fileName, int chunkNumber)
         {
-            return await Request.DownloadFileChunkAsync(message, fileName, chunkNumber, _service, cancellationToken);
+            return await ClusterClient.Default.GetGrain<IFileGrain>(String.Empty).DownloadFileChunk(message, fileName, chunkNumber);
         }
 
         // phAjax.uploadFileChunk
@@ -49,9 +36,10 @@ namespace Phenix.Services.Plugin.Api.Inout
         /// <returns>完成上传时返回消息</returns>
         [Authorize]
         [HttpPut]
-        public async Task<string> UploadFileChunk(CancellationToken cancellationToken)
+        public async Task<string> UploadFileChunk(string message, string fileName, int chunkCount, int chunkNumber, int chunkSize, int maxChunkSize)
         {
-            return await Request.UploadFileChunkAsync(_service, cancellationToken);
+            return await ClusterClient.Default.GetGrain<IFileGrain>(String.Empty).UploadFileChunk(message,
+                new FileChunkInfo(fileName, chunkCount, chunkNumber, chunkSize, maxChunkSize, await Request.ReadBodyAsFileChunkAsync()));
         }
 
         #endregion

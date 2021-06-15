@@ -503,6 +503,7 @@ var phAjax = (function($) {
 
         downloadFile: function(options) {
             var defaults = {
+                path: "/api/inout/file", //路径
                 message: null, //上传消息
                 fileName: null, //下载文件名
                 onProgress: null, //执行进度的回调函数, 参数(fileName, chunkCount, chunkNumber, chunkSize, chunkBody, chunkBuffer)，函数调用返回值如为false则中止下载
@@ -510,12 +511,12 @@ var phAjax = (function($) {
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
             };
             options = $.extend(defaults, options);
-            phAjax.downloadFileChunk(options.message, options.fileName, 1, null, options.onProgress, options.onSuccess, options.onError);
+            phAjax.downloadFileChunk(options.path, options.message, options.fileName, 1, null, options.onProgress, options.onSuccess, options.onError);
         },
 
-        downloadFileChunk: function(message, fileName, chunkNumber, chunkBuffer, onProgress, onSuccess, onError) {
+        downloadFileChunk: function(path, message, fileName, chunkNumber, chunkBuffer, onProgress, onSuccess, onError) {
             phAjax.call({
-                path: "/api/inout/file?message=" + encodeURIComponent(message) + "&fileName=" + encodeURIComponent(fileName) + "&chunkNumber=" + chunkNumber,
+                path: path + "?message=" + encodeURIComponent(message) + "&fileName=" + encodeURIComponent(fileName) + "&chunkNumber=" + chunkNumber,
                 onSuccess: function (result) {
                     if (result == null)
                         return;
@@ -531,7 +532,7 @@ var phAjax = (function($) {
                             onSuccess(result.FileName, new Blob([phUtils.toUint8Array(chunkBuffer)]));
                         return;
                     };
-                    phAjax.downloadFileChunk(message, fileName, chunkNumber + 1, chunkBuffer, onProgress, onSuccess, onError);
+                    phAjax.downloadFileChunk(path, message, fileName, chunkNumber + 1, chunkBuffer, onProgress, onSuccess, onError);
                 },
                 onError: function (XMLHttpRequest, textStatus, errorThrown) {
                     if (typeof onError == "function")
@@ -542,6 +543,7 @@ var phAjax = (function($) {
 
         uploadFiles: function(options) {
             var defaults = {
+                path: "/api/inout/file", //路径
                 message: null, //上传消息
                 files: null, //上传文件(须是FileList/File对象(如果APP应用是本地图片，要么转成base64->File对象，要么转成网络图片->base64->File对象))
                 onProgress: null, //执行进度的回调函数, 参数(fileName, chunkCount, chunkNumber, chunkSize)，回调函数返回值如为false则中止上传
@@ -553,33 +555,25 @@ var phAjax = (function($) {
                 if (options.files instanceof FileList) {
                     for (var i = 0; i < options.files.length; i++) {
                         var file = options.files[i];
-                        phAjax.uploadFileChunk(options.message, file, 1, options.onProgress, options.onSuccess, options.onError);
+                        phAjax.uploadFileChunk(options.path, options.message, file, 1, options.onProgress, options.onSuccess, options.onError);
                     };
                 } else {
-                    phAjax.uploadFileChunk(options.message, options.files, 1, options.onProgress, options.onSuccess, options.onError);
+                    phAjax.uploadFileChunk(options.path, options.message, options.files, 1, options.onProgress, options.onSuccess, options.onError);
                 };
         },
 
-        uploadFileChunk: function (message, file, chunkNumber, onProgress, onSuccess, onError) {
-            var formData = new FormData();
-            formData.append("message", message);
+        uploadFileChunk: function(path, message, file, chunkNumber, onProgress, onSuccess, onError) {
             var chunkCount = Math.ceil(file.size / maxChunkSize);
             var chunkSize = chunkNumber > 0 ? chunkNumber < chunkCount ? maxChunkSize : file.size - maxChunkSize * (chunkCount - 1) : 0;
-            formData.append("chunkInfo",
-                JSON.stringify({
-                    FileName: file.name,
-                    ChunkCount: chunkCount,
-                    ChunkNumber: chunkNumber,
-                    ChunkSize: chunkSize,
-                    MaxChunkSize: maxChunkSize
-                }));
+            var formData = new FormData();
             if (chunkNumber > 0) {
                 var p = maxChunkSize * (chunkNumber - 1);
                 formData.append("chunkBody", file.slice(p, p + chunkSize), file.name);
             };
             phAjax.call({
                 type: "PUT",
-                path: "/api/inout/file",
+                path: path + "?message=" + encodeURIComponent(message) + "&fileName=" + encodeURIComponent(file.name) +
+                    "&chunkCount=" + chunkCount + "&chunkNumber=" + chunkNumber + "&chunkSize=" + chunkSize + "&maxChunkSize=" + maxChunkSize,
                 processData: false, //不要对data参数进行序列化处理
                 contentType: false, //不要设置Content-Type请求头，因为文件数据是以multipart/form-data来编码
                 data: formData,
@@ -588,7 +582,7 @@ var phAjax = (function($) {
                         return;
                     if (typeof onProgress == "function")
                         if (!onProgress(file.name, chunkCount, chunkNumber, chunkSize)) {
-                            phAjax.uploadFileChunk(message, file, 0, onProgress, onSuccess, onError);
+                            phAjax.uploadFileChunk(path, message, file, 0, onProgress, onSuccess, onError);
                             return;
                         };
                     if (chunkNumber >= chunkCount) {
@@ -596,7 +590,7 @@ var phAjax = (function($) {
                             onSuccess(result);
                         return;
                     };
-                    phAjax.uploadFileChunk(message, file, chunkNumber + 1, onProgress, onSuccess, onError);
+                    phAjax.uploadFileChunk(path, message, file, chunkNumber + 1, onProgress, onSuccess, onError);
                 },
                 onError: function(XMLHttpRequest, textStatus, errorThrown) {
                     if (typeof onError == "function")
