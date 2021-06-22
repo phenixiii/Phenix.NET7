@@ -190,3 +190,9 @@ Copyright © 2007, 2021 Phenixヾ Studio
 2，优化用户身份验证功能
 
 
+20210622
+1，更新《Phenix.NET7.服务部署方法》
+2，更新《Phenix.NET7.搭建开发环境》
+3，整理Phenix.Services.XXX工程结构
+
+

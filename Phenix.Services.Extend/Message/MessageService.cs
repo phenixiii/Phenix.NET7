@@ -12,7 +12,7 @@ namespace Phenix.Services.Extend.Message
     {
         #region 方法
 
-        Task IMessageService.OnConnected(Identity identity, string connectionId)
+        Task IMessageService.OnConnected(IIdentity identity, string connectionId)
         {
             /*
              * 本函数被执行到，说明客户端已连接到 SignalR hub 中间件
@@ -21,7 +21,7 @@ namespace Phenix.Services.Extend.Message
             return Task.CompletedTask;
         }
 
-        Task IMessageService.OnDisconnected(Identity identity, string connectionId, Exception exception)
+        Task IMessageService.OnDisconnected(IIdentity identity, string connectionId, Exception exception)
         {
             /*
              * 本函数被执行到，说明客户端已断开 SignalR hub 中间件

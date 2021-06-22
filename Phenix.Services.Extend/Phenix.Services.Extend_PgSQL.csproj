@@ -23,10 +23,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="Phenix.Core">
       <HintPath>..\Bin_PgSQL\net5.0\Phenix.Core.dll</HintPath>
     </Reference>

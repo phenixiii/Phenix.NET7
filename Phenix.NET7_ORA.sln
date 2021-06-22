@@ -43,6 +43,39 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Business_OR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Contract_ORA", "Phenix.Services.Contract\Phenix.Services.Contract_ORA.csproj", "{655E1FB3-FBF4-4828-BE60-BA888AD1C2C1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phenix.Client", "Phenix.Client", "{D699CC37-CB5A-4A28-96E9-D75A55CD828A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{62DFAED0-722A-462A-BEB9-3C5526578985}"
+	ProjectSection(SolutionItems) = preProject
+		Phenix.Client\lib\jquery.base64.js = Phenix.Client\lib\jquery.base64.js
+		Phenix.Client\lib\jquery.cookie.js = Phenix.Client\lib\jquery.cookie.js
+		Phenix.Client\lib\jquery.min.js = Phenix.Client\lib\jquery.min.js
+		Phenix.Client\lib\json2.js = Phenix.Client\lib\json2.js
+		Phenix.Client\lib\phenix7.js = Phenix.Client\lib\phenix7.js
+		Phenix.Client\lib\signalr.js = Phenix.Client\lib\signalr.js
+		Phenix.Client\lib\signalr.js.map = Phenix.Client\lib\signalr.js.map
+		Phenix.Client\lib\signalr.min.js = Phenix.Client\lib\signalr.min.js
+		Phenix.Client\lib\signalr.min.js.map = Phenix.Client\lib\signalr.min.js.map
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{D2F49C2F-D51C-4391-B8C6-35A65D427A71}"
+	ProjectSection(SolutionItems) = preProject
+		Phenix.Client\test\event-log.html = Phenix.Client\test\event-log.html
+		Phenix.Client\test\file.html = Phenix.Client\test\file.html
+		Phenix.Client\test\gate.html = Phenix.Client\test\gate.html
+		Phenix.Client\test\myself.html = Phenix.Client\test\myself.html
+		Phenix.Client\test\user-message.html = Phenix.Client\test\user-message.html
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "crypto-js", "crypto-js", "{EB7F7FE4-F183-4893-83CF-3DB21DF4397B}"
+	ProjectSection(SolutionItems) = preProject
+		Phenix.Client\lib\crypto-js\aes-min.js = Phenix.Client\lib\crypto-js\aes-min.js
+		Phenix.Client\lib\crypto-js\cipher-core-min.js = Phenix.Client\lib\crypto-js\cipher-core-min.js
+		Phenix.Client\lib\crypto-js\core-min.js = Phenix.Client\lib\crypto-js\core-min.js
+		Phenix.Client\lib\crypto-js\enc-base64-min.js = Phenix.Client\lib\crypto-js\enc-base64-min.js
+		Phenix.Client\lib\crypto-js\md5-min.js = Phenix.Client\lib\crypto-js\md5-min.js
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -136,6 +169,9 @@ Global
 		{05432C34-8F5A-4BDA-831E-663256E2EE05} = {1140EBB7-3D04-4936-B893-FC46D34B8D01}
 		{0FE74B3F-00AC-4876-AD44-91CDE0F981DB} = {1140EBB7-3D04-4936-B893-FC46D34B8D01}
 		{F2C70441-C9A8-4FEA-81E1-C7C20005167B} = {1140EBB7-3D04-4936-B893-FC46D34B8D01}
+		{62DFAED0-722A-462A-BEB9-3C5526578985} = {D699CC37-CB5A-4A28-96E9-D75A55CD828A}
+		{D2F49C2F-D51C-4391-B8C6-35A65D427A71} = {D699CC37-CB5A-4A28-96E9-D75A55CD828A}
+		{EB7F7FE4-F183-4893-83CF-3DB21DF4397B} = {62DFAED0-722A-462A-BEB9-3C5526578985}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9C8CF59-EE51-4301-9EAC-22750A624DD2}

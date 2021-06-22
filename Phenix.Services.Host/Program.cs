@@ -49,13 +49,13 @@ namespace Phenix.Services.Host
             Console.WriteLine("设为调试状态（正式环境下请注释掉）");
             AppRun.Debugging = true;
 
-            Console.WriteLine("填充缺省数据库元数据缓存...");
+            Console.WriteLine("从缺省数据库加载元数据填充缓存...（如果加载时间过长，请检查当前目录下Phenix.Core.db中数据库连接串是否配置正确！）");
             Database.Default.MetaData.FillingCache();
 
-            Console.WriteLine("注册用户资料管理代理工厂");
-            Phenix.Core.Security.Identity.RegisterFactory(new Phenix.Services.Plugin.UserProxyFactory());
+            Console.WriteLine("注册获取用户身份方法");
+            Phenix.Core.Security.Principal.FetchIdentity = Phenix.Services.Plugin.Security.Identity.Fetch;
 
-            Console.WriteLine("构建Host并启动Orleans服务和WebAPI服务...");
+            Console.WriteLine("构建并启动Host以加载Orleans和WebAPI的服务...");
             _host = CreateHostBuilder(args).Build();
             _host.Run();
         }
@@ -74,17 +74,6 @@ namespace Phenix.Services.Host
                     .ConfigureLogging(logging => logging.AddConsole())
                     /*
                      * 配置Orleans服务集群
-                     * 配置项见Phenix.Actor.OrleansConfig
-                     * 设置集群ID、服务ID：Phenix.Core.Data.Database.Default.DataSourceKey
-                     * 设置默认的激活体垃圾收集年龄限为2天
-                     * 设置Clustering、GrainStorage、Reminder数据库：Phenix.Core.Data.Database.Default
-                     * 设置Silo端口：EndpointOptions.DEFAULT_SILO_PORT
-                     * 设置Gateway端口：EndpointOptions.DEFAULT_GATEWAY_PORT
-                     * 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProviderExtension.StreamProviderName
-                     *
-                     * 装配Actor插件
-                     * 插件程序集都应该统一采用"*.Plugin.dll"、"*.Contract.dll"作为文件名的后缀
-                     * 插件程序集都应该被部署到本服务容器的执行目录下
                      */
                     .ConfigureCluster(Database.Default)
                     /*
