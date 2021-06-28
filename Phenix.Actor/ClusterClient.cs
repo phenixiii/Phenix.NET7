@@ -96,7 +96,9 @@ namespace Phenix.Actor
                     {
                         /*
                          * 装配Actor插件
-                         * 插件程序集都应该统一采用"*.Contract.dll"、"*.Plugin.dll"作为文件名的后缀
+                         * 实体程序集都应该统一采用"*.Business.dll"作为文件名的后缀
+                         * 契约程序集都应该统一采用"*.Contract.dll"作为文件名的后缀
+                         * 插件程序集都应该统一采用"*.Plugin.dll"作为文件名的后缀
                          * 插件程序集都应该被部署到本服务容器的执行目录下
                          */
                         foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Business.dll"))
@@ -111,7 +113,7 @@ namespace Phenix.Actor
                     {
                         if (context.Grain is ISecurityContext)
                         {
-                            Identity currentIdentity = Identity.CurrentIdentity;
+                            IIdentity currentIdentity = Principal.CurrentIdentity;
                             if (currentIdentity != null)
                             {
                                 RequestContext.Set(ContextConfig.CurrentIdentityCompanyName, currentIdentity.CompanyName);

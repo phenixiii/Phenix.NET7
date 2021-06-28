@@ -1,4 +1,5 @@
-﻿using Orleans;
+﻿using System;
+using Orleans;
 using Orleans.Streams;
 
 namespace Phenix.Actor
@@ -33,6 +34,9 @@ namespace Phenix.Actor
         /// <returns>流提供者</returns>
         public static IStreamProvider GetStreamProvider(this IClusterClient clusterClient)
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return clusterClient.GetStreamProvider(StreamProviderName);
         }
 

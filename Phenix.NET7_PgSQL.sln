@@ -12,6 +12,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Core.Log.EventLog", "Demo_PgSQL\Demo.Phenix.Core.Log.EventLog\Demo.Phenix.Core.Log.EventLog.csproj", "{7639E825-33EC-44FE-BD97-34EC24A9C90A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Host_PgSQL", "Phenix.Services.Host\Phenix.Services.Host_PgSQL.csproj", "{F957AABA-D2A0-48BB-9F0D-1E3CB3DE30EB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FE056D15-D215-4BC6-8CEA-4F44D8ACC28B} = {FE056D15-D215-4BC6-8CEA-4F44D8ACC28B}
+		{5984092A-CE52-4BD2-91B2-D5557B961CC5} = {5984092A-CE52-4BD2-91B2-D5557B961CC5}
+		{1D6BFC2E-B2F1-4EC8-9AEE-10BF5DD085DD} = {1D6BFC2E-B2F1-4EC8-9AEE-10BF5DD085DD}
+		{4EECC35A-2696-416D-A8D8-9CA64D93E9D6} = {4EECC35A-2696-416D-A8D8-9CA64D93E9D6}
+		{7A9AB0C0-EDB6-46D4-9E03-A09204D2BC86} = {7A9AB0C0-EDB6-46D4-9E03-A09204D2BC86}
+		{707782EB-7ED1-4AB4-B6ED-AB8E278DEC7B} = {707782EB-7ED1-4AB4-B6ED-AB8E278DEC7B}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Business_PgSQL", "Phenix.Business\Phenix.Business_PgSQL.csproj", "{5984092A-CE52-4BD2-91B2-D5557B961CC5}"
 EndProject
@@ -20,8 +28,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Tools.EntityBuilder_PgSQL", "Phenix.Tools\Phenix.Tools.EntityBuilder\Phenix.Tools.EntityBuilder_PgSQL.csproj", "{60DD37CF-ABDB-4AFE-9912-4EDE58047D77}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Tools.BusinessBuilder_PgSQL", "Phenix.Tools\Phenix.Tools.BusinessBuilder\Phenix.Tools.BusinessBuilder_PgSQL.csproj", "{93EBB665-E92D-4003-A7FD-AA3B1BA47FC4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5984092A-CE52-4BD2-91B2-D5557B961CC5} = {5984092A-CE52-4BD2-91B2-D5557B961CC5}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Business.UndoableBase", "Demo_PgSQL\Demo.Phenix.Business.UndoableBase\Demo.Phenix.Business.UndoableBase.csproj", "{75990BDD-7D4E-4D5E-9A41-9164592C69F2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5984092A-CE52-4BD2-91B2-D5557B961CC5} = {5984092A-CE52-4BD2-91B2-D5557B961CC5}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Tools.CreateKeyPair_PgSQL", "Phenix.Tools\Phenix.Tools.CreateKeyPair\Phenix.Tools.CreateKeyPair_PgSQL.csproj", "{B0976F77-8F9C-4407-B3FA-7ED3A46A6F5B}"
 EndProject
@@ -32,16 +46,36 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Actor_PgSQL", "Phenix.Actor\Phenix.Actor_PgSQL.csproj", "{4EECC35A-2696-416D-A8D8-9CA64D93E9D6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Plugin_PgSQL", "Phenix.Services.Plugin\Phenix.Services.Plugin_PgSQL.csproj", "{7A9AB0C0-EDB6-46D4-9E03-A09204D2BC86}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FE056D15-D215-4BC6-8CEA-4F44D8ACC28B} = {FE056D15-D215-4BC6-8CEA-4F44D8ACC28B}
+		{5984092A-CE52-4BD2-91B2-D5557B961CC5} = {5984092A-CE52-4BD2-91B2-D5557B961CC5}
+		{1D6BFC2E-B2F1-4EC8-9AEE-10BF5DD085DD} = {1D6BFC2E-B2F1-4EC8-9AEE-10BF5DD085DD}
+		{4EECC35A-2696-416D-A8D8-9CA64D93E9D6} = {4EECC35A-2696-416D-A8D8-9CA64D93E9D6}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Algorithm_PgSQL", "Phenix.Algorithm\Phenix.Algorithm_PgSQL.csproj", "{55B8685A-81FD-4A9C-B256-4C75F8243FDF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Extend_PgSQL", "Phenix.Services.Extend\Phenix.Services.Extend_PgSQL.csproj", "{707782EB-7ED1-4AB4-B6ED-AB8E278DEC7B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FE056D15-D215-4BC6-8CEA-4F44D8ACC28B} = {FE056D15-D215-4BC6-8CEA-4F44D8ACC28B}
+		{5984092A-CE52-4BD2-91B2-D5557B961CC5} = {5984092A-CE52-4BD2-91B2-D5557B961CC5}
+		{1D6BFC2E-B2F1-4EC8-9AEE-10BF5DD085DD} = {1D6BFC2E-B2F1-4EC8-9AEE-10BF5DD085DD}
+		{4EECC35A-2696-416D-A8D8-9CA64D93E9D6} = {4EECC35A-2696-416D-A8D8-9CA64D93E9D6}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem", "Demo_PgSQL\Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem\Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem.csproj", "{9B1E5903-BDA2-4D11-9E57-7F437B6A4C8A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Business_PgSQL", "Phenix.Services.Business\Phenix.Services.Business_PgSQL.csproj", "{FE056D15-D215-4BC6-8CEA-4F44D8ACC28B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5984092A-CE52-4BD2-91B2-D5557B961CC5} = {5984092A-CE52-4BD2-91B2-D5557B961CC5}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Contract_PgSQL", "Phenix.Services.Contract\Phenix.Services.Contract_PgSQL.csproj", "{1D6BFC2E-B2F1-4EC8-9AEE-10BF5DD085DD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FE056D15-D215-4BC6-8CEA-4F44D8ACC28B} = {FE056D15-D215-4BC6-8CEA-4F44D8ACC28B}
+		{5984092A-CE52-4BD2-91B2-D5557B961CC5} = {5984092A-CE52-4BD2-91B2-D5557B961CC5}
+		{4EECC35A-2696-416D-A8D8-9CA64D93E9D6} = {4EECC35A-2696-416D-A8D8-9CA64D93E9D6}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phenix.Client", "Phenix.Client", "{D699CC37-CB5A-4A28-96E9-D75A55CD828A}"
 EndProject
@@ -83,15 +117,12 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{AE48AC17-C7EE-4028-A6C1-C27B48FB0C9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE48AC17-C7EE-4028-A6C1-C27B48FB0C9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE48AC17-C7EE-4028-A6C1-C27B48FB0C9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE48AC17-C7EE-4028-A6C1-C27B48FB0C9F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B7ABDC01-CD82-4568-B0B8-75C9E8B5579A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B7ABDC01-CD82-4568-B0B8-75C9E8B5579A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7ABDC01-CD82-4568-B0B8-75C9E8B5579A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7ABDC01-CD82-4568-B0B8-75C9E8B5579A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7639E825-33EC-44FE-BD97-34EC24A9C90A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7639E825-33EC-44FE-BD97-34EC24A9C90A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7639E825-33EC-44FE-BD97-34EC24A9C90A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7639E825-33EC-44FE-BD97-34EC24A9C90A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F957AABA-D2A0-48BB-9F0D-1E3CB3DE30EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -111,7 +142,6 @@ Global
 		{93EBB665-E92D-4003-A7FD-AA3B1BA47FC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93EBB665-E92D-4003-A7FD-AA3B1BA47FC4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{75990BDD-7D4E-4D5E-9A41-9164592C69F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75990BDD-7D4E-4D5E-9A41-9164592C69F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75990BDD-7D4E-4D5E-9A41-9164592C69F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75990BDD-7D4E-4D5E-9A41-9164592C69F2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B0976F77-8F9C-4407-B3FA-7ED3A46A6F5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -119,11 +149,9 @@ Global
 		{B0976F77-8F9C-4407-B3FA-7ED3A46A6F5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0976F77-8F9C-4407-B3FA-7ED3A46A6F5B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D6A56A75-A5F9-4718-B7B4-C94392B4A575}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6A56A75-A5F9-4718-B7B4-C94392B4A575}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6A56A75-A5F9-4718-B7B4-C94392B4A575}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6A56A75-A5F9-4718-B7B4-C94392B4A575}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9459C7AC-86D8-4363-B43F-B241F9D5B7B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9459C7AC-86D8-4363-B43F-B241F9D5B7B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9459C7AC-86D8-4363-B43F-B241F9D5B7B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9459C7AC-86D8-4363-B43F-B241F9D5B7B2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4EECC35A-2696-416D-A8D8-9CA64D93E9D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

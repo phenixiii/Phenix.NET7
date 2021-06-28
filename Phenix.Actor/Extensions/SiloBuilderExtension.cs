@@ -20,6 +20,7 @@ namespace Orleans.Hosting
     {
         /// <summary>
         /// 配置Orleans服务集群
+        /// 
         /// 配置项见Phenix.Actor.OrleansConfig
         /// 设置集群ID、服务ID：Phenix.Core.Data.Database.Default.DataSourceKey
         /// 设置默认的激活体垃圾收集年龄限为2天
@@ -27,8 +28,11 @@ namespace Orleans.Hosting
         /// 设置Silo端口：EndpointOptions.DEFAULT_SILO_PORT
         /// 设置Gateway端口：EndpointOptions.DEFAULT_GATEWAY_PORT
         /// 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProviderExtension.StreamProviderName
-        /// 装配Actor插件
-        /// 插件程序集都应该统一采用"*.Plugin.dll"、"*.Contract.dll"作为文件名的后缀
+        /// 
+        /// 装配Actor插件 
+        /// 实体程序集都应该统一采用"*.Business.dll"作为文件名的后缀
+        /// 契约程序集都应该统一采用"*.Contract.dll"作为文件名的后缀
+        /// 插件程序集都应该统一采用"*.Plugin.dll"作为文件名的后缀
         /// 插件程序集都应该被部署到本服务容器的执行目录下
         /// </summary>
         /// <param name="builder">ISiloBuilder</param>
@@ -36,7 +40,8 @@ namespace Orleans.Hosting
         /// <returns>ISiloBuilder</returns>
         public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder, Database database)
         {
-            return ConfigureCluster(builder, OrleansConfig.ClusterId, OrleansConfig.ServiceId, database.ConnectionString,
+            return ConfigureCluster(builder, OrleansConfig.ClusterId, OrleansConfig.ServiceId, 
+                database != null ? database.ConnectionString : Database.Default.ConnectionString,
                 OrleansConfig.DefaultGrainCollectionAgeMinutes, OrleansConfig.DefaultSiloPort, OrleansConfig.DefaultGatewayPort);
         }
 
@@ -54,6 +59,9 @@ namespace Orleans.Hosting
         public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder, string clusterId, string serviceId, string connectionString,
             int grainCollectionAgeMinutes, int siloPort, int gatewayPort)
         {
+            if (builder == null)
+                throw new ArgumentNullException(nameof(builder));
+
             return builder
                 .Configure<SerializationProviderOptions>(options =>
                 {
@@ -118,11 +126,6 @@ namespace Orleans.Hosting
                 .ConfigureEndpoints(siloPort, gatewayPort)
                 .ConfigureApplicationParts(parts =>
                 {
-                    /*
-                     * 装配Actor插件
-                     * 插件程序集都应该统一采用"*.Contract.dll"、"*.Plugin.dll"作为文件名的后缀
-                     * 插件程序集都应该被部署到本服务容器的执行目录下
-                     */
                     foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Business.dll"))
                         parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
                     foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Contract.dll"))
@@ -134,11 +137,11 @@ namespace Orleans.Hosting
                 .AddMemoryGrainStorage("PubSubStore") //正式环境下请使用Event Hubs、ServiceBus、Azure Queues、Apache Kafka之一，要么自己实现PersistentStreamProvider组件
                 .AddIncomingGrainCallFilter(context =>
                 {
-                    Identity.CurrentIdentity = context.Grain is ISecurityContext &&
-                                               RequestContext.Get(ContextConfig.CurrentIdentityCompanyName) is string companyName &&
-                                               RequestContext.Get(ContextConfig.CurrentIdentityUserName) is string userName &&
-                                               RequestContext.Get(ContextConfig.CurrentIdentityCultureName) is string cultureName
-                        ? Identity.Fetch(companyName, userName, cultureName)
+                    Principal.CurrentIdentity = context.Grain is ISecurityContext &&
+                                                RequestContext.Get(ContextConfig.CurrentIdentityCompanyName) is string companyName &&
+                                                RequestContext.Get(ContextConfig.CurrentIdentityUserName) is string userName &&
+                                                RequestContext.Get(ContextConfig.CurrentIdentityCultureName) is string cultureName
+                        ? Principal.FetchIdentity(companyName, userName, cultureName, null)
                         : null;
 
                     if (context.Grain is ITraceLogContext && RequestContext.Get(ContextConfig.traceKey) is long traceKey && RequestContext.Get(ContextConfig.traceOrder) is int traceOrder)

@@ -25,6 +25,9 @@ namespace Phenix.Actor
         public static async Task<bool> ExistKernelAsync<TGrain>(this IClusterClient clusterClient, string primaryKey)
             where TGrain : IEntityGrain, IGrainWithStringKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).ExistKernel();
         }
 
@@ -37,6 +40,9 @@ namespace Phenix.Actor
         public static async Task<bool> ExistKernelAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey)
             where TGrain : IEntityGrain, IGrainWithGuidKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).ExistKernel();
         }
 
@@ -50,6 +56,9 @@ namespace Phenix.Actor
         public static async Task<bool> ExistKernelAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension)
             where TGrain : IEntityGrain, IGrainWithGuidCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).ExistKernel();
         }
 
@@ -62,6 +71,9 @@ namespace Phenix.Actor
         public static async Task<bool> ExistKernelAsync<TGrain>(this IClusterClient clusterClient, long primaryKey)
             where TGrain : IEntityGrain, IGrainWithIntegerKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).ExistKernel();
         }
 
@@ -75,6 +87,9 @@ namespace Phenix.Actor
         public static async Task<bool> ExistKernelAsync<TGrain>(this IClusterClient clusterClient, long primaryKey, string keyExtension)
             where TGrain : IEntityGrain, IGrainWithIntegerCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).ExistKernel();
         }
 
@@ -88,6 +103,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithStringKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).FetchKernel();
         }
 
@@ -101,6 +119,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithGuidKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).FetchKernel();
         }
 
@@ -115,6 +136,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithGuidCompoundKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).FetchKernel();
         }
 
@@ -128,6 +152,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithIntegerKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).FetchKernel();
         }
 
@@ -142,6 +169,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithIntegerCompoundKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).FetchKernel();
         }
 
@@ -156,6 +186,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithStringKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).PatchKernel(source);
         }
 
@@ -170,6 +203,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithGuidKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).PatchKernel(source);
         }
 
@@ -185,6 +221,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithGuidCompoundKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).PatchKernel(source);
         }
 
@@ -199,6 +238,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithIntegerKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).PatchKernel(source);
         }
 
@@ -214,6 +256,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithIntegerCompoundKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).PatchKernel(source);
         }
 
@@ -227,6 +272,9 @@ namespace Phenix.Actor
             params NameValue[] propertyValues)
             where TGrain : IEntityGrain, IGrainWithStringKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).PatchKernel(propertyValues);
         }
 
@@ -240,6 +288,9 @@ namespace Phenix.Actor
             params NameValue[] propertyValues)
             where TGrain : IEntityGrain, IGrainWithGuidKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).PatchKernel(propertyValues);
         }
 
@@ -254,6 +305,9 @@ namespace Phenix.Actor
             params NameValue[] propertyValues)
             where TGrain : IEntityGrain, IGrainWithGuidCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).PatchKernel(propertyValues);
         }
 
@@ -267,6 +321,9 @@ namespace Phenix.Actor
             params NameValue[] propertyValues)
             where TGrain : IEntityGrain, IGrainWithIntegerKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).PatchKernel(propertyValues);
         }
 
@@ -281,6 +338,9 @@ namespace Phenix.Actor
             params NameValue[] propertyValues)
             where TGrain : IEntityGrain, IGrainWithIntegerCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).PatchKernel(propertyValues);
         }
 
@@ -294,6 +354,9 @@ namespace Phenix.Actor
             IDictionary<string, object> propertyValues)
             where TGrain : IEntityGrain, IGrainWithStringKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).PatchKernel(propertyValues);
         }
 
@@ -307,6 +370,9 @@ namespace Phenix.Actor
             IDictionary<string, object> propertyValues)
             where TGrain : IEntityGrain, IGrainWithGuidKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).PatchKernel(propertyValues);
         }
 
@@ -321,6 +387,9 @@ namespace Phenix.Actor
             IDictionary<string, object> propertyValues)
             where TGrain : IEntityGrain, IGrainWithGuidCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).PatchKernel(propertyValues);
         }
 
@@ -334,6 +403,9 @@ namespace Phenix.Actor
             IDictionary<string, object> propertyValues)
             where TGrain : IEntityGrain, IGrainWithIntegerKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).PatchKernel(propertyValues);
         }
 
@@ -348,6 +420,9 @@ namespace Phenix.Actor
             IDictionary<string, object> propertyValues)
             where TGrain : IEntityGrain, IGrainWithIntegerCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).PatchKernel(propertyValues);
         }
 
@@ -362,6 +437,9 @@ namespace Phenix.Actor
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithStringKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(propertyName);
         }
 
@@ -376,6 +454,9 @@ namespace Phenix.Actor
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithGuidKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(propertyName);
         }
 
@@ -391,6 +472,9 @@ namespace Phenix.Actor
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithGuidCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty(propertyName);
         }
 
@@ -405,6 +489,9 @@ namespace Phenix.Actor
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithIntegerKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(propertyName);
         }
 
@@ -420,6 +507,9 @@ namespace Phenix.Actor
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithIntegerCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty(propertyName);
         }
 
@@ -435,6 +525,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithStringKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
         }
 
@@ -450,6 +543,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithGuidKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
         }
 
@@ -466,6 +562,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithGuidCompoundKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
         }
 
@@ -481,6 +580,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithIntegerKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
         }
 
@@ -497,6 +599,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithIntegerCompoundKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
         }
 
@@ -511,6 +616,9 @@ namespace Phenix.Actor
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithStringKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(propertyName);
         }
 
@@ -525,6 +633,9 @@ namespace Phenix.Actor
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithGuidKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(propertyName);
         }
 
@@ -540,6 +651,9 @@ namespace Phenix.Actor
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithGuidCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty<TValue>(propertyName);
         }
 
@@ -554,6 +668,9 @@ namespace Phenix.Actor
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithIntegerKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(propertyName);
         }
 
@@ -569,6 +686,9 @@ namespace Phenix.Actor
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithIntegerCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty<TValue>(propertyName);
         }
 
@@ -584,6 +704,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithStringKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
         }
 
@@ -599,6 +722,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithGuidKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
         }
 
@@ -615,6 +741,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithGuidCompoundKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty<TValue>(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
         }
 
@@ -630,6 +759,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithIntegerKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
         }
 
@@ -646,6 +778,9 @@ namespace Phenix.Actor
             where TGrain : IEntityGrain<TKernel>, IGrainWithIntegerCompoundKey
             where TKernel : EntityBase<TKernel>
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty<TValue>(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
         }
 
@@ -665,6 +800,9 @@ namespace Phenix.Actor
             long parentId, params NameValue[] propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithStringKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).AddChildNode(parentId, propertyValues);
         }
 
@@ -680,6 +818,9 @@ namespace Phenix.Actor
             long parentId, params NameValue[] propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithGuidKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).AddChildNode(parentId, propertyValues);
         }
 
@@ -696,6 +837,9 @@ namespace Phenix.Actor
             long parentId, params NameValue[] propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithGuidCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).AddChildNode(parentId, propertyValues);
         }
 
@@ -711,6 +855,9 @@ namespace Phenix.Actor
             long parentId, params NameValue[] propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithIntegerKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).AddChildNode(parentId, propertyValues);
         }
 
@@ -727,6 +874,9 @@ namespace Phenix.Actor
             long parentId, params NameValue[] propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithIntegerCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).AddChildNode(parentId, propertyValues);
         }
 
@@ -742,6 +892,9 @@ namespace Phenix.Actor
             long parentId, IDictionary<string, object> propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithStringKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).AddChildNode(parentId, propertyValues);
         }
 
@@ -757,6 +910,9 @@ namespace Phenix.Actor
             long parentId, IDictionary<string, object> propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithGuidKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).AddChildNode(parentId, propertyValues);
         }
 
@@ -773,6 +929,9 @@ namespace Phenix.Actor
             long parentId, IDictionary<string, object> propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithGuidCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).AddChildNode(parentId, propertyValues);
         }
 
@@ -788,6 +947,9 @@ namespace Phenix.Actor
             long parentId, IDictionary<string, object> propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithIntegerKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).AddChildNode(parentId, propertyValues);
         }
 
@@ -804,6 +966,9 @@ namespace Phenix.Actor
             long parentId, IDictionary<string, object> propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithIntegerCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).AddChildNode(parentId, propertyValues);
         }
 
@@ -818,6 +983,9 @@ namespace Phenix.Actor
             long id, long parentId)
             where TGrain : ITreeEntityGrain, IGrainWithStringKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).ChangeParentNode(id, parentId);
         }
 
@@ -832,6 +1000,9 @@ namespace Phenix.Actor
             long id, long parentId)
             where TGrain : ITreeEntityGrain, IGrainWithGuidKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).ChangeParentNode(id, parentId);
         }
 
@@ -847,6 +1018,9 @@ namespace Phenix.Actor
             long id, long parentId)
             where TGrain : ITreeEntityGrain, IGrainWithGuidCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).ChangeParentNode(id, parentId);
         }
 
@@ -861,6 +1035,9 @@ namespace Phenix.Actor
             long id, long parentId)
             where TGrain : ITreeEntityGrain, IGrainWithIntegerKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).ChangeParentNode(id, parentId);
         }
 
@@ -876,6 +1053,9 @@ namespace Phenix.Actor
             long id, long parentId)
             where TGrain : ITreeEntityGrain, IGrainWithIntegerCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).ChangeParentNode(id, parentId);
         }
 
@@ -890,6 +1070,9 @@ namespace Phenix.Actor
             long id, params NameValue[] propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithStringKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).UpdateNode(id, propertyValues);
         }
         
@@ -904,6 +1087,9 @@ namespace Phenix.Actor
             long id, params NameValue[] propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithGuidKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).UpdateNode(id, propertyValues);
         }
 
@@ -919,6 +1105,9 @@ namespace Phenix.Actor
             long id, params NameValue[] propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithGuidCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).UpdateNode(id, propertyValues);
         }
 
@@ -933,6 +1122,9 @@ namespace Phenix.Actor
             long id, params NameValue[] propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithIntegerKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).UpdateNode(id, propertyValues);
         }
 
@@ -948,6 +1140,9 @@ namespace Phenix.Actor
             long id, params NameValue[] propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithIntegerCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).UpdateNode(id, propertyValues);
         }
 
@@ -962,6 +1157,9 @@ namespace Phenix.Actor
             long id, IDictionary<string, object> propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithStringKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).UpdateNode(id, propertyValues);
         }
 
@@ -976,6 +1174,9 @@ namespace Phenix.Actor
             long id, IDictionary<string, object> propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithGuidKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).UpdateNode(id, propertyValues);
         }
 
@@ -991,6 +1192,9 @@ namespace Phenix.Actor
             long id, IDictionary<string, object> propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithGuidCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).UpdateNode(id, propertyValues);
         }
         
@@ -1005,6 +1209,9 @@ namespace Phenix.Actor
             long id, IDictionary<string, object> propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithIntegerKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey).UpdateNode(id, propertyValues);
         }
 
@@ -1020,6 +1227,9 @@ namespace Phenix.Actor
             long id, IDictionary<string, object> propertyValues)
             where TGrain : ITreeEntityGrain, IGrainWithIntegerCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).UpdateNode(id, propertyValues);
         }
 
@@ -1034,6 +1244,9 @@ namespace Phenix.Actor
             long id)
             where TGrain : ITreeEntityGrain, IGrainWithStringKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).DeleteBranch(id);
         }
 
@@ -1048,6 +1261,9 @@ namespace Phenix.Actor
             long id)
             where TGrain : ITreeEntityGrain, IGrainWithGuidKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).DeleteBranch(id);
         }
 
@@ -1063,6 +1279,9 @@ namespace Phenix.Actor
             long id)
             where TGrain : ITreeEntityGrain, IGrainWithGuidCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).DeleteBranch(id);
         }
 
@@ -1077,6 +1296,9 @@ namespace Phenix.Actor
             long id)
             where TGrain : ITreeEntityGrain, IGrainWithIntegerKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey).DeleteBranch(id);
         }
 
@@ -1092,6 +1314,9 @@ namespace Phenix.Actor
             long id)
             where TGrain : ITreeEntityGrain, IGrainWithIntegerCompoundKey
         {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
             return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).DeleteBranch(id);
         }
 
