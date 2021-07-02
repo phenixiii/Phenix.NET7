@@ -8,6 +8,7 @@ namespace Phenix.Services.Contract.Security
 {
     /// <summary>
     /// 用户资料Grain接口
+    /// key：CompanyName'\u0004'UserName
     /// </summary>
     public interface IUserGrain : IEntityGrain<User>, IGrainWithStringKey
     {
@@ -76,9 +77,13 @@ namespace Phenix.Services.Contract.Security
         Task<string> Decrypt(string cipherText);
 
         /// <summary>
+        /// 获取自己用户资料
+        /// </summary>
+        Task<User> FetchMyself();
+
+        /// <summary>
         /// 获取公司用户资料
         /// </summary>
-        /// <returns>公司用户资料</returns>
         Task<IList<User>> FetchCompanyUsers();
 
         /// <summary>

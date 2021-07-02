@@ -31,6 +31,20 @@ namespace Phenix.Services.Plugin.Message
 
         #region 属性
 
+        #region 配置项
+
+        private static readonly Guid _groupStreamId = new Guid("54E67F1B-ABD7-4518-BA30-020A20AE3D49");
+
+        /// <summary>
+        /// 分组StreamId
+        /// </summary>
+        public static Guid GroupStreamId
+        {
+            get { return _groupStreamId; }
+        }
+
+        #endregion
+
         private readonly IMessageService _service;
 
         private readonly SynchronizedDictionary<string, SynchronizedList<string>> _connectedInfos = 
@@ -72,7 +86,7 @@ namespace Phenix.Services.Plugin.Message
 
             private async Task OnReceiving(string content, StreamSequenceToken token)
             {
-                await _owner.Clients.Group(_groupName).SendAsync("OnReceived", content);
+                await _owner.Clients.Group(_groupName).SendAsync("onReceived", content);
             }
 
             private Task OnSubscribeError(Exception error)
@@ -102,7 +116,7 @@ namespace Phenix.Services.Plugin.Message
         /// 订阅
         /// </summary>
         /// <param name="groupName">组名</param>
-        public async Task Subscribe(string groupName)
+        public async Task SubscribeAsync(string groupName)
         {
             _connectedInfos.GetValue(Context.ConnectionId, () => new SynchronizedList<string>()).AddOnce(groupName);
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
@@ -110,7 +124,7 @@ namespace Phenix.Services.Plugin.Message
             _subscribers.GetValue(groupName, async () =>
             {
                 Subscriber subscriber = new Subscriber(this, groupName);
-                await subscriber.SubscribeAsync(ClusterClient.Default.GetStreamProvider().GetStream<string>(StreamConfig.GroupMessageStreamId, groupName));
+                await subscriber.SubscribeAsync(ClusterClient.Default.GetStreamProvider().GetStream<string>(GroupStreamId, groupName));
                 return subscriber;
             });
         }

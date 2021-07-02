@@ -6,11 +6,13 @@ using Phenix.Core.Security.Auth;
 using Phenix.Core.Threading;
 using Phenix.Services.Business.Security;
 using Phenix.Services.Contract.Security;
+using Phenix.Services.Contract.Security.Myself;
 
 namespace Phenix.Services.Plugin.Security
 {
     /// <summary>
     /// 用户资料Grain
+    /// key：CompanyName'\u0004'UserName
     /// </summary>
     public class UserGrain : EntityGrainBase<User>, IUserGrain
     {
@@ -48,7 +50,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         protected long RootTeamsId
         {
-            get { return _rootTeamsId ??= AsyncHelper.RunSync(() => ClusterClient.GetKernelPropertyAsync<ITeamsGrain, Teams, long>(CompanyName, p => p.Id)); }
+            get { return _rootTeamsId ??= AsyncHelper.RunSync(() => ClusterClient.GetKernelPropertyAsync<ICompanyTeamsGrain, Teams, long>(CompanyName, p => p.Id)); }
         }
 
         /// <summary>
@@ -138,6 +140,15 @@ namespace Phenix.Services.Plugin.Security
             return Task.FromResult(Kernel.Decrypt(cipherText));
         }
 
+        async Task<User> IUserGrain.FetchMyself()
+        {
+            if (Kernel == null)
+                throw new UserNotFoundException();
+
+            return Kernel.FetchMyself((await ClusterClient.GetGrain<ICompanyTeamsGrain>(CompanyName).FetchKernel()).FindInBranch(p => p.Id == Kernel.TeamsId),
+                Kernel.PositionId.HasValue ? await ClusterClient.GetGrain<IPositionGrain>(Kernel.PositionId.Value).FetchKernel() : null);
+        }
+
         #region CompanyAdmin 操作功能
 
         async Task<IList<User>> IUserGrain.FetchCompanyUsers()
@@ -145,7 +156,7 @@ namespace Phenix.Services.Plugin.Security
             if (Kernel == null)
                 throw new UserNotFoundException();
 
-            return Kernel.FetchCompanyUsers(await ClusterClient.GetGrain<ITeamsGrain>(CompanyName).FetchKernel());
+            return Kernel.FetchCompanyUsers(await ClusterClient.GetGrain<ICompanyTeamsGrain>(CompanyName).FetchKernel(), Position.FetchKeyValues(Database, p => p.Id));
         }
 
         async Task<string> IUserGrain.Register(string phone, string eMail, string regAlias, string requestAddress, long teamsId, long positionId)
@@ -153,7 +164,7 @@ namespace Phenix.Services.Plugin.Security
             if (Kernel != null)
                 throw new InvalidOperationException("登录名已被他人注册!");
 
-            if (!await ClusterClient.GetGrain<ITeamsGrain>(CompanyName).HaveNode(teamsId, false))
+            if (!await ClusterClient.GetGrain<ICompanyTeamsGrain>(CompanyName).HaveNode(teamsId, false))
                 throw new InvalidOperationException("注册用户的团队不存在!");
 
             string initialPassword = UserName;

@@ -23,7 +23,7 @@ namespace Phenix.Services.Plugin.Security
         [HttpGet]
         public async Task<string> Get()
         {
-            return await EncryptAsync(await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).FetchKernel());
+            return await EncryptAsync(await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).FetchMyself());
         }
 
         /// <summary>

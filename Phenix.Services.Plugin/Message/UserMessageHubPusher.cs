@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
+using Phenix.Core.Data;
 using Phenix.Core.Log;
 using Phenix.Core.Reflection;
 using Phenix.Core.SyncCollections;
@@ -64,18 +65,18 @@ namespace Phenix.Services.Plugin.Message
 
         #region 方法
 
-        public void AddConnectedInfo(string userName, string connectionId)
+        public void AddConnectedInfo(string userKey, string connectionId)
         {
             InitializeTask();
 
-            _connectedInfos[userName] = new ConnectedInfo(connectionId);
+            _connectedInfos[userKey] = new ConnectedInfo(connectionId);
         }
 
-        public void RemoveConnectedInfo(string userName)
+        public void RemoveConnectedInfo(string userKey)
         {
             InitializeTask();
 
-            _connectedInfos.Remove(userName);
+            _connectedInfos.Remove(userKey);
         }
 
         private void InitializeTask()
@@ -103,7 +104,7 @@ namespace Phenix.Services.Plugin.Message
                         {
                             if (connectedInfo.Value.SentDateTimes.Count == 0 && DateTime.Now.Subtract(connectedInfo.Value.LastActionTime).TotalSeconds <= 1)
                                 continue;
-                            IDictionary<long, string> messages = UserMessage.Receive(connectedInfo.Key);
+                            IDictionary<long, string> messages = Database.Default.ExecuteGet(UserMessage.Receive, connectedInfo.Key);
                             if (messages.Count > 0)
                             {
                                 Dictionary<long, string> packages = new Dictionary<long, string>(messages.Count);
@@ -119,7 +120,7 @@ namespace Phenix.Services.Plugin.Message
                                 {
                                     IClientProxy clientProxy = _context.Clients.Client(connectedInfo.Value.ConnectionId);
                                     if (clientProxy != null)
-                                        clientProxy.SendAsync("OnReceived", Utilities.JsonSerialize(packages));
+                                        clientProxy.SendAsync("onReceived", Utilities.JsonSerialize(packages));
                                 }
                             }
                             else

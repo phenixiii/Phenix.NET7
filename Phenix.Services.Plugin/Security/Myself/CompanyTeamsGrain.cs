@@ -1,13 +1,14 @@
 ﻿using Phenix.Actor;
 using Phenix.Services.Business.Security;
-using Phenix.Services.Contract.Security;
+using Phenix.Services.Contract.Security.Myself;
 
-namespace Phenix.Services.Plugin.Security
+namespace Phenix.Services.Plugin.Security.Myself
 {
     /// <summary>
-    /// 团队资料Grain
+    /// 公司团体Grain
+    /// key：CompanyName
     /// </summary>
-    public class TeamsGrain : TreeEntityGrainBase<Teams>, ITeamsGrain
+    public class CompanyTeamsGrain : TreeEntityGrainBase<Teams>, ICompanyTeamsGrain
     {
         #region 属性
 

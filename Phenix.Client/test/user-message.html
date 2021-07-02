@@ -121,13 +121,13 @@
     口令<input id="userPassword" type="text" value="口令即登录名" />
     <input name="logonButton" onclick="phAjax.logon({companyName: companyName.value, userName: userName.value, password: userPassword.value, onComplete: onComplete});" type="button" value="登录" /><br />
     <br />
-    <input name="sendMessageButton" onclick="sendMessage(userName.value);" type="button" value="发布消息给自己" /><br />
+    <input name="sendMessageButton" onclick="sendMessage(phAjax.userKey);" type="button" value="发布消息给自己" /><br />
     <br />
     <input name="receiveMessageButton" onclick="receiveMessage();" type="button" value="拉取消息" /><br />
     <br />
     <input name="subscribeUserMessageButton" onclick="subscribeMessage();" type="button" value="启动用户消息订阅机制" /><br />
     <br />
-    <input name="subscribeGroupMessageButton" onclick="subscribeMessage(userName.value);" type="button" value="启动分组消息订阅机制" /><br />
+    <input name="subscribeGroupMessageButton" onclick="subscribeMessage(phAjax.userKey);" type="button" value="启动分组消息订阅机制" /><br />
     <br />
 </body>
 </html>

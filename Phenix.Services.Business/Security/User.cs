@@ -47,7 +47,6 @@ namespace Phenix.Services.Business.Security
         public string TeamsName
         {
             get { return _teamsName; }
-            private set { _teamsName = value; }
         }
 
         private string _positionName;
@@ -58,7 +57,6 @@ namespace Phenix.Services.Business.Security
         public string PositionName
         {
             get { return _positionName; }
-            private set { _positionName = value; }
         }
 
         #endregion
@@ -66,20 +64,28 @@ namespace Phenix.Services.Business.Security
         #region 方法
 
         /// <summary>
+        /// 获取自己用户资料
+        /// </summary>
+        public User FetchMyself(Teams teams, Position position)
+        {
+            _teamsName = teams != null ? teams.Name : null;
+            _positionName = position != null ? position.Name : null;
+            return this;
+        }
+
+        /// <summary>
         /// 获取公司用户资料
         /// </summary>
-        /// <returns>公司用户资料</returns>
-        public IList<User> FetchCompanyUsers(Teams company)
+        public IList<User> FetchCompanyUsers(Teams company, IDictionary<long, Position> positions)
         {
-            IDictionary<long, Position> positions = Position.FetchKeyValues(Database, p => p.Id);
             IList<User> result = FetchList(Database, p => p.RootTeamsId == RootTeamsId && p.RootTeamsId != p.TeamsId);
             foreach (User item in result)
             {
-                if (item.PositionId.HasValue && positions.TryGetValue(item.PositionId.Value, out Position position))
-                    item.PositionName = position.Name;
                 Teams teams = company.FindInBranch(p => p.Id == item.TeamsId);
                 if (teams != null)
-                    item.TeamsName = teams.Name;
+                    item._teamsName = teams.Name;
+                if (item.PositionId.HasValue && positions.TryGetValue(item.PositionId.Value, out Position position))
+                    item._positionName = position.Name;
             }
 
             return result;
@@ -141,7 +147,7 @@ namespace Phenix.Services.Business.Security
                         Set(p => p.RequestFailureTime, null)) == 1)
             {
                 DynamicPassword = dynamicPassword;
-                Validate(timestamp, true);
+                SetAuthenticated(timestamp, true);
                 return true;
             }
             UpdateSelf(SetProperty(p => p.RequestAddress, requestAddress).
@@ -172,7 +178,7 @@ namespace Phenix.Services.Business.Security
             {
                 Password = password;
                 DynamicPassword = null;
-                Validate(timestamp, true);
+                SetAuthenticated(timestamp, true);
                 return true;
             }
 

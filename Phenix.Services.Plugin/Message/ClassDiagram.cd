@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Phenix.Services.Plugin.Message.UserMessageHubPusher">
-    <Position X="5" Y="5.25" Width="2.25" />
+    <Position X="2.75" Y="3.75" Width="2.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -18,14 +18,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.Services.Plugin.Message.UserMessageController">
-    <Position X="0.5" Y="5.25" Width="2" />
+    <Position X="0.5" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAABAAAAAAAAAAAEAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
       <FileName>Message\UserMessageController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.Services.Plugin.Message.UserMessageHub">
-    <Position X="2.75" Y="5.25" Width="2" />
+    <Position X="0.5" Y="3.75" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -35,7 +35,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.Services.Plugin.Message.GroupMessageHub">
-    <Position X="0.5" Y="0.5" Width="2" />
+    <Position X="0.5" Y="6" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
       <Compartment Name="Nested Types" Collapsed="false" />
@@ -54,6 +54,17 @@
       <HashCode>EAIAAAAAAAAAAAAQAAAAABAAAAACAAAAAAAAACAAAAA=</HashCode>
       <FileName>Message\GroupMessageHub.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Services.Plugin.Message.UserMessageGrain">
+    <Position X="2.75" Y="0.5" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AIAAAAIAEAAAAABAAAEAAgAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Message\UserMessageGrain.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Font Name="Microsoft YaHei UI" Size="9" />
 </ClassDiagram>

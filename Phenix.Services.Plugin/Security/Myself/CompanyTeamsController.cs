@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Net.Filters;
 using Phenix.Services.Business.Security;
-using Phenix.Services.Contract.Security;
+using Phenix.Services.Contract.Security.Myself;
 
 namespace Phenix.Services.Plugin.Security.Myself
 {
@@ -26,7 +26,7 @@ namespace Phenix.Services.Plugin.Security.Myself
         [HttpPost]
         public async Task<long> AddChild(string name, long parentId)
         {
-            return await ClusterClient.Default.GetGrain<ITeamsGrain>(User.Identity.CompanyName).AddChildNode(parentId, Teams.Set(p => p.Name, name));
+            return await ClusterClient.Default.GetGrain<ICompanyTeamsGrain>(User.Identity.CompanyName).AddChildNode(parentId, Teams.Set(p => p.Name, name));
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace Phenix.Services.Plugin.Security.Myself
         [HttpPut]
         public async Task ChangeParent(long id, long parentId)
         {
-            await ClusterClient.Default.GetGrain<ITeamsGrain>(User.Identity.CompanyName).ChangeParentNode(id, parentId);
+            await ClusterClient.Default.GetGrain<ICompanyTeamsGrain>(User.Identity.CompanyName).ChangeParentNode(id, parentId);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Phenix.Services.Plugin.Security.Myself
         [HttpPatch]
         public async Task Update(long id, string name)
         {
-            await ClusterClient.Default.GetGrain<ITeamsGrain>(User.Identity.CompanyName).UpdateNode(id, Teams.Set(p => p.Name, name));
+            await ClusterClient.Default.GetGrain<ICompanyTeamsGrain>(User.Identity.CompanyName).UpdateNode(id, Teams.Set(p => p.Name, name));
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Phenix.Services.Plugin.Security.Myself
         [HttpDelete]
         public async Task<int> Delete(long id)
         {
-            return await ClusterClient.Default.GetGrain<ITeamsGrain>(User.Identity.CompanyName).DeleteBranch(id);
+            return await ClusterClient.Default.GetGrain<ICompanyTeamsGrain>(User.Identity.CompanyName).DeleteBranch(id);
         }
     }
 }

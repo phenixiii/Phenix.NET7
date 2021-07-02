@@ -41,7 +41,7 @@ namespace Phenix.Services.Plugin.Message
         public override async Task OnConnectedAsync()
         {
             if (Principal.CurrentIdentity != null)
-                _pusher.AddConnectedInfo(Principal.CurrentIdentity.UserName, Context.ConnectionId);
+                _pusher.AddConnectedInfo(Principal.CurrentIdentity.PrimaryKey, Context.ConnectionId);
             if (_service != null)
                 await _service.OnConnected(Principal.CurrentIdentity, Context.ConnectionId);
             await base.OnConnectedAsync();
@@ -53,7 +53,7 @@ namespace Phenix.Services.Plugin.Message
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             if (Principal.CurrentIdentity != null)
-                _pusher.RemoveConnectedInfo(Principal.CurrentIdentity.UserName);
+                _pusher.RemoveConnectedInfo(Principal.CurrentIdentity.PrimaryKey);
             if (_service != null)
                 await _service.OnDisconnected(Principal.CurrentIdentity, Context.ConnectionId, exception);
             await base.OnDisconnectedAsync(exception);

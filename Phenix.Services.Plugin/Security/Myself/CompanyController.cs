@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Net.Filters;
 using Phenix.Services.Business.Security;
-using Phenix.Services.Contract.Security;
+using Phenix.Services.Contract.Security.Myself;
 
 namespace Phenix.Services.Plugin.Security.Myself
 {
@@ -24,7 +24,7 @@ namespace Phenix.Services.Plugin.Security.Myself
         [HttpGet]
         public async Task<Teams> Get()
         {
-            return await ClusterClient.Default.GetGrain<ITeamsGrain>(User.Identity.CompanyName).FetchKernel();
+            return await ClusterClient.Default.GetGrain<ICompanyTeamsGrain>(User.Identity.CompanyName).FetchKernel();
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Phenix.Services.Plugin.Security.Myself
         [HttpPatch]
         public async Task Patch()
         {
-            await ClusterClient.Default.GetGrain<ITeamsGrain>(User.Identity.CompanyName).PatchKernel(await Request.ReadBodyAsync<Teams>());
+            await ClusterClient.Default.GetGrain<ICompanyTeamsGrain>(User.Identity.CompanyName).PatchKernel(await Request.ReadBodyAsync<Teams>());
         }
     }
 }

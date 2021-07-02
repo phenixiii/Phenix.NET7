@@ -3,103 +3,31 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
-using System.Threading;
 using Phenix.Core;
-using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
 
 namespace Phenix.Services.Business.Message
 {
     /// <summary>
     /// 用户消息
-    /// 由Database.Default的PH7_UserMessage表提供消息缓存
     /// </summary>
     public static class UserMessage
     {
-        #region 属性
-
-        #region 配置项
-
-        private static int? _clearMessageDeferMonths;
-
-        /// <summary>
-        /// 清理几个月前的消息
-        /// 默认：12(>=3)
-        /// </summary>
-        public static int ClearMessageDeferMonths
-        {
-            get { return AppSettings.GetProperty(ref _clearMessageDeferMonths, 12); }
-            set { AppSettings.SetProperty(ref _clearMessageDeferMonths, value >= 3 ? value : 3); }
-        }
-
-        #endregion
-
-        #region 数据源
-
-        private static Database _database;
-
-        /// <summary>
-        /// 数据库入口
-        /// </summary>
-        public static Database Database
-        {
-            get
-            {
-                if (_database == null)
-                {
-                    Database database = Database.Default;
-                    lock (database)
-                        if (_database == null)
-                        {
-                            _database = database;
-                            InitializeTable(database);
-                        }
-
-                    Thread.MemoryBarrier();
-                }
-
-                return _database;
-            }
-        }
-
-        #endregion
-
-        #endregion
-
         #region 方法
-        
+
         /// <summary>
         /// 发送消息
         /// </summary>
+        /// <param name="transaction">DbTransaction</param>
+        /// <param name="id">ID</param>
         /// <param name="sender">发送用户</param>
         /// <param name="receiver">接收用户</param>
         /// <param name="content">消息内容</param>
-        public static UserMessageInfo Send(string sender, string receiver, string content)
+        public static void Send(DbTransaction transaction, long id, string sender, string receiver, string content)
         {
-            UserMessageInfo result = new UserMessageInfo(Database.Sequence.Value, sender, receiver, content);
-            Send(result);
-            return result;
-        }
-
-        /// <summary>
-        /// 保存对象日志
-        /// </summary>
-        /// <param name="info">事件资料</param>
-        public static void Send(UserMessageInfo info)
-        {
-            Database.Execute(Send, info);
-        }
-
-        /// <summary>
-        /// 保存对象日志
-        /// </summary>
-        /// <param name="transaction">DbTransaction</param>
-        /// <param name="info">事件资料</param>
-        public static void Send(DbTransaction transaction, UserMessageInfo info)
-        {
-            if (String.IsNullOrEmpty(info.Sender))
+            if (String.IsNullOrEmpty(sender))
                 throw new InvalidOperationException("必须指定发送方!");
-            if (String.IsNullOrEmpty(info.Receiver))
+            if (String.IsNullOrEmpty(receiver))
                 throw new InvalidOperationException("必须指定接收方!");
 
             bool existed = false;
@@ -108,34 +36,33 @@ namespace Phenix.Services.Business.Message
 insert into PH7_UserMessage
   (UM_ID, UM_Sender, UM_Receiver, UM_CreateTime)
 values
-  (@UM_ID, @UM_Sender, @UM_Receiver, @UM_CreateTime)"))
+  (@UM_ID, @UM_Sender, @UM_Receiver, now())"))
 #endif
 #if MsSQL
             using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
 insert into PH7_UserMessage
   (UM_ID, UM_Sender, UM_Receiver, UM_CreateTime)
 values
-  (@UM_ID, @UM_Sender, @UM_Receiver, @UM_CreateTime)"))
+  (@UM_ID, @UM_Sender, @UM_Receiver, getdate())"))
 #endif
 #if MySQL
             using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
 insert into PH7_UserMessage
   (UM_ID, UM_Sender, UM_Receiver, UM_CreateTime)
 values
-  (?UM_ID, ?UM_Sender, ?UM_Receiver, ?UM_CreateTime)"))
+  (?UM_ID, ?UM_Sender, ?UM_Receiver, now())"))
 #endif
 #if ORA
             using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
 insert into PH7_UserMessage
   (UM_ID, UM_Sender, UM_Receiver, UM_CreateTime)
 values
-  (:UM_ID, :UM_Sender, :UM_Receiver, :UM_CreateTime)"))
+  (:UM_ID, :UM_Sender, :UM_Receiver, sysdate)"))
 #endif
             {
-                DbCommandHelper.CreateParameter(command, "UM_ID", info.Id);
-                DbCommandHelper.CreateParameter(command, "UM_Sender", info.Sender);
-                DbCommandHelper.CreateParameter(command, "UM_Receiver", info.Receiver);
-                DbCommandHelper.CreateParameter(command, "UM_CreateTime", info.CreateTime);
+                DbCommandHelper.CreateParameter(command, "UM_ID", id);
+                DbCommandHelper.CreateParameter(command, "UM_Sender", sender);
+                DbCommandHelper.CreateParameter(command, "UM_Receiver", receiver);
                 try
                 {
                     DbCommandHelper.ExecuteNonQuery(command, false);
@@ -173,9 +100,9 @@ from PH7_UserMessage
 where UM_ID = :UM_ID", CommandBehavior.SingleRow, false))
 #endif
                 {
-                    reader.CreateParameter("UM_ID", info.Id);
+                    reader.CreateParameter("UM_ID", id);
                     if (reader.Read())
-                        if (String.CompareOrdinal(reader.GetNullableString(0), info.Content) == 0)
+                        if (String.CompareOrdinal(reader.GetNullableString(0), content) == 0)
                             return;
                 }
 #if PgSQL
@@ -219,9 +146,9 @@ update PH7_UserMessage set
 where UM_ID = :UM_ID"))
 #endif
                 {
-                    DbCommandHelper.CreateParameter(command, "UM_Sender", info.Sender);
-                    DbCommandHelper.CreateParameter(command, "UM_Receiver", info.Receiver);
-                    DbCommandHelper.CreateParameter(command, "UM_ID", info.Id);
+                    DbCommandHelper.CreateParameter(command, "UM_Sender", sender);
+                    DbCommandHelper.CreateParameter(command, "UM_Receiver", receiver);
+                    DbCommandHelper.CreateParameter(command, "UM_ID", id);
                     DbCommandHelper.ExecuteNonQuery(command, false);
                 }
             }
@@ -250,21 +177,11 @@ update PH7_UserMessage set
 where UM_ID = :UM_ID"))
 #endif
             {
-                DbCommandHelper.CreateParameter(command, "UM_Content", info.Content);
-                DbCommandHelper.CreateParameter(command, "UM_ID", info.Id);
+                DbCommandHelper.CreateParameter(command, "UM_Content", content);
+                DbCommandHelper.CreateParameter(command, "UM_ID", id);
                 if (DbCommandHelper.ExecuteNonQuery(command, false) == 0)
-                    throw new InvalidOperationException(String.Format(AppSettings.GetValue("未能发送消息: {0}-{1}"), info.Id, info.Content));
+                    throw new InvalidOperationException(String.Format(AppSettings.GetValue("未能发送消息: {0}-{1}"), id, content));
             }
-        }
-
-        /// <summary>
-        /// 接收消息（PULL）
-        /// </summary>
-        /// <param name="receiver">接收用户</param>
-        /// <returns>结果集(消息ID-消息内容)</returns>
-        public static IDictionary<long, string> Receive(string receiver)
-        {
-            return Database.ExecuteGet(Receive, receiver);
         }
 
         /// <summary>
@@ -319,14 +236,10 @@ order by UM_CreateTime", CommandBehavior.SingleResult, false))
         /// <summary>
         /// 确认收到
         /// </summary>
+        /// <param name="transaction">DbTransaction</param>
         /// <param name="id">消息ID</param>
         /// <param name="burn">是否销毁</param>
-        public static void AffirmReceived(long id, bool burn = false)
-        {
-            Database.Execute(AffirmReceived, id, burn);
-        }
-
-        private static void AffirmReceived(DbTransaction transaction, long id, bool burn)
+        public static void AffirmReceived(DbTransaction transaction, long id, bool burn)
         {
             if (burn)
 #if PgSQL
@@ -349,11 +262,11 @@ where UM_ID = ?UM_ID and UM_SendTime is null"))
 delete from PH7_UserMessage
 where UM_ID = :UM_ID and UM_SendTime is null"))
 #endif
-            {
-                DbCommandHelper.CreateParameter(command, "UM_ID", id);
+                {
+                    DbCommandHelper.CreateParameter(command, "UM_ID", id);
                     if (DbCommandHelper.ExecuteNonQuery(command, false) == 1)
                         return;
-            }
+                }
 #if PgSQL
             using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
 update PH7_UserMessage set
@@ -385,42 +298,40 @@ where UM_ID = :UM_ID and UM_SendTime is null or UM_SendTime = :UM_SendTime and U
             }
         }
 
-        #region Initialize
-
-        private static void InitializeTable(Database database)
-        {
-            database.AddTimedTask("Clear PH7_UserMessage", Clear, 20);
-        }
-
-        private static void Clear(DbConnection connection)
+        /// <summary>
+        /// 清理报文
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="sender">发送用户</param>
+        /// <param name="clearMessageDeferMonths">清理几个月前的消息</param>
+        public static void Clear(DbConnection connection, string sender, int clearMessageDeferMonths)
         {
 #if PgSQL
             using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
 delete from PH7_UserMessage
-where UM_CreateTime <= @UM_CreateTime"))
+where UM_Sender = @UM_Sender and UM_CreateTime <= @UM_CreateTime"))
 #endif
 #if MsSQL
             using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
 delete from PH7_UserMessage
-where UM_CreateTime <= @UM_CreateTime"))
+where UM_Sender = @UM_Sender and UM_CreateTime <= @UM_CreateTime"))
 #endif
 #if MySQL
             using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
 delete from PH7_UserMessage
-where UM_CreateTime <= ?UM_CreateTime"))
+where UM_Sender = ?UM_Sender and UM_CreateTime <= ?UM_CreateTime"))
 #endif
 #if ORA
             using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
 delete from PH7_UserMessage
-where UM_CreateTime <= :UM_CreateTime"))
+where UM_Sender = :UM_Sender and UM_CreateTime <= :UM_CreateTime"))
 #endif
             {
-                DbCommandHelper.CreateParameter(command, "UM_CreateTime", DateTime.Now.AddMonths(-ClearMessageDeferMonths));
+                DbCommandHelper.CreateParameter(command, "UM_Sender", sender);
+                DbCommandHelper.CreateParameter(command, "UM_CreateTime", DateTime.Now.AddMonths(-clearMessageDeferMonths));
                 DbCommandHelper.ExecuteNonQuery(command, false);
             }
         }
-        
-        #endregion
 
         #endregion
     }

@@ -34,10 +34,10 @@
 <body>
     请启动 Phenix.Services.Host 程序<br />
     <br />
-    注册<br />
+    登记(获取动态口令)/注册(静态口令即登录名)<br />
     公司名<input id="companyName" type="text" value="公司名不允许重复" />
     登录名<input id="userName" type="text" value="登录名不允许重复" />
-    <input name="checkInButton" onclick="phAjax.checkIn({baseAddress: 'http://localhost.:5000', companyName: companyName.value, userName: userName.value, onComplete: onComplete});" type="button" value="注册" /><br />
+    <input name="checkInButton" onclick="phAjax.checkIn({baseAddress: 'http://localhost.:5000', companyName: companyName.value, userName: userName.value, onComplete: onComplete});" type="button" value="登记/注册" /><br />
     <br />
     登录<br />
     口令<input id="userPassword" type="text" value="口令即登录名" />

@@ -2,7 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Phenix.Services.Business.Message;
+using Phenix.Actor;
+using Phenix.Services.Contract.Message;
 
 namespace Phenix.Services.Plugin.Message
 {
@@ -13,31 +14,6 @@ namespace Phenix.Services.Plugin.Message
     [ApiController]
     public sealed class UserMessageController : Phenix.Core.Net.Api.ControllerBase
     {
-        // phAjax.receiveMessage()
-        /// <summary>
-        /// 接收（PULL）
-        /// </summary>
-        /// <returns>结果集(消息ID-消息内容)</returns>
-        [Authorize]
-        [HttpGet]
-        public IDictionary<long, string> Receive()
-        {
-            return UserMessage.Receive(User.Identity.UserName);
-        }
-
-        // phAjax.sendMessage()
-        /// <summary>
-        /// 发送
-        /// </summary>
-        /// <param name="id">消息ID</param>
-        /// <param name="receiver">接收用户</param>
-        [Authorize]
-        [HttpPut]
-        public async Task Send(long id, string receiver)
-        {
-            UserMessage.Send(new UserMessageInfo(id, User.Identity.UserName, receiver, await Request.ReadBodyAsStringAsync()));
-        }
-
         // phAjax.sendMessage()
         /// <summary>
         /// 发送
@@ -47,10 +23,21 @@ namespace Phenix.Services.Plugin.Message
         [HttpPost]
         public async Task Send(string receiver)
         {
-            string content = await Request.ReadBodyAsStringAsync();
-            //测试分组消息的推送
-            //await ClusterClient.Default.GetStreamProvider().GetStream<string>(StreamConfig.GroupMessageStreamId, receiver).OnNextAsync(content);
-            UserMessage.Send(User.Identity.UserName, receiver, content);
+            await ClusterClient.Default.GetGrain<IUserMessageGrain>(User.Identity.PrimaryKey).Send(receiver, await Request.ReadBodyAsStringAsync());
+            //可替换为以下代码测试分组消息的推送
+            //await ClusterClient.Default.GetStreamProvider().GetStream<string>(GroupMessageHub.GroupStreamId, receiver).OnNextAsync(await Request.ReadBodyAsStringAsync());
+        }
+
+        // phAjax.receiveMessage()
+        /// <summary>
+        /// 接收（PULL）
+        /// </summary>
+        /// <returns>结果集(消息ID-消息内容)</returns>
+        [Authorize]
+        [HttpGet]
+        public async Task<IDictionary<long, string>> Receive()
+        {
+            return await ClusterClient.Default.GetGrain<IUserMessageGrain>(User.Identity.PrimaryKey).Receive();
         }
 
         // phAjax.affirmReceivedMessage()
@@ -61,9 +48,9 @@ namespace Phenix.Services.Plugin.Message
         /// <param name="burn">是否销毁</param>
         [Authorize]
         [HttpDelete]
-        public void AffirmReceived(long id, bool burn)
+        public async Task AffirmReceived(long id, bool burn)
         {
-            UserMessage.AffirmReceived(id, burn);
+            await ClusterClient.Default.GetGrain<IUserMessageGrain>(User.Identity.PrimaryKey).AffirmReceived(id, burn);
         }
     }
 }

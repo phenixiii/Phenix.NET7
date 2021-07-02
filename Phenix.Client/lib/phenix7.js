@@ -85,7 +85,7 @@ var phAjax = (function($) {
         }
     };
 
-    var getUserKey = function() {
+    var getUserSign = function() {
         var result;
         try {
             result = window.localStorage.getItem(userKeyCookieName);
@@ -94,7 +94,7 @@ var phAjax = (function($) {
         }
         return typeof result !== undefined && result != null ? result : CryptoJS.MD5("******").toString().toUpperCase();
     };
-    var setUserKey = function(value) {
+    var setUserSign = function(value) {
         try {
             window.localStorage.removeItem(userKeyCookieName);
             window.localStorage.setItem(userKeyCookieName, value);
@@ -122,18 +122,18 @@ var phAjax = (function($) {
     };
 
     // 身份验证token: [公司名],[登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)],[会话签名]
-    var initializeComplexAuthorization = function(companyName, userName, userKey, session) {
+    var initializeComplexAuthorization = function(companyName, userName, userSign, session) {
         var timestamp = phUtils.random(9) + new Date().toISOString();
         if (typeof session === undefined || session == null) {
-            session = phUtils.encrypt(timestamp, userKey);
+            session = phUtils.encrypt(timestamp, userSign);
             setSession(session);
         }
-        return encodeURIComponent(companyName) + "," + encodeURIComponent(userName) + "," + timestamp + "," + phUtils.encrypt(timestamp, userKey) + "," + session;
+        return encodeURIComponent(companyName) + "," + encodeURIComponent(userName) + "," + timestamp + "," + phUtils.encrypt(timestamp, userSign) + "," + session;
     };
 
     // 身份验证token: [公司名],[登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)],[会话签名]
     var formatComplexAuthorization = function() {
-        return initializeComplexAuthorization(getCompanyName(), getUserName(), getUserKey(), getSession());
+        return initializeComplexAuthorization(getCompanyName(), getUserName(), getUserSign(), getSession());
     };
 
     return {
@@ -153,12 +153,16 @@ var phAjax = (function($) {
             return getUserName();
         },
 
+        get userKey() {
+            return getCompanyName() + '\u0004' + getUserName();
+        },
+
         encrypt: function(data) {
-            return phUtils.encrypt(data, getUserKey());
+            return phUtils.encrypt(data, getUserSign());
         },
 
         decrypt: function(cipherText) {
-            return phUtils.decrypt(cipherText, getUserKey());
+            return phUtils.decrypt(cipherText, getUserSign());
         },
 
         // 登记(获取动态口令)/注册(静态口令即登录名)
@@ -220,7 +224,7 @@ var phAjax = (function($) {
             options = $.extend(defaults, options);
             if (options.hashName)
                 options.userName = CryptoJS.MD5(options.userName).toString().toUpperCase();
-            var userKey = CryptoJS.MD5(options.password).toString().toUpperCase();
+            var userSign = CryptoJS.MD5(options.password).toString().toUpperCase();
             $.ajax({
                 type: "POST",
                 url: options.baseAddress + "/api/security/gate",
@@ -229,15 +233,15 @@ var phAjax = (function($) {
                 crossDomain: true,
                 timeout: 30000,
                 beforeSend: function(XMLHttpRequest) {
-                    XMLHttpRequest.setRequestHeader(authorizationHeaderName, initializeComplexAuthorization(options.companyName, options.userName, userKey, null));
+                    XMLHttpRequest.setRequestHeader(authorizationHeaderName, initializeComplexAuthorization(options.companyName, options.userName, userSign, null));
                 },
-                data: phUtils.encrypt(options.tag, userKey),
+                data: phUtils.encrypt(options.tag, userSign),
                 complete: function(XMLHttpRequest, textStatus) {
                     if (XMLHttpRequest.status == 200) {
                         setBaseAddress(options.baseAddress);
                         setCompanyName(options.companyName);
                         setUserName(options.userName);
-                        setUserKey(userKey);
+                        setUserSign(userSign);
                     } else {
                         if (typeof options.onError == "function")
                             options.onError(XMLHttpRequest, textStatus, new Error(XMLHttpRequest.responseText));
@@ -304,7 +308,7 @@ var phAjax = (function($) {
                 data: password + '\u0004' + newPassword,
                 encryptData: true,
                 onSuccess: function(result) {
-                    setUserKey(CryptoJS.MD5(newPassword).toString().toUpperCase());
+                    setUserSign(CryptoJS.MD5(newPassword).toString().toUpperCase());
                     if (typeof options.onSuccess == "function")
                         options.onSuccess(result); //是否成功
                 },
@@ -357,50 +361,6 @@ var phAjax = (function($) {
             });
         },
 
-        // 接收消息（PULL）
-        receiveMessage: function(options) {
-            var defaults = {
-                onSuccess: null, //调用成功的回调函数, 参数(messages)为消息id(key)+content(array[key])数据字典集合
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
-            };
-            options = $.extend(defaults, options);
-            phAjax.call({
-                path: "/api/message/user-message",
-                onSuccess: function(result) {
-                    if (typeof options.onSuccess == "function")
-                        options.onSuccess(result);
-                },
-                onError: function(XMLHttpRequest, textStatus, errorThrown) {
-                    if (typeof options.onError == "function")
-                        options.onError(XMLHttpRequest, textStatus, errorThrown);
-                },
-            });
-        },
-
-        // 发送消息
-        // receiver: 接收用户
-        // content: 消息内容
-        sendMessage: function(id, receiver, content, options) {
-            var defaults = {
-                onSuccess: null, //调用成功的回调函数
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
-            };
-            options = $.extend(defaults, options);
-            phAjax.call({
-                type: "PUT",
-                path: "/api/message/user-message?id=" + id + "&receiver=" + encodeURIComponent(receiver),
-                data: content,
-                onSuccess: function(result) {
-                    if (typeof options.onSuccess == "function")
-                        options.onSuccess();
-                },
-                onError: function(XMLHttpRequest, textStatus, errorThrown) {
-                    if (typeof options.onError == "function")
-                        options.onError(XMLHttpRequest, textStatus, errorThrown);
-                },
-            });
-        },
-
         // 发送消息
         // receiver: 接收用户
         // content: 消息内容
@@ -417,6 +377,26 @@ var phAjax = (function($) {
                 onSuccess: function(result) {
                     if (typeof options.onSuccess == "function")
                         options.onSuccess();
+                },
+                onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (typeof options.onError == "function")
+                        options.onError(XMLHttpRequest, textStatus, errorThrown);
+                },
+            });
+        },
+
+        // 接收消息（PULL）
+        receiveMessage: function(options) {
+            var defaults = {
+                onSuccess: null, //调用成功的回调函数, 参数(messages)为消息id(key)+content(array[key])数据字典集合
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, errorThrown)
+            };
+            options = $.extend(defaults, options);
+            phAjax.call({
+                path: "/api/message/user-message",
+                onSuccess: function(result) {
+                    if (typeof options.onSuccess == "function")
+                        options.onSuccess(result);
                 },
                 onError: function(XMLHttpRequest, textStatus, errorThrown) {
                     if (typeof options.onError == "function")
@@ -481,7 +461,7 @@ var phAjax = (function($) {
             });
             connection.onreconnected(function(connectionId) {
                 if (options.groupName != null)
-                    connection.invoke("Subscribe", options.groupName);
+                    connection.invoke("SubscribeAsync", options.groupName);
                 if (typeof options.onReconnected == "function")
                     options.onReconnected(connection, connectionId);
             });
@@ -495,7 +475,7 @@ var phAjax = (function($) {
                         options.onFail(connection, error);
                 }).then(function() {
                     if (options.groupName != null)
-                        connection.invoke("Subscribe", options.groupName);
+                        connection.invoke("SubscribeAsync", options.groupName);
                     if (typeof options.onThen == "function")
                         options.onThen(connection);
                 });
