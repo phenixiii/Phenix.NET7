@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
+using System.Linq.Expressions;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
+using Phenix.Core.Data.Expressions;
 using Phenix.Core.SyncCollections;
 
 namespace Phenix.Business
@@ -63,10 +66,10 @@ namespace Phenix.Business
         /// 设置从业务对象
         /// </summary>
         /// <param name="detail">从业务对象</param>
-        protected void SetDetail<TDetail>(params TDetail[] detail)
+        public void SetDetail<TDetail>(params TDetail[] detail)
             where TDetail : BusinessBase<TDetail>
         {
-            SetDetail(true, detail);
+            SetDetail(false, detail);
         }
 
         /// <summary>
@@ -74,7 +77,7 @@ namespace Phenix.Business
         /// </summary>
         /// <param name="ignoreRepeat">忽略重复的</param>
         /// <param name="detail">从业务对象</param>
-        protected void SetDetail<TDetail>(bool ignoreRepeat = true, params TDetail[] detail)
+        public void SetDetail<TDetail>(bool ignoreRepeat = false, params TDetail[] detail)
             where TDetail : BusinessBase<TDetail>
         {
             if (detail == null || detail.Length == 0)
@@ -113,6 +116,162 @@ namespace Phenix.Business
 
             return null;
         }
+
+        #region NewDetail
+
+        /// <summary>
+        /// 新增从业务对象(自动填充主键和保留字段)
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        /// <returns>业务对象</returns>
+        public new TDetail NewDetail<TDetail>(params NameValue[] propertyValues)
+            where TDetail : BusinessBase<TDetail>
+        {
+            return NewDetail<TDetail>(NameValue.ToDictionary(propertyValues));
+        }
+
+        /// <summary>
+        /// 新增从业务对象(自动填充主键和保留字段)
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        /// <returns>业务对象</returns>
+        public new TDetail NewDetail<TDetail>(IDictionary<string, object> propertyValues)
+            where TDetail : BusinessBase<TDetail>
+        {
+            TDetail result = base.NewDetail<TDetail>(propertyValues);
+            SetDetail(result);
+            return result;
+        }
+
+        #endregion
+
+        #region FetchDetails
+
+        /// <summary>
+        /// 获取从业务对象
+        /// </summary>
+        /// <param name="orderBys">排序队列</param>
+        public new IList<TDetail> FetchDetails<TDetail>(params OrderBy<TDetail>[] orderBys)
+            where TDetail : BusinessBase<TDetail>
+        {
+            return FetchDetails((CriteriaExpression)null, null, 0, 10, orderBys);
+        }
+
+        /// <summary>
+        /// 获取从业务对象
+        /// </summary>
+        /// <param name="pageNo">页码(1..N, 0为不分页)</param>
+        /// <param name="pageSize">分页大小</param>
+        /// <param name="orderBys">排序队列</param>
+        public new IList<TDetail> FetchDetails<TDetail>(int pageNo, int pageSize = 10, params OrderBy<TDetail>[] orderBys)
+            where TDetail : BusinessBase<TDetail>
+        {
+            return FetchDetails((CriteriaExpression)null, null, pageNo, pageSize, orderBys);
+        }
+
+        /// <summary>
+        /// 获取从业务对象
+        /// </summary>
+        /// <param name="criteriaLambda">条件表达式</param>
+        /// <param name="orderBys">排序队列</param>
+        public new IList<TDetail> FetchDetails<TDetail>(Expression<Func<TDetail, bool>> criteriaLambda, params OrderBy<TDetail>[] orderBys)
+            where TDetail : BusinessBase<TDetail>
+        {
+            return FetchDetails(CriteriaExpression.Where(criteriaLambda), null, 0, 10, orderBys);
+        }
+
+        /// <summary>
+        /// 获取从业务对象
+        /// </summary>
+        /// <param name="criteriaLambda">条件表达式</param>
+        /// <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+        /// <param name="orderBys">排序队列</param>
+        public new IList<TDetail> FetchDetails<TDetail>(Expression<Func<TDetail, bool>> criteriaLambda, object criteria, params OrderBy<TDetail>[] orderBys)
+            where TDetail : BusinessBase<TDetail>
+        {
+            return FetchDetails(CriteriaExpression.Where(criteriaLambda), criteria, 0, 10, orderBys);
+        }
+
+        /// <summary>
+        /// 获取从业务对象
+        /// </summary>
+        /// <param name="criteriaLambda">条件表达式</param>
+        /// <param name="pageNo">页码(1..N, 0为不分页)</param>
+        /// <param name="pageSize">分页大小</param>
+        /// <param name="orderBys">排序队列</param>
+        public new IList<TDetail> FetchDetails<TDetail>(Expression<Func<TDetail, bool>> criteriaLambda, int pageNo, int pageSize = 10, params OrderBy<TDetail>[] orderBys)
+            where TDetail : BusinessBase<TDetail>
+        {
+            return FetchDetails(CriteriaExpression.Where(criteriaLambda), null, pageNo, pageSize, orderBys);
+        }
+
+        /// <summary>
+        /// 获取从业务对象
+        /// </summary>
+        /// <param name="criteriaLambda">条件表达式</param>
+        /// <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+        /// <param name="pageNo">页码(1..N, 0为不分页)</param>
+        /// <param name="pageSize">分页大小</param>
+        /// <param name="orderBys">排序队列</param>
+        public new IList<TDetail> FetchDetails<TDetail>(Expression<Func<TDetail, bool>> criteriaLambda, object criteria, int pageNo, int pageSize = 10, params OrderBy<TDetail>[] orderBys)
+            where TDetail : BusinessBase<TDetail>
+        {
+            return FetchDetails(CriteriaExpression.Where(criteriaLambda), criteria, pageNo, pageSize, orderBys);
+        }
+
+        /// <summary>
+        /// 获取从业务对象
+        /// </summary>
+        /// <param name="criteriaExpression">条件表达式</param>
+        /// <param name="orderBys">排序队列</param>
+        public new IList<TDetail> FetchDetails<TDetail>(CriteriaExpression criteriaExpression, params OrderBy<TDetail>[] orderBys)
+            where TDetail : BusinessBase<TDetail>
+        {
+            return FetchDetails(criteriaExpression, null, 0, 10, orderBys);
+        }
+
+        /// <summary>
+        /// 获取从业务对象
+        /// </summary>
+        /// <param name="criteriaExpression">条件表达式</param>
+        /// <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+        /// <param name="orderBys">排序队列</param>
+        public new IList<TDetail> FetchDetails<TDetail>(CriteriaExpression criteriaExpression, object criteria, params OrderBy<TDetail>[] orderBys)
+            where TDetail : BusinessBase<TDetail>
+        {
+            return FetchDetails(criteriaExpression, criteria, 0, 10, orderBys);
+        }
+
+        /// <summary>
+        /// 获取从业务对象
+        /// </summary>
+        /// <param name="criteriaExpression">条件表达式</param>
+        /// <param name="pageNo">页码(1..N, 0为不分页)</param>
+        /// <param name="pageSize">分页大小</param>
+        /// <param name="orderBys">排序队列</param>
+        public new IList<TDetail> FetchDetails<TDetail>(CriteriaExpression criteriaExpression, int pageNo, int pageSize = 10, params OrderBy<TDetail>[] orderBys)
+            where TDetail : BusinessBase<TDetail>
+        {
+            return FetchDetails(criteriaExpression, null, pageNo, pageSize, orderBys);
+        }
+
+        /// <summary>
+        /// 获取从业务对象
+        /// </summary>
+        /// <param name="criteriaExpression">条件表达式</param>
+        /// <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
+        /// <param name="pageNo">页码(1..N, 0为不分页)</param>
+        /// <param name="pageSize">分页大小</param>
+        /// <param name="orderBys">排序队列</param>
+        public new IList<TDetail> FetchDetails<TDetail>(CriteriaExpression criteriaExpression, object criteria, int pageNo, int pageSize = 10, params OrderBy<TDetail>[] orderBys)
+            where TDetail : BusinessBase<TDetail>
+        {
+            IList<TDetail> result = base.FetchDetails(criteriaExpression, criteria, pageNo, pageSize, orderBys);
+            SetDetail(result.ToArray());
+            return result;
+        }
+
+        #endregion
 
         #endregion
 

@@ -23,7 +23,7 @@ var phAjax = (function($) {
     var baseAddressCookieName = "P-BA";
     var companyNameCookieName = "P-CN";
     var userNameCookieName = "P-UN";
-    var userKeyCookieName = "P-UK";
+    var userSignCookieName = "P-US";
     var sessionCookieName = "P-SS";
 
     var methodOverrideHeaderName = "X-HTTP-Method-Override";
@@ -88,18 +88,18 @@ var phAjax = (function($) {
     var getUserSign = function() {
         var result;
         try {
-            result = window.localStorage.getItem(userKeyCookieName);
+            result = window.localStorage.getItem(userSignCookieName);
         } catch (e) {
-            result = $.cookie(userKeyCookieName);
+            result = $.cookie(userSignCookieName);
         }
         return typeof result !== undefined && result != null ? result : CryptoJS.MD5("******").toString().toUpperCase();
     };
     var setUserSign = function(value) {
         try {
-            window.localStorage.removeItem(userKeyCookieName);
-            window.localStorage.setItem(userKeyCookieName, value);
+            window.localStorage.removeItem(userSignCookieName);
+            window.localStorage.setItem(userSignCookieName, value);
         } catch (e) {
-            $.cookie(userKeyCookieName, value, { path: '/' });
+            $.cookie(userSignCookieName, value, { path: '/' });
         }
     };
 
