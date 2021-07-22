@@ -23,17 +23,11 @@ namespace Orleans.Hosting
         /// 
         /// 配置项见Phenix.Actor.OrleansConfig
         /// 设置集群ID、服务ID：Phenix.Core.Data.Database.Default.DataSourceKey
-        /// 设置默认的激活体垃圾收集年龄限为2天
+        /// 设置默认的激活体垃圾收集年龄限为：OrleansConfig.DefaultGrainCollectionAgeMinutes
         /// 设置Clustering、GrainStorage、Reminder数据库：Phenix.Core.Data.Database.Default
         /// 设置Silo端口：EndpointOptions.DEFAULT_SILO_PORT
         /// 设置Gateway端口：EndpointOptions.DEFAULT_GATEWAY_PORT
         /// 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProviderExtension.StreamProviderName
-        /// 
-        /// 装配Actor插件 
-        /// 实体程序集都应该统一采用"*.Business.dll"作为文件名的后缀
-        /// 契约程序集都应该统一采用"*.Contract.dll"作为文件名的后缀
-        /// 插件程序集都应该统一采用"*.Plugin.dll"作为文件名的后缀
-        /// 插件程序集都应该被部署到本服务容器的执行目录下
         /// </summary>
         /// <param name="builder">ISiloBuilder</param>
         /// <param name="database">数据库入口</param>
@@ -126,6 +120,13 @@ namespace Orleans.Hosting
                 .ConfigureEndpoints(siloPort, gatewayPort)
                 .ConfigureApplicationParts(parts =>
                 {
+                    /*
+                     * 装配Actor插件 
+                     * 业务程序集都应该统一采用"*.Business.dll"作为文件名的后缀
+                     * 契约程序集都应该统一采用"*.Contract.dll"作为文件名的后缀
+                     * 插件程序集都应该统一采用"*.Plugin.dll"作为文件名的后缀
+                     * 以上程序集都应该被部署到主程序的执行目录下
+                     */
                     foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Business.dll"))
                         parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
                     foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Contract.dll"))
