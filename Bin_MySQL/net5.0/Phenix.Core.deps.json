@@ -6,9 +6,9 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "Phenix.Core\/7.5.48": {
+      "Phenix.Core\/7.5.49": {
         "dependencies": {
-          "MySql.Data": "8.0.25",
+          "MySql.Data": "8.0.26",
           "Newtonsoft.Json": "13.0.1",
           "System.Data.SQLite.Core": "1.0.114.3"
         },
@@ -76,7 +76,7 @@
           "Microsoft.NETCore.Platforms": "3.1.0"
         }
       },
-      "MySql.Data\/8.0.25": {
+      "MySql.Data\/8.0.26": {
         "dependencies": {
           "BouncyCastle.NetCore": "1.8.5",
           "Google.Protobuf": "3.14.0",
@@ -90,8 +90,8 @@
         },
         "runtime": {
           "lib\/net5.0\/MySql.Data.dll": {
-            "assemblyVersion": "8.0.25.0",
-            "fileVersion": "8.0.25.0"
+            "assemblyVersion": "8.0.26.0",
+            "fileVersion": "8.0.26.0"
           },
           "lib\/net5.0\/Ubiety.Dns.Core.dll": {
             "assemblyVersion": "2.2.1.0",
@@ -208,7 +208,7 @@
     }
   },
   "libraries": {
-    "Phenix.Core\/7.5.48": {
+    "Phenix.Core\/7.5.49": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -262,12 +262,12 @@
       "path": "microsoft.win32.systemevents\/4.7.0",
       "hashPath": "microsoft.win32.systemevents.4.7.0.nupkg.sha512"
     },
-    "MySql.Data\/8.0.25": {
+    "MySql.Data\/8.0.26": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-nt0RP1Z3Prz3JQAH1PgIbvBYzumInTVQZEOMU57iRSNeD97+YjMuHgQBCLCqju2Btb4Hmn2Kv9aMFX3jhVaMlg==",
-      "path": "mysql.data\/8.0.25",
-      "hashPath": "mysql.data.8.0.25.nupkg.sha512"
+      "sha512": "sha512-iOxE24dI01JZlZ1EObkz9WwYMzX+0RnBf5a11OkPDCOGv2Yo0tTWmwAJfVXkuuSD47XngOir7l7+xZZ56lZyAA==",
+      "path": "mysql.data\/8.0.26",
+      "hashPath": "mysql.data.8.0.26.nupkg.sha512"
     },
     "Newtonsoft.Json\/13.0.1": {
       "type": "package",

@@ -162,11 +162,6 @@ Copyright © 2007, 2021 Phenixヾ Studio
 2，完善Phenix.Core.Log.EventLog功能，弃用PH7_EventLog表，改为按季度分为4个表（PH7_EventLog_1~4）记录当前季度发生的日志，下一季度用的日志表在使用之前会被自动清空
 
 
-20201021
-1，改写Phenix.Services.Host自动加载插件服务（"*.Plugin.dll"）、扩展服务（"*.Extend.dll"）的方法
-2，改写Phenix.Actor工程中自动编译插件服务（"*.Plugin.dll"）、契约服务（"*.Contract.dll"）的方法
-
-
 20201109
 1，升级至for .net core5，开发工具 Visual Studio 2019 16.8.x及以上版本
 2，Phenix.Core.AppSettings应用系统配置工具支持中英文切换，写入的中英文用‘|’分隔，读取时会判断Thread.CurrentThread.CurrentCulture.Name是否为'zh-'截取前半截还是后半截
@@ -194,5 +189,10 @@ Copyright © 2007, 2021 Phenixヾ Studio
 1，更新《Phenix.NET7.服务部署方法》
 2，更新《Phenix.NET7.搭建开发环境》
 3，整理Phenix.Services.XXX工程结构
+
+
+20210728
+1，更新《Phenix.NET7.持久层开发方法》
+2，提供Phenix.Norm工程源码，封装标准化的业务逻辑，含默认功能实现，可集成到实体类/业务类，比如IDocs、IDevice接口
 
 

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Phenix.Norm.IDocs&lt;T&gt;">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAAAAAAgAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>IDocs.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DocsStatus" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Phenix.Norm.IDevice&lt;T&gt;">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>IDevice.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DeviceStatus" />
+    </ShowAsAssociation>
+  </Interface>
+  <Enum Name="Phenix.Norm.DocsStatus">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAIAAAAAAAAAAAAAAAAAIAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>DocsStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Phenix.Norm.DeviceStatus">
+    <Position X="3" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AUAAAAAAAAAAAAAAAAQAAAAAAAAAAAAIAAACAAAAAAA=</HashCode>
+      <FileName>DeviceStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

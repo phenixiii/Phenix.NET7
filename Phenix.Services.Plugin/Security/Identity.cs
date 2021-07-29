@@ -232,7 +232,7 @@ namespace Phenix.Services.Plugin.Security
 
         private Task<TValue> GetKernelProperty<TValue>(Expression<Func<User, TValue>> propertyLambda)
         {
-            return ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).GetKernelProperty<TValue>(Utilities.GetPropertyInfo<User>(propertyLambda).Name);
+            return ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).GetKernelProperty<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         #endregion

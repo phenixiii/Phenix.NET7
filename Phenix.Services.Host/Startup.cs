@@ -116,7 +116,8 @@ namespace Phenix.Services.Host
                     /*
                      * 装配Controller插件
                      * 插件程序集都应该统一采用"*.Plugin.dll"作为文件名的后缀
-                     * 插件程序集都应该被部署到本服务容器的执行目录下
+                     * 插件程序集都应该被部署到本服务容器的执行目录下动态加载
+                     * 除了Phenix.Services.Plugin被引用外其他都应该是动态加载
                      */
                     foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
                         parts.ApplicationParts.Add(new AssemblyPart(Assembly.LoadFrom(fileName)));

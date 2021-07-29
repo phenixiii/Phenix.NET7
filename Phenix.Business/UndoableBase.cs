@@ -237,7 +237,7 @@ namespace Phenix.Business
             if (!IsSelfDirty)
                 throw new InvalidOperationException("仅允许查询编辑状态的对象旧值");
 
-            PropertyInfo propertyInfo = Utilities.GetPropertyInfo<T>(propertyLambda);
+            PropertyInfo propertyInfo = Utilities.GetPropertyInfo(propertyLambda);
             if (_oldPropertyValues != null && _oldPropertyValues.TryGetValue(propertyInfo.Name, out object result))
                 return Utilities.ChangeType(result, propertyInfo.PropertyType);
 
@@ -252,7 +252,7 @@ namespace Phenix.Business
         /// <param name="propertyLambda">含类属性的 lambda 表达式</param>
         public bool? IsDirtyProperty(Expression<Func<T, object>> propertyLambda)
         {
-            return DirtyPropertyNames.TryGetValue(Utilities.GetPropertyInfo<T>(propertyLambda).Name, out bool? result) ? result : null;
+            return DirtyPropertyNames.TryGetValue(Utilities.GetPropertyInfo(propertyLambda).Name, out bool? result) ? result : null;
         }
 
         /// <summary>
@@ -263,7 +263,7 @@ namespace Phenix.Business
         public void SetDirtyProperty(Expression<Func<T, object>> propertyLambda, bool? isDirty = true)
         {
             IsSelfDirty = true;
-            DirtyPropertyNames[Utilities.GetPropertyInfo<T>(propertyLambda).Name] = isDirty;
+            DirtyPropertyNames[Utilities.GetPropertyInfo(propertyLambda).Name] = isDirty;
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace Phenix.Business
         public void SetDirtyValue(Expression<Func<T, object>> propertyLambda, object newValue)
         {
             IsSelfDirty = true;
-            Property property = SelfSheet.GetProperty(this.GetType(), Utilities.GetPropertyInfo<T>(propertyLambda).Name);
+            Property property = SelfSheet.GetProperty(propertyLambda);
             if (property.Field != null)
                 property.Field.Set(this, newValue);
             else

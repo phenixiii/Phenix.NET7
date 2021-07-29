@@ -141,7 +141,7 @@ namespace Phenix.Services.Business.Security
         {
             if (UpdateSelf(p => p.Id == Id && p.DynamicPassword == dynamicPassword &&
                                 p.DynamicPasswordCreateTime >= DateTime.Now.AddMinutes(-DynamicPasswordValidityMinutes),
-                    SetProperty(p => p.RequestAddress, requestAddress).
+                    Set(p => p.RequestAddress, requestAddress).
                         Set(p => p.RequestSession, requestSession).
                         Set(p => p.RequestFailureCount, 0).
                         Set(p => p.RequestFailureTime, null)) == 1)
@@ -150,7 +150,8 @@ namespace Phenix.Services.Business.Security
                 SetAuthenticated(timestamp, true);
                 return true;
             }
-            UpdateSelf(SetProperty(p => p.RequestAddress, requestAddress).
+
+            UpdateSelf(Set(p => p.RequestAddress, requestAddress).
                 Set(p => p.RequestSession, requestSession).
                 Set(p => p.RequestFailureCount, p => p.RequestFailureCount + 1).
                 Set(p => p.RequestFailureTime, DateTime.Now));
@@ -171,7 +172,7 @@ namespace Phenix.Services.Business.Security
         protected override bool IsValidPassword(string timestamp, string password, string requestAddress, string requestSession, bool throwIfNotConform = true)
         {
             if (UpdateSelf(p => p.Id == Id && p.Password == password,
-                    SetProperty(p => p.RequestAddress, requestAddress).
+                    Set(p => p.RequestAddress, requestAddress).
                         Set(p => p.RequestSession, requestSession).
                         Set(p => p.RequestFailureCount, 0).
                         Set(p => p.RequestFailureTime, null)) == 1)
@@ -182,7 +183,7 @@ namespace Phenix.Services.Business.Security
                 return true;
             }
 
-            UpdateSelf(SetProperty(p => p.RequestAddress, requestAddress).
+            UpdateSelf(Set(p => p.RequestAddress, requestAddress).
                 Set(p => p.RequestSession, requestSession).
                 Set(p => p.RequestFailureCount, p => p.RequestFailureCount + 1).
                 Set(p => p.RequestFailureTime, DateTime.Now));
@@ -197,7 +198,7 @@ namespace Phenix.Services.Business.Security
         /// <returns>是否成功</returns>
         public override bool ResetPassword()
         {
-            return UpdateSelf(SetProperty(p => p.Password, MD5CryptoTextProvider.ComputeHash(Name))) == 1;
+            return UpdateSelf(Set(p => p.Password, MD5CryptoTextProvider.ComputeHash(Name))) == 1;
         }
 
         /// <summary>
@@ -214,7 +215,7 @@ namespace Phenix.Services.Business.Security
         {
             if (!base.ChangePassword(ref password, ref newPassword, hashPassword, requestAddress, requestSession, throwIfNotConform))
                 return false;
-            return UpdateSelf(SetProperty(p => p.Password, newPassword)) == 1;
+            return UpdateSelf(Set(p => p.Password, newPassword)) == 1;
         }
 
         /// <summary>
@@ -227,7 +228,7 @@ namespace Phenix.Services.Business.Security
         {
             string result = base.ApplyDynamicPassword(requestAddress, throwIfNotConform);
             if (result != null)
-                UpdateSelf(SetProperty(p => p.DynamicPassword, MD5CryptoTextProvider.ComputeHash(result)).
+                UpdateSelf(Set(p => p.DynamicPassword, MD5CryptoTextProvider.ComputeHash(result)).
                     Set(p => p.DynamicPasswordCreateTime, DateTime.Now).
                     Set(p => p.RequestAddress, requestAddress));
             return result ;
@@ -239,7 +240,7 @@ namespace Phenix.Services.Business.Security
         public override void Activate()
         {
             if (Disabled)
-                UpdateSelf(SetProperty(p => p.Disabled, false).
+                UpdateSelf(Set(p => p.Disabled, false).
                     Set(p => p.DisabledTime, DateTime.Now));
         }
 
@@ -249,7 +250,7 @@ namespace Phenix.Services.Business.Security
         public override void Disable()
         {
             if (!Disabled)
-                UpdateSelf(SetProperty(p => p.Disabled, true).
+                UpdateSelf(Set(p => p.Disabled, true).
                     Set(p => p.DisabledTime, DateTime.Now));
         }
 

@@ -65,18 +65,18 @@ namespace Phenix.Services.Plugin.Message
 
         #region 方法
 
-        public void AddConnectedInfo(string userKey, string connectionId)
+        public void AddConnectedInfo(string key, string connectionId)
         {
             InitializeTask();
 
-            _connectedInfos[userKey] = new ConnectedInfo(connectionId);
+            _connectedInfos[key] = new ConnectedInfo(connectionId);
         }
 
-        public void RemoveConnectedInfo(string userKey)
+        public void RemoveConnectedInfo(string key)
         {
             InitializeTask();
 
-            _connectedInfos.Remove(userKey);
+            _connectedInfos.Remove(key);
         }
 
         private void InitializeTask()

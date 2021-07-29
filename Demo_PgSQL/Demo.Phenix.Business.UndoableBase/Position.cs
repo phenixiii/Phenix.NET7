@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Phenix.Business;
 using Phenix.Core.Data.Expressions;
-using Phenix.Core.Security;
 
 namespace Demo
 {

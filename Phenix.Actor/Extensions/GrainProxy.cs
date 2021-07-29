@@ -528,7 +528,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -546,7 +546,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -565,7 +565,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -583,7 +583,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -602,7 +602,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -707,7 +707,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -725,7 +725,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -744,7 +744,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty<TValue>(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -762,7 +762,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -781,7 +781,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty<TValue>(Utilities.GetPropertyInfo<TKernel>(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         #endregion

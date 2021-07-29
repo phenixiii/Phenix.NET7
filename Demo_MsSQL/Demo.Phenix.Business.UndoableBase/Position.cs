@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Phenix.Business;
 using Phenix.Core.Data.Expressions;
-using Phenix.Core.Security;
 
 namespace Demo
 {
@@ -14,7 +13,7 @@ namespace Demo
     public sealed class Position : BusinessBase<Position>
     {
         #region 属性
-        
+
         private long _id;
 
         /// <summary>
