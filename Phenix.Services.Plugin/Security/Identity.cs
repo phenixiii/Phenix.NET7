@@ -130,7 +130,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         public long Id
         {
-            get { return _id ??= AsyncHelper.RunSync(() => GetKernelProperty(p => p.Id)); }
+            get { return _id ??= AsyncHelper.RunSync(() => GetKernelPropertyValue(p => p.Id)); }
         }
 
         private long? _rootTeamsId;
@@ -140,7 +140,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         public long RootTeamsId
         {
-            get { return _rootTeamsId ??= AsyncHelper.RunSync(() => GetKernelProperty(p => p.RootTeamsId)); }
+            get { return _rootTeamsId ??= AsyncHelper.RunSync(() => GetKernelPropertyValue(p => p.RootTeamsId)); }
         }
 
         private long? _teamsId;
@@ -150,7 +150,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         public long TeamsId
         {
-            get { return _teamsId ??= AsyncHelper.RunSync(() => GetKernelProperty(p => p.TeamsId)); }
+            get { return _teamsId ??= AsyncHelper.RunSync(() => GetKernelPropertyValue(p => p.TeamsId)); }
         }
 
         private long? _positionId;
@@ -160,7 +160,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         public long? PositionId
         {
-            get { return _positionId ??= AsyncHelper.RunSync(() => GetKernelProperty(p => p.PositionId)); }
+            get { return _positionId ??= AsyncHelper.RunSync(() => GetKernelPropertyValue(p => p.PositionId)); }
         }
 
         private bool? _isCompanyAdmin;
@@ -169,7 +169,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         public bool IsCompanyAdmin
         {
-            get { return _isCompanyAdmin ??= AsyncHelper.RunSync(() => GetKernelProperty(p => p.IsCompanyAdmin)); }
+            get { return _isCompanyAdmin ??= AsyncHelper.RunSync(() => GetKernelPropertyValue(p => p.IsCompanyAdmin)); }
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         public bool IsAuthenticated
         {
-            get { return AsyncHelper.RunSync(() => GetKernelProperty(p => p.IsAuthenticated)); }
+            get { return AsyncHelper.RunSync(() => GetKernelPropertyValue(p => p.IsAuthenticated)); }
         }
         
         /// <summary>
@@ -230,9 +230,9 @@ namespace Phenix.Services.Plugin.Security
             return PositionId.HasValue ? ClusterClient.Default.GetGrain<IPositionGrain>(PositionId.Value).IsInRole(role) : Task.FromResult(false);
         }
 
-        private Task<TValue> GetKernelProperty<TValue>(Expression<Func<User, TValue>> propertyLambda)
+        private Task<TValue> GetKernelPropertyValue<TValue>(Expression<Func<User, TValue>> propertyLambda)
         {
-            return ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).GetKernelProperty<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
+            return ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).GetKernelPropertyValue<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         #endregion

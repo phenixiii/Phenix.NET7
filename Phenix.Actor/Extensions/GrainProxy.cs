@@ -433,14 +433,14 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="propertyName">属性名</param>
         /// <returns>属性值</returns>
-        public static async Task<object> GetKernelPropertyAsync<TGrain>(this IClusterClient clusterClient, string primaryKey,
+        public static async Task<object> GetKernelPropertyValueAsync<TGrain>(this IClusterClient clusterClient, string primaryKey,
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithStringKey
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(propertyName);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelPropertyValue(propertyName);
         }
 
         /// <summary>
@@ -450,14 +450,14 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="propertyName">属性名</param>
         /// <returns>属性值</returns>
-        public static async Task<object> GetKernelPropertyAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey,
+        public static async Task<object> GetKernelPropertyValueAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey,
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithGuidKey
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(propertyName);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelPropertyValue(propertyName);
         }
 
         /// <summary>
@@ -468,14 +468,14 @@ namespace Phenix.Actor
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="propertyName">属性名</param>
         /// <returns>属性值</returns>
-        public static async Task<object> GetKernelPropertyAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
+        public static async Task<object> GetKernelPropertyValueAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithGuidCompoundKey
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty(propertyName);
+            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelPropertyValue(propertyName);
         }
 
         /// <summary>
@@ -485,14 +485,14 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="propertyName">属性名</param>
         /// <returns>属性值</returns>
-        public static async Task<object> GetKernelPropertyAsync<TGrain>(this IClusterClient clusterClient, long primaryKey,
+        public static async Task<object> GetKernelPropertyValueAsync<TGrain>(this IClusterClient clusterClient, long primaryKey,
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithIntegerKey
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(propertyName);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelPropertyValue(propertyName);
         }
 
         /// <summary>
@@ -503,14 +503,14 @@ namespace Phenix.Actor
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="propertyName">属性名</param>
         /// <returns>属性值</returns>
-        public static async Task<object> GetKernelPropertyAsync<TGrain>(this IClusterClient clusterClient, long primaryKey, string keyExtension,
+        public static async Task<object> GetKernelPropertyValueAsync<TGrain>(this IClusterClient clusterClient, long primaryKey, string keyExtension,
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithIntegerCompoundKey
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty(propertyName);
+            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelPropertyValue(propertyName);
         }
 
         /// <summary>
@@ -520,7 +520,7 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="propertyLambda">含类属性的 lambda 表达式</param>
         /// <returns>属性值</returns>
-        public static async Task<object> GetKernelPropertyAsync<TGrain, TKernel>(this IClusterClient clusterClient, string primaryKey,
+        public static async Task<object> GetKernelPropertyValueAsync<TGrain, TKernel>(this IClusterClient clusterClient, string primaryKey,
             Expression<Func<TKernel, object>> propertyLambda)
             where TGrain : IEntityGrain<TKernel>, IGrainWithStringKey
             where TKernel : EntityBase<TKernel>
@@ -528,7 +528,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(Utilities.GetPropertyInfo(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelPropertyValue(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -538,7 +538,7 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="propertyLambda">含类属性的 lambda 表达式</param>
         /// <returns>属性值</returns>
-        public static async Task<object> GetKernelPropertyAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey,
+        public static async Task<object> GetKernelPropertyValueAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey,
             Expression<Func<TKernel, object>> propertyLambda)
             where TGrain : IEntityGrain<TKernel>, IGrainWithGuidKey
             where TKernel : EntityBase<TKernel>
@@ -546,7 +546,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(Utilities.GetPropertyInfo(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelPropertyValue(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -557,7 +557,7 @@ namespace Phenix.Actor
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="propertyLambda">含类属性的 lambda 表达式</param>
         /// <returns>属性值</returns>
-        public static async Task<object> GetKernelPropertyAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
+        public static async Task<object> GetKernelPropertyValueAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
             Expression<Func<TKernel, object>> propertyLambda)
             where TGrain : IEntityGrain<TKernel>, IGrainWithGuidCompoundKey
             where TKernel : EntityBase<TKernel>
@@ -565,7 +565,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty(Utilities.GetPropertyInfo(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelPropertyValue(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -575,7 +575,7 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键String</param>
         /// <param name="propertyLambda">含类属性的 lambda 表达式</param>
         /// <returns>属性值</returns>
-        public static async Task<object> GetKernelPropertyAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey,
+        public static async Task<object> GetKernelPropertyValueAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey,
             Expression<Func<TKernel, object>> propertyLambda)
             where TGrain : IEntityGrain<TKernel>, IGrainWithIntegerKey
             where TKernel : EntityBase<TKernel>
@@ -583,7 +583,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty(Utilities.GetPropertyInfo(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelPropertyValue(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -594,7 +594,7 @@ namespace Phenix.Actor
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="propertyLambda">含类属性的 lambda 表达式</param>
         /// <returns>属性值</returns>
-        public static async Task<object> GetKernelPropertyAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey, string keyExtension,
+        public static async Task<object> GetKernelPropertyValueAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey, string keyExtension,
             Expression<Func<TKernel, object>> propertyLambda)
             where TGrain : IEntityGrain<TKernel>, IGrainWithIntegerCompoundKey
             where TKernel : EntityBase<TKernel>
@@ -602,7 +602,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty(Utilities.GetPropertyInfo(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelPropertyValue(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -612,14 +612,14 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="propertyName">属性名</param>
         /// <returns>属性值</returns>
-        public static async Task<TValue> GetKernelPropertyAsync<TGrain, TValue>(this IClusterClient clusterClient, string primaryKey,
+        public static async Task<TValue> GetKernelPropertyValueAsync<TGrain, TValue>(this IClusterClient clusterClient, string primaryKey,
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithStringKey
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(propertyName);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelPropertyValue<TValue>(propertyName);
         }
 
         /// <summary>
@@ -629,14 +629,14 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="propertyName">属性名</param>
         /// <returns>属性值</returns>
-        public static async Task<TValue> GetKernelPropertyAsync<TGrain, TValue>(this IClusterClient clusterClient, Guid primaryKey,
+        public static async Task<TValue> GetKernelPropertyValueAsync<TGrain, TValue>(this IClusterClient clusterClient, Guid primaryKey,
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithGuidKey
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(propertyName);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelPropertyValue<TValue>(propertyName);
         }
 
         /// <summary>
@@ -647,14 +647,14 @@ namespace Phenix.Actor
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="propertyName">属性名</param>
         /// <returns>属性值</returns>
-        public static async Task<TValue> GetKernelPropertyAsync<TGrain, TValue>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
+        public static async Task<TValue> GetKernelPropertyValueAsync<TGrain, TValue>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithGuidCompoundKey
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty<TValue>(propertyName);
+            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelPropertyValue<TValue>(propertyName);
         }
 
         /// <summary>
@@ -664,14 +664,14 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="propertyName">属性名</param>
         /// <returns>属性值</returns>
-        public static async Task<TValue> GetKernelPropertyAsync<TGrain, TValue>(this IClusterClient clusterClient, long primaryKey,
+        public static async Task<TValue> GetKernelPropertyValueAsync<TGrain, TValue>(this IClusterClient clusterClient, long primaryKey,
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithIntegerKey
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(propertyName);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelPropertyValue<TValue>(propertyName);
         }
 
         /// <summary>
@@ -682,14 +682,14 @@ namespace Phenix.Actor
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="propertyName">属性名</param>
         /// <returns>属性值</returns>
-        public static async Task<TValue> GetKernelPropertyAsync<TGrain, TValue>(this IClusterClient clusterClient, long primaryKey, string keyExtension,
+        public static async Task<TValue> GetKernelPropertyValueAsync<TGrain, TValue>(this IClusterClient clusterClient, long primaryKey, string keyExtension,
             string propertyName)
             where TGrain : IEntityGrain, IGrainWithIntegerCompoundKey
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty<TValue>(propertyName);
+            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelPropertyValue<TValue>(propertyName);
         }
 
         /// <summary>
@@ -699,7 +699,7 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="propertyLambda">含类属性的 lambda 表达式</param>
         /// <returns>属性值</returns>
-        public static async Task<TValue> GetKernelPropertyAsync<TGrain, TKernel, TValue>(this IClusterClient clusterClient, string primaryKey,
+        public static async Task<TValue> GetKernelPropertyValueAsync<TGrain, TKernel, TValue>(this IClusterClient clusterClient, string primaryKey,
             Expression<Func<TKernel, TValue>> propertyLambda)
             where TGrain : IEntityGrain<TKernel>, IGrainWithStringKey
             where TKernel : EntityBase<TKernel>
@@ -707,7 +707,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelPropertyValue<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -717,7 +717,7 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="propertyLambda">含类属性的 lambda 表达式</param>
         /// <returns>属性值</returns>
-        public static async Task<TValue> GetKernelPropertyAsync<TGrain, TKernel, TValue>(this IClusterClient clusterClient, Guid primaryKey,
+        public static async Task<TValue> GetKernelPropertyValueAsync<TGrain, TKernel, TValue>(this IClusterClient clusterClient, Guid primaryKey,
             Expression<Func<TKernel, TValue>> propertyLambda)
             where TGrain : IEntityGrain<TKernel>, IGrainWithGuidKey
             where TKernel : EntityBase<TKernel>
@@ -725,7 +725,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelPropertyValue<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -736,7 +736,7 @@ namespace Phenix.Actor
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="propertyLambda">含类属性的 lambda 表达式</param>
         /// <returns>属性值</returns>
-        public static async Task<TValue> GetKernelPropertyAsync<TGrain, TKernel, TValue>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
+        public static async Task<TValue> GetKernelPropertyValueAsync<TGrain, TKernel, TValue>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
             Expression<Func<TKernel, TValue>> propertyLambda)
             where TGrain : IEntityGrain<TKernel>, IGrainWithGuidCompoundKey
             where TKernel : EntityBase<TKernel>
@@ -744,7 +744,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelPropertyValue<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -754,7 +754,7 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键String</param>
         /// <param name="propertyLambda">含类属性的 lambda 表达式</param>
         /// <returns>属性值</returns>
-        public static async Task<TValue> GetKernelPropertyAsync<TGrain, TKernel, TValue>(this IClusterClient clusterClient, long primaryKey,
+        public static async Task<TValue> GetKernelPropertyValueAsync<TGrain, TKernel, TValue>(this IClusterClient clusterClient, long primaryKey,
             Expression<Func<TKernel, TValue>> propertyLambda)
             where TGrain : IEntityGrain<TKernel>, IGrainWithIntegerKey
             where TKernel : EntityBase<TKernel>
@@ -762,7 +762,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelProperty<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey).GetKernelPropertyValue<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         /// <summary>
@@ -773,7 +773,7 @@ namespace Phenix.Actor
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="propertyLambda">含类属性的 lambda 表达式</param>
         /// <returns>属性值</returns>
-        public static async Task<TValue> GetKernelPropertyAsync<TGrain, TKernel, TValue>(this IClusterClient clusterClient, long primaryKey, string keyExtension,
+        public static async Task<TValue> GetKernelPropertyValueAsync<TGrain, TKernel, TValue>(this IClusterClient clusterClient, long primaryKey, string keyExtension,
             Expression<Func<TKernel, TValue>> propertyLambda)
             where TGrain : IEntityGrain<TKernel>, IGrainWithIntegerCompoundKey
             where TKernel : EntityBase<TKernel>
@@ -781,7 +781,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelProperty<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
+            return await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).GetKernelPropertyValue<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
         }
 
         #endregion

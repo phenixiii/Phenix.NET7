@@ -50,7 +50,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         protected long RootTeamsId
         {
-            get { return _rootTeamsId ??= AsyncHelper.RunSync(() => ClusterClient.GetKernelPropertyAsync<ICompanyTeamsGrain, Teams, long>(CompanyName, p => p.Id)); }
+            get { return _rootTeamsId ??= AsyncHelper.RunSync(() => ClusterClient.GetKernelPropertyValueAsync<ICompanyTeamsGrain, Teams, long>(CompanyName, p => p.Id)); }
         }
 
         /// <summary>

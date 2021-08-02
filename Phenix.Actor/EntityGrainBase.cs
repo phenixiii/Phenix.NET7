@@ -129,7 +129,7 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="propertyName">属性名</param>
         /// <returns>属性值</returns>
-        protected virtual object GetKernelProperty(string propertyName)
+        protected virtual object GetKernelPropertyValue(string propertyName)
         {
             if (Kernel == null)
                 throw new InvalidOperationException("获取不到空根实体对象的属性值!");
@@ -137,14 +137,14 @@ namespace Phenix.Actor
             return Utilities.GetMemberValue(Kernel, propertyName);
         }
 
-        Task<object> IEntityGrain.GetKernelProperty(string propertyName)
+        Task<object> IEntityGrain.GetKernelPropertyValue(string propertyName)
         {
-            return Task.FromResult(GetKernelProperty(propertyName));
+            return Task.FromResult(GetKernelPropertyValue(propertyName));
         }
 
-        Task<TValue> IEntityGrain.GetKernelProperty<TValue>(string propertyName)
+        Task<TValue> IEntityGrain.GetKernelPropertyValue<TValue>(string propertyName)
         {
-            return Task.FromResult((TValue) Utilities.ChangeType(GetKernelProperty(propertyName), typeof(TValue)));
+            return Task.FromResult(Utilities.ChangeType<TValue>(GetKernelPropertyValue(propertyName)));
         }
 
         #endregion

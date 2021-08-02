@@ -193,6 +193,6 @@ Copyright © 2007, 2021 Phenixヾ Studio
 
 20210728
 1，更新《Phenix.NET7.持久层开发方法》
-2，提供Phenix.Norm工程源码，封装标准化的业务逻辑，含默认功能实现，可集成到实体类/业务类，比如IDocs、IDevice接口
+2，提供Phenix.Norm工程源码，封装标准化的业务逻辑，含默认功能实现，可集成到实体类/业务类，比如IDocs接口
 
 
