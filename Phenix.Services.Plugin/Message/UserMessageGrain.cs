@@ -12,7 +12,8 @@ namespace Phenix.Services.Plugin.Message
 {
     /// <summary>
     /// 用户消息Grain
-    /// key：CompanyName'\u0004'UserName
+    /// key: CompanyName
+    /// keyExtension: UserName
     /// </summary>
     public class UserMessageGrain : GrainBase, IUserMessageGrain, IRemindable
     {

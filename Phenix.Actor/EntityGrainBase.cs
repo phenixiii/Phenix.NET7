@@ -49,6 +49,11 @@ namespace Phenix.Actor
 
         #region 方法
 
+        Task<bool> IEntityGrain.ExistKernel()
+        {
+            return Task.FromResult(ExistKernel());
+        }
+
         /// <summary>
         /// 存在根实体对象
         /// </summary>
@@ -58,9 +63,9 @@ namespace Phenix.Actor
             return Kernel != null;
         }
 
-        Task<bool> IEntityGrain.ExistKernel()
+        Task<TKernel> IEntityGrain<TKernel>.FetchKernel()
         {
-            return Task.FromResult(ExistKernel());
+            return Task.FromResult(FetchKernel());
         }
 
         /// <summary>
@@ -72,16 +77,17 @@ namespace Phenix.Actor
             return Kernel;
         }
 
-        Task<TKernel> IEntityGrain<TKernel>.FetchKernel()
+        Task IEntityGrain<TKernel>.PutKernel(TKernel source)
         {
-            return Task.FromResult(FetchKernel());
+            PutKernel(source);
+            return Task.CompletedTask;
         }
 
         /// <summary>
         /// 更新根实体对象(如不存在则新增)
         /// </summary>
         /// <param name="source">数据源</param>
-        protected virtual void PatchKernel(TKernel source)
+        protected virtual void PutKernel(TKernel source)
         {
             if (Kernel != null)
                 Kernel.UpdateSelf(source);
@@ -92,23 +98,9 @@ namespace Phenix.Actor
             }
         }
 
-        /// <summary>
-        /// 更新根实体对象(如不存在则新增)
-        /// </summary>
-        /// <param name="propertyValues">待更新属性值队列</param>
-        protected virtual void PatchKernel(IDictionary<string, object> propertyValues)
+        Task IEntityGrain<TKernel>.PatchKernel(params NameValue<TKernel>[] propertyValues)
         {
-            if (Kernel != null)
-                Kernel.UpdateSelf(propertyValues);
-            else if (this is IGrainWithIntegerKey)
-                EntityBase<TKernel>.New(Database, PrimaryKeyLong, propertyValues).InsertSelf();
-            else
-                EntityBase<TKernel>.New(Database, propertyValues).InsertSelf();
-        }
-
-        Task IEntityGrain<TKernel>.PatchKernel(TKernel source)
-        {
-            PatchKernel(source);
+            PatchKernel(NameValue<TKernel>.ToDictionary(propertyValues));
             return Task.CompletedTask;
         }
 
@@ -125,16 +117,17 @@ namespace Phenix.Actor
         }
 
         /// <summary>
-        /// 获取根实体对象属性值
+        /// 更新根实体对象(如不存在则新增)
         /// </summary>
-        /// <param name="propertyName">属性名</param>
-        /// <returns>属性值</returns>
-        protected virtual object GetKernelPropertyValue(string propertyName)
+        /// <param name="propertyValues">待更新属性值队列</param>
+        protected virtual void PatchKernel(IDictionary<string, object> propertyValues)
         {
-            if (Kernel == null)
-                throw new InvalidOperationException("获取不到空根实体对象的属性值!");
-
-            return Utilities.GetMemberValue(Kernel, propertyName);
+            if (Kernel != null)
+                Kernel.UpdateSelf(propertyValues);
+            else if (this is IGrainWithIntegerKey)
+                EntityBase<TKernel>.New(Database, PrimaryKeyLong, propertyValues).InsertSelf();
+            else
+                EntityBase<TKernel>.New(Database, propertyValues).InsertSelf();
         }
 
         Task<object> IEntityGrain.GetKernelPropertyValue(string propertyName)
@@ -145,6 +138,19 @@ namespace Phenix.Actor
         Task<TValue> IEntityGrain.GetKernelPropertyValue<TValue>(string propertyName)
         {
             return Task.FromResult(Utilities.ChangeType<TValue>(GetKernelPropertyValue(propertyName)));
+        }
+
+        /// <summary>
+        /// 获取根实体对象属性值
+        /// </summary>
+        /// <param name="propertyName">属性名</param>
+        /// <returns>属性值</returns>
+        protected virtual object GetKernelPropertyValue(string propertyName)
+        {
+            if (Kernel == null)
+                throw new InvalidOperationException("获取不到空根实体对象的属性值!");
+
+            return Utilities.GetMemberValue(Kernel, propertyName);
         }
 
         #endregion

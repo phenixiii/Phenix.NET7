@@ -181,7 +181,7 @@ namespace Phenix.Actor
         /// <param name="clusterClient">Orleans服务集群客户端</param>
         /// <param name="primaryKey">主键</param>
         /// <param name="source">数据源</param>
-        public static async Task PatchKernelAsync<TGrain, TKernel>(this IClusterClient clusterClient, string primaryKey,
+        public static async Task PutKernelAsync<TGrain, TKernel>(this IClusterClient clusterClient, string primaryKey,
             TKernel source)
             where TGrain : IEntityGrain<TKernel>, IGrainWithStringKey
             where TKernel : EntityBase<TKernel>
@@ -189,7 +189,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            await clusterClient.GetGrain<TGrain>(primaryKey).PatchKernel(source);
+            await clusterClient.GetGrain<TGrain>(primaryKey).PutKernel(source);
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace Phenix.Actor
         /// <param name="clusterClient">Orleans服务集群客户端</param>
         /// <param name="primaryKey">主键</param>
         /// <param name="source">数据源</param>
-        public static async Task PatchKernelAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey,
+        public static async Task PutKernelAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey,
             TKernel source)
             where TGrain : IEntityGrain<TKernel>, IGrainWithGuidKey
             where TKernel : EntityBase<TKernel>
@@ -206,7 +206,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            await clusterClient.GetGrain<TGrain>(primaryKey).PatchKernel(source);
+            await clusterClient.GetGrain<TGrain>(primaryKey).PutKernel(source);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="source">数据源</param>
-        public static async Task PatchKernelAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
+        public static async Task PutKernelAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
             TKernel source)
             where TGrain : IEntityGrain<TKernel>, IGrainWithGuidCompoundKey
             where TKernel : EntityBase<TKernel>
@@ -224,7 +224,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).PatchKernel(source);
+            await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).PutKernel(source);
         }
 
         /// <summary>
@@ -233,7 +233,7 @@ namespace Phenix.Actor
         /// <param name="clusterClient">Orleans服务集群客户端</param>
         /// <param name="primaryKey">主键String</param>
         /// <param name="source">数据源</param>
-        public static async Task PatchKernelAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey,
+        public static async Task PutKernelAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey,
             TKernel source)
             where TGrain : IEntityGrain<TKernel>, IGrainWithIntegerKey
             where TKernel : EntityBase<TKernel>
@@ -241,7 +241,7 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            await clusterClient.GetGrain<TGrain>(primaryKey).PatchKernel(source);
+            await clusterClient.GetGrain<TGrain>(primaryKey).PutKernel(source);
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="source">数据源</param>
-        public static async Task PatchKernelAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey, string keyExtension,
+        public static async Task PutKernelAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey, string keyExtension,
             TKernel source)
             where TGrain : IEntityGrain<TKernel>, IGrainWithIntegerCompoundKey
             where TKernel : EntityBase<TKernel>
@@ -259,8 +259,97 @@ namespace Phenix.Actor
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).PatchKernel(source);
+            await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).PutKernel(source);
         }
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="clusterClient">Orleans服务集群客户端</param>
+        /// <param name="primaryKey">主键</param>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        public static async Task PatchKernelAsync<TGrain, TKernel>(this IClusterClient clusterClient, string primaryKey,
+            params NameValue<TKernel>[] propertyValues)
+            where TGrain : IEntityGrain<TKernel>, IGrainWithStringKey
+            where TKernel : EntityBase<TKernel>
+        {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
+            await clusterClient.GetGrain<TGrain>(primaryKey).PatchKernel(propertyValues);
+        }
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="clusterClient">Orleans服务集群客户端</param>
+        /// <param name="primaryKey">主键</param>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        public static async Task PatchKernelAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey,
+            params NameValue<TKernel>[] propertyValues)
+            where TGrain : IEntityGrain<TKernel>, IGrainWithGuidKey
+            where TKernel : EntityBase<TKernel>
+        {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
+            await clusterClient.GetGrain<TGrain>(primaryKey).PatchKernel(propertyValues);
+        }
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="clusterClient">Orleans服务集群客户端</param>
+        /// <param name="primaryKey">主键</param>
+        /// <param name="keyExtension">扩展主键</param>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        public static async Task PatchKernelAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
+            params NameValue<TKernel>[] propertyValues)
+            where TGrain : IEntityGrain<TKernel>, IGrainWithGuidCompoundKey
+            where TKernel : EntityBase<TKernel>
+        {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
+            await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).PatchKernel(propertyValues);
+        }
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="clusterClient">Orleans服务集群客户端</param>
+        /// <param name="primaryKey">主键String</param>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        public static async Task PatchKernelAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey,
+            params NameValue<TKernel>[] propertyValues)
+            where TGrain : IEntityGrain<TKernel>, IGrainWithIntegerKey
+            where TKernel : EntityBase<TKernel>
+        {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
+            await clusterClient.GetGrain<TGrain>(primaryKey).PatchKernel(propertyValues);
+        }
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="clusterClient">Orleans服务集群客户端</param>
+        /// <param name="primaryKey">主键</param>
+        /// <param name="keyExtension">扩展主键</param>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        public static async Task PatchKernelAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey, string keyExtension,
+            params NameValue<TKernel>[] propertyValues)
+            where TGrain : IEntityGrain<TKernel>, IGrainWithIntegerCompoundKey
+            where TKernel : EntityBase<TKernel>
+        {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
+            await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).PatchKernel(propertyValues);
+        }
+
+
 
         /// <summary>
         /// 更新根实体对象(如不存在则新增)
@@ -796,9 +885,10 @@ namespace Phenix.Actor
         /// <param name="parentId">父节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <returns>子节点ID</returns>
-        public static async Task<long> AddChildNodeAsync<TGrain>(this IClusterClient clusterClient, string primaryKey,
-            long parentId, params NameValue[] propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithStringKey
+        public static async Task<long> AddChildNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, string primaryKey,
+            long parentId, params NameValue<TKernel>[] propertyValues)
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithStringKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -814,9 +904,10 @@ namespace Phenix.Actor
         /// <param name="parentId">父节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <returns>子节点ID</returns>
-        public static async Task<long> AddChildNodeAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey,
-            long parentId, params NameValue[] propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithGuidKey
+        public static async Task<long> AddChildNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey,
+            long parentId, params NameValue<TKernel>[] propertyValues)
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithGuidKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -833,9 +924,10 @@ namespace Phenix.Actor
         /// <param name="parentId">父节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <returns>子节点ID</returns>
-        public static async Task<long> AddChildNodeAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
-            long parentId, params NameValue[] propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithGuidCompoundKey
+        public static async Task<long> AddChildNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
+            long parentId, params NameValue<TKernel>[] propertyValues)
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithGuidCompoundKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -851,9 +943,10 @@ namespace Phenix.Actor
         /// <param name="parentId">父节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <returns>子节点ID</returns>
-        public static async Task<long> AddChildNodeAsync<TGrain>(this IClusterClient clusterClient, long primaryKey,
-            long parentId, params NameValue[] propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithIntegerKey
+        public static async Task<long> AddChildNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey,
+            long parentId, params NameValue<TKernel>[] propertyValues)
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithIntegerKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -870,9 +963,10 @@ namespace Phenix.Actor
         /// <param name="parentId">父节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <returns>子节点ID</returns>
-        public static async Task<long> AddChildNodeAsync<TGrain>(this IClusterClient clusterClient, long primaryKey, string keyExtension, 
-            long parentId, params NameValue[] propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithIntegerCompoundKey
+        public static async Task<long> AddChildNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey, string keyExtension, 
+            long parentId, params NameValue<TKernel>[] propertyValues)
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithIntegerCompoundKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -888,9 +982,10 @@ namespace Phenix.Actor
         /// <param name="parentId">父节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <returns>子节点ID</returns>
-        public static async Task<long> AddChildNodeAsync<TGrain>(this IClusterClient clusterClient, string primaryKey,
+        public static async Task<long> AddChildNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, string primaryKey,
             long parentId, IDictionary<string, object> propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithStringKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithStringKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -906,9 +1001,10 @@ namespace Phenix.Actor
         /// <param name="parentId">父节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <returns>子节点ID</returns>
-        public static async Task<long> AddChildNodeAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey,
+        public static async Task<long> AddChildNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey,
             long parentId, IDictionary<string, object> propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithGuidKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithGuidKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -925,9 +1021,10 @@ namespace Phenix.Actor
         /// <param name="parentId">父节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <returns>子节点ID</returns>
-        public static async Task<long> AddChildNodeAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
+        public static async Task<long> AddChildNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
             long parentId, IDictionary<string, object> propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithGuidCompoundKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithGuidCompoundKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -943,9 +1040,10 @@ namespace Phenix.Actor
         /// <param name="parentId">父节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <returns>子节点ID</returns>
-        public static async Task<long> AddChildNodeAsync<TGrain>(this IClusterClient clusterClient, long primaryKey,
+        public static async Task<long> AddChildNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey,
             long parentId, IDictionary<string, object> propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithIntegerKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithIntegerKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -962,9 +1060,10 @@ namespace Phenix.Actor
         /// <param name="parentId">父节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <returns>子节点ID</returns>
-        public static async Task<long> AddChildNodeAsync<TGrain>(this IClusterClient clusterClient, long primaryKey, string keyExtension, 
+        public static async Task<long> AddChildNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey, string keyExtension, 
             long parentId, IDictionary<string, object> propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithIntegerCompoundKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithIntegerCompoundKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -979,9 +1078,10 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="id">节点ID</param>
         /// <param name="parentId">父节点ID</param>
-        public static async Task ChangeParentNodeAsync<TGrain>(this IClusterClient clusterClient, string primaryKey,
+        public static async Task ChangeParentNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, string primaryKey,
             long id, long parentId)
-            where TGrain : ITreeEntityGrain, IGrainWithStringKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithStringKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -996,9 +1096,10 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="id">节点ID</param>
         /// <param name="parentId">父节点ID</param>
-        public static async Task ChangeParentNodeAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey,
+        public static async Task ChangeParentNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey,
             long id, long parentId)
-            where TGrain : ITreeEntityGrain, IGrainWithGuidKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithGuidKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1014,9 +1115,10 @@ namespace Phenix.Actor
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="id">节点ID</param>
         /// <param name="parentId">父节点ID</param>
-        public static async Task ChangeParentNodeAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
+        public static async Task ChangeParentNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
             long id, long parentId)
-            where TGrain : ITreeEntityGrain, IGrainWithGuidCompoundKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithGuidCompoundKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1031,9 +1133,10 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="id">节点ID</param>
         /// <param name="parentId">父节点ID</param>
-        public static async Task ChangeParentNodeAsync<TGrain>(this IClusterClient clusterClient, long primaryKey,
+        public static async Task ChangeParentNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey,
             long id, long parentId)
-            where TGrain : ITreeEntityGrain, IGrainWithIntegerKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithIntegerKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1049,9 +1152,10 @@ namespace Phenix.Actor
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="id">节点ID</param>
         /// <param name="parentId">父节点ID</param>
-        public static async Task ChangeParentNodeAsync<TGrain>(this IClusterClient clusterClient, long primaryKey, string keyExtension, 
+        public static async Task ChangeParentNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey, string keyExtension, 
             long id, long parentId)
-            where TGrain : ITreeEntityGrain, IGrainWithIntegerCompoundKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithIntegerCompoundKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1066,9 +1170,10 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="id">节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        public static async Task UpdateNodeAsync<TGrain>(this IClusterClient clusterClient, string primaryKey,
-            long id, params NameValue[] propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithStringKey
+        public static async Task UpdateNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, string primaryKey,
+            long id, params NameValue<TKernel>[] propertyValues)
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithStringKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1083,9 +1188,10 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="id">节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        public static async Task UpdateNodeAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey,
-            long id, params NameValue[] propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithGuidKey
+        public static async Task UpdateNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey,
+            long id, params NameValue<TKernel>[] propertyValues)
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithGuidKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1101,9 +1207,10 @@ namespace Phenix.Actor
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="id">节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        public static async Task UpdateNodeAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
-            long id, params NameValue[] propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithGuidCompoundKey
+        public static async Task UpdateNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
+            long id, params NameValue<TKernel>[] propertyValues)
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithGuidCompoundKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1118,9 +1225,10 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="id">节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        public static async Task UpdateNodeAsync<TGrain>(this IClusterClient clusterClient, long primaryKey,
-            long id, params NameValue[] propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithIntegerKey
+        public static async Task UpdateNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey,
+            long id, params NameValue<TKernel>[] propertyValues)
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithIntegerKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1136,9 +1244,10 @@ namespace Phenix.Actor
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="id">节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        public static async Task UpdateNodeAsync<TGrain>(this IClusterClient clusterClient, long primaryKey, string keyExtension, 
-            long id, params NameValue[] propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithIntegerCompoundKey
+        public static async Task UpdateNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey, string keyExtension, 
+            long id, params NameValue<TKernel>[] propertyValues)
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithIntegerCompoundKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1153,9 +1262,10 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="id">节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        public static async Task UpdateNodeAsync<TGrain>(this IClusterClient clusterClient, string primaryKey,
+        public static async Task UpdateNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, string primaryKey,
             long id, IDictionary<string, object> propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithStringKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithStringKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1170,9 +1280,10 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="id">节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        public static async Task UpdateNodeAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey,
+        public static async Task UpdateNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey,
             long id, IDictionary<string, object> propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithGuidKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithGuidKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1188,9 +1299,10 @@ namespace Phenix.Actor
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="id">节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        public static async Task UpdateNodeAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
+        public static async Task UpdateNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
             long id, IDictionary<string, object> propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithGuidCompoundKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithGuidCompoundKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1205,9 +1317,10 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="id">节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        public static async Task UpdateNodeAsync<TGrain>(this IClusterClient clusterClient, long primaryKey,
+        public static async Task UpdateNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey,
             long id, IDictionary<string, object> propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithIntegerKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithIntegerKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1223,9 +1336,10 @@ namespace Phenix.Actor
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="id">节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        public static async Task UpdateNodeAsync<TGrain>(this IClusterClient clusterClient, long primaryKey, string keyExtension, 
+        public static async Task UpdateNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey, string keyExtension, 
             long id, IDictionary<string, object> propertyValues)
-            where TGrain : ITreeEntityGrain, IGrainWithIntegerCompoundKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithIntegerCompoundKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1240,9 +1354,10 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="id">节点ID</param>
         /// <returns>更新记录数</returns>
-        public static async Task<int> DeleteNodeAsync<TGrain>(this IClusterClient clusterClient, string primaryKey,
+        public static async Task<int> DeleteNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, string primaryKey,
             long id)
-            where TGrain : ITreeEntityGrain, IGrainWithStringKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithStringKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1257,9 +1372,10 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="id">节点ID</param>
         /// <returns>更新记录数</returns>
-        public static async Task<int> DeleteNodeAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey,
+        public static async Task<int> DeleteNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey,
             long id)
-            where TGrain : ITreeEntityGrain, IGrainWithGuidKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithGuidKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1275,9 +1391,10 @@ namespace Phenix.Actor
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="id">节点ID</param>
         /// <returns>更新记录数</returns>
-        public static async Task<int> DeleteNodeAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
+        public static async Task<int> DeleteNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension,
             long id)
-            where TGrain : ITreeEntityGrain, IGrainWithGuidCompoundKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithGuidCompoundKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1292,9 +1409,10 @@ namespace Phenix.Actor
         /// <param name="primaryKey">主键</param>
         /// <param name="id">节点ID</param>
         /// <returns>更新记录数</returns>
-        public static async Task<int> DeleteNodeAsync<TGrain>(this IClusterClient clusterClient, long primaryKey,
+        public static async Task<int> DeleteNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey,
             long id)
-            where TGrain : ITreeEntityGrain, IGrainWithIntegerKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithIntegerKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
@@ -1310,9 +1428,10 @@ namespace Phenix.Actor
         /// <param name="keyExtension">扩展主键</param>
         /// <param name="id">节点ID</param>
         /// <returns>更新记录数</returns>
-        public static async Task<int> DeleteNodeAsync<TGrain>(this IClusterClient clusterClient, long primaryKey, string keyExtension, 
+        public static async Task<int> DeleteNodeAsync<TGrain, TKernel>(this IClusterClient clusterClient, long primaryKey, string keyExtension, 
             long id)
-            where TGrain : ITreeEntityGrain, IGrainWithIntegerCompoundKey
+            where TGrain : ITreeEntityGrain<TKernel>, IGrainWithIntegerCompoundKey
+            where TKernel : EntityBase<TKernel>
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));

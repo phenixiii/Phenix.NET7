@@ -30,10 +30,10 @@ namespace Phenix.Services.Plugin.Security
         /// 更新自己资料
         /// </summary>
         [Authorize]
-        [HttpPatch]
-        public async Task Patch()
+        [HttpPut]
+        public async Task Put()
         {
-            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).PatchKernel(await Request.ReadBodyAsync<User>(true));
+            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).PutKernel(await Request.ReadBodyAsync<User>(true));
         }
     }
 }

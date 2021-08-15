@@ -8,15 +8,7 @@ namespace Phenix.Actor
     /// <summary>
     /// 树实体Grain接口
     /// </summary>
-    public interface ITreeEntityGrain<TKernel> : IEntityGrain<TKernel>, ITreeEntityGrain
-        where TKernel : EntityBase<TKernel>
-    {
-    }
-
-    /// <summary>
-    /// 树实体Grain接口
-    /// </summary>
-    public interface ITreeEntityGrain : IEntityGrain
+    public interface ITreeEntityGrain<TKernel> : IEntityGrain<TKernel>
     {
         #region 方法
 
@@ -34,7 +26,7 @@ namespace Phenix.Actor
         /// <param name="parentId">父节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <returns>子节点ID</returns>
-        Task<long> AddChildNode(long parentId, params NameValue[] propertyValues);
+        Task<long> AddChildNode(long parentId, params NameValue<TKernel>[] propertyValues);
 
         /// <summary>
         /// 添加子节点
@@ -56,7 +48,7 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="id">节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        Task UpdateNode(long id, params NameValue[] propertyValues);
+        Task UpdateNode(long id, params NameValue<TKernel>[] propertyValues);
 
         /// <summary>
         /// 更新节点

@@ -1,5 +1,6 @@
 Phenix Framework 7.5 for .net 5
 Copyright © 2007, 2021 Phenixヾ Studio
+使用框架的目的首要的是对软件过程的有效管控
 
 发布地址：https://github.com/phenixiii/Phenix.NET7
 技术交流群：206648373
@@ -94,7 +95,7 @@ Copyright © 2007, 2021 Phenixヾ Studio
 
 20200220
 1，提供《Phenix.Services.Host.分布式服务插件.pptx》，讲解WebAPI（应用）服务和Orleans（领域）服务的设计和开发方法
-2，重构Phenix.Core持久化引擎，强调聚合和聚合根的领域对象模型，在采取分库分表策略的数据库部署场景下，一棵聚合树里的所有对象都随聚合根对象一起锁定在某个分库上进行持久化，持久化的路由算法是取自聚合根对象里一个映射'_RU'后缀字段的属性值经HASH取余得到具体的分库ID
+2，重构持久化引擎，强调聚合和聚合根的领域对象模型，在采取分库分表策略的数据库部署场景下，一棵聚合树里的所有对象都随聚合根对象一起锁定在某个分库上进行持久化，持久化的路由算法是取自聚合根对象里一个映射'_RU'后缀字段的属性值经HASH取余得到具体的分库ID
 
 
 20200408
@@ -171,7 +172,7 @@ Copyright © 2007, 2021 Phenixヾ Studio
 1，提供《Phenix.NET7.搭建开发环境》
 2，提供《Phenix.NET7.服务部署方法》
 3，提供《Phenix.NET7.持久层开发方法》
-4，持久层引擎添加映射标签SheetAttribute和ColumnAttribute以支持未按规范设计的数据库表结构
+4，持久化引擎添加映射标签SheetAttribute和ColumnAttribute以支持未按规范设计的数据库表结构
 5，优化Phenix.Tools.BusinessBuilder和Phenix.Tools.EntityBuilder工程，默认都为实体或业务类打上映射标签
 
 
@@ -194,5 +195,10 @@ Copyright © 2007, 2021 Phenixヾ Studio
 20210728
 1，更新《Phenix.NET7.持久层开发方法》
 2，提供Phenix.Norm工程源码，封装标准化的业务逻辑，含默认功能实现，可集成到实体类/业务类，比如IDocs接口
+
+
+20210807
+1，持久化引擎添加InsertOrUpdate功能以支持Put服务请求
+2，提供Phenix.TPT.Plugin工程源码，TPT为Teamwork Project Tracker系统名缩写，是一款SAAS版的项目跟踪工具
 
 

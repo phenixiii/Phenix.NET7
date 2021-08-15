@@ -32,10 +32,10 @@ namespace Phenix.Services.Plugin.Security.Myself
         /// </summary>
         [CompanyAdminFilter]
         [Authorize]
-        [HttpPatch]
-        public async Task Patch()
+        [HttpPut]
+        public async Task Put()
         {
-            await ClusterClient.Default.GetGrain<ICompanyTeamsGrain>(User.Identity.CompanyName).PatchKernel(await Request.ReadBodyAsync<Teams>());
+            await ClusterClient.Default.GetGrain<ICompanyTeamsGrain>(User.Identity.CompanyName).PutKernel(await Request.ReadBodyAsync<Teams>());
         }
     }
 }

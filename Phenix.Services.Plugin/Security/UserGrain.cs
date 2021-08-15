@@ -12,7 +12,8 @@ namespace Phenix.Services.Plugin.Security
 {
     /// <summary>
     /// 用户资料Grain
-    /// key：CompanyName'\u0004'UserName
+    /// key: CompanyName
+    /// keyExtension: UserName
     /// </summary>
     public class UserGrain : EntityGrainBase<User>, IUserGrain
     {

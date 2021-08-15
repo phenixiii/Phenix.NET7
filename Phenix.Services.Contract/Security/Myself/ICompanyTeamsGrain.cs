@@ -6,7 +6,7 @@ namespace Phenix.Services.Contract.Security.Myself
 {
     /// <summary>
     /// 公司团队Grain接口
-    /// key：CompanyName
+    /// key: CompanyName
     /// </summary>
     public interface ICompanyTeamsGrain : ITreeEntityGrain<Teams>, IGrainWithStringKey
     {

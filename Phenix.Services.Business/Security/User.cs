@@ -132,13 +132,16 @@ namespace Phenix.Services.Business.Security
         /// 核对动态口令有效性
         /// </summary>
         /// <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-        /// <param name="dynamicPassword">动态口令</param>
+        /// <param name="dynamicPassword">动态口令(散列值)</param>
         /// <param name="requestAddress">服务请求方IP地址</param>
         /// <param name="requestSession">服务请求会话签名</param>
         /// <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
         /// <returns>是否正确</returns>
         protected override bool IsValidDynamicPassword(string timestamp, string dynamicPassword, string requestAddress, string requestSession, bool throwIfNotConform = true)
         {
+            if (!base.IsValidDynamicPassword(timestamp, dynamicPassword, requestAddress, requestSession, throwIfNotConform))
+                return false;
+
             if (UpdateSelf(p => p.Id == Id && p.DynamicPassword == dynamicPassword &&
                                 p.DynamicPasswordCreateTime >= DateTime.Now.AddMinutes(-DynamicPasswordValidityMinutes),
                     Set(p => p.RequestAddress, requestAddress).
@@ -164,13 +167,16 @@ namespace Phenix.Services.Business.Security
         /// 核对登录口令有效性
         /// </summary>
         /// <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-        /// <param name="password">登录口令</param>
+        /// <param name="password">登录口令(散列值)</param>
         /// <param name="requestAddress">服务请求方IP地址</param>
         /// <param name="requestSession">服务请求会话签名</param>
         /// <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
         /// <returns>是否正确</returns>
         protected override bool IsValidPassword(string timestamp, string password, string requestAddress, string requestSession, bool throwIfNotConform = true)
         {
+            if (!base.IsValidPassword(timestamp, password, requestAddress, requestSession, throwIfNotConform))
+                return false;
+
             if (UpdateSelf(p => p.Id == Id && p.Password == password,
                     Set(p => p.RequestAddress, requestAddress).
                         Set(p => p.RequestSession, requestSession).
@@ -215,6 +221,7 @@ namespace Phenix.Services.Business.Security
         {
             if (!base.ChangePassword(ref password, ref newPassword, hashPassword, requestAddress, requestSession, throwIfNotConform))
                 return false;
+
             return UpdateSelf(Set(p => p.Password, newPassword)) == 1;
         }
 

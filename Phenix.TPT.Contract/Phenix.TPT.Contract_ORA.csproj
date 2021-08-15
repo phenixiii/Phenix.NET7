@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<Version>7.5.50</Version>
+		<AssemblyVersion>7.5.50.0807</AssemblyVersion>
+		<FileVersion>7.5.50.0807</FileVersion>
+		<Description>Teamwork Project Tracker 2.0</Description>
+		<Authors>ming</Authors>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<AssemblyName>Phenix.TPT.Contract</AssemblyName>
+		<RootNamespace>Phenix.TPT.Contract</RootNamespace>
+		<Copyright>Copyright © 2007, 2021 Phenixヾ Studio</Copyright>
+		<Company />
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<OutputPath>..\Bin_ORA\</OutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<OutputPath>..\Bin_ORA\</OutputPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<PackageReference Include="Microsoft.Orleans.Client" Version="3.4.3" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Phenix.Actor">
+			<HintPath>..\Bin_ORA\net5.0\Phenix.Actor.dll</HintPath>
+		</Reference>
+		<Reference Include="Phenix.Core">
+			<HintPath>..\Bin_ORA\net5.0\Phenix.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="Phenix.Services.Business">
+			<HintPath>..\Bin_ORA\net5.0\Phenix.TPT.Business.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties Reactor_Enabled="1" />
+		</VisualStudio>
+	</ProjectExtensions>
+
+</Project>

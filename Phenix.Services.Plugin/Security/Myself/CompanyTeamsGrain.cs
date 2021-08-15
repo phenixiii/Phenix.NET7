@@ -6,7 +6,7 @@ namespace Phenix.Services.Plugin.Security.Myself
 {
     /// <summary>
     /// 公司团体Grain
-    /// key：CompanyName
+    /// key: CompanyName
     /// </summary>
     public class CompanyTeamsGrain : TreeEntityGrainBase<Teams>, ICompanyTeamsGrain
     {

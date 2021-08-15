@@ -26,7 +26,7 @@ namespace Phenix.Services.Extend.Security
              */
             Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0}({1}) 的初始口令是'{2}'", user.RegAlias, user.Name, initialPassword));
             return Task.FromResult(String.CompareOrdinal(user.Name, initialPassword) == 0
-                ? String.Format("您的初始口令和登录名相同，首次登录时请更改为符合条件的口令(长度需大于等于{0}个字符且至少包含数字、大小写字母、特殊字符之{1}种)", User.PasswordLengthMinimum, User.PasswordComplexityMinimum)
+                ? String.Format("您的初始口令和登录名相同，首次登录前需修改口令以符合复杂性要求(长度需大于等于{0}个字符且至少包含数字、大小写字母、特殊字符之{1}种)", User.PasswordLengthMinimum, User.PasswordComplexityMinimum)
                 : String.Format("您的初始口令存放于 {0} 目录下的日志文件里.", Phenix.Core.Log.EventLog.LocalDirectory));
         }
 

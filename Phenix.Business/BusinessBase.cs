@@ -124,10 +124,10 @@ namespace Phenix.Business
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <returns>业务对象</returns>
-        public new TDetail NewDetail<TDetail>(params NameValue[] propertyValues)
+        public new TDetail NewDetail<TDetail>(params NameValue<TDetail>[] propertyValues)
             where TDetail : BusinessBase<TDetail>
         {
-            return NewDetail<TDetail>(NameValue.ToDictionary(propertyValues));
+            return NewDetail<TDetail>(NameValue<TDetail>.ToDictionary(propertyValues));
         }
 
         /// <summary>

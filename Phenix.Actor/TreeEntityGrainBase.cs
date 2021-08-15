@@ -67,6 +67,11 @@ namespace Phenix.Actor
             return null;
         }
 
+        Task<bool> ITreeEntityGrain<TKernel>.HaveNode(long id, bool throwIfNotFound)
+        {
+            return Task.FromResult(HaveNode(id, throwIfNotFound));
+        }
+
         /// <summary>
         /// 是否存在节点
         /// </summary>
@@ -78,9 +83,9 @@ namespace Phenix.Actor
             return GetNode(id, throwIfNotFound) != null;
         }
 
-        Task<bool> ITreeEntityGrain.HaveNode(long id, bool throwIfNotFound)
+        Task<long> ITreeEntityGrain<TKernel>.AddChildNode(long parentId, params NameValue<TKernel>[] propertyValues)
         {
-            return Task.FromResult(HaveNode(id, throwIfNotFound));
+            return Task.FromResult(AddChildNode(parentId, propertyValues));
         }
 
         /// <summary>
@@ -89,13 +94,13 @@ namespace Phenix.Actor
         /// <param name="parentId">父节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <returns>子节点ID</returns>
-        protected virtual long AddChildNode(long parentId, params NameValue[] propertyValues)
+        protected virtual long AddChildNode(long parentId, params NameValue<TKernel>[] propertyValues)
         {
             TKernel childNode = GetNode(parentId).AddChild(() => TreeEntityBase<TKernel>.New(Database, propertyValues));
             return childNode.Id;
         }
 
-        Task<long> ITreeEntityGrain.AddChildNode(long parentId, params NameValue[] propertyValues)
+        Task<long> ITreeEntityGrain<TKernel>.AddChildNode(long parentId, IDictionary<string, object> propertyValues)
         {
             return Task.FromResult(AddChildNode(parentId, propertyValues));
         }
@@ -112,9 +117,10 @@ namespace Phenix.Actor
             return childNode.Id;
         }
 
-        Task<long> ITreeEntityGrain.AddChildNode(long parentId, IDictionary<string, object> propertyValues)
+        Task ITreeEntityGrain<TKernel>.ChangeParentNode(long id, long parentId)
         {
-            return Task.FromResult(AddChildNode(parentId, propertyValues));
+            ChangeParentNode(id, parentId);
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -127,9 +133,9 @@ namespace Phenix.Actor
             GetNode(id).ChangeParent(GetNode(parentId));
         }
 
-        Task ITreeEntityGrain.ChangeParentNode(long id, long parentId)
+        Task ITreeEntityGrain<TKernel>.UpdateNode(long id, params NameValue<TKernel>[] propertyValues)
         {
-            ChangeParentNode(id, parentId);
+            UpdateNode(id, propertyValues);
             return Task.CompletedTask;
         }
 
@@ -138,12 +144,12 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="id">节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        protected virtual void UpdateNode(long id, params NameValue[] propertyValues)
+        protected virtual void UpdateNode(long id, params NameValue<TKernel>[] propertyValues)
         {
             GetNode(id).UpdateSelf(propertyValues);
         }
 
-        Task ITreeEntityGrain.UpdateNode(long id, params NameValue[] propertyValues)
+        Task ITreeEntityGrain<TKernel>.UpdateNode(long id, IDictionary<string, object> propertyValues)
         {
             UpdateNode(id, propertyValues);
             return Task.CompletedTask;
@@ -159,10 +165,9 @@ namespace Phenix.Actor
             GetNode(id).UpdateSelf(propertyValues);
         }
 
-        Task ITreeEntityGrain.UpdateNode(long id, IDictionary<string, object> propertyValues)
+        Task<int> ITreeEntityGrain<TKernel>.DeleteBranch(long id)
         {
-            UpdateNode(id, propertyValues);
-            return Task.CompletedTask;
+            return Task.FromResult(DeleteBranch(id));
         }
 
         /// <summary>
@@ -172,12 +177,7 @@ namespace Phenix.Actor
         /// <returns>更新记录数</returns>
         protected virtual int DeleteBranch(long id)
         {
-           return GetNode(id).DeleteBranch();
-        }
-
-        Task<int> ITreeEntityGrain.DeleteBranch(long id)
-        {
-            return Task.FromResult(DeleteBranch(id));
+            return GetNode(id).DeleteBranch();
         }
 
         #endregion

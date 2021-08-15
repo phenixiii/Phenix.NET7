@@ -8,7 +8,8 @@ namespace Phenix.Services.Contract.Security
 {
     /// <summary>
     /// 用户资料Grain接口
-    /// key：CompanyName'\u0004'UserName
+    /// key: CompanyName
+    /// keyExtension: UserName
     /// </summary>
     public interface IUserGrain : IEntityGrain<User>, IGrainWithStringKey
     {

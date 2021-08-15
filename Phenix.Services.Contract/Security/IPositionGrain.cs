@@ -7,7 +7,7 @@ namespace Phenix.Services.Contract.Security
 {
     /// <summary>
     /// 岗位资料Grain接口
-    /// key：ID
+    /// key: ID
     /// </summary>
     public interface IPositionGrain : IEntityGrain<Position>, IGrainWithIntegerKey
     {

@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Phenix.Core.Data.Expressions;
-using Phenix.Core.Data.Model;
 
 namespace Phenix.Actor
 {
     /// <summary>
     /// 实体Grain接口
     /// </summary>
-    public interface IEntityGrain<TKernel> : IEntityGrain
-        where TKernel : EntityBase<TKernel>
+    public interface IEntityGrain<TKernel> : IEntityGrain 
     {
         #region 方法
 
@@ -23,7 +21,13 @@ namespace Phenix.Actor
         /// 更新根实体对象(如不存在则新增)
         /// </summary>
         /// <param name="source">数据源</param>
-        Task PatchKernel(TKernel source);
+        Task PutKernel(TKernel source);
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        Task PatchKernel(params NameValue<TKernel>[] propertyValues);
 
         #endregion
     }

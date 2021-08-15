@@ -6,7 +6,8 @@ namespace Phenix.Services.Contract.Message
 {
     /// <summary>
     /// 用户消息Grain接口
-    /// key：CompanyName'\u0004'UserName
+    /// key: CompanyName
+    /// keyExtension: UserName
     /// </summary>
     public interface IUserMessageGrain : IGrainWithStringKey
     {

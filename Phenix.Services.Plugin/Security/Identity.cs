@@ -61,16 +61,16 @@ namespace Phenix.Services.Plugin.Security
             if (String.IsNullOrEmpty(userName))
                 return null;
 
-            string key = FormatPrimaryKey(companyName, userName);
+            string primaryKey = FormatPrimaryKey(companyName, userName);
             cacheDiscardIntervalHours = cacheDiscardIntervalHours ?? CacheDiscardIntervalHours;
-            if (cacheDiscardIntervalHours > 0 && _cache.TryGetValue(key, out CachedObject<Identity> cachedObject))
+            if (cacheDiscardIntervalHours > 0 && _cache.TryGetValue(primaryKey, out CachedObject<Identity> cachedObject))
             {
                 cachedObject.Value._cultureName = cultureName;
                 return cachedObject.Value;
             }
 
             Identity result = new Identity(companyName, userName, cultureName);
-            _cache[key] = new CachedObject<Identity>(result, DateTime.Now.AddHours(cacheDiscardIntervalHours.Value));
+            _cache[primaryKey] = new CachedObject<Identity>(result, DateTime.Now.AddHours(cacheDiscardIntervalHours.Value));
             return result;
         }
 
@@ -81,7 +81,7 @@ namespace Phenix.Services.Plugin.Security
         private string _primaryKey;
 
         /// <summary>
-        /// PrimaryKey
+        /// CompanyName'\u0004'UserName
         /// </summary>
         public string PrimaryKey
         {
@@ -130,7 +130,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         public long Id
         {
-            get { return _id ??= AsyncHelper.RunSync(() => GetKernelPropertyValue(p => p.Id)); }
+            get { return _id ??= AsyncHelper.RunSync(() => GetKernelPropertyValueAsync(p => p.Id)); }
         }
 
         private long? _rootTeamsId;
@@ -140,7 +140,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         public long RootTeamsId
         {
-            get { return _rootTeamsId ??= AsyncHelper.RunSync(() => GetKernelPropertyValue(p => p.RootTeamsId)); }
+            get { return _rootTeamsId ??= AsyncHelper.RunSync(() => GetKernelPropertyValueAsync(p => p.RootTeamsId)); }
         }
 
         private long? _teamsId;
@@ -150,7 +150,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         public long TeamsId
         {
-            get { return _teamsId ??= AsyncHelper.RunSync(() => GetKernelPropertyValue(p => p.TeamsId)); }
+            get { return _teamsId ??= AsyncHelper.RunSync(() => GetKernelPropertyValueAsync(p => p.TeamsId)); }
         }
 
         private long? _positionId;
@@ -160,7 +160,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         public long? PositionId
         {
-            get { return _positionId ??= AsyncHelper.RunSync(() => GetKernelPropertyValue(p => p.PositionId)); }
+            get { return _positionId ??= AsyncHelper.RunSync(() => GetKernelPropertyValueAsync(p => p.PositionId)); }
         }
 
         private bool? _isCompanyAdmin;
@@ -169,7 +169,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         public bool IsCompanyAdmin
         {
-            get { return _isCompanyAdmin ??= AsyncHelper.RunSync(() => GetKernelPropertyValue(p => p.IsCompanyAdmin)); }
+            get { return _isCompanyAdmin ??= AsyncHelper.RunSync(() => GetKernelPropertyValueAsync(p => p.IsCompanyAdmin)); }
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         public bool IsAuthenticated
         {
-            get { return AsyncHelper.RunSync(() => GetKernelPropertyValue(p => p.IsAuthenticated)); }
+            get { return AsyncHelper.RunSync(() => GetKernelPropertyValueAsync(p => p.IsAuthenticated)); }
         }
         
         /// <summary>
@@ -192,17 +192,14 @@ namespace Phenix.Services.Plugin.Security
 
         #region 方法
         
-        private static string FormatPrimaryKey(string companyName, string userName)
+        private static string FormatPrimaryKey(string key, string keyExtension)
         {
-            return String.Format("{0}{1}{2}", companyName, Standards.RowSeparator, userName);
+            return String.Format("{0}{1}{2}", key, Standards.RowSeparator, keyExtension);
         }
 
-        /// <summary>
-        /// 格式化PrimaryKey
-        /// </summary>
-        string IIdentity.FormatPrimaryKey(string userName)
+        string IIdentity.FormatPrimaryKey(string keyExtension)
         {
-            return FormatPrimaryKey(CompanyName, userName);
+            return FormatPrimaryKey(CompanyName, keyExtension);
         }
 
         Task<bool> IIdentity.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, string requestSession, bool throwIfNotConform)
@@ -230,9 +227,9 @@ namespace Phenix.Services.Plugin.Security
             return PositionId.HasValue ? ClusterClient.Default.GetGrain<IPositionGrain>(PositionId.Value).IsInRole(role) : Task.FromResult(false);
         }
 
-        private Task<TValue> GetKernelPropertyValue<TValue>(Expression<Func<User, TValue>> propertyLambda)
+        private async Task<TValue> GetKernelPropertyValueAsync<TValue>(Expression<Func<User, TValue>> propertyLambda)
         {
-            return ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).GetKernelPropertyValue<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
+            return await ClusterClient.Default.GetKernelPropertyValueAsync<IUserGrain, User, TValue>(PrimaryKey, propertyLambda);
         }
 
         #endregion

@@ -39,8 +39,8 @@ namespace Phenix.Services.Plugin.Security.Myself
         /// <returns>返回信息</returns>
         [CompanyAdminFilter]
         [Authorize]
-        [HttpPut]
-        public async Task<string> Put(string name, string phone, string eMail, string regAlias, long teamsId, long positionId)
+        [HttpPost]
+        public async Task<string> Register(string name, string phone, string eMail, string regAlias, long teamsId, long positionId)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name), "登录名不允许为空!");
@@ -54,13 +54,13 @@ namespace Phenix.Services.Plugin.Security.Myself
         /// <param name="name">登录名</param>
         [CompanyAdminFilter]
         [Authorize]
-        [HttpPatch]
-        public async Task Patch(string name)
+        [HttpPut]
+        public async Task Put(string name)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name), "登录名不允许为空!");
             
-            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.FormatPrimaryKey(name)).PatchKernel(await Request.ReadBodyAsync<Phenix.Services.Business.Security.User>(true));
+            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.FormatPrimaryKey(name)).PutKernel(await Request.ReadBodyAsync<Phenix.Services.Business.Security.User>(true));
         }
     }
 }

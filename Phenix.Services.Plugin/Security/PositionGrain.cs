@@ -8,7 +8,7 @@ namespace Phenix.Services.Plugin.Security
 {
     /// <summary>
     /// 岗位资料Grain
-    /// key：ID
+    /// key: ID
     /// </summary>
     public class PositionGrain : EntityGrainBase<Position>, IPositionGrain
     {
