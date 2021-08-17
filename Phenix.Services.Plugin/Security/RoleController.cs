@@ -4,13 +4,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Core.Data;
 using Phenix.Core.Net.Filters;
+using Phenix.Services.Contract;
 
 namespace Phenix.Services.Plugin.Security
 {
     /// <summary>
     /// 角色控制器
     /// </summary>
-    [Route(ApiConfig.ApiSecurityRolePath)]
+    [Route(WebApiConfig.ApiSecurityRolePath)]
     [ApiController]
     public sealed class RoleController : Phenix.Core.Net.Api.ControllerBase
     {

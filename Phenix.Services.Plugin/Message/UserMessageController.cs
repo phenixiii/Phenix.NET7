@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
+using Phenix.Services.Contract;
 using Phenix.Services.Contract.Message;
 
 namespace Phenix.Services.Plugin.Message
@@ -10,7 +11,7 @@ namespace Phenix.Services.Plugin.Message
     /// <summary>
     /// 用户消息控制器
     /// </summary>
-    [Route(ApiConfig.ApiMessageUserMessagePath)]
+    [Route(WebApiConfig.ApiMessageUserMessagePath)]
     [ApiController]
     public sealed class UserMessageController : Phenix.Core.Net.Api.ControllerBase
     {
@@ -25,7 +26,7 @@ namespace Phenix.Services.Plugin.Message
         {
             await ClusterClient.Default.GetGrain<IUserMessageGrain>(User.Identity.PrimaryKey).Send(receiver, await Request.ReadBodyAsStringAsync());
             //可替换为以下代码测试分组消息的推送
-            //await ClusterClient.Default.GetStreamProvider().GetStream<string>(GroupMessageHub.GroupStreamId, receiver).OnNextAsync(await Request.ReadBodyAsStringAsync());
+            //await ClusterClient.Default.GetStreamProvider().GetStream<string>(StreamConfig.GroupStreamId, receiver).OnNextAsync(await Request.ReadBodyAsStringAsync());
         }
 
         // phAjax.receiveMessage()

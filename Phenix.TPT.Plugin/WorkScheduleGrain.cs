@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
 using Phenix.Actor;
+using Phenix.Core.Data;
 using Phenix.TPT.Business;
 using Phenix.TPT.Contract;
 
@@ -33,12 +34,12 @@ namespace Phenix.TPT.Plugin
             get { return PrimaryKeyExtension; }
         }
 
-        private IDictionary<string, WorkSchedule> _immediateWorkSchedules;
+        private IDictionary<DateTime, WorkSchedule> _immediateWorkSchedules;
 
         /// <summary>
         /// 近期工作档期
         /// </summary>
-        protected IDictionary<string, WorkSchedule> ImmediateWorkSchedules
+        protected IDictionary<DateTime, WorkSchedule> ImmediateWorkSchedules
         {
             get
             {
@@ -64,17 +65,17 @@ namespace Phenix.TPT.Plugin
         {
             if (worker == Manager)
                 return Task.FromResult(true);
-            if (ImmediateWorkSchedules.TryGetValue(WorkSchedule.FormatYearMonth(year, month), out WorkSchedule workSchedule))
+            if (ImmediateWorkSchedules.TryGetValue(Standards.FormatYearMonth(year, month), out WorkSchedule workSchedule))
                 return Task.FromResult(workSchedule.Workers.Contains(worker));
 
             throw new ArgumentOutOfRangeException(String.Format("查询不到{0}年{1}月的{2}工作档期记录!", year, month, worker));
         }
 
-        Task<IDictionary<string, WorkSchedule>> IWorkScheduleGrain.GetImmediateWorkSchedules()
+        Task<IDictionary<DateTime, WorkSchedule>> IWorkScheduleGrain.GetImmediateWorkSchedules()
         {
             return Task.FromResult(ImmediateWorkSchedules);
         }
-        
+
         Task IWorkScheduleGrain.PutWorkSchedule(WorkSchedule source)
         {
             int year = DateTime.Today.Year;
@@ -85,30 +86,49 @@ namespace Phenix.TPT.Plugin
             if (source.Manager != Manager)
                 throw new ArgumentException(String.Format("提交的工作档期管理人员应该是{0}!", Manager), nameof(source));
 
-            string yearMonth = WorkSchedule.FormatYearMonth(source.Year, source.Month);
+            List<string> workers = new List<string>();
+            DateTime yearMonth = Standards.FormatYearMonth(source.Year, source.Month);
             if (ImmediateWorkSchedules.TryGetValue(yearMonth, out WorkSchedule workSchedule))
                 Database.Execute((DbTransaction dbTransaction) =>
                 {
+                    workers.AddRange(workSchedule.Workers);
                     workSchedule.UpdateSelf(dbTransaction, source);
-                    ResetWorkScheduleWorker(dbTransaction, workSchedule);
+                    ResetWorkers(dbTransaction, workSchedule);
                 });
             else
                 Database.Execute((DbTransaction dbTransaction) =>
                 {
                     source.InsertSelf(dbTransaction);
-                    ResetWorkScheduleWorker(dbTransaction, source);
+                    ResetWorkers(dbTransaction, source);
                     ImmediateWorkSchedules[yearMonth] = source;
                 });
 
+            foreach (string worker in source.Workers)
+                if (!workers.Contains(worker))
+                    workers.Add(worker);
+            foreach (string worker in workers)
+                ClusterClient.GetGrain<IWorkerGrain>(RootTeamsId, worker).ResetProjectWorkloads();
             return Task.CompletedTask;
         }
 
-        private void ResetWorkScheduleWorker(DbTransaction dbTransaction, WorkSchedule workSchedule)
+        private void ResetWorkers(DbTransaction dbTransaction, WorkSchedule workSchedule)
         {
             workSchedule.DeleteDetails<WorkScheduleWorker>(dbTransaction);
             foreach (string worker in workSchedule.Workers)
-                workSchedule.NewDetail(WorkScheduleWorker.Set(p => p.Worker, worker)).
-                    InsertSelf(dbTransaction);
+                workSchedule.NewDetail(WorkScheduleWorker.Set(p => p.Worker, worker)).InsertSelf(dbTransaction);
+        }
+
+        Task IWorkScheduleGrain.ResetWorkerProjectWorkloads()
+        {
+            List<string> workers = new List<string>();
+            foreach (KeyValuePair<DateTime, WorkSchedule> kvp in ImmediateWorkSchedules)
+            foreach (string worker in kvp.Value.Workers)
+                if (!workers.Contains(worker))
+                    workers.Add(worker);
+            foreach (string worker in workers)
+                ClusterClient.GetGrain<IWorkerGrain>(RootTeamsId, worker).ResetProjectWorkloads();
+            ClusterClient.GetGrain<IWorkerGrain>(RootTeamsId, Manager).ResetProjectWorkloads();
+            return Task.CompletedTask;
         }
 
         #endregion

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans.Streams;
+using Phenix.Core.Data;
 using Phenix.Core.Data.Model;
 
 namespace Phenix.Actor
@@ -13,6 +14,88 @@ namespace Phenix.Actor
     public abstract class StreamTreeEntityGrainBase<TKernel> : StreamTreeEntityGrainBase<TKernel, TKernel>
         where TKernel : TreeEntityBase<TKernel>
     {
+        #region 方法
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="source">数据源</param>
+        protected override Task PutKernel(TKernel source)
+        {
+            bool isNew = Kernel == null;
+            base.PutKernel(source);
+            if (isNew)
+                Send(Kernel);
+            else
+                Send(Kernel, Kernel.PrimaryKey.ToString());
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        protected override Task PatchKernel(IDictionary<string, object> propertyValues)
+        {
+            bool isNew = Kernel == null;
+            base.PatchKernel(propertyValues);
+            if (isNew)
+                Send(Kernel);
+            else
+                Send(Kernel, Kernel.PrimaryKey.ToString());
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// 添加子节点
+        /// </summary>
+        /// <param name="parentId">父节点ID</param>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        /// <returns>子节点ID</returns>
+        protected override Task<long> AddChildNode(long parentId, IDictionary<string, object> propertyValues)
+        {
+            Task<long> result = base.AddChildNode(parentId, propertyValues);
+            Send(Kernel, Kernel.PrimaryKey.ToString());
+            return result;
+        }
+
+        /// <summary>
+        /// 更改父节点
+        /// </summary>
+        /// <param name="id">节点ID</param>
+        /// <param name="parentId">父节点ID</param>
+        protected override Task ChangeParentNode(long id, long parentId)
+        {
+            base.ChangeParentNode(id, parentId);
+            Send(Kernel, Kernel.PrimaryKey.ToString());
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// 更新节点
+        /// </summary>
+        /// <param name="id">节点ID</param>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        protected override Task UpdateNode(long id, IDictionary<string, object> propertyValues)
+        {
+            base.UpdateNode(id, propertyValues);
+            Send(Kernel, Kernel.PrimaryKey.ToString());
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// 删除节点枝杈
+        /// </summary>
+        /// <param name="id">节点ID</param>
+        /// <returns>更新记录数</returns>
+        protected override Task<int> DeleteBranch(long id)
+        {
+            Task<int> result = base.DeleteBranch(id);
+            Send(Kernel, Kernel.PrimaryKey.ToString());
+            return result;
+        }
+
+        #endregion
     }
 
     /// <summary>
@@ -27,25 +110,6 @@ namespace Phenix.Actor
         /// StreamId
         /// </summary>
         protected abstract Guid StreamId { get; }
-
-        #region Observable
-
-        /// <summary>
-        /// (自己作为Observable的)StreamNamespace
-        /// </summary>
-        protected abstract string StreamNamespace { get; }
-
-        private IAsyncStream<TEvent> _streamWorker;
-
-        /// <summary>
-        /// (自己作为Observable的)Stream
-        /// </summary>
-        protected virtual IAsyncStream<TEvent> StreamWorker
-        {
-            get { return _streamWorker ?? (_streamWorker = ClusterClient.GetStreamProvider().GetStream<TEvent>(StreamId, StreamNamespace)); }
-        }
-
-        #endregion
 
         #region Observer
 
@@ -101,9 +165,9 @@ namespace Phenix.Actor
         /// <summary>
         /// 发送消息
         /// </summary>
-        protected Task Send(TEvent content, StreamSequenceToken token = null)
+        protected Task Send(TEvent content, string streamNamespace = Standards.UnknownValue, StreamSequenceToken token = null)
         {
-            return StreamWorker.OnNextAsync(content, token);
+            return ClusterClient.GetStreamProvider().GetStream<TEvent>(StreamId, streamNamespace).OnNextAsync(content, token);
         }
 
         #endregion
@@ -164,7 +228,10 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="content">消息内容</param>
         /// <param name="token">StreamSequenceToken</param>
-        protected abstract Task OnReceiving(TEvent content, StreamSequenceToken token);
+        protected virtual Task OnReceiving(TEvent content, StreamSequenceToken token)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// 订阅失败

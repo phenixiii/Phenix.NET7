@@ -17,7 +17,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>ACAACAAAAAAAAAAgAAAAQAAAAAAABAAAAAABAAQAAAA=</HashCode>
+      <HashCode>ACAACAAAAAAAAAAgAgAAQAAAAAAABAAAAAABAAQAAAA=</HashCode>
       <FileName>WorkScheduleGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -28,8 +28,19 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>QKQBQCAAQgAAAQADgAgQCgQAwAAAIAQBACABAUAAQAU=</HashCode>
+      <HashCode>QKQBQCAAAgAAAQADgAgQCgQAwAAAIAQBACABAUAAQAU=</HashCode>
       <FileName>ProjectGrain.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.TPT.Plugin.WorkerGrain">
+    <Position X="4.25" Y="4" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQQQAA=</HashCode>
+      <FileName>WorkerGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>

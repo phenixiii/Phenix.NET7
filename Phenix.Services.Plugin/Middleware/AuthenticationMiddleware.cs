@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Core.Data;
 using Phenix.Core.Security;
+using Phenix.Services.Contract;
 
 namespace Phenix.Services.Plugin.Middleware
 {
@@ -80,7 +81,7 @@ namespace Phenix.Services.Plugin.Middleware
                 string signature = strings[3];
                 string session = strings[4];
                 IIdentity identity = Principal.FetchIdentity(companyName, userName, context.Request.GetAcceptLanguage(), null);
-                if (String.Compare(context.Request.Path, ApiConfig.ApiSecurityGatePath, StringComparison.OrdinalIgnoreCase) == 0 && context.Request.Method == HttpMethod.Post.Method)
+                if (String.Compare(context.Request.Path, WebApiConfig.ApiSecurityGatePath, StringComparison.OrdinalIgnoreCase) == 0 && context.Request.Method == HttpMethod.Post.Method)
                 {
                     if (await identity.IsValidLogon(timestamp, signature, await context.Request.ReadBodyAsStringAsync(), context.Request.GetRemoteAddress(), session, true))
                     {

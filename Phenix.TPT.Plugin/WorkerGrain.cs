@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Phenix.Actor;
+using Phenix.Core.Data;
+using Phenix.Core.SyncCollections;
 using Phenix.TPT.Business;
 using Phenix.TPT.Contract;
 
@@ -30,35 +34,50 @@ namespace Phenix.TPT.Plugin
             get { return PrimaryKeyExtension; }
         }
 
-        private IDictionary<short, Workday> _currentYearWorkdays;
-
-        /// <summary>
-        /// 本年度工作日
-        /// </summary>
-        protected IDictionary<short, Workday> CurrentYearWorkdays
-        {
-            get
-            {
-                if (_currentYearWorkdays == null)
-                {
-                    IDictionary<short, Workday> currentYearWorkdays = Workday.FetchKeyValues(Database,
-                        p => p.Month,
-                        p => p.OriginateTeams == RootTeamsId && p.Year == Year);
-                    if (currentYearWorkdays.Count == 0)
-                        for (short i = 1; i <= 12; i++)
-                            currentYearWorkdays.Add(i, Workday.New(Database,
-                                Workday.Set(p => p.Year, Year).
-                                    Set(p => p.Month, i)));
-                    _currentYearWorkdays = currentYearWorkdays;
-                }
-
-                return _currentYearWorkdays;
-            }
-        }
+        private readonly SynchronizedDictionary<DateTime, IList<ProjectWorkload>> _projectWorkloads =
+            new SynchronizedDictionary<DateTime, IList<ProjectWorkload>>() ;
 
         #endregion
 
         #region 方法
+
+        Task<IList<ProjectWorkload>> IWorkerGrain.GetProjectWorkloads(short year, short month)
+        {
+            DateTime yearMonth = Standards.FormatYearMonth(year, month);
+            return Task.FromResult(_projectWorkloads.GetValue(yearMonth, () =>
+            {
+                IDictionary<long, ProjectWorkload> result = ProjectWorkload.FetchKeyValues(Database,
+                    p => p.PiId,
+                    p => p.OriginateTeams == RootTeamsId && p.Worker == Worker && p.Year == year && p.Month == month);
+                foreach (ProjectWorkerV item in ProjectWorkerV.FetchList(Database,
+                    p => p.OriginateTeams == RootTeamsId && p.Worker == Worker && p.Year == year && p.Month == month))
+                    if (!result.ContainsKey(item.Id))
+                        result.Add(item.Id, ProjectWorkload.New(Database,
+                            ProjectWorkload.Set(p => p.Year, year).
+                                Set(p => p.Month, month).
+                                Set(p => p.Worker, Worker).
+                                Set(p => p.PiId, item.Id).
+                                Set(p => p.ProjectName, item.ProjectName)));
+                foreach (ProjectInfo item in ProjectInfo.FetchList(Database,
+                    p => p.OriginateTeams == RootTeamsId && p.OriginateTime <= yearMonth &&
+                         (p.ClosedDate == null || p.ClosedDate >= yearMonth) &&
+                         (p.ProjectManager == Worker || p.DevelopManager == Worker || p.MaintenanceManager == Worker)))
+                    if (!result.ContainsKey(item.Id))
+                        result.Add(item.Id, ProjectWorkload.New(Database,
+                            ProjectWorkload.Set(p => p.Year, year).
+                                Set(p => p.Month, month).
+                                Set(p => p.Worker, Worker).
+                                Set(p => p.PiId, item.Id).
+                                Set(p => p.ProjectName, item.ProjectName)));
+                return new List<ProjectWorkload>(result.Values);
+            }));
+        }
+
+        Task IWorkerGrain.ResetProjectWorkloads()
+        {
+            _projectWorkloads.Clear();
+            return Task.CompletedTask;
+        }
 
         #endregion
     }

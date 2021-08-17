@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Net.Filters;
+using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security;
 
 namespace Phenix.Services.Plugin.Security.Myself
@@ -11,7 +12,7 @@ namespace Phenix.Services.Plugin.Security.Myself
     /// <summary>
     /// 公司用户控制器
     /// </summary>
-    [Route(ApiConfig.ApiSecurityMyselfCompanyUserPath)]
+    [Route(WebApiConfig.ApiSecurityMyselfCompanyUserPath)]
     [ApiController]
     public sealed class CompanyUserController : Phenix.Core.Net.Api.ControllerBase
     {

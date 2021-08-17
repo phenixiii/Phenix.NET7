@@ -1,6 +1,6 @@
 Phenix Framework 7.5 for .net 5
 Copyright © 2007, 2021 Phenixヾ Studio
-使用框架的目的首要的是对软件过程的有效管控
+使用开发框架的目的，首要的是对软件过程的有效管控，让团队保持一致的编写风格，提升协作效率、开发速度和代码质量，保证软件产品的可维护性
 
 发布地址：https://github.com/phenixiii/Phenix.NET7
 技术交流群：206648373

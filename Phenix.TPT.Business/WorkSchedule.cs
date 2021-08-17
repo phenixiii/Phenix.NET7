@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Phenix.Core.Data;
 using Phenix.Core.Data.Model;
 using Phenix.Core.Data.Schema;
 
@@ -24,24 +25,9 @@ namespace Phenix.TPT.Business
         /// 年月
         /// </summary>
         [Newtonsoft.Json.JsonIgnore]
-        public string YearMonth
+        public DateTime YearMonth
         {
-            get { return FormatYearMonth(Year, Month); }
-        }
-
-        #endregion
-
-        #region 方法
-
-        /// <summary>
-        /// 格式化年月
-        /// </summary>
-        /// <param name="year">年</param>
-        /// <param name="month">月</param>
-        /// <returns>格式化年月</returns>
-        public static string FormatYearMonth(int year, int month)
-        {
-            return String.Format("{0}-{1}", year, month);
+            get { return Standards.FormatYearMonth(Year, Month); }
         }
 
         #endregion

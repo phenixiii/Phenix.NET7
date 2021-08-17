@@ -106,9 +106,5 @@ namespace Phenix.TPT.Contract
         Task<decimal> GetTotalReimbursementAmount();
 
         #endregion
-
-        #region 项目工作量
-
-        #endregion
     }
 }

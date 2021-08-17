@@ -5,7 +5,7 @@ using Phenix.Core.Data.Schema;
 
 /* 
    builder:    phenixiii
-   build time: 2021-08-09 17:34:10
+   build time: 2021-08-17 15:15:24
    mapping to: PT7_PROJECT_WORKLOAD 项目工作量
 */
 
@@ -41,14 +41,15 @@ namespace Phenix.TPT.Business
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
         protected ProjectWorkload(string dataSourceKey,
-            long id, long piId, short year, short month, string worker, short manageWorkloadRole, short investigateWorkloadRole, short developWorkloadRole, short testWorkloadRole, short implementWorkloadRole, short maintenanceWorkloadRole, long originator, DateTime originateTime, long updater, DateTime updateTime) 
+            long id, short year, short month, string worker, long piId, string projectName, short manageWorkloadRole, short investigateWorkloadRole, short developWorkloadRole, short testWorkloadRole, short implementWorkloadRole, short maintenanceWorkloadRole, long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime) 
             : base(dataSourceKey)
         {
             _id = id;
-            _piId = piId;
             _year = year;
             _month = month;
             _worker = worker;
+            _piId = piId;
+            _projectName = projectName;
             _manageWorkloadRole = manageWorkloadRole;
             _investigateWorkloadRole = investigateWorkloadRole;
             _developWorkloadRole = developWorkloadRole;
@@ -57,6 +58,7 @@ namespace Phenix.TPT.Business
             _maintenanceWorkloadRole = maintenanceWorkloadRole;
             _originator = originator;
             _originateTime = originateTime;
+            _originateTeams = originateTeams;
             _updater = updater;
             _updateTime = updateTime;
         }
@@ -75,18 +77,6 @@ namespace Phenix.TPT.Business
         {
             get { return _id; }
             set { _id = value; }
-        }
-
-        private long _piId;
-        /// <summary>
-        /// 项目资料
-        /// </summary>
-        [Display(Description = @"项目资料")]
-        [Column("PW_PI_ID_WM")]
-        public long PiId
-        {
-            get { return _piId; }
-            set { _piId = value; }
         }
 
         private short _year;
@@ -123,6 +113,30 @@ namespace Phenix.TPT.Business
         {
             get { return _worker; }
             set { _worker = value; }
+        }
+
+        private long _piId;
+        /// <summary>
+        /// 项目资料
+        /// </summary>
+        [Display(Description = @"项目资料")]
+        [Column("PW_PI_ID_WM")]
+        public long PiId
+        {
+            get { return _piId; }
+            set { _piId = value; }
+        }
+
+        private string _projectName;
+        /// <summary>
+        /// 项目名称
+        /// </summary>
+        [Display(Description = @"项目名称")]
+        [Column("PW_PROJECT_NAME")]
+        public string ProjectName
+        {
+            get { return _projectName; }
+            set { _projectName = value; }
         }
 
         private short _manageWorkloadRole;
@@ -219,6 +233,18 @@ namespace Phenix.TPT.Business
         {
             get { return _originateTime; }
             set { _originateTime = value; }
+        }
+
+        private long _originateTeams;
+        /// <summary>
+        /// 制单团体
+        /// </summary>
+        [Display(Description = @"制单团体")]
+        [Column("PW_ORIGINATE_TEAMS")]
+        public long OriginateTeams
+        {
+            get { return _originateTeams; }
+            set { _originateTeams = value; }
         }
 
         private long _updater;

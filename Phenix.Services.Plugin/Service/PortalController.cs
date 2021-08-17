@@ -6,13 +6,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Core.Net.Filters;
 using Phenix.Core.Reflection;
+using Phenix.Services.Contract;
 
 namespace Phenix.Services.Plugin.Service
 {
     /// <summary>
     /// 门户控制器
     /// </summary>
-    [Route(ApiConfig.ApiServicePortalPath)]
+    [Route(WebApiConfig.ApiServicePortalPath)]
     [ApiController]
     public sealed class PortalController : Phenix.Core.Net.Api.ControllerBase
     {

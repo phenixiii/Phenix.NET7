@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans.Streams;
+using Phenix.Core.Data;
 using Phenix.Core.Data.Model;
 
 namespace Phenix.Actor
@@ -12,6 +13,39 @@ namespace Phenix.Actor
     public abstract class StreamEntityGrainBase<TKernel> : StreamEntityGrainBase<TKernel, TKernel>
         where TKernel : EntityBase<TKernel>
     {
+        #region 方法
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="source">数据源</param>
+        protected override Task PutKernel(TKernel source)
+        {
+            bool isNew = Kernel == null;
+            base.PutKernel(source);
+            if (isNew)
+                Send(Kernel);
+            else
+                Send(Kernel, Kernel.PrimaryKey.ToString());
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        protected override Task PatchKernel(IDictionary<string, object> propertyValues)
+        {
+            bool isNew = Kernel == null;
+            base.PatchKernel(propertyValues);
+            if (isNew)
+                Send(Kernel);
+            else
+                Send(Kernel, Kernel.PrimaryKey.ToString());
+            return Task.CompletedTask;
+        }
+
+        #endregion
     }
 
     /// <summary>
@@ -26,25 +60,6 @@ namespace Phenix.Actor
         /// StreamId
         /// </summary>
         protected abstract Guid StreamId { get; }
-
-        #region Observable
-
-        /// <summary>
-        /// (自己作为Observable的)StreamNamespace
-        /// </summary>
-        protected abstract string StreamNamespace { get; }
-
-        private IAsyncStream<TEvent> _streamWorker;
-
-        /// <summary>
-        /// (自己作为Observable的)Stream
-        /// </summary>
-        protected virtual IAsyncStream<TEvent> StreamWorker
-        {
-            get { return _streamWorker ?? (_streamWorker = ClusterClient.GetStreamProvider().GetStream<TEvent>(StreamId, StreamNamespace)); }
-        }
-
-        #endregion
 
         #region Observer
 
@@ -100,9 +115,9 @@ namespace Phenix.Actor
         /// <summary>
         /// 发送消息
         /// </summary>
-        protected Task Send(TEvent content, StreamSequenceToken token = null)
+        protected Task Send(TEvent content, string streamNamespace = Standards.UnknownValue, StreamSequenceToken token = null)
         {
-            return StreamWorker.OnNextAsync(content, token);
+            return ClusterClient.GetStreamProvider().GetStream<TEvent>(StreamId, streamNamespace).OnNextAsync(content, token);
         }
 
         #endregion
@@ -163,7 +178,10 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="content">消息内容</param>
         /// <param name="token">StreamSequenceToken</param>
-        protected abstract Task OnReceiving(TEvent content, StreamSequenceToken token);
+        protected virtual Task OnReceiving(TEvent content, StreamSequenceToken token)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// 订阅失败

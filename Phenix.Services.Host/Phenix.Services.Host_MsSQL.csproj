@@ -1,83 +1,86 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-	<Version>7.5.48</Version>
-	<AssemblyVersion>7.5.48.0610</AssemblyVersion>
-	<FileVersion>7.5.48.0610</FileVersion>
-    <Description>Phenix Framework 7.5 for .NET 5</Description>
-    <Authors>ming</Authors>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <AssemblyName>Phenix.Services.Host</AssemblyName>
-    <RootNamespace>Phenix.Services.Host</RootNamespace>
-    <Copyright>Copyright © 2007, 2021 Phenixヾ Studio</Copyright>
-    <Product>Phenix.Services.Host</Product>
-    <PackageId>Phenix.Services.Host</PackageId>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<Version>7.5.48</Version>
+		<AssemblyVersion>7.5.48.0610</AssemblyVersion>
+		<FileVersion>7.5.48.0610</FileVersion>
+		<Description>Phenix Framework 7.5 for .NET 5</Description>
+		<Authors>ming</Authors>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<AssemblyName>Phenix.Services.Host</AssemblyName>
+		<RootNamespace>Phenix.Services.Host</RootNamespace>
+		<Copyright>Copyright © 2007, 2021 Phenixヾ Studio</Copyright>
+		<Product>Phenix.Services.Host</Product>
+		<PackageId>Phenix.Services.Host</PackageId>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\Bin_MsSQL\</OutputPath>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<OutputPath>..\Bin_MsSQL\</OutputPath>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\Bin_MsSQL\</OutputPath>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<OutputPath>..\Bin_MsSQL\</OutputPath>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <ServerGarbageCollection>true</ServerGarbageCollection>
-    <ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
-    <!-- Warning: Setting the following switch is *NOT* recommended in web apps. -->
-	<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
-  </PropertyGroup>
+	<PropertyGroup>
+		<ServerGarbageCollection>true</ServerGarbageCollection>
+		<ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
+		<!-- Warning: Setting the following switch is *NOT* recommended in web apps. -->
+		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="5.0.9" />
-    <PackageReference Include="Microsoft.Orleans.Client" Version="3.4.3" />
-    <PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="3.4.3" />
-    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.4.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Orleans.OrleansCodeGenerator" Version="3.4.3" />
-    <PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="3.4.3" />
-    <PackageReference Include="Microsoft.Orleans.Reminders.AdoNet" Version="3.4.3" />
-    <PackageReference Include="Microsoft.Orleans.Serialization.Bond" Version="3.4.3" />
-    <PackageReference Include="Microsoft.Orleans.Server" Version="3.4.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="OrleansDashboard" Version="3.5.2" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.114.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.9" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="5.0.9" />
+		<PackageReference Include="Microsoft.Orleans.Client" Version="3.4.3" />
+		<PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="3.4.3" />
+		<PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.4.3">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Orleans.OrleansCodeGenerator" Version="3.4.3" />
+		<PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="3.4.3" />
+		<PackageReference Include="Microsoft.Orleans.Reminders.AdoNet" Version="3.4.3" />
+		<PackageReference Include="Microsoft.Orleans.Serialization.Bond" Version="3.4.3" />
+		<PackageReference Include="Microsoft.Orleans.Server" Version="3.4.3" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="OrleansDashboard" Version="3.5.2" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.114.3" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="Phenix.Actor">
-      <HintPath>..\Bin_MsSQL\net5.0\Phenix.Actor.dll</HintPath>
-    </Reference>
-    <Reference Include="Phenix.Core">
-      <HintPath>..\Bin_MsSQL\net5.0\Phenix.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Phenix.Services.Plugin">
-	  <HintPath>..\Bin_MsSQL\net5.0\Phenix.Services.Plugin.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="Phenix.Actor">
+			<HintPath>..\Bin_MsSQL\net5.0\Phenix.Actor.dll</HintPath>
+		</Reference>
+		<Reference Include="Phenix.Core">
+			<HintPath>..\Bin_MsSQL\net5.0\Phenix.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="Phenix.Services.Contract">
+			<HintPath>..\Bin_MsSQL\net5.0\Phenix.Services.Contract.dll</HintPath>
+		</Reference>
+		<Reference Include="Phenix.Services.Plugin">
+			<HintPath>..\Bin_MsSQL\net5.0\Phenix.Services.Plugin.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="DockerBuild.bat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Dockerfile">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="DockerRun.bat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Phenix.Core.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Phenix.Core.Init.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="DockerBuild.bat">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Dockerfile">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="DockerRun.bat">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Phenix.Core.db">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Phenix.Core.Init.db">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>

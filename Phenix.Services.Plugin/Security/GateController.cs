@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Security;
+using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security;
 
 namespace Phenix.Services.Plugin.Security
@@ -11,7 +12,7 @@ namespace Phenix.Services.Plugin.Security
     /// <summary>
     /// 系统入口控制器
     /// </summary>
-    [Route(ApiConfig.ApiSecurityGatePath)]
+    [Route(WebApiConfig.ApiSecurityGatePath)]
     [ApiController]
     public sealed class GateController : Phenix.Core.Net.Api.ControllerBase
     {

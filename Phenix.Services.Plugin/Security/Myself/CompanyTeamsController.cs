@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Net.Filters;
 using Phenix.Services.Business.Security;
+using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security.Myself;
 
 namespace Phenix.Services.Plugin.Security.Myself
@@ -11,7 +12,7 @@ namespace Phenix.Services.Plugin.Security.Myself
     /// <summary>
     /// 公司团体控制器
     /// </summary>
-    [Route(ApiConfig.ApiSecurityMyselfCompanyTeamsPath)]
+    [Route(WebApiConfig.ApiSecurityMyselfCompanyTeamsPath)]
     [ApiController]
     public sealed class CompanyTeamsController : Phenix.Core.Net.Api.ControllerBase
     {

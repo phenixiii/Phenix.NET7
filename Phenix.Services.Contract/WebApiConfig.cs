@@ -1,9 +1,9 @@
-﻿namespace Phenix.Services.Plugin
+﻿namespace Phenix.Services.Contract
 {
     /// <summary>
     /// WebAPI配置信息
     /// </summary>
-    public static class ApiConfig
+    public static class WebApiConfig
     {
         /// <summary>
         /// /api/security/gate

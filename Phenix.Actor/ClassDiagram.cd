@@ -16,7 +16,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>QEAAIAEIAUAAAAEAgAAAEAICAAAIAAAAAAAAAgAAAAA=</HashCode>
+      <HashCode>AEAAIAEIAUAAAAEAgAAAEAICAAAIAAAAAAAAAgAAAAA=</HashCode>
       <FileName>EntityGrainBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -27,7 +27,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AIAAAEAQAQAAAAAAAFEAAAAABAAAAQBAJAAAAAAAigA=</HashCode>
+      <HashCode>AAAAAEAQAAAAAAAAAFEAAAAABAAAAQBAIAAAAAAAigA=</HashCode>
       <FileName>StreamGrainBase.cs</FileName>
       <NewMemberFileName>StreamEntityGrainBase.cs</NewMemberFileName>
     </TypeIdentifier>
@@ -38,7 +38,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AACAAAAAQyAAAgAAQAAAEAEAEAAAAQAAAAAAAgIAAAA=</HashCode>
+      <HashCode>AAAAAAAAQyAAAgAAQAAAEAEAEAAAAQAAAAAAAgIAAAA=</HashCode>
       <FileName>TreeEntityGrainBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -54,7 +54,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.Actor.StreamTreeEntityGrainBase&lt;TKernel&gt;">
-    <Position X="6.5" Y="14.5" Width="3" />
+    <Position X="6.5" Y="14.75" Width="3" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>StreamTreeEntityGrainBase.cs</FileName>
@@ -75,7 +75,7 @@
   <Class Name="Phenix.Actor.StreamEntityGrainBase&lt;TKernel&gt;">
     <Position X="6.5" Y="13.25" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAEAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>StreamEntityGrainBase.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -85,7 +85,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AIAAAEAQAQAAAAAAAFEAAAAABAAAAQBAJAAAAAAAigA=</HashCode>
+      <HashCode>AAAAAEAQAAAAAAAAAFEAAAAABAAAAQBAIAAAAAAAigA=</HashCode>
       <FileName>StreamEntityGrainBase.cs</FileName>
     </TypeIdentifier>
   </Class>

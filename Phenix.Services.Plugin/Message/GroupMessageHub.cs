@@ -9,6 +9,7 @@ using Phenix.Actor;
 using Phenix.Core.Log;
 using Phenix.Core.Security;
 using Phenix.Core.SyncCollections;
+using Phenix.Services.Contract;
 using Phenix.Services.Contract.Message;
 
 namespace Phenix.Services.Plugin.Message
@@ -30,20 +31,6 @@ namespace Phenix.Services.Plugin.Message
         }
 
         #region 属性
-
-        #region 配置项
-
-        private static readonly Guid _groupStreamId = new Guid("54E67F1B-ABD7-4518-BA30-020A20AE3D49");
-
-        /// <summary>
-        /// 分组StreamId
-        /// </summary>
-        public static Guid GroupStreamId
-        {
-            get { return _groupStreamId; }
-        }
-
-        #endregion
 
         private readonly IMessageService _service;
 
@@ -124,7 +111,7 @@ namespace Phenix.Services.Plugin.Message
             _subscribers.GetValue(groupName, async () =>
             {
                 Subscriber subscriber = new Subscriber(this, groupName);
-                await subscriber.SubscribeAsync(ClusterClient.Default.GetStreamProvider().GetStream<string>(GroupStreamId, groupName));
+                await subscriber.SubscribeAsync(ClusterClient.Default.GetStreamProvider().GetStream<string>(StreamConfig.GroupStreamId, groupName));
                 return subscriber;
             });
         }

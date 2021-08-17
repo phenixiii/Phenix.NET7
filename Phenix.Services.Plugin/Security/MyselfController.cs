@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Services.Business.Security;
+using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security;
 
 namespace Phenix.Services.Plugin.Security
@@ -10,7 +11,7 @@ namespace Phenix.Services.Plugin.Security
     /// <summary>
     /// 用户自己控制器
     /// </summary>
-    [Route(ApiConfig.ApiSecurityMyselfPath)]
+    [Route(WebApiConfig.ApiSecurityMyselfPath)]
     [ApiController]
     public sealed class MyselfController : Phenix.Core.Net.Api.ControllerBase
     {

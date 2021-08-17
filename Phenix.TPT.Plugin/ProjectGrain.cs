@@ -138,23 +138,63 @@ namespace Phenix.TPT.Plugin
             private set { _totalReimbursementAmount = value; }
         }
 
-        private IList<ProjectWorkload> _projectWorkloadList;
-
-        /// <summary>
-        /// 项目工作量清单
-        /// </summary>
-        protected IList<ProjectWorkload> ProjectWorkloadList
-        {
-            get
-            {
-                return _projectWorkloadList ?? (_projectWorkloadList =
-                    Kernel.FetchDetails(ProjectWorkload.Descending(p => p.Year).Descending(p => p.Month)));
-            }
-        }
-
         #endregion
 
         #region 方法
+
+        #region Kernel
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="source">数据源</param>
+        protected override Task PutKernel(ProjectInfo source)
+        {
+            string oldProjectManager = Kernel != null ? Kernel.ProjectManager : null;
+            string oldDevelopManager = Kernel != null ? Kernel.DevelopManager : null;
+
+            base.PutKernel(source);
+
+            if (oldProjectManager != Kernel.ProjectManager)
+            {
+                ClusterClient.GetGrain<IWorkScheduleGrain>(Kernel.OriginateTeams, oldProjectManager).ResetWorkerProjectWorkloads();
+                ClusterClient.GetGrain<IWorkScheduleGrain>(Kernel.OriginateTeams, Kernel.ProjectManager).ResetWorkerProjectWorkloads();
+            }
+            if (oldDevelopManager != Kernel.DevelopManager)
+            {
+                ClusterClient.GetGrain<IWorkScheduleGrain>(Kernel.OriginateTeams, oldDevelopManager).ResetWorkerProjectWorkloads();
+                ClusterClient.GetGrain<IWorkScheduleGrain>(Kernel.OriginateTeams, Kernel.DevelopManager).ResetWorkerProjectWorkloads();
+            }
+
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则新增)
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        protected override Task PatchKernel(IDictionary<string, object> propertyValues)
+        {
+            string oldProjectManager = Kernel != null ? Kernel.ProjectManager : null;
+            string oldDevelopManager = Kernel != null ? Kernel.DevelopManager : null;
+
+            base.PatchKernel(propertyValues);
+
+            if (oldProjectManager != Kernel.ProjectManager)
+            {
+                ClusterClient.GetGrain<IWorkScheduleGrain>(Kernel.OriginateTeams, oldProjectManager).ResetWorkerProjectWorkloads();
+                ClusterClient.GetGrain<IWorkScheduleGrain>(Kernel.OriginateTeams, Kernel.ProjectManager).ResetWorkerProjectWorkloads();
+            }
+            if (oldDevelopManager != Kernel.DevelopManager)
+            {
+                ClusterClient.GetGrain<IWorkScheduleGrain>(Kernel.OriginateTeams, oldDevelopManager).ResetWorkerProjectWorkloads();
+                ClusterClient.GetGrain<IWorkScheduleGrain>(Kernel.OriginateTeams, Kernel.DevelopManager).ResetWorkerProjectWorkloads();
+            }
+
+            return Task.CompletedTask;
+        }
+
+        #endregion
 
         #region 项目年度计划
 
@@ -325,10 +365,6 @@ namespace Phenix.TPT.Plugin
         {
             return Task.FromResult(TotalReimbursementAmount);
         }
-
-        #endregion
-
-        #region 项目工作量
 
         #endregion
 

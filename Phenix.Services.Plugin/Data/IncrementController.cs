@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Core.Data;
+using Phenix.Services.Contract;
 
 namespace Phenix.Services.Plugin.Data
 {
     /// <summary>
     /// 64位增量控制器
     /// </summary>
-    [Route(ApiConfig.ApiDataIncrementPath)]
+    [Route(WebApiConfig.ApiDataIncrementPath)]
     [ApiController]
     public sealed class IncrementController : Phenix.Core.Net.Api.ControllerBase
     {
