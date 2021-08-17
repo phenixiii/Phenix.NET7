@@ -25,17 +25,5 @@ namespace Phenix.TPT.Business.Norm
         /// </summary>
         [Phenix.Core.Data.EnumCaption("研发任务")]
         ResearchTask = 2,
-
-        /// <summary>
-        /// 其他任务
-        /// </summary>
-        [Phenix.Core.Data.EnumCaption("其他任务")]
-        OtherTask = 8,
-
-        /// <summary>
-        /// 休假
-        /// </summary>
-        [Phenix.Core.Data.EnumCaption("休假")]
-        Leave = 9
     }
 }

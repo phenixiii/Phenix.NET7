@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Threading.Tasks;
 using Phenix.Actor;
 using Phenix.TPT.Business;
@@ -61,7 +62,12 @@ namespace Phenix.TPT.Plugin
 
         Task<bool> IWorkScheduleGrain.HaveWorkSchedule(string worker, short year, short month)
         {
-            return Task.FromResult(ImmediateWorkSchedules.TryGetValue(WorkSchedule.FormatYearMonth(year, month), out WorkSchedule workSchedule) && workSchedule.Workers.Contains(worker));
+            if (worker == Manager)
+                return Task.FromResult(true);
+            if (ImmediateWorkSchedules.TryGetValue(WorkSchedule.FormatYearMonth(year, month), out WorkSchedule workSchedule))
+                return Task.FromResult(workSchedule.Workers.Contains(worker));
+
+            throw new ArgumentOutOfRangeException(String.Format("查询不到{0}年{1}月的{2}工作档期记录!", year, month, worker));
         }
 
         Task<IDictionary<string, WorkSchedule>> IWorkScheduleGrain.GetImmediateWorkSchedules()
@@ -81,14 +87,28 @@ namespace Phenix.TPT.Plugin
 
             string yearMonth = WorkSchedule.FormatYearMonth(source.Year, source.Month);
             if (ImmediateWorkSchedules.TryGetValue(yearMonth, out WorkSchedule workSchedule))
-                workSchedule.UpdateSelf(source);
+                Database.Execute((DbTransaction dbTransaction) =>
+                {
+                    workSchedule.UpdateSelf(dbTransaction, source);
+                    ResetWorkScheduleWorker(dbTransaction, workSchedule);
+                });
             else
-            {
-                source.InsertSelf();
-                ImmediateWorkSchedules[yearMonth] = source;
-            }
+                Database.Execute((DbTransaction dbTransaction) =>
+                {
+                    source.InsertSelf(dbTransaction);
+                    ResetWorkScheduleWorker(dbTransaction, source);
+                    ImmediateWorkSchedules[yearMonth] = source;
+                });
 
             return Task.CompletedTask;
+        }
+
+        private void ResetWorkScheduleWorker(DbTransaction dbTransaction, WorkSchedule workSchedule)
+        {
+            workSchedule.DeleteDetails<WorkScheduleWorker>(dbTransaction);
+            foreach (string worker in workSchedule.Workers)
+                workSchedule.NewDetail(WorkScheduleWorker.Set(p => p.Worker, worker)).
+                    InsertSelf(dbTransaction);
         }
 
         #endregion
