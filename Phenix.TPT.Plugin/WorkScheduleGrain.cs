@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
 using System.Threading.Tasks;
 using Orleans.Streams;
@@ -84,13 +85,15 @@ namespace Phenix.TPT.Plugin
 
         #region Stream
 
-        private void SendEventForRefreshProjectWorkloads(string receiver)
+        private void SendEventForRefreshProjectWorkloads(string receiver, string content)
         {
             if (receiver == Manager)
                 return;
+            if (content == Manager)
+                return;
 
             ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.RefreshProjectWorkloadsStreamId,
-                Standards.FormatCompoundKey(RootTeamsId, receiver)).OnNextAsync("*");
+                Standards.FormatCompoundKey(RootTeamsId, receiver)).OnNextAsync(content);
         }
 
         /// <summary>
@@ -106,7 +109,7 @@ namespace Phenix.TPT.Plugin
                 if (!workers.Contains(worker))
                     workers.Add(worker);
             foreach (string worker in workers)
-                SendEventForRefreshProjectWorkloads(worker);
+                SendEventForRefreshProjectWorkloads(worker, content);
             return Task.CompletedTask;
         }
 
@@ -119,23 +122,24 @@ namespace Phenix.TPT.Plugin
             if (ImmediateWorkSchedules.TryGetValue(Standards.FormatYearMonth(year, month), out WorkSchedule workSchedule))
                 return Task.FromResult(workSchedule.Workers.Contains(worker));
 
-            throw new ArgumentOutOfRangeException(String.Format("查询不到{0}年{1}月的{2}工作档期记录!", year, month, worker));
+            throw new InvalidOperationException(String.Format("查询不到{0}年{1}月{2}的工作档期记录!", year, month, worker));
         }
 
-        Task<IDictionary<DateTime, WorkSchedule>> IWorkScheduleGrain.GetImmediateWorkSchedules()
+        Task<IList<WorkSchedule>> IWorkScheduleGrain.GetImmediateWorkSchedules()
         {
-            return Task.FromResult(ImmediateWorkSchedules);
+            IList<WorkSchedule> result = new List<WorkSchedule>(ImmediateWorkSchedules.Values);
+            return Task.FromResult(result);
         }
 
         Task IWorkScheduleGrain.PutWorkSchedule(WorkSchedule source)
         {
             int year = DateTime.Today.Year;
             if (source.Year < year || source.Year > year + 1)
-                throw new ArgumentOutOfRangeException(nameof(source), String.Format("提交的工作档期仅限于{0}年和{1}年的!", year, year + 1));
-            if (source.Month <= 1 || source.Month >= 12)
-                throw new ArgumentOutOfRangeException(nameof(source), "提交的工作档期月份仅限于1-12之间!");
+                throw new ValidationException(String.Format("提交的工作档期仅限于{0}年和{1}年的!", year, year + 1));
+            if (source.Month < 1 || source.Month > 12)
+                throw new ValidationException("提交的工作档期月份仅限于1-12之间!");
             if (source.Manager != Manager)
-                throw new ArgumentException(String.Format("提交的工作档期管理人员应该是{0}!", Manager), nameof(source));
+                throw new ValidationException(String.Format("提交的工作档期管理人员应该是{0}!", Manager));
 
             List<string> workers = new List<string>();
             DateTime yearMonth = Standards.FormatYearMonth(source.Year, source.Month);
@@ -158,7 +162,7 @@ namespace Phenix.TPT.Plugin
                 if (!workers.Contains(worker))
                     workers.Add(worker);
             foreach (string worker in workers)
-                SendEventForRefreshProjectWorkloads(worker);
+                SendEventForRefreshProjectWorkloads(worker, Manager);
             return Task.CompletedTask;
         }
 

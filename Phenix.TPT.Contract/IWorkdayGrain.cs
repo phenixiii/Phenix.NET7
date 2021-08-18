@@ -13,19 +13,19 @@ namespace Phenix.TPT.Contract
     public interface IWorkdayGrain : Phenix.Actor.IGrain, IGrainWithIntegerCompoundKey
     {
         /// <summary>
-        /// 获取本年度某月工作日
+        /// 获取某年某月工作日
         /// </summary>
-        Task<short> GetCurrentYearWorkdays(short month);
+        Task<short> GetWorkdays(short year, short month);
 
         /// <summary>
         /// 获取本年度工作日
         /// </summary>
-        Task<IDictionary<short, Workday>> GetCurrentYearWorkdays();
+        Task<IList<Workday>> GetCurrentYearWorkdays();
 
         /// <summary>
         /// 获取次年度工作日
         /// </summary>
-        Task<IDictionary<short, Workday>> GetNextYearWorkdays();
+        Task<IList<Workday>> GetNextYearWorkdays();
 
         /// <summary>
         /// 更新工作日(如不存在则新增)

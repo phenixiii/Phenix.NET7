@@ -9,6 +9,9 @@ using Phenix.Core.Data.Schema;
    builder:    phenixiii
    build time: 2021-08-09 17:34:10
    mapping to: PT7_WORK_SCHEDULE 工作档期
+   revision record: 
+    1，属性Workers类型改成IList<string>
+    2，添加YearMonth属性用于FetchKeyValues
 */
 
 namespace Phenix.TPT.Business

@@ -148,7 +148,7 @@ namespace Phenix.TPT.Plugin
         private void SendEventForRefreshProjectWorkloads(string receiver)
         {
             ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.RefreshProjectWorkloadsStreamId,
-                Standards.FormatCompoundKey(Kernel.OriginateTeams, receiver)).OnNextAsync("*");
+                Standards.FormatCompoundKey(Kernel.OriginateTeams, receiver)).OnNextAsync(receiver);
         }
 
         #endregion
@@ -231,7 +231,8 @@ namespace Phenix.TPT.Plugin
                 {
                     decimal subTotalReceivables = totalReceivables - item.AnnualReceivables;
                     if (source.AnnualReceivables > Kernel.ContAmount - subTotalReceivables)
-                        throw new ValidationException(String.Format("本应收款({0})已超过可报数额({1})!", source.AnnualReceivables, Kernel.ContAmount - subTotalReceivables));
+                        throw new ValidationException(String.Format("本应收款({0})已超过{1}可报数额({2})!", 
+                            source.AnnualReceivables, Kernel.ProjectName, Kernel.ContAmount - subTotalReceivables));
 
                     item.UpdateSelf(source);
                     TotalReceivables = subTotalReceivables + source.AnnualReceivables;
@@ -239,7 +240,8 @@ namespace Phenix.TPT.Plugin
                 }
 
             if (source.AnnualReceivables > Kernel.ContAmount - totalReceivables)
-                throw new ValidationException(String.Format("本应收款({0})已超过可报数额({1})!", source.AnnualReceivables, Kernel.ContAmount - totalReceivables));
+                throw new ValidationException(String.Format("本应收款({0})已超过{1}可报数额({2})!",
+                    source.AnnualReceivables, Kernel.ProjectName, Kernel.ContAmount - totalReceivables));
 
             source.InsertSelf();
             ProjectAnnualPlanList.Add(source);
@@ -304,7 +306,8 @@ namespace Phenix.TPT.Plugin
         {
             decimal totalInvoiceAmount = TotalInvoiceAmount;
             if (source.InvoiceAmount > Kernel.ContAmount - totalInvoiceAmount)
-                throw new ValidationException(String.Format("本开票金额({0})已超过可开数额({1})!", source.InvoiceAmount, Kernel.ContAmount - totalInvoiceAmount));
+                throw new ValidationException(String.Format("本开票金额({0})已超过{1}可开数额({2})!",
+                    source.InvoiceAmount, Kernel.ProjectName, Kernel.ContAmount - totalInvoiceAmount));
 
             source.InsertSelf();
             ProjectProceedsList.Add(source);
@@ -323,7 +326,7 @@ namespace Phenix.TPT.Plugin
                 }
 
             if (projectProceeds == null)
-                throw new ValidationException("未找到可删除的开票记录!");
+                throw new ArgumentException(String.Format("未找到{0}可删除的开票记录!", Kernel.ProjectName), nameof(id));
 
             projectProceeds.DeleteSelf();
             ProjectProceedsList.Remove(projectProceeds);
@@ -364,7 +367,7 @@ namespace Phenix.TPT.Plugin
                 }
 
             if (projectExpenses == null)
-                throw new ValidationException("未找到可删除的报销记录!");
+                throw new ArgumentException(String.Format("未找到{0}可删除的报销记录!", Kernel.ProjectName), nameof(id));
 
             projectExpenses.DeleteSelf();
             ProjectExpensesList.Remove(projectExpenses);

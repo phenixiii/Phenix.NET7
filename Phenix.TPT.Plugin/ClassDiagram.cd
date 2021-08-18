@@ -1,45 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Phenix.TPT.Plugin.WorkdayGrain">
-    <Position X="0.5" Y="0.5" Width="3.75" />
+    <Position X="0.5" Y="0.5" Width="3.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAAAAABEAABAAAAAAAAAIAAABgAAAAAAACAAUAACA=</HashCode>
+      <HashCode>AAAABAAABEAABAAAAAAAAAIAAABgAAAAAAACAAUAACA=</HashCode>
       <FileName>WorkdayGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.TPT.Plugin.WorkScheduleGrain">
-    <Position X="4.5" Y="0.5" Width="3.75" />
+    <Position X="4" Y="0.5" Width="3.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>ACAACAAAAAAAAAAgAgAAQAAAAAAABAAAAAABAAQAAAA=</HashCode>
+      <HashCode>QCAACAAAAAAAAAAgAAAAQAAAAAAABABAIAABABQACAA=</HashCode>
       <FileName>WorkScheduleGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.TPT.Plugin.ProjectGrain">
-    <Position X="0.5" Y="4" Width="3.5" />
+    <Position X="0.5" Y="4.5" Width="3.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>QKQBQCAAAgAAAQADgAgQCgQAwAAAIAQBACABAUAAQAU=</HashCode>
+      <HashCode>QKQBQCEAAwAAAQADgAgACgQAwAAAIAQBACABAUAAQAU=</HashCode>
       <FileName>ProjectGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.TPT.Plugin.WorkerGrain">
-    <Position X="4.25" Y="4" Width="2.75" />
+    <Position X="4.25" Y="4.5" Width="2.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQQQAA=</HashCode>
+      <HashCode>AAAAABAAAAAAAAAAAQAAAAAAAAAAAABAIAAAAAQQSAA=</HashCode>
       <FileName>WorkerGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />

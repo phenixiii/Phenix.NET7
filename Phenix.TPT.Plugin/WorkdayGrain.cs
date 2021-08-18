@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Phenix.Actor;
 using Phenix.TPT.Business;
@@ -76,7 +77,7 @@ namespace Phenix.TPT.Plugin
             {
                 if (_nextYearWorkdays == null)
                 {
-                    IDictionary<short, Workday>  nextYearWorkdays = Workday.FetchKeyValues(Database,
+                    IDictionary<short, Workday> nextYearWorkdays = Workday.FetchKeyValues(Database,
                         p => p.Month,
                         p => p.OriginateTeams == RootTeamsId && p.Year == Year + 1);
                     if (nextYearWorkdays.Count == 0)
@@ -95,10 +96,12 @@ namespace Phenix.TPT.Plugin
 
         #region 方法
 
-        Task<short> IWorkdayGrain.GetCurrentYearWorkdays(short month)
+        Task<short> IWorkdayGrain.GetWorkdays(short year, short month)
         {
-            if (month <= 1 || month >= 12)
-                throw new ArgumentOutOfRangeException(nameof(month), "查询的工作日月份仅限于1-12之间!");
+            if (year < Year || year > Year + 1)
+                throw new ValidationException(String.Format("查询的工作日仅限于{0}年和{1}年的!", year, year + 1));
+            if (month < 1 || month > 12)
+                throw new ValidationException("查询的工作日月份仅限于1-12之间!");
 
             Workday workday = CurrentYearWorkdays[month];
             if (workday.Days == 0)
@@ -107,28 +110,30 @@ namespace Phenix.TPT.Plugin
             return Task.FromResult(workday.Days);
         }
 
-        Task<IDictionary<short, Workday>> IWorkdayGrain.GetCurrentYearWorkdays()
+        Task<IList<Workday>> IWorkdayGrain.GetCurrentYearWorkdays()
         {
-            return Task.FromResult(CurrentYearWorkdays);
+            IList<Workday> result = new List<Workday>(CurrentYearWorkdays.Values);
+            return Task.FromResult(result);
         }
 
-        Task<IDictionary<short, Workday>> IWorkdayGrain.GetNextYearWorkdays()
+        Task<IList<Workday>> IWorkdayGrain.GetNextYearWorkdays()
         {
-            return Task.FromResult(NextYearWorkdays);
+            IList<Workday> result = new List<Workday>(NextYearWorkdays.Values);
+            return Task.FromResult(result);
         }
 
         Task IWorkdayGrain.PutWorkday(Workday source)
         {
-            if (source.Month <= 1 || source.Month >= 12)
-                throw new ArgumentOutOfRangeException(nameof(source), "提交的工作日月份仅限于1-12之间!");
-            if (source.Days <= 15 || source.Days >= 25)
-                throw new ArgumentOutOfRangeException(nameof(source), "提交的工作日天数仅限于15-25之间!");
+            if (source.Month < 1 || source.Month > 12)
+                throw new ValidationException("提交的工作日月份仅限于1-12之间!");
+            if (source.Days < 15 || source.Days > 25)
+                throw new ValidationException("提交的工作日天数仅限于15-25之间!");
 
             Workday workday = source.Year == Year
                 ? CurrentYearWorkdays[source.Month]
                 : source.Year == Year + 1
                     ? NextYearWorkdays[source.Month]
-                    : throw new ArgumentOutOfRangeException(nameof(source), String.Format("提交的工作日仅限于{0}年和{1}年的!", Year, Year + 1));
+                    : throw new ValidationException(String.Format("提交的工作日仅限于{0}年和{1}年的!", Year, Year + 1));
 
             if (workday.Days == 0)
             {

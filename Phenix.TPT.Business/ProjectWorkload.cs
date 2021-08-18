@@ -7,6 +7,8 @@ using Phenix.Core.Data.Schema;
    builder:    phenixiii
    build time: 2021-08-17 15:15:24
    mapping to: PT7_PROJECT_WORKLOAD 项目工作量
+   revision record: 
+    1，添加Workload属性用于统计工作量
 */
 
 namespace Phenix.TPT.Business
@@ -17,6 +19,13 @@ namespace Phenix.TPT.Business
     [Serializable]
     public class ProjectWorkload : ProjectWorkload<ProjectWorkload>
     {
+        /// <summary>
+        /// 人天
+        /// </summary>
+        public int Workload
+        {
+            get { return ManageWorkload + InvestigateWorkload + DevelopWorkload + TestWorkload + ImplementWorkload + MaintenanceWorkload; }
+        }
     }
 
     /// <summary>
@@ -41,7 +50,7 @@ namespace Phenix.TPT.Business
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
         protected ProjectWorkload(string dataSourceKey,
-            long id, short year, short month, string worker, long piId, string projectName, short manageWorkloadRole, short investigateWorkloadRole, short developWorkloadRole, short testWorkloadRole, short implementWorkloadRole, short maintenanceWorkloadRole, long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime) 
+            long id, short year, short month, string worker, long piId, string projectName, short manageWorkload, short investigateWorkload, short developWorkload, short testWorkload, short implementWorkload, short maintenanceWorkload, long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime) 
             : base(dataSourceKey)
         {
             _id = id;
@@ -50,12 +59,12 @@ namespace Phenix.TPT.Business
             _worker = worker;
             _piId = piId;
             _projectName = projectName;
-            _manageWorkloadRole = manageWorkloadRole;
-            _investigateWorkloadRole = investigateWorkloadRole;
-            _developWorkloadRole = developWorkloadRole;
-            _testWorkloadRole = testWorkloadRole;
-            _implementWorkloadRole = implementWorkloadRole;
-            _maintenanceWorkloadRole = maintenanceWorkloadRole;
+            _manageWorkload = manageWorkload;
+            _investigateWorkload = investigateWorkload;
+            _developWorkload = developWorkload;
+            _testWorkload = testWorkload;
+            _implementWorkload = implementWorkload;
+            _maintenanceWorkload = maintenanceWorkload;
             _originator = originator;
             _originateTime = originateTime;
             _originateTeams = originateTeams;
@@ -139,76 +148,76 @@ namespace Phenix.TPT.Business
             set { _projectName = value; }
         }
 
-        private short _manageWorkloadRole;
+        private short _manageWorkload;
         /// <summary>
         /// 项目管理人天
         /// </summary>
         [Display(Description = @"项目管理人天")]
-        [Column("PW_MANAGE_WORKLOAD_ROLE")]
-        public short ManageWorkloadRole
+        [Column("PW_MANAGE_WORKLOAD")]
+        public short ManageWorkload
         {
-            get { return _manageWorkloadRole; }
-            set { _manageWorkloadRole = value; }
+            get { return _manageWorkload; }
+            set { _manageWorkload = value; }
         }
 
-        private short _investigateWorkloadRole;
+        private short _investigateWorkload;
         /// <summary>
         /// 调研分析人天
         /// </summary>
         [Display(Description = @"调研分析人天")]
-        [Column("PW_INVESTIGATE_WORKLOAD_ROLE")]
-        public short InvestigateWorkloadRole
+        [Column("PW_INVESTIGATE_WORKLOAD")]
+        public short InvestigateWorkload
         {
-            get { return _investigateWorkloadRole; }
-            set { _investigateWorkloadRole = value; }
+            get { return _investigateWorkload; }
+            set { _investigateWorkload = value; }
         }
 
-        private short _developWorkloadRole;
+        private short _developWorkload;
         /// <summary>
         /// 设计开发人天
         /// </summary>
         [Display(Description = @"设计开发人天")]
-        [Column("PW_DEVELOP_WORKLOAD_ROLE")]
-        public short DevelopWorkloadRole
+        [Column("PW_DEVELOP_WORKLOAD")]
+        public short DevelopWorkload
         {
-            get { return _developWorkloadRole; }
-            set { _developWorkloadRole = value; }
+            get { return _developWorkload; }
+            set { _developWorkload = value; }
         }
 
-        private short _testWorkloadRole;
+        private short _testWorkload;
         /// <summary>
         /// 联调测试人天
         /// </summary>
         [Display(Description = @"联调测试人天")]
-        [Column("PW_TEST_WORKLOAD_ROLE")]
-        public short TestWorkloadRole
+        [Column("PW_TEST_WORKLOAD")]
+        public short TestWorkload
         {
-            get { return _testWorkloadRole; }
-            set { _testWorkloadRole = value; }
+            get { return _testWorkload; }
+            set { _testWorkload = value; }
         }
 
-        private short _implementWorkloadRole;
+        private short _implementWorkload;
         /// <summary>
         /// 培训实施人天
         /// </summary>
         [Display(Description = @"培训实施人天")]
-        [Column("PW_IMPLEMENT_WORKLOAD_ROLE")]
-        public short ImplementWorkloadRole
+        [Column("PW_IMPLEMENT_WORKLOAD")]
+        public short ImplementWorkload
         {
-            get { return _implementWorkloadRole; }
-            set { _implementWorkloadRole = value; }
+            get { return _implementWorkload; }
+            set { _implementWorkload = value; }
         }
 
-        private short _maintenanceWorkloadRole;
+        private short _maintenanceWorkload;
         /// <summary>
         /// 质保维保人天
         /// </summary>
         [Display(Description = @"质保维保人天")]
-        [Column("PW_MAINTENANCE_WORKLOAD_ROLE")]
-        public short MaintenanceWorkloadRole
+        [Column("PW_MAINTENANCE_WORKLOAD")]
+        public short MaintenanceWorkload
         {
-            get { return _maintenanceWorkloadRole; }
-            set { _maintenanceWorkloadRole = value; }
+            get { return _maintenanceWorkload; }
+            set { _maintenanceWorkload = value; }
         }
 
         private long _originator;

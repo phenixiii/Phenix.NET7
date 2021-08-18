@@ -16,5 +16,11 @@ namespace Phenix.TPT.Contract
         /// 获取某年某月项目工作量
         /// </summary>
         Task<IList<ProjectWorkload>> GetProjectWorkloads(short year, short month);
+
+        /// <summary>
+        /// 更新项目工作量(如不存在则新增)
+        /// </summary>
+        /// <param name="source">数据源</param>
+        Task PutProjectWorkload(ProjectWorkload source);
     }
 }

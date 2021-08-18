@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans;
 using Phenix.TPT.Business;
@@ -21,7 +20,7 @@ namespace Phenix.TPT.Contract
         /// <summary>
         /// 获取近期工作档期
         /// </summary>
-        Task<IDictionary<DateTime, WorkSchedule>> GetImmediateWorkSchedules();
+        Task<IList<WorkSchedule>> GetImmediateWorkSchedules();
 
         /// <summary>
         /// 更新工作档期(如不存在则新增)
