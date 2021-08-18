@@ -4120,6 +4120,11 @@
             是根实体
             </summary>
         </member>
+        <member name="P:Phenix.Core.Data.Model.EntityBase`1.PrimaryKey">
+            <summary>
+            主键值
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Data.Model.EntityBase`1.PrimaryKeyLong">
             <summary>
             主键值
@@ -9951,6 +9956,39 @@
             取标准属性名(剔除后缀)
             </summary>
             <param name="binderName">类属性名/类字段名/参数名</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Standards.FormatCompoundKey(System.Object,System.Object)">
+            <summary>
+            格式化复合键
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Standards.FormatCompoundKey(System.Object,System.Object,System.Object)">
+            <summary>
+            格式化复合键
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Standards.FormatCompoundKey(System.Object,System.Object,System.Object,System.Object)">
+            <summary>
+            格式化复合键
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Standards.FormatCompoundKey(System.Object,System.Object,System.Object,System.Object,System.Object)">
+            <summary>
+            格式化复合键
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Standards.SplitCompoundKey(System.String)">
+            <summary>
+            分解复合键
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Standards.FormatYearMonth(System.Int32,System.Int32)">
+            <summary>
+            格式化年月
+            </summary>
+            <param name="year">年</param>
+            <param name="month">月</param>
+            <returns>格式化年月</returns>
         </member>
         <member name="M:Phenix.Core.Data.Standards.ExtractCultureText(System.String,System.Globalization.CultureInfo)">
             <summary>

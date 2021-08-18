@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Orleans.Streams;
 using Phenix.Actor;
 using Phenix.Core.Data;
 using Phenix.Core.SyncCollections;
@@ -14,9 +15,29 @@ namespace Phenix.TPT.Plugin
     /// key: RootTeamsId
     /// keyExtension: Worker
     /// </summary>
-    public class WorkerGrain : GrainBase, IWorkerGrain
+    public class WorkerGrain : StreamGrainBase<string>, IWorkerGrain
     {
         #region 属性
+        
+        #region Stream
+
+        /// <summary>
+        /// StreamId
+        /// </summary>
+        protected override Guid StreamId
+        {
+            get { return StreamConfig.RefreshProjectWorkloadsStreamId; }
+        }
+
+        /// <summary>
+        /// (自己作为Observer)侦听的一组StreamNamespace
+        /// </summary>
+        protected override string[] ListenStreamNamespaces
+        {
+            get { return new string[] { Standards.FormatCompoundKey(RootTeamsId, Worker) }; }
+        }
+
+        #endregion
 
         /// <summary>
         /// 所属公司ID
@@ -40,6 +61,22 @@ namespace Phenix.TPT.Plugin
         #endregion
 
         #region 方法
+
+
+        #region Stream
+        
+        /// <summary>
+        /// 接收消息
+        /// </summary>
+        /// <param name="content">消息内容</param>
+        /// <param name="token">StreamSequenceToken</param>
+        protected override Task OnReceiving(string content, StreamSequenceToken token)
+        {
+            _projectWorkloads.Clear();
+            return Task.CompletedTask;
+        }
+
+        #endregion
 
         Task<IList<ProjectWorkload>> IWorkerGrain.GetProjectWorkloads(short year, short month)
         {
@@ -71,12 +108,6 @@ namespace Phenix.TPT.Plugin
                                 Set(p => p.ProjectName, item.ProjectName)));
                 return new List<ProjectWorkload>(result.Values);
             }));
-        }
-
-        Task IWorkerGrain.ResetProjectWorkloads()
-        {
-            _projectWorkloads.Clear();
-            return Task.CompletedTask;
         }
 
         #endregion

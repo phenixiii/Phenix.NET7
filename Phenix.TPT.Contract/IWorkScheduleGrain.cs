@@ -28,10 +28,5 @@ namespace Phenix.TPT.Contract
         /// </summary>
         /// <param name="source">数据源</param>
         Task PutWorkSchedule(WorkSchedule source);
-
-        /// <summary>
-        /// 重置工作人员项目工作量
-        /// </summary>
-        Task ResetWorkerProjectWorkloads();
     }
 }

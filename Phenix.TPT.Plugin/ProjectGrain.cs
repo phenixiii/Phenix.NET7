@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Phenix.Actor;
+using Phenix.Core.Data;
 using Phenix.TPT.Business;
 using Phenix.TPT.Contract;
 
@@ -142,6 +143,16 @@ namespace Phenix.TPT.Plugin
 
         #region 方法
 
+        #region Stream
+
+        private void SendEventForRefreshProjectWorkloads(string receiver)
+        {
+            ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.RefreshProjectWorkloadsStreamId,
+                Standards.FormatCompoundKey(Kernel.OriginateTeams, receiver)).OnNextAsync("*");
+        }
+
+        #endregion
+
         #region Kernel
 
         /// <summary>
@@ -157,13 +168,13 @@ namespace Phenix.TPT.Plugin
 
             if (oldProjectManager != Kernel.ProjectManager)
             {
-                ClusterClient.GetGrain<IWorkScheduleGrain>(Kernel.OriginateTeams, oldProjectManager).ResetWorkerProjectWorkloads();
-                ClusterClient.GetGrain<IWorkScheduleGrain>(Kernel.OriginateTeams, Kernel.ProjectManager).ResetWorkerProjectWorkloads();
+                SendEventForRefreshProjectWorkloads(oldProjectManager);
+                SendEventForRefreshProjectWorkloads(Kernel.ProjectManager);
             }
             if (oldDevelopManager != Kernel.DevelopManager)
             {
-                ClusterClient.GetGrain<IWorkScheduleGrain>(Kernel.OriginateTeams, oldDevelopManager).ResetWorkerProjectWorkloads();
-                ClusterClient.GetGrain<IWorkScheduleGrain>(Kernel.OriginateTeams, Kernel.DevelopManager).ResetWorkerProjectWorkloads();
+                SendEventForRefreshProjectWorkloads(oldDevelopManager);
+                SendEventForRefreshProjectWorkloads(Kernel.DevelopManager);
             }
 
             return Task.CompletedTask;
@@ -182,13 +193,13 @@ namespace Phenix.TPT.Plugin
 
             if (oldProjectManager != Kernel.ProjectManager)
             {
-                ClusterClient.GetGrain<IWorkScheduleGrain>(Kernel.OriginateTeams, oldProjectManager).ResetWorkerProjectWorkloads();
-                ClusterClient.GetGrain<IWorkScheduleGrain>(Kernel.OriginateTeams, Kernel.ProjectManager).ResetWorkerProjectWorkloads();
+                SendEventForRefreshProjectWorkloads(oldProjectManager);
+                SendEventForRefreshProjectWorkloads(Kernel.ProjectManager);
             }
             if (oldDevelopManager != Kernel.DevelopManager)
             {
-                ClusterClient.GetGrain<IWorkScheduleGrain>(Kernel.OriginateTeams, oldDevelopManager).ResetWorkerProjectWorkloads();
-                ClusterClient.GetGrain<IWorkScheduleGrain>(Kernel.OriginateTeams, Kernel.DevelopManager).ResetWorkerProjectWorkloads();
+                SendEventForRefreshProjectWorkloads(oldDevelopManager);
+                SendEventForRefreshProjectWorkloads(Kernel.DevelopManager);
             }
 
             return Task.CompletedTask;

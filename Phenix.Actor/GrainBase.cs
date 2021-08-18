@@ -142,7 +142,7 @@ namespace Phenix.Actor
         private void SplitPrimaryKeyString()
         {
             string primaryKeyString = this.GetPrimaryKeyString();
-            string[] strings = primaryKeyString.Split(Standards.RowSeparator);
+            string[] strings = Standards.SplitCompoundKey(primaryKeyString);
             if (strings.Length == 2)
             {
                 _primaryKeyString = strings[0];

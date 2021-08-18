@@ -62,7 +62,7 @@ namespace Phenix.Actor
         /// <returns>Orleans服务集群客户端</returns>
         public static IClusterClient Fetch(string clusterId, string serviceId, string connectionString)
         {
-            return _cache.GetValue(String.Format("{0}*{1}", clusterId, serviceId), () =>
+            return _cache.GetValue(Standards.FormatCompoundKey(clusterId, serviceId), () =>
             {
                 IClusterClient value = new ClientBuilder()
                     .Configure<SerializationProviderOptions>(options =>

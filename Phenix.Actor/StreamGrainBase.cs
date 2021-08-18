@@ -23,7 +23,7 @@ namespace Phenix.Actor
         /// <summary>
         /// (自己作为Observer)侦听的一组StreamNamespace
         /// </summary>
-        protected virtual IList<string> ListenStreamNamespaces
+        protected virtual string[] ListenStreamNamespaces
         {
             get { return null; }
         }
@@ -40,7 +40,7 @@ namespace Phenix.Actor
                 if (_listenStreamWorkers == null)
                 {
                     Dictionary<string, IAsyncStream<TEvent>> result = new Dictionary<string, IAsyncStream<TEvent>>(StringComparer.Ordinal);
-                    IList<string> listenStreamNamespaces = ListenStreamNamespaces;
+                    string[] listenStreamNamespaces = ListenStreamNamespaces;
                     if (listenStreamNamespaces != null)
                         foreach (string streamNamespace in listenStreamNamespaces)
                             result[streamNamespace] = ClusterClient.GetStreamProvider().GetStream<TEvent>(StreamId, streamNamespace);

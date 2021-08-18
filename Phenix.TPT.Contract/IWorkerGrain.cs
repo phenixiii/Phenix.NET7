@@ -16,10 +16,5 @@ namespace Phenix.TPT.Contract
         /// 获取某年某月项目工作量
         /// </summary>
         Task<IList<ProjectWorkload>> GetProjectWorkloads(short year, short month);
-
-        /// <summary>
-        /// 重置项目工作量
-        /// </summary>
-        Task ResetProjectWorkloads();
     }
 }

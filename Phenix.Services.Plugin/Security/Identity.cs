@@ -61,7 +61,7 @@ namespace Phenix.Services.Plugin.Security
             if (String.IsNullOrEmpty(userName))
                 return null;
 
-            string primaryKey = FormatPrimaryKey(companyName, userName);
+            string primaryKey = Standards.FormatCompoundKey(companyName, userName);
             cacheDiscardIntervalHours = cacheDiscardIntervalHours ?? CacheDiscardIntervalHours;
             if (cacheDiscardIntervalHours > 0 && _cache.TryGetValue(primaryKey, out CachedObject<Identity> cachedObject))
             {
@@ -85,7 +85,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         public string PrimaryKey
         {
-            get { return _primaryKey ??= FormatPrimaryKey(_companyName, _userName); }
+            get { return _primaryKey ??= Standards.FormatCompoundKey(_companyName, _userName); }
         }
 
         private readonly string _companyName;
@@ -192,14 +192,9 @@ namespace Phenix.Services.Plugin.Security
 
         #region ·½·¨
         
-        private static string FormatPrimaryKey(string key, string keyExtension)
-        {
-            return String.Format("{0}{1}{2}", key, Standards.RowSeparator, keyExtension);
-        }
-
         string IIdentity.FormatPrimaryKey(string keyExtension)
         {
-            return FormatPrimaryKey(CompanyName, keyExtension);
+            return Standards.FormatCompoundKey(CompanyName, keyExtension);
         }
 
         Task<bool> IIdentity.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, string requestSession, bool throwIfNotConform)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Threading.Tasks;
+using Orleans.Streams;
 using Phenix.Actor;
 using Phenix.Core.Data;
 using Phenix.TPT.Business;
@@ -14,9 +15,29 @@ namespace Phenix.TPT.Plugin
     /// key: RootTeamsId
     /// keyExtension: Manager
     /// </summary>
-    public class WorkScheduleGrain : GrainBase, IWorkScheduleGrain
+    public class WorkScheduleGrain : StreamGrainBase<string>, IWorkScheduleGrain
     {
         #region 属性
+
+        #region Stream
+
+        /// <summary>
+        /// StreamId
+        /// </summary>
+        protected override Guid StreamId
+        {
+            get { return StreamConfig.RefreshProjectWorkloadsStreamId; }
+        }
+
+        /// <summary>
+        /// (自己作为Observer)侦听的一组StreamNamespace
+        /// </summary>
+        protected override string[] ListenStreamNamespaces
+        {
+            get { return new string[] {Standards.FormatCompoundKey(RootTeamsId, Manager)}; }
+        }
+
+        #endregion
 
         /// <summary>
         /// 所属公司ID
@@ -60,6 +81,36 @@ namespace Phenix.TPT.Plugin
         #endregion
 
         #region 方法
+
+        #region Stream
+
+        private void SendEventForRefreshProjectWorkloads(string receiver)
+        {
+            if (receiver == Manager)
+                return;
+
+            ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.RefreshProjectWorkloadsStreamId,
+                Standards.FormatCompoundKey(RootTeamsId, receiver)).OnNextAsync("*");
+        }
+
+        /// <summary>
+        /// 接收消息
+        /// </summary>
+        /// <param name="content">消息内容</param>
+        /// <param name="token">StreamSequenceToken</param>
+        protected override Task OnReceiving(string content, StreamSequenceToken token)
+        {
+            List<string> workers = new List<string>();
+            foreach (KeyValuePair<DateTime, WorkSchedule> kvp in ImmediateWorkSchedules)
+            foreach (string worker in kvp.Value.Workers)
+                if (!workers.Contains(worker))
+                    workers.Add(worker);
+            foreach (string worker in workers)
+                SendEventForRefreshProjectWorkloads(worker);
+            return Task.CompletedTask;
+        }
+
+        #endregion
 
         Task<bool> IWorkScheduleGrain.HaveWorkSchedule(string worker, short year, short month)
         {
@@ -107,7 +158,7 @@ namespace Phenix.TPT.Plugin
                 if (!workers.Contains(worker))
                     workers.Add(worker);
             foreach (string worker in workers)
-                ClusterClient.GetGrain<IWorkerGrain>(RootTeamsId, worker).ResetProjectWorkloads();
+                SendEventForRefreshProjectWorkloads(worker);
             return Task.CompletedTask;
         }
 
@@ -116,19 +167,6 @@ namespace Phenix.TPT.Plugin
             workSchedule.DeleteDetails<WorkScheduleWorker>(dbTransaction);
             foreach (string worker in workSchedule.Workers)
                 workSchedule.NewDetail(WorkScheduleWorker.Set(p => p.Worker, worker)).InsertSelf(dbTransaction);
-        }
-
-        Task IWorkScheduleGrain.ResetWorkerProjectWorkloads()
-        {
-            List<string> workers = new List<string>();
-            foreach (KeyValuePair<DateTime, WorkSchedule> kvp in ImmediateWorkSchedules)
-            foreach (string worker in kvp.Value.Workers)
-                if (!workers.Contains(worker))
-                    workers.Add(worker);
-            foreach (string worker in workers)
-                ClusterClient.GetGrain<IWorkerGrain>(RootTeamsId, worker).ResetProjectWorkloads();
-            ClusterClient.GetGrain<IWorkerGrain>(RootTeamsId, Manager).ResetProjectWorkloads();
-            return Task.CompletedTask;
         }
 
         #endregion
