@@ -2,9 +2,9 @@
 
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
-		<Version>7.5.48</Version>
-		<AssemblyVersion>7.5.48.0610</AssemblyVersion>
-		<FileVersion>7.5.48.0610</FileVersion>
+		<Version>7.5.50</Version>
+		<AssemblyVersion>7.5.50.0807</AssemblyVersion>
+		<FileVersion>7.5.50.0807</FileVersion>
 		<Description>Phenix Framework 7.5 for .NET 5</Description>
 		<Authors>ming</Authors>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -26,9 +26,6 @@
 	<PropertyGroup>
 		<ServerGarbageCollection>true</ServerGarbageCollection>
 		<ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
-		<!-- Warning: Setting the following switch is *NOT* recommended in web apps. -->
-		<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
-		<UserSecretsId>4bbfcbb3-1606-4370-8c9f-a746c6b10d6c</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
