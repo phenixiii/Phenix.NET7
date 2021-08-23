@@ -85,14 +85,14 @@ namespace Phenix.TPT.Plugin
 
         #region Stream
 
-        private void SendEventForRefreshProjectWorkloads(string receiver, string content)
+        private Task SendEventForRefreshProjectWorkloads(string receiver, string content)
         {
             if (receiver == Manager)
-                return;
+                return Task.CompletedTask;
             if (content == Manager)
-                return;
+                return Task.CompletedTask;
 
-            ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.RefreshProjectWorkloadsStreamId,
+            return ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.RefreshProjectWorkloadsStreamId,
                 Standards.FormatCompoundKey(RootTeamsId, receiver)).OnNextAsync(content);
         }
 

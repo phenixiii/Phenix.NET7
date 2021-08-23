@@ -47,6 +47,11 @@ namespace Phenix.Services.Contract.Security
         Task<bool> IsValid(string timestamp, string signature, string requestAddress, string requestSession, bool throwIfNotConform);
 
         /// <summary>
+        /// 登出
+        /// </summary>
+        Task Logout();
+
+        /// <summary>
         /// 重置登录口令(静态口令即登录名)
         /// </summary>
         /// <returns>是否成功</returns>

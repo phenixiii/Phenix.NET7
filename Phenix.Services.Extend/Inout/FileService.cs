@@ -12,11 +12,6 @@ namespace Phenix.Services.Extend.Inout
     {
         #region 方法
 
-        /// <summary>
-        /// 当完成下载文件时触发
-        /// </summary>
-        /// <param name="message">上传消息</param>
-        /// <param name="sourcePath">读取路径</param>
         Task IFileService.AfterDownloadFile(string message, string sourcePath)
         {
             /*
@@ -26,12 +21,6 @@ namespace Phenix.Services.Extend.Inout
             return Task.CompletedTask;
         }
 
-        /// <summary>
-        /// 当完成上传文件时触发
-        /// </summary>
-        /// <param name="message">上传消息</param>
-        /// <param name="targetPath">写入路径</param>
-        /// <returns>完成上传时返回消息</returns>
         Task<string> IFileService.AfterUploadFile(string message, string targetPath)
         {
             /*

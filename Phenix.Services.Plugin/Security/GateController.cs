@@ -52,6 +52,17 @@ namespace Phenix.Services.Plugin.Security
             // ignored
         }
 
+        // phAjax.logout()
+        /// <summary>
+        /// 登出
+        /// </summary>
+        [Authorize]
+        [HttpDelete]
+        public async Task Logout()
+        {
+            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).Logout();
+        }
+
         #endregion
     }
 }

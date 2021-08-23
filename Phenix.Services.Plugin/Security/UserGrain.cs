@@ -109,6 +109,16 @@ namespace Phenix.Services.Plugin.Security
             return Task.FromResult(Kernel.IsValid(timestamp, signature, requestAddress, requestSession, throwIfNotConform));
         }
 
+        async Task IUserGrain.Logout()
+        {
+            if (Kernel == null)
+                throw new UserNotFoundException();
+
+            Kernel.Logout();
+            if (_service != null)
+                await _service.OnLogout();
+        }
+
         Task<bool> IUserGrain.ResetPassword()
         {
             if (Kernel == null)

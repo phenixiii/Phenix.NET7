@@ -252,6 +252,34 @@ var phAjax = (function($) {
             });
         },
 
+        // 登出
+        logout: function(options) {
+            var defaults = {
+                cache: false, //默认不缓存
+            };
+            options = $.extend(defaults, options);
+            phAjax.call({
+                type: "DELETE",
+                path: "/api/security/gate",
+                onSuccess: function(result) {
+                    if (!options.cache) {
+                        setCompanyName("");
+                        setUserName("");
+                    }
+                    setUserSign("");
+                    setSession("");
+                },
+                onError: function(XMLHttpRequest, textStatus, errorThrown) {
+                    if (!options.cache) {
+                        setCompanyName("");
+                        setUserName("");
+                    }
+                    setUserSign("");
+                    setSession("");
+                },
+            });
+        },
+
         // 获取自己资料
         getMyself: function(options) {
             var defaults = {

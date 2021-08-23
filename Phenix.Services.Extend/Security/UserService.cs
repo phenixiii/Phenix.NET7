@@ -12,12 +12,6 @@ namespace Phenix.Services.Extend.Security
     {
         #region 方法
 
-        /// <summary>
-        /// 注册成功
-        /// </summary>
-        /// <param name="user">用户资料</param>
-        /// <param name="initialPassword">初始口令</param>
-        /// <returns>返回消息</returns>
         Task<string> IUserService.OnRegistered(User user, string initialPassword)
         {
             /*
@@ -30,12 +24,6 @@ namespace Phenix.Services.Extend.Security
                 : String.Format("您的初始口令存放于 {0} 目录下的日志文件里.", Phenix.Core.Log.EventLog.LocalDirectory));
         }
 
-        /// <summary>
-        /// 登记处理
-        /// </summary>
-        /// <param name="user">用户资料</param>
-        /// <param name="dynamicPassword">动态口令</param>
-        /// <returns>返回消息</returns>
         Task<string> IUserService.OnCheckIn(User user, string dynamicPassword)
         {
             /*
@@ -46,16 +34,19 @@ namespace Phenix.Services.Extend.Security
             return Task.FromResult(String.Format("您的动态口令存放于 {0} 目录下的日志文件里, 有效期 {1} 分钟.", Phenix.Core.Log.EventLog.LocalDirectory, User.DynamicPasswordValidityMinutes));
         }
 
-        /// <summary>
-        /// 登录完成
-        /// </summary>
-        /// <param name="user">用户资料</param>
-        /// <param name="tag">捎带数据(已解密, 默认是客户端当前时间)</param>
         Task IUserService.OnLogon(User user, string tag)
         {
             /*
              * 本函数被执行到，说明用户已通过身份验证
              * 可利用客户端传过来的 tag 扩展出系统自己的用户登录功能
+             */
+            return Task.CompletedTask;
+        }
+
+        Task IUserService.OnLogout()
+        {
+            /*
+             * 本函数被执行到，说明用户已退出系统
              */
             return Task.CompletedTask;
         }
