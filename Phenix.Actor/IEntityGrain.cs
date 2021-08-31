@@ -58,6 +58,11 @@ namespace Phenix.Actor
         Task PatchKernel(IDictionary<string, object> propertyValues);
 
         /// <summary>
+        /// 删除根实体对象
+        /// </summary>
+        Task DeleteKernel();
+
+        /// <summary>
         /// 获取根实体对象属性值
         /// </summary>
         /// <param name="propertyName">属性名</param>

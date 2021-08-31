@@ -10899,12 +10899,11 @@
             <param name="value">值</param>
             <param name="resultType">返回值的类型</param>
         </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.ConvertToDbValue(System.Object,System.Boolean)">
+        <member name="M:Phenix.Core.Reflection.Utilities.ConvertToDbValue(System.Object)">
             <summary>
             返回与数据库字段类型匹配的值
             </summary>
             <param name="value">值</param>
-            <param name="nullToDBNull">Null转换为DBNull</param>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.FindDetailListType(System.Type,System.String,System.Int32)">
             <summary>
@@ -12089,6 +12088,11 @@
             <param name="requestSession">服务请求会话签名</param>
             <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
             <returns>是否正确</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.User`1.Logout">
+            <summary>
+            核对有效性
+            </summary>
         </member>
         <member name="M:Phenix.Core.Security.User`1.IsValidLogon(System.String,System.String,System.String,System.String,System.Boolean)">
             <summary>

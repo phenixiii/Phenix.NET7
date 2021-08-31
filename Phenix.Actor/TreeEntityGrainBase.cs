@@ -54,6 +54,16 @@ namespace Phenix.Actor
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// 删除根实体对象
+        /// </summary>
+        protected override Task DeleteKernel()
+        {
+            if (Kernel != null)
+                Kernel.DeleteBranch();
+            return Task.CompletedTask;
+        }
+
         private TKernel GetNode(long id, bool throwIfNotFound = true)
         {
             if (Kernel == null)

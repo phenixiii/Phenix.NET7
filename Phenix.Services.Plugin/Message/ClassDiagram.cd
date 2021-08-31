@@ -51,7 +51,7 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>EAIAAAAAAAAAAAAQAAAAABAAAAACAAAAAAAAACAAAAA=</HashCode>
+      <HashCode>EAIAAAAAAAAAAAAQAAAAABAAAAAAAQAAAAAAACAAAAA=</HashCode>
       <FileName>Message\GroupMessageHub.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -63,6 +63,17 @@
     <TypeIdentifier>
       <HashCode>AIAAAAIAEAAAAABAAAEAAgAAAAAAAAAAAAAAAEAAAAA=</HashCode>
       <FileName>Message\UserMessageGrain.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Services.Plugin.Message.EmailGrain">
+    <Position X="0.5" Y="11" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAQAAgAAEAAQQAEDAAAgBEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Message\EmailGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>

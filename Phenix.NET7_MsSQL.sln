@@ -110,6 +110,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "crypto-js", "crypto-js", "{
 		Phenix.Client\lib\crypto-js\md5-min.js = Phenix.Client\lib\crypto-js\md5-min.js
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.TPT.Business_MsSQL", "Phenix.TPT.Business\Phenix.TPT.Business_MsSQL.csproj", "{7663BEEC-3B13-42FD-A2FA-0DD2C396EA3B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.TPT.Contract_MsSQL", "Phenix.TPT.Contract\Phenix.TPT.Contract_MsSQL.csproj", "{DBD93A3F-8E95-4F38-9322-FE0C8B100569}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.TPT.Plugin_MsSQL", "Phenix.TPT.Plugin\Phenix.TPT.Plugin_MsSQL.csproj", "{9B6CBE3F-7E8D-43C4-B2AE-CA9C0965AA14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -182,6 +188,18 @@ Global
 		{6D77E557-DE45-41A0-B9A5-157C17FB8ECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D77E557-DE45-41A0-B9A5-157C17FB8ECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D77E557-DE45-41A0-B9A5-157C17FB8ECF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7663BEEC-3B13-42FD-A2FA-0DD2C396EA3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7663BEEC-3B13-42FD-A2FA-0DD2C396EA3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7663BEEC-3B13-42FD-A2FA-0DD2C396EA3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7663BEEC-3B13-42FD-A2FA-0DD2C396EA3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBD93A3F-8E95-4F38-9322-FE0C8B100569}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBD93A3F-8E95-4F38-9322-FE0C8B100569}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBD93A3F-8E95-4F38-9322-FE0C8B100569}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBD93A3F-8E95-4F38-9322-FE0C8B100569}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B6CBE3F-7E8D-43C4-B2AE-CA9C0965AA14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B6CBE3F-7E8D-43C4-B2AE-CA9C0965AA14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B6CBE3F-7E8D-43C4-B2AE-CA9C0965AA14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B6CBE3F-7E8D-43C4-B2AE-CA9C0965AA14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

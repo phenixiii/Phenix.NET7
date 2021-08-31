@@ -348,9 +348,7 @@ namespace Phenix.Actor
 
             await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).PatchKernel(propertyValues);
         }
-
-
-
+        
         /// <summary>
         /// 更新根实体对象(如不存在则新增)
         /// </summary>
@@ -513,6 +511,78 @@ namespace Phenix.Actor
                 throw new ArgumentNullException(nameof(clusterClient));
 
             await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).PatchKernel(propertyValues);
+        }
+
+        /// <summary>
+        /// 删除根实体对象
+        /// </summary>
+        /// <param name="clusterClient">Orleans服务集群客户端</param>
+        /// <param name="primaryKey">主键</param>
+        public static async Task DeleteKernelAsync<TGrain>(this IClusterClient clusterClient, string primaryKey)
+            where TGrain : IEntityGrain, IGrainWithStringKey
+        {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
+            await clusterClient.GetGrain<TGrain>(primaryKey).DeleteKernel();
+        }
+
+        /// <summary>
+        /// 删除根实体对象
+        /// </summary>
+        /// <param name="clusterClient">Orleans服务集群客户端</param>
+        /// <param name="primaryKey">主键</param>
+        public static async Task DeleteKernelAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey)
+            where TGrain : IEntityGrain, IGrainWithGuidKey
+        {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
+            await clusterClient.GetGrain<TGrain>(primaryKey).DeleteKernel();
+        }
+
+        /// <summary>
+        /// 删除根实体对象
+        /// </summary>
+        /// <param name="clusterClient">Orleans服务集群客户端</param>
+        /// <param name="primaryKey">主键</param>
+        /// <param name="keyExtension">扩展主键</param>
+        public static async Task DeleteKernelAsync<TGrain>(this IClusterClient clusterClient, Guid primaryKey, string keyExtension)
+            where TGrain : IEntityGrain, IGrainWithGuidCompoundKey
+        {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
+            await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).DeleteKernel();
+        }
+
+        /// <summary>
+        /// 删除根实体对象
+        /// </summary>
+        /// <param name="clusterClient">Orleans服务集群客户端</param>
+        /// <param name="primaryKey">主键String</param>
+        public static async Task DeleteKernelAsync<TGrain>(this IClusterClient clusterClient, long primaryKey)
+            where TGrain : IEntityGrain, IGrainWithIntegerKey
+        {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
+            await clusterClient.GetGrain<TGrain>(primaryKey).DeleteKernel();
+        }
+
+        /// <summary>
+        /// 删除根实体对象
+        /// </summary>
+        /// <param name="clusterClient">Orleans服务集群客户端</param>
+        /// <param name="primaryKey">主键</param>
+        /// <param name="keyExtension">扩展主键</param>
+        public static async Task DeleteKernelAsync<TGrain>(this IClusterClient clusterClient, long primaryKey, string keyExtension)
+            where TGrain : IEntityGrain, IGrainWithIntegerCompoundKey
+        {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
+            await clusterClient.GetGrain<TGrain>(primaryKey, keyExtension).DeleteKernel();
         }
 
         /// <summary>

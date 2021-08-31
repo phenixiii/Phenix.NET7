@@ -33,7 +33,7 @@ namespace Phenix.Actor
         /// </summary>
         public static IClusterClient Default
         {
-            get { return _default ?? (_default = Fetch(Database.Default)); }
+            get { return _default ??= Fetch(Database.Default); }
         }
 
         #endregion

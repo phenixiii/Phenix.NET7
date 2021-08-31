@@ -6,11 +6,11 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "Phenix.Core\/7.5.50": {
+      "Phenix.Core\/7.5.51": {
         "dependencies": {
           "MySql.Data": "8.0.26",
           "Newtonsoft.Json": "13.0.1",
-          "System.Data.SQLite.Core": "1.0.114.3"
+          "System.Data.SQLite.Core": "1.0.115"
         },
         "runtime": {
           "Phenix.Core.dll": {}
@@ -111,11 +111,11 @@
           }
         }
       },
-      "Stub.System.Data.SQLite.Core.NetStandard\/1.0.114.3": {
+      "Stub.System.Data.SQLite.Core.NetStandard\/1.0.115": {
         "runtime": {
           "lib\/netstandard2.1\/System.Data.SQLite.dll": {
-            "assemblyVersion": "1.0.114.0",
-            "fileVersion": "1.0.114.0"
+            "assemblyVersion": "1.0.115.0",
+            "fileVersion": "1.0.115.0"
           }
         },
         "runtimeTargets": {
@@ -132,12 +132,12 @@
           "runtimes\/win-x64\/native\/SQLite.Interop.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "1.0.114.0"
+            "fileVersion": "1.0.115.0"
           },
           "runtimes\/win-x86\/native\/SQLite.Interop.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "1.0.114.0"
+            "fileVersion": "1.0.115.0"
           }
         }
       },
@@ -153,9 +153,9 @@
           }
         }
       },
-      "System.Data.SQLite.Core\/1.0.114.3": {
+      "System.Data.SQLite.Core\/1.0.115": {
         "dependencies": {
-          "Stub.System.Data.SQLite.Core.NetStandard": "1.0.114.3"
+          "Stub.System.Data.SQLite.Core.NetStandard": "1.0.115"
         }
       },
       "System.Drawing.Common\/4.7.0": {
@@ -208,7 +208,7 @@
     }
   },
   "libraries": {
-    "Phenix.Core\/7.5.50": {
+    "Phenix.Core\/7.5.51": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -276,12 +276,12 @@
       "path": "newtonsoft.json\/13.0.1",
       "hashPath": "newtonsoft.json.13.0.1.nupkg.sha512"
     },
-    "Stub.System.Data.SQLite.Core.NetStandard\/1.0.114.3": {
+    "Stub.System.Data.SQLite.Core.NetStandard\/1.0.115": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-qXqeVhPtbl\/i3t+YUPwbaAGCU+ci8TODUc5zQt6YCjlu5TVnCFiZAmLut3G0\/YjO0+FEm9y0l90X+8cem7h84g==",
-      "path": "stub.system.data.sqlite.core.netstandard\/1.0.114.3",
-      "hashPath": "stub.system.data.sqlite.core.netstandard.1.0.114.3.nupkg.sha512"
+      "sha512": "sha512-afpVRUKjuLZ17W2iv779YORpWQN40rJ82g\/ASC6Yq1J4emO+8hL316AISf5nJWfXecygLdqevzXxQZR7z2yRww==",
+      "path": "stub.system.data.sqlite.core.netstandard\/1.0.115",
+      "hashPath": "stub.system.data.sqlite.core.netstandard.1.0.115.nupkg.sha512"
     },
     "System.Buffers\/4.5.1": {
       "type": "package",
@@ -297,12 +297,12 @@
       "path": "system.configuration.configurationmanager\/4.4.1",
       "hashPath": "system.configuration.configurationmanager.4.4.1.nupkg.sha512"
     },
-    "System.Data.SQLite.Core\/1.0.114.3": {
+    "System.Data.SQLite.Core\/1.0.115": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-60qfErVKfVoqM1kWUX98QUBUBnivvtCezWB4Yk66AhdXCbPFxnRCq0eLc4LMrOPWOYl69X1xlmnEQ+FowqmDvg==",
-      "path": "system.data.sqlite.core\/1.0.114.3",
-      "hashPath": "system.data.sqlite.core.1.0.114.3.nupkg.sha512"
+      "sha512": "sha512-OuzSKnAnXtbsB7MUddjLiLAUEuEu8kJco3jWllZs+zgYmuiK5VHUHafD74C65HwnnmWVHUvFBrJ0NDAKINuGNQ==",
+      "path": "system.data.sqlite.core\/1.0.115",
+      "hashPath": "system.data.sqlite.core.1.0.115.nupkg.sha512"
     },
     "System.Drawing.Common\/4.7.0": {
       "type": "package",

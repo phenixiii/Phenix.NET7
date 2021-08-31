@@ -26,37 +26,37 @@ namespace Phenix.Services.Business.Security
             string requestAddress, int requestFailureCount, DateTime? requestFailureTime,
             long rootTeamsId, long teamsId, long? positionId,
             bool locked, DateTime? lockedTime, bool disabled, DateTime? disabledTime,
-            string teamsName, string positionName)
+            Teams teams, Position position)
             : base(dataSourceKey,
                 id, name, phone, eMail, regAlias, regTime,
                 requestAddress, requestFailureCount, requestFailureTime,
                 rootTeamsId, teamsId, positionId,
                 locked, lockedTime, disabled, disabledTime)
         {
-            _teamsName = teamsName;
-            _positionName = positionName;
+            _teams = teams;
+            _position = position;
         }
 
         #region 属性
 
-        private string _teamsName;
+        private Teams _teams;
 
         /// <summary>
-        /// 所属部门名称
+        /// 所属部门
         /// </summary>
-        public string TeamsName
+        public Teams Teams
         {
-            get { return _teamsName; }
+            get { return _teams; }
         }
 
-        private string _positionName;
+        private Position _position;
 
         /// <summary>
-        /// 担任岗位名称
+        /// 担任岗位
         /// </summary>
-        public string PositionName
+        public Position Position
         {
-            get { return _positionName; }
+            get { return _position; }
         }
 
         #endregion
@@ -68,8 +68,8 @@ namespace Phenix.Services.Business.Security
         /// </summary>
         public User FetchMyself(Teams teams, Position position)
         {
-            _teamsName = teams != null ? teams.Name : null;
-            _positionName = position != null ? position.Name : null;
+            _teams = teams;
+            _position = position;
             return this;
         }
 
@@ -81,11 +81,9 @@ namespace Phenix.Services.Business.Security
             IList<User> result = FetchList(Database, p => p.RootTeamsId == RootTeamsId && p.RootTeamsId != p.TeamsId);
             foreach (User item in result)
             {
-                Teams teams = company.FindInBranch(p => p.Id == item.TeamsId);
-                if (teams != null)
-                    item._teamsName = teams.Name;
+                item._teams = company.FindInBranch(p => p.Id == item.TeamsId);
                 if (item.PositionId.HasValue && positions.TryGetValue(item.PositionId.Value, out Position position))
-                    item._positionName = position.Name;
+                    item._position = position;
             }
 
             return result;

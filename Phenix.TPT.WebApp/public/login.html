@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,Chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+    <script>
+        document.write("<link rel='stylesheet' href='css/page.css?v=" + new Date().toLocaleDateString() + "' charset='UTF-8'>");
+    </script>
+    <title>登录</title>
+</head>
+
+<body style="background: #F0F0F0">
+    <div id="login">
+        <div class="logo" style="text-align:center;margin-top:2%;">
+            <h1>
+                <font face="Papyrus">Teamwork Project Tracker II</font>
+            </h1>
+        </div>
+        <div class="login-group">
+            <div class="login_boder">
+                <div class="login_padding">
+                    <label style="clear: both">
+                        <h2 id="userNameHint" style="clear:both"></h2>
+                        <input class="txt_input" id="userName" type="text" style="font-weight: lighter" placeholder="请输入登录名">
+                    </label>
+                    <label style="clear: both">
+                        <h2 id="passwordHint" style="clear:both"></h2>
+                        <input class="txt_input" id="password" type="password" style="font-weight: lighter" placeholder="请输入口令">
+                    </label>
+                    <label style="clear: both">
+                        <h2 id="companyNameHint" style="clear:both"></h2>
+                        <input class="txt_input" id="companyName" type="text" style="font-weight: lighter" placeholder="请输入公司名">
+                    </label>
+                    <p class="forgot">
+                        <a style="color:rgb(31, 73, 125)" @click="checkIn()">获取动态口令</a> |
+                        <a style="color:rgb(31, 73, 125)" @click="checkIn()">立即注册会员</a>
+                    </p>
+                    <input type="button" value="登录" class="btn" @click="logon()" style="background:rgb(31, 73, 125);color:white;height:36px;width: 295px;font-size: 14px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="scripts/lib/crypto-js/core-min.js"></script>
+    <script type="text/javascript" src="scripts/lib/crypto-js/enc-base64-min.js"></script>
+    <script type="text/javascript" src="scripts/lib/crypto-js/cipher-core-min.js"></script>
+    <script type="text/javascript" src="scripts/lib/crypto-js/aes-min.js"></script>
+    <script type="text/javascript" src="scripts/lib/crypto-js/md5-min.js"></script>
+    <script type="text/javascript" src="scripts/lib/json2.js"></script>
+    <script type="text/javascript" src="scripts/lib/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts/lib/jquery.cookie.js"></script>
+    <script type="text/javascript" src="scripts/lib/jquery.base64.js"></script>
+    <script type="text/javascript" src="scripts/lib/signalr.min.js"></script>
+    <script type="text/javascript" src="scripts/lib/phenix7.js"></script>
+
+    <script type="text/javascript" src="scripts/lib/common.min.js"></script>
+    <script type="text/javascript" src="scripts/lib/mesgbox.js"></script>
+
+    <script>
+        document.write("<script type='text/javascript' src='scripts/login.js?v=" + new Date().toLocaleDateString() + "'><\/script>");
+    </script>
+</body>
+
+</html>

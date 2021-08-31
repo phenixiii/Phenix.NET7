@@ -26,16 +26,16 @@ namespace Phenix.Services.Plugin.Inout
         
         #region 配置项
 
-        private static string _downloadPath;
+        private string _downloadPath;
 
         /// <summary>
         /// 下载目录
         /// 默认：Phenix.Core.AppRun.TempDirectory
         /// </summary>
-        public static string DownloadPath
+        public string DownloadPath
         {
-            get { return AppSettings.GetProperty(ref _downloadPath, AppRun.TempDirectory); }
-            set { AppSettings.SetProperty(ref _downloadPath, value); }
+            get { return AppSettings.GetProperty(PrimaryKeyString, ref _downloadPath, AppRun.TempDirectory); }
+            set { AppSettings.SetProperty(PrimaryKeyString, ref _downloadPath, value); }
         }
 
         private static int? _chunkSize;
@@ -50,16 +50,16 @@ namespace Phenix.Services.Plugin.Inout
             set { AppSettings.SetProperty(ref _chunkSize, value); }
         }
 
-        private static string _uploadPath;
+        private string _uploadPath;
 
         /// <summary>
         /// 上传目录
         /// 默认：Phenix.Core.AppRun.TempDirectory
         /// </summary>
-        public static string UploadPath
+        public string UploadPath
         {
-            get { return AppSettings.GetProperty(ref _uploadPath, AppRun.TempDirectory); }
-            set { AppSettings.SetProperty(ref _uploadPath, value); }
+            get { return AppSettings.GetProperty(PrimaryKeyString, ref _uploadPath, AppRun.TempDirectory); }
+            set { AppSettings.SetProperty(PrimaryKeyString, ref _uploadPath, value); }
         }
 
         #endregion

@@ -16,9 +16,13 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AQAAAAAAAAACAAgAAAAAAAAAAAAAAAAAAAAAKAAAAAA=</HashCode>
+      <HashCode>AQAACgAAAAAAAAAgAAAAAAAAAAAAAAAAQAAAgAAAAAA=</HashCode>
       <FileName>Security\User.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Position" />
+      <Property Name="Teams" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Phenix.Services.Business.Security.Position">
     <Position X="2.5" Y="3.75" Width="1.5" />

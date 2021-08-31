@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Phenix.Actor;
+using Phenix.Core.Data.Expressions;
 using Phenix.Core.Security.Auth;
 using Phenix.Core.Threading;
 using Phenix.Services.Business.Security;
@@ -59,7 +60,15 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         protected override User Kernel
         {
-            get { return base.Kernel ??= User.FetchRoot(Database, p => p.RootTeamsId == RootTeamsId && p.Name == UserName); }
+            get
+            {
+                if (base.Kernel == null)
+                {
+                    if (AsyncHelper.RunSync<bool>(() => ClusterClient.ExistKernelAsync<ICompanyTeamsGrain>(CompanyName)))
+                        base.Kernel = User.FetchRoot(Database, p => p.RootTeamsId == RootTeamsId && p.Name == UserName);
+                }
+                return base.Kernel;
+            }
         }
 
         private readonly IUserService _service;
@@ -73,8 +82,22 @@ namespace Phenix.Services.Plugin.Security
             string result;
             if (Kernel == null)
             {
+                if (await ClusterClient.ExistKernelAsync<ICompanyTeamsGrain>(CompanyName))
+                    throw new InvalidOperationException(String.Format("请更换公司名, '{0}'已被其他用户注册!", CompanyName));
+                else
+                    await ClusterClient.PatchKernelAsync<ICompanyTeamsGrain>(CompanyName,
+                        NameValue.Set<Teams>(p => p.Name, CompanyName));
+
                 string initialPassword = UserName;
-                Kernel = User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, RootTeamsId, null, ref initialPassword);
+                try
+                {
+                    Kernel = User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, RootTeamsId, null, ref initialPassword);
+                }
+                catch
+                {
+                    await ClusterClient.DeleteKernelAsync<ICompanyTeamsGrain>(CompanyName);
+                    throw;
+                }
                 result = _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
             }
             else

@@ -22,7 +22,7 @@ namespace Phenix.Actor
         /// </summary>
         protected override Database Database
         {
-            get { return _kernel != null ? _kernel.Database : Database.Default; }
+            get { return _kernel != null ? _kernel.Database : base.Database; }
         }
 
         private TKernel _kernel;
@@ -118,6 +118,20 @@ namespace Phenix.Actor
             return PatchKernel(propertyValues);
         }
 
+        /// <summary>
+        /// 删除根实体对象
+        /// </summary>
+        protected virtual Task DeleteKernel()
+        {
+            if (Kernel != null)
+                Kernel.DeleteSelf();
+            return Task.CompletedTask;
+        }
+        Task IEntityGrain.DeleteKernel()
+        {
+            return DeleteKernel();
+        }
+
         Task<object> IEntityGrain.GetKernelPropertyValue(string propertyName)
         {
             return Task.FromResult(GetKernelPropertyValue(propertyName));
@@ -131,7 +145,7 @@ namespace Phenix.Actor
         private object GetKernelPropertyValue(string propertyName)
         {
             if (Kernel == null)
-                throw new InvalidOperationException("获取不到空根实体对象的属性值!");
+                throw new InvalidOperationException("无法获取不存在的根实体对象的属性值!");
 
             return Utilities.GetMemberValue(Kernel, propertyName);
         }

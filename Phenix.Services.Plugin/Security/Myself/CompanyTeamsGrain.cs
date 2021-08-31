@@ -25,11 +25,7 @@ namespace Phenix.Services.Plugin.Security.Myself
         /// </summary>
         protected override Teams Kernel
         {
-            get
-            {
-                return base.Kernel ?? (base.Kernel = Teams.FetchTree(Database, p => p.Name == CompanyName && p.Id == p.RootId,
-                    () => Teams.NewRoot(Database, Teams.Set(p => p.Name, CompanyName))));
-            }
+            get { return base.Kernel ??= Teams.FetchTree(Database, p => p.Name == CompanyName && p.Id == p.RootId); }
         }
 
         #endregion

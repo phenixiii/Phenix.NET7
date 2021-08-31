@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
+using Phenix.Actor;
+using Phenix.Core;
 using Phenix.Services.Business.Security;
+using Phenix.Services.Contract.Message;
 using Phenix.Services.Contract.Security;
 
 namespace Phenix.Services.Extend.Security
@@ -14,24 +18,33 @@ namespace Phenix.Services.Extend.Security
 
         Task<string> IUserService.OnRegistered(User user, string initialPassword)
         {
-            /*
-             * 以下代码供你自己测试用
-             * 生产环境下，请替换为通过第三方渠道（邮箱或短信）将初始口令推送给到用户并返回提示信息
-             */
-            Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0}({1}) 的初始口令是'{2}'", user.RegAlias, user.Name, initialPassword));
-            return Task.FromResult(String.CompareOrdinal(user.Name, initialPassword) == 0
-                ? String.Format("您的初始口令和登录名相同，首次登录前需修改口令以符合复杂性要求(长度需大于等于{0}个字符且至少包含数字、大小写字母、特殊字符之{1}种)", User.PasswordLengthMinimum, User.PasswordComplexityMinimum)
-                : String.Format("您的初始口令存放于 {0} 目录下的日志文件里.", Phenix.Core.Log.EventLog.LocalDirectory));
+            return Task.FromResult(String.Format("您的初始口令和登录名相同。首次登录前，请修改口令以符合复杂性要求(长度需大于等于{0}个字符且至少包含数字、大小写字母、特殊字符之{1}种)",
+                User.PasswordLengthMinimum, User.PasswordComplexityMinimum));
         }
 
-        Task<string> IUserService.OnCheckIn(User user, string dynamicPassword)
+        async Task<string> IUserService.OnCheckIn(User user, string dynamicPassword)
         {
-            /*
-             * 以下代码供你自己测试用
-             * 生产环境下，请替换为通过第三方渠道（邮箱或短信）将动态口令推送给到用户并返回提示信息
-             */
-            Phenix.Core.Log.EventLog.SaveLocal(String.Format("{0}({1}) 的动态口令是'{2}'(有效期 {3} 分钟)", user.RegAlias, user.Name, dynamicPassword, User.DynamicPasswordValidityMinutes));
-            return Task.FromResult(String.Format("您的动态口令存放于 {0} 目录下的日志文件里, 有效期 {1} 分钟.", Phenix.Core.Log.EventLog.LocalDirectory, User.DynamicPasswordValidityMinutes));
+            if (!String.IsNullOrEmpty(user.EMail))
+            {
+                StringBuilder mailBody = new StringBuilder();
+                mailBody.Append("亲爱的&nbsp;" + user.RegAlias + "&nbsp;会员：<br/>");
+                mailBody.Append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您好！<br/>");
+                mailBody.Append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您于&nbsp;" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                mailBody.Append("&nbsp;申领的动态口令为：" + dynamicPassword + "<br/>");
+                mailBody.Append("&nbsp;&nbsp;<font color=red>(" + User.DynamicPasswordValidityMinutes + "分钟内有效)</font><br/>");
+                mailBody.Append("&nbsp;如非本人操作，请忽略本邮件。<br/>");
+                try
+                {
+                    await ClusterClient.Default.GetGrain<IEmailGrain>("PH").Send(user.RegAlias ?? user.Name, user.EMail, "获取动态口令", true, mailBody.ToString());
+                }
+                catch (Exception ex)
+                {
+                    return String.Format("获取动态口令失败!: {0}", AppRun.GetErrorHint(ex));
+                }
+                return String.Format("本次申领的动态口令已发送到您登记的邮箱，请注意查收，并请在{0}分钟内使用动态口令登录系统。", User.DynamicPasswordValidityMinutes);
+            }
+            else
+                return String.Format("您未曾登记过邮箱，无法收到动态口令。您可以联系系统管理员，为您重置登录口令。");
         }
 
         Task IUserService.OnLogon(User user, string tag)
