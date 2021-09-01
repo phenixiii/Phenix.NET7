@@ -54,8 +54,7 @@ namespace Phenix.Services.Contract.Security
         /// <summary>
         /// 重置登录口令(静态口令即登录名)
         /// </summary>
-        /// <returns>是否成功</returns>
-        Task<bool> ResetPassword();
+        Task ResetPassword();
 
         /// <summary>
         /// 修改登录口令
@@ -63,9 +62,7 @@ namespace Phenix.Services.Contract.Security
         /// <param name="password">登录口令</param>
         /// <param name="newPassword">新登录口令</param>
         /// <param name="requestAddress">服务请求方IP地址</param>
-        /// <param name="throwIfNotConform">如果为 true, 账号无效或口令不规范会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserPasswordComplexityException异常而不是返回false</param>
-        /// <returns>是否成功</returns>
-        Task<bool> ChangePassword(string password, string newPassword, string requestAddress, bool throwIfNotConform);
+        Task ChangePassword(string password, string newPassword, string requestAddress);
 
         /// <summary>
         /// 加密

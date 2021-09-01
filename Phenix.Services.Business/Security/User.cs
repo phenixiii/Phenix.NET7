@@ -199,10 +199,9 @@ namespace Phenix.Services.Business.Security
         /// <summary>
         /// 重置登录口令
         /// </summary>
-        /// <returns>是否成功</returns>
-        public override bool ResetPassword()
+        public override void ResetPassword()
         {
-            return UpdateSelf(Set(p => p.Password, MD5CryptoTextProvider.ComputeHash(Name))) == 1;
+            UpdateSelf(Set(p => p.Password, MD5CryptoTextProvider.ComputeHash(Name)));
         }
 
         /// <summary>
@@ -213,14 +212,10 @@ namespace Phenix.Services.Business.Security
         /// <param name="hashPassword">需HASH登录口令</param>
         /// <param name="requestAddress">服务请求方IP地址</param>
         /// <param name="requestSession">服务请求会话签名</param>
-        /// <param name="throwIfNotConform">如果为 true, 账号无效或口令不规范会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserPasswordComplexityException异常而不是返回false</param>
-        /// <returns>是否成功</returns>
-        public override bool ChangePassword(ref string password, ref string newPassword, bool hashPassword, string requestAddress, string requestSession, bool throwIfNotConform = true)
+        public override void ChangePassword(ref string password, ref string newPassword, bool hashPassword, string requestAddress, string requestSession)
         {
-            if (!base.ChangePassword(ref password, ref newPassword, hashPassword, requestAddress, requestSession, throwIfNotConform))
-                return false;
-
-            return UpdateSelf(Set(p => p.Password, newPassword)) == 1;
+            base.ChangePassword(ref password, ref newPassword, hashPassword, requestAddress, requestSession);
+            UpdateSelf(Set(p => p.Password, newPassword));
         }
 
         /// <summary>

@@ -2,7 +2,6 @@
 using System.Text;
 using System.Threading.Tasks;
 using Phenix.Actor;
-using Phenix.Core;
 using Phenix.Services.Business.Security;
 using Phenix.Services.Contract.Message;
 using Phenix.Services.Contract.Security;
@@ -39,12 +38,12 @@ namespace Phenix.Services.Extend.Security
                 }
                 catch (Exception ex)
                 {
-                    return String.Format("获取动态口令失败!: {0}", AppRun.GetErrorHint(ex));
+                    throw new InvalidOperationException("获取动态口令失败!", ex);
                 }
                 return String.Format("本次申领的动态口令已发送到您登记的邮箱，请注意查收，并请在{0}分钟内使用动态口令登录系统。", User.DynamicPasswordValidityMinutes);
             }
-            else
-                return String.Format("您未曾登记过邮箱，无法收到动态口令。您可以联系系统管理员，为您重置登录口令。");
+
+            return "您未曾登记过邮箱，无法收到动态口令。您可以联系系统管理员，为您重置登录口令。";
         }
 
         Task IUserService.OnLogon(User user, string tag)

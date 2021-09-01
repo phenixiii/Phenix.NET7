@@ -166,9 +166,12 @@ namespace Phenix.Services.Host
 
             /*
              * 使用转接头中间件（代理服务器和负载均衡器）
-             * 策略见 ConfigureServices 函数里的 services.Configure<ForwardedHeadersOptions>() 以适应部署环境
+             * 策略同 ConfigureServices 函数里的 services.Configure<ForwardedHeadersOptions>() 以适应部署环境
              */
-            app.UseForwardedHeaders();
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             /*
              * 使用异常处理中间件

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Phenix.Actor;
 using Phenix.Core.Data.Expressions;
 using Phenix.Core.Security.Auth;
+using Phenix.Core.Security.Cryptography;
 using Phenix.Core.Threading;
 using Phenix.Services.Business.Security;
 using Phenix.Services.Contract.Security;
@@ -79,34 +80,40 @@ namespace Phenix.Services.Plugin.Security
 
         async Task<string> IUserGrain.CheckIn(string phone, string eMail, string regAlias, string requestAddress)
         {
-            string result;
-            if (Kernel == null)
+            if (Kernel != null)
             {
-                if (await ClusterClient.ExistKernelAsync<ICompanyTeamsGrain>(CompanyName))
-                    throw new InvalidOperationException(String.Format("请更换公司名, '{0}'已被其他用户注册!", CompanyName));
-                else
-                    await ClusterClient.PatchKernelAsync<ICompanyTeamsGrain>(CompanyName,
-                        NameValue.Set<Teams>(p => p.Name, CompanyName));
+                List<NameValue<User>> nameValues = new List<NameValue<User>>(2);
+                if (!String.IsNullOrEmpty(phone))
+                    nameValues.Add(NameValue.Set<User>(p => p.Phone, phone));
+                if (!String.IsNullOrEmpty(eMail))
+                    nameValues.Add(NameValue.Set<User>(p => p.EMail, eMail));
+                if (nameValues.Count > 0)
+                    Kernel.UpdateSelf(nameValues.ToArray());
 
-                string initialPassword = UserName;
-                try
-                {
-                    Kernel = User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, RootTeamsId, null, ref initialPassword);
-                }
-                catch
-                {
-                    await ClusterClient.DeleteKernelAsync<ICompanyTeamsGrain>(CompanyName);
-                    throw;
-                }
-                result = _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
-            }
-            else
-            {
+                if (String.CompareOrdinal(MD5CryptoTextProvider.ComputeHash(Kernel.Name), Kernel.Password) == 0)
+                    return _service != null ? await _service.OnRegistered(Kernel, Kernel.Name) : null;
+                
                 string dynamicPassword = Kernel.ApplyDynamicPassword(requestAddress);
-                result = _service != null ? await _service.OnCheckIn(Kernel, dynamicPassword) : null;
+                return _service != null ? await _service.OnCheckIn(Kernel, dynamicPassword) : null;
             }
 
-            return result;
+            if (await ClusterClient.ExistKernelAsync<ICompanyTeamsGrain>(CompanyName))
+                throw new InvalidOperationException(String.Format("请更换公司名, '{0}'已被其他用户注册!", CompanyName));
+
+            await ClusterClient.PatchKernelAsync<ICompanyTeamsGrain>(CompanyName,
+                NameValue.Set<Teams>(p => p.Name, CompanyName));
+            string initialPassword = UserName;
+            try
+            {
+                Kernel = User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, RootTeamsId, null, ref initialPassword);
+            }
+            catch
+            {
+                await ClusterClient.DeleteKernelAsync<ICompanyTeamsGrain>(CompanyName);
+                throw;
+            }
+
+            return _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
         }
 
         async Task<bool> IUserGrain.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, string requestSession, bool throwIfNotConform)
@@ -142,20 +149,22 @@ namespace Phenix.Services.Plugin.Security
                 await _service.OnLogout();
         }
 
-        Task<bool> IUserGrain.ResetPassword()
+        Task IUserGrain.ResetPassword()
         {
             if (Kernel == null)
                 throw new UserNotFoundException();
 
-            return Task.FromResult(Kernel.ResetPassword());
+            Kernel.ResetPassword();
+            return Task.CompletedTask;
         }
 
-        Task<bool> IUserGrain.ChangePassword(string password, string newPassword, string requestAddress, bool throwIfNotConform)
+        Task IUserGrain.ChangePassword(string password, string newPassword, string requestAddress)
         {
             if (Kernel == null)
                 throw new UserNotFoundException();
 
-            return Task.FromResult(Kernel.ChangePassword(ref password, ref newPassword, true, requestAddress, Kernel.RequestSession, throwIfNotConform));
+            Kernel.ChangePassword(ref password, ref newPassword, true, requestAddress, Kernel.RequestSession);
+            return Task.CompletedTask;
         }
 
         Task<string> IUserGrain.Encrypt(string sourceText)

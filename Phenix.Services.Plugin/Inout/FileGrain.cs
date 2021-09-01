@@ -38,16 +38,16 @@ namespace Phenix.Services.Plugin.Inout
             set { AppSettings.SetProperty(PrimaryKeyString, ref _downloadPath, value); }
         }
 
-        private static int? _chunkSize;
+        private int? _chunkSize;
 
         /// <summary>
         /// 块最大值
         /// 默认：64 * 1024
         /// </summary>
-        public static int MaxChunkSize
+        public int MaxChunkSize
         {
-            get { return AppSettings.GetProperty(ref _chunkSize, 64 * 1024); }
-            set { AppSettings.SetProperty(ref _chunkSize, value); }
+            get { return AppSettings.GetProperty(PrimaryKeyString, ref _chunkSize, 64 * 1024); }
+            set { AppSettings.SetProperty(PrimaryKeyString, ref _chunkSize, value); }
         }
 
         private string _uploadPath;
@@ -84,7 +84,7 @@ namespace Phenix.Services.Plugin.Inout
 
             string sourcePath = Path.Combine(DownloadPath, fileName);
             if (!File.Exists(sourcePath))
-                throw new InvalidOperationException(String.Format(AppSettings.GetValue("不存在下载文件: {0}"), fileName));
+                throw new InvalidOperationException(String.Format("不存在下载文件: {0}", fileName));
 
             await using (FileStream sourceStream = new FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {

@@ -26,7 +26,7 @@ namespace Phenix.Services.Plugin.Security
         }
 
         #region 工厂
-        
+
         #region 配置项
 
         private static int? _cacheDiscardIntervalHours;
@@ -164,6 +164,7 @@ namespace Phenix.Services.Plugin.Security
         }
 
         private bool? _isCompanyAdmin;
+
         /// <summary>
         /// 是否公司管理员?
         /// </summary>
@@ -179,7 +180,7 @@ namespace Phenix.Services.Plugin.Security
         {
             get { return AsyncHelper.RunSync(() => GetKernelPropertyValueAsync(p => p.IsAuthenticated)); }
         }
-        
+
         /// <summary>
         /// 身份验证类型
         /// </summary>
@@ -191,7 +192,7 @@ namespace Phenix.Services.Plugin.Security
         #endregion
 
         #region 方法
-        
+
         string IIdentity.FormatPrimaryKey(string keyExtension)
         {
             return Standards.FormatCompoundKey(CompanyName, keyExtension);

@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using Phenix.Actor;
-using Phenix.Core.Data;
 using Phenix.Core.Net.Filters;
 using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security;
@@ -23,10 +23,10 @@ namespace Phenix.Services.Plugin.Security.Myself
         /// </summary>
         [Authorize]
         [HttpPut]
-        public async Task<bool> Put()
+        public async Task Put()
         {
-            string[] strings = (await Request.ReadBodyAsStringAsync(true)).Split(Standards.RowSeparator);
-            return await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).ChangePassword(strings[0], strings[1], Request.GetRemoteAddress(), true);
+            dynamic body = JObject.Parse(await Request.ReadBodyAsStringAsync(true));
+            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).ChangePassword((string) body.password, (string) body.newPassword, Request.GetRemoteAddress());
         }
 
         /// <summary>
