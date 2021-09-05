@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Phenix.Actor;
 using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security;
@@ -25,7 +24,7 @@ namespace Phenix.Services.Plugin.Security
         [HttpGet]
         public async Task<string> Get()
         {
-            return await EncryptAsync(await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).FetchMyself());
+            return await EncryptAsync(ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).FetchMyself());
         }
 
         // phAjax.patchMyself()
@@ -36,7 +35,8 @@ namespace Phenix.Services.Plugin.Security
         [HttpPatch]
         public async Task Patch()
         {
-            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).PatchKernel(JsonConvert.DeserializeObject<Dictionary<string, object>>(await Request.ReadBodyAsStringAsync(true)));
+            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).PatchKernel(
+                await Request.ReadBodyAsync<Dictionary<string, object>>(true));
         }
     }
 }

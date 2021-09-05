@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Phenix.Actor;
 using Phenix.Core.Data.Expressions;
 using Phenix.Core.Security.Auth;
-using Phenix.Core.Security.Cryptography;
 using Phenix.Core.Threading;
 using Phenix.Services.Business.Security;
 using Phenix.Services.Contract.Security;
@@ -46,6 +45,14 @@ namespace Phenix.Services.Plugin.Security
             get { return PrimaryKeyExtension; }
         }
 
+        /// <summary>
+        /// 公司团队Grain接口
+        /// </summary>
+        protected ICompanyTeamsGrain CompanyTeamsGrain
+        {
+            get { return ClusterClient.GetGrain<ICompanyTeamsGrain>(CompanyName); }
+        }
+
         private long? _rootTeamsId;
 
         /// <summary>
@@ -53,7 +60,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         protected long RootTeamsId
         {
-            get { return _rootTeamsId ??= AsyncHelper.RunSync(() => ClusterClient.GetKernelPropertyValueAsync<ICompanyTeamsGrain, Teams, long>(CompanyName, p => p.Id)); }
+            get { return _rootTeamsId ??= AsyncHelper.RunSync(() => CompanyTeamsGrain.GetKernelPropertyValue(p => p.Id)); }
         }
 
         /// <summary>
@@ -65,9 +72,10 @@ namespace Phenix.Services.Plugin.Security
             {
                 if (base.Kernel == null)
                 {
-                    if (AsyncHelper.RunSync<bool>(() => ClusterClient.ExistKernelAsync<ICompanyTeamsGrain>(CompanyName)))
+                    if (AsyncHelper.RunSync<bool>(() => CompanyTeamsGrain.ExistKernel()))
                         base.Kernel = User.FetchRoot(Database, p => p.RootTeamsId == RootTeamsId && p.Name == UserName);
                 }
+
                 return base.Kernel;
             }
         }
@@ -82,61 +90,57 @@ namespace Phenix.Services.Plugin.Security
         {
             if (Kernel != null)
             {
-                List<NameValue<User>> nameValues = new List<NameValue<User>>(2);
+                List<NameValue<User>> nameValues = new List<NameValue<User>>(3);
                 if (!String.IsNullOrEmpty(phone))
                     nameValues.Add(NameValue.Set<User>(p => p.Phone, phone));
                 if (!String.IsNullOrEmpty(eMail))
                     nameValues.Add(NameValue.Set<User>(p => p.EMail, eMail));
+                if (!String.IsNullOrEmpty(regAlias))
+                    nameValues.Add(NameValue.Set<User>(p => p.RegAlias, regAlias));
                 if (nameValues.Count > 0)
                     Kernel.UpdateSelf(nameValues.ToArray());
 
-                if (String.CompareOrdinal(MD5CryptoTextProvider.ComputeHash(Kernel.Name), Kernel.Password) == 0)
+                if (Kernel.IsInitialPassword)
                     return _service != null ? await _service.OnRegistered(Kernel, Kernel.Name) : null;
-                
                 string dynamicPassword = Kernel.ApplyDynamicPassword(requestAddress);
                 return _service != null ? await _service.OnCheckIn(Kernel, dynamicPassword) : null;
             }
 
-            if (await ClusterClient.ExistKernelAsync<ICompanyTeamsGrain>(CompanyName))
+            if (await ClusterClient.GetGrain<ICompanyTeamsGrain>(CompanyName).ExistKernel())
                 throw new InvalidOperationException(String.Format("请更换公司名, '{0}'已被其他用户注册!", CompanyName));
 
-            await ClusterClient.PatchKernelAsync<ICompanyTeamsGrain>(CompanyName,
-                NameValue.Set<Teams>(p => p.Name, CompanyName));
             string initialPassword = UserName;
+            await CompanyTeamsGrain.PatchKernel(NameValue.Set<Teams>(p => p.Name, CompanyName));
             try
             {
                 Kernel = User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, RootTeamsId, null, ref initialPassword);
             }
             catch
             {
-                await ClusterClient.DeleteKernelAsync<ICompanyTeamsGrain>(CompanyName);
+                await CompanyTeamsGrain.DeleteKernel();
                 throw;
             }
 
             return _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
         }
 
-        async Task<bool> IUserGrain.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, string requestSession, bool throwIfNotConform)
+        async Task IUserGrain.Logon(string signature, string tag, string requestAddress)
         {
             if (Kernel == null)
                 throw new UserNotFoundException();
 
-            if (Kernel.IsValidLogon(timestamp, signature, requestAddress, requestSession, throwIfNotConform))
-            {
-                if (_service != null)
-                    await _service.OnLogon(Kernel, Kernel.Decrypt(tag));
-                return true;
-            }
-
-            return false;
+            Kernel.Logon(signature, ref tag, requestAddress);
+            if (_service != null)
+                await _service.OnLogon(Kernel, tag);
         }
 
-        Task<bool> IUserGrain.IsValid(string timestamp, string signature, string requestAddress, string requestSession, bool throwIfNotConform)
+        Task IUserGrain.Verify(string signature, string requestAddress)
         {
             if (Kernel == null)
                 throw new UserNotFoundException();
 
-            return Task.FromResult(Kernel.IsValid(timestamp, signature, requestAddress, requestSession, throwIfNotConform));
+            Kernel.Verify(signature, requestAddress);
+            return Task.CompletedTask;
         }
 
         async Task IUserGrain.Logout()
@@ -146,7 +150,7 @@ namespace Phenix.Services.Plugin.Security
 
             Kernel.Logout();
             if (_service != null)
-                await _service.OnLogout();
+                await _service.OnLogout(Kernel);
         }
 
         Task IUserGrain.ResetPassword()
@@ -155,15 +159,6 @@ namespace Phenix.Services.Plugin.Security
                 throw new UserNotFoundException();
 
             Kernel.ResetPassword();
-            return Task.CompletedTask;
-        }
-
-        Task IUserGrain.ChangePassword(string password, string newPassword, string requestAddress)
-        {
-            if (Kernel == null)
-                throw new UserNotFoundException();
-
-            Kernel.ChangePassword(ref password, ref newPassword, true, requestAddress, Kernel.RequestSession);
             return Task.CompletedTask;
         }
 
@@ -188,8 +183,9 @@ namespace Phenix.Services.Plugin.Security
             if (Kernel == null)
                 throw new UserNotFoundException();
 
-            return Kernel.FetchMyself((await ClusterClient.GetGrain<ICompanyTeamsGrain>(CompanyName).FetchKernel()).FindInBranch(p => p.Id == Kernel.TeamsId),
-                Kernel.PositionId.HasValue ? await ClusterClient.GetGrain<IPositionGrain>(Kernel.PositionId.Value).FetchKernel() : null);
+            Teams teams = await CompanyTeamsGrain.GetNode(Kernel.TeamsId);
+            Position position = Kernel.PositionId.HasValue ? await ClusterClient.GetGrain<IPositionGrain>(Kernel.PositionId.Value).FetchKernel() : null;
+            return Kernel.FetchMyself(teams, position);
         }
 
         #region CompanyAdmin 操作功能
@@ -199,15 +195,20 @@ namespace Phenix.Services.Plugin.Security
             if (Kernel == null)
                 throw new UserNotFoundException();
 
-            return Kernel.FetchCompanyUsers(await ClusterClient.GetGrain<ICompanyTeamsGrain>(CompanyName).FetchKernel(), Position.FetchKeyValues(Database, p => p.Id));
+            IList<User> result = User.FetchList(Database, p => p.RootTeamsId == RootTeamsId && p.RootTeamsId != p.TeamsId);
+            Teams companyTeams = await CompanyTeamsGrain.FetchKernel();
+            IDictionary<long, Position> positions = Position.FetchKeyValues(Database, p => p.Id);
+            foreach (User item in result)
+                item.FetchMyself(companyTeams.FindInBranch(p => p.Id == item.TeamsId),
+                    item.PositionId.HasValue && positions.TryGetValue(item.PositionId.Value, out Position position) ? position : null);
+            return result;
         }
 
         async Task<string> IUserGrain.Register(string phone, string eMail, string regAlias, string requestAddress, long teamsId, long positionId)
         {
             if (Kernel != null)
                 throw new InvalidOperationException("登录名已被他人注册!");
-
-            if (!await ClusterClient.GetGrain<ICompanyTeamsGrain>(CompanyName).HaveNode(teamsId, false))
+            if (!await CompanyTeamsGrain.HaveNode(teamsId, false))
                 throw new InvalidOperationException("注册用户的团队不存在!");
 
             string initialPassword = UserName;

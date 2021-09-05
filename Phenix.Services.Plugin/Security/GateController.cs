@@ -42,6 +42,7 @@ namespace Phenix.Services.Plugin.Security
         }
 
         // phAjax.logon()
+        // phAjax.changePassword()
         /// <summary>
         /// 登录
         /// </summary>

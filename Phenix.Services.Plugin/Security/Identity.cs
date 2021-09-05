@@ -198,14 +198,14 @@ namespace Phenix.Services.Plugin.Security
             return Standards.FormatCompoundKey(CompanyName, keyExtension);
         }
 
-        Task<bool> IIdentity.IsValidLogon(string timestamp, string signature, string tag, string requestAddress, string requestSession, bool throwIfNotConform)
+        async Task IIdentity.Logon(string signature, string tag, string requestAddress)
         {
-            return ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).IsValidLogon(timestamp, signature, tag, requestAddress, requestSession, throwIfNotConform);
+            await ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).Logon(signature, tag, requestAddress);
         }
 
-        Task<bool> IIdentity.IsValid(string timestamp, string signature, string requestAddress, string requestSession, bool throwIfNotConform)
+        async Task IIdentity.Verify(string signature, string requestAddress)
         {
-            return ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).IsValid(timestamp, signature, requestAddress, requestSession, throwIfNotConform);
+            await ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).Verify(signature, requestAddress);
         }
 
         Task<string> IIdentity.Encrypt(object sourceData)
@@ -225,7 +225,7 @@ namespace Phenix.Services.Plugin.Security
 
         private async Task<TValue> GetKernelPropertyValueAsync<TValue>(Expression<Func<User, TValue>> propertyLambda)
         {
-            return await ClusterClient.Default.GetKernelPropertyValueAsync<IUserGrain, User, TValue>(PrimaryKey, propertyLambda);
+            return await ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).GetKernelPropertyValue(propertyLambda);
         }
 
         #endregion

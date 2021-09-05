@@ -30,13 +30,13 @@ namespace Phenix.Services.Contract.Security
         /// 登录完成
         /// </summary>
         /// <param name="user">用户资料</param>
-        /// <param name="tag">捎带数据(已解密, 默认是客户端当前时间)</param>
+        /// <param name="tag">捎带数据(默认是客户端时间也可以是修改的新密码)</param>
         Task OnLogon(User user, string tag);
 
         /// <summary>
         /// 登出完成
         /// </summary>
-        Task OnLogout();
+        Task OnLogout(User user);
 
         #endregion
     }

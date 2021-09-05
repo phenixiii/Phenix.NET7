@@ -24,27 +24,19 @@ namespace Phenix.Services.Contract.Security
         Task<string> CheckIn(string phone, string eMail, string regAlias, string requestAddress);
 
         /// <summary>
-        /// 核对登录有效性
+        /// 登录
         /// </summary>
-        /// <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-        /// <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
-        /// <param name="tag">捎带数据(未解密, 默认是客户端当前时间)</param>
+        /// <param name="signature">会话签名</param>
+        /// <param name="tag">捎带数据(默认是客户端时间也可以是修改的新密码)</param>
         /// <param name="requestAddress">服务请求方IP地址</param>
-        /// <param name="requestSession">服务请求会话签名</param>
-        /// <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
-        /// <returns>是否正确</returns>
-        Task<bool> IsValidLogon(string timestamp, string signature, string tag, string requestAddress, string requestSession, bool throwIfNotConform);
+        Task Logon(string signature, string tag, string requestAddress);
 
         /// <summary>
-        /// 核对有效性
+        /// 验证
         /// </summary>
-        /// <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-        /// <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
+        /// <param name="signature">会话签名</param>
         /// <param name="requestAddress">服务请求方IP地址</param>
-        /// <param name="requestSession">服务请求会话签名</param>
-        /// <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
-        /// <returns>是否正确</returns>
-        Task<bool> IsValid(string timestamp, string signature, string requestAddress, string requestSession, bool throwIfNotConform);
+        Task Verify(string signature, string requestAddress);
 
         /// <summary>
         /// 登出
@@ -55,14 +47,6 @@ namespace Phenix.Services.Contract.Security
         /// 重置登录口令(静态口令即登录名)
         /// </summary>
         Task ResetPassword();
-
-        /// <summary>
-        /// 修改登录口令
-        /// </summary>
-        /// <param name="password">登录口令</param>
-        /// <param name="newPassword">新登录口令</param>
-        /// <param name="requestAddress">服务请求方IP地址</param>
-        Task ChangePassword(string password, string newPassword, string requestAddress);
 
         /// <summary>
         /// 加密
@@ -80,7 +64,7 @@ namespace Phenix.Services.Contract.Security
         Task<string> Decrypt(string cipherText);
 
         /// <summary>
-        /// 获取自己用户资料
+        /// 获取用户资料
         /// </summary>
         Task<User> FetchMyself();
 

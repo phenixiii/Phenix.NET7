@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -55,13 +56,14 @@ namespace Phenix.Services.Plugin.Security.Myself
         /// <param name="name">登录名</param>
         [CompanyAdminFilter]
         [Authorize]
-        [HttpPut]
-        public async Task Put(string name)
+        [HttpPatch]
+        public async Task Patch(string name)
         {
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name), "登录名不允许为空!");
-            
-            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.FormatPrimaryKey(name)).PutKernel(await Request.ReadBodyAsync<Phenix.Services.Business.Security.User>(true));
+
+            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.FormatPrimaryKey(name)).PatchKernel(
+                await Request.ReadBodyAsync<Dictionary<string, object>>(true));
         }
     }
 }

@@ -180,7 +180,7 @@ where UM_ID = :UM_ID"))
                 DbCommandHelper.CreateParameter(command, "UM_Content", content);
                 DbCommandHelper.CreateParameter(command, "UM_ID", id);
                 if (DbCommandHelper.ExecuteNonQuery(command, false) == 0)
-                    throw new InvalidOperationException(String.Format(AppSettings.GetValue("未能发送消息: {0}-{1}"), id, content));
+                    throw new InvalidOperationException(String.Format("未能发送消息: {0}-{1}", id, content));
             }
         }
 

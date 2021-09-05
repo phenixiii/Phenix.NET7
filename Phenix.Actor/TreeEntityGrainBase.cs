@@ -64,7 +64,13 @@ namespace Phenix.Actor
             return Task.CompletedTask;
         }
 
-        private TKernel GetNode(long id, bool throwIfNotFound = true)
+        /// <summary>
+        /// 获取节点
+        /// </summary>
+        /// <param name="id">节点ID</param>
+        /// <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+        /// <returns>节点</returns>
+        protected virtual TKernel GetNode(long id, bool throwIfNotFound = true)
         {
             if (Kernel == null)
                 throw new ArgumentException("需先有根节点", nameof(id));
@@ -77,15 +83,14 @@ namespace Phenix.Actor
                 throw new ArgumentException(String.Format("找不到ID为{0}的节点", id), nameof(id));
             return null;
         }
+        Task<TKernel> ITreeEntityGrain<TKernel>.GetNode(long id, bool throwIfNotFound)
+        {
+            return Task.FromResult(GetNode(id, throwIfNotFound));
+        }
 
         Task<bool> ITreeEntityGrain<TKernel>.HaveNode(long id, bool throwIfNotFound)
         {
             return Task.FromResult(GetNode(id, throwIfNotFound) != null);
-        }
-
-        Task<long> ITreeEntityGrain<TKernel>.AddChildNode(long parentId, params NameValue<TKernel>[] propertyValues)
-        {
-            return AddChildNode(parentId, NameValue<TKernel>.ToDictionary(propertyValues));
         }
 
         /// <summary>
@@ -103,6 +108,10 @@ namespace Phenix.Actor
         {
             return AddChildNode(parentId, propertyValues);
         }
+        Task<long> ITreeEntityGrain<TKernel>.AddChildNode(long parentId, params NameValue<TKernel>[] propertyValues)
+        {
+            return AddChildNode(parentId, NameValue<TKernel>.ToDictionary(propertyValues));
+        }
 
         /// <summary>
         /// 更改父节点
@@ -119,11 +128,6 @@ namespace Phenix.Actor
             return ChangeParentNode(id, parentId);
         }
 
-        Task ITreeEntityGrain<TKernel>.UpdateNode(long id, params NameValue<TKernel>[] propertyValues)
-        {
-            return UpdateNode(id, NameValue<TKernel>.ToDictionary(propertyValues));
-        }
-
         /// <summary>
         /// 更新节点
         /// </summary>
@@ -137,6 +141,10 @@ namespace Phenix.Actor
         Task ITreeEntityGrain<TKernel>.UpdateNode(long id, IDictionary<string, object> propertyValues)
         {
             return UpdateNode(id, propertyValues);
+        }
+        Task ITreeEntityGrain<TKernel>.UpdateNode(long id, params NameValue<TKernel>[] propertyValues)
+        {
+            return UpdateNode(id, NameValue<TKernel>.ToDictionary(propertyValues));
         }
 
         /// <summary>

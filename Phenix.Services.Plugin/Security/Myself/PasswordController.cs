@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using Phenix.Actor;
 using Phenix.Core.Net.Filters;
 using Phenix.Services.Contract;
@@ -17,18 +16,6 @@ namespace Phenix.Services.Plugin.Security.Myself
     [ApiController]
     public sealed class PasswordController : Phenix.Core.Net.Api.ControllerBase
     {
-        // phAjax.changePassword()
-        /// <summary>
-        /// 修改登录口令
-        /// </summary>
-        [Authorize]
-        [HttpPut]
-        public async Task Put()
-        {
-            dynamic body = JObject.Parse(await Request.ReadBodyAsStringAsync(true));
-            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).ChangePassword((string) body.password, (string) body.newPassword, Request.GetRemoteAddress());
-        }
-
         /// <summary>
         /// 重置公司用户登录口令
         /// </summary>

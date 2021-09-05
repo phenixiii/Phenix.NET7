@@ -55,7 +55,7 @@ namespace Phenix.Services.Extend.Security
             return Task.CompletedTask;
         }
 
-        Task IUserService.OnLogout()
+        Task IUserService.OnLogout(User user)
         {
             /*
              * 本函数被执行到，说明用户已退出系统

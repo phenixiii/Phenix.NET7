@@ -13,8 +13,6 @@
     <script type="text/javascript" src="../lib/jquery.base64.js"></script>
     <script type="text/javascript" src="../lib/signalr.min.js"></script>
     <script type="text/javascript" src="../lib/phenix7.js"></script>
-
-    示例代码见 test 目录
  */
 ;
 $.support.cors = true;
@@ -23,7 +21,6 @@ var phAjax = (function($) {
     var baseAddressCookieName = "P-BA";
     var companyNameCookieName = "P-CN";
     var userNameCookieName = "P-UN";
-    var userSignCookieName = "P-US";
     var sessionCookieName = "P-SS";
     var myselfCookieName = "P-MS";
 
@@ -32,111 +29,109 @@ var phAjax = (function($) {
 
     var maxChunkSize = 64 * 1024;
 
+    var setBaseAddress = function(value) {
+        try {
+            window.localStorage.removeItem(baseAddressCookieName);
+            if (value != null)
+                window.localStorage.setItem(baseAddressCookieName, value);
+        } catch (e) {
+            $.cookie(baseAddressCookieName, value, { path: '/' });
+        }
+    };
     var getBaseAddress = function() {
         var result;
         try {
             result = window.localStorage.getItem(baseAddressCookieName);
         } catch (e) {
             result = $.cookie(baseAddressCookieName);
-        }
-        return typeof result !== undefined && result != null ? result : window.location.protocol + "//" + window.location.host + ":5000";
-    };
-    var setBaseAddress = function(value) {
-        try {
-            window.localStorage.removeItem(baseAddressCookieName);
-            window.localStorage.setItem(baseAddressCookieName, value);
-        } catch (e) {
-            $.cookie(baseAddressCookieName, value, { path: '/' });
-        }
+        };
+        return result != null ? result : window.location.protocol + "//" + window.location.host + ":5000";
     };
 
+    var setCompanyName = function(value) {
+        try {
+            window.localStorage.removeItem(companyNameCookieName);
+            if (value != null)
+                window.localStorage.setItem(companyNameCookieName, value);
+        } catch (e) {
+            $.cookie(companyNameCookieName, value, { path: '/' });
+        }
+    };
     var getCompanyName = function() {
         var result;
         try {
             result = window.localStorage.getItem(companyNameCookieName);
         } catch (e) {
             result = $.cookie(companyNameCookieName);
-        }
-        return typeof result !== undefined && result != null ? result : "";
-    };
-    var setCompanyName = function(value) {
-        try {
-            window.localStorage.removeItem(companyNameCookieName);
-            window.localStorage.setItem(companyNameCookieName, value);
-        } catch (e) {
-            $.cookie(companyNameCookieName, value, { path: '/' });
-        }
+        };
+        return result != null ? result : "";
     };
 
+    var setUserName = function(value) {
+        try {
+            window.localStorage.removeItem(userNameCookieName);
+            if (value != null)
+                window.localStorage.setItem(userNameCookieName, value);
+        } catch (e) {
+            $.cookie(userNameCookieName, value, { path: '/' });
+        }
+    };
     var getUserName = function() {
         var result;
         try {
             result = window.localStorage.getItem(userNameCookieName);
         } catch (e) {
             result = $.cookie(userNameCookieName);
-        }
-        return typeof result !== undefined && result != null ? result : "";
-    };
-    var setUserName = function(value) {
-        try {
-            window.localStorage.removeItem(userNameCookieName);
-            window.localStorage.setItem(userNameCookieName, value);
-        } catch (e) {
-            $.cookie(userNameCookieName, value, { path: '/' });
-        }
+        };
+        return result != null ? result : "";
     };
 
-    var getUserSign = function() {
-        var result;
-        try {
-            result = window.localStorage.getItem(userSignCookieName);
-        } catch (e) {
-            result = $.cookie(userSignCookieName);
-        }
-        return typeof result !== undefined && result != null ? result : CryptoJS.MD5("******").toString().toUpperCase();
-    };
-    var setUserSign = function(value) {
-        try {
-            window.localStorage.removeItem(userSignCookieName);
-            window.localStorage.setItem(userSignCookieName, value);
-        } catch (e) {
-            $.cookie(userSignCookieName, value, { path: '/' });
-        }
-    };
-
-    var getSession = function() {
-        var result;
-        try {
-            result = window.localStorage.getItem(sessionCookieName);
-        } catch (e) {
-            result = $.cookie(sessionCookieName);
-        }
-        return result;
-    };
     var setSession = function(value) {
         try {
             window.localStorage.removeItem(sessionCookieName);
-            window.localStorage.setItem(sessionCookieName, value);
+            if (value != null)
+                window.localStorage.setItem(sessionCookieName, value);
         } catch (e) {
             $.cookie(sessionCookieName, value, { path: '/' });
         }
     };
-
-    // 身份验证token: [公司名],[登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)],[会话签名]
-    var initializeComplexAuthorization = function(companyName, userName, userSign, session) {
-        var timestamp = phUtils.random(9) + new Date().toISOString();
-        if (typeof session === undefined || session == null) {
-            session = phUtils.encrypt(timestamp, userSign);
-            setSession(session);
-        }
-        return encodeURIComponent(companyName) + "," + encodeURIComponent(userName) + "," + timestamp + "," + phUtils.encrypt(timestamp, userSign) + "," + session;
+    var getSession = function(password) {
+        var result;
+        if (password != null) {
+            result = phUtils.encrypt(phUtils.random(9) + new Date().toISOString(), CryptoJS.MD5(password).toString().toUpperCase());
+            setSession(result);
+            return result;
+        };
+        try {
+            result = window.localStorage.getItem(sessionCookieName);
+        } catch (e) {
+            result = $.cookie(sessionCookieName);
+        };
+        return result != null ? result : "";
+    };
+    
+    // 身份验证token: [公司名],[登录名],[会话签名]
+    var initializeComplexAuthorization = function(companyName, userName, password) {
+        return encodeURIComponent(companyName) + "," + encodeURIComponent(userName) + "," +
+            (password != null
+                ? getSession(password)
+                : phUtils.encrypt(phUtils.random(9) + new Date().toISOString(), getSession(null)));
     };
 
-    // 身份验证token: [公司名],[登录名],[时间戳(9位长随机数+ISO格式当前时间)],[签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)],[会话签名]
+    // 身份验证token: [公司名],[登录名],[会话签名]
     var formatComplexAuthorization = function() {
-        return initializeComplexAuthorization(getCompanyName(), getUserName(), getUserSign(), getSession());
+        return initializeComplexAuthorization(getCompanyName(), getUserName(), null);
     };
 
+    var setMyself = function(value) {
+        try {
+            window.localStorage.removeItem(myselfCookieName);
+            if (value != null)
+                window.localStorage.setItem(myselfCookieName, JSON.stringify(value));
+        } catch (e) {
+            $.cookie(myselfCookieName, value != null ? JSON.stringify(value) : null, { path: '/' });
+        }
+    };
     var getMyself = function() {
         var result;
         try {
@@ -144,24 +139,16 @@ var phAjax = (function($) {
         } catch (e) {
             result = $.cookie(myselfCookieName);
         }
-        return typeof result !== undefined && result != null ? JSON.parse(result) : null;
-    };
-    var setMyself = function(value) {
-        try {
-            window.localStorage.removeItem(myselfCookieName);
-            window.localStorage.setItem(myselfCookieName, JSON.stringify(value));
-        } catch (e) {
-            $.cookie(myselfCookieName, JSON.stringify(value), { path: '/' });
-        }
+        return result != null ? JSON.parse(result) : null;
     };
 
     return {
-        get baseAddress() {
-            return getBaseAddress();
-        },
-
         set baseAddress(value) {
             setBaseAddress(value);
+        },
+
+        get baseAddress() {
+            return getBaseAddress();
         },
 
         get companyName() {
@@ -177,11 +164,11 @@ var phAjax = (function($) {
         },
 
         encrypt: function(data) {
-            return phUtils.encrypt(data, getUserSign());
+            return phUtils.encrypt(data, getSession(null));
         },
 
         decrypt: function(cipherText) {
-            return phUtils.decrypt(cipherText, getUserSign());
+            return phUtils.decrypt(cipherText, getSession(null));
         },
 
         // 登记(获取动态口令)/注册(静态口令即登录名)
@@ -200,6 +187,8 @@ var phAjax = (function($) {
             options = $.extend(defaults, options);
             if (options.hashName)
                 options.userName = CryptoJS.MD5(options.userName).toString().toUpperCase();
+            setSession(null);
+            setMyself(null);
             $.ajax({
                 type: "GET",
                 url: options.baseAddress + "/api/security/gate" +
@@ -218,8 +207,6 @@ var phAjax = (function($) {
                         setBaseAddress(options.baseAddress);
                         setCompanyName(options.companyName);
                         setUserName(options.userName);
-                        setUserSign(null);
-                        setMyself(null);
                         if (typeof options.onSuccess == "function")
                             options.onSuccess(XMLHttpRequest.responseText);
                     } else {
@@ -233,19 +220,26 @@ var phAjax = (function($) {
         // 登录
         logon: function(options) {
             var defaults = {
-                baseAddress: phAjax.baseAddress, //"http://localhost:5000"
-                companyName: "", //公司名
-                userName: "", //登录名
-                password: "", //登录口令/动态口令
+                baseAddress: null, //服务地址
+                companyName: null, //公司名
+                userName: null, //登录名
                 hashName: false, //Hash登录名
-                tag: new Date().toISOString(), //捎带数据(默认是客户端当前时间)
+                password: null, //登录口令/动态口令
+                tag: new Date().toISOString(), //捎带数据(默认是客户端时间也可以是修改的新密码)
                 onSuccess: null, //调用成功的回调函数, 参数(result)为返回的消息
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
             };
             options = $.extend(defaults, options);
-            if (options.hashName)
+            if (options.baseAddress == null)
+                options.baseAddress = phAjax.baseAddress;
+            if (options.companyName == null)
+                options.companyName = phAjax.companyName;
+            if (options.userName == null)
+                options.userName = phAjax.userName;
+            else if (options.hashName)
                 options.userName = CryptoJS.MD5(options.userName).toString().toUpperCase();
-            var userSign = CryptoJS.MD5(options.password).toString().toUpperCase();
+            setSession(null);
+            setMyself(null);
             $.ajax({
                 type: "POST",
                 url: options.baseAddress + "/api/security/gate",
@@ -254,16 +248,14 @@ var phAjax = (function($) {
                 crossDomain: true,
                 timeout: 30000,
                 beforeSend: function(XMLHttpRequest) {
-                    XMLHttpRequest.setRequestHeader(authorizationHeaderName, initializeComplexAuthorization(options.companyName, options.userName, userSign, null));
+                    XMLHttpRequest.setRequestHeader(authorizationHeaderName, initializeComplexAuthorization(options.companyName, options.userName, options.password));
                 },
-                data: phUtils.encrypt(options.tag, userSign),
+                data: phUtils.encrypt(options.tag, CryptoJS.MD5(options.password).toString().toUpperCase()),
                 complete: function(XMLHttpRequest, textStatus) {
                     if (XMLHttpRequest.status == 200) {
                         setBaseAddress(options.baseAddress);
                         setCompanyName(options.companyName);
                         setUserName(options.userName);
-                        setUserSign(userSign);
-                        setMyself(null);
                         if (typeof options.onSuccess == "function")
                             options.onSuccess(XMLHttpRequest.responseText);
                     } else {
@@ -283,20 +275,12 @@ var phAjax = (function($) {
             phAjax.call({
                 type: "DELETE",
                 path: "/api/security/gate",
-                onSuccess: function(result) {
+                onComplete: function(XMLHttpRequest, textStatus) {
                     if (!options.cache) {
                         setCompanyName(null);
                         setUserName(null);
                     };
-                    setUserSign(null);
-                    setMyself(null);
-                },
-                onError: function(XMLHttpRequest, textStatus) {
-                    if (!options.cache) {
-                        setCompanyName(null);
-                        setUserName(null);
-                    }
-                    setUserSign(null);
+                    setSession(null);
                     setMyself(null);
                 },
             });
@@ -321,10 +305,11 @@ var phAjax = (function($) {
             phAjax.call({
                 path: "/api/security/myself",
                 decryptResult: true,
-                onSuccess: function(result) {
-                    setMyself(JSON.parse(result));
+                onSuccess: function (result) {
+                    var user = JSON.parse(result);
+                    setMyself(user);
                     if (typeof options.onSuccess == "function")
-                        options.onSuccess(JSON.parse(result));
+                        options.onSuccess(user);
                 },
                 onError: function(XMLHttpRequest, textStatus) {
                     if (typeof options.onError == "function")
@@ -373,7 +358,7 @@ var phAjax = (function($) {
                     if (typeof options.onSuccess == "function")
                         options.onSuccess(result);
                 },
-                onError: function (XMLHttpRequest, textStatus) {
+                onError: function(XMLHttpRequest, textStatus) {
                     if (typeof options.onError == "function")
                         options.onError(XMLHttpRequest, textStatus);
                 },
@@ -381,22 +366,26 @@ var phAjax = (function($) {
         },
 
         // 修改登录口令
-        // password: 登录口令
-        // newPassword: 新登录口令
-        changePassword: function(password, newPassword, options) {
+        changePassword: function(options) {
             var defaults = {
+                baseAddress: null, //服务地址
+                companyName: null, //公司名
+                userName: null, //登录名
+                hashName: false, //Hash登录名
+                password: null, //登录口令/动态口令
+                newPassword: null, //新登录口令
                 onSuccess: null, //调用成功的回调函数
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
             };
-            setUserSign(CryptoJS.MD5(password).toString().toUpperCase());
             options = $.extend(defaults, options);
-            phAjax.call({
-                type: "PUT",
-                path: "/api/security/myself/password",
-                data: { password: password, newPassword: newPassword },
-                encryptData: true,
-                onSuccess: function(result) {
-                    setUserSign(CryptoJS.MD5(newPassword).toString().toUpperCase());
+            phAjax.logon({
+                baseAddress: options.baseAddress,
+                companyName: options.companyName,
+                userName: options.userName,
+                hashName: options.hashName,
+                password: options.password,
+                tag: { newPassword: options.newPassword },
+                onSuccess: function (result) {
                     if (typeof options.onSuccess == "function")
                         options.onSuccess(result);
                 },
@@ -626,7 +615,7 @@ var phAjax = (function($) {
                     for (var i = 0; i < options.files.length; i++) {
                         var file = options.files[i];
                         phAjax.uploadFileChunk(options.path, options.message, file, 1, options.onProgress, options.onSuccess, options.onError);
-                    };
+                    }
                 } else {
                     phAjax.uploadFileChunk(options.path, options.message, options.files, 1, options.onProgress, options.onSuccess, options.onError);
                 };
@@ -683,6 +672,7 @@ var phAjax = (function($) {
                 cache: false, //默认不缓存
                 timeout: 30000, //默认超时30秒
                 onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
+                onValidityError: null, //有效性错误的回调函数, 参数(key, statusCode, hint, messageType)
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
                 onComplete: null, //调用完成的回调函数, 参数(XMLHttpRequest, textStatus)
             };
@@ -718,9 +708,17 @@ var phAjax = (function($) {
                         }
                     }
                     else if (XMLHttpRequest.status >= 400) {
-                        if (typeof options.onError == "function")
-                            options.onError(XMLHttpRequest, textStatus);
-                    }
+                        if (XMLHttpRequest.status == 409) {
+                            if (typeof options.onSuccess == "function") {
+                                var validationMessage = JSON.parse(XMLHttpRequest.responseText);
+                                options.onValidityError(validationMessage.Key, validationMessage.StatusCode, validationMessage.Hint, validationMessage.MessageType);
+                            }
+                        }
+                        else {
+                            if (typeof options.onError == "function")
+                                options.onError(XMLHttpRequest, textStatus);
+                        }
+                    };
                     if (typeof options.onComplete == "function")
                         options.onComplete(XMLHttpRequest, textStatus);
                 },
@@ -736,10 +734,9 @@ var phUtils = (function() {
     return {
         random: function(length) {
             var result = Math.random().toString(36).substr(2);
-            if (result.length >= length) {
+            if (result.length >= length)
                 return result.substr(0, length);
-            }
-            result += phAjax.random(length - result.length);
+            result += phUtils.random(length - result.length);
             return result;
         },
 
@@ -754,7 +751,7 @@ var phUtils = (function() {
                 data = JSON.stringify(data);
                 result = CryptoJS.AES.encrypt(data, key, { iv: key, mode: CryptoJS.mode.CBC });
                 return CryptoJS.enc.Base64.stringify(result.ciphertext);
-            }
+            };
             return null;
         },
         
@@ -770,7 +767,7 @@ var phUtils = (function() {
             var result = new Uint8Array(i);
             while (i--) {
                 result[i] = byteStr.charCodeAt(i);
-            }
+            };
             return result;
         },
 
@@ -782,10 +779,10 @@ var phUtils = (function() {
                     if (value == null)
                         continue;
                     result[p] = typeof value === 'object'
-                        ? (value instanceof Array ? filterArrayParams(value) : filterParams(value))
+                        ? (value instanceof Array ? phUtils.filterArrayParams(value) : phUtils.filterParams(value))
                         : value;
                 }
-            }
+            };
             return result;
         },
 
@@ -794,7 +791,7 @@ var phUtils = (function() {
             arr.forEach((item, index) => {
                 if (item != null)
                     result.push(typeof item === 'object'
-                        ? (item instanceof Array ? filterArrayParams(item) : filterParams(item))
+                        ? (item instanceof Array ? phUtils.filterArrayParams(item) : phUtils.filterParams(item))
                         : item
                     );
             });

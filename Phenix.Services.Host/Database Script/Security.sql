@@ -34,10 +34,10 @@ CREATE TABLE PH7_User (                                 --用户
   US_RegAlias VARCHAR(100) NULL,                        --昵称
   US_RegTime DATE NOT NULL,                             --注册时间
   US_Password VARCHAR(500) NOT NULL,                    --登录口令(散列值)
-  US_DynamicPassword VARCHAR(500) NOT NULL,             --动态口令(散列值)
-  US_DynamicPasswordCreateTime DATE NOT NULL,           --动态口令生成时间
+  US_DynamicPassword VARCHAR(500) NULL,                 --动态口令(散列值)
+  US_DynamicPasswordCreateTime DATE NULL,               --动态口令生成时间
   US_RequestAddress VARCHAR(39) NOT NULL,               --服务请求方IP地址
-  US_RequestSession VARCHAR(100) NULL,                  --服务请求会话签名
+  US_RequestSignature VARCHAR(500) NULL,                --服务请求会话签名
   US_RequestFailureCount NUMERIC(2) default 0 NOT NULL, --服务请求失败次数
   US_RequestFailureTime DATE NULL,                      --服务请求失败时间
   US_Root_Teams_ID NUMERIC(15) NOT NULL,                --所属公司
