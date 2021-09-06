@@ -82,6 +82,17 @@ namespace Phenix.Services.Plugin.Message
             set { AppSettings.SetProperty(Name, ref _senderPassword, value, true); }
         }
 
+        private int? _sendTimeoutMilliseconds;
+
+        /// <summary>
+        /// 发送超时毫秒
+        /// </summary>
+        public int SendTimeoutMilliseconds
+        {
+            get { return AppSettings.GetProperty(Name, ref _sendTimeoutMilliseconds, 10000); }
+            set { AppSettings.SetProperty(Name, ref _sendTimeoutMilliseconds, value); }
+        }
+
         #endregion
 
         #endregion
@@ -98,10 +109,11 @@ namespace Phenix.Services.Plugin.Message
             bodyBuilder.HtmlBody = htmlBody;
             message.Body = bodyBuilder.ToMessageBody();
             message.Priority = urgent ? MessagePriority.Urgent : MessagePriority.Normal;
-            CancellationTokenSource tokenSource = new CancellationTokenSource(30000); //30s超时
             using (SmtpClient client = new SmtpClient())
             {
+                client.Timeout = SendTimeoutMilliseconds;
                 client.ServerCertificateValidationCallback = delegate { return true; };
+                CancellationTokenSource tokenSource = new CancellationTokenSource(SendTimeoutMilliseconds);
                 await client.ConnectAsync(SenderHost, SenderPort, SenderEnabledSsl ? SecureSocketOptions.SslOnConnect : SecureSocketOptions.Auto, tokenSource.Token);
                 await client.AuthenticateAsync(SenderAddress, SenderPassword, tokenSource.Token);
                 await client.SendAsync(message, tokenSource.Token);

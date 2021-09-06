@@ -72,7 +72,7 @@ namespace Phenix.Services.Plugin.Security
             {
                 if (base.Kernel == null)
                 {
-                    if (AsyncHelper.RunSync<bool>(() => CompanyTeamsGrain.ExistKernel()))
+                    if (AsyncHelper.RunSync(() => CompanyTeamsGrain.ExistKernel()))
                         base.Kernel = User.FetchRoot(Database, p => p.RootTeamsId == RootTeamsId && p.Name == UserName);
                 }
 

@@ -49,13 +49,13 @@ namespace Phenix.Actor
         /// 更新根实体对象(如不存在则新增)
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
-        Task PatchKernel(params NameValue[] propertyValues);
+        Task PatchKernel(IDictionary<string, object> propertyValues);
 
         /// <summary>
         /// 更新根实体对象(如不存在则新增)
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
-        Task PatchKernel(IDictionary<string, object> propertyValues);
+        Task PatchKernel(params NameValue[] propertyValues);
 
         /// <summary>
         /// 删除根实体对象
@@ -68,13 +68,6 @@ namespace Phenix.Actor
         /// <param name="propertyName">属性名</param>
         /// <returns>属性值</returns>
         Task<object> GetKernelPropertyValue(string propertyName);
-
-        /// <summary>
-        /// 获取根实体对象属性值
-        /// </summary>
-        /// <param name="propertyName">属性名</param>
-        /// <returns>属性值</returns>
-        Task<TValue> GetKernelPropertyValue<TValue>(string propertyName);
 
         #endregion
     }

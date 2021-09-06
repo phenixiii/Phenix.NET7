@@ -47,12 +47,12 @@
     transform: translate(-50%, 0%);
 }
 
-.login-group {
+.center-group {
     position: absolute;
     left: 50%;
     top: 50%;
     width: 390px;
-    height: 326px;
+    height: auto;
     background: #fff;
     border-radius: 15px;
     margin: 0 auto;
@@ -60,13 +60,23 @@
     margin-top: -188px;
 }
 
-.login_boder h2 {
+.center_padding {
+    padding: 28px 47px 20px 47px;
+}
+
+.center_boder h2 {
     color: red;
     font-size: 12px;
     font-weight: normal;
 }
 
-.login_boder input.txt_input {
+.center_boder h3 {
+    color: blue;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.center_boder input.txt_input {
     width: 295px;
     height: 36px;
     border: 1px solid #cad2db;
@@ -80,7 +90,7 @@
     font-family: Arial;
 }
 
-.login_boder input.txt_input:focus {
+.center_boder input.txt_input:focus {
     -moz-transition: border linear .2s, -moz-box-shadow linear .2s;
     -webkit-transition: border linear .2s, -webkit-box-shadow linear .2s;
     transition: border linear .2s, box-shadow linear .2s;
@@ -92,41 +102,32 @@
     border: 1px solid #6192c8;
 }
 
-.login_boder p.forgot {
+.center_boder p.forgot {
     font-size: 11px;
     text-align: right;
     margin-bottom: 15px;
     margin-right: 13px;
 }
 
-.login_boder p.forgot a,
-.login_boder p.forgot a:visited {
+.center_boder p.forgot a,
+.center_boder p.forgot a:visited {
     color: #8c8e91;
 }
 
-.login_boder p.forgot a:hover {
+.center_boder p.forgot a:hover {
     color: #206fd5;
 }
 
-.login_padding {
-    padding: 28px 47px 20px 47px;
+#center_button {
+    background: rgb(31, 73, 125);
+    color: white;
+    height: 36px;
+    width: 295px;
+    font-size: 14px;
 }
 
 .itemchart {
     height: 200px;
-}
-
-.user-logo {
-    position: absolute;
-    width: 3%;
-    height: calc(width);
-    top: 0px;
-    right: 2%;
-}
-
-.user-logo img {
-    width: 100%;
-    height: 100%;
 }
 
 .arrow {

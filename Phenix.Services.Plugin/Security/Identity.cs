@@ -208,19 +208,19 @@ namespace Phenix.Services.Plugin.Security
             await ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).Verify(signature, requestAddress);
         }
 
-        Task<string> IIdentity.Encrypt(object sourceData)
+        async Task<string> IIdentity.Encrypt(object sourceData)
         {
-            return ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).Encrypt(sourceData is string sourceText ? sourceText : Utilities.JsonSerialize(sourceData));
+            return await ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).Encrypt(sourceData is string sourceText ? sourceText : Utilities.JsonSerialize(sourceData));
         }
 
-        Task<string> IIdentity.Decrypt(string cipherText)
+        async Task<string> IIdentity.Decrypt(string cipherText)
         {
-            return ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).Decrypt(cipherText);
+            return await ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).Decrypt(cipherText);
         }
 
-        Task<bool> IIdentity.IsInRole(string role)
+        async Task<bool> IIdentity.IsInRole(string role)
         {
-            return PositionId.HasValue ? ClusterClient.Default.GetGrain<IPositionGrain>(PositionId.Value).IsInRole(role) : Task.FromResult(false);
+            return PositionId.HasValue && await ClusterClient.Default.GetGrain<IPositionGrain>(PositionId.Value).IsInRole(role);
         }
 
         private async Task<TValue> GetKernelPropertyValueAsync<TValue>(Expression<Func<User, TValue>> propertyLambda)

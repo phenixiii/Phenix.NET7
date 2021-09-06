@@ -19,13 +19,13 @@ namespace Phenix.Actor
         /// <param name="entityGrain">实体Grain接口</param>
         /// <param name="propertyLambda">含类属性的 lambda 表达式</param>
         /// <returns>属性值</returns>
-        public static Task<TValue> GetKernelPropertyValue<TKernel, TValue>(this IEntityGrain<TKernel> entityGrain, Expression<Func<TKernel, TValue>> propertyLambda)
+        public static async Task<TValue> GetKernelPropertyValue<TKernel, TValue>(this IEntityGrain<TKernel> entityGrain, Expression<Func<TKernel, TValue>> propertyLambda)
             where TKernel : EntityBase<TKernel>
         {
             if (entityGrain == null)
                 throw new ArgumentNullException(nameof(entityGrain));
 
-            return entityGrain.GetKernelPropertyValue<TValue>(Utilities.GetPropertyInfo(propertyLambda).Name);
+            return Utilities.ChangeType<TValue>(await entityGrain.GetKernelPropertyValue(Utilities.GetPropertyInfo(propertyLambda).Name));
         }
 
         #endregion

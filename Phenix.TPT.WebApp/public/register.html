@@ -9,11 +9,11 @@
     <script>
         document.write("<link rel='stylesheet' href='css/page.css?v=" + new Date().toLocaleDateString() + "' charset='UTF-8'>");
     </script>
-    <title>登录TPT</title>
+    <title>注册公司级会员</title>
 </head>
 
 <body style="background: #F0F0F0">
-    <div id="login">
+    <div id="register">
         <div class="logo" style="text-align:center;margin-top:2%;">
             <h1>
                 <font face="Papyrus">Teamwork Project Tracker II</font>
@@ -34,32 +34,19 @@
                     <label style="clear: both">
                         <input class="txt_input" id="companyName" type="text" style="font-weight: lighter" placeholder="请输入公司名">
                     </label>
+                    <h2 id="eMailHint" style="clear:both"></h2>
+                    <label style="clear: both">
+                        <input class="txt_input" id="eMail" type="email" style="font-weight: lighter" placeholder="请输入邮箱地址">
+                    </label>
+                    <h2 id="regAliasHint" style="clear:both"></h2>
+                    <label style="clear: both">
+                        <input class="txt_input" id="regAlias" type="text" style="font-weight: lighter" placeholder="请输入昵称">
+                    </label>
                     <p class="forgot">
-                        <a @click="onCheckIn()">动态口令</a> |
-                        <a @click="window.location.href = 'register.html'">注册会员</a>
+                        <a @click="window.location.href = 'login.html'">登录TPT</a>
                     </p>
-                    <input id="center_button" class="btn" type="button" value="登录" @click="onLogon()">
-                    <h3 id="logonHint" style="clear: both"></h3>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="patchMyselfDialog" tabindex="-1" role="dialog" aria-labelledby="patchMyselfDialogLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">x</button>
-                        <h4 class="modal-title" id="patchMyselfDialogLabel">更新资料</h4>
-                    </div>
-                    <div class="modal-body">
-                        <label>
-                            <input class="txt_input" id="eMail" type="email" style="font-weight: lighter" placeholder="请输入邮箱地址" size="30">
-                        </label>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary" @click="onPatchMyself()">提交</button>
-                    </div>
+                    <input id="center_button" class="btn" type="button" value="注册公司级会员" @click="onRegister()">
+                    <h3 id="registerHint" style="clear: both"></h3>
                 </div>
             </div>
         </div>
@@ -81,7 +68,7 @@
     <script type="text/javascript" src="scripts/lib/mesgbox.js"></script>
 
     <script>
-        document.write("<script type='text/javascript' src='scripts/login.js?v=" + new Date().toLocaleDateString() + "'><\/script>");
+        document.write("<script type='text/javascript' src='scripts/register.js?v=" + new Date().toLocaleDateString() + "'><\/script>");
     </script>
 </body>
 

@@ -89,16 +89,6 @@ namespace Phenix.Actor
             return PutKernel(source);
         }
 
-        Task IEntityGrain<TKernel>.PatchKernel(params NameValue<TKernel>[] propertyValues)
-        {
-            return PatchKernel(NameValue<TKernel>.ToDictionary(propertyValues));
-        }
-
-        Task IEntityGrain.PatchKernel(params NameValue[] propertyValues)
-        {
-            return PatchKernel(NameValue.ToDictionary(propertyValues));
-        }
-
         /// <summary>
         /// 更新根实体对象(如不存在则新增)
         /// </summary>
@@ -117,6 +107,14 @@ namespace Phenix.Actor
         {
             return PatchKernel(propertyValues);
         }
+        Task IEntityGrain.PatchKernel(params NameValue[] propertyValues)
+        {
+            return PatchKernel(NameValue.ToDictionary(propertyValues));
+        }
+        Task IEntityGrain<TKernel>.PatchKernel(params NameValue<TKernel>[] propertyValues)
+        {
+            return PatchKernel(NameValue<TKernel>.ToDictionary(propertyValues));
+        }
 
         /// <summary>
         /// 删除根实体对象
@@ -132,22 +130,16 @@ namespace Phenix.Actor
             return DeleteKernel();
         }
 
-        Task<object> IEntityGrain.GetKernelPropertyValue(string propertyName)
-        {
-            return Task.FromResult(GetKernelPropertyValue(propertyName));
-        }
-
-        Task<TValue> IEntityGrain.GetKernelPropertyValue<TValue>(string propertyName)
-        {
-            return Task.FromResult(Utilities.ChangeType<TValue>(GetKernelPropertyValue(propertyName)));
-        }
-
         private object GetKernelPropertyValue(string propertyName)
         {
             if (Kernel == null)
                 throw new InvalidOperationException("无法获取不存在的根实体对象的属性值!");
 
             return Utilities.GetMemberValue(Kernel, propertyName);
+        }
+        Task<object> IEntityGrain.GetKernelPropertyValue(string propertyName)
+        {
+            return Task.FromResult(GetKernelPropertyValue(propertyName));
         }
 
         #endregion
