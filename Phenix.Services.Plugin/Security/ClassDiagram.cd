@@ -3,7 +3,7 @@
   <Class Name="Phenix.Services.Plugin.Security.GateController">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAIAAAABAAAAAAAABAAAAAA=</HashCode>
       <FileName>Security\GateController.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -27,13 +27,13 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>UAACQACAgIJAAAAAKAlBAIAgAACUAEAAAQIAAAZkoAI=</HashCode>
+      <HashCode>UEAGQACAgIBAAAAAKAlBAIAgAACUAEAAAQIAAAYEogI=</HashCode>
       <FileName>Security\Identity.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.Services.Plugin.Security.PositionGrain">
-    <Position X="3.25" Y="2.5" Width="2" />
+    <Position X="3.25" Y="2.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Security\PositionGrain.cs</FileName>
@@ -41,12 +41,12 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.Services.Plugin.Security.UserGrain">
-    <Position X="0.5" Y="2.5" Width="2.5" />
+    <Position X="0.5" Y="2.75" Width="2.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>QAAAQAAAAIAIAAAQAAIAAAAAAAgAAAAQAYAAAwQAAAI=</HashCode>
+      <HashCode>QAAAQAAAEIBIAAAQAAIACAAAAAgEAAAAAQAAA0QAAAI=</HashCode>
       <FileName>Security\UserGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />

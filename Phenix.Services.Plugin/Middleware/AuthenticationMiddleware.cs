@@ -78,7 +78,7 @@ namespace Phenix.Services.Plugin.Middleware
                 string userName = Uri.UnescapeDataString(strings[1]);
                 string signature = strings[2];
                 IIdentity identity = Principal.FetchIdentity(companyName, userName, context.Request.GetAcceptLanguage(), null);
-                if (String.Compare(context.Request.Path, WebApiConfig.ApiSecurityGatePath, StringComparison.OrdinalIgnoreCase) == 0 && context.Request.Method == HttpMethod.Post.Method)
+                if (String.Compare(context.Request.Path, WebApiConfig.SecurityGatePath, StringComparison.OrdinalIgnoreCase) == 0 && context.Request.Method == HttpMethod.Put.Method)
                 {
                     await identity.Logon(signature, await context.Request.ReadBodyAsStringAsync(), context.Request.GetRemoteAddress());
                     Principal.CurrentIdentity = identity;

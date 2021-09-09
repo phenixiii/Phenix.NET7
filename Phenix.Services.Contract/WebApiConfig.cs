@@ -6,88 +6,93 @@
     public static class WebApiConfig
     {
         /// <summary>
+        /// /api/security/user
+        /// </summary>
+        public const string SecurityUserPath = "/api/security/user";
+
+        /// <summary>
         /// /api/security/gate
         /// </summary>
-        public const string ApiSecurityGatePath = "/api/security/gate";
+        public const string SecurityGatePath = "/api/security/gate";
 
         /// <summary>
         /// /api/security/myself
         /// </summary>
-        public const string ApiSecurityMyselfPath = "/api/security/myself";
+        public const string SecurityMyselfPath = "/api/security/myself";
 
         /// <summary>
         /// /api/security/myself/company
         /// </summary>
-        public const string ApiSecurityMyselfCompanyPath = "/api/security/myself/company";
+        public const string SecurityMyselfCompanyPath = "/api/security/myself/company";
 
         /// <summary>
         /// /api/security/myself/company-teams
         /// </summary>
-        public const string ApiSecurityMyselfCompanyTeamsPath = "/api/security/myself/company-teams";
+        public const string SecurityMyselfCompanyTeamsPath = "/api/security/myself/company-teams";
 
         /// <summary>
         /// /api/security/myself/company-user
         /// </summary>
-        public const string ApiSecurityMyselfCompanyUserPath = "/api/security/myself/company-user";
+        public const string SecurityMyselfCompanyUserPath = "/api/security/myself/company-user";
 
         /// <summary>
         /// /api/security/myself/password
         /// </summary>
-        public const string ApiSecurityMyselfPasswordPath = "/api/security/myself/password";
+        public const string SecurityMyselfPasswordPath = "/api/security/myself/password";
 
         /// <summary>
         /// /api/security/position
         /// </summary>
-        public const string ApiSecurityPositionPath = "/api/security/position";
+        public const string SecurityPositionPath = "/api/security/position";
 
         /// <summary>
         /// /api/security/role
         /// </summary>
-        public const string ApiSecurityRolePath = "/api/security/role";
+        public const string SecurityRolePath = "/api/security/role";
 
         /// <summary>
         /// /api/security/one-off-key-pair
         /// </summary>
-        public const string ApiSecurityOneOffKeyPairPath = "/api/security/one-off-key-pair";
+        public const string SecurityOneOffKeyPairPath = "/api/security/one-off-key-pair";
 
         /// <summary>
         /// /api/data/sequence
         /// </summary>
-        public const string ApiDataSequencePath = "/api/data/sequence";
+        public const string DataSequencePath = "/api/data/sequence";
 
         /// <summary>
         /// /api/data/increment
         /// </summary>
-        public const string ApiDataIncrementPath = "/api/data/increment";
+        public const string DataIncrementPath = "/api/data/increment";
 
         /// <summary>
         /// /api/message/group-message-hub
         /// </summary>
-        public const string ApiMessageGroupMessageHubPath = "/api/message/group-message-hub";
+        public const string MessageGroupMessageHubPath = "/api/message/group-message-hub";
 
         /// <summary>
         /// /api/message/user-message
         /// </summary>
-        public const string ApiMessageUserMessagePath = "/api/message/user-message";
+        public const string MessageUserMessagePath = "/api/message/user-message";
 
         /// <summary>
         /// /api/message/user-message-hub
         /// </summary>
-        public const string ApiMessageUserMessageHubPath = "/api/message/user-message-hub";
+        public const string MessageUserMessageHubPath = "/api/message/user-message-hub";
 
         /// <summary>
         /// /api/inout/file
         /// </summary>
-        public const string ApiInoutFilePath = "/api/inout/file";
+        public const string InoutFilePath = "/api/inout/file";
 
         /// <summary>
         /// /api/log/event-log
         /// </summary>
-        public const string ApiLogEventLogPath = "/api/log/event-log";
+        public const string LogEventLogPath = "/api/log/event-log";
 
         /// <summary>
         /// /api/service/portal
         /// </summary>
-        public const string ApiServicePortalPath = "/api/service/portal";
+        public const string ServicePortalPath = "/api/service/portal";
     }
 }

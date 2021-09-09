@@ -16,33 +16,16 @@ namespace Phenix.Actor
         #region 方法
 
         /// <summary>
-        /// 更新根实体对象(如不存在则新增)
+        /// 操作根实体对象之后
         /// </summary>
-        /// <param name="source">数据源</param>
-        protected override Task PutKernel(TKernel source)
+        /// <param name="executeAction">执行动作</param>
+        /// <param name="tag">标记</param>
+        protected override void OnKernelOperated(ExecuteAction executeAction, object tag)
         {
-            bool isNew = Kernel == null;
-            base.PutKernel(source);
-            if (isNew)
+            if (executeAction == ExecuteAction.Insert)
                 Send(Kernel);
             else
                 Send(Kernel, Kernel.PrimaryKey.ToString());
-            return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// 更新根实体对象(如不存在则新增)
-        /// </summary>
-        /// <param name="propertyValues">待更新属性值队列</param>
-        protected override Task PatchKernel(IDictionary<string, object> propertyValues)
-        {
-            bool isNew = Kernel == null;
-            base.PatchKernel(propertyValues);
-            if (isNew)
-                Send(Kernel);
-            else
-                Send(Kernel, Kernel.PrimaryKey.ToString());
-            return Task.CompletedTask;
         }
 
         #endregion

@@ -8,7 +8,7 @@ namespace Phenix.Services.Plugin.Data
     /// <summary>
     /// 64位序号控制器
     /// </summary>
-    [Route(WebApiConfig.ApiDataSequencePath)]
+    [Route(WebApiConfig.DataSequencePath)]
     [ApiController]
     public sealed class SequenceController : Phenix.Core.Net.Api.ControllerBase
     {

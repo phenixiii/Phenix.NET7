@@ -49,7 +49,7 @@ namespace Phenix.Services.Host
             Console.WriteLine("设为调试状态（正式环境下请注释掉）");
             AppRun.Debugging = true;
 
-            Console.WriteLine("从缺省数据库加载元数据填充缓存...（如果加载时间过长，请检查当前目录下Phenix.Core.db中数据库连接串是否配置正确！）");
+            Console.WriteLine("从缺省数据库加载元数据到本地...（如果加载时间过长，请检查当前目录下Phenix.Core.db中数据库连接串是否配置正确！）");
             Database.Default.MetaData.FillingCache();
 
             Console.WriteLine("注册获取用户身份方法");

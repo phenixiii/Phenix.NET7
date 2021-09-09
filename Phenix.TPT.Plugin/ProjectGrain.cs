@@ -26,8 +26,7 @@ namespace Phenix.TPT.Plugin
         {
             get
             {
-                return _projectAnnualPlanList ?? (_projectAnnualPlanList =
-                    Kernel.FetchDetails(ProjectAnnualPlan.Descending(p => p.Year)));
+                return _projectAnnualPlanList ??= Kernel.FetchDetails(ProjectAnnualPlan.Descending(p => p.Year));
             }
         }
 
@@ -62,8 +61,7 @@ namespace Phenix.TPT.Plugin
         {
             get
             {
-                return _projectMonthlyReportList ?? (_projectMonthlyReportList =
-                    Kernel.FetchDetails(ProjectMonthlyReport.Descending(p => p.Year).Descending(p => p.Month)));
+                return _projectMonthlyReportList ??= Kernel.FetchDetails(ProjectMonthlyReport.Descending(p => p.Year).Descending(p => p.Month));
             }
         }
 
@@ -76,8 +74,7 @@ namespace Phenix.TPT.Plugin
         {
             get
             {
-                return _projectProceedsList ?? (_projectProceedsList =
-                    Kernel.FetchDetails(ProjectProceeds.Descending(p => p.InvoiceDate)));
+                return _projectProceedsList ??= Kernel.FetchDetails(ProjectProceeds.Descending(p => p.InvoiceDate));
             }
         }
 
@@ -112,8 +109,7 @@ namespace Phenix.TPT.Plugin
         {
             get
             {
-                return _projectExpensesList ?? (_projectExpensesList =
-                    Kernel.FetchDetails(ProjectExpenses.Descending(p => p.ReimbursementDate)));
+                return _projectExpensesList ??= Kernel.FetchDetails(ProjectExpenses.Descending(p => p.ReimbursementDate));
             }
         }
 
@@ -156,53 +152,48 @@ namespace Phenix.TPT.Plugin
         #region Kernel
 
         /// <summary>
-        /// 更新根实体对象(如不存在则新增)
+        /// 操作根实体对象之前
         /// </summary>
-        /// <param name="source">数据源</param>
-        protected override Task PutKernel(ProjectInfo source)
+        /// <param name="executeAction">执行动作</param>
+        /// <param name="tag">标记</param>
+        protected override void OnKernelOperating(ExecuteAction executeAction, out object tag)
         {
-            string oldProjectManager = Kernel != null ? Kernel.ProjectManager : null;
-            string oldDevelopManager = Kernel != null ? Kernel.DevelopManager : null;
-
-            base.PutKernel(source);
-
-            if (oldProjectManager != Kernel.ProjectManager)
-            {
-                SendEventForRefreshProjectWorkloads(oldProjectManager);
-                SendEventForRefreshProjectWorkloads(Kernel.ProjectManager);
-            }
-            if (oldDevelopManager != Kernel.DevelopManager)
-            {
-                SendEventForRefreshProjectWorkloads(oldDevelopManager);
-                SendEventForRefreshProjectWorkloads(Kernel.DevelopManager);
-            }
-
-            return Task.CompletedTask;
+            tag = executeAction == ExecuteAction.Update
+                ? new
+                {
+                    ProjectManager = Kernel.ProjectManager,
+                    DevelopManager = Kernel.DevelopManager
+                }
+                : null;
         }
 
         /// <summary>
-        /// 更新根实体对象(如不存在则新增)
+        /// 操作根实体对象之后
         /// </summary>
-        /// <param name="propertyValues">待更新属性值队列</param>
-        protected override Task PatchKernel(IDictionary<string, object> propertyValues)
+        /// <param name="executeAction">执行动作</param>
+        /// <param name="tag">标记</param>
+        protected override void OnKernelOperated(ExecuteAction executeAction, object tag)
         {
-            string oldProjectManager = Kernel != null ? Kernel.ProjectManager : null;
-            string oldDevelopManager = Kernel != null ? Kernel.DevelopManager : null;
-
-            base.PatchKernel(propertyValues);
-
-            if (oldProjectManager != Kernel.ProjectManager)
+            if (executeAction == ExecuteAction.Update)
             {
-                SendEventForRefreshProjectWorkloads(oldProjectManager);
-                SendEventForRefreshProjectWorkloads(Kernel.ProjectManager);
+                dynamic old = tag;
+                if (old.ProjectManager != Kernel.ProjectManager)
+                {
+                    SendEventForRefreshProjectWorkloads(old.ProjectManager);
+                    SendEventForRefreshProjectWorkloads(Kernel.ProjectManager);
+                }
+
+                if (old.DevelopManager != Kernel.DevelopManager)
+                {
+                    SendEventForRefreshProjectWorkloads(old.DevelopManager);
+                    SendEventForRefreshProjectWorkloads(Kernel.DevelopManager);
+                }
             }
-            if (oldDevelopManager != Kernel.DevelopManager)
+            else
             {
-                SendEventForRefreshProjectWorkloads(oldDevelopManager);
+                SendEventForRefreshProjectWorkloads(Kernel.ProjectManager);
                 SendEventForRefreshProjectWorkloads(Kernel.DevelopManager);
             }
-
-            return Task.CompletedTask;
         }
 
         #endregion

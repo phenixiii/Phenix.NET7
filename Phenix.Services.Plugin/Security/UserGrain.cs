@@ -86,42 +86,51 @@ namespace Phenix.Services.Plugin.Security
 
         #region 方法
 
-        async Task<string> IUserGrain.CheckIn(string phone, string eMail, string regAlias, string requestAddress)
+        async Task<string> IUserGrain.Register(string phone, string eMail, string regAlias, string requestAddress, long? teamsId, long? positionId)
         {
             if (Kernel != null)
+                throw new InvalidOperationException("不允许重复注册!");
+
+            if (teamsId.HasValue && teamsId != RootTeamsId)
             {
-                List<NameValue<User>> nameValues = new List<NameValue<User>>(3);
-                if (!String.IsNullOrEmpty(phone))
-                    nameValues.Add(NameValue.Set<User>(p => p.Phone, phone));
-                if (!String.IsNullOrEmpty(eMail))
-                    nameValues.Add(NameValue.Set<User>(p => p.EMail, eMail));
-                if (!String.IsNullOrEmpty(regAlias))
-                    nameValues.Add(NameValue.Set<User>(p => p.RegAlias, regAlias));
-                if (nameValues.Count > 0)
-                    Kernel.UpdateSelf(nameValues.ToArray());
+                if (!await CompanyTeamsGrain.HaveNode(teamsId.Value, false))
+                    throw new ArgumentException("设置的团队在公司里不存在!", nameof(teamsId));
+                if (!positionId.HasValue)
+                    throw new ArgumentException("公司普通用户必须设置岗位!", nameof(positionId));
+                else if (!await ClusterClient.GetGrain<IPositionGrain>(positionId.Value).ExistKernel())
+                    throw new InvalidOperationException("设置的岗位不存在!");
 
-                if (Kernel.IsInitialPassword)
-                    return _service != null ? await _service.OnRegistered(Kernel, Kernel.Name) : null;
-                string dynamicPassword = Kernel.ApplyDynamicPassword(requestAddress);
-                return _service != null ? await _service.OnCheckIn(Kernel, dynamicPassword) : null;
+                string initialPassword = UserName;
+                Kernel = User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, teamsId.Value, positionId, ref initialPassword);
+                return _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
             }
-
-            if (await ClusterClient.GetGrain<ICompanyTeamsGrain>(CompanyName).ExistKernel())
-                throw new InvalidOperationException(String.Format("请更换公司名, '{0}'已被其他用户注册!", CompanyName));
-
-            string initialPassword = UserName;
-            await CompanyTeamsGrain.PatchKernel(NameValue.Set<Teams>(p => p.Name, CompanyName));
-            try
+            else
             {
-                Kernel = User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, RootTeamsId, null, ref initialPassword);
-            }
-            catch
-            {
-                await CompanyTeamsGrain.DeleteKernel();
-                throw;
-            }
+                if (await ClusterClient.GetGrain<ICompanyTeamsGrain>(CompanyName).ExistKernel())
+                    throw new InvalidOperationException("公司名已被其他用户注册!");
 
-            return _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
+                await CompanyTeamsGrain.CreateKernel(NameValue.Set<Teams>(p => p.Name, CompanyName));
+                try
+                {
+                    string initialPassword = UserName;
+                    Kernel = User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, RootTeamsId, null, ref initialPassword);
+                    return _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
+                }
+                catch
+                {
+                    await CompanyTeamsGrain.DeleteKernel();
+                    throw;
+                }
+            }
+        }
+
+        async Task<string> IUserGrain.CheckIn(string requestAddress)
+        {
+            if (Kernel == null)
+                throw new UserNotFoundException();
+
+            string dynamicPassword = Kernel.ApplyDynamicPassword(requestAddress);
+            return _service != null ? await _service.OnCheckIn(Kernel, dynamicPassword) : null;
         }
 
         async Task IUserGrain.Logon(string signature, string tag, string requestAddress)
@@ -188,8 +197,6 @@ namespace Phenix.Services.Plugin.Security
             return Kernel.FetchMyself(teams, position);
         }
 
-        #region CompanyAdmin 操作功能
-
         async Task<IList<User>> IUserGrain.FetchCompanyUsers()
         {
             if (Kernel == null)
@@ -203,20 +210,6 @@ namespace Phenix.Services.Plugin.Security
                     item.PositionId.HasValue && positions.TryGetValue(item.PositionId.Value, out Position position) ? position : null);
             return result;
         }
-
-        async Task<string> IUserGrain.Register(string phone, string eMail, string regAlias, string requestAddress, long teamsId, long positionId)
-        {
-            if (Kernel != null)
-                throw new InvalidOperationException("登录名已被他人注册!");
-            if (!await CompanyTeamsGrain.HaveNode(teamsId, false))
-                throw new InvalidOperationException("注册用户的团队不存在!");
-
-            string initialPassword = UserName;
-            Kernel = User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, teamsId, teamsId, positionId, ref initialPassword);
-            return _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
-        }
-
-        #endregion
 
         #endregion
     }

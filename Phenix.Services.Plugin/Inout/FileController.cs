@@ -11,7 +11,7 @@ namespace Phenix.Services.Plugin.Inout
     /// <summary>
     /// 文件存取控制器
     /// </summary>
-    [Route(WebApiConfig.ApiInoutFilePath)]
+    [Route(WebApiConfig.InoutFilePath)]
     [ApiController]
     public sealed class FileController : Phenix.Core.Net.Api.ControllerBase
     {

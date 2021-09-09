@@ -11,7 +11,7 @@ namespace Phenix.Services.Plugin.Security
     /// <summary>
     /// 角色控制器
     /// </summary>
-    [Route(WebApiConfig.ApiSecurityRolePath)]
+    [Route(WebApiConfig.SecurityRolePath)]
     [ApiController]
     public sealed class RoleController : Phenix.Core.Net.Api.ControllerBase
     {

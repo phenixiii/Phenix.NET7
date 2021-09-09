@@ -18,13 +18,38 @@ namespace Phenix.Actor
         Task<TKernel> FetchKernel();
 
         /// <summary>
-        /// 更新根实体对象(如不存在则新增)
+        /// 新增根实体对象
+        /// </summary>
+        /// <param name="source">数据源</param>
+        /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
+        Task CreateKernel(TKernel source, bool throwIfFound = true);
+
+        /// <summary>
+        /// 新增根实体对象(如存在则引发 InvalidOperationException)
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        Task CreateKernel(params NameValue<TKernel>[] propertyValues);
+
+        /// <summary>
+        /// 新增或更新根实体对象
         /// </summary>
         /// <param name="source">数据源</param>
         Task PutKernel(TKernel source);
 
         /// <summary>
-        /// 更新根实体对象(如不存在则新增)
+        /// 新增或更新根实体对象
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        Task PutKernel(params NameValue<TKernel>[] propertyValues);
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则引发 InvalidOperationException)
+        /// </summary>
+        /// <param name="source">数据源</param>
+        Task PatchKernel(TKernel source);
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则引发 InvalidOperationException)
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
         Task PatchKernel(params NameValue<TKernel>[] propertyValues);
@@ -46,13 +71,38 @@ namespace Phenix.Actor
         Task<bool> ExistKernel();
 
         /// <summary>
-        /// 更新根实体对象(如不存在则新增)
+        /// 新增根实体对象
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
+        Task CreateKernel(IDictionary<string, object> propertyValues, bool throwIfFound = true);
+
+        /// <summary>
+        /// 新增根实体对象(如存在则引发 InvalidOperationException)
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        Task CreateKernel(params NameValue[] propertyValues);
+
+        /// <summary>
+        /// 新增或更新根实体对象
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        Task PutKernel(IDictionary<string, object> propertyValues);
+
+        /// <summary>
+        /// 新增或更新根实体对象
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        Task PutKernel(params NameValue[] propertyValues);
+
+        /// <summary>
+        /// 更新根实体对象(如不存在则引发 InvalidOperationException)
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
         Task PatchKernel(IDictionary<string, object> propertyValues);
 
         /// <summary>
-        /// 更新根实体对象(如不存在则新增)
+        /// 更新根实体对象(如不存在则引发 InvalidOperationException)
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
         Task PatchKernel(params NameValue[] propertyValues);

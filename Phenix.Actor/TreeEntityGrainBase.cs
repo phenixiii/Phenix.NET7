@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans;
+using Phenix.Core.Data;
 using Phenix.Core.Data.Expressions;
 using Phenix.Core.Data.Model;
 
@@ -40,17 +41,34 @@ namespace Phenix.Actor
         #region 方法
 
         /// <summary>
-        /// 更新根实体对象(如不存在则新增)
+        /// 新增根实体对象
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
-        protected override Task PatchKernel(IDictionary<string, object> propertyValues)
+        /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
+        protected override Task CreateKernel(IDictionary<string, object> propertyValues, bool throwIfFound = true)
         {
             if (Kernel != null)
-                Kernel.UpdateSelf(propertyValues);
+                if (throwIfFound)
+                    throw new InvalidOperationException("不允许重复新增!");
+                else
+                {
+                    OnKernelOperating(ExecuteAction.Update, out object tag);
+                    Kernel.UpdateSelf(propertyValues);
+                    OnKernelOperated(ExecuteAction.Update, tag);
+                }
             else if (this is IGrainWithIntegerKey)
-                TreeEntityBase<TKernel>.NewRoot(Database, PrimaryKeyLong, propertyValues).InsertSelf();
+            {
+                OnKernelOperating(ExecuteAction.Insert, out object tag);
+                TreeEntityBase<TKernel>.NewRoot(Database, propertyValues).InsertSelf(PrimaryKeyLong);
+                OnKernelOperated(ExecuteAction.Insert, tag);
+            }
             else
+            {
+                OnKernelOperating(ExecuteAction.Insert, out object tag);
                 TreeEntityBase<TKernel>.NewRoot(Database, propertyValues).InsertSelf();
+                OnKernelOperated(ExecuteAction.Insert, tag);
+            }
+
             return Task.CompletedTask;
         }
 
@@ -60,7 +78,12 @@ namespace Phenix.Actor
         protected override Task DeleteKernel()
         {
             if (Kernel != null)
+            {
+                OnKernelOperating(ExecuteAction.Delete, out object tag);
                 Kernel.DeleteBranch();
+                OnKernelOperated(ExecuteAction.Delete, tag);
+            }
+
             return Task.CompletedTask;
         }
 
@@ -73,7 +96,7 @@ namespace Phenix.Actor
         protected virtual TKernel GetNode(long id, bool throwIfNotFound = true)
         {
             if (Kernel == null)
-                throw new ArgumentException("需先有根节点", nameof(id));
+                throw new InvalidOperationException("需先有根节点");
 
             TKernel node = Kernel.FindInBranch(p => p.Id == id);
             if (node != null)

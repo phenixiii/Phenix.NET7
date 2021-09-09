@@ -14,14 +14,24 @@ namespace Phenix.Services.Contract.Security
     public interface IUserGrain : IEntityGrain<User>, IGrainWithStringKey
     {
         /// <summary>
-        /// 登记(获取动态口令)/注册(静态口令即登录名)
+        /// 注册(初始口令即登录名)
         /// </summary>
-        /// <param name="phone">手机(注册时可空)</param>
-        /// <param name="eMail">邮箱(注册时可空)</param>
-        /// <param name="regAlias">昵称(注册时可空)</param>
+        /// <param name="phone">手机</param>
+        /// <param name="eMail">邮箱</param>
+        /// <param name="regAlias">昵称</param>
+        /// <param name="requestAddress">服务请求方IP地址</param>
+        /// <param name="teamsId">所属团体ID(注册公司管理员时为null)</param>
+        /// <param name="positionId">担任岗位ID(注册公司管理员时为null)</param>
+        /// <returns>返回信息</returns>
+        Task<string> Register(string phone, string eMail, string regAlias, string requestAddress, long? teamsId = null, long? positionId = null);
+
+
+        /// <summary>
+        /// 登记(获取动态口令)
+        /// </summary>
         /// <param name="requestAddress">服务请求方IP地址</param>
         /// <returns>返回信息</returns>
-        Task<string> CheckIn(string phone, string eMail, string regAlias, string requestAddress);
+        Task<string> CheckIn(string requestAddress);
 
         /// <summary>
         /// 登录
@@ -44,7 +54,7 @@ namespace Phenix.Services.Contract.Security
         Task Logout();
 
         /// <summary>
-        /// 重置登录口令(静态口令即登录名)
+        /// 重置登录口令(初始口令即登录名)
         /// </summary>
         Task ResetPassword();
 
@@ -72,17 +82,5 @@ namespace Phenix.Services.Contract.Security
         /// 获取公司用户资料
         /// </summary>
         Task<IList<User>> FetchCompanyUsers();
-
-        /// <summary>
-        /// 注册(静态口令即登录名)
-        /// </summary>
-        /// <param name="phone">手机(注册时可空)</param>
-        /// <param name="eMail">邮箱(注册时可空)</param>
-        /// <param name="regAlias">昵称(注册时可空)</param>
-        /// <param name="requestAddress">服务请求方IP地址</param>
-        /// <param name="teamsId">所属团体ID</param>
-        /// <param name="positionId">担任岗位ID</param>
-        /// <returns>返回信息</returns>
-        Task<string> Register(string phone, string eMail, string regAlias, string requestAddress, long teamsId, long positionId);
     }
 }

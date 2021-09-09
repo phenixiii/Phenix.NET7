@@ -26,10 +26,6 @@
                     <label style="clear: both">
                         <input class="txt_input" id="userName" type="text" style="font-weight: lighter" placeholder="请输入登录名">
                     </label>
-                    <h2 id="passwordHint" style="clear:both"></h2>
-                    <label style="clear: both">
-                        <input class="txt_input" id="password" type="password" style="font-weight: lighter" placeholder="请输入口令">
-                    </label>
                     <h2 id="companyNameHint" style="clear:both"></h2>
                     <label style="clear: both">
                         <input class="txt_input" id="companyName" type="text" style="font-weight: lighter" placeholder="请输入公司名">
@@ -43,10 +39,42 @@
                         <input class="txt_input" id="regAlias" type="text" style="font-weight: lighter" placeholder="请输入昵称">
                     </label>
                     <p class="forgot">
+                        <a @click="onShowChangePasswordDialog()">修改口令</a> |
                         <a @click="window.location.href = 'login.html'">登录TPT</a>
                     </p>
                     <input id="center_button" class="btn" type="button" value="注册公司级会员" @click="onRegister()">
                     <h3 id="registerHint" style="clear: both"></h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="changePasswordDialog" tabindex="-1" role="dialog" aria-labelledby="changePasswordDialogLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="changePasswordDialogLabel">修改登录口令</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label>
+                            <label style="clear: both">
+                                <input class="txt_input" id="password" type="password" style="font-weight: lighter" placeholder="请输入口令" size="40">
+                            </label>
+                            <h id="passwordHint" style="clear:both"></h>
+                            <label style="clear: both">
+                                <input class="txt_input" id="newPassword" type="password" style="font-weight: lighter" placeholder="请输入新口令" size="40">
+                            </label>
+                            <h id="newPasswordHint" style="clear:both"></h>
+                            <label style="clear: both">
+                                <input class="txt_input" id="newPassword2" type="password" style="font-weight: lighter" placeholder="请确认新口令" size="40">
+                            </label>
+                            <h id="newPassword2Hint" style="clear:both"></h>
+                        </label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" @click="onChangePassword()">提交</button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -12,7 +12,7 @@ namespace Phenix.Services.Plugin.Security.Myself
     /// <summary>
     /// 登录口令控制器
     /// </summary>
-    [Route(WebApiConfig.ApiSecurityMyselfPasswordPath)]
+    [Route(WebApiConfig.SecurityMyselfPasswordPath)]
     [ApiController]
     public sealed class PasswordController : Phenix.Core.Net.Api.ControllerBase
     {

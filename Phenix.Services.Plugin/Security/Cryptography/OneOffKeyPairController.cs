@@ -11,7 +11,7 @@ namespace Phenix.Services.Plugin.Security.Cryptography
     /// <summary>
     /// 一次性公钥私钥对控制器
     /// </summary>
-    [Route(WebApiConfig.ApiSecurityOneOffKeyPairPath)]
+    [Route(WebApiConfig.SecurityOneOffKeyPairPath)]
     [ApiController]
     public sealed class OneOffKeyPairController : Phenix.Core.Net.Api.ControllerBase
     {

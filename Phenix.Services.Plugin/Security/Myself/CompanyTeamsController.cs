@@ -12,7 +12,7 @@ namespace Phenix.Services.Plugin.Security.Myself
     /// <summary>
     /// 公司团体控制器
     /// </summary>
-    [Route(WebApiConfig.ApiSecurityMyselfCompanyTeamsPath)]
+    [Route(WebApiConfig.SecurityMyselfCompanyTeamsPath)]
     [ApiController]
     public sealed class CompanyTeamsController : Phenix.Core.Net.Api.ControllerBase
     {

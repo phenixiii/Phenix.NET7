@@ -13,7 +13,7 @@ namespace Phenix.Services.Plugin.Service
     /// <summary>
     /// 门户控制器
     /// </summary>
-    [Route(WebApiConfig.ApiServicePortalPath)]
+    [Route(WebApiConfig.ServicePortalPath)]
     [ApiController]
     public sealed class PortalController : Phenix.Core.Net.Api.ControllerBase
     {

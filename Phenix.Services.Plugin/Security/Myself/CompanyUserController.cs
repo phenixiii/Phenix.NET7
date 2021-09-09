@@ -13,7 +13,7 @@ namespace Phenix.Services.Plugin.Security.Myself
     /// <summary>
     /// 公司用户控制器
     /// </summary>
-    [Route(WebApiConfig.ApiSecurityMyselfCompanyUserPath)]
+    [Route(WebApiConfig.SecurityMyselfCompanyUserPath)]
     [ApiController]
     public sealed class CompanyUserController : Phenix.Core.Net.Api.ControllerBase
     {
@@ -41,7 +41,7 @@ namespace Phenix.Services.Plugin.Security.Myself
         /// <returns>返回信息</returns>
         [CompanyAdminFilter]
         [Authorize]
-        [HttpPost]
+        [HttpPut]
         public async Task<string> Register(string name, string phone, string eMail, string regAlias, long teamsId, long positionId)
         {
             if (String.IsNullOrEmpty(name))
@@ -62,8 +62,7 @@ namespace Phenix.Services.Plugin.Security.Myself
             if (String.IsNullOrEmpty(name))
                 throw new ArgumentNullException(nameof(name), "登录名不允许为空!");
 
-            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.FormatPrimaryKey(name)).PatchKernel(
-                await Request.ReadBodyAsync<Dictionary<string, object>>(true));
+            await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.FormatPrimaryKey(name)).PatchKernel(await Request.ReadBodyAsync<Dictionary<string, object>>(true));
         }
     }
 }

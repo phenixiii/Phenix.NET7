@@ -101,12 +101,12 @@ var phAjax = (function($) {
             result = phUtils.encrypt(phUtils.random(9) + new Date().toISOString(), CryptoJS.MD5(password).toString().toUpperCase());
             setSession(result);
             return result;
-        };
+        }
         try {
             result = window.localStorage.getItem(sessionCookieName);
         } catch (e) {
             result = $.cookie(sessionCookieName);
-        };
+        }
         return result != null ? result : "";
     };
     
@@ -171,16 +171,59 @@ var phAjax = (function($) {
             return phUtils.decrypt(cipherText, getSession(null));
         },
 
-        // 登记(获取动态口令)/注册(静态口令即登录名)
+        // 注册(初始口令即登录名)
+        register: function(options) {
+            var defaults = {
+                baseAddress: phAjax.baseAddress, //"http://localhost:5000"
+                companyName: "", //公司名
+                userName: "", //登录名
+                hashName: false, //Hash登录名
+                phone: "", //手机
+                eMail: "", //邮箱
+                regAlias: "", //注册昵称
+                onSuccess: null, //调用成功的回调函数, 参数(result)为返回的消息
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
+            };
+            options = $.extend(defaults, options);
+            if (options.hashName)
+                options.userName = CryptoJS.MD5(options.userName).toString().toUpperCase();
+            setSession(null);
+            setMyself(null);
+            $.ajax({
+                type: "PUT",
+                url: options.baseAddress + "/api/security/myself" +
+                    "?companyName=" + encodeURIComponent(options.companyName) +
+                    "&userName=" + encodeURIComponent(options.userName) +
+                    "&phone=" + options.phone +
+                    "&eMail=" + options.eMail +
+                    "&regAlias=" + encodeURIComponent(options.regAlias),
+                contentType: "application/json;charset=utf-8",
+                cache: false,
+                crossDomain: true,
+                timeout: 30000,
+                data: null,
+                complete: function(XMLHttpRequest, textStatus) {
+                    if (XMLHttpRequest.status == 200) {
+                        setBaseAddress(options.baseAddress);
+                        setCompanyName(options.companyName);
+                        setUserName(options.userName);
+                        if (typeof options.onSuccess == "function")
+                            options.onSuccess(XMLHttpRequest.responseText);
+                    } else {
+                        if (typeof options.onError == "function")
+                            options.onError(XMLHttpRequest, textStatus);
+                    }
+                },
+            });
+        },
+
+        // 登记(获取动态口令)
         checkIn: function(options) {
             var defaults = {
                 baseAddress: phAjax.baseAddress, //"http://localhost:5000"
                 companyName: "", //公司名
                 userName: "", //登录名
                 hashName: false, //Hash登录名
-                phone: "", //手机(注册时可空)
-                eMail: "", //邮箱(注册时可空)
-                regAlias: "", //注册昵称(注册时可空)
                 onSuccess: null, //调用成功的回调函数, 参数(result)为返回的消息
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
             };
@@ -193,10 +236,7 @@ var phAjax = (function($) {
                 type: "GET",
                 url: options.baseAddress + "/api/security/gate" +
                     "?companyName=" + encodeURIComponent(options.companyName) +
-                    "&userName=" + encodeURIComponent(options.userName) +
-                    "&phone=" + options.phone +
-                    "&eMail=" + options.eMail +
-                    "&regAlias=" + encodeURIComponent(options.regAlias),
+                    "&userName=" + encodeURIComponent(options.userName),
                 contentType: "application/json;charset=utf-8",
                 cache: false,
                 crossDomain: true,
@@ -241,7 +281,7 @@ var phAjax = (function($) {
             setSession(null);
             setMyself(null);
             $.ajax({
-                type: "POST",
+                type: "PUT",
                 url: options.baseAddress + "/api/security/gate",
                 contentType: "application/json;charset=utf-8",
                 cache: false,
@@ -279,7 +319,7 @@ var phAjax = (function($) {
                     if (!options.cache) {
                         setCompanyName(null);
                         setUserName(null);
-                    };
+                    }
                     setSession(null);
                     setMyself(null);
                 },
@@ -527,7 +567,7 @@ var phAjax = (function($) {
                 .configureLogging("error")
                 .withAutomaticReconnect()
                 .build();
-            connection.on('onReceived',
+            connection.on("onReceived",
                 function(messages) {
                     if (typeof options.onReceived == "function")
                         options.onReceived(options.groupName == null ? JSON.parse(messages) : messages);
@@ -584,12 +624,12 @@ var phAjax = (function($) {
                         var goon = onProgress(result.FileName, result.ChunkCount, result.ChunkNumber, result.ChunkSize, result.ChunkBody, chunkBuffer);
                         if (typeof goon == "boolean" && !goon)
                             return;
-                    };
+                    }
                     if (result.ChunkNumber >= result.ChunkCount) {
                         if (typeof onSuccess == "function")
                             onSuccess(result.FileName, new Blob([phUtils.toUint8Array(chunkBuffer)]));
                         return;
-                    };
+                    }
                     phAjax.downloadFileChunk(path, message, fileName, chunkNumber + 1, chunkBuffer, onProgress, onSuccess, onError);
                 },
                 onError: function (XMLHttpRequest, textStatus) {
@@ -618,7 +658,7 @@ var phAjax = (function($) {
                     }
                 } else {
                     phAjax.uploadFileChunk(options.path, options.message, options.files, 1, options.onProgress, options.onSuccess, options.onError);
-                };
+                }
         },
 
         uploadFileChunk: function(path, message, file, chunkNumber, onProgress, onSuccess, onError) {
@@ -643,12 +683,12 @@ var phAjax = (function($) {
                         if (!onProgress(file.name, chunkCount, chunkNumber, chunkSize)) {
                             phAjax.uploadFileChunk(path, message, file, 0, onProgress, onSuccess, onError);
                             return;
-                        };
+                        }
                     if (chunkNumber >= chunkCount) {
                         if (typeof onSuccess == "function")
                             onSuccess(result);
                         return;
-                    };
+                    }
                     phAjax.uploadFileChunk(path, message, file, chunkNumber + 1, onProgress, onSuccess, onError);
                 },
                 onError: function(XMLHttpRequest, textStatus) {
@@ -751,7 +791,7 @@ var phUtils = (function() {
                 data = JSON.stringify(data);
                 result = CryptoJS.AES.encrypt(data, key, { iv: key, mode: CryptoJS.mode.CBC });
                 return CryptoJS.enc.Base64.stringify(result.ciphertext);
-            };
+            }
             return null;
         },
         
@@ -767,7 +807,7 @@ var phUtils = (function() {
             var result = new Uint8Array(i);
             while (i--) {
                 result[i] = byteStr.charCodeAt(i);
-            };
+            }
             return result;
         },
 
@@ -778,11 +818,11 @@ var phUtils = (function() {
                     var value = obj[p];
                     if (value == null)
                         continue;
-                    result[p] = typeof value === 'object'
+                    result[p] = typeof value === "object"
                         ? (value instanceof Array ? phUtils.filterArrayParams(value) : phUtils.filterParams(value))
                         : value;
                 }
-            };
+            }
             return result;
         },
 
@@ -790,7 +830,7 @@ var phUtils = (function() {
             var result = [];
             arr.forEach((item, index) => {
                 if (item != null)
-                    result.push(typeof item === 'object'
+                    result.push(typeof item === "object"
                         ? (item instanceof Array ? phUtils.filterArrayParams(item) : phUtils.filterParams(item))
                         : item
                     );

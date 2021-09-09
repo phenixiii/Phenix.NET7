@@ -17,7 +17,7 @@ namespace Phenix.Services.Extend.Security
 
         Task<string> IUserService.OnRegistered(User user, string initialPassword)
         {
-            return Task.FromResult(String.Format("您的初始口令和登录名相同。首次登录前，请修改口令以符合复杂性要求(长度需大于等于{0}个字符且至少包含数字、大小写字母、特殊字符之{1}种)",
+            return Task.FromResult(String.Format("注册成功。在首次登录前请将登录口令(初始同登录名)改为强口令(长度需大于等于{0}个字符且至少包含数字、大小写字母、特殊字符之{1}种)。",
                 User.PasswordLengthMinimum, User.PasswordComplexityMinimum));
         }
 

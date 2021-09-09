@@ -12,7 +12,7 @@ namespace Phenix.Services.Plugin.Security.Myself
     /// <summary>
     /// 公司资料控制器
     /// </summary>
-    [Route(WebApiConfig.ApiSecurityMyselfCompanyPath)]
+    [Route(WebApiConfig.SecurityMyselfCompanyPath)]
     [ApiController]
     public sealed class CompanyController : Phenix.Core.Net.Api.ControllerBase
     {
@@ -33,10 +33,10 @@ namespace Phenix.Services.Plugin.Security.Myself
         /// </summary>
         [CompanyAdminFilter]
         [Authorize]
-        [HttpPut]
-        public async Task Put()
+        [HttpPatch]
+        public async Task Patch()
         {
-            await ClusterClient.Default.GetGrain<ICompanyTeamsGrain>(User.Identity.CompanyName).PutKernel(await Request.ReadBodyAsync<Teams>());
+            await ClusterClient.Default.GetGrain<ICompanyTeamsGrain>(User.Identity.CompanyName).PatchKernel(await Request.ReadBodyAsync<Teams>());
         }
     }
 }
