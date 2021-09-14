@@ -36,12 +36,12 @@ namespace Phenix.Actor
         private static int? _defaultGrainCollectionAgeMinutes;
 
         /// <summary>
-        /// 默认的激活体垃圾收集年龄限
-        /// 默认：2天
+        /// 默认的激活体垃圾回收年龄限
+        /// 默认：60*2分钟
         /// </summary>
         public static int DefaultGrainCollectionAgeMinutes
         {
-            get { return AppSettings.GetLocalProperty(ref _defaultGrainCollectionAgeMinutes, 60 * 24 * 2); }
+            get { return AppSettings.GetLocalProperty(ref _defaultGrainCollectionAgeMinutes, 60 * 2); }
             set { AppSettings.SetLocalProperty(ref _defaultGrainCollectionAgeMinutes, value); }
         }
 

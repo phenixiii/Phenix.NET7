@@ -339,7 +339,7 @@ var phAjax = (function($) {
                 if (myself != null) {
                     if (typeof options.onSuccess == "function")
                         options.onSuccess(myself);
-                    return;
+                    return myself;
                 }
             };
             phAjax.call({

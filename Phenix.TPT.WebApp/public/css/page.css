@@ -33,18 +33,14 @@
     color: rgb(146, 208, 80);
 }
 
-.butt {
-    border: 1px solid rgb(220, 220, 220);
-    border-radius: 3px;
-    background-color: #fafafa
-}
-
 .logo {
     position: absolute;
     left: 50%;
     -ms-transform: translate(-50%, 0%);
     -webkit-transform: translate(-50%, 0%);
     transform: translate(-50%, 0%);
+    ext-align: center;
+    margin-top: 2%;
 }
 
 .center-group {
@@ -60,23 +56,23 @@
     margin-top: -188px;
 }
 
-.center_padding {
+.center-padding {
     padding: 28px 47px 20px 47px;
 }
 
-.center_boder h2 {
+.center-boder h2 {
     color: red;
     font-size: 12px;
     font-weight: normal;
 }
 
-.center_boder h3 {
+.center-boder h3 {
     color: blue;
     font-size: 12px;
     font-weight: normal;
 }
 
-.center_boder input.txt_input {
+.center-boder input.txt-input {
     width: 295px;
     height: 36px;
     border: 1px solid #cad2db;
@@ -90,7 +86,7 @@
     font-family: Arial;
 }
 
-.center_boder input.txt_input:focus {
+.center-boder input.txt-input:focus {
     -moz-transition: border linear .2s, -moz-box-shadow linear .2s;
     -webkit-transition: border linear .2s, -webkit-box-shadow linear .2s;
     transition: border linear .2s, box-shadow linear .2s;
@@ -102,28 +98,126 @@
     border: 1px solid #6192c8;
 }
 
-.center_boder p.forgot {
+.center-boder p.forgot {
     font-size: 11px;
     text-align: right;
     margin-bottom: 15px;
     margin-right: 13px;
 }
 
-.center_boder p.forgot a,
-.center_boder p.forgot a:visited {
+.center-boder p.forgot a,
+.center-boder p.forgot a:visited {
     color: #8c8e91;
 }
 
-.center_boder p.forgot a:hover {
+.center-boder p.forgot a:hover {
     color: #206fd5;
 }
 
-#center_button {
+#center-button {
     background: rgb(31, 73, 125);
     color: white;
     height: 36px;
     width: 295px;
     font-size: 14px;
+}
+
+.modal-body h {
+    color: red;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.modal-body input.txt-input {
+    width: 295px;
+    height: 36px;
+    border: 1px solid #cad2db;
+    padding: 0 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    line-height: 36px;
+    font-size: 14px;
+    color: #717171;
+    font-family: Arial;
+}
+
+.modal-body input.txt-input:focus {
+    -moz-transition: border linear .2s, -moz-box-shadow linear .2s;
+    -webkit-transition: border linear .2s, -webkit-box-shadow linear .2s;
+    transition: border linear .2s, box-shadow linear .2s;
+    outline: none;
+    border-color: rgba(173, 173, 173, .75);
+    -moz-box-shadow: 0 0 8px rgba(173, 173, 173, .5);
+    -webkit-box-shadow: 0 0 8px rgba(173, 173, 173, 3);
+    box-shadow: 0 0 8px rgba(173, 173, 173, .5);
+    border: 1px solid #6192c8;
+}
+
+.sec-menu {
+    background-color: rgb(108, 152, 209);
+    padding-top: 16px;
+    padding-bottom: 12px;
+    color: #fff;
+    font-size: 22px;
+}
+
+.sec-menu a {
+    font-style: normal;
+    font-size: 14px;
+    margin-bottom: 0%;
+    margin-top: 20px;
+    margin-right: 15px;
+    color: black;
+    float: right;
+}
+
+#side-menu {
+    height: 100%;
+    position: fixed;
+    left: -250px;
+    background-color: rgb(108, 152, 209);
+    color: #fff;
+    z-index: 999;
+    overflow: auto;
+    max-width: 500px;
+    overflow: auto;
+}
+
+#side-menu ul {
+    list-style: none;
+    padding: 0px;
+}
+
+#side-menu ul li {
+    border-bottom: 1px solid #3BA551;
+    padding: 20px 25px;
+    color: black;
+    cursor: pointer;
+}
+
+#side-menu ul li a i {
+    padding-right: 10px;
+}
+
+#side-menu ul li a,
+#side-menu ul li a:hover {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.menu-close-icon,
+.menu-open-icon {
+    cursor: pointer;
+}
+
+.button {
+    border: 1px solid rgb(220, 220, 220);
+    border-radius: 3px;
+    background-color: #fafafa;
+    cursor: pointer;
+    text-align: center;
 }
 
 .itemchart {
@@ -263,16 +357,6 @@ hr {
     border-top: 1px solid rgb(245, 245, 255);
 }
 
-/*.projectname {
-    text-align: center;
-    font-family: Microsoft YaHei, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: royalblue;
-    padding: 0%;
-    margin: 3px 0% 0% 0%;
-    height: 69px;
-    /*line-height: 69px;
-}*/
-
 .totalworkload {
     text-align: center;
     font-family: Microsoft YaHei, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -320,12 +404,6 @@ hr {
 
 .line {
     height: 500px;
-}
-
-.main {
-    width: 100%;
-    height: calc(100%-100px);
-    margin-top: -15px;
 }
 
 .tabli {
@@ -393,52 +471,6 @@ input {
 
 [v-cloak] {
     display: none;
-}
-
-.sec-menu {
-    background-color: rgb(108, 152, 209);
-    padding-top: 16px;
-    padding-bottom: 12px;
-    color: #fff;
-    font-size: 22px;
-}
-
-#side-menu {
-    height: 100%;
-    position: fixed;
-    left: -250px;
-    background-color: rgb(108, 152, 209);
-    color: #fff;
-    z-index: 999;
-    overflow: auto;
-    max-width: 500px;
-    overflow: auto;
-}
-
-#side-menu ul {
-    list-style: none;
-    padding: 0px;
-}
-
-#side-menu ul li {
-    border-bottom: 1px solid #3BA551;
-    padding: 20px 25px;
-}
-
-#side-menu ul li a i {
-    padding-right: 10px;
-}
-
-#side-menu ul li a,
-#side-menu ul li a:hover {
-    color: #fff;
-    text-decoration: none;
-    font-size: 16px;
-}
-
-.menu-close-icon,
-.menu-open-icon {
-    cursor: pointer;
 }
 
 .header-line {

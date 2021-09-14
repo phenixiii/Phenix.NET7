@@ -12,38 +12,37 @@
     <title>登录TPT</title>
 </head>
 
-<body style="background: #F0F0F0">
-    <div id="login">
-        <div class="logo" style="text-align:center;margin-top:2%;">
+<body style="background: #F0F0F0;">
+    <div id="content">
+        <div class="logo">
             <h1>
                 <font face="Papyrus">Teamwork Project Tracker II</font>
             </h1>
         </div>
         <div class="center-group">
-            <div class="center_boder">
-                <div class="center_padding">
-                    <h2 id="userNameHint" style="clear:both"></h2>
-                    <label style="clear: both">
-                        <input class="txt_input" id="userName" type="text" style="font-weight: lighter" placeholder="请输入登录名">
+            <div class="center-boder">
+                <div class="center-padding">
+                    <h2 id="userNameHint" style="clear: both;"></h2>
+                    <label style="clear: both;">
+                        <input class="txt-input" id="userName" type="text" style="font-weight: lighter;" placeholder="请输入登录名">
                     </label>
-                    <h2 id="passwordHint" style="clear:both"></h2>
-                    <label style="clear: both">
-                        <input class="txt_input" id="password" type="password" style="font-weight: lighter" placeholder="请输入口令">
+                    <h2 id="passwordHint" style="clear: both;"></h2>
+                    <label style="clear: both;">
+                        <input class="txt-input" id="password" type="password" style="font-weight: lighter;" placeholder="请输入口令">
                     </label>
-                    <h2 id="companyNameHint" style="clear:both"></h2>
-                    <label style="clear: both">
-                        <input class="txt_input" id="companyName" type="text" style="font-weight: lighter" placeholder="请输入公司名">
+                    <h2 id="companyNameHint" style="clear: both;"></h2>
+                    <label style="clear: both;">
+                        <input class="txt-input" id="companyName" type="text" style="font-weight: lighter;" placeholder="请输入公司名">
                     </label>
                     <p class="forgot">
-                        <a @click="onCheckIn()">动态口令</a> |
-                        <a @click="window.location.href = 'register.html'">注册会员</a>
+                        <a style="cursor: pointer;" @click="onCheckIn()">动态口令</a> |
+                        <a style="cursor: pointer;" @click="window.location.href = 'register.html'">注册会员</a>
                     </p>
-                    <input id="center_button" class="btn" type="button" value="登录" @click="onLogon()">
-                    <h3 id="logonHint" style="clear: both"></h3>
+                    <input id="center-button" class="btn" type="button" value="登录" @click="onLogon()">
+                    <h3 id="logonHint" style="clear: both;"></h3>
                 </div>
             </div>
         </div>
-
         <div class="modal fade" id="patchMyselfDialog" tabindex="-1" role="dialog" aria-labelledby="patchMyselfDialogLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -53,8 +52,8 @@
                     </div>
                     <div class="modal-body">
                         <label>
-                            <label style="clear: both">
-                                <input class="txt_input" id="eMail" type="email" style="font-weight: lighter" placeholder="请输入邮箱地址" size="40">
+                            <label style="clear: both;">
+                                <input class="txt-input" id="eMail" type="email" style="font-weight: lighter;" placeholder="请输入邮箱地址" size="40">
                             </label>
                         </label>
                     </div>
@@ -79,7 +78,7 @@
     <script type="text/javascript" src="scripts/lib/signalr.min.js"></script>
     <script type="text/javascript" src="scripts/lib/phenix7.js"></script>
 
-    <script type="text/javascript" src="scripts/lib/common.min.js"></script>
+    <script type="text/javascript" src="scripts/lib/vue.min.js"></script>
     <script type="text/javascript" src="scripts/lib/mesgbox.js"></script>
 
     <script>

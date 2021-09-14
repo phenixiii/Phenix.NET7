@@ -23,7 +23,7 @@ namespace Orleans.Hosting
         /// 
         /// 配置项见Phenix.Actor.OrleansConfig
         /// 设置集群ID、服务ID：Phenix.Core.Data.Database.Default.DataSourceKey
-        /// 设置默认的激活体垃圾收集年龄限为：OrleansConfig.DefaultGrainCollectionAgeMinutes
+        /// 设置默认的激活体垃圾回收年龄限为：OrleansConfig.DefaultGrainCollectionAgeMinutes
         /// 设置Clustering、GrainStorage、Reminder数据库：Phenix.Core.Data.Database.Default
         /// 设置Silo端口：EndpointOptions.DEFAULT_SILO_PORT
         /// 设置Gateway端口：EndpointOptions.DEFAULT_GATEWAY_PORT
@@ -46,7 +46,7 @@ namespace Orleans.Hosting
         /// <param name="clusterId">Orleans集群的唯一ID</param>
         /// <param name="serviceId">Orleans服务的唯一ID</param>
         /// <param name="connectionString">Orleans数据库连接串</param>
-        /// <param name="grainCollectionAgeMinutes">默认的激活体垃圾收集年龄限(分钟)</param>
+        /// <param name="grainCollectionAgeMinutes">默认的激活体垃圾回收年龄限(分钟)</param>
         /// <param name="siloPort">Silo端口</param>
         /// <param name="gatewayPort">Gateway端口</param>
         /// <returns>ISiloBuilder</returns>

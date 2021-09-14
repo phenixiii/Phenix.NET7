@@ -84,8 +84,8 @@ function fetchValidityPasswordInfo() {
     return result;
 }
 
-var v = new Vue({
-    el: '#register',
+var vue = new Vue({
+    el: '#content',
     methods: {
         onRegister: function() {
             var inputs = fetchValidityRegisterInfo();

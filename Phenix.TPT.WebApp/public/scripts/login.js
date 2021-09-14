@@ -9,7 +9,7 @@
     }
 });
 
-function fetchLogonInfo() {
+function fetchCheckInInfo() {
     var result = {};
 
     result.userName = $('#userName').val().trim();
@@ -19,14 +19,6 @@ function fetchLogonInfo() {
         return null;
     }
     $("#userNameHint").html('');
-
-    result.password = $('#password').val().trim();
-    if (result.password == null || result.password == "") {
-        $('#passwordHint').html('登录口令不允许为空！');
-        $('#password').focus();
-        return null;
-    }
-    $('#passwordHint').html('');
 
     result.companyName = $('#companyName').val().trim();
     if (result.companyName == null || result.companyName == "") {
@@ -39,27 +31,61 @@ function fetchLogonInfo() {
     return result;
 }
 
+function fetchLogonInfo() {
+    var result = fetchCheckInInfo();
+
+    result.password = $('#password').val().trim();
+    if (result.password == null || result.password == "") {
+        $('#passwordHint').html('登录口令不允许为空！');
+        $('#password').focus();
+        return null;
+    }
+    $('#passwordHint').html('');
+
+
+    return result;
+}
+
 function jumpPage() {
     var hint = $('#logonHint');
     phAjax.getMyself({
-        onSuccess: function (result) {
+        onSuccess: function(result) {
             if (result.EMail == null || result.RegAlias == null)
                 $('#patchMyselfDialog').modal('show');
-            else if (result.Position == null || result.Position.Roles.indexOf('经营管理') >= 0)
-                window.location.href = 'search.html';
             else
                 window.location.href = 'index.html';
         },
-        onError: function (XMLHttpRequest, textStatus) {
+        onError: function(XMLHttpRequest, textStatus) {
             hint.html(XMLHttpRequest.responseText);
             zdalert('获取个人资料失败', XMLHttpRequest.responseText);
         },
     });
 }
 
-var v = new Vue({
-    el: "#login",
+var vue = new Vue({
+    el: '#content',
     methods: {
+        onCheckIn: function() {
+            var inputs = fetchCheckInInfo();
+            if (inputs == null)
+                return;
+
+            var hint = $('#logonHint');
+            hint.html('正在登记，请稍等...');
+            phAjax.checkIn({
+                companyName: inputs.companyName,
+                userName: inputs.userName,
+                onSuccess: function(result) {
+                    hint.html(result);
+                    zdconfirm('登记成功', result);
+                },
+                onError: function(XMLHttpRequest, textStatus) {
+                    hint.html(XMLHttpRequest.responseText);
+                    zdalert('登记失败', XMLHttpRequest.responseText);
+                },
+            });
+        },
+
         onLogon: function() {
             var inputs = fetchLogonInfo();
             if (inputs == null)
@@ -78,27 +104,6 @@ var v = new Vue({
                 onError: function(XMLHttpRequest, textStatus) {
                     hint.html(XMLHttpRequest.responseText);
                     zdalert('登录失败', XMLHttpRequest.responseText);
-                },
-            });
-        },
-
-        onCheckIn: function() {
-            var inputs = fetchValidityInputs();
-            if (inputs == null)
-                return;
-
-            var hint = $('#logonHint');
-            hint.html('正在登记，请稍等...');
-            phAjax.checkIn({
-                companyName: inputs.companyName,
-                userName: inputs.userName,
-                onSuccess: function(result) {
-                    hint.html(result);
-                    zdconfirm('登记成功', result);
-                },
-                onError: function(XMLHttpRequest, textStatus) {
-                    hint.html(XMLHttpRequest.responseText);
-                    zdalert('登记失败', XMLHttpRequest.responseText);
                 },
             });
         },
