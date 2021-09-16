@@ -1,6 +1,8 @@
-﻿using Orleans.Configuration;
+﻿using System.Linq;
+using Orleans.Configuration;
 using Phenix.Core;
 using Phenix.Core.Data;
+using Phenix.Core.Security;
 
 namespace Phenix.Actor
 {
@@ -36,13 +38,13 @@ namespace Phenix.Actor
         private static int? _defaultGrainCollectionAgeMinutes;
 
         /// <summary>
-        /// 默认的激活体垃圾回收年龄限
-        /// 默认：60*2分钟
+        /// 默认的激活体垃圾回收年龄限(分钟)
+        /// 默认：Principal.RequestIdleIntervalLimitMinutes(>=Principal.RequestIdleIntervalLimitMinutes)
         /// </summary>
         public static int DefaultGrainCollectionAgeMinutes
         {
-            get { return AppSettings.GetLocalProperty(ref _defaultGrainCollectionAgeMinutes, 60 * 2); }
-            set { AppSettings.SetLocalProperty(ref _defaultGrainCollectionAgeMinutes, value); }
+            get { return new[] {AppSettings.GetLocalProperty(ref _defaultGrainCollectionAgeMinutes, Principal.RequestIdleIntervalLimitMinutes), Principal.RequestIdleIntervalLimitMinutes}.Max(); }
+            set { AppSettings.SetLocalProperty(ref _defaultGrainCollectionAgeMinutes, new[] {value, Principal.RequestIdleIntervalLimitMinutes}.Max()); }
         }
 
         private static int? _defaultSiloPort;

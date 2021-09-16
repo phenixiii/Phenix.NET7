@@ -9,6 +9,8 @@ namespace Phenix.Services.Plugin.Security.Cryptography
 {
     /// <summary>
     /// 一次性公钥私钥对Grain
+    /// key: DiscardIntervalSeconds
+    /// keyExtension: Name
     /// </summary>
     public class OneOffKeyPairGrain : GrainBase, IOneOffKeyPairGrain
     {
@@ -22,30 +24,35 @@ namespace Phenix.Services.Plugin.Security.Cryptography
             get { return PrimaryKeyLong > 0 ? PrimaryKeyLong : 60; }
         }
 
-        private static readonly SynchronizedDictionary<string, CachedObject<KeyPair>> _cache =
-            new SynchronizedDictionary<string, CachedObject<KeyPair>>(StringComparer.Ordinal);
+        /// <summary>
+        /// 名称
+        /// </summary>
+        protected string Name
+        {
+            get { return PrimaryKeyExtension; }
+        }
+
+        private CachedObject<KeyPair> _keyPair;
 
         #endregion
 
         #region 方法
 
-        Task<string> IOneOffKeyPairGrain.GetPublicKey(string name)
+        Task<string> IOneOffKeyPairGrain.GetPublicKey()
         {
             KeyPair keyPair = RSACryptoTextProvider.CreateKeyPair();
-            _cache[name] = new CachedObject<KeyPair>(keyPair, DateTime.Now.AddSeconds(DiscardIntervalSeconds));
+            _keyPair = new CachedObject<KeyPair>(keyPair, DateTime.Now.AddSeconds(DiscardIntervalSeconds));
             return Task.FromResult(keyPair.PublicKey);
         }
 
-        Task<string> IOneOffKeyPairGrain.Decrypt(string name, string cipherText, bool fOAEP)
+        Task<string> IOneOffKeyPairGrain.Decrypt(string cipherText, bool fOAEP)
         {
-            string result = null;
-            if (_cache.TryGetValue(name, out CachedObject<KeyPair> cachedObject))
-            {
-                result = RSACryptoTextProvider.Decrypt(cachedObject.Value.PrivateKey, cipherText, fOAEP);
-                _cache.Remove(name);
-            }
+            if (_keyPair == null)
+                throw new InvalidOperationException("需先获取公钥才能解密!");
+            if (_keyPair.IsInvalid)
+                throw new InvalidOperationException("需重新获取公钥才能解密!");
 
-            return Task.FromResult(result);
+            return Task.FromResult(RSACryptoTextProvider.Decrypt(_keyPair.Value.PrivateKey, cipherText, fOAEP));
         }
 
         #endregion

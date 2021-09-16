@@ -15,11 +15,11 @@ namespace Phenix.Services.Plugin.Middleware
     /// 身份验证中间件
     /// 
     /// 与客户端接口 phenix7.js 一起实现用户的身份验证功能
-    /// 你也可以开发自己的客户端接口（比如桌面端、APP应用端），仅需在报文上添加身份验证 Header，格式为 Phenix-Authorization=[公司名],[登录名],[会话签名]
+    /// 你也可以开发自己的客户端接口（比如桌面端、APP应用端），仅需在报文上添加身份验证 Header，格式为 PH-Authorization=[公司名],[登录名],[会话签名]
     ///
     /// 登录口令/动态口令应该通过第三方渠道（邮箱或短信）推送给到用户，由用户输入到系统提供的客户端登录界面上，用于加密时间戳生成报文的签名
-    /// 用户登录成功后，客户端程序要将二次MD5登录口令/动态口令缓存在本地，以便每次向服务端发起 call 时都能为报文添加上 Phenix-Authorization
-    /// 未添加上 Phenix-Authorization 的报文会被当作是匿名访问，仅允许访问带[AllowAnonymous]标签或不打[Authorize]标签的 Controller/Action
+    /// 用户登录成功后，客户端程序要将二次MD5登录口令/动态口令缓存在本地，以便每次向服务端发起 call 时都能为报文添加上 PH-Authorization
+    /// 未添加上 PH-Authorization 的报文会被当作是匿名访问，仅允许访问带[AllowAnonymous]标签或不打[Authorize]标签的 Controller/Action
     ///
     /// 验证失败的话 context.Response.StatusCode = 401 Unauthorized，失败详情见报文体
     /// 验证成功的话 Phenix.Core.Security.Principal.CurrentIdentity.IsAuthenticated = true 且 context.User 会被赋值为 new ClaimsPrincipal(Principal.CurrentIdentity)
@@ -41,7 +41,7 @@ namespace Phenix.Services.Plugin.Middleware
 
         private const string MethodOverrideHeaderName = "X-HTTP-Method-Override";
 
-        private const string AuthorizationHeaderName = "Phenix-Authorization";
+        private const string AuthorizationHeaderName = "PH-Authorization";
 
         #endregion
 

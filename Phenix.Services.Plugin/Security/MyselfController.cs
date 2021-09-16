@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using Phenix.Actor;
 using Phenix.Core.Security;
 using Phenix.Services.Contract;
@@ -35,15 +36,16 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         [AllowAnonymous]
         [HttpPut]
-        public async Task<string> Register(string companyName, string userName, string phone, string eMail, string regAlias)
+        public async Task<string> Register()
         {
-            if (String.IsNullOrEmpty(companyName))
-                throw new ArgumentNullException(nameof(companyName), "公司名不允许为空!");
-            if (String.IsNullOrEmpty(userName))
-                throw new ArgumentNullException(nameof(userName), "登录名不允许为空!");
+            dynamic body = await Request.ReadBodyAsDynamicAsync();
+            if (String.IsNullOrEmpty((string) body.companyName))
+                throw new ArgumentNullException(nameof(body.companyName), "公司名不允许为空!");
+            if (String.IsNullOrEmpty((string) body.userName))
+                throw new ArgumentNullException(nameof(body.userName), "登录名不允许为空!");
 
-            IIdentity identity = Principal.FetchIdentity(companyName, userName, Request.GetAcceptLanguage(), null);
-            return await ClusterClient.Default.GetGrain<IUserGrain>(identity.PrimaryKey).Register(phone, eMail, regAlias, Request.GetRemoteAddress());
+            IIdentity identity = Principal.FetchIdentity((string) body.companyName, (string) body.userName, Request.GetAcceptLanguage(), null);
+            return await ClusterClient.Default.GetGrain<IUserGrain>(identity.PrimaryKey).Register((string) body.phone, (string) body.eMail, (string) body.regAlias, Request.GetRemoteAddress());
         }
 
         // phAjax.patchMyself()

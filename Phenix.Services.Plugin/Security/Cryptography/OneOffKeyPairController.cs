@@ -46,7 +46,7 @@ namespace Phenix.Services.Plugin.Security.Cryptography
         [HttpGet]
         public async Task<string> GetPublicKey(string name)
         {
-            return await ClusterClient.Default.GetGrain<IOneOffKeyPairGrain>(KeyPairDiscardIntervalSeconds).GetPublicKey(name);
+            return await ClusterClient.Default.GetGrain<IOneOffKeyPairGrain>(KeyPairDiscardIntervalSeconds, name).GetPublicKey();
         }
         
         #endregion

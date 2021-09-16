@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Orleans;
 using Orleans.Runtime;
@@ -29,8 +30,8 @@ namespace Phenix.Services.Plugin.Message
         /// </summary>
         public static int ClearMessageDeferMonths
         {
-            get { return AppSettings.GetProperty(ref _clearMessageDeferMonths, 6); }
-            set { AppSettings.SetProperty(ref _clearMessageDeferMonths, value >= 3 ? value : 3); }
+            get { return new[] {AppSettings.GetProperty(ref _clearMessageDeferMonths, 6), 3}.Max(); }
+            set { AppSettings.SetProperty(ref _clearMessageDeferMonths, new[] {value, 3}.Max()); }
         }
 
         #endregion

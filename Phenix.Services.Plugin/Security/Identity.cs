@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Phenix.Actor;
@@ -33,12 +34,12 @@ namespace Phenix.Services.Plugin.Security
 
         /// <summary>
         /// 缓存丢弃间隔(小时)
-        /// 默认：1
+        /// 默认：1(>=1)
         /// </summary>
         public static int CacheDiscardIntervalHours
         {
-            get { return AppSettings.GetProperty(ref _cacheDiscardIntervalHours, 1); }
-            set { AppSettings.SetProperty(ref _cacheDiscardIntervalHours, value); }
+            get { return new[] {AppSettings.GetProperty(ref _cacheDiscardIntervalHours, 1), 1}.Max(); }
+            set { AppSettings.SetProperty(ref _cacheDiscardIntervalHours, new[] {value, 1}.Max()); }
         }
 
         #endregion
@@ -186,7 +187,7 @@ namespace Phenix.Services.Plugin.Security
         /// </summary>
         public string AuthenticationType
         {
-            get { return "Phenix-Authorization"; }
+            get { return "PH-Authorization"; }
         }
 
         #endregion

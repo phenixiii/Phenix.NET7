@@ -133,6 +133,14 @@ namespace Phenix.Services.Business.Security
         }
 
         /// <summary>
+        /// 登出
+        /// </summary>
+        public override void Logout()
+        {
+            UpdateSelf(Set(p => p.RequestSignature, null));
+        }
+
+        /// <summary>
         /// 重置登录口令
         /// </summary>
         public override void ResetPassword()

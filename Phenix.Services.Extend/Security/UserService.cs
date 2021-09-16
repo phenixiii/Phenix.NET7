@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading.Tasks;
 using Phenix.Actor;
+using Phenix.Core.Security;
 using Phenix.Services.Business.Security;
 using Phenix.Services.Contract.Message;
 using Phenix.Services.Contract.Security;
@@ -18,7 +19,7 @@ namespace Phenix.Services.Extend.Security
         Task<string> IUserService.OnRegistered(User user, string initialPassword)
         {
             return Task.FromResult(String.Format("注册成功。在首次登录前请将登录口令(初始同登录名)改为强口令(长度需大于等于{0}个字符且至少包含数字、大小写字母、特殊字符之{1}种)。",
-                User.PasswordLengthMinimum, User.PasswordComplexityMinimum));
+                Principal.PasswordLengthMinimum, Principal.PasswordComplexityMinimum));
         }
 
         async Task<string> IUserService.OnCheckIn(User user, string dynamicPassword)
@@ -30,7 +31,7 @@ namespace Phenix.Services.Extend.Security
                 mailBody.Append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您好！<br/>");
                 mailBody.Append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您于&nbsp;" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                 mailBody.Append("&nbsp;申领的动态口令为：" + dynamicPassword + "<br/>");
-                mailBody.Append("&nbsp;&nbsp;<font color=red>(" + User.DynamicPasswordValidityMinutes + "分钟内有效)</font><br/>");
+                mailBody.Append("&nbsp;&nbsp;<font color=red>(" + Principal.DynamicPasswordValidityMinutes + "分钟内有效)</font><br/>");
                 mailBody.Append("&nbsp;如非本人操作，请忽略本邮件。<br/>");
                 try
                 {
@@ -40,7 +41,7 @@ namespace Phenix.Services.Extend.Security
                 {
                     throw new InvalidOperationException("获取动态口令失败!", ex);
                 }
-                return String.Format("本次申领的动态口令已发送到您登记的邮箱，请注意查收，并请在{0}分钟内使用动态口令登录系统。", User.DynamicPasswordValidityMinutes);
+                return String.Format("本次申领的动态口令已发送到您登记的邮箱，请注意查收，并请在{0}分钟内使用动态口令登录系统。", Principal.DynamicPasswordValidityMinutes);
             }
 
             return "您未曾登记过邮箱，无法收到动态口令。您可以联系系统管理员，为您重置登录口令。";

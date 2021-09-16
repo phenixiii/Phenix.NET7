@@ -13,7 +13,7 @@
 </head>
 
 <body style="background: #F0F0F0;">
-    <div id="content">
+    <div id="content v-cloak">
         <div class="logo">
             <h1>
                 <font face="Papyrus">Teamwork Project Tracker II</font>
@@ -24,25 +24,25 @@
                 <div class="center-padding">
                     <h2 id="userNameHint" style="clear: both;"></h2>
                     <label style="clear: both;">
-                        <input class="txt-input" id="userName" type="text" style="font-weight: lighter;" placeholder="请输入登录名">
+                        <input class="txt-input" id="userName" type="text" placeholder="请输入登录名">
                     </label>
                     <h2 id="companyNameHint" style="clear: both;"></h2>
                     <label style="clear: both;">
-                        <input class="txt-input" id="companyName" type="text" style="font-weight: lighter;" placeholder="请输入公司名">
+                        <input class="txt-input" id="companyName" type="text" placeholder="请输入公司名">
                     </label>
                     <h2 id="eMailHint" style="clear: both;"></h2>
                     <label style="clear: both;">
-                        <input class="txt-input" id="eMail" type="email" style="font-weight: lighter;" placeholder="请输入邮箱地址">
+                        <input class="txt-input" id="eMail" type="email" placeholder="请输入邮箱地址">
                     </label>
                     <h2 id="regAliasHint" style="clear: both;"></h2>
                     <label style="clear: both;">
-                        <input class="txt-input" id="regAlias" type="text" style="font-weight: lighter;" placeholder="请输入昵称">
+                        <input class="txt-input" id="regAlias" type="text" placeholder="请输入昵称">
                     </label>
                     <p class="forgot">
-                        <a style="cursor: pointer;" @click="onShowChangePasswordDialog()">修改口令</a> |
-                        <a style="cursor: pointer;" @click="window.location.href = 'login.html'">登录TPT</a>
+                        <a @click="onShowChangePasswordDialog()">修改口令</a> |
+                        <a @click="window.location.href = 'login.html'">登录TPT</a>
                     </p>
-                    <input id="center-button" class="btn" type="button" value="注册公司级会员" @click="onRegister()">
+                    <input class="btn" id="center-button" type="button" value="注册公司级会员" @click="onRegister()">
                     <h3 id="registerHint" style="clear: both;"></h3>
                 </div>
             </div>
@@ -51,28 +51,28 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title" id="changePasswordDialogLabel">修改登录口令</h4>
                     </div>
                     <div class="modal-body">
                         <label>
                             <label style="clear: both;">
-                                <input class="txt-input" id="password" type="password" style="font-weight: lighter;" placeholder="请输入口令" size="40">
+                                <input class="txt-input" id="password" type="password" placeholder="请输入口令" size="40">
                                 <h id="passwordHint" style="clear: both;"></h>
                             </label>
                             <label style="clear: both;">
-                                <input class="txt-input" id="newPassword" type="password" style="font-weight: lighter;" placeholder="请输入新口令" size="40">
+                                <input class="txt-input" id="newPassword" type="password" placeholder="请输入新口令" size="40">
                                 <h id="newPasswordHint" style="clear: both;"></h>
                             </label>
                             <label style="clear: both;">
-                                <input class="txt-input" id="newPassword2" type="password" style="font-weight: lighter;" placeholder="请确认新口令" size="40">
+                                <input class="txt-input" id="newPassword2" type="password" placeholder="请确认新口令" size="40">
                                 <h id="newPassword2Hint" style="clear: both;"></h>
                             </label>
                         </label>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary" @click="onChangePassword()">提交</button>
+                        <button class="btn btn-default" type="button" data-dismiss="modal">取消</button>
+                        <button class="btn btn-primary" type="button" @click="onChangePassword()">提交</button>
                     </div>
                 </div>
             </div>
@@ -92,6 +92,7 @@
     <script type="text/javascript" src="scripts/lib/phenix7.js"></script>
 
     <script type="text/javascript" src="scripts/lib/vue.min.js"></script>
+    <script type="text/javascript" src="scripts/lib/bootstrap.min.js"></script>
     <script type="text/javascript" src="scripts/lib/mesgbox.js"></script>
 
     <script>
