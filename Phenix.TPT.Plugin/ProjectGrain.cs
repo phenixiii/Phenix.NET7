@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Common;
 using System.Threading.Tasks;
 using Phenix.Actor;
 using Phenix.Core.Data;
+using Phenix.Core.Data.Expressions;
 using Phenix.TPT.Business;
 using Phenix.TPT.Contract;
+using Phenix.TPT.Plugin.Filters;
 
 namespace Phenix.TPT.Plugin
 {
@@ -28,28 +31,6 @@ namespace Phenix.TPT.Plugin
             {
                 return _projectAnnualPlanList ??= Kernel.FetchDetails(ProjectAnnualPlan.Descending(p => p.Year));
             }
-        }
-
-        private decimal? _totalReceivables;
-
-        /// <summary>
-        /// 应收总额
-        /// </summary>
-        public decimal TotalReceivables
-        {
-            get
-            {
-                if (!_totalReceivables.HasValue)
-                {
-                    decimal totalReceivables = 0;
-                    foreach (ProjectAnnualPlan item in ProjectAnnualPlanList)
-                        totalReceivables = totalReceivables + item.AnnualReceivables;
-                    _totalReceivables = totalReceivables;
-                }
-
-                return _totalReceivables.Value;
-            }
-            private set { _totalReceivables = value; }
         }
 
         private IList<ProjectMonthlyReport> _projectMonthlyReportList;
@@ -78,28 +59,6 @@ namespace Phenix.TPT.Plugin
             }
         }
 
-        private decimal? _totalInvoiceAmount;
-
-        /// <summary>
-        /// 开票总额
-        /// </summary>
-        public decimal TotalInvoiceAmount
-        {
-            get
-            {
-                if (!_totalInvoiceAmount.HasValue)
-                {
-                    decimal totalInvoiceAmount = 0;
-                    foreach (ProjectProceeds item in ProjectProceedsList)
-                        totalInvoiceAmount = totalInvoiceAmount + item.InvoiceAmount;
-                    _totalInvoiceAmount = totalInvoiceAmount;
-                }
-
-                return _totalInvoiceAmount.Value;
-            }
-            private set { _totalInvoiceAmount = value; }
-        }
-
         private IList<ProjectExpenses> _projectExpensesList;
 
         /// <summary>
@@ -111,28 +70,6 @@ namespace Phenix.TPT.Plugin
             {
                 return _projectExpensesList ??= Kernel.FetchDetails(ProjectExpenses.Descending(p => p.ReimbursementDate));
             }
-        }
-
-        private decimal? _totalReimbursementAmount;
-
-        /// <summary>
-        /// 报销总额
-        /// </summary>
-        public decimal TotalReimbursementAmount
-        {
-            get
-            {
-                if (!_totalReimbursementAmount.HasValue)
-                {
-                    decimal totalReimbursementAmount = 0;
-                    foreach (ProjectExpenses item in ProjectExpensesList)
-                        totalReimbursementAmount = totalReimbursementAmount + item.ReimbursementAmount;
-                    _totalReimbursementAmount = totalReimbursementAmount;
-                }
-
-                return _totalReimbursementAmount.Value;
-            }
-            private set { _totalReimbursementAmount = value; }
         }
 
         #endregion
@@ -177,15 +114,15 @@ namespace Phenix.TPT.Plugin
             if (executeAction == ExecuteAction.Update)
             {
                 dynamic old = tag;
-                if (old.ProjectManager != Kernel.ProjectManager)
+                if ((string) old.ProjectManager != Kernel.ProjectManager)
                 {
-                    SendEventForRefreshProjectWorkloads(old.ProjectManager);
+                    SendEventForRefreshProjectWorkloads((string) old.ProjectManager);
                     SendEventForRefreshProjectWorkloads(Kernel.ProjectManager);
                 }
 
-                if (old.DevelopManager != Kernel.DevelopManager)
+                if ((string) old.DevelopManager != Kernel.DevelopManager)
                 {
-                    SendEventForRefreshProjectWorkloads(old.DevelopManager);
+                    SendEventForRefreshProjectWorkloads((string) old.DevelopManager);
                     SendEventForRefreshProjectWorkloads(Kernel.DevelopManager);
                 }
             }
@@ -194,6 +131,23 @@ namespace Phenix.TPT.Plugin
                 SendEventForRefreshProjectWorkloads(Kernel.ProjectManager);
                 SendEventForRefreshProjectWorkloads(Kernel.DevelopManager);
             }
+        }
+
+        private async Task<bool> IsMyProject()
+        {
+            return await User.Identity.IsInRole(Roles.经营管理.ToString()) ||
+                   User.Identity.UserName == Kernel.ProjectManager ||
+                   User.Identity.UserName == Kernel.DevelopManager ||
+                   User.Identity.UserName == Kernel.MaintenanceManager ||
+                   User.Identity.UserName == Kernel.SalesManager;
+        }
+
+        async Task IProjectGrain.Close(DateTime closedDate)
+        {
+            if (!await IsMyProject())
+                throw new ValidationException("非请毋删!");
+
+            Kernel.UpdateSelf(NameValue.Set<ProjectInfo>(p => p.ClosedDate, closedDate));
         }
 
         #endregion
@@ -205,44 +159,56 @@ namespace Phenix.TPT.Plugin
             return Task.FromResult(ProjectAnnualPlanList);
         }
 
-        Task<ProjectAnnualPlan> IProjectGrain.GetNowProjectAnnualPlan()
+        Task<ProjectAnnualPlan> IProjectGrain.GetProjectAnnualPlan(int year)
         {
-            DateTime today = DateTime.Today;
+            //DateTime today = DateTime.Today;
+            //if (today.Year < year)
+            //    throw new ValidationException("未来不可期~");
+            
             foreach (ProjectAnnualPlan item in ProjectAnnualPlanList)
-                if (item.Year == today.Year)
+                if (item.Year == year)
                     return Task.FromResult(item);
-            return Task.FromResult(Kernel.NewDetail(ProjectAnnualPlan.Set(p => p.Year, today.Year)));
+            return Task.FromResult(Kernel.NewDetail(ProjectAnnualPlan.Set(p => p.Year, year)));
         }
 
-        Task IProjectGrain.PutProjectAnnualPlan(ProjectAnnualPlan source)
+        async Task IProjectGrain.PutProjectAnnualPlan(ProjectAnnualPlan source)
         {
-            decimal totalReceivables = TotalReceivables;
+            if (!await IsMyProject())
+                throw new ValidationException("非请毋改!");
+
+            //DateTime today = DateTime.Today;
+            //if (today.Year < source.Year)
+            //    throw new ValidationException("未来不可期~");
+
             foreach (ProjectAnnualPlan item in ProjectAnnualPlanList)
                 if (item.Year == source.Year)
                 {
-                    decimal subTotalReceivables = totalReceivables - item.AnnualReceivables;
-                    if (source.AnnualReceivables > Kernel.ContAmount - subTotalReceivables)
-                        throw new ValidationException(String.Format("本应收款({0})已超过{1}可报数额({2})!", 
-                            source.AnnualReceivables, Kernel.ProjectName, Kernel.ContAmount - subTotalReceivables));
+                    if (source.AnnualReceivables > Kernel.ContAmount - Kernel.TotalReceivables + item.AnnualReceivables)
+                        throw new ValidationException(String.Format("本应收款({0})已超过{1}可报数额({2})!",
+                            source.AnnualReceivables, Kernel.ProjectName, Kernel.ContAmount - Kernel.TotalReceivables + item.AnnualReceivables));
 
-                    item.UpdateSelf(source);
-                    TotalReceivables = subTotalReceivables + source.AnnualReceivables;
-                    return Task.CompletedTask;
+                    Database.Execute((DbTransaction dbTransaction) =>
+                    {
+                        item.UpdateSelf(dbTransaction, source);
+                        Kernel.UpdateSelf(dbTransaction,
+                            NameValue.Set<ProjectInfo>(p => p.AnnualMilestone, source.AnnualMilestone).
+                                Set(p => p.TotalReceivables, p => p.TotalReceivables - item.AnnualReceivables + source.AnnualReceivables));
+                    });
+                    return;
                 }
 
-            if (source.AnnualReceivables > Kernel.ContAmount - totalReceivables)
+            if (source.AnnualReceivables > Kernel.ContAmount - Kernel.TotalReceivables)
                 throw new ValidationException(String.Format("本应收款({0})已超过{1}可报数额({2})!",
-                    source.AnnualReceivables, Kernel.ProjectName, Kernel.ContAmount - totalReceivables));
+                    source.AnnualReceivables, Kernel.ProjectName, Kernel.ContAmount - Kernel.TotalReceivables));
 
-            source.InsertSelf();
+            Database.Execute((DbTransaction dbTransaction) =>
+            {
+                source.InsertSelf(dbTransaction);
+                Kernel.UpdateSelf(dbTransaction,
+                    NameValue.Set<ProjectInfo>(p => p.AnnualMilestone, source.AnnualMilestone).
+                        Set(p => p.TotalReceivables, p => p.TotalReceivables + source.AnnualReceivables));
+            });
             ProjectAnnualPlanList.Add(source);
-            TotalReceivables = totalReceivables + source.AnnualReceivables;
-            return Task.CompletedTask;
-        }
-
-        Task<decimal> IProjectGrain.GetTotalReceivables()
-        {
-            return Task.FromResult(TotalReceivables);
         }
 
         #endregion
@@ -254,34 +220,53 @@ namespace Phenix.TPT.Plugin
             return Task.FromResult(ProjectMonthlyReportList);
         }
 
-        Task<ProjectMonthlyReport> IProjectGrain.GetNowProjectMonthlyReport()
+        Task<ProjectMonthlyReport> IProjectGrain.GetProjectMonthlyReport(int year, int month)
         {
             DateTime today = DateTime.Today;
-            DateTime ultimo = today.AddMonths(-1);
+            if (today.Year < year || today.Year == year && today.Month < month)
+                throw new ValidationException("未来不可得~");
+
+            DateTime ultimo = new DateTime(year, month, 1).AddMilliseconds(-1);
             ProjectMonthlyReport ultimoReport = null;
             foreach (ProjectMonthlyReport item in ProjectMonthlyReportList)
-                if (item.Year == today.Year && item.Month == today.Month)
+                if (item.Year == year && item.Month == month)
                     return Task.FromResult(item);
                 else if (item.Year == ultimo.Year && item.Month == ultimo.Month)
                     ultimoReport = item;
             return Task.FromResult(Kernel.NewDetail(ProjectMonthlyReport.
-                Set(p => p.Year, today.Year).
-                Set(p => p.Month, today.Month).
+                Set(p => p.Year, year).
+                Set(p => p.Month, month).
                 Set( p => p.MonthlyPlan, ultimoReport != null ? ultimoReport.NextMonthlyPlan : "*")));
         }
 
-        Task IProjectGrain.PutProjectMonthlyReport(ProjectMonthlyReport source)
+        async Task IProjectGrain.PutProjectMonthlyReport(ProjectMonthlyReport source)
         {
+            if (!await IsMyProject())
+                throw new ValidationException("非请毋改!");
+
+            DateTime today = DateTime.Today;
+            if (today.Year < source.Year || today.Year == source.Year && today.Month < source.Month)
+                throw new ValidationException("未来不可得~");
+
             foreach (ProjectMonthlyReport item in ProjectMonthlyReportList)
                 if (item.Year == source.Year && item.Month == source.Month)
                 {
-                    item.UpdateSelf(source);
-                    return Task.CompletedTask;
+                    Database.Execute((DbTransaction dbTransaction) =>
+                    {
+                        item.UpdateSelf(dbTransaction, source);
+                        Kernel.UpdateSelf(dbTransaction,
+                            NameValue.Set<ProjectInfo>(p => p.CurrentStatus, source.Status));
+                    });
+                    return;
                 }
 
-            source.InsertSelf();
+            Database.Execute((DbTransaction dbTransaction) =>
+            {
+                source.InsertSelf(dbTransaction);
+                Kernel.UpdateSelf(dbTransaction,
+                    NameValue.Set<ProjectInfo>(p => p.CurrentStatus, source.Status));
+            });
             ProjectMonthlyReportList.Add(source);
-            return Task.CompletedTask;
         }
 
         #endregion
@@ -292,22 +277,30 @@ namespace Phenix.TPT.Plugin
         {
             return Task.FromResult(ProjectProceedsList);
         }
-        
-        Task IProjectGrain.PostProjectProceeds(ProjectProceeds source)
-        {
-            decimal totalInvoiceAmount = TotalInvoiceAmount;
-            if (source.InvoiceAmount > Kernel.ContAmount - totalInvoiceAmount)
-                throw new ValidationException(String.Format("本开票金额({0})已超过{1}可开数额({2})!",
-                    source.InvoiceAmount, Kernel.ProjectName, Kernel.ContAmount - totalInvoiceAmount));
 
-            source.InsertSelf();
+        async Task IProjectGrain.PostProjectProceeds(ProjectProceeds source)
+        {
+            if (!await IsMyProject())
+                throw new ValidationException("非请毋加!");
+
+            if (source.InvoiceAmount > Kernel.ContAmount - Kernel.TotalInvoiceAmount)
+                throw new ValidationException(String.Format("本开票金额({0})已超过{1}可开数额({2})!",
+                    source.InvoiceAmount, Kernel.ProjectName, Kernel.ContAmount - Kernel.TotalInvoiceAmount));
+
+            Database.Execute((DbTransaction dbTransaction) =>
+            {
+                source.InsertSelf(dbTransaction);
+                Kernel.UpdateSelf(dbTransaction,
+                    NameValue.Set<ProjectInfo>(p => p.TotalInvoiceAmount, p => p.TotalInvoiceAmount + source.InvoiceAmount));
+            });
             ProjectProceedsList.Add(source);
-            TotalInvoiceAmount = totalInvoiceAmount + source.InvoiceAmount;
-            return Task.CompletedTask;
         }
 
-        Task IProjectGrain.DeleteProjectProceeds(long id)
+        async Task IProjectGrain.DeleteProjectProceeds(long id)
         {
+            if (!await IsMyProject())
+                throw new ValidationException("非请毋删!");
+
             ProjectProceeds projectProceeds = null;
             foreach (ProjectProceeds item in ProjectProceedsList)
                 if (item.Id == id)
@@ -319,15 +312,13 @@ namespace Phenix.TPT.Plugin
             if (projectProceeds == null)
                 throw new ArgumentException(String.Format("未找到{0}可删除的开票记录!", Kernel.ProjectName), nameof(id));
 
-            projectProceeds.DeleteSelf();
+            Database.Execute((DbTransaction dbTransaction) =>
+            {
+                projectProceeds.DeleteSelf(dbTransaction);
+                Kernel.UpdateSelf(dbTransaction,
+                    NameValue.Set<ProjectInfo>(p => p.TotalInvoiceAmount, p => p.TotalInvoiceAmount - projectProceeds.InvoiceAmount));
+            });
             ProjectProceedsList.Remove(projectProceeds);
-            TotalInvoiceAmount = TotalInvoiceAmount - projectProceeds.InvoiceAmount;
-            return Task.CompletedTask;
-        }
-
-        Task<decimal> IProjectGrain.GetTotalInvoiceAmount()
-        {
-            return Task.FromResult(TotalInvoiceAmount);
         }
 
         #endregion
@@ -341,14 +332,21 @@ namespace Phenix.TPT.Plugin
 
         Task IProjectGrain.PostProjectExpenses(ProjectExpenses source)
         {
-            source.InsertSelf();
+            Database.Execute((DbTransaction dbTransaction) =>
+            {
+                source.InsertSelf(dbTransaction);
+                Kernel.UpdateSelf(dbTransaction,
+                    NameValue.Set<ProjectInfo>(p => p.TotalReimbursementAmount, p => p.TotalReimbursementAmount + source.ReimbursementAmount));
+            });
             ProjectExpensesList.Add(source);
-            TotalReimbursementAmount = TotalReimbursementAmount + source.ReimbursementAmount;
             return Task.CompletedTask;
         }
 
-        Task IProjectGrain.DeleteProjectExpenses(long id)
+        async Task IProjectGrain.DeleteProjectExpenses(long id)
         {
+            if (!await IsMyProject())
+                throw new ValidationException("非请毋删!");
+
             ProjectExpenses projectExpenses = null;
             foreach (ProjectExpenses item in ProjectExpensesList)
                 if (item.Id == id)
@@ -360,15 +358,13 @@ namespace Phenix.TPT.Plugin
             if (projectExpenses == null)
                 throw new ArgumentException(String.Format("未找到{0}可删除的报销记录!", Kernel.ProjectName), nameof(id));
 
-            projectExpenses.DeleteSelf();
+            Database.Execute((DbTransaction dbTransaction) =>
+            {
+                projectExpenses.DeleteSelf(dbTransaction);
+                Kernel.UpdateSelf(dbTransaction,
+                    NameValue.Set<ProjectInfo>(p => p.TotalReimbursementAmount, p => p.TotalReimbursementAmount - projectExpenses.ReimbursementAmount));
+            });
             ProjectExpensesList.Remove(projectExpenses);
-            TotalReimbursementAmount = TotalReimbursementAmount - projectExpenses.ReimbursementAmount;
-            return Task.CompletedTask;
-        }
-
-        Task<decimal> IProjectGrain.GetTotalReimbursementAmount()
-        {
-            return Task.FromResult(TotalReimbursementAmount);
         }
 
         #endregion

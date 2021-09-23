@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans;
 using Phenix.Actor;
@@ -12,6 +13,11 @@ namespace Phenix.TPT.Contract
     /// </summary>
     public interface IProjectGrain : IEntityGrain<ProjectInfo>, IGrainWithIntegerKey
     {
+        /// <summary>
+        /// 关闭项目
+        /// </summary>
+        Task Close(DateTime closedDate);
+
         #region 项目年度计划
 
         /// <summary>
@@ -20,20 +26,15 @@ namespace Phenix.TPT.Contract
         Task<IList<ProjectAnnualPlan>> GetAllProjectAnnualPlan();
 
         /// <summary>
-        /// 获取当前年度计划
+        /// 获取当年年度计划
         /// </summary>
-        Task<ProjectAnnualPlan> GetNowProjectAnnualPlan();
+        Task<ProjectAnnualPlan> GetProjectAnnualPlan(int year);
 
         /// <summary>
         /// 更新年度计划(如不存在则新增)
         /// </summary>
         /// <param name="source">数据源</param>
         Task PutProjectAnnualPlan(ProjectAnnualPlan source);
-
-        /// <summary>
-        /// 获取应收总额
-        /// </summary>
-        Task<decimal> GetTotalReceivables();
 
         #endregion
 
@@ -45,9 +46,9 @@ namespace Phenix.TPT.Contract
         Task<IList<ProjectMonthlyReport>> GetAllProjectMonthlyReport();
 
         /// <summary>
-        /// 获取当前项目月报
+        /// 获取当月项目月报
         /// </summary>
-        Task<ProjectMonthlyReport> GetNowProjectMonthlyReport();
+        Task<ProjectMonthlyReport> GetProjectMonthlyReport(int year, int month);
 
         /// <summary>
         /// 更新项目月报(如不存在则新增)
@@ -75,11 +76,6 @@ namespace Phenix.TPT.Contract
         /// </summary>
         Task DeleteProjectProceeds(long id);
 
-        /// <summary>
-        /// 获取开票总额
-        /// </summary>
-        Task<decimal> GetTotalInvoiceAmount();
-
         #endregion
 
         #region 项目开支
@@ -99,11 +95,6 @@ namespace Phenix.TPT.Contract
         /// 删除项目开支
         /// </summary>
         Task DeleteProjectExpenses(long id);
-
-        /// <summary>
-        /// 获取报销总额
-        /// </summary>
-        Task<decimal> GetTotalReimbursementAmount();
 
         #endregion
     }

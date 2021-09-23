@@ -30,13 +30,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="babel.config.js" />
+    <Content Include="public\css\fonts\font-awesome.css" />
+    <Content Include="public\css\fonts\font-awesome.min.css" />
+    <Content Include="public\css\fonts\fontawesome-webfont.eot" />
+    <Content Include="public\css\fonts\fontawesome-webfont.svg" />
+    <Content Include="public\css\fonts\fontawesome-webfont.ttf" />
+    <Content Include="public\css\fonts\fontawesome-webfont.woff" />
+    <Content Include="public\css\fonts\fontawesome-webfont.woff2" />
+    <Content Include="public\css\fonts\FontAwesome.otf" />
     <Content Include="public\scripts\lib\bootstrap-datepicker.min.js" />
     <Content Include="public\scripts\lib\bootstrap.min.js" />
     <Content Include="public\statistic.html" />
     <Content Include="public\myself.html" />
     <Content Include="public\scripts\lib\vue.js" />
     <Content Include="public\scripts\lib\vue.min.js" />
-    <Content Include="public\scripts\linechart.js" />
     <Content Include="public\css\bootstrap\bootstrap-grid.css" />
     <Content Include="public\css\bootstrap\bootstrap-grid.css.map" />
     <Content Include="public\css\bootstrap\bootstrap-grid.min.css" />
@@ -50,20 +57,12 @@
     <Content Include="public\css\bootstrap\bootstrap.min.css" />
     <Content Include="public\css\bootstrap\bootstrap.min.css.map" />
     <Content Include="public\css\element.css" />
-    <Content Include="public\css\fonts\font-awesome.css" />
-    <Content Include="public\css\fonts\font-awesome.min.css" />
     <Content Include="public\css\fonts\element-icons.ttf" />
     <Content Include="public\css\fonts\element-icons.woff" />
     <Content Include="public\css\kalendae.css" />
-    <Content Include="public\css\page.css" />
+    <Content Include="public\css\base-style.css" />
     <Content Include="public\detail.html" />
     <Content Include="public\favicon.ico" />
-    <Content Include="public\css\fonts\fontawesome-webfont.eot" />
-    <Content Include="public\css\fonts\fontawesome-webfont.svg" />
-    <Content Include="public\css\fonts\fontawesome-webfont.ttf" />
-    <Content Include="public\css\fonts\fontawesome-webfont.woff" />
-    <Content Include="public\css\fonts\fontawesome-webfont.woff2" />
-    <Content Include="public\css\fonts\FontAwesome.otf" />
     <Content Include="public\images\legend.jpg" />
     <Content Include="public\workload.html" />
     <Content Include="public\register.html" />
@@ -71,7 +70,7 @@
     <Content Include="public\index.html" />
     <Content Include="public\projectinfo.html" />
     <Content Include="public\schedule.html" />
-    <Content Include="public\scripts\basefunc.js" />
+    <Content Include="public\scripts\base-func.js" />
     <Content Include="public\scripts\statistic.js" />
     <Content Include="public\scripts\myself.js" />
     <Content Include="public\scripts\lib\crypto-js\aes-min.js" />

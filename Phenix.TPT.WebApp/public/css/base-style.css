@@ -17,54 +17,14 @@ li {
     text-align: center;
 }
 
-hr {
-    margin: 0%;
-    width: 1em;
-    height: 4px;
-    border-top: 1px solid rgb(245, 245, 255);
-}
-
 tbody {
     table-layout: fixed;
-    /*display: block;*/
     border-color: inherit;
-    /*overflow-y: scroll;
-    height: 500px;*/
-}
-
-.nocolor {
-    background-color: rgb(245, 245, 255);
-    color: rgb(245, 245, 255);
-}
-
-.manacolor {
-    background-color: rgb(128, 100, 162);
-    color: rgb(128, 100, 162);
-}
-
-.invecolor {
-    background-color: rgb(0, 112, 192);
-    color: rgb(0, 112, 192);
-}
-
-.devecolor {
-    background-color: rgb(247, 150, 70);
-    color: rgb(247, 150, 70);
-}
-
-.testcolor {
-    background-color: rgb(255, 255, 0);
-    color: rgb(255, 255, 0);
-}
-
-.implcolor {
-    background-color: rgb(0, 176, 240);
-    color: rgb(0, 176, 240);
-}
-
-.maincolor {
-    background-color: rgb(146, 208, 80);
-    color: rgb(146, 208, 80);
+    /*
+    display: block;
+    overflow-y: scroll;
+    height: 500px;
+    */
 }
 
 .logo {
@@ -204,7 +164,7 @@ tbody {
     background-color: rgb(108, 152, 209);
     padding-top: 16px;
     padding-bottom: 12px;
-    color: #fff;
+    color: black;
     font-size: 22px;
 }
 
@@ -213,9 +173,15 @@ tbody {
     font-size: 14px;
     margin-bottom: 0%;
     margin-top: 20px;
-    margin-right: 15px;
+    margin-right: 25px;
     color: black;
     float: right;
+    text-decoration: none;
+}
+
+.sec-menu a.logout {
+    margin-right: 0px;
+    cursor: pointer;
 }
 
 #side-menu {
@@ -264,48 +230,21 @@ tbody {
     padding-top: 30px;
     border-bottom: 1px solid #eeeeee;
     text-transform: uppercase;
-    overflow: hidden
+    overflow: hidden;
+    padding: 0.1%;
+    margin-top: 2.5%;
+    margin-bottom: 0.5%;
 }
 
 .header-line h4 {
     float: left;
     margin-top: 2.5%;
-    margin-bottom: 0%
-}
-
-.header-line div.arrow-button {
-    border: 1px solid rgb(220, 220, 220);
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -ms-border-radius: 3px;
-    border-radius: 3px;
-    background-color: #fafafa;
-    text-align: center;
-    float: right;
-    width: 45px;
-    margin-left: 1%;
-    cursor: pointer;
+    margin-bottom: 0.5%;
 }
 
 .header-line label.txt {
     display: block;
     margin: 0px;
-}
-
-.header-line div.fa-filter {
-    border: 1px solid rgb(220, 220, 220);
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    -ms-border-radius: 3px;
-    border-radius: 3px;
-    background-color: #fafafa;
-    text-align: center;
-    float: right;
-    width: 45px;
-    margin-left: 1%;
-    cursor: pointer;
-    color: rgb(128, 128, 128);
-    font-size: 45px;
 }
 
 .arrow {
@@ -315,30 +254,86 @@ tbody {
 
 .arrow-down {
     border-top: 12.5px solid rgb(128, 128, 128);
-    border-left: 23px solid transparent;
-    border-right: 23px solid transparent;
+    border-left: 22px solid transparent;
+    border-right: 22px solid transparent;
     display: block;
 }
 
 .arrow-up {
     border-bottom: 12.5px solid rgb(128, 128, 128);
-    border-left: 23px solid transparent;
-    border-right: 23px solid transparent;
+    border-left: 22px solid transparent;
+    border-right: 22px solid transparent;
     display: block;
 }
 
 .arrow-left {
-    border-top: 23px solid transparent;
-    border-bottom: 23px solid transparent;
+    border-top: 22px solid transparent;
+    border-bottom: 22px solid transparent;
     border-right: 12.5px solid rgb(128, 128, 128);
     display: block;
 }
 
 .arrow-right {
-    border-top: 23px solid transparent;
-    border-bottom: 23px solid transparent;
+    border-top: 22px solid transparent;
+    border-bottom: 22px solid transparent;
     border-left: 12.5px solid rgb(128, 128, 128);
     display: block;
+}
+
+.arrow-button {
+    border: 1px solid rgb(220, 220, 220);
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #fafafa;
+    text-align: center;
+    float: right;
+    width: 46px;
+    margin-left: 1%;
+    cursor: pointer;
+}
+
+.filter-button {
+    border: 1px solid rgb(220, 220, 220);
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #fafafa;
+    text-align: center;
+    float: right;
+    width: 46px;
+    margin-left: 1%;
+    cursor: pointer;
+    color: rgb(128, 128, 128);
+    font-size: 45px;
+}
+
+.goto-top-button {
+    overflow: hidden;
+    position: fixed;
+    right: 30px;
+    bottom: 20px;
+    z-index: 10;
+}
+
+.goto-top-button a{
+    border: 1px solid rgb(220, 220, 220);
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+    background-color: #fafafa;
+    float: right;
+    padding: 6px 10.5px;
+}
+
+.goto-top-button fa {
+    cursor: pointer;
+    color: rgb(155, 155, 155)
+}
+
+.panel {
+    padding: 0%;
 }
 
 .panel-query {
@@ -370,8 +365,117 @@ tbody {
     padding-right: 0%;
 }
 
-.itemchart {
-    height: 200px;
+.panel-list-item {
+    background: #fafafa;
+}
+
+.panel-list-item i.fa {
+    float: left;
+    margin-left: 10%;
+    padding: 0%;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.panel-list-column {
+    float: left;
+    text-align: left;
+}
+
+.panel-fold {
+    width: 100%;
+    height: 300px;
+    margin-top: 2%;
+    border-top: 1px dashed rgb(195, 195, 201);
+}
+
+.text-wrapper {
+    white-space: pre-wrap;
+}
+
+.no-color {
+    background-color: rgb(245, 245, 255);
+    color: rgb(245, 245, 255);
+    margin: 0%;
+    width: 1em;
+    height: 4px;
+    border-top: 1px solid rgb(245, 245, 255);
+}
+
+.manage-color {
+    background-color: rgb(128, 100, 162);
+    color: rgb(128, 100, 162);
+    margin: 0%;
+    width: 1em;
+    height: 4px;
+    border-top: 1px solid rgb(245, 245, 255);
+}
+
+.investigate-color {
+    background-color: rgb(0, 112, 192);
+    color: rgb(0, 112, 192);
+    margin: 0%;
+    width: 1em;
+    height: 4px;
+    border-top: 1px solid rgb(245, 245, 255);
+}
+
+.develop-color {
+    background-color: rgb(247, 150, 70);
+    color: rgb(247, 150, 70);
+    margin: 0%;
+    width: 1em;
+    height: 4px;
+    border-top: 1px solid rgb(245, 245, 255);
+}
+
+.test-color {
+    background-color: rgb(255, 255, 0);
+    color: rgb(255, 255, 0);
+    margin: 0%;
+    width: 1em;
+    height: 4px;
+    border-top: 1px solid rgb(245, 245, 255);
+}
+
+.implement-color {
+    background-color: rgb(0, 176, 240);
+    color: rgb(0, 176, 240);
+    margin: 0%;
+    width: 1em;
+    height: 4px;
+    border-top: 1px solid rgb(245, 245, 255);
+}
+
+.maintenance-color {
+    background-color: rgb(146, 208, 80);
+    color: rgb(146, 208, 80);
+    margin: 0%;
+    width: 1em;
+    height: 4px;
+    border-top: 1px solid rgb(245, 245, 255);
+}
+
+.project-badge {
+    margin: 0% 2% 0% 0%;
+    float: left;
+}
+
+.project-report {
+    float: left;
+    margin-right: 1%;
+    height: 300px;
+    border: 1px solid rgb(220, 220, 220);
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.project-report-content {
+    border: none;
+    width: 100%;
+    height: 93%;
+    outline: none;
+    background: #fafafa
 }
 
 #trh {

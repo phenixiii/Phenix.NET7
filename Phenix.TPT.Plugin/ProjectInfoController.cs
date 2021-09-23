@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Phenix.Actor;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Expressions;
 using Phenix.TPT.Business;
 using Phenix.TPT.Contract;
+using Phenix.TPT.Plugin.Filters;
 
 namespace Phenix.TPT.Plugin
 {
@@ -29,6 +32,13 @@ namespace Phenix.TPT.Plugin
             return ProjectInfo.FetchList(Database.Default,
                 p => p.OriginateTime <= lastDay && (p.ClosedDate == null || p.ClosedDate >= firstDay),
                 OrderBy.Descending<ProjectInfo>(p => p.ContApproveDate));
+        }
+
+        [ProjectControlFilter]
+        [HttpDelete]
+        public async Task Close(long id, DateTime closedDate)
+        {
+            await ClusterClient.Default.GetGrain<IProjectGrain>(id).Close(closedDate);
         }
 
         #endregion

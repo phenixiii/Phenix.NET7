@@ -9,5 +9,10 @@
         /// /api/project-info
         /// </summary>
         public const string ProjectInfoPath = "/api/project-info";
+
+        /// <summary>
+        /// /api/project-monthly-report
+        /// </summary>
+        public const string ProjectMonthlyReportPath = "/api/project-monthly-report";
     }
 }

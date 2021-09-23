@@ -1,55 +1,41 @@
-﻿$(function() {
-    var userAgent = window.navigator.userAgent;
-    if (!(userAgent.indexOf('Chrome') > -1)) {　
-        zdconfirm('系统提示', '推荐使用chrome浏览器，前去下载? ', function(ok) {
-            if (ok) {
-                window.location.href = "https://chrome.en.softonic.com/";
-            }
-        });
-    }
-});
-
-function fetchCheckInInfo() {
-    var result = {};
-
-    result.userName = $('#userName').val().trim();
-    if (result.userName == null || result.userName == "") {
-        $('#userNameHint').html('登录名不允许为空！');
-        $('#userName').focus();
-        return null;
-    }
+﻿function isValidCheckInInfo() {
     $("#userNameHint").html('');
-
-    result.companyName = $('#companyName').val().trim();
-    if (result.companyName == null || result.companyName == "") {
-        $('#companyNameHint').html('公司名不允许为空！');
-        $('#companyName').focus();
-        return null;
+    if (vue.userName == null || vue.userName.trim() === '') {
+        $('#userNameHint').html('登录名不允许为空!');
+        $('#userName').focus();
+        return false;
     }
-    $("#companyNameHint").html('');
 
-    return result;
+    $('#companyNameHint').html('');
+    if (vue.companyName == null || vue.companyName.trim() === '') {
+        $('#companyNameHint').html('公司名不允许为空!');
+        $('#companyName').focus();
+        return false;
+    }
+
+    return true;
 }
 
-function fetchLogonInfo() {
-    var result = fetchCheckInInfo();
+function isValidLogonInfo() {
+    if (!isValidCheckInInfo())
+        return false;
 
-    result.password = $('#password').val().trim();
-    if (result.password == null || result.password == "") {
-        $('#passwordHint').html('登录口令不允许为空！');
-        $('#password').focus();
-        return null;
-    }
     $('#passwordHint').html('');
+    if (vue.password == null || vue.password.trim() === '') {
+        $('#passwordHint').html('登录口令不允许为空!');
+        $('#password').focus();
+        return false;
+    }
 
-
-    return result;
+    return true;
 }
 
 function jumpPage() {
     var hint = $('#logonHint');
+    hint.html('正在获取个人资料, 请稍等...');
     phAjax.getMyself({
         onSuccess: function(result) {
+            hint.html('您好, ' + result.RegAlias);
             if (result.EMail == null || result.RegAlias == null)
                 $('#patchMyselfDialog').modal('show');
             else
@@ -64,20 +50,26 @@ function jumpPage() {
 
 var vue = new Vue({
     el: '#content',
+    data: {
+        userName: null,
+        password: null,
+        companyName: null,
+        eMail: null,
+        regAlias: null,
+    },
     methods: {
         onCheckIn: function() {
-            var inputs = fetchCheckInInfo();
-            if (inputs == null)
+            if (!isValidCheckInInfo())
                 return;
 
             var hint = $('#logonHint');
-            hint.html('正在登记，请稍等...');
+            hint.html('正在登记, 请稍等...');
             phAjax.checkIn({
-                companyName: inputs.companyName,
-                userName: inputs.userName,
+                companyName: this.companyName.trim(),
+                userName: this.userName.trim(),
                 onSuccess: function(result) {
                     hint.html(result);
-                    zdconfirm('登记成功', result);
+                    zdalert('登记成功', result);
                 },
                 onError: function(XMLHttpRequest, textStatus) {
                     hint.html(XMLHttpRequest.responseText);
@@ -87,16 +79,15 @@ var vue = new Vue({
         },
 
         onLogon: function() {
-            var inputs = fetchLogonInfo();
-            if (inputs == null)
+            if (!isValidLogonInfo())
                 return;
 
             var hint = $('#logonHint');
-            hint.html('正在登录，请稍等...');
+            hint.html('正在登录, 请稍等...');
             phAjax.logon({
-                companyName: inputs.companyName,
-                userName: inputs.userName,
-                password: inputs.password,
+                companyName: this.companyName.trim(),
+                userName: this.userName.trim(),
+                password: this.password,
                 onSuccess: function(result) {
                     hint.html(result);
                     jumpPage();
@@ -110,13 +101,16 @@ var vue = new Vue({
 
         onPatchMyself: function() {
             var hint = $('#logonHint');
+            hint.html('正在更新, 请稍等...');
             phAjax.patchMyself({
-                eMail: $('#eMail').val().trim(),
+                eMail: this.eMail.trim(),
+                regAlias: this.regAlias.trim(),
                 onSuccess: function(result) {
                     hint.html(result);
                     jumpPage();
                 },
                 onError: function(XMLHttpRequest, textStatus) {
+                    hint.html(XMLHttpRequest.responseText);
                     zdalert('更新失败', XMLHttpRequest.responseText);
                 },
             });

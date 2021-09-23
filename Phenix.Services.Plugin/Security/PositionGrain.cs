@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Phenix.Actor;
 using Phenix.Services.Business.Security;
@@ -14,20 +15,16 @@ namespace Phenix.Services.Plugin.Security
     {
         #region 方法
 
-        Task<bool> IPositionGrain.IsInRole(string role)
+        Task<bool> IPositionGrain.IsInRole(IList<string> roles)
         {
-            if (String.IsNullOrEmpty(role))
+            if (roles == null || roles.Count == 0)
                 return Task.FromResult(true);
-            bool foundRole = false;
-            foreach (string s in role.Split('|', StringSplitOptions.RemoveEmptyEntries))
-                if (!String.IsNullOrEmpty(s))
-                {
-                    if (Kernel.Roles != null && Kernel.Roles.Contains(s))
-                        return Task.FromResult(true);
-                    foundRole = true;
-                }
 
-            return Task.FromResult(!foundRole);
+            foreach (string s in roles)
+                if (String.IsNullOrEmpty(s) ||
+                    Kernel.Roles != null && Kernel.Roles.Contains(s))
+                    return Task.FromResult(true);
+            return Task.FromResult(false);
         }
 
         #endregion

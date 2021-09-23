@@ -73,7 +73,7 @@ namespace Phenix.Services.Plugin.Security
                 if (base.Kernel == null)
                 {
                     if (AsyncHelper.RunSync(() => CompanyTeamsGrain.ExistKernel()))
-                        base.Kernel = User.FetchRoot(Database, p => p.RootTeamsId == RootTeamsId && p.Name == UserName);
+                        base.Kernel = Phenix.Services.Business.Security.User.FetchRoot(Database, p => p.RootTeamsId == RootTeamsId && p.Name == UserName);
                 }
 
                 return base.Kernel;
@@ -101,7 +101,7 @@ namespace Phenix.Services.Plugin.Security
                     throw new InvalidOperationException("设置的岗位不存在!");
 
                 string initialPassword = UserName;
-                Kernel = User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, teamsId.Value, positionId, ref initialPassword);
+                Kernel = Phenix.Services.Business.Security.User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, teamsId.Value, positionId, ref initialPassword);
                 return _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
             }
             else
@@ -113,7 +113,7 @@ namespace Phenix.Services.Plugin.Security
                 try
                 {
                     string initialPassword = UserName;
-                    Kernel = User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, RootTeamsId, null, ref initialPassword);
+                    Kernel = Phenix.Services.Business.Security.User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, RootTeamsId, null, ref initialPassword);
                     return _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
                 }
                 catch
@@ -202,7 +202,7 @@ namespace Phenix.Services.Plugin.Security
             if (Kernel == null)
                 throw new UserNotFoundException();
 
-            IList<User> result = User.FetchList(Database, p => p.RootTeamsId == RootTeamsId && p.RootTeamsId != p.TeamsId);
+            IList<User> result = Phenix.Services.Business.Security.User.FetchList(Database, p => p.RootTeamsId == RootTeamsId && p.RootTeamsId != p.TeamsId);
             Teams companyTeams = await CompanyTeamsGrain.FetchKernel();
             IDictionary<long, Position> positions = Position.FetchKeyValues(Database, p => p.Id);
             foreach (User item in result)

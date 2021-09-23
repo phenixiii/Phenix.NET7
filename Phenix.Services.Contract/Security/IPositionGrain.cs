@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Orleans;
 using Phenix.Actor;
 using Phenix.Services.Business.Security;
@@ -12,10 +13,10 @@ namespace Phenix.Services.Contract.Security
     public interface IPositionGrain : IEntityGrain<Position>, IGrainWithIntegerKey
     {
         /// <summary>
-        /// 确定是否属于指定的角色
+        /// 确定是否属于指定的一组角色
         /// </summary>
-        /// <param name="role">角色</param>
-        /// <returns>属于指定的角色</returns>
-        Task<bool> IsInRole(string role);
+        /// <param name="roles">指定的一组角色</param>
+        /// <returns>存在交集</returns>
+        Task<bool> IsInRole(IList<string> roles);
     }
 }

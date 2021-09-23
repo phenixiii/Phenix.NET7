@@ -461,7 +461,7 @@ var phAjax = (function($) {
             options = $.extend(defaults, options);
             phAjax.call({
                 path: '/api/data/increment',
-                data: { key: key, initialValue: initialValue },
+                pathParam: { key: key, initialValue: initialValue },
                 onSuccess: function(result) {
                     if (typeof options.onSuccess === 'function')
                         options.onSuccess(result);
@@ -484,7 +484,8 @@ var phAjax = (function($) {
             options = $.extend(defaults, options);
             phAjax.call({
                 type: 'POST',
-                path: phUtils.addUrlParam('/api/message/user-message', { receiver: receiver }),
+                path: '/api/message/user-message',
+                pathParam: { receiver: receiver },
                 data: content,
                 onSuccess: function(result) {
                     if (typeof options.onSuccess === 'function')
@@ -528,7 +529,8 @@ var phAjax = (function($) {
             options = $.extend(defaults, options);
             phAjax.call({
                 type: 'DELETE',
-                path: phUtils.addUrlParam('/api/message/user-message', { id: id, burn: burn }),
+                path: '/api/message/user-message',
+                pathParam: { id: id, burn: burn },
                 onSuccess: function(result) {
                     if (typeof options.onSuccess === 'function')
                         options.onSuccess();
@@ -609,7 +611,8 @@ var phAjax = (function($) {
 
         downloadFileChunk: function(path, message, fileName, chunkNumber, chunkBuffer, onProgress, onSuccess, onError) {
             phAjax.call({
-                path: phUtils.addUrlParam(path, { message: message, fileName: fileName, chunkNumber: chunkNumber }),
+                path: path,
+                pathParam: { message: message, fileName: fileName, chunkNumber: chunkNumber },
                 onSuccess: function (result) {
                     if (result == null)
                         return;
@@ -666,7 +669,8 @@ var phAjax = (function($) {
             };
             phAjax.call({
                 type: 'PUT',
-                path: phUtils.addUrlParam(path, { message: message, fileName: file.name, chunkCount: chunkCount, chunkNumber: chunkNumber, chunkSize: chunkSize, maxChunkSize: maxChunkSize }),
+                path: path,
+                pathParam: { message: message, fileName: file.name, chunkCount: chunkCount, chunkNumber: chunkNumber, chunkSize: chunkSize, maxChunkSize: maxChunkSize },
                 processData: false, //不要对data参数进行序列化处理
                 contentType: false, //不要设置Content-Type请求头，因为文件数据是以multipart/form-data来编码
                 data: formData,
@@ -698,7 +702,8 @@ var phAjax = (function($) {
                 anonymity: false, //是否匿名访问
                 type: 'GET', //HttpMethod(GET/POST/PUT/PATCH/DELETE)
                 path: null, //路径
-                data: null, //上传数据（GET时用于path传参）
+                pathParam: null, //URL参数
+                data: null, //上传数据
                 trimData: false, //默认不清理data的空属性值
                 processData: true, //默认对data参数进行序列化处理
                 encryptData: false, //默认不加密data（否则服务端请用Request.ReadBodyAsync(true)解密）
@@ -707,18 +712,16 @@ var phAjax = (function($) {
                 cache: false, //默认不缓存
                 timeout: 30000, //默认超时30秒
                 onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
-                onValidityError: null, //有效性错误的回调函数, 参数(key, statusCode, hint, messageType)
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
                 onComplete: null, //调用完成的回调函数, 参数(XMLHttpRequest, textStatus)
             };
             options = $.extend(defaults, options);
+            if (options.pathParam !== null)
+                options.path = phUtils.addUrlParam(options.path, options.pathParam);
             if (options.data != null && typeof options.data === 'object') {
                 if (options.trimData)
                     options.data = phUtils.trimData(options.data);
-                if (options.type === 'GET') {
-                    options.path = phUtils.addUrlParam(options.path, options.data);
-                    options.data = null;
-                } else if (options.options.processData)
+                if (options.processData)
                     options.data = JSON.stringify(options.data);
             }
             $.ajax({
@@ -751,10 +754,8 @@ var phAjax = (function($) {
                     }
                     else if (XMLHttpRequest.status >= 400) {
                         if (XMLHttpRequest.status === 409) {
-                            if (typeof options.onSuccess === 'function') {
-                                var validationMessage = JSON.parse(XMLHttpRequest.responseText);
-                                options.onValidityError(validationMessage.Key, validationMessage.StatusCode, validationMessage.Hint, validationMessage.MessageType);
-                            }
+                            if (typeof options.onError === 'function')
+                                options.onError(XMLHttpRequest, textStatus, JSON.parse(XMLHttpRequest.responseText));
                         }
                         else {
                             if (typeof options.onError === 'function')
@@ -814,49 +815,65 @@ var phUtils = (function() {
         },
 
         toUrlParam: function(data) {
-            var result = '';
-            for (let p in data) {
-                if (Object.prototype.hasOwnProperty.call(data, p)) {
-                    var value = data[p];
-                    if (value == null)
-                        value = '';
-                    result += '&' + p.substring(0, 1).toLowerCase() + p.substring(1) + '=' + encodeURIComponent(value);
+            if (data != null && typeof data === 'object') {
+                var result = '';
+                for (let p in data) {
+                    if (Object.prototype.hasOwnProperty.call(data, p)) {
+                        var value = data[p];
+                        if (value == null)
+                            value = '';
+                        result += '&' + p.substring(0, 1).toLowerCase() + p.substring(1) + '=' + encodeURIComponent(value);
+                    }
                 }
+                return result === '' ? result : result.substring(1);
             }
-            return result === "" ? result : result.substring(1);
+            return data;
         },
 
         addUrlParam: function(url, data) {
             var param = phUtils.toUrlParam(data);
-            if (param !== '')
-                url += (url.indexOf('?') < 0 ? '?' : '') + param;
-            return url;
+            return param != null && param !== ''
+                ? url + (url.indexOf('?') < 0 ? '?' : '') + param
+                : url;
         },
 
         trimData: function(data) {
-            var result = {};
-            for (let p in data) {
-                if (Object.prototype.hasOwnProperty.call(data, p)) {
-                    var value = data[p];
-                    if (value != null)
-                        result[p] = typeof value === 'object'
-                            ? (value instanceof Array ? phUtils.trimArrayData(value) : phUtils.trimData(value))
-                            : value;
+            if (data != null && typeof data === 'object')
+                if (data instanceof Array) {
+                    return phUtils.trimArrayData(data);
+                } else {
+                    var result = {};
+                    for (let p in data) {
+                        if (Object.prototype.hasOwnProperty.call(data, p)) {
+                            var value = data[p];
+                            if (value == null || value === '')
+                                continue;
+                            result[p] = typeof value === 'object'
+                                ? (value instanceof Array ? phUtils.trimArrayData(value) : phUtils.trimData(value))
+                                : value;
+                        }
+                    }
+                    return result;
                 }
-            }
-            return result;
+            return data;
         },
 
         trimArrayData: function(array) {
-            var result = [];
-            array.forEach((item, index) => {
-                if (item != null)
-                    result.push(typeof item === 'object'
-                        ? (item instanceof Array ? phUtils.trimArrayData(item) : phUtils.trimData(item))
-                        : item
-                    );
-            });
-            return result;
+            if (array != null && typeof array === 'object')
+                if (array instanceof Array) {
+                    var result = [];
+                    array.forEach((item, index) => {
+                        if (item != null && item !== '')
+                            result.push(typeof item === 'object'
+                                ? (item instanceof Array ? phUtils.trimArrayData(item) : phUtils.trimData(item))
+                                : item
+                            );
+                    });
+                    return result;
+                } else {
+                    return phUtils.trimData(array);
+                }
+            return array;
         }
     }
 })();

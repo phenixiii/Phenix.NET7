@@ -3,17 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,Chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
     <script>
-        document.write("<link rel='stylesheet' href='css/page.css?v=" + new Date().toLocaleDateString() + "' charset='UTF-8'>");
+        document.write("<link rel='stylesheet' href='css/base-style.css?v=" + new Date().toLocaleDateString() + "' charset='UTF-8'>");
     </script>
     <title>登录TPT</title>
 </head>
 
 <body style="background: #F0F0F0;">
-    <div id="content v-cloak">
+    <div id="content" v-cloak>
         <div class="logo">
             <h1>
                 <font face="Papyrus">Teamwork Project Tracker II</font>
@@ -24,15 +23,15 @@
                 <div class="center-padding">
                     <h2 id="userNameHint" style="clear: both;"></h2>
                     <label style="clear: both;">
-                        <input class="txt-input" id="userName" type="text" placeholder="请输入登录名">
+                        <input class="txt-input" id="userName" type="text" placeholder="请输入登录名" v-model="userName">
                     </label>
                     <h2 id="passwordHint" style="clear: both;"></h2>
                     <label style="clear: both;">
-                        <input class="txt-input" id="password" type="password" placeholder="请输入口令">
+                        <input class="txt-input" id="password" type="password" placeholder="请输入口令" v-model="password">
                     </label>
                     <h2 id="companyNameHint" style="clear: both;"></h2>
                     <label style="clear: both;">
-                        <input class="txt-input" id="companyName" type="text" placeholder="请输入公司名">
+                        <input class="txt-input" id="companyName" type="text" placeholder="请输入公司名" v-model="companyName">
                     </label>
                     <p class="forgot">
                         <a @click="onCheckIn()">动态口令</a> |
@@ -48,12 +47,15 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="patchMyselfDialogLabel">更新资料</h4>
+                        <h4 class="modal-title" id="patchMyselfDialogLabel">更新或补充资料</h4>
                     </div>
                     <div class="modal-body">
                         <label>
                             <label style="clear: both;">
-                                <input class="txt-input" id="eMail" type="email" placeholder="请输入邮箱地址" size="40">
+                                <input class="txt-input" id="eMail" type="email" size="40" placeholder="请输入邮箱地址" v-model="eMail">
+                            </label>
+                            <label style="clear: both;">
+                                <input class="txt-input" id="regAlias" type="text" size="40" placeholder="请输入昵称" v-model="regAlias">
                             </label>
                         </label>
                     </div>

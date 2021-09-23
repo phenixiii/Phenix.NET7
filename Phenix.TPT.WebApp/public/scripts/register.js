@@ -1,109 +1,98 @@
-﻿$(function() {
-    var userAgent = window.navigator.userAgent;
-    if (!(userAgent.indexOf('Chrome') > -1)) {　
-        zdconfirm('系统提示', '推荐使用chrome浏览器，前去下载? ', function(ok) {
-            if (ok) {
-                window.location.href = "https://chrome.en.softonic.com/";
-            }
-        });
-    }
-});
-
-function fetchLogonInfo() {
-    var result = {};
-
-    result.userName = $('#userName').val().trim();
-    if (result.userName == null || result.userName == '') {
-        $('#changePasswordDialog').modal('hide');
-        $('#userNameHint').html('登录名不允许为空！');
-        $('#userName').focus();
-        return null;
-    }
+﻿function isValidLogonInfo() {
     $('#userNameHint').html('');
-
-    result.companyName = $('#companyName').val().trim();
-    if (result.companyName == null || result.companyName == '') {
-        $('#changePasswordDialog').modal('hide');
-        $('#companyNameHint').html('公司名不允许为空！');
-        $('#companyName').focus();
-        return null;
+    if (vue.userName == null || vue.userName === '') {
+        $('#userNameHint').html('登录名不允许为空!');
+        $('#userName').focus();
+        return false;
     }
+
     $('#companyNameHint').html('');
+    if (vue.companyName == null || vue.companyName === '') {
+        $('#companyNameHint').html('公司名不允许为空!');
+        $('#companyName').focus();
+        return false;
+    }
 
-    return result;
+    return true;
 }
 
-function fetchValidityRegisterInfo() {
-    var result = fetchLogonInfo();
+function isValidRegisterInfo() {
+    if (!isValidLogonInfo())
+        return false;
 
-    result.eMail = $('#eMail').val().trim();
-    if (result.eMail == null || result.eMail == '') {
-        $('#eMailHint').html('邮箱地址不允许为空！');
-        $('#eMail').focus();
-        return null;
-    }
     $('#eMailHint').html('');
-
-    result.regAlias = $('#regAlias').val().trim();
-    if (result.regAlias == null || result.regAlias == '') {
-        $('#regAliasHint').html('昵称不允许为空！');
-        $('#regAlias').focus();
-        return null;
+    if (vue.eMail == null || vue.eMail === '') {
+        $('#eMailHint').html('邮箱地址不允许为空!');
+        $('#eMail').focus();
+        return false;
     }
-    $('#regAliasHint').html('');
 
-    return result;
+    $('#regAliasHint').html('');
+    if (vue.regAlias == null || vue.regAlias === '') {
+        $('#regAliasHint').html('昵称不允许为空!');
+        $('#regAlias').focus();
+        return false;
+    }
+
+    return true;
 }
 
-function fetchValidityPasswordInfo() {
-    var result = fetchLogonInfo();
+function isValidPasswordInfo() {
+    if (!isValidLogonInfo())
+        return false;
 
-    result.password = $('#password').val().trim();
-    if (result.password == null || result.password == "") {
-        $('#passwordHint').html('登录口令不允许为空！');
-        $('#password').focus();
-        return null;
-    }
     $('#passwordHint').html('');
-
-    result.newPassword = $('#newPassword').val().trim();
-    if (result.newPassword == null || result.newPassword == "") {
-        $('#newPasswordHint').html('新口令不允许为空！');
-        $('#newPassword').focus();
-        return null;
+    if (vue.password == null || vue.password === "") {
+        $('#passwordHint').html('登录口令不允许为空!');
+        $('#password').focus();
+        return false;
     }
+
     $('#newPasswordHint').html('');
-
-    result.newPassword2 = $('#newPassword2').val().trim();
-    if (result.newPassword != result.newPassword2 ) {
-        $('#newPassword2Hint').html('新口令重复确认有误！');
-        $('#newPassword2').focus();
-        return null;
+    if (vue.newPassword == null || vue.newPassword === "") {
+        $('#newPasswordHint').html('新口令不允许为空!');
+        $('#newPassword').focus();
+        return false;
     }
+
     $('#newPassword2Hint').html('');
-    return result;
+    if (vue.newPassword !== vue.newPassword2 ) {
+        $('#newPassword2Hint').html('新口令重复确认有误!');
+        $('#newPassword2').focus();
+        return false;
+    }
+
+    return true;
 }
 
 var vue = new Vue({
     el: '#content',
+    data: {
+        userName: null,
+        companyName: null,
+        eMail: null,
+        regAlias: null,
+        password: null,
+        newPassword: null,
+        newPassword2: null,
+    },
     methods: {
         onRegister: function() {
-            var inputs = fetchValidityRegisterInfo();
-            if (inputs == null)
+            if (!isValidRegisterInfo())
                 return;
             
             var hint = $('#registerHint');
-            hint.html('正在注册企业会员，请稍等...');
+            hint.html('正在注册企业会员, 请稍等...');
             phAjax.register({
-                companyName: inputs.companyName,
-                userName: inputs.userName,
+                companyName: this.companyName,
+                userName: this.userName,
                 hashName: false,
-                phone: inputs.phone,
-                eMail: inputs.eMail,
-                regAlias: inputs.regAlias,
+                phone: this.phone,
+                eMail: this.eMail,
+                regAlias: this.regAlias,
                 onSuccess: function(result) {
                     hint.html(result);
-                    $('#password').val(inputs.userName);
+                    this.password = this.userName;
                     $('#changePasswordDialog').modal('show');
                 },
                 onError: function(XMLHttpRequest, textStatus) {
@@ -113,39 +102,36 @@ var vue = new Vue({
             });
         },
 
-        onShowChangePasswordDialog: function() {
-            var inputs = fetchLogonInfo();
-            if (inputs == null)
-                return;
-
-            $('#changePasswordDialog').modal('show');
+        showChangePasswordDialog: function() {
+            if (isValidLogonInfo())
+                $('#changePasswordDialog').modal('show');
+            else
+                $('#changePasswordDialog').modal('hide');
         },
 
         onChangePassword: function() {
-            var inputs = fetchValidityPasswordInfo();
-            if (inputs == null)
+            if (!isValidPasswordInfo)
                 return;
 
             phAjax.changePassword({
-                companyName: inputs.companyName,
-                userName: inputs.userName,
+                companyName: this.companyName,
+                userName: this.userName,
                 hashName: false,
-                password: inputs.password,
-                newPassword: inputs.newPassword,
-                onSuccess: function(result) {
+                password: this.password,
+                newPassword: this.newPassword,
+                onSuccess: function (result) {
                     zdconfirm('修改口令成功',
-                        '是否需要自动跳转到登录界面？',
+                        '是否需要自动跳转到登录界面?',
                         function(result) {
                             if (result)
                                 window.location.href = 'login.html';
+                            else
+                                $('#changePasswordDialog').modal('hide');
                         });
                 },
                 onError: function(XMLHttpRequest, textStatus) {
-                    zdalert('修改口令失败',
-                        XMLHttpRequest.responseText,
-                        function(result) {
-                            $("#password").focus();
-                        });
+                    zdalert('修改口令失败', XMLHttpRequest.responseText);
+                    $("#password").focus();
                 },
             });
         },

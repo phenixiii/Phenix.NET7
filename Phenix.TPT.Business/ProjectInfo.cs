@@ -6,7 +6,7 @@ using Phenix.TPT.Business.Norm;
 
 /* 
    builder:    phenixiii
-   build time: 2021-08-06 15:36:14
+   build time: 2021-09-17 15:44:27
    mapping to: PT7_PROJECT_INFO 项目资料
 */
 
@@ -42,7 +42,7 @@ namespace Phenix.TPT.Business
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
         protected ProjectInfo(string dataSourceKey,
-            long id, string contNumber, DateTime contApproveDate, string projectName, ProjectType projectType, string projectManager, string developManager, string maintenanceManager, string salesManager, string salesArea, string customer, decimal contAmount, decimal contMargin, string productVersion, decimal productPrice, decimal maintenancePrice, string contPayClause, string contBreachClause, string contSealingClause, string contDefensiveClause, string contDurationClause, string contAcceptanceClause, string contAcceptanceDocs, string contDocsPath, DateTime? onlinePlanDate, DateTime? onlineActualDate, DateTime? acceptDate, int? estimateWorkload, bool manageWork, bool investigateWork, bool developWork, bool testWork, bool implementWork, bool maintenanceWork, long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime, DateTime? closedDate) 
+            long id, string contNumber, DateTime contApproveDate, string projectName, ProjectType projectType, string projectManager, string developManager, string maintenanceManager, string salesManager, string salesArea, string customer, decimal contAmount, decimal contMargin, string productVersion, decimal productPrice, decimal maintenancePrice, string contPayClause, string contBreachClause, string contSealingClause, string contDefensiveClause, string contDurationClause, string contAcceptanceClause, string contAcceptanceDocs, string contDocsPath, DateTime? onlinePlanDate, DateTime? onlineActualDate, DateTime? acceptDate, int? estimateWorkload, bool manageWork, bool investigateWork, bool developWork, bool testWork, bool implementWork, bool maintenanceWork, long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime, DateTime? closedDate, string currentStatus, string annualMilestone, decimal totalReceivables, decimal totalInvoiceAmount, decimal totalReimbursementAmount) 
             : base(dataSourceKey)
         {
             _id = id;
@@ -85,6 +85,11 @@ namespace Phenix.TPT.Business
             _updater = updater;
             _updateTime = updateTime;
             _closedDate = closedDate;
+            _currentStatus = currentStatus;
+            _annualMilestone = annualMilestone;
+            _totalReceivables = totalReceivables;
+            _totalInvoiceAmount = totalInvoiceAmount;
+            _totalReimbursementAmount = totalReimbursementAmount;
         }
 
         protected override void InitializeSelf()
@@ -569,6 +574,66 @@ namespace Phenix.TPT.Business
         {
             get { return _closedDate; }
             set { _closedDate = value; }
+        }
+
+        private string _currentStatus;
+        /// <summary>
+        /// 当前状态
+        /// </summary>
+        [Display(Description = @"当前状态")]
+        [Column("PI_CURRENT_STATUS")]
+        public string CurrentStatus
+        {
+            get { return _currentStatus; }
+            set { _currentStatus = value; }
+        }
+
+        private string _annualMilestone;
+        /// <summary>
+        /// 年里程碑
+        /// </summary>
+        [Display(Description = @"年里程碑")]
+        [Column("PI_ANNUAL_MILESTONE")]
+        public string AnnualMilestone
+        {
+            get { return _annualMilestone; }
+            set { _annualMilestone = value; }
+        }
+
+        private decimal _totalReceivables;
+        /// <summary>
+        /// 应收总额
+        /// </summary>
+        [Display(Description = @"应收总额")]
+        [Column("PI_TOTAL_RECEIVABLES")]
+        public decimal TotalReceivables
+        {
+            get { return _totalReceivables; }
+            set { _totalReceivables = value; }
+        }
+
+        private decimal _totalInvoiceAmount;
+        /// <summary>
+        /// 开票总额
+        /// </summary>
+        [Display(Description = @"开票总额")]
+        [Column("PI_TOTAL_INVOICE_AMOUNT")]
+        public decimal TotalInvoiceAmount
+        {
+            get { return _totalInvoiceAmount; }
+            set { _totalInvoiceAmount = value; }
+        }
+
+        private decimal _totalReimbursementAmount;
+        /// <summary>
+        /// 报销总额
+        /// </summary>
+        [Display(Description = @"报销总额")]
+        [Column("PI_TOTAL_REIMBURSEMENT_AMOUNT")]
+        public decimal TotalReimbursementAmount
+        {
+            get { return _totalReimbursementAmount; }
+            set { _totalReimbursementAmount = value; }
         }
 
     }

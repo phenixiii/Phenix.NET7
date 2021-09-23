@@ -1,6 +1,7 @@
 ﻿using System;
 using Orleans;
 using Phenix.Core.Data;
+using Phenix.Core.Security;
 
 namespace Phenix.Actor
 {
@@ -10,6 +11,14 @@ namespace Phenix.Actor
     public abstract class GrainBase : Grain, IGrain
     {
         #region 属性
+        
+        /// <summary>
+        /// 用户身份
+        /// </summary>
+        public Principal User
+        {
+            get { return Principal.CurrentPrincipal; }
+        }
 
         /// <summary>
         /// 数据库入口

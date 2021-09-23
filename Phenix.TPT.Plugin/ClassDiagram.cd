@@ -23,18 +23,18 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.TPT.Plugin.ProjectGrain">
-    <Position X="0.5" Y="4.5" Width="3.5" />
+    <Position X="0.5" Y="4.75" Width="3.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>QKQBQCEAAwAAAQADgAgACgQAwAAAIAQBACABAUAAQAU=</HashCode>
+      <HashCode>QoABAAAAAAEAAAADgCgQAgQAgAAAIAQRAAABAQAAQgQ=</HashCode>
       <FileName>ProjectGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.TPT.Plugin.WorkerGrain">
-    <Position X="4.25" Y="4.5" Width="2.75" />
+    <Position X="4" Y="4.75" Width="2.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -43,6 +43,20 @@
       <FileName>WorkerGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.TPT.Plugin.ProjectInfoController">
+    <Position X="4" Y="8.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>ProjectInfoController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.TPT.Plugin.ProjectMonthlyReportController">
+    <Position X="6" Y="8.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ProjectMonthlyReportController.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Font Name="Microsoft YaHei UI" Size="9" />
 </ClassDiagram>

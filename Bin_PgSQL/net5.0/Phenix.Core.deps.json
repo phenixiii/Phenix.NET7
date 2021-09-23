@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "Phenix.Core\/7.5.51": {
+      "Phenix.Core\/7.5.52": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.1",
           "Npgsql": "5.0.7",
@@ -74,7 +74,7 @@
     }
   },
   "libraries": {
-    "Phenix.Core\/7.5.51": {
+    "Phenix.Core\/7.5.52": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

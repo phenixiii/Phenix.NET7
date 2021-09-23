@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -219,9 +220,10 @@ namespace Phenix.Services.Plugin.Security
             return await ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).Decrypt(cipherText);
         }
 
-        async Task<bool> IIdentity.IsInRole(string role)
+        async Task<bool> IIdentity.IsInRole(params string[] roles)
         {
-            return PositionId.HasValue && await ClusterClient.Default.GetGrain<IPositionGrain>(PositionId.Value).IsInRole(role);
+            return IsCompanyAdmin ||
+                   PositionId.HasValue && await ClusterClient.Default.GetGrain<IPositionGrain>(PositionId.Value).IsInRole(roles);
         }
 
         private async Task<TValue> GetKernelPropertyValueAsync<TValue>(Expression<Func<User, TValue>> propertyLambda)

@@ -3,17 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,Chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
     <script>
-        document.write("<link rel='stylesheet' href='css/page.css?v=" + new Date().toLocaleDateString() + "' charset='UTF-8'>");
+        document.write("<link rel='stylesheet' href='css/base-style.css?v=" + new Date().toLocaleDateString() + "' charset='UTF-8'>");
     </script>
     <title>注册公司级会员</title>
 </head>
 
 <body style="background: #F0F0F0;">
-    <div id="content v-cloak">
+    <div id="content" v-cloak>
         <div class="logo">
             <h1>
                 <font face="Papyrus">Teamwork Project Tracker II</font>
@@ -24,22 +23,22 @@
                 <div class="center-padding">
                     <h2 id="userNameHint" style="clear: both;"></h2>
                     <label style="clear: both;">
-                        <input class="txt-input" id="userName" type="text" placeholder="请输入登录名">
+                        <input class="txt-input" id="userName" type="text" placeholder="请输入登录名" v-model="userName">
                     </label>
                     <h2 id="companyNameHint" style="clear: both;"></h2>
                     <label style="clear: both;">
-                        <input class="txt-input" id="companyName" type="text" placeholder="请输入公司名">
+                        <input class="txt-input" id="companyName" type="text" placeholder="请输入公司名" v-model="companyName">
                     </label>
                     <h2 id="eMailHint" style="clear: both;"></h2>
                     <label style="clear: both;">
-                        <input class="txt-input" id="eMail" type="email" placeholder="请输入邮箱地址">
+                        <input class="txt-input" id="eMail" type="email" placeholder="请输入邮箱地址" v-model="eMail">
                     </label>
                     <h2 id="regAliasHint" style="clear: both;"></h2>
                     <label style="clear: both;">
-                        <input class="txt-input" id="regAlias" type="text" placeholder="请输入昵称">
+                        <input class="txt-input" id="regAlias" type="text" placeholder="请输入昵称" v-model="regAlias">
                     </label>
                     <p class="forgot">
-                        <a @click="onShowChangePasswordDialog()">修改口令</a> |
+                        <a @click="showChangePasswordDialog()">修改口令</a> |
                         <a @click="window.location.href = 'login.html'">登录TPT</a>
                     </p>
                     <input class="btn" id="center-button" type="button" value="注册公司级会员" @click="onRegister()">
@@ -57,15 +56,15 @@
                     <div class="modal-body">
                         <label>
                             <label style="clear: both;">
-                                <input class="txt-input" id="password" type="password" placeholder="请输入口令" size="40">
+                                <input class="txt-input" id="password" type="password" size="40" placeholder="请输入口令" v-model="password">
                                 <h id="passwordHint" style="clear: both;"></h>
                             </label>
                             <label style="clear: both;">
-                                <input class="txt-input" id="newPassword" type="password" placeholder="请输入新口令" size="40">
+                                <input class="txt-input" id="newPassword" type="password" size="40" placeholder="请输入新口令" v-model="newPassword">
                                 <h id="newPasswordHint" style="clear: both;"></h>
                             </label>
                             <label style="clear: both;">
-                                <input class="txt-input" id="newPassword2" type="password" placeholder="请确认新口令" size="40">
+                                <input class="txt-input" id="newPassword2" type="password" size="40" placeholder="请确认新口令" v-model="newPassword2">
                                 <h id="newPassword2Hint" style="clear: both;"></h>
                             </label>
                         </label>
