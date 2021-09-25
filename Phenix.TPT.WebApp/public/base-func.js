@@ -2,7 +2,7 @@ $(function() {
     if (phAjax.userName === '')
         gotoLogin();
     else {
-        var menu = document.getElementById('menu');
+        var menu = document.getElementById('menu'); // <div id="menu"></div>
         var secMenu = document.createElement('section');
         secMenu.className = 'sec-menu';
         secMenu.innerHTML = [
@@ -141,7 +141,74 @@ function gotoStatistic() {
 
 function gotoMyself() {
     if (window.location.href.indexOf('myself.html') === -1)
-        window.location.href = "myself.html"
+        window.location.href = 'myself.html';
+}
+
+function await() {
+    var waitHold = document.getElementById('wait-hold'); // <div id="wait-hold"></div>
+    if (waitHold !== null)
+        if (waitHold.style.display === 'block')
+            return false;
+        else
+            waitHold.style.display = 'block';
+    return true;
+}
+
+function waitOut() {
+    var waitHold = document.getElementById('wait-hold'); // <div id="wait-hold"></div>
+    if (waitHold !== null)
+        if (waitHold.style.display === 'none')
+            return false;
+        else
+            waitHold.style.display = 'none';
+    return true;
+}
+
+function callAjax(options) {
+    var defaults = {
+        anonymity: false, //是否匿名访问
+        type: 'GET', //HttpMethod(GET/POST/PUT/PATCH/DELETE)
+        path: null, //路径
+        pathParam: null, //URL参数
+        data: null, //上传数据
+        trimData: false, //默认不清理data的空属性值
+        processData: true, //默认对data参数进行序列化处理
+        encryptData: false, //默认不加密data（否则服务端请用Request.ReadBodyAsync(true)解密）
+        decryptResult: false, //默认不解密result（否则服务端请用this.EncryptAsync(result)加密, 下载经解密后可在onSuccess事件里用JSON.parse(result)还原为JavaScript对象）
+        contentType: 'application/json;charset=utf-8',
+        cache: false, //默认不缓存
+        timeout: 30000, //默认超时30秒
+        onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
+        onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
+        onComplete: null, //调用完成的回调函数, 参数(XMLHttpRequest, textStatus)
+    };
+    options = $.extend(defaults, options);
+    if (window.await())
+        phAjax.call({
+            anonymity: options.anonymity,
+            type: options.type,
+            path: options.path,
+            pathParam: options.pathParam,
+            data: options.data,
+            trimData: options.trimData,
+            processData: options.processData,
+            encryptData: options.encryptData,
+            decryptResult: options.decryptResult,
+            contentType: options.contentType,
+            cache: options.cache,
+            timeout: options.timeout,
+            onSuccess: function(result) {
+                window.waitOut();
+                if (typeof options.onSuccess === 'function')
+                    options.onSuccess(result);
+            },
+            onError: function(XMLHttpRequest, textStatus, validityError) {
+                window.waitOut();
+                if (typeof options.onError === 'function')
+                    options.onError(XMLHttpRequest, textStatus, validityError);
+            },
+            onComplete: options.onComplete,
+        });
 }
 
 Date.prototype.format = function(format) {
@@ -160,29 +227,4 @@ Date.prototype.format = function(format) {
         if (new RegExp('(' + k + ')').test(format))
             format = format.replace(RegExp.$1, RegExp.$1.length === 1 ? o[k] : ('00' + o[k]).substr(('' + o[k]).length));
     return format;
-}
-
-function getcolor(work) {
-    var color = 'white';
-    switch (work) {
-        case 'manage':
-            color = 'rgb(128, 100, 162)';
-            break;
-        case 'investigate':
-            color = 'rgb(0, 112, 192)';
-            break;
-        case 'develop':
-            color = 'rgb(247, 150, 70)';
-            break;
-        case 'test':
-            color = 'rgb(255, 255, 0)';
-            break;
-        case 'implement':
-            color = 'rgb(0, 176, 240)';
-            break;
-        case 'maintenance':
-            color = 'rgb(146, 208, 80)';
-            break;
-    }
-    return color;
 }

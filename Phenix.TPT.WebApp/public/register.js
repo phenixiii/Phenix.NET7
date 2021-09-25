@@ -120,7 +120,7 @@ var vue = new Vue({
                 password: this.password,
                 newPassword: this.newPassword,
                 onSuccess: function (result) {
-                    zdconfirm('修改口令成功',
+                    zdconfirm('成功修改口令',
                         '是否需要自动跳转到登录界面?',
                         function(result) {
                             if (result)

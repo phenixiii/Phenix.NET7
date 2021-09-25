@@ -384,9 +384,40 @@ tbody {
 
 .panel-fold {
     width: 100%;
-    height: 300px;
-    margin-top: 2%;
+    height: 308px;
+    margin-top: 0%;
     border-top: 1px dashed rgb(195, 195, 201);
+}
+
+.panel-fold label {
+    float: left;
+    margin: 1% 1% 1% 1%;
+    text-align: center;
+    color: rgb(108, 152, 209);
+}
+
+.panel-fold i.fa {
+    margin: 1% 1% 1% 1%;
+    float: right;
+    margin-left: 0%;
+    padding: 0%;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.panel-fold-area {
+    float: left;
+    height: 285px;
+    border: 1px solid rgb(220, 220, 220);
+    -ms-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.panel-fold-area textarea {
+    border: none;
+    width: 100%;
+    height: 93%;
+    outline: none;
 }
 
 .text-wrapper {
@@ -456,26 +487,26 @@ tbody {
     border-top: 1px solid rgb(245, 245, 255);
 }
 
-.project-badge {
+.badge-chapter {
     margin: 0% 2% 0% 0%;
     float: left;
 }
 
-.project-report {
-    float: left;
-    margin-right: 1%;
-    height: 300px;
-    border: 1px solid rgb(220, 220, 220);
-    -ms-border-radius: 3px;
-    border-radius: 3px;
+#wait-hold {
+    cursor: wait;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
 }
 
-.project-report-content {
-    border: none;
+#wait-hold label {
     width: 100%;
-    height: 93%;
-    outline: none;
-    background: #fafafa
+    margin-top: 2.5%;
+    text-align: center;
+    color: rgb(245, 245, 255);
 }
 
 #trh {

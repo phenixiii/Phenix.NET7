@@ -69,7 +69,7 @@ var vue = new Vue({
                 userName: this.userName.trim(),
                 onSuccess: function(result) {
                     hint.html(result);
-                    zdalert('登记成功', result);
+                    zdalert('成功登记', result);
                 },
                 onError: function(XMLHttpRequest, textStatus) {
                     hint.html(XMLHttpRequest.responseText);

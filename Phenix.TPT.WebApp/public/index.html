@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="lib-css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="lib-css/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="lib-css/element.css">
+    <script>
+        document.write("<link rel='stylesheet' href='base-style.css?v=" + new Date().toLocaleDateString() + "' charset='UTF-8'>");
+    </script>
+    <title>项目管理</title>
+</head>
+
+<body>
+    <div id="menu"></div>
+
+    <div class="content" id="content" v-cloak>
+        <div class="container">
+            <div class="header-line col-md-12">
+                <h4>{{stateTitle[state]}}</h4>
+                <div class="arrow-button">
+                    <span class="arrow arrow-up" @click="onPlusMonth()" title="下一月"></span>
+                    <label class="txt">{{filterTimeInterval.month}}</label>
+                    <span class="arrow arrow-down" @click="onMinusMonth()" title="上一月"></span>
+                </div>
+                <div class="arrow-button">
+                    <span class="arrow arrow-up" @click="onPlusYear()" title="下一年"></span>
+                    <label class="txt">{{filterTimeInterval.year}}</label>
+                    <span class="arrow arrow-down" @click="onMinusYear()" title="上一年"></span>
+                </div>
+                <div class="filter-button fa fa-filter" @click="onFilerProject()" :title="filterStateTitle[filterState]"></div>
+            </div>
+            <div class="panel col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-query panel-body">
+                        <label class="panel-query-item txt col-md-1">项目</label>
+                        <input class="panel-query-item txt-input col-md-4 form-control" placeholder="项目名称/服务客户/销售区域/合同号，可输入片段" v-model="queryName">
+                        <label class="panel-query-item txt col-md-1">负责人</label>
+                        <input class="panel-query-item txt-input col-md-4 form-control" placeholder="负责人姓名/产品版本/当前状态，可输入片段" v-model="queryPerson">
+                        <button class="panel-query-item btn btn-primary col-md-1" @click="onQueryProject()">查询</button>
+                        <button class="panel-query-item btn btn-primary col-md-1" v-bind:disabled="!canAddProject()" @click="onAddProject()">添加</button>
+                    </div>
+                </div>
+                <ul class="panel panel-default">
+                    <li v-for="(projectInfo) in filteredProjectInfos">
+                        <div class="panel panel-default" :id="projectInfo.Id">
+                            <div class="panel-list-item panel-body">
+                                <div style="display: block; overflow: hidden;">
+                                    <div class="panel-list-column" style="width: 10%; padding-left: 20px; margin-top: 5px; text-align: center;">
+                                        <p class="text-wrapper" v-text="new Date(projectInfo.ContApproveDate).format('yyyy-MM-dd')"></p>
+                                    </div>
+                                    <div class="panel-list-column" style="width: 15%; padding-left: 10px; margin-top: 5px; text-align: center;">
+                                        <p class="text-wrapper" v-text="(projectInfo.CurrentStatus??'')+'\n\r'+(projectInfo.AnnualMilestone??'')"></p>
+                                    </div>
+                                    <div class="panel-list-column" style="width: 38%; padding-left: 10px;">
+                                        <div>
+                                            <hr class="badge-chapter manage-color" v-if="projectInfo.ManageWork" />
+                                            <hr class="badge-chapter no-color" v-else />
+                                            <hr class="badge-chapter investigate-color" v-if="projectInfo.InvestigateWork" />
+                                            <hr class="badge-chapter no-color" v-else />
+                                            <hr class="badge-chapter develop-color" v-if="projectInfo.DevelopWork" />
+                                            <hr class="badge-chapter no-color" v-else />
+                                            <hr class="badge-chapter test-color" v-if="projectInfo.TestWork" />
+                                            <hr class="badge-chapter no-color" v-else />
+                                            <hr class="badge-chapter implement-color" v-if="projectInfo.ImplementWork" />
+                                            <hr class="badge-chapter no-color" v-else />
+                                            <hr class="badge-chapter maintenance-color" v-if="projectInfo.MaintenanceWork" />
+                                            <hr class="badge-chapter no-color" v-else />
+                                        </div>
+                                        <div class="panel-list-column" style="word-wrap: break-word; word-break: break-all; height: auto; width: 100%;">
+                                            <p class="text-wrapper">{{projectInfo.ProjectName}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="panel-list-column" style="width: 15%; padding-left: 10px; margin-top: 5px; text-align: center;">
+                                        <p class="text-wrapper" v-text="projectInfo.ContNumber.replace(/（/,'\n\r（')"></p>
+                                    </div>
+                                    <div class="panel-list-column" style="width: 6%; padding-left: 10px; margin-top: 5px; text-align: center;">
+                                        <p>{{projectInfo.ProjectManager}}</p>
+                                    </div>
+                                    <div class="panel-list-column" style="width: 6%; padding-left: 10px; margin-top: 5px; text-align: center;">
+                                        <p>{{projectInfo.DevelopManager}}</p>
+                                    </div>
+                                    <div class="panel-list-column" style="width: 8%; padding-left: 10px; margin-top: 5px; padding-right: 0px;">
+                                        <i class="fa fa-pencil" type="buttonon" @click="onEditProject(projectInfo)" title="编辑项目" v-show="canEditProject(projectInfo)"></i>
+                                        <i class="fa fa-chevron-down" type="buttonon" @click="onSwitchMonthlyReport(projectInfo, $event)" title="填写月报"></i>
+                                        <i class="fa fa-remove" type="buttonon" @click="showCloseProjectDialog(projectInfo)" title="关闭项目" v-show="canCloseProject(projectInfo)"></i>
+                                    </div>
+                                </div>
+                                <ul class="hide panel" id="monthlyReportPanel">
+                                    <li v-for="(monthlyReport) in projectInfo.monthlyReports">
+                                        <div class="panel panel-fold">
+                                            <div style="width: 100%;">
+                                                <label style="width: 88%;">{{monthlyReport.Month}} 月报</label>
+                                                <i class="fa fa-floppy-o" type="buttonon" @click="onPutMonthlyReport(projectInfo, monthlyReport, $event)" title="提交月报" v-show="canPutMonthlyReport(projectInfo, monthlyReport)"></i>
+                                            </div>
+                                            <div>
+                                                <div class="panel-fold-area" style="width: 22%; margin-right: 1%;">
+                                                    <span>月度计划</span>
+                                                    <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.MonthlyPlan"></textarea>
+                                                </div>
+                                                <div class="panel-fold-area" style="width: 22%; margin-right: 1%;">
+                                                    <span>实绩完成</span>
+                                                    <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.MonthlyAchieve"></textarea>
+                                                </div>
+                                                <div class="panel-fold-area" style="width: 22%; margin-right: 1%;">
+                                                    <span>下月计划</span>
+                                                    <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.NextMonthlyPlan"></textarea>
+                                                </div>
+                                                <div class="panel-fold-area" style="width: 10%; margin-right: 1%;">
+                                                    <span>风险警示</span>
+                                                    <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.RiskCaution"></textarea>
+                                                </div>
+                                                <div class="panel-fold-area" style="width: 20%;">
+                                                    <span>协调需求</span>
+                                                    <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.DemandCoordination"></textarea>
+                                                </div>
+                                                <i class="fa fa-chevron-down" type="buttonon" @click="onNextMonthlyReport(projectInfo, $event)" title="以往月报"></i>
+                                                <i class="fa fa-chevron-up" type="buttonon" @click="onHideMonthlyReport(projectInfo)" title="收起月报"></i>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="modal fade" id="closeProjectDialog" tabindex="-1" role="dialog" aria-labelledby="closeProjectDialogLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="closeProjectDialogLabel">设置项目的关闭日期</h4>
+                    </div>
+                    <div class="modal-body">
+                        <el-date-picker value-format="yyyy-MM-dd" format="yyyy-MM-dd" style="width: 100%" v-model="closedDate"></el-date-picker>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" type="button" data-dismiss="modal">取消</button>
+                        <button class="btn btn-primary" type="button" @click="onCloseProject()">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="goto-top-button" style="overflow: hidden;">
+            <a title="返回顶部" href="#">
+                <i class="fa fa-angle-up fa-2x" type="button" aria-hidden="true"></i>
+            </a>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="lib/crypto-js/core-min.js"></script>
+    <script type="text/javascript" src="lib/crypto-js/enc-base64-min.js"></script>
+    <script type="text/javascript" src="lib/crypto-js/cipher-core-min.js"></script>
+    <script type="text/javascript" src="lib/crypto-js/aes-min.js"></script>
+    <script type="text/javascript" src="lib/crypto-js/md5-min.js"></script>
+    <script type="text/javascript" src="lib/json2.js"></script>
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/jquery.cookie.js"></script>
+    <script type="text/javascript" src="lib/jquery.base64.js"></script>
+    <script type="text/javascript" src="lib/signalr.min.js"></script>
+    <script type="text/javascript" src="lib/phenix7.js"></script>
+
+    <script type="text/javascript" src="lib/vue.min.js"></script>
+    <script type="text/javascript" src="lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="lib/mesgbox.js"></script>
+    <script type="text/javascript" src="lib/element.js"></script>
+
+    <script type="text/javascript" src="base-func.js?v=1"></script>
+    <script>
+        document.write("<script type='text/javascript' src='index.js?v=" + new Date().toLocaleDateString() + "'><\/script>");
+    </script>
+
+    <div id="wait-hold"></div>
+</body>
+
+</html>
