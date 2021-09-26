@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="lib-css/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="lib-css/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="lib-css/element.css">
+    <link rel="stylesheet" href="lib/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="lib/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="lib/element/element.css">
     <script>
         document.write("<link rel='stylesheet' href='base-style.css?v=" + new Date().toLocaleDateString() + "' charset='UTF-8'>");
     </script>
@@ -91,11 +91,17 @@
                                 <ul class="hide panel" id="monthlyReportPanel">
                                     <li v-for="(monthlyReport) in projectInfo.monthlyReports">
                                         <div class="panel panel-fold">
-                                            <div style="width: 100%;">
-                                                <label style="width: 88%;">{{monthlyReport.Month}} 月报</label>
-                                                <i class="fa fa-floppy-o" type="buttonon" @click="onPutMonthlyReport(projectInfo, monthlyReport, $event)" title="提交月报" v-show="canPutMonthlyReport(projectInfo, monthlyReport)"></i>
-                                            </div>
                                             <div>
+                                                <div class="panel-fold-input" style="width: 20%;">
+                                                    <datalist id=" project-statuses">
+                                                         <option v-for="item in projectStatuses">{{item}}</option>
+                                                    </datalist>
+                                                    <input v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" type="search" list=" project-statuses" placeholder="项目状态" v-model="monthlyReport.Status" @blur="monthlyReport.Status=$event.target.value">
+                                                </div>
+                                                <label style="width: 50%;">{{monthlyReport.Month}} 月报</label>
+                                                <i class="fa fa-floppy-o" type="buttonon" @click="onPutMonthlyReport(projectInfo, monthlyReport)" title="提交月报" v-show="canPutMonthlyReport(projectInfo, monthlyReport)"></i>
+                                            </div>
+                                            <div style="clear: both;">
                                                 <div class="panel-fold-area" style="width: 22%; margin-right: 1%;">
                                                     <span>月度计划</span>
                                                     <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.MonthlyPlan"></textarea>
@@ -145,9 +151,9 @@
                 </div>
             </div>
         </div>
-        <div class="goto-top-button" style="overflow: hidden;">
+        <div class="goto-top-button">
             <a title="返回顶部" href="#">
-                <i class="fa fa-angle-up fa-2x" type="button" aria-hidden="true"></i>
+                <i class="fa fa-angle-up fa-2x" type="button"></i>
             </a>
         </div>
     </div>
@@ -165,9 +171,9 @@
     <script type="text/javascript" src="lib/phenix7.js"></script>
 
     <script type="text/javascript" src="lib/vue.min.js"></script>
-    <script type="text/javascript" src="lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="lib/bootstrap/bootstrap.min.js"></script>
     <script type="text/javascript" src="lib/mesgbox.js"></script>
-    <script type="text/javascript" src="lib/element.js"></script>
+    <script type="text/javascript" src="lib/element/element.js"></script>
 
     <script type="text/javascript" src="base-func.js?v=1"></script>
     <script>

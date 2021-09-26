@@ -7,7 +7,7 @@ label {
 }
 
 input {
-    border: 1px solid #DBDBDB;
+    border: 1px solid rgb(220, 220, 220);
     background: #fff;
 }
 
@@ -393,16 +393,26 @@ tbody {
     float: left;
     margin: 1% 1% 1% 1%;
     text-align: center;
-    color: rgb(108, 152, 209);
+    color: royalblue;
 }
 
 .panel-fold i.fa {
     margin: 1% 1% 1% 1%;
     float: right;
-    margin-left: 0%;
-    padding: 0%;
-    font-size: 16px;
     cursor: pointer;
+}
+
+.panel-fold-input {
+    float: left;
+    margin: 1% 1% 1% 1%;
+}
+
+.panel-fold-input input {
+    width: 100%;
+    border: 0px;
+    margin-left: 0%;
+    outline: none;
+    border-bottom: 1px solid rgb(220, 220, 220);
 }
 
 .panel-fold-area {
@@ -414,10 +424,11 @@ tbody {
 }
 
 .panel-fold-area textarea {
+    width: 98%;
+    height: 92%;
     border: none;
-    width: 100%;
-    height: 93%;
     outline: none;
+    margin: 1% 1% 1% 1%;
 }
 
 .text-wrapper {
@@ -500,13 +511,6 @@ tbody {
     left: 0;
     height: 100%;
     width: 100%;
-}
-
-#wait-hold label {
-    width: 100%;
-    margin-top: 2.5%;
-    text-align: center;
-    color: rgb(245, 245, 255);
 }
 
 #trh {
@@ -621,15 +625,6 @@ table.table1 {
     color: black;
 }
 
-.resultitem {
-    color: royalblue;
-    float: left;
-}
-
-.line {
-    height: 500px;
-}
-
 .tabli {
     float: left;
     height: 50px;
@@ -650,26 +645,6 @@ table.table1 {
     border-left: 1.2px solid rgb(83, 163, 233);
     border-right: 1.2px solid rgb(83, 163, 233);
     border-bottom: 1.2px solid #fafafa;
-}
-
-.helpp {
-    font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
-}
-
-.projectitem {
-    margin-bottom: 0.5%;
-}
-
-.kalendae {
-    width: 15%;
-}
-
-.k-calendar {
-    margin-left: 7%;
-}
-
-.content-wrapper {
-    min-height: 1000px;
 }
 
 #tablehead {
