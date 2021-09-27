@@ -168,7 +168,9 @@ namespace Phenix.TPT.Plugin
             foreach (ProjectAnnualPlan item in ProjectAnnualPlanList)
                 if (item.Year == year)
                     return Task.FromResult(item);
-            return Task.FromResult(Kernel.NewDetail(ProjectAnnualPlan.Set(p => p.Year, year)));
+
+            return Task.FromResult(Kernel.NewDetail(ProjectAnnualPlan.Set(p => p.Year, year).
+                Set(p => p.AnnualReceivables, Kernel.ContAmount - Kernel.TotalReceivables)));
         }
 
         async Task IProjectGrain.PutProjectAnnualPlan(ProjectAnnualPlan source)
@@ -233,10 +235,12 @@ namespace Phenix.TPT.Plugin
                     return Task.FromResult(item);
                 else if (item.Year == ultimo.Year && item.Month == ultimo.Month)
                     ultimoReport = item;
+
             return Task.FromResult(Kernel.NewDetail(ProjectMonthlyReport.
                 Set(p => p.Year, year).
                 Set(p => p.Month, month).
-                Set( p => p.MonthlyPlan, ultimoReport != null ? ultimoReport.NextMonthlyPlan : "*")));
+                Set(p => p.Status, ultimoReport != null ? ultimoReport.Status : null).
+                Set(p => p.MonthlyPlan, ultimoReport != null ? ultimoReport.NextMonthlyPlan : "*")));
         }
 
         async Task IProjectGrain.PutProjectMonthlyReport(ProjectMonthlyReport source)
@@ -254,8 +258,9 @@ namespace Phenix.TPT.Plugin
                     Database.Execute((DbTransaction dbTransaction) =>
                     {
                         item.UpdateSelf(dbTransaction, source);
-                        Kernel.UpdateSelf(dbTransaction,
-                            NameValue.Set<ProjectInfo>(p => p.CurrentStatus, source.Status));
+                        if (today.Year == source.Year && today.Month == source.Month)
+                            Kernel.UpdateSelf(dbTransaction,
+                                NameValue.Set<ProjectInfo>(p => p.CurrentStatus, source.Status));
                     });
                     return;
                 }
@@ -263,8 +268,9 @@ namespace Phenix.TPT.Plugin
             Database.Execute((DbTransaction dbTransaction) =>
             {
                 source.InsertSelf(dbTransaction);
-                Kernel.UpdateSelf(dbTransaction,
-                    NameValue.Set<ProjectInfo>(p => p.CurrentStatus, source.Status));
+                if (today.Year == source.Year && today.Month == source.Month)
+                    Kernel.UpdateSelf(dbTransaction,
+                        NameValue.Set<ProjectInfo>(p => p.CurrentStatus, source.Status));
             });
             ProjectMonthlyReportList.Add(source);
         }

@@ -20,15 +20,20 @@ function isMyProject(projectInfo) {
             myself.Name === projectInfo.SalesManager);
 }
 
+function pushProjectStatuses(status) {
+    if (!vue.projectStatuses.includes(status))
+        vue.projectStatuses.push(status);
+}
+
 function locatingProjectInfo(projectInfo) {
     if (projectInfo != null)
         setTimeout(function () { $('html,body').animate({ scrollTop: $('#' + projectInfo.Id).offset().top }, 1000); }, 100);
 }
 
 function showMonthlyReportPanel(projectInfo) {
-    if (projectInfo.switchMonthlyReportButton != null && projectInfo.switchMonthlyReportButton.hasClass('fa-chevron-down')) {
-        projectInfo.switchMonthlyReportButton.removeClass('fa-chevron-down');
-        projectInfo.switchMonthlyReportButton.addClass('fa-chevron-up');
+    if (projectInfo.switchMonthlyReportButton != null && projectInfo.switchMonthlyReportButton.hasClass('fa-tag')) {
+        projectInfo.switchMonthlyReportButton.removeClass('fa-tag');
+        projectInfo.switchMonthlyReportButton.addClass('fa-tags');
         projectInfo.switchMonthlyReportButton.attr("title", '收起月报');
     };
     if (projectInfo.monthlyReportPanel != null && projectInfo.monthlyReportPanel.hasClass('hide')) {
@@ -42,9 +47,9 @@ function showMonthlyReportPanel(projectInfo) {
 
 function hideMonthlyReportPanel(projectInfo) {
     var result = false;
-    if (projectInfo.switchMonthlyReportButton != null && projectInfo.switchMonthlyReportButton.hasClass('fa-chevron-up')) {
-        projectInfo.switchMonthlyReportButton.removeClass('fa-chevron-up');
-        projectInfo.switchMonthlyReportButton.addClass('fa-chevron-down');
+    if (projectInfo.switchMonthlyReportButton != null && projectInfo.switchMonthlyReportButton.hasClass('fa-tags')) {
+        projectInfo.switchMonthlyReportButton.removeClass('fa-tags');
+        projectInfo.switchMonthlyReportButton.addClass('fa-tag');
         projectInfo.switchMonthlyReportButton.attr('title', '填写月报');
         delete projectInfo.switchMonthlyReportButton;
         result = true;
@@ -72,6 +77,9 @@ function filterProjectInfos(projectInfos) {
 
     if (projectInfos != null) {
         projectInfos.forEach((item, index) => {
+            pushProjectStatuses(item.CurrentStatus);
+            pushProjectStatuses(item.AnnualMilestone);
+
             switch (vue.filterState) {
             case 0: //显示当月自己负责项目
                 if (!isMyProject(item))
@@ -164,8 +172,11 @@ function fetchMonthlyReport(projectInfo) {
             month: month
         },
         onSuccess: function(result) {
+            pushProjectStatuses(result.Status);
+
             projectInfo.monthlyReports.push(result);
             vue.$forceUpdate();
+
             showMonthlyReportPanel(projectInfo);
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
@@ -183,6 +194,12 @@ function putMonthlyReport(projectInfo, monthlyReport) {
         },
         data: monthlyReport,
         onSuccess: function (result) {
+            var now = new Date();
+            if (monthlyReport.Year === now.getFullYear() &&
+                monthlyReport.Month === now.getMonth() + 1)
+                Vue.set(projectInfo, 'CurrentStatus', monthlyReport.Status);
+            pushProjectStatuses(monthlyReport.Status);
+
             zdconfirm('成功提交项目月报',
                 '是否需要合上月报填写面板?',
                 function (result) {
@@ -236,14 +253,14 @@ var vue = new Vue({
         },
         queryName: window.localStorage.hasOwnProperty(queryNameCacheKey) ? window.localStorage.getItem(queryNameCacheKey) : null,
         queryPerson: window.localStorage.hasOwnProperty(queryPersonCacheKey) ? window.localStorage.getItem(queryPersonCacheKey) : null,
+        
+        projectStatuses: [],
 
         projectInfos: null,
         currentProjectInfo: null, //当前操作对象
         filteredProjectInfos: [], //用于界面绑定的projectInfos子集
 
         closedDate: new Date().format('yyyy-MM-dd'),
-
-        projectStatuses: [],
     },
 
     methods: {

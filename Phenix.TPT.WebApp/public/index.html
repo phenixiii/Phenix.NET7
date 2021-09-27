@@ -48,13 +48,13 @@
                         <div class="panel panel-default" :id="projectInfo.Id">
                             <div class="panel-list-item panel-body">
                                 <div style="display: block; overflow: hidden;">
-                                    <div class="panel-list-column" style="width: 10%; padding-left: 20px; margin-top: 5px; text-align: center;">
+                                    <div class="panel-list-column" style="width: 9%; padding-left: 20px; margin-top: 5px; text-align: center;">
                                         <p class="text-wrapper" v-text="new Date(projectInfo.ContApproveDate).format('yyyy-MM-dd')"></p>
                                     </div>
                                     <div class="panel-list-column" style="width: 15%; padding-left: 10px; margin-top: 5px; text-align: center;">
-                                        <p class="text-wrapper" v-text="(projectInfo.CurrentStatus??'')+'\n\r'+(projectInfo.AnnualMilestone??'')"></p>
+                                        <p class="text-wrapper" v-text="(projectInfo.CurrentStatus??'')+'\n\r【'+(projectInfo.AnnualMilestone??'') + '】'"></p>
                                     </div>
-                                    <div class="panel-list-column" style="width: 38%; padding-left: 10px;">
+                                    <div class="panel-list-column" style="width: 40%; padding-left: 10px;">
                                         <div>
                                             <hr class="badge-chapter manage-color" v-if="projectInfo.ManageWork" />
                                             <hr class="badge-chapter no-color" v-else />
@@ -84,7 +84,7 @@
                                     </div>
                                     <div class="panel-list-column" style="width: 8%; padding-left: 10px; margin-top: 5px; padding-right: 0px;">
                                         <i class="fa fa-pencil" type="buttonon" @click="onEditProject(projectInfo)" title="编辑项目" v-show="canEditProject(projectInfo)"></i>
-                                        <i class="fa fa-chevron-down" type="buttonon" @click="onSwitchMonthlyReport(projectInfo, $event)" title="填写月报"></i>
+                                        <i class="fa fa-tag" type="buttonon" @click="onSwitchMonthlyReport(projectInfo, $event)" title="填写月报"></i>
                                         <i class="fa fa-remove" type="buttonon" @click="showCloseProjectDialog(projectInfo)" title="关闭项目" v-show="canCloseProject(projectInfo)"></i>
                                     </div>
                                 </div>
@@ -92,14 +92,16 @@
                                     <li v-for="(monthlyReport) in projectInfo.monthlyReports">
                                         <div class="panel panel-fold">
                                             <div>
-                                                <div class="panel-fold-input" style="width: 20%;">
-                                                    <datalist id=" project-statuses">
-                                                         <option v-for="item in projectStatuses">{{item}}</option>
-                                                    </datalist>
-                                                    <input v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" type="search" list=" project-statuses" placeholder="项目状态" v-model="monthlyReport.Status" @blur="monthlyReport.Status=$event.target.value">
+                                                <div class="panel-fold-header" style="width: 10%;">
+                                                    <input v-bind:readonly="true" v-model="monthlyReport.Month">
                                                 </div>
-                                                <label style="width: 50%;">{{monthlyReport.Month}} 月报</label>
-                                                <i class="fa fa-floppy-o" type="buttonon" @click="onPutMonthlyReport(projectInfo, monthlyReport)" title="提交月报" v-show="canPutMonthlyReport(projectInfo, monthlyReport)"></i>
+                                                <div class="panel-fold-header" style="width: 15%;">
+                                                    <datalist id="project-statuses">
+                                                        <option v-for="item in projectStatuses">{{item}}</option>
+                                                    </datalist>
+                                                    <input v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" type="search" list="project-statuses" placeholder="状态" v-model="monthlyReport.Status" @blur="monthlyReport.Status=$event.target.value">
+                                                </div>
+                                                <i class="fa fa-save" type="buttonon" @click="onPutMonthlyReport(projectInfo, monthlyReport)" title="提交月报" v-show="canPutMonthlyReport(projectInfo, monthlyReport)"></i>
                                             </div>
                                             <div style="clear: both;">
                                                 <div class="panel-fold-area" style="width: 22%; margin-right: 1%;">

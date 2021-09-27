@@ -34,7 +34,7 @@ $(function() {
             '        <i id="index" class="fa fa-cog fa-2x"></i>',
             '    </li>',
             '    <li title="工作档期" onclick="gotoSchedule()">',
-            '        <i id="schedule" class="fa fa-sliders fa-2x"></i>',
+            '        <i id="schedule" class="fa fa-tasks fa-2x"></i>',
             '    </li>',
             '    <li title="月工作量" onclick="gotoWorkload()">',
             '        <i id="workload" class="fa fa-calendar fa-2x"></i>',
