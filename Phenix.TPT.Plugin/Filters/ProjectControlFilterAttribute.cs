@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Phenix.Core.Net.Filters;
 using Phenix.Core.Security;
+using Phenix.TPT.Business.Norm;
 
 namespace Phenix.TPT.Plugin.Filters
 {
@@ -18,8 +19,8 @@ namespace Phenix.TPT.Plugin.Filters
         /// <param name="context">HttpContext</param>
         public override async Task CheckValidity(IIdentity identity, HttpContext context)
         {
-            if (!await identity.IsInRole(Roles.经营管理.ToString(), Roles.项目管理.ToString()))
-                throw new SecurityException("仅允许管理人员操作本功能!");
+            if (!await identity.IsInRole(ProjectRoles.经营管理, ProjectRoles.项目管理))
+                throw new SecurityException("仅限公司管理人员操作本功能!");
         }
     }
 }

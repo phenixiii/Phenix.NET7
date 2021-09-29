@@ -17,6 +17,9 @@ namespace Phenix.Services.Plugin.Security
 
         Task<bool> IPositionGrain.IsInRole(IList<string> roles)
         {
+            if (Kernel == null)
+                throw new PositionNotFoundException();
+
             if (roles == null || roles.Count == 0)
                 return Task.FromResult(true);
 

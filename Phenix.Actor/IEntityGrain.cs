@@ -14,18 +14,19 @@ namespace Phenix.Actor
         /// <summary>
         /// 获取根实体对象
         /// </summary>
+        /// <param name="autoNew">不存在则新增</param>
         /// <returns>根实体对象</returns>
-        Task<TKernel> FetchKernel();
+        Task<TKernel> FetchKernel(bool autoNew = false);
 
         /// <summary>
-        /// 新增根实体对象
+        /// 新增根实体对象并自动持久化
         /// </summary>
         /// <param name="source">数据源</param>
         /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
         Task CreateKernel(TKernel source, bool throwIfFound = true);
 
         /// <summary>
-        /// 新增根实体对象(如存在则引发 InvalidOperationException)
+        /// 新增根实体对象并自动持久化(如存在则引发 InvalidOperationException)
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
         Task CreateKernel(params NameValue<TKernel>[] propertyValues);
@@ -71,14 +72,14 @@ namespace Phenix.Actor
         Task<bool> ExistKernel();
 
         /// <summary>
-        /// 新增根实体对象
+        /// 新增根实体对象并自动持久化
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
         Task CreateKernel(IDictionary<string, object> propertyValues, bool throwIfFound = true);
 
         /// <summary>
-        /// 新增根实体对象(如存在则引发 InvalidOperationException)
+        /// 新增根实体对象并自动持久化(如存在则引发 InvalidOperationException)
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
         Task CreateKernel(params NameValue[] propertyValues);

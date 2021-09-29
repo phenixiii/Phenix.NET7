@@ -11,8 +11,8 @@ function isMyProject(projectInfo) {
     if (myself == null)
         return false;
     return myself.Position == null ||
-        myself.Position.Roles.indexOf('经营管理') === 0 ||
-        myself.Position.Roles.indexOf('项目管理') === 0 &&
+        myself.Position.Roles.indexOf(projectRoles.经营管理) >= 0 ||
+        myself.Position.Roles.indexOf(projectRoles.项目管理) >= 0 &&
         (projectInfo == null ||
             myself.Name === projectInfo.ProjectManager ||
             myself.Name === projectInfo.DevelopManager ||
@@ -26,8 +26,11 @@ function pushProjectStatuses(status) {
 }
 
 function locatingProjectInfo(projectInfo) {
-    if (projectInfo != null)
-        setTimeout(function () { $('html,body').animate({ scrollTop: $('#' + projectInfo.Id).offset().top }, 1000); }, 100);
+    if (projectInfo != null) {
+        var offsetTop = $('#' + projectInfo.Id).offset().top;
+        if (offsetTop < document.documentElement.scrollTop)
+            setTimeout(function() { $('html,body').animate({ scrollTop: offsetTop }, 1000); }, 100);
+    }
 }
 
 function showMonthlyReportPanel(projectInfo) {
@@ -131,7 +134,7 @@ function filterProjectInfos(projectInfos) {
 function fetchProjectInfos(reset) {
     if (reset || vue.projectInfos == null)
         window.callAjax({
-            path: '/api/project-info',
+            path: '/api/project-info/all',
             pathParam: vue.filterTimeInterval,
             onSuccess: function(result) {
                 vue.projectInfos = result;
@@ -144,6 +147,39 @@ function fetchProjectInfos(reset) {
         });
     else
         filterProjectInfos(vue.projectInfos);
+}
+
+function addProjectInfo() {
+    window.callAjax({
+        path: '/api/project-info',
+        onSuccess: function(result) {
+            result.monthlyReports = [];
+            vue.currentProjectInfo = result;
+            vue.filteredProjectInfos.unshift(result);
+            vue.projectInfos.unshift(result);
+        },
+        onError: function(XMLHttpRequest, textStatus, validityError) {
+            vue.projectInfos = null;
+            zdalert('添加项目资料失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+        },
+    });
+}
+
+function closeProject(projectInfo, closedDate) {
+    window.callAjax({
+        type: 'DELETE',
+        path: '/api/project-info',
+        pathParam: { id: projectInfo.Id, closedDate: closedDate },
+        onSuccess: function (result) {
+            $('#closeProjectDialog').modal('hide');
+            Vue.set(projectInfo, 'ClosedDate', closedDate);
+            zdalert('成功关闭项目', projectInfo.ProjectName);
+        },
+        onError: function (XMLHttpRequest, textStatus, validityError) {
+            vue.projectInfos = null;
+            zdalert('关闭项目失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+        },
+    });
 }
 
 function fetchMonthlyReport(projectInfo) {
@@ -167,7 +203,7 @@ function fetchMonthlyReport(projectInfo) {
     window.callAjax({
         path: '/api/project-monthly-report',
         pathParam: {
-            id: projectInfo.Id,
+            projectInfoId: projectInfo.Id,
             year: year,
             month: month
         },
@@ -190,7 +226,7 @@ function putMonthlyReport(projectInfo, monthlyReport) {
         type: "PUT",
         path: '/api/project-monthly-report',
         pathParam: {
-            id: projectInfo.Id,
+            projectInfoId: projectInfo.Id,
         },
         data: monthlyReport,
         onSuccess: function (result) {
@@ -211,23 +247,6 @@ function putMonthlyReport(projectInfo, monthlyReport) {
         },
         onError: function (XMLHttpRequest, textStatus, validityError) {
             zdalert('提交项目月报失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
-        },
-    });
-}
-
-function closeProject(projectInfo, closedDate) {
-    window.callAjax({
-        type: 'DELETE',
-        path: '/api/project-info',
-        pathParam: { id: projectInfo.Id, closedDate: closedDate },
-        onSuccess: function (result) {
-            $('#closeProjectDialog').modal('hide');
-            Vue.set(projectInfo, 'ClosedDate', closedDate);
-            zdalert('成功关闭项目', projectInfo.ProjectName);
-        },
-        onError: function (XMLHttpRequest, textStatus, validityError) {
-            vue.projectInfos = null;
-            zdalert('关闭项目失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
         },
     });
 }
@@ -253,7 +272,7 @@ var vue = new Vue({
         },
         queryName: window.localStorage.hasOwnProperty(queryNameCacheKey) ? window.localStorage.getItem(queryNameCacheKey) : null,
         queryPerson: window.localStorage.hasOwnProperty(queryPersonCacheKey) ? window.localStorage.getItem(queryPersonCacheKey) : null,
-        
+
         projectStatuses: [],
 
         projectInfos: null,
@@ -328,8 +347,7 @@ var vue = new Vue({
         },
 
         onAddProject: function() {
-            window.localStorage.removeItem(currentProjectInfoCacheKey);
-            window.location.href = 'project-Info.html';
+            addProjectInfo();
         },
 
         canEditProject: function(projectInfo) {
@@ -339,6 +357,29 @@ var vue = new Vue({
         onEditProject: function(projectInfo) {
             window.localStorage.setItem(currentProjectInfoCacheKey, projectInfo.Id);
             window.location.href = 'project-Info.html';
+        },
+
+        canCloseProject: function(projectInfo) {
+            if (!isMyProject(projectInfo))
+                return false;
+            return projectInfo.ClosedDate == null;
+        },
+
+        showCloseProjectDialog: function(projectInfo) {
+            this.currentProjectInfo = projectInfo;
+            if (projectInfo.ContAmount > projectInfo.TotalInvoiceAmount) {
+                zdconfirm('关闭项目',
+                    projectInfo.ProjectName + ' 项目还有 ' + (projectInfo.ContAmount - projectInfo.TotalInvoiceAmount) + ' 万元应收款未开票! 是否仍关闭?',
+                    function (result) {
+                        if (result)
+                            $('#closeProjectDialog').modal('show');
+                    });
+            } else
+                $('#closeProjectDialog').modal('show');
+        },
+
+        onCloseProject: function() {
+            closeProject(this.currentProjectInfo, this.closedDate);
         },
 
         onSwitchMonthlyReport: function(projectInfo, e) {
@@ -376,29 +417,6 @@ var vue = new Vue({
         onPutMonthlyReport: function(projectInfo, monthlyReport) {
             this.currentProjectInfo = projectInfo;
             putMonthlyReport(projectInfo, monthlyReport);
-        },
-
-        canCloseProject: function(projectInfo) {
-            if (!isMyProject(projectInfo))
-                return false;
-            return projectInfo.ClosedDate == null;
-        },
-
-        showCloseProjectDialog: function(projectInfo) {
-            this.currentProjectInfo = projectInfo;
-            if (projectInfo.ContAmount > projectInfo.TotalInvoiceAmount) {
-                zdconfirm('关闭项目',
-                    projectInfo.ProjectName + ' 项目还有 ' + (projectInfo.ContAmount - projectInfo.TotalInvoiceAmount) + ' 万元应收款未开票! 是否仍关闭?',
-                    function(result) {
-                        if (result)
-                            $('#closeProjectDialog').modal('show');
-                    });
-            } else
-                $('#closeProjectDialog').modal('show');
-        },
-
-        onCloseProject: function() {
-            closeProject(this.currentProjectInfo, this.closedDate);
         },
     }
 })

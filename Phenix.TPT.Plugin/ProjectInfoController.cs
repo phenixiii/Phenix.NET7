@@ -22,8 +22,8 @@ namespace Phenix.TPT.Plugin
         #region 方法
 
         [Authorize]
-        [HttpGet]
-        public IList<ProjectInfo> Get(int year, int month)
+        [HttpGet("all")]
+        public IList<ProjectInfo> GetAll(int year, int month)
         {
             DateTime firstDay = new DateTime(year, month, 1);
             DateTime lastDay = month < 12
@@ -31,7 +31,23 @@ namespace Phenix.TPT.Plugin
                 : new DateTime(year + 1, 1, 1).AddMilliseconds(-1);
             return ProjectInfo.FetchList(Database.Default,
                 p => p.OriginateTime <= lastDay && (p.ClosedDate == null || p.ClosedDate >= firstDay),
-                OrderBy.Descending<ProjectInfo>(p => p.ContApproveDate));
+                OrderBy.Descending<ProjectInfo>(p => p.ContApproveDate).
+                    Descending(p => p.UpdateTime));
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<ProjectInfo> Get(long? id)
+        {
+            return await ClusterClient.Default.GetGrain<IProjectGrain>(id ?? Database.Default.Sequence.Value).FetchKernel(true);
+        }
+
+        [ProjectControlFilter]
+        [HttpPut]
+        public async Task Put()
+        {
+            ProjectInfo projectInfo = await Request.ReadBodyAsync<ProjectInfo>();
+            await ClusterClient.Default.GetGrain<IProjectGrain>(projectInfo.Id).PutKernel(projectInfo);
         }
 
         [ProjectControlFilter]

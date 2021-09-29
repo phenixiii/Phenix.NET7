@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
+using System.Security;
 using System.Threading.Tasks;
 using Phenix.Actor;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Expressions;
 using Phenix.TPT.Business;
+using Phenix.TPT.Business.Norm;
 using Phenix.TPT.Contract;
-using Phenix.TPT.Plugin.Filters;
 
 namespace Phenix.TPT.Plugin
 {
@@ -76,6 +77,16 @@ namespace Phenix.TPT.Plugin
 
         #region 方法
 
+        private async Task<bool> IsMyProject()
+        {
+            return await User.Identity.IsInRole(ProjectRoles.经营管理) ||
+                   await User.Identity.IsInRole(ProjectRoles.项目管理) && (Kernel == null ||
+                                                                       User.Identity.UserName == Kernel.ProjectManager ||
+                                                                       User.Identity.UserName == Kernel.DevelopManager ||
+                                                                       User.Identity.UserName == Kernel.MaintenanceManager ||
+                                                                       User.Identity.UserName == Kernel.SalesManager);
+        }
+
         #region Stream
 
         private Task SendEventForRefreshProjectWorkloads(string receiver)
@@ -133,19 +144,30 @@ namespace Phenix.TPT.Plugin
             }
         }
 
-        private async Task<bool> IsMyProject()
+        /// <summary>
+        /// 获取根实体对象
+        /// </summary>
+        /// <param name="autoNew">不存在则新增</param>
+        /// <returns>根实体对象</returns>
+        protected override ProjectInfo FetchKernel(bool autoNew = false)
         {
-            return await User.Identity.IsInRole(Roles.经营管理.ToString()) ||
-                   User.Identity.UserName == Kernel.ProjectManager ||
-                   User.Identity.UserName == Kernel.DevelopManager ||
-                   User.Identity.UserName == Kernel.MaintenanceManager ||
-                   User.Identity.UserName == Kernel.SalesManager;
+            if (Kernel != null)
+                return Kernel;
+
+            ProjectInfo result = base.FetchKernel(autoNew);
+            if (result != null)
+                result.Apply(NameValue.Set<ProjectInfo>(p => p.ContApproveDate, DateTime.Today).
+                    Set(p => p.ProjectType, ProjectType.技术服务));
+            return result;
         }
 
         async Task IProjectGrain.Close(DateTime closedDate)
         {
+            if (Kernel == null)
+                throw new ProjectNotFoundException();
+
             if (!await IsMyProject())
-                throw new ValidationException("非请毋删!");
+                throw new SecurityException("非请毋删!");
 
             Kernel.UpdateSelf(NameValue.Set<ProjectInfo>(p => p.ClosedDate, closedDate));
         }
@@ -156,15 +178,21 @@ namespace Phenix.TPT.Plugin
 
         Task<IList<ProjectAnnualPlan>> IProjectGrain.GetAllProjectAnnualPlan()
         {
+            if (Kernel == null)
+                throw new ProjectNotFoundException();
+
             return Task.FromResult(ProjectAnnualPlanList);
         }
 
         Task<ProjectAnnualPlan> IProjectGrain.GetProjectAnnualPlan(int year)
         {
+            if (Kernel == null)
+                throw new ProjectNotFoundException();
+
             //DateTime today = DateTime.Today;
             //if (today.Year < year)
             //    throw new ValidationException("未来不可期~");
-            
+
             foreach (ProjectAnnualPlan item in ProjectAnnualPlanList)
                 if (item.Year == year)
                     return Task.FromResult(item);
@@ -175,8 +203,11 @@ namespace Phenix.TPT.Plugin
 
         async Task IProjectGrain.PutProjectAnnualPlan(ProjectAnnualPlan source)
         {
+            if (Kernel == null)
+                throw new ProjectNotFoundException();
+
             if (!await IsMyProject())
-                throw new ValidationException("非请毋改!");
+                throw new SecurityException("非请毋改!");
 
             //DateTime today = DateTime.Today;
             //if (today.Year < source.Year)
@@ -219,11 +250,17 @@ namespace Phenix.TPT.Plugin
 
         Task<IList<ProjectMonthlyReport>> IProjectGrain.GetAllProjectMonthlyReport()
         {
+            if (Kernel == null)
+                throw new ProjectNotFoundException();
+
             return Task.FromResult(ProjectMonthlyReportList);
         }
 
         Task<ProjectMonthlyReport> IProjectGrain.GetProjectMonthlyReport(int year, int month)
         {
+            if (Kernel == null)
+                throw new ProjectNotFoundException();
+
             DateTime today = DateTime.Today;
             if (today.Year < year || today.Year == year && today.Month < month)
                 throw new ValidationException("未来不可得~");
@@ -245,8 +282,11 @@ namespace Phenix.TPT.Plugin
 
         async Task IProjectGrain.PutProjectMonthlyReport(ProjectMonthlyReport source)
         {
+            if (Kernel == null)
+                throw new ProjectNotFoundException();
+
             if (!await IsMyProject())
-                throw new ValidationException("非请毋改!");
+                throw new SecurityException("非请毋改!");
 
             DateTime today = DateTime.Today;
             if (today.Year < source.Year || today.Year == source.Year && today.Month < source.Month)
@@ -281,13 +321,19 @@ namespace Phenix.TPT.Plugin
 
         Task<IList<ProjectProceeds>> IProjectGrain.GetAllProjectProceeds()
         {
+            if (Kernel == null)
+                throw new ProjectNotFoundException();
+
             return Task.FromResult(ProjectProceedsList);
         }
 
         async Task IProjectGrain.PostProjectProceeds(ProjectProceeds source)
         {
+            if (Kernel == null)
+                throw new ProjectNotFoundException();
+
             if (!await IsMyProject())
-                throw new ValidationException("非请毋加!");
+                throw new SecurityException("非请毋加!");
 
             if (source.InvoiceAmount > Kernel.ContAmount - Kernel.TotalInvoiceAmount)
                 throw new ValidationException(String.Format("本开票金额({0})已超过{1}可开数额({2})!",
@@ -304,8 +350,11 @@ namespace Phenix.TPT.Plugin
 
         async Task IProjectGrain.DeleteProjectProceeds(long id)
         {
+            if (Kernel == null)
+                throw new ProjectNotFoundException();
+
             if (!await IsMyProject())
-                throw new ValidationException("非请毋删!");
+                throw new SecurityException("非请毋删!");
 
             ProjectProceeds projectProceeds = null;
             foreach (ProjectProceeds item in ProjectProceedsList)
@@ -316,7 +365,7 @@ namespace Phenix.TPT.Plugin
                 }
 
             if (projectProceeds == null)
-                throw new ArgumentException(String.Format("未找到{0}可删除的开票记录!", Kernel.ProjectName), nameof(id));
+                throw new ValidationException(String.Format("未找到{0}可删除的开票记录!", Kernel.ProjectName));
 
             Database.Execute((DbTransaction dbTransaction) =>
             {
@@ -333,11 +382,17 @@ namespace Phenix.TPT.Plugin
 
         Task<IList<ProjectExpenses>> IProjectGrain.GetAllProjectExpenses()
         {
+            if (Kernel == null)
+                throw new ProjectNotFoundException();
+
             return Task.FromResult(ProjectExpensesList);
         }
 
         Task IProjectGrain.PostProjectExpenses(ProjectExpenses source)
         {
+            if (Kernel == null)
+                throw new ProjectNotFoundException();
+
             Database.Execute((DbTransaction dbTransaction) =>
             {
                 source.InsertSelf(dbTransaction);
@@ -350,8 +405,11 @@ namespace Phenix.TPT.Plugin
 
         async Task IProjectGrain.DeleteProjectExpenses(long id)
         {
+            if (Kernel == null)
+                throw new ProjectNotFoundException();
+
             if (!await IsMyProject())
-                throw new ValidationException("非请毋删!");
+                throw new SecurityException("非请毋删!");
 
             ProjectExpenses projectExpenses = null;
             foreach (ProjectExpenses item in ProjectExpensesList)
@@ -362,7 +420,7 @@ namespace Phenix.TPT.Plugin
                 }
 
             if (projectExpenses == null)
-                throw new ArgumentException(String.Format("未找到{0}可删除的报销记录!", Kernel.ProjectName), nameof(id));
+                throw new ValidationException(String.Format("未找到{0}可删除的报销记录!", Kernel.ProjectName));
 
             Database.Execute((DbTransaction dbTransaction) =>
             {

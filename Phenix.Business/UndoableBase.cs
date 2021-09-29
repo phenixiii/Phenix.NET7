@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -196,7 +197,7 @@ namespace Phenix.Business
         public virtual void BeginEdit()
         {
             if (IsSelfDirty)
-                throw new InvalidOperationException("禁止编辑已处于编辑状态的对象");
+                throw new System.ComponentModel.DataAnnotations.ValidationException("禁止编辑已处于编辑状态的对象");
 
             IsSelfDirty = true;
         }
@@ -208,7 +209,7 @@ namespace Phenix.Business
         public virtual void CancelEdit()
         {
             if (!IsSelfDirty)
-                throw new InvalidOperationException("仅允许回滚已处于编辑状态的对象");
+                throw new System.ComponentModel.DataAnnotations.ValidationException("仅允许回滚已处于编辑状态的对象");
 
             IsSelfDirty = false;
         }
@@ -235,14 +236,14 @@ namespace Phenix.Business
         public object GetOldValue(Expression<Func<T, object>> propertyLambda, bool throwIfNotFound = true)
         {
             if (!IsSelfDirty)
-                throw new InvalidOperationException("仅允许查询编辑状态的对象旧值");
+                throw new System.ComponentModel.DataAnnotations.ValidationException("仅允许查询编辑状态的对象旧值");
 
             PropertyInfo propertyInfo = Utilities.GetPropertyInfo(propertyLambda);
             if (_oldPropertyValues != null && _oldPropertyValues.TryGetValue(propertyInfo.Name, out object result))
                 return Utilities.ChangeType(result, propertyInfo.PropertyType);
 
             if (throwIfNotFound)
-                throw new ArgumentException(String.Format("类 {0}.{1} 属性未映射表字段或可能是水印字段", this.GetType().FullName, propertyInfo.Name), nameof(propertyLambda));
+                throw new InvalidOperationException(String.Format("类 {0}.{1} 属性未映射表字段或可能是水印字段", this.GetType().FullName, propertyInfo.Name));
             return null;
         }
 
@@ -289,7 +290,7 @@ namespace Phenix.Business
         public bool SetDirtyValues(T source)
         {
             if (IsSelfDirty)
-                throw new InvalidOperationException("禁止导入已处于编辑状态的对象");
+                throw new System.ComponentModel.DataAnnotations.ValidationException("禁止导入已处于编辑状态的对象");
 
             bool result = false;
             Dictionary<string, object> oldPropertyValues = new Dictionary<string, object>(StringComparer.Ordinal);

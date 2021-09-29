@@ -99,9 +99,9 @@ namespace Phenix.TPT.Plugin
         Task<short> IWorkdayGrain.GetWorkdays(short year, short month)
         {
             if (year < Year || year > Year + 1)
-                throw new ValidationException(String.Format("查询的工作日仅限于{0}年和{1}年的!", year, year + 1));
+                throw new ArgumentException(String.Format("查询的工作日仅限于{0}年和{1}年的!", year, year + 1));
             if (month < 1 || month > 12)
-                throw new ValidationException("查询的工作日月份仅限于1-12之间!");
+                throw new ArgumentException("查询的工作日月份仅限于1-12之间!");
 
             Workday workday = CurrentYearWorkdays[month];
             if (workday.Days == 0)

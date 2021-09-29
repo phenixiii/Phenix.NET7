@@ -26,7 +26,7 @@ namespace Phenix.TPT.Contract
         Task<IList<ProjectAnnualPlan>> GetAllProjectAnnualPlan();
 
         /// <summary>
-        /// 获取当年年度计划
+        /// 获取当年年度计划(如不存在则新增)
         /// </summary>
         Task<ProjectAnnualPlan> GetProjectAnnualPlan(int year);
 
@@ -46,7 +46,7 @@ namespace Phenix.TPT.Contract
         Task<IList<ProjectMonthlyReport>> GetAllProjectMonthlyReport();
 
         /// <summary>
-        /// 获取当月项目月报
+        /// 获取当月项目月报(如不存在则新增)
         /// </summary>
         Task<ProjectMonthlyReport> GetProjectMonthlyReport(int year, int month);
 

@@ -73,7 +73,7 @@ namespace Phenix.Services.Plugin.Middleware
                 //身份验证token: [公司名],[登录名],[会话签名]
                 string[] strings = token.Split(Standards.ValueSeparator);
                 if (strings.Length != 3)
-                    throw new InvalidOperationException(String.Format("身份验证token格式错误：{0}", token));
+                    throw new NotSupportedException(String.Format("身份验证token格式错误：{0}", token));
                 string companyName = Uri.UnescapeDataString(strings[0]);
                 string userName = Uri.UnescapeDataString(strings[1]);
                 string signature = strings[2];

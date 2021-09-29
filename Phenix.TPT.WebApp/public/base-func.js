@@ -85,11 +85,11 @@ $(function() {
                 $('#userName').html('您好，' + (result.RegAlias ?? result.Name));
                 if (result.Position == null)
                     gotoIndex();
-                else if (result.Position.Roles.indexOf('经营管理') === 0)
+                else if (result.Position.Roles.indexOf(projectRoles.经营管理) >= 0)
                     gotoAccount();
                 else {
                     document.getElementById('account').style.color = 'gray';
-                    if (result.Position.Roles.indexOf('项目管理') === 0)
+                    if (result.Position.Roles.indexOf(projectRoles.项目管理) >= 0)
                         gotoIndex();
                     else
                         gotoWorkload();
@@ -105,6 +105,19 @@ $(function() {
         });
     }
 })
+
+var projectRoles = {
+    经营管理: "经营管理",
+    项目管理: "项目管理",
+    调研分析: "调研分析",
+    设计开发: "设计开发",
+    测试联调: "测试联调",
+    培训实施: "培训实施",
+    质保维保: "质保维保",
+    方案设计: "方案设计",
+    采购施工: "采购施工",
+    交付验收: "交付验收",
+}
 
 function gotoLogin() {
     if (window.location.href.indexOf('login.html') === -1)
@@ -129,7 +142,7 @@ function gotoWorkload() {
 function gotoAccount() {
     if (window.location.href.indexOf('account.html') === -1) {
         var myself = phAjax.getMyself();
-        if (myself.Position == null || myself.Position.Roles.indexOf('经营管理') === 0)
+        if (myself.Position == null || myself.Position.Roles.indexOf(projectRoles.经营管理) >= 0)
             window.location.href = 'account.html';
     }
 }

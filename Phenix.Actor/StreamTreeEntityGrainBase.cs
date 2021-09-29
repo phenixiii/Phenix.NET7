@@ -35,9 +35,9 @@ namespace Phenix.Actor
         /// <param name="parentId">父节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <returns>子节点ID</returns>
-        protected override Task<long> AddChildNode(long parentId, IDictionary<string, object> propertyValues)
+        protected override long AddChildNode(long parentId, IDictionary<string, object> propertyValues)
         {
-            Task<long> result = base.AddChildNode(parentId, propertyValues);
+            long result = base.AddChildNode(parentId, propertyValues);
             Send(Kernel, Kernel.PrimaryKey.ToString());
             return result;
         }
@@ -47,11 +47,10 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="id">节点ID</param>
         /// <param name="parentId">父节点ID</param>
-        protected override Task ChangeParentNode(long id, long parentId)
+        protected override void ChangeParentNode(long id, long parentId)
         {
             base.ChangeParentNode(id, parentId);
             Send(Kernel, Kernel.PrimaryKey.ToString());
-            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -59,11 +58,10 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="id">节点ID</param>
         /// <param name="propertyValues">待更新属性值队列</param>
-        protected override Task UpdateNode(long id, IDictionary<string, object> propertyValues)
+        protected override void UpdateNode(long id, IDictionary<string, object> propertyValues)
         {
             base.UpdateNode(id, propertyValues);
             Send(Kernel, Kernel.PrimaryKey.ToString());
-            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -71,9 +69,9 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="id">节点ID</param>
         /// <returns>更新记录数</returns>
-        protected override Task<int> DeleteBranch(long id)
+        protected override int DeleteBranch(long id)
         {
-            Task<int> result = base.DeleteBranch(id);
+            int result = base.DeleteBranch(id);
             Send(Kernel, Kernel.PrimaryKey.ToString());
             return result;
         }

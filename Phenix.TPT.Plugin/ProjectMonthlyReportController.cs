@@ -19,16 +19,16 @@ namespace Phenix.TPT.Plugin
 
         [Authorize]
         [HttpGet]
-        public async Task<ProjectMonthlyReport> Get(long id, int year, int month)
+        public async Task<ProjectMonthlyReport> Get(long projectInfoId, int year, int month)
         {
-            return await ClusterClient.Default.GetGrain<IProjectGrain>(id).GetProjectMonthlyReport(year, month);
+            return await ClusterClient.Default.GetGrain<IProjectGrain>(projectInfoId).GetProjectMonthlyReport(year, month);
         }
 
         [ProjectControlFilter]
         [HttpPut]
-        public async Task Put(long id)
+        public async Task Put(long projectInfoId)
         {
-            await ClusterClient.Default.GetGrain<IProjectGrain>(id).PutProjectMonthlyReport(await Request.ReadBodyAsync<ProjectMonthlyReport>());
+            await ClusterClient.Default.GetGrain<IProjectGrain>(projectInfoId).PutProjectMonthlyReport(await Request.ReadBodyAsync<ProjectMonthlyReport>());
         }
 
         #endregion

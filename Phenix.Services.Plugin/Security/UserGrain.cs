@@ -89,38 +89,36 @@ namespace Phenix.Services.Plugin.Security
         async Task<string> IUserGrain.Register(string phone, string eMail, string regAlias, string requestAddress, long? teamsId, long? positionId)
         {
             if (Kernel != null)
-                throw new InvalidOperationException("不允许重复注册!");
+                throw new System.ComponentModel.DataAnnotations.ValidationException("不允许重复注册!");
 
             if (teamsId.HasValue && teamsId != RootTeamsId)
             {
                 if (!await CompanyTeamsGrain.HaveNode(teamsId.Value, false))
-                    throw new ArgumentException("设置的团队在公司里不存在!", nameof(teamsId));
+                    throw new System.ComponentModel.DataAnnotations.ValidationException("设置的团队在公司里不存在!");
                 if (!positionId.HasValue)
-                    throw new ArgumentException("公司普通用户必须设置岗位!", nameof(positionId));
-                else if (!await ClusterClient.GetGrain<IPositionGrain>(positionId.Value).ExistKernel())
-                    throw new InvalidOperationException("设置的岗位不存在!");
+                    throw new System.ComponentModel.DataAnnotations.ValidationException("公司普通用户必须设置岗位!");
+                if (!await ClusterClient.GetGrain<IPositionGrain>(positionId.Value).ExistKernel())
+                    throw new System.ComponentModel.DataAnnotations.ValidationException("设置的岗位不存在!");
 
                 string initialPassword = UserName;
                 Kernel = Phenix.Services.Business.Security.User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, teamsId.Value, positionId, ref initialPassword);
                 return _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
             }
-            else
-            {
-                if (await ClusterClient.GetGrain<ICompanyTeamsGrain>(CompanyName).ExistKernel())
-                    throw new InvalidOperationException("公司名已被其他用户注册!");
 
-                await CompanyTeamsGrain.CreateKernel(NameValue.Set<Teams>(p => p.Name, CompanyName));
-                try
-                {
-                    string initialPassword = UserName;
-                    Kernel = Phenix.Services.Business.Security.User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, RootTeamsId, null, ref initialPassword);
-                    return _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
-                }
-                catch
-                {
-                    await CompanyTeamsGrain.DeleteKernel();
-                    throw;
-                }
+            if (await ClusterClient.GetGrain<ICompanyTeamsGrain>(CompanyName).ExistKernel())
+                throw new System.ComponentModel.DataAnnotations.ValidationException("公司名已被其他用户注册!");
+
+            await CompanyTeamsGrain.CreateKernel(NameValue.Set<Teams>(p => p.Name, CompanyName));
+            try
+            {
+                string initialPassword = UserName;
+                Kernel = Phenix.Services.Business.Security.User.Register(Database, UserName, phone, eMail, regAlias, requestAddress, RootTeamsId, RootTeamsId, null, ref initialPassword);
+                return _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
+            }
+            catch
+            {
+                await CompanyTeamsGrain.DeleteKernel();
+                throw;
             }
         }
 

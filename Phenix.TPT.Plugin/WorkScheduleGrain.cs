@@ -122,7 +122,7 @@ namespace Phenix.TPT.Plugin
             if (ImmediateWorkSchedules.TryGetValue(Standards.FormatYearMonth(year, month), out WorkSchedule workSchedule))
                 return Task.FromResult(workSchedule.Workers.Contains(worker));
 
-            throw new InvalidOperationException(String.Format("查询不到{0}年{1}月{2}的工作档期记录!", year, month, worker));
+            throw new ValidationException(String.Format("查询不到{0}年{1}月{2}的工作档期记录!", year, month, worker));
         }
 
         Task<IList<WorkSchedule>> IWorkScheduleGrain.GetImmediateWorkSchedules()

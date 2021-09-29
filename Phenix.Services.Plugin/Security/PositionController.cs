@@ -11,7 +11,7 @@ using Phenix.Services.Contract.Security;
 namespace Phenix.Services.Plugin.Security
 {
     /// <summary>
-    /// 岗位控制器
+    /// 岗位资料控制器
     /// </summary>
     [Route(WebApiConfig.SecurityPositionPath)]
     [ApiController]

@@ -26,9 +26,9 @@ namespace Phenix.Services.Business.Message
         public static void Send(DbTransaction transaction, long id, string sender, string receiver, string content)
         {
             if (String.IsNullOrEmpty(sender))
-                throw new InvalidOperationException("必须指定发送方!");
+                throw new ArgumentException("必须指定发送方!", nameof(sender));
             if (String.IsNullOrEmpty(receiver))
-                throw new InvalidOperationException("必须指定接收方!");
+                throw new ArgumentException("必须指定接收方!", nameof(receiver));
 
             bool existed = false;
 #if PgSQL
@@ -193,7 +193,7 @@ where UM_ID = :UM_ID"))
         public static IDictionary<long, string> Receive(DbConnection connection, string receiver)
         {
             if (String.IsNullOrEmpty(receiver))
-                throw new InvalidOperationException("必须指定接收方!");
+                throw new ArgumentException("必须指定接收方!", nameof(receiver));
 
             Dictionary<long, string> result = new Dictionary<long, string>();
 #if PgSQL
