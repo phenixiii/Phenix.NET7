@@ -1,14 +1,14 @@
 ﻿function isValidLogonInfo() {
-    $('#userNameHint').html('');
+    vue.userNameHint = '';
     if (vue.userName == null || vue.userName === '') {
-        $('#userNameHint').html('登录名不允许为空!');
+        vue.userNameHint = '登录名不允许为空!'
         $('#userName').focus();
         return false;
     }
 
-    $('#companyNameHint').html('');
+    vue.companyNameHint = '';
     if (vue.companyName == null || vue.companyName === '') {
-        $('#companyNameHint').html('公司名不允许为空!');
+        vue.companyNameHint = '公司名不允许为空!';
         $('#companyName').focus();
         return false;
     }
@@ -20,16 +20,16 @@ function isValidRegisterInfo() {
     if (!isValidLogonInfo())
         return false;
 
-    $('#eMailHint').html('');
+    vue.eMailHint = '';
     if (vue.eMail == null || vue.eMail === '') {
-        $('#eMailHint').html('邮箱地址不允许为空!');
+        vue.eMailHint = '邮箱地址不允许为空!';
         $('#eMail').focus();
         return false;
     }
 
-    $('#regAliasHint').html('');
+    vue.regAliasHint = '';
     if (vue.regAlias == null || vue.regAlias === '') {
-        $('#regAliasHint').html('昵称不允许为空!');
+        vue.regAliasHint = '昵称不允许为空!';
         $('#regAlias').focus();
         return false;
     }
@@ -41,28 +41,73 @@ function isValidPasswordInfo() {
     if (!isValidLogonInfo())
         return false;
 
-    $('#passwordHint').html('');
+    vue.passwordHint = '';
     if (vue.password == null || vue.password === "") {
-        $('#passwordHint').html('登录口令不允许为空!');
+        vue.passwordHint = '登录口令不允许为空!';
         $('#password').focus();
         return false;
     }
 
-    $('#newPasswordHint').html('');
+    vue.newPasswordHint = '';
     if (vue.newPassword == null || vue.newPassword === "") {
-        $('#newPasswordHint').html('新口令不允许为空!');
+        vue.newPasswordHint = '新口令不允许为空!';
         $('#newPassword').focus();
         return false;
     }
 
-    $('#newPassword2Hint').html('');
-    if (vue.newPassword !== vue.newPassword2 ) {
-        $('#newPassword2Hint').html('新口令重复确认有误!');
+    vue.newPassword2Hint = '';
+    if (vue.newPassword !== vue.newPassword2) {
+        vue.newPassword2Hint = '新口令重复确认有误!';
         $('#newPassword2').focus();
         return false;
     }
 
     return true;
+}
+
+function register() {
+    vue.registerHint = '正在注册企业会员, 请稍等...';
+    phAjax.register({
+        companyName: vue.companyName,
+        userName: vue.userName,
+        hashName: false,
+        phone: vue.phone,
+        eMail: vue.eMail,
+        regAlias: vue.regAlias,
+        onSuccess: function(result) {
+            vue.registerHint = result;
+            vue.password = vue.userName;
+            $('#changePasswordDialog').modal('show');
+        },
+        onError: function(XMLHttpRequest, textStatus) {
+            vue.registerHint = XMLHttpRequest.responseText;
+            zdalert('注册失败', XMLHttpRequest.responseText);
+        },
+    });
+}
+
+function changePassword() {
+    phAjax.changePassword({
+        companyName: vue.companyName,
+        userName: vue.userName,
+        hashName: false,
+        password: vue.password,
+        newPassword: vue.newPassword,
+        onSuccess: function (result) {
+            zdconfirm('成功修改口令',
+                '是否需要自动跳转到登录界面?',
+                function (result) {
+                    if (result)
+                        window.location.href = 'login.html';
+                    else
+                        $('#changePasswordDialog').modal('hide');
+                });
+        },
+        onError: function (XMLHttpRequest, textStatus) {
+            zdalert('修改口令失败', XMLHttpRequest.responseText);
+            $("#password").focus();
+        },
+    });
 }
 
 var vue = new Vue({
@@ -75,31 +120,20 @@ var vue = new Vue({
         password: null,
         newPassword: null,
         newPassword2: null,
+        
+        userNameHint: null,
+        companyNameHint: null,
+        eMailHint: null,
+        regAliasHint: null,
+        passwordHint: null,
+        newPasswordHint: null,
+        newPassword2Hint: null,
+        registerHint: null,
     },
     methods: {
         onRegister: function() {
-            if (!isValidRegisterInfo())
-                return;
-            
-            var hint = $('#registerHint');
-            hint.html('正在注册企业会员, 请稍等...');
-            phAjax.register({
-                companyName: this.companyName,
-                userName: this.userName,
-                hashName: false,
-                phone: this.phone,
-                eMail: this.eMail,
-                regAlias: this.regAlias,
-                onSuccess: function(result) {
-                    hint.html(result);
-                    this.password = this.userName;
-                    $('#changePasswordDialog').modal('show');
-                },
-                onError: function(XMLHttpRequest, textStatus) {
-                    hint.html(XMLHttpRequest.responseText);
-                    zdalert('注册失败', XMLHttpRequest.responseText);
-                },
-            });
+            if (isValidRegisterInfo())
+                register();
         },
 
         showChangePasswordDialog: function() {
@@ -110,30 +144,8 @@ var vue = new Vue({
         },
 
         onChangePassword: function() {
-            if (!isValidPasswordInfo)
-                return;
-
-            phAjax.changePassword({
-                companyName: this.companyName,
-                userName: this.userName,
-                hashName: false,
-                password: this.password,
-                newPassword: this.newPassword,
-                onSuccess: function (result) {
-                    zdconfirm('成功修改口令',
-                        '是否需要自动跳转到登录界面?',
-                        function(result) {
-                            if (result)
-                                window.location.href = 'login.html';
-                            else
-                                $('#changePasswordDialog').modal('hide');
-                        });
-                },
-                onError: function(XMLHttpRequest, textStatus) {
-                    zdalert('修改口令失败', XMLHttpRequest.responseText);
-                    $("#password").focus();
-                },
-            });
+            if (isValidPasswordInfo)
+                changePassword();
         },
     }
 })

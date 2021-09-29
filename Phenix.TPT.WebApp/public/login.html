@@ -21,15 +21,15 @@
         <div class="center-group">
             <div class="center-boder">
                 <div class="center-padding">
-                    <h2 id="userNameHint" style="clear: both;"></h2>
+                    <h2 style="clear: both;" v-text="userNameHint"></h2>
                     <label style="clear: both;">
                         <input class="txt-input" id="userName" type="text" placeholder="请输入登录名" v-model="userName">
                     </label>
-                    <h2 id="passwordHint" style="clear: both;"></h2>
+                    <h2  style="clear: both;" v-text="passwordHint"></h2>
                     <label style="clear: both;">
                         <input class="txt-input" id="password" type="password" placeholder="请输入口令" v-model="password">
                     </label>
-                    <h2 id="companyNameHint" style="clear: both;"></h2>
+                    <h2 style="clear: both;" v-text="companyNameHint"></h2>
                     <label style="clear: both;">
                         <input class="txt-input" id="companyName" type="text" placeholder="请输入公司名" v-model="companyName">
                     </label>
@@ -38,7 +38,7 @@
                         <a @click="window.location.href = 'register.html'">注册会员</a>
                     </p>
                     <input class="btn" id="center-button" type="button" value="登录" @click="onLogon()">
-                    <h3 id="logonHint" style="clear: both;"></h3>
+                    <h3 style="clear: both;" v-text="logonHint"></h3>
                 </div>
             </div>
         </div>
@@ -52,10 +52,10 @@
                     <div class="modal-body">
                         <label>
                             <label style="clear: both;">
-                                <input class="txt-input" id="eMail" type="email" size="40" placeholder="请输入邮箱地址" v-model="eMail">
+                                <input class="txt-input" type="email" size="40" placeholder="请输入邮箱地址" v-model="eMail">
                             </label>
                             <label style="clear: both;">
-                                <input class="txt-input" id="regAlias" type="text" size="40" placeholder="请输入昵称" v-model="regAlias">
+                                <input class="txt-input" type="text" size="40" placeholder="请输入昵称" v-model="regAlias">
                             </label>
                         </label>
                     </div>

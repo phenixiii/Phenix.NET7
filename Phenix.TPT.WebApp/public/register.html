@@ -21,19 +21,19 @@
         <div class="center-group">
             <div class="center-boder">
                 <div class="center-padding">
-                    <h2 id="userNameHint" style="clear: both;"></h2>
+                    <h2 style="clear: both;" v-text="userNameHint"></h2>
                     <label style="clear: both;">
                         <input class="txt-input" id="userName" type="text" placeholder="请输入登录名" v-model="userName">
                     </label>
-                    <h2 id="companyNameHint" style="clear: both;"></h2>
+                    <h2 style="clear: both;" v-text="companyNameHint"></h2>
                     <label style="clear: both;">
                         <input class="txt-input" id="companyName" type="text" placeholder="请输入公司名" v-model="companyName">
                     </label>
-                    <h2 id="eMailHint" style="clear: both;"></h2>
+                    <h2 style="clear: both;" v-text="eMailHint"></h2>
                     <label style="clear: both;">
                         <input class="txt-input" id="eMail" type="email" placeholder="请输入邮箱地址" v-model="eMail">
                     </label>
-                    <h2 id="regAliasHint" style="clear: both;"></h2>
+                    <h2 style="clear: both;" v-text="regAliasHint"></h2>
                     <label style="clear: both;">
                         <input class="txt-input" id="regAlias" type="text" placeholder="请输入昵称" v-model="regAlias">
                     </label>
@@ -42,7 +42,7 @@
                         <a @click="window.location.href = 'login.html'">登录TPT</a>
                     </p>
                     <input class="btn" id="center-button" type="button" value="注册公司级会员" @click="onRegister()">
-                    <h3 id="registerHint" style="clear: both;"></h3>
+                    <h3 style="clear: both;" v-text="registerHint"></h3>
                 </div>
             </div>
         </div>
@@ -57,15 +57,15 @@
                         <label>
                             <label style="clear: both;">
                                 <input class="txt-input" id="password" type="password" size="40" placeholder="请输入口令" v-model="password">
-                                <h id="passwordHint" style="clear: both;"></h>
+                                <h style="clear: both;" v-text="passwordHint"></h>
                             </label>
                             <label style="clear: both;">
                                 <input class="txt-input" id="newPassword" type="password" size="40" placeholder="请输入新口令" v-model="newPassword">
-                                <h id="newPasswordHint" style="clear: both;"></h>
+                                <h style="clear: both;" v-text="newPasswordHint"></h>
                             </label>
                             <label style="clear: both;">
                                 <input class="txt-input" id="newPassword2" type="password" size="40" placeholder="请确认新口令" v-model="newPassword2">
-                                <h id="newPassword2Hint" style="clear: both;"></h>
+                                <h style="clear: both;" v-text="newPassword2Hint"></h>
                             </label>
                         </label>
                     </div>

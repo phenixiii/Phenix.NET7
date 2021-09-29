@@ -27,42 +27,26 @@ function pushProjectStatuses(status) {
 
 function locatingProjectInfo(projectInfo) {
     if (projectInfo != null) {
-        var offsetTop = $('#' + projectInfo.Id).offset().top;
+        var offsetTop = $('#' + projectInfo.Id).offset().top; // :id="projectInfo.Id"
         if (offsetTop < document.documentElement.scrollTop)
             setTimeout(function() { $('html,body').animate({ scrollTop: offsetTop }, 1000); }, 100);
     }
 }
 
+function showCloseProjectDialog() {
+    $('#closeProjectDialog').modal('show'); // id="closeProjectDialog"
+}
+
+function hideCloseProjectDialog() {
+    $('#closeProjectDialog').modal('hide'); //id="closeProjectDialog"
+}
+
 function showMonthlyReportPanel(projectInfo) {
-    if (projectInfo.switchMonthlyReportButton != null && projectInfo.switchMonthlyReportButton.hasClass('fa-tag')) {
-        projectInfo.switchMonthlyReportButton.removeClass('fa-tag');
-        projectInfo.switchMonthlyReportButton.addClass('fa-tags');
-        projectInfo.switchMonthlyReportButton.attr("title", '收起月报');
-    };
-    if (projectInfo.monthlyReportPanel != null && projectInfo.monthlyReportPanel.hasClass('hide')) {
-        projectInfo.monthlyReportPanel.removeClass('hide');
-    }
-    if (projectInfo.nextMonthlyReportButton != null && !projectInfo.nextMonthlyReportButton.hasClass('hide')) {
-        projectInfo.nextMonthlyReportButton.addClass('hide');
-        delete projectInfo.nextMonthlyReportButton;
-    }
+    Vue.set(projectInfo, 'showingMonthlyReport', true);
 }
 
 function hideMonthlyReportPanel(projectInfo) {
-    var result = false;
-    if (projectInfo.switchMonthlyReportButton != null && projectInfo.switchMonthlyReportButton.hasClass('fa-tags')) {
-        projectInfo.switchMonthlyReportButton.removeClass('fa-tags');
-        projectInfo.switchMonthlyReportButton.addClass('fa-tag');
-        projectInfo.switchMonthlyReportButton.attr('title', '填写月报');
-        delete projectInfo.switchMonthlyReportButton;
-        result = true;
-    }
-    if (projectInfo.monthlyReportPanel != null && !projectInfo.monthlyReportPanel.hasClass('hide')) {
-        projectInfo.monthlyReportPanel.addClass('hide');
-        delete projectInfo.monthlyReportPanel;
-        result = true;
-    }
-    return result;
+    Vue.delete(projectInfo, 'showingMonthlyReport');
 }
 
 function filterProjectInfos(projectInfos) {
@@ -171,18 +155,18 @@ function closeProject(projectInfo, closedDate) {
         path: '/api/project-info',
         pathParam: { id: projectInfo.Id, closedDate: closedDate },
         onSuccess: function (result) {
-            $('#closeProjectDialog').modal('hide');
             Vue.set(projectInfo, 'ClosedDate', closedDate);
-            zdalert('成功关闭项目', projectInfo.ProjectName);
+            hideCloseProjectDialog();
+            zdalert('成功归档', projectInfo.ProjectName);
         },
         onError: function (XMLHttpRequest, textStatus, validityError) {
             vue.projectInfos = null;
-            zdalert('关闭项目失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+            zdalert('归档失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
         },
     });
 }
 
-function fetchMonthlyReport(projectInfo) {
+function nextMonthlyReport(projectInfo) {
     var year;
     var month;
     if (projectInfo.monthlyReports.length > 0) {
@@ -229,23 +213,24 @@ function putMonthlyReport(projectInfo, monthlyReport) {
             projectInfoId: projectInfo.Id,
         },
         data: monthlyReport,
-        onSuccess: function (result) {
+        onSuccess: function(result) {
+            pushProjectStatuses(monthlyReport.Status);
+
             var now = new Date();
             if (monthlyReport.Year === now.getFullYear() &&
                 monthlyReport.Month === now.getMonth() + 1)
                 Vue.set(projectInfo, 'CurrentStatus', monthlyReport.Status);
-            pushProjectStatuses(monthlyReport.Status);
 
             zdconfirm('成功提交项目月报',
                 '是否需要合上月报填写面板?',
-                function (result) {
+                function(result) {
                     if (result) {
-                        if (hideMonthlyReportPanel(projectInfo))
-                            locatingProjectInfo(projectInfo);
+                        hideMonthlyReportPanel(projectInfo);
+                        locatingProjectInfo(projectInfo);
                     }
                 });
         },
-        onError: function (XMLHttpRequest, textStatus, validityError) {
+        onError: function(XMLHttpRequest, textStatus, validityError) {
             zdalert('提交项目月报失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
         },
     });
@@ -368,41 +353,37 @@ var vue = new Vue({
         showCloseProjectDialog: function(projectInfo) {
             this.currentProjectInfo = projectInfo;
             if (projectInfo.ContAmount > projectInfo.TotalInvoiceAmount) {
-                zdconfirm('关闭项目',
-                    projectInfo.ProjectName + ' 项目还有 ' + (projectInfo.ContAmount - projectInfo.TotalInvoiceAmount) + ' 万元应收款未开票! 是否仍关闭?',
+                zdconfirm('归档项目',
+                    projectInfo.ProjectName + ' 项目还有 ' + (projectInfo.ContAmount - projectInfo.TotalInvoiceAmount) + ' 万元应收款未开票，归档后将无法更新! 是否继续?',
                     function (result) {
                         if (result)
-                            $('#closeProjectDialog').modal('show');
+                            showCloseProjectDialog();
                     });
             } else
-                $('#closeProjectDialog').modal('show');
+                showCloseProjectDialog();
         },
 
         onCloseProject: function() {
             closeProject(this.currentProjectInfo, this.closedDate);
         },
 
-        onSwitchMonthlyReport: function(projectInfo, e) {
-            if (!hideMonthlyReportPanel(projectInfo)) {
-                this.currentProjectInfo = projectInfo;
-                projectInfo.switchMonthlyReportButton = $(e.target);
-                projectInfo.monthlyReportPanel = $('#' + projectInfo.Id).find('#monthlyReportPanel');
-                if (projectInfo.monthlyReports.length === 0)
-                    fetchMonthlyReport(projectInfo);
-                else
-                    showMonthlyReportPanel(projectInfo);
-            }
+        onShowMonthlyReport: function(projectInfo) {
+            this.currentProjectInfo = projectInfo;
+            if (projectInfo.monthlyReports.length === 0)
+                nextMonthlyReport(projectInfo);
+            else
+                showMonthlyReportPanel(projectInfo);
         },
 
-        onNextMonthlyReport: function(projectInfo, e) {
+        onNextMonthlyReport: function(projectInfo) {
             this.currentProjectInfo = projectInfo;
-            projectInfo.nextMonthlyReportButton = $(e.target);
-            fetchMonthlyReport(projectInfo);
+            nextMonthlyReport(projectInfo);
         },
 
         onHideMonthlyReport: function(projectInfo) {
-            if (hideMonthlyReportPanel(projectInfo))
-                locatingProjectInfo(projectInfo);
+            this.currentProjectInfo = projectInfo;
+            hideMonthlyReportPanel(projectInfo);
+            locatingProjectInfo(projectInfo);
         },
 
         canPutMonthlyReport: function(projectInfo, monthlyReport) {
