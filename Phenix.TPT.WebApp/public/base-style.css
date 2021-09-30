@@ -193,7 +193,6 @@ tbody {
     z-index: 999;
     overflow: auto;
     max-width: 500px;
-    overflow: auto;
 }
 
 #side-menu ul {
@@ -369,9 +368,9 @@ tbody {
 }
 
 .panel-list-item i.fa {
-    float: left;
-    margin-left: 10%;
-    padding: 0%;
+    float: right;
+    margin: 1% 0% 1% 0%;
+    padding: 0 5px;
     font-size: 16px;
     cursor: pointer;
 }
@@ -382,37 +381,49 @@ tbody {
 }
 
 .panel-fold {
-    width: 100%;
     height: 310px;
     margin-top: 0%;
     border-top: 1px dashed rgb(108, 152, 209);
 }
 
-.panel-fold label {
+.panel-fold-header-item {
     float: left;
-    margin: 1% 1% 1% 1%;
-    text-align: right;
-    padding: 0 5px;
+    margin: 1% 1% 1% 0%;
 }
 
-.panel-fold i.fa {
-    margin: 1% 1% 1% 1%;
-    float: right;
-    cursor: pointer;
-}
-
-.panel-fold-header {
-    float: left;
-    margin: 1% 1% 1% 1%;
-}
-
-.panel-fold-header input {
+.panel-fold-header-item input {
     width: 100%;
     border: 0px;
     text-align: center;
     outline: none;
     background-color: rgb(108, 152, 209);
     color: #fafafa;
+}
+
+.panel-fold-info {
+    line-height: 100%;
+    margin-top: 2%;
+}
+
+.panel-fold-info-item {
+    width: 50%;
+    float: left;
+}
+
+.panel-fold-info-item label {
+    margin: 1% 1% 1% 1%;
+    text-align: right;
+    padding: 0 5px;
+    text-align: right;
+    font-weight: normal
+}
+
+.panel-fold-info-item input {
+    color: #333;
+    width: 80%;
+    border: 0px;
+    border-bottom: 1px solid rgb(220, 220, 220);
+    outline: none;
 }
 
 .panel-fold-area {

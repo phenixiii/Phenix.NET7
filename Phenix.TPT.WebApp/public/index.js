@@ -33,6 +33,14 @@ function locatingProjectInfo(projectInfo) {
     }
 }
 
+function showProjectInfoPanel(projectInfo) {
+    Vue.set(projectInfo, 'showingProjectInfo', true);
+}
+
+function hideProjectInfoPanel(projectInfo) {
+    Vue.delete(projectInfo, 'showingProjectInfo');
+}
+
 function showCloseProjectDialog() {
     $('#closeProjectDialog').modal('show'); // id="closeProjectDialog"
 }
@@ -66,6 +74,7 @@ function filterProjectInfos(projectInfos) {
         projectInfos.forEach((item, index) => {
             pushProjectStatuses(item.CurrentStatus);
             pushProjectStatuses(item.AnnualMilestone);
+            item.ContApproveDate = new Date(item.ContApproveDate).format('yyyy-MM-dd');
 
             switch (vue.filterState) {
             case 0: //显示当月自己负责项目
@@ -126,7 +135,7 @@ function fetchProjectInfos(reset) {
             },
             onError: function(XMLHttpRequest, textStatus, validityError) {
                 vue.projectInfos = null;
-                zdalert('获取项目资料失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+                zdalert('获取项目失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
             },
         });
     else
@@ -144,7 +153,7 @@ function addProjectInfo() {
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
             vue.projectInfos = null;
-            zdalert('添加项目资料失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+            zdalert('添加项目失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
         },
     });
 }
@@ -161,7 +170,7 @@ function closeProject(projectInfo, closedDate) {
         },
         onError: function (XMLHttpRequest, textStatus, validityError) {
             vue.projectInfos = null;
-            zdalert('归档失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+            zdalert('项目归档失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
         },
     });
 }
@@ -200,7 +209,7 @@ function nextMonthlyReport(projectInfo) {
             showMonthlyReportPanel(projectInfo);
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
-            zdalert('获取项目月报失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+            zdalert('获取月报失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
         },
     });
 }
@@ -221,8 +230,8 @@ function putMonthlyReport(projectInfo, monthlyReport) {
                 monthlyReport.Month === now.getMonth() + 1)
                 Vue.set(projectInfo, 'CurrentStatus', monthlyReport.Status);
 
-            zdconfirm('成功提交项目月报',
-                '是否需要合上月报填写面板?',
+            zdconfirm('成功提交月报',
+                '是否需要合上月报面板?',
                 function(result) {
                     if (result) {
                         hideMonthlyReportPanel(projectInfo);
@@ -231,7 +240,7 @@ function putMonthlyReport(projectInfo, monthlyReport) {
                 });
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
-            zdalert('提交项目月报失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+            zdalert('提交月报失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
         },
     });
 }
@@ -339,9 +348,19 @@ var vue = new Vue({
             return isMyProject(projectInfo);
         },
 
-        onEditProject: function(projectInfo) {
+        onShowProjectInfo: function (projectInfo) {
+            this.currentProjectInfo = projectInfo;
+            showProjectInfoPanel(projectInfo);
+        },
+
+        onPutProjectInfo: function (projectInfo) {
             window.localStorage.setItem(currentProjectInfoCacheKey, projectInfo.Id);
             window.location.href = 'project-Info.html';
+        },
+
+        onHideProjectInfo: function (projectInfo) {
+            hideProjectInfoPanel(projectInfo);
+            locatingProjectInfo(projectInfo);
         },
 
         canCloseProject: function(projectInfo) {
@@ -353,7 +372,7 @@ var vue = new Vue({
         showCloseProjectDialog: function(projectInfo) {
             this.currentProjectInfo = projectInfo;
             if (projectInfo.ContAmount > projectInfo.TotalInvoiceAmount) {
-                zdconfirm('归档项目',
+                zdconfirm('项目归档',
                     projectInfo.ProjectName + ' 项目还有 ' + (projectInfo.ContAmount - projectInfo.TotalInvoiceAmount) + ' 万元应收款未开票，归档后将无法更新! 是否继续?',
                     function (result) {
                         if (result)

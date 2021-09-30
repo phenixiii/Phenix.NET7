@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="lib/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="lib/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="lib/element/element.css">
     <script>
         document.write("<link rel='stylesheet' href='base-style.css?v=" + new Date().toLocaleDateString() + "' charset='UTF-8'>");
     </script>
@@ -36,9 +35,9 @@
                 <div class="panel panel-default">
                     <div class="panel-query panel-body">
                         <label class="panel-query-item txt col-md-1">项目</label>
-                        <input class="panel-query-item txt-input col-md-4 form-control" placeholder="模糊查询：项目名称/服务客户/销售区域/合同号" v-model="queryName">
+                        <input class="panel-query-item txt-input col-md-4 form-control" placeholder="模糊查：项目名称/服务客户/销售区域/合同号" v-model="queryName">
                         <label class="panel-query-item txt col-md-1">负责人</label>
-                        <input class="panel-query-item txt-input col-md-4 form-control" placeholder="模糊查询：负责人姓名/产品版本/当前状态" v-model="queryPerson">
+                        <input class="panel-query-item txt-input col-md-4 form-control" placeholder="模糊查：负责人姓名/产品版本/当前状态" v-model="queryPerson">
                         <button class="panel-query-item btn btn-primary col-md-1" @click="onQueryProject()">查询</button>
                         <button class="panel-query-item btn btn-primary col-md-1" v-bind:disabled="!canAddProject()" @click="onAddProject()">添加</button>
                     </div>
@@ -49,7 +48,7 @@
                             <div class="panel-list-item panel-body">
                                 <div style="display: block; overflow: hidden;">
                                     <div class="panel-list-column" style="width: 9%; padding-left: 20px; margin-top: 5px; text-align: center;">
-                                        <p class="text-wrapper" v-text="new Date(projectInfo.ContApproveDate).format('yyyy-MM-dd')"></p>
+                                        <p class="text-wrapper" v-text="projectInfo.ContApproveDate"></p>
                                     </div>
                                     <div class="panel-list-column" style="width: 15%; padding-left: 10px; margin-top: 5px; text-align: center;">
                                         <p class="text-wrapper" v-text="(projectInfo.CurrentStatus??'')+'\n\r[ '+(projectInfo.AnnualMilestone??'') + ' ]'"></p>
@@ -82,42 +81,38 @@
                                     <div class="panel-list-column" style="width: 6%; padding-left: 10px; margin-top: 5px; text-align: center;">
                                         <p>{{projectInfo.DevelopManager}}</p>
                                     </div>
-                                    <div class="panel-list-column" style="width: 8%; padding-left: 10px; margin-top: 5px; padding-right: 0px;">
-                                        <i class="fa fa-pencil" type="buttonon" @click="onEditProject(projectInfo)" title="编辑" v-show="canEditProject(projectInfo)"></i>
-                                        <i class="fa fa-toggle-on" type="buttonon" @click="showCloseProjectDialog(projectInfo)" title="归档" v-if="canCloseProject(projectInfo)"></i>
-                                        <i class="fa fa-toggle-off" title="已归档" v-else></i>
-                                        <i class="fa fa-tag" type="buttonon" @click="onShowMonthlyReport(projectInfo)" title="填写月报" v-if="!projectInfo.showingMonthlyReport"></i>
+                                    <div class="panel-list-column" style="width: 9%; padding-left: 10px; margin-top: 5px; padding-right: 5px;">
+                                        <i class="fa fa-tag" type="buttonon" @click="onShowMonthlyReport(projectInfo)" title="展开月报" v-if="!projectInfo.showingMonthlyReport"></i>
                                         <i class="fa fa-tags" type="buttonon" @click="onHideMonthlyReport(projectInfo)" title="收起月报" v-else></i>
+                                        <i class="fa fa-toggle-on" type="buttonon" @click="showCloseProjectDialog(projectInfo)" title="项目归档" v-if="!projectInfo.showingProjectInfo && canCloseProject(projectInfo)"></i>
+                                        <i class="fa fa-toggle-off" title="已归档" v-else v-if="!projectInfo.showingProjectInfo && !canCloseProject(projectInfo)"></i>
+                                        <i class="fa fa-chevron-down" type="buttonon" @click="onShowProjectInfo(projectInfo)" title="展开项目" v-if="!projectInfo.showingProjectInfo && canEditProject(projectInfo)"></i>
+                                        <i class="fa fa-save" type="buttonon" @click="onPutProjectInfo(projectInfo)" title="提交项目" v-else v-if="projectInfo.showingProjectInfo && canEditProject(projectInfo)"></i>
+                                        <i class="fa fa-chevron-up" type="buttonon" @click="onHideProjectInfo(projectInfo)" title="收起项目" v-else v-if="projectInfo.showingProjectInfo"></i>
                                     </div>
                                 </div>
-                                <ul class="hide panel" id="EditProjectPanel">
-                                    <div class="panel panel-fold">
-                                        <div class="projectcon" id="projectcon" style="display:block;clear:both;margin-top:2%">
-                                            <div style="width:100%;text-align: center">
-                                                <div style="margin-bottom:0.5%;padding:0% 10%;overflow: hidden;">
-                                                    <div class="projectitem" style="width:50%;float:left;padding-right:3%">
-                                                        <label class=".project-info-label">合同号:</label>
-                                                        <input class="dept project-info-input" id="ContNumber" type="search" v-model="projectInfo.ContNumber">
-                                                    </div>
-                                                    <div class="projectitem" style="width:50%;float:left;padding-left:3%">
-                                                        <label class="project-info-label">流转日期:</label>
-                                                        <!--class="auto-kal"-->
-                                                        <el-date-picker class="dept project-info-input" type="date" v-model="projectInfo.ContApproveDate" style="width:81%" value-format=" yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
-                                                    </div>
-                                                </div>
-
+                                <div class="panel panel-fold" v-show="projectInfo.showingProjectInfo">
+                                    <div class="panel-fold-info">
+                                        <div style="clear: both;">
+                                            <div class="panel-fold-info-item">
+                                                <label>合同号:</label>
+                                                <input v-model="projectInfo.ContNumber">
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>流转日期:</label>
+                                                <input type="date" v-model="projectInfo.ContApproveDate">
                                             </div>
                                         </div>
                                     </div>
-                                </ul>
+                                </div>
                                 <ul class="panel" v-show="projectInfo.showingMonthlyReport">
                                     <li v-for="(monthlyReport, index) in projectInfo.monthlyReports">
                                         <div class="panel panel-fold">
                                             <div>
-                                                <div class="panel-fold-header" style="width: 8%;">
+                                                <div class="panel-fold-header-item" style="width: 7%;">
                                                     <input v-bind:readonly="true" v-model="monthlyReport.Month">
                                                 </div>
-                                                <div class="panel-fold-header" style="width: 15%;">
+                                                <div class="panel-fold-header-item" style="width: 15%;">
                                                     <datalist id="project-statuses">
                                                         <option v-for="item in projectStatuses">{{item}}</option>
                                                     </datalist>
@@ -166,7 +161,7 @@
                         <h4 class="modal-title" id="closeProjectDialogLabel">设置项目的关闭日期</h4>
                     </div>
                     <div class="modal-body">
-                        <el-date-picker value-format="yyyy-MM-dd" format="yyyy-MM-dd" style="width: 100%" v-model="closedDate"></el-date-picker>
+                        <input type="date" v-model="closedDate">
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal">取消</button>
@@ -197,7 +192,6 @@
     <script type="text/javascript" src="lib/vue.min.js"></script>
     <script type="text/javascript" src="lib/bootstrap/bootstrap.min.js"></script>
     <script type="text/javascript" src="lib/mesgbox.js"></script>
-    <script type="text/javascript" src="lib/element/element.js"></script>
 
     <script type="text/javascript" src="base-func.js?v=1"></script>
     <script>
