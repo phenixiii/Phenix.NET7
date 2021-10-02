@@ -157,7 +157,7 @@ namespace Phenix.TPT.Plugin
             ProjectInfo result = base.FetchKernel(autoNew);
             if (result != null)
                 result.Apply(NameValue.Set<ProjectInfo>(p => p.ContApproveDate, DateTime.Today).
-                    Set(p => p.ProjectType, ProjectType.技术服务));
+                    Set(p => p.ProjectType, ProjectType.软件技术服务));
             return result;
         }
 

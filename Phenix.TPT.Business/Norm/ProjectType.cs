@@ -1,4 +1,5 @@
 ﻿using System;
+using Phenix.Core.Data;
 
 namespace Phenix.TPT.Business.Norm
 {
@@ -8,8 +9,16 @@ namespace Phenix.TPT.Business.Norm
     [Serializable]
     public enum ProjectType
     {
-        技术服务 = 0,
-        运维项目 = 1,
-        产品研发 = 2,
+        [EnumCaption("软件技术服务")]
+        软件技术服务 = 0,
+
+        [EnumCaption("集成技术服务")]
+        集成技术服务 = 1,
+
+        [EnumCaption("运维服务")]
+        运维服务 = 2,
+
+        [EnumCaption("产品研发")]
+        产品研发 = 3,
     }
 }

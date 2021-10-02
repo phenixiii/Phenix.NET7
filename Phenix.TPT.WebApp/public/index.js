@@ -1,4 +1,5 @@
-$(function () {
+$(function() {
+    fetchProjectTypes();
     fetchProjectInfos(true);
 });
 
@@ -11,13 +12,25 @@ function isMyProject(projectInfo) {
     if (myself == null)
         return false;
     return myself.Position == null ||
-        myself.Position.Roles.indexOf(projectRoles.经营管理) >= 0 ||
-        myself.Position.Roles.indexOf(projectRoles.项目管理) >= 0 &&
+        myself.Position.Roles.indexOf(base.projectRoles.经营管理) >= 0 ||
+        myself.Position.Roles.indexOf(base.projectRoles.项目管理) >= 0 &&
         (projectInfo == null ||
             myself.Name === projectInfo.ProjectManager ||
             myself.Name === projectInfo.DevelopManager ||
             myself.Name === projectInfo.MaintenanceManager ||
             myself.Name === projectInfo.SalesManager);
+}
+
+function fetchProjectTypes() {
+    base.call({
+        path: '/api/project-type/all',
+        onSuccess: function(result) {
+            vue.projectTypes = result;
+        },
+        onError: function(XMLHttpRequest, textStatus, validityError) {
+            zdalert('获取项目类型失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+        },
+    });
 }
 
 function pushProjectStatuses(status) {
@@ -126,7 +139,7 @@ function filterProjectInfos(projectInfos) {
 
 function fetchProjectInfos(reset) {
     if (reset || vue.projectInfos == null)
-        window.callAjax({
+        base.call({
             path: '/api/project-info/all',
             pathParam: vue.filterTimeInterval,
             onSuccess: function(result) {
@@ -143,7 +156,7 @@ function fetchProjectInfos(reset) {
 }
 
 function addProjectInfo() {
-    window.callAjax({
+    base.call({
         path: '/api/project-info',
         onSuccess: function(result) {
             result.monthlyReports = [];
@@ -159,7 +172,7 @@ function addProjectInfo() {
 }
 
 function closeProject(projectInfo, closedDate) {
-    window.callAjax({
+    base.call({
         type: 'DELETE',
         path: '/api/project-info',
         pathParam: { id: projectInfo.Id, closedDate: closedDate },
@@ -193,7 +206,7 @@ function nextMonthlyReport(projectInfo) {
         month = date.getMonth() + 1;
     }
 
-    window.callAjax({
+    base.call({
         path: '/api/project-monthly-report',
         pathParam: {
             projectInfoId: projectInfo.Id,
@@ -215,7 +228,7 @@ function nextMonthlyReport(projectInfo) {
 }
 
 function putMonthlyReport(projectInfo, monthlyReport) {
-    window.callAjax({
+    base.call({
         type: "PUT",
         path: '/api/project-monthly-report',
         pathParam: {
@@ -268,6 +281,7 @@ var vue = new Vue({
         queryPerson: window.localStorage.hasOwnProperty(queryPersonCacheKey) ? window.localStorage.getItem(queryPersonCacheKey) : null,
 
         projectStatuses: [],
+        projectTypes: [],
 
         projectInfos: null,
         currentProjectInfo: null, //当前操作对象

@@ -14,5 +14,10 @@
         /// /api/project-monthly-report
         /// </summary>
         public const string ProjectMonthlyReportPath = "/api/project-monthly-report";
+        
+        /// <summary>
+        /// /api/project-type
+        /// </summary>
+        public const string ProjectTypePath = "/api/project-type";
     }
 }

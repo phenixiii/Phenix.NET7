@@ -401,7 +401,7 @@ tbody {
 }
 
 .panel-fold-info {
-    line-height: 100%;
+    line-height: 200%;
     margin-top: 2%;
 }
 
@@ -418,9 +418,11 @@ tbody {
     font-weight: normal
 }
 
+.panel-fold-info-item select,
 .panel-fold-info-item input {
     color: #333;
     width: 80%;
+    height: 23px;
     border: 0px;
     border-bottom: 1px solid rgb(220, 220, 220);
     outline: none;

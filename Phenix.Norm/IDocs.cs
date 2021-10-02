@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Expressions;
 using Phenix.Core.Data.Model;
@@ -25,7 +26,11 @@ namespace Phenix.Norm
         [Newtonsoft.Json.JsonIgnore]
         public DocsStatus DocsStatus
         {
-            get { return EnumKeyValue.GetEnumFirst<DocsStatus>(p => p.Key == DocsStatusKey); }
+            get
+            {
+                EnumKeyValue enumKeyValue = EnumKeyValue.Fetch<DocsStatus>().FirstOrDefault(p => p.Key == DocsStatusKey);
+                return enumKeyValue != null ? (DocsStatus) enumKeyValue.Value : DocsStatus.Unverified;
+            }
         }
         
         #endregion

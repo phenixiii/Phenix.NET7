@@ -55,18 +55,18 @@
                                     </div>
                                     <div class="panel-list-column" style="width: 40%; padding-left: 10px;">
                                         <div>
-                                            <hr class="badge-chapter manage-color" title="项目管理工作" v-if="projectInfo.ManageWork" />
-                                            <hr class="badge-chapter no-color" title="项目管理工作" v-else />
-                                            <hr class="badge-chapter investigate-color" title="调研分析工作" v-if="projectInfo.InvestigateWork" />
-                                            <hr class="badge-chapter no-color" title="调研分析工作" v-else />
-                                            <hr class="badge-chapter develop-color" title="设计开发工作" v-if="projectInfo.DevelopWork" />
-                                            <hr class="badge-chapter no-color" title="设计开发工作" v-else />
-                                            <hr class="badge-chapter test-color" title="联调测试工作" v-if="projectInfo.TestWork" />
-                                            <hr class="badge-chapter no-color" title="联调测试工作" v-else />
-                                            <hr class="badge-chapter implement-color" title="培训实施工作" v-if="projectInfo.ImplementWork" />
-                                            <hr class="badge-chapter no-color" title="培训实施工作" v-else />
-                                            <hr class="badge-chapter maintenance-color" title="质保维保工作" v-if="projectInfo.MaintenanceWork" />
-                                            <hr class="badge-chapter no-color" title="质保维保工作" v-else />
+                                            <hr class="badge-chapter manage-color" v-bind:title="base.projectRoles.项目管理" v-if="projectInfo.ManageWork" />
+                                            <hr class="badge-chapter no-color" v-bind:title="base.projectRoles.项目管理" v-else />
+                                            <hr class="badge-chapter investigate-color" v-bind:title="base.projectRoles.调研分析" v-if="projectInfo.InvestigateWork" />
+                                            <hr class="badge-chapter no-color" v-bind:title="base.projectRoles.调研分析" v-else />
+                                            <hr class="badge-chapter develop-color" v-bind:title="base.projectRoles.设计开发" v-if="projectInfo.DevelopWork" />
+                                            <hr class="badge-chapter no-color" v-bind:title="base.projectRoles.设计开发" v-else />
+                                            <hr class="badge-chapter test-color" v-bind:title="base.projectRoles.测试联调" v-if="projectInfo.TestWork" />
+                                            <hr class="badge-chapter no-color" v-bind:title="base.projectRoles.测试联调" v-else />
+                                            <hr class="badge-chapter implement-color" v-bind:title="base.projectRoles.培训实施" v-if="projectInfo.ImplementWork" />
+                                            <hr class="badge-chapter no-color" v-bind:title="base.projectRoles.培训实施" v-else />
+                                            <hr class="badge-chapter maintenance-color" v-bind:title="base.projectRoles.质保维保" v-if="projectInfo.MaintenanceWork" />
+                                            <hr class="badge-chapter no-color" v-bind:title="base.projectRoles.质保维保" v-else />
                                         </div>
                                         <div class="panel-list-column" style="word-wrap: break-word; word-break: break-all; height: auto; width: 100%;">
                                             <p class="text-wrapper">{{projectInfo.ProjectName}}</p>
@@ -95,12 +95,24 @@
                                     <div class="panel-fold-info">
                                         <div style="clear: both;">
                                             <div class="panel-fold-info-item">
-                                                <label>合同号:</label>
+                                                <label>合 同 号:</label>
                                                 <input v-model="projectInfo.ContNumber">
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>流转日期:</label>
                                                 <input type="date" v-model="projectInfo.ContApproveDate">
+                                            </div>
+                                        </div>
+                                        <div style="clear: both;">
+                                            <div class="panel-fold-info-item">
+                                                <label>项目名称:</label>
+                                                <input v-model="projectInfo.ProjectName">
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>项目类型:</label>
+                                                <select v-model="projectInfo.ProjectType">
+                                                    <option v-for="(item) in projectTypes" :key="item.Key" :label="item.Caption" :value="item.Value"></option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -116,7 +128,7 @@
                                                     <datalist id="project-statuses">
                                                         <option v-for="item in projectStatuses">{{item}}</option>
                                                     </datalist>
-                                                    <input v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" type="search" list="project-statuses" placeholder="请填写：项目状态" v-model="monthlyReport.Status" @blur="monthlyReport.Status=$event.target.value">
+                                                    <input type="search" list="project-statuses" placeholder="填写/选择：项目状态" v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.Status" @blur="monthlyReport.Status=$event.target.value">
                                                 </div>
                                                 <i class="fa fa-save" type="buttonon" @click="onPutMonthlyReport(projectInfo, monthlyReport)" title="提交月报" v-show="canPutMonthlyReport(projectInfo, monthlyReport)"></i>
                                             </div>

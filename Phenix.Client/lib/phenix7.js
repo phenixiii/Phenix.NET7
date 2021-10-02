@@ -711,6 +711,7 @@ var phAjax = (function($) {
                 contentType: 'application/json;charset=utf-8', 
                 cache: false, //默认不缓存
                 timeout: 30000, //默认超时30秒
+                async: true, //默认异步
                 onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
                 onComplete: null, //调用完成的回调函数, 参数(XMLHttpRequest, textStatus)
@@ -733,6 +734,7 @@ var phAjax = (function($) {
                 cache: options.cache,
                 crossDomain: true,
                 timeout: options.timeout,
+                async: options.async,
                 beforeSend: function(XMLHttpRequest) {
                     if (!options.anonymity)
                         XMLHttpRequest.setRequestHeader(authorizationHeaderName, formatComplexAuthorization());
