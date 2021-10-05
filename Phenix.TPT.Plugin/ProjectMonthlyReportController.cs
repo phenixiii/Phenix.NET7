@@ -25,6 +25,7 @@ namespace Phenix.TPT.Plugin
         }
 
         [ProjectControlFilter]
+        [Authorize]
         [HttpPut]
         public async Task Put(long projectInfoId)
         {

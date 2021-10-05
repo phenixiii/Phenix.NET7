@@ -13,8 +13,7 @@ namespace Phenix.TPT.Plugin
 {
     /// <summary>
     /// 工作档期Grain接口
-    /// key: RootTeamsId
-    /// keyExtension: Manager
+    /// key: Manager（PH7_User.US_ID）
     /// </summary>
     public class WorkScheduleGrain : StreamGrainBase<string>, IWorkScheduleGrain
     {
@@ -35,25 +34,17 @@ namespace Phenix.TPT.Plugin
         /// </summary>
         protected override string[] ListenStreamNamespaces
         {
-            get { return new string[] {Standards.FormatCompoundKey(RootTeamsId, Manager)}; }
+            get { return new string[] {Manager.ToString()}; }
         }
 
         #endregion
 
         /// <summary>
-        /// 所属公司ID
-        /// </summary>
-        protected long RootTeamsId
-        {
-            get { return PrimaryKeyLong; }
-        }
-
-        /// <summary>
         /// 管理人员
         /// </summary>
-        protected string Manager
+        protected long Manager
         {
-            get { return PrimaryKeyExtension; }
+            get { return PrimaryKeyLong; }
         }
 
         private IDictionary<DateTime, WorkSchedule> _immediateWorkSchedules;
@@ -71,7 +62,7 @@ namespace Phenix.TPT.Plugin
                     int month = DateTime.Today.Month;
                     _immediateWorkSchedules = WorkSchedule.FetchKeyValues(Database,
                         p => p.YearMonth,
-                        p => p.OriginateTeams == RootTeamsId && p.Manager == Manager &&
+                        p => p.Manager == Manager &&
                              (p.Year == year && p.Month >= month || p.Year > year));
                 }
 
@@ -85,15 +76,14 @@ namespace Phenix.TPT.Plugin
 
         #region Stream
 
-        private Task SendEventForRefreshProjectWorkloads(string receiver, string content)
+        private Task SendEventForRefreshProjectWorkloads(long receiver, string content)
         {
             if (receiver == Manager)
                 return Task.CompletedTask;
-            if (content == Manager)
+            if (content == Manager.ToString())
                 return Task.CompletedTask;
 
-            return ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.RefreshProjectWorkloadsStreamId,
-                Standards.FormatCompoundKey(RootTeamsId, receiver)).OnNextAsync(content);
+            return ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.RefreshProjectWorkloadsStreamId, receiver.ToString()).OnNextAsync(content);
         }
 
         /// <summary>
@@ -103,19 +93,19 @@ namespace Phenix.TPT.Plugin
         /// <param name="token">StreamSequenceToken</param>
         protected override Task OnReceiving(string content, StreamSequenceToken token)
         {
-            List<string> workers = new List<string>();
+            List<long> workers = new List<long>();
             foreach (KeyValuePair<DateTime, WorkSchedule> kvp in ImmediateWorkSchedules)
-            foreach (string worker in kvp.Value.Workers)
+            foreach (long worker in kvp.Value.Workers)
                 if (!workers.Contains(worker))
                     workers.Add(worker);
-            foreach (string worker in workers)
+            foreach (long worker in workers)
                 SendEventForRefreshProjectWorkloads(worker, content);
             return Task.CompletedTask;
         }
 
         #endregion
 
-        Task<bool> IWorkScheduleGrain.HaveWorkSchedule(string worker, short year, short month)
+        Task<bool> IWorkScheduleGrain.HaveWorkSchedule(long worker, short year, short month)
         {
             if (worker == Manager)
                 return Task.FromResult(true);
@@ -141,7 +131,7 @@ namespace Phenix.TPT.Plugin
             if (source.Manager != Manager)
                 throw new ValidationException(String.Format("提交的工作档期管理人员应该是{0}!", Manager));
 
-            List<string> workers = new List<string>();
+            List<long> workers = new List<long>();
             DateTime yearMonth = Standards.FormatYearMonth(source.Year, source.Month);
             if (ImmediateWorkSchedules.TryGetValue(yearMonth, out WorkSchedule workSchedule))
                 Database.Execute((DbTransaction dbTransaction) =>
@@ -158,18 +148,18 @@ namespace Phenix.TPT.Plugin
                     ImmediateWorkSchedules[yearMonth] = source;
                 });
 
-            foreach (string worker in source.Workers)
+            foreach (long worker in source.Workers)
                 if (!workers.Contains(worker))
                     workers.Add(worker);
-            foreach (string worker in workers)
-                SendEventForRefreshProjectWorkloads(worker, Manager);
+            foreach (long worker in workers)
+                SendEventForRefreshProjectWorkloads(worker, Manager.ToString());
             return Task.CompletedTask;
         }
 
         private void ResetWorkers(DbTransaction dbTransaction, WorkSchedule workSchedule)
         {
             workSchedule.DeleteDetails<WorkScheduleWorker>(dbTransaction);
-            foreach (string worker in workSchedule.Workers)
+            foreach (long worker in workSchedule.Workers)
                 workSchedule.NewDetail(WorkScheduleWorker.Set(p => p.Worker, worker)).InsertSelf(dbTransaction);
         }
 

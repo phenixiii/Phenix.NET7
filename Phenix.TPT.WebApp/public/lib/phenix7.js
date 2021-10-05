@@ -182,33 +182,26 @@ var phAjax = (function($) {
                 eMail: '', //邮箱
                 regAlias: '', //注册昵称
                 onSuccess: null, //调用成功的回调函数, 参数(result)为返回的消息
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
             };
             options = $.extend(defaults, options);
             if (options.hashName)
                 options.userName = CryptoJS.MD5(options.userName).toString().toUpperCase();
             setSession(null);
             setMyself(null);
-            $.ajax({
+            setBaseAddress(options.baseAddress);
+            phAjax.call({
+                anonymity: true,
                 type: 'PUT',
-                url: options.baseAddress + '/api/security/myself',
-                contentType: 'application/json;charset=utf-8',
-                cache: false,
-                crossDomain: true,
-                timeout: 30000,
-                data: JSON.stringify({ companyName: options.companyName, userName: options.userName, phone: options.phone, eMail: options.eMail, regAlias: options.regAlias }),
-                complete: function(XMLHttpRequest, textStatus) {
-                    if (XMLHttpRequest.status === 200) {
-                        setBaseAddress(options.baseAddress);
-                        setCompanyName(options.companyName);
-                        setUserName(options.userName);
-                        if (typeof options.onSuccess === 'function')
-                            options.onSuccess(XMLHttpRequest.responseText);
-                    } else {
-                        if (typeof options.onError === 'function')
-                            options.onError(XMLHttpRequest, textStatus);
-                    }
+                path: '/api/security/myself',
+                pathParam: { companyName: options.companyName, userName: options.userName, phone: options.phone, eMail: options.eMail, regAlias: options.regAlias },
+                onSuccess: function(result) {
+                    setCompanyName(options.companyName);
+                    setUserName(options.userName);
+                    if (typeof options.onSuccess === 'function')
+                        options.onSuccess(result);
                 },
+                onError: options.onError,
             });
         },
 
@@ -298,6 +291,31 @@ var phAjax = (function($) {
                 },
             });
         },
+        
+        // 修改登录口令
+        changePassword: function(options) {
+            var defaults = {
+                baseAddress: null, //服务地址
+                companyName: null, //公司名
+                userName: null, //登录名
+                hashName: false, //Hash登录名
+                password: null, //登录口令/动态口令
+                newPassword: null, //新登录口令
+                onSuccess: null, //调用成功的回调函数
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
+            };
+            options = $.extend(defaults, options);
+            phAjax.logon({
+                baseAddress: options.baseAddress,
+                companyName: options.companyName,
+                userName: options.userName,
+                hashName: options.hashName,
+                password: options.password,
+                tag: { newPassword: options.newPassword },
+                onSuccess: options.onSuccess,
+                onError: options.onError,
+            });
+        },
 
         // 登出
         logout: function(options) {
@@ -324,7 +342,7 @@ var phAjax = (function($) {
             var defaults = {
                 reset: false, //是否重新获取
                 onSuccess: null, //调用成功的回调函数, 参数(result)为返回的User对象
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
             };
             options = $.extend(defaults, options);
             if (!options.reset) {
@@ -339,15 +357,11 @@ var phAjax = (function($) {
                 path: '/api/security/myself',
                 decryptResult: true,
                 onSuccess: function(result) {
-                    var user = JSON.parse(result);
-                    setMyself(user);
+                    setMyself(result);
                     if (typeof options.onSuccess === 'function')
-                        options.onSuccess(user);
+                        options.onSuccess(result);
                 },
-                onError: function(XMLHttpRequest, textStatus) {
-                    if (typeof options.onError === 'function')
-                        options.onError(XMLHttpRequest, textStatus);
-                },
+                onError: options.onError,
             });
         },
 
@@ -358,24 +372,21 @@ var phAjax = (function($) {
                 eMail: null, //邮箱
                 regAlias: null, //注册昵称
                 onSuccess: null, //调用成功的回调函数
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
             };
             options = $.extend(defaults, options);
             phAjax.call({
                 type: 'PATCH',
                 path: '/api/security/myself',
-                data: { phone: options.phone, eMail: options.eMail, regAlias: options.regAlias },
-                trimData: true,
-                decryptResult: true,
+                data: { Phone: options.phone, EMail: options.eMail, RegAlias: options.regAlias },
+                trimDataEmptyProperty: true,
+                encryptData: true,
                 onSuccess: function(result) {
                     phAjax.getMyself({ reset: true });
                     if (typeof options.onSuccess === 'function')
                         options.onSuccess(result);
                 },
-                onError: function(XMLHttpRequest, textStatus) {
-                    if (typeof options.onError === 'function')
-                        options.onError(XMLHttpRequest, textStatus);
-                },
+                onError: options.onError,
             });
         },
 
@@ -383,50 +394,28 @@ var phAjax = (function($) {
         getMyselfCompany: function(options) {
             var defaults = {
                 onSuccess: null, //调用成功的回调函数, 参数(result)为返回的Teams对象
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
             };
             options = $.extend(defaults, options);
             phAjax.call({
                 path: '/api/security/myself/company',
-                onSuccess: function(result) {
-                    if (typeof options.onSuccess === 'function')
-                        options.onSuccess(result);
-                },
-                onError: function(XMLHttpRequest, textStatus) {
-                    if (typeof options.onError === 'function')
-                        options.onError(XMLHttpRequest, textStatus);
-                },
+                onSuccess: options.onSuccess,
+                onError: options.onError,
             });
         },
 
-        // 修改登录口令
-        changePassword: function(options) {
+        // 获取自己公司用户资料
+        getMyselfCompanyUsers: function(options) {
             var defaults = {
-                baseAddress: null, //服务地址
-                companyName: null, //公司名
-                userName: null, //登录名
-                hashName: false, //Hash登录名
-                password: null, //登录口令/动态口令
-                newPassword: null, //新登录口令
-                onSuccess: null, //调用成功的回调函数
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
+                onSuccess: null, //调用成功的回调函数, 参数(result)为返回的User对象集合
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
             };
             options = $.extend(defaults, options);
-            phAjax.logon({
-                baseAddress: options.baseAddress,
-                companyName: options.companyName,
-                userName: options.userName,
-                hashName: options.hashName,
-                password: options.password,
-                tag: { newPassword: options.newPassword },
-                onSuccess: function(result) {
-                    if (typeof options.onSuccess === 'function')
-                        options.onSuccess(result);
-                },
-                onError: function(XMLHttpRequest, textStatus) {
-                    if (typeof options.onError === 'function')
-                        options.onError(XMLHttpRequest, textStatus);
-                },
+            phAjax.call({
+                path: '/api/security/myself/company-user/all',
+                decryptResult: true,
+                onSuccess: options.onSuccess,
+                onError: options.onError,
             });
         },
 
@@ -434,19 +423,13 @@ var phAjax = (function($) {
         getSequence: function(options) {
             var defaults = {
                 onSuccess: null, //调用成功的回调函数, 参数(result)为返回的64位序号
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
             };
             options = $.extend(defaults, options);
             phAjax.call({
                 path: '/api/data/sequence',
-                onSuccess: function(result) {
-                    if (typeof options.onSuccess === 'function')
-                        options.onSuccess(result);
-                },
-                onError: function(XMLHttpRequest, textStatus) {
-                    if (typeof options.onError === 'function')
-                        options.onError(XMLHttpRequest, textStatus);
-                },
+                onSuccess: options.onSuccess,
+                onError: options.onError,
             });
         },
 
@@ -456,20 +439,14 @@ var phAjax = (function($) {
         getIncrement: function(key, initialValue, options) {
             var defaults = {
                 onSuccess: null, //调用成功的回调函数, 参数(result)为返回的64位增量值
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
             };
             options = $.extend(defaults, options);
             phAjax.call({
                 path: '/api/data/increment',
                 pathParam: { key: key, initialValue: initialValue },
-                onSuccess: function(result) {
-                    if (typeof options.onSuccess === 'function')
-                        options.onSuccess(result);
-                },
-                onError: function(XMLHttpRequest, textStatus) {
-                    if (typeof options.onError === 'function')
-                        options.onError(XMLHttpRequest, textStatus);
-                },
+                onSuccess: options.onSuccess,
+                onError: options.onError,
             });
         },
 
@@ -479,7 +456,7 @@ var phAjax = (function($) {
         sendMessage: function(receiver, content, options) {
             var defaults = {
                 onSuccess: null, //调用成功的回调函数
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
             };
             options = $.extend(defaults, options);
             phAjax.call({
@@ -487,14 +464,8 @@ var phAjax = (function($) {
                 path: '/api/message/user-message',
                 pathParam: { receiver: receiver },
                 data: content,
-                onSuccess: function(result) {
-                    if (typeof options.onSuccess === 'function')
-                        options.onSuccess();
-                },
-                onError: function(XMLHttpRequest, textStatus) {
-                    if (typeof options.onError === 'function')
-                        options.onError(XMLHttpRequest, textStatus);
-                },
+                onSuccess: options.onSuccess,
+                onError: options.onError,
             });
         },
 
@@ -502,19 +473,13 @@ var phAjax = (function($) {
         receiveMessage: function(options) {
             var defaults = {
                 onSuccess: null, //调用成功的回调函数, 参数(messages)为消息id(key)+content(array[key])数据字典集合
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
             };
             options = $.extend(defaults, options);
             phAjax.call({
                 path: '/api/message/user-message',
-                onSuccess: function(result) {
-                    if (typeof options.onSuccess === 'function')
-                        options.onSuccess(result);
-                },
-                onError: function(XMLHttpRequest, textStatus) {
-                    if (typeof options.onError === 'function')
-                        options.onError(XMLHttpRequest, textStatus);
-                },
+                onSuccess: options.onSuccess,
+                onError: options.onError,
             });
         },
 
@@ -524,21 +489,15 @@ var phAjax = (function($) {
         affirmReceivedMessage: function(id, burn, options) {
             var defaults = {
                 onSuccess: null, //调用成功的回调函数
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
             };
             options = $.extend(defaults, options);
             phAjax.call({
                 type: 'DELETE',
                 path: '/api/message/user-message',
                 pathParam: { id: id, burn: burn },
-                onSuccess: function(result) {
-                    if (typeof options.onSuccess === 'function')
-                        options.onSuccess();
-                },
-                onError: function(XMLHttpRequest, textStatus) {
-                    if (typeof options.onError === 'function')
-                        options.onError(XMLHttpRequest, textStatus);
-                },
+                onSuccess: options.onSuccess,
+                onError: options.onError,
             });
         },
 
@@ -603,7 +562,7 @@ var phAjax = (function($) {
                 fileName: null, //下载文件名
                 onProgress: null, //执行进度的回调函数, 参数(fileName, chunkCount, chunkNumber, chunkSize, chunkBody, chunkBuffer)，函数调用返回值如为false则中止下载
                 onSuccess: null, //调用成功的回调函数, 参数(fileName, fileBlob)
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
             };
             options = $.extend(defaults, options);
             phAjax.downloadFileChunk(options.path, options.message, options.fileName, 1, null, options.onProgress, options.onSuccess, options.onError);
@@ -613,7 +572,7 @@ var phAjax = (function($) {
             phAjax.call({
                 path: path,
                 pathParam: { message: message, fileName: fileName, chunkNumber: chunkNumber },
-                onSuccess: function (result) {
+                onSuccess: function(result) {
                     if (result == null)
                         return;
                     result.ChunkBody = $.base64.atob(result.ChunkBody);
@@ -630,10 +589,7 @@ var phAjax = (function($) {
                     }
                     phAjax.downloadFileChunk(path, message, fileName, chunkNumber + 1, chunkBuffer, onProgress, onSuccess, onError);
                 },
-                onError: function (XMLHttpRequest, textStatus) {
-                    if (typeof onError === 'function')
-                        onError(XMLHttpRequest, textStatus);
-                },
+                onError: onError,
             });
         },
 
@@ -645,7 +601,7 @@ var phAjax = (function($) {
                 files: null, //上传文件(须是FileList/File对象(如果APP应用是本地图片，要么转成base64->File对象，要么转成网络图片->base64->File对象))
                 onProgress: null, //执行进度的回调函数, 参数(fileName, chunkCount, chunkNumber, chunkSize)，回调函数返回值如为false则中止上传
                 onSuccess: null, //调用成功的回调函数, 参数(message)为完成上传时返回消息
-                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus)
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
             };
             options = $.extend(defaults, options);
             if (options.files != null)
@@ -689,10 +645,7 @@ var phAjax = (function($) {
                     }
                     phAjax.uploadFileChunk(path, message, file, chunkNumber + 1, onProgress, onSuccess, onError);
                 },
-                onError: function(XMLHttpRequest, textStatus) {
-                    if (typeof onError === 'function')
-                        onError(XMLHttpRequest, textStatus);
-                },
+                onError: onError,
             });
         },
 
@@ -704,7 +657,8 @@ var phAjax = (function($) {
                 path: null, //路径
                 pathParam: null, //URL参数
                 data: null, //上传数据
-                trimData: false, //默认不清理data的空属性值
+                trimDataEmptyProperty: false, //默认不清理data的空属性值
+                trimDataLocalProperty: true, //默认清理data的本地添加(小驼峰法命名)属性值
                 processData: true, //默认对data参数进行序列化处理
                 encryptData: false, //默认不加密data（否则服务端请用Request.ReadBodyAsync(true)解密）
                 decryptResult: false, //默认不解密result（否则服务端请用this.EncryptAsync(result)加密, 下载经解密后可在onSuccess事件里用JSON.parse(result)还原为JavaScript对象）
@@ -719,11 +673,10 @@ var phAjax = (function($) {
             options = $.extend(defaults, options);
             if (options.pathParam !== null)
                 options.path = phUtils.addUrlParam(options.path, options.pathParam);
-            if (options.data != null && typeof options.data === 'object') {
-                if (options.trimData)
-                    options.data = phUtils.trimData(options.data);
-                if (options.processData)
-                    options.data = JSON.stringify(options.data);
+            if (options.processData && options.data != null && typeof options.data === 'object') {
+                if (options.trimDataEmptyProperty || options.trimDataLocalProperty)
+                    options.data = phUtils.trimData(options.data, options.trimDataEmptyProperty, options.trimDataLocalProperty);
+                options.data = JSON.stringify(options.data);
             }
             $.ajax({
                 type: (options.type === 'PUT' || options.type === 'PATCH' || options.type === 'DELETE') ? 'POST' : options.type,
@@ -743,14 +696,30 @@ var phAjax = (function($) {
                 data: options.encryptData ? phAjax.encrypt(options.data) : options.data,
                 success: function(result) {
                     if (typeof options.onSuccess === 'function') {
-                        options.onSuccess(options.decryptResult ? phAjax.decrypt(result) : result);
+                        if (options.decryptResult) {
+                            var s = phAjax.decrypt(result);
+                            try {
+                                options.onSuccess(JSON.parse(s));
+                            } catch (e) {
+                                options.onSuccess(s);
+                            }
+                        } else
+                            options.onSuccess(result);
                         options.onSuccess = null;
                     }
                 },
                 complete: function(XMLHttpRequest, textStatus) {
                     if (XMLHttpRequest.status === 200) {
                         if (typeof options.onSuccess === 'function') {
-                            options.onSuccess(options.decryptResult ? phAjax.decrypt(XMLHttpRequest.responseText) : XMLHttpRequest.responseText);
+                            if (options.decryptResult) {
+                                var s = phAjax.decrypt(XMLHttpRequest.responseText);
+                                try {
+                                    options.onSuccess(JSON.parse(s));
+                                } catch (e) {
+                                    options.onSuccess(s);
+                                }
+                            } else
+                                options.onSuccess(XMLHttpRequest.responseText);
                             options.onSuccess = null;
                         }
                     }
@@ -820,12 +789,8 @@ var phUtils = (function() {
             if (data != null && typeof data === 'object') {
                 var result = '';
                 for (let p in data) {
-                    if (Object.prototype.hasOwnProperty.call(data, p)) {
-                        var value = data[p];
-                        if (value == null)
-                            value = '';
-                        result += '&' + p.substring(0, 1).toLowerCase() + p.substring(1) + '=' + encodeURIComponent(value);
-                    }
+                    if (Object.prototype.hasOwnProperty.call(data, p))
+                        result += '&' + p[0].toLowerCase() + p.substring(1) + '=' + encodeURIComponent(data[p] ?? '');
                 }
                 return result === '' ? result : result.substring(1);
             }
@@ -839,19 +804,23 @@ var phUtils = (function() {
                 : url;
         },
 
-        trimData: function(data) {
+        trimData: function(data, trimDataEmptyProperty, trimDataLocalProperty) {
             if (data != null && typeof data === 'object')
                 if (data instanceof Array) {
-                    return phUtils.trimArrayData(data);
+                    return phUtils.trimArrayData(data, trimDataEmptyProperty, trimDataLocalProperty);
                 } else {
                     var result = {};
                     for (let p in data) {
                         if (Object.prototype.hasOwnProperty.call(data, p)) {
+                            if (trimDataLocalProperty && p[0] === p[0].toLowerCase())
+                                continue;
                             var value = data[p];
-                            if (value == null || value === '')
+                            if (trimDataEmptyProperty && (value == null || value === ''))
                                 continue;
                             result[p] = typeof value === 'object'
-                                ? (value instanceof Array ? phUtils.trimArrayData(value) : phUtils.trimData(value))
+                                ? (value instanceof Array
+                                    ? phUtils.trimArrayData(value, trimDataEmptyProperty, trimDataLocalProperty)
+                                    : phUtils.trimData(value, trimDataEmptyProperty, trimDataLocalProperty))
                                 : value;
                         }
                     }
@@ -860,20 +829,22 @@ var phUtils = (function() {
             return data;
         },
 
-        trimArrayData: function(array) {
+        trimArrayData: function(array, trimDataEmptyProperty, trimDataLocalProperty) {
             if (array != null && typeof array === 'object')
                 if (array instanceof Array) {
                     var result = [];
                     array.forEach((item, index) => {
                         if (item != null && item !== '')
                             result.push(typeof item === 'object'
-                                ? (item instanceof Array ? phUtils.trimArrayData(item) : phUtils.trimData(item))
+                                ? (item instanceof Array
+                                    ? phUtils.trimArrayData(item, trimDataEmptyProperty, trimDataLocalProperty)
+                                    : phUtils.trimData(item, trimDataEmptyProperty, trimDataLocalProperty))
                                 : item
                             );
                     });
                     return result;
                 } else {
-                    return phUtils.trimData(array);
+                    return phUtils.trimData(array, trimDataEmptyProperty, trimDataLocalProperty);
                 }
             return array;
         }

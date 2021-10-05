@@ -80,11 +80,12 @@ namespace Phenix.TPT.Plugin
         private async Task<bool> IsMyProject()
         {
             return await User.Identity.IsInRole(ProjectRoles.经营管理) ||
-                   await User.Identity.IsInRole(ProjectRoles.项目管理) && (Kernel == null ||
-                                                                       User.Identity.UserName == Kernel.ProjectManager ||
-                                                                       User.Identity.UserName == Kernel.DevelopManager ||
-                                                                       User.Identity.UserName == Kernel.MaintenanceManager ||
-                                                                       User.Identity.UserName == Kernel.SalesManager);
+                   Kernel == null && await User.Identity.IsInRole(ProjectRoles.项目管理) ||
+                   Kernel != null && (
+                       User.Identity.Id == Kernel.ProjectManager ||
+                       User.Identity.Id == Kernel.DevelopManager ||
+                       User.Identity.Id == Kernel.MaintenanceManager ||
+                       User.Identity.Id == Kernel.SalesManager);
         }
 
         #region Stream
@@ -125,22 +126,22 @@ namespace Phenix.TPT.Plugin
             if (executeAction == ExecuteAction.Update)
             {
                 dynamic old = tag;
-                if ((string) old.ProjectManager != Kernel.ProjectManager)
+                if ((long) old.ProjectManager != Kernel.ProjectManager)
                 {
                     SendEventForRefreshProjectWorkloads((string) old.ProjectManager);
-                    SendEventForRefreshProjectWorkloads(Kernel.ProjectManager);
+                    SendEventForRefreshProjectWorkloads(Kernel.ProjectManager.ToString());
                 }
 
-                if ((string) old.DevelopManager != Kernel.DevelopManager)
+                if ((long) old.DevelopManager != Kernel.DevelopManager)
                 {
                     SendEventForRefreshProjectWorkloads((string) old.DevelopManager);
-                    SendEventForRefreshProjectWorkloads(Kernel.DevelopManager);
+                    SendEventForRefreshProjectWorkloads(Kernel.DevelopManager.ToString());
                 }
             }
             else
             {
-                SendEventForRefreshProjectWorkloads(Kernel.ProjectManager);
-                SendEventForRefreshProjectWorkloads(Kernel.DevelopManager);
+                SendEventForRefreshProjectWorkloads(Kernel.ProjectManager.ToString());
+                SendEventForRefreshProjectWorkloads(Kernel.DevelopManager.ToString());
             }
         }
 

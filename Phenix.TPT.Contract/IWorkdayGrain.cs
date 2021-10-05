@@ -7,15 +7,14 @@ namespace Phenix.TPT.Contract
 {
     /// <summary>
     /// 工作日Grain接口
-    /// key: RootTeamsId
-    /// keyExtension: Year
+    /// key: Year
     /// </summary>
-    public interface IWorkdayGrain : Phenix.Actor.IGrain, IGrainWithIntegerCompoundKey
+    public interface IWorkdayGrain : Phenix.Actor.IGrain, IGrainWithIntegerKey
     {
         /// <summary>
-        /// 获取某年某月工作日
+        /// 获取本年度某月工作日
         /// </summary>
-        Task<short> GetWorkdays(short year, short month);
+        Task<short> GetWorkdays(short month);
 
         /// <summary>
         /// 获取本年度工作日

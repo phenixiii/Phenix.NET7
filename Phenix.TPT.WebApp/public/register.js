@@ -79,9 +79,9 @@ function register() {
             vue.password = vue.userName;
             $('#changePasswordDialog').modal('show');
         },
-        onError: function(XMLHttpRequest, textStatus) {
-            vue.registerHint = XMLHttpRequest.responseText;
-            zdalert('注册失败', XMLHttpRequest.responseText);
+        onError: function(XMLHttpRequest, textStatus, validityError) {
+            vue.registerHint = validityError != null ? validityError.Hint : XMLHttpRequest.responseText;
+            zdalert('注册失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
         },
     });
 }

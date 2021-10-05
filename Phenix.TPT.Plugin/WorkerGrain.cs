@@ -13,8 +13,7 @@ namespace Phenix.TPT.Plugin
 {
     /// <summary>
     /// 工作人员Grain
-    /// key: RootTeamsId
-    /// keyExtension: Worker
+    /// key: Worker（PH7_User.US_ID）
     /// </summary>
     public class WorkerGrain : StreamGrainBase<string>, IWorkerGrain
     {
@@ -35,25 +34,17 @@ namespace Phenix.TPT.Plugin
         /// </summary>
         protected override string[] ListenStreamNamespaces
         {
-            get { return new string[] { Standards.FormatCompoundKey(RootTeamsId, Worker) }; }
+            get { return new string[] {Worker.ToString()}; }
         }
 
         #endregion
 
         /// <summary>
-        /// 所属公司ID
-        /// </summary>
-        protected long RootTeamsId
-        {
-            get { return PrimaryKeyLong; }
-        }
-
-        /// <summary>
         /// 工作人员
         /// </summary>
-        protected string Worker
+        protected long Worker
         {
-            get { return PrimaryKeyExtension; }
+            get { return PrimaryKeyLong; }
         }
 
         private readonly SynchronizedDictionary<DateTime, IDictionary<long, ProjectWorkload>> _projectWorkloads =
@@ -86,9 +77,9 @@ namespace Phenix.TPT.Plugin
             {
                 IDictionary<long, ProjectWorkload> value = ProjectWorkload.FetchKeyValues(Database,
                     p => p.PiId,
-                    p => p.OriginateTeams == RootTeamsId && p.Worker == Worker && p.Year == year && p.Month == month);
+                    p => p.Worker == Worker && p.Year == year && p.Month == month);
                 foreach (ProjectWorkerV item in ProjectWorkerV.FetchList(Database,
-                    p => p.OriginateTeams == RootTeamsId && p.Worker == Worker && p.Year == year && p.Month == month))
+                    p => p.Worker == Worker && p.Year == year && p.Month == month))
                     if (!value.ContainsKey(item.Id))
                         value.Add(item.Id, ProjectWorkload.New(Database,
                             ProjectWorkload.Set(p => p.Year, year).
@@ -97,7 +88,7 @@ namespace Phenix.TPT.Plugin
                                 Set(p => p.PiId, item.Id).
                                 Set(p => p.ProjectName, item.ProjectName)));
                 foreach (ProjectInfo item in ProjectInfo.FetchList(Database,
-                    p => p.OriginateTeams == RootTeamsId && p.OriginateTime <= yearMonth &&
+                    p => p.OriginateTime <= yearMonth &&
                          (p.ClosedDate == null || p.ClosedDate >= yearMonth) &&
                          (p.ProjectManager == Worker || p.DevelopManager == Worker || p.MaintenanceManager == Worker)))
                     if (!value.ContainsKey(item.Id))
@@ -129,7 +120,7 @@ namespace Phenix.TPT.Plugin
                 int oldAllWorkload = 0;
                 foreach (KeyValuePair<long, ProjectWorkload> kvp in projectWorkloads)
                     oldAllWorkload = oldAllWorkload + kvp.Value.Workload;
-                int overmuchWorkload = oldAllWorkload - projectWorkload.Workload + source.Workload - await ClusterClient.GetGrain<IWorkdayGrain>(RootTeamsId, source.Year.ToString()).GetWorkdays(source.Year, source.Month);
+                int overmuchWorkload = oldAllWorkload - projectWorkload.Workload + source.Workload - await ClusterClient.GetGrain<IWorkdayGrain>(source.Year).GetWorkdays(source.Month);
                 if (overmuchWorkload > 0)
                     throw new ValidationException(String.Format("提交的{0}年{1}月{2}项目工作量相比当月工作日余量多出{3}人天!", source.Year, source.Month, source.ProjectName, overmuchWorkload));
                 

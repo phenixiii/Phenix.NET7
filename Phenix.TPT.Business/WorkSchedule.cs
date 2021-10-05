@@ -58,7 +58,7 @@ namespace Phenix.TPT.Business
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
         protected WorkSchedule(string dataSourceKey,
-            long id, short year, short month, string manager, IList<string> workers, long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime) 
+            long id, short year, short month, long manager, IList<long> workers, long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime) 
             : base(dataSourceKey)
         {
             _id = id;
@@ -113,26 +113,26 @@ namespace Phenix.TPT.Business
             set { _month = value; }
         }
 
-        private string _manager;
+        private long _manager;
         /// <summary>
         /// 管理人员
         /// </summary>
         [Display(Description = @"管理人员")]
         [Column("WS_MANAGER_WM")]
-        public string Manager
+        public long Manager
         {
             get { return _manager; }
             set { _manager = value; }
         }
 
-        //* 改写：string -> IList<string>
-        private IList<string> _workers;
+        //* 改写：string -> IList<long>
+        private IList<long> _workers;
         /// <summary>
         /// 工作人员
         /// </summary>
         [Display(Description = @"工作人员")]
         [Column("WS_WORKERS")]
-        public IList<string> Workers
+        public IList<long> Workers
         {
             get { return _workers; }
         }

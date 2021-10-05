@@ -40,9 +40,9 @@ function jumpPage() {
             else
                 window.location.href = 'index.html';
         },
-        onError: function(XMLHttpRequest, textStatus) {
-            vue.logonHint = XMLHttpRequest.responseText;
-            zdalert('获取个人资料失败', XMLHttpRequest.responseText);
+        onError: function(XMLHttpRequest, textStatus, validityError) {
+            vue.logonHint = validityError != null ? validityError.Hint : XMLHttpRequest.responseText;
+            zdalert('获取个人资料失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
         },
     });
 }
@@ -89,9 +89,9 @@ function patchMyself() {
             vue.logonHint = result;
             jumpPage();
         },
-        onError: function(XMLHttpRequest, textStatus) {
-            vue.logonHint = XMLHttpRequest.responseText;
-            zdalert('更新失败', XMLHttpRequest.responseText);
+        onError: function(XMLHttpRequest, textStatus, validityError) {
+            vue.logonHint = validityError != null ? validityError.Hint : XMLHttpRequest.responseText;
+            zdalert('更新失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
         },
     });
 }

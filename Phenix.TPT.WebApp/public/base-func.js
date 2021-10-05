@@ -133,18 +133,17 @@ var base = (function($) {
                 path: null, //路径
                 pathParam: null, //URL参数
                 data: null, //上传数据
-                trimData: false, //默认不清理data的空属性值
+                trimDataEmptyProperty: false, //默认不清理data的空属性值
+                trimDataLocalProperty: true, //默认清理data的本地添加(小驼峰法命名)属性值
                 processData: true, //默认对data参数进行序列化处理
                 encryptData: false, //默认不加密data（否则服务端请用Request.ReadBodyAsync(true)解密）
-                decryptResult:
-                    false, //默认不解密result（否则服务端请用this.EncryptAsync(result)加密, 下载经解密后可在onSuccess事件里用JSON.parse(result)还原为JavaScript对象）
+                decryptResult: false, //默认不解密result（否则服务端请用this.EncryptAsync(result)加密, 下载经解密后可在onSuccess事件里用JSON.parse(result)还原为JavaScript对象）
                 contentType: 'application/json;charset=utf-8',
                 cache: false, //默认不缓存
                 timeout: 30000, //默认超时30秒
                 async: true, //默认异步
                 onSuccess: null, //调用成功的回调函数, 参数(result)为返回的数据
-                onError:
-                    null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
                 onComplete: null, //调用完成的回调函数, 参数(XMLHttpRequest, textStatus)
             };
             options = $.extend(defaults, options);
@@ -155,7 +154,8 @@ var base = (function($) {
                 path: options.path,
                 pathParam: options.pathParam,
                 data: options.data,
-                trimData: options.trimData,
+                trimDataEmptyProperty: options.trimDataEmptyProperty,
+                trimDataLocalProperty: options.trimDataLocalProperty,
                 processData: options.processData,
                 encryptData: options.encryptData,
                 decryptResult: options.decryptResult,
@@ -213,6 +213,22 @@ var base = (function($) {
         gotoMyself: function() {
             if (window.location.href.indexOf('myself.html') === -1)
                 window.location.href = 'myself.html';
+        },
+
+        get position() {
+            return {
+                公司高层: "公司高层",
+                公司中层: "公司中层",
+                项目经理: "项目经理",
+                开发经理: "开发经理",
+                集成经理: "集成经理",
+                数据管理: "数据管理",
+                软件开发: "软件开发",
+                集成工程: "集成工程",
+                质量管理: "质量管理",
+                产品经理: "产品经理",
+                销售经理: "销售经理",
+            };
         },
 
         get projectRoles() {

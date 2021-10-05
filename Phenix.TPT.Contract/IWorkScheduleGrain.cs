@@ -7,15 +7,14 @@ namespace Phenix.TPT.Contract
 {
     /// <summary>
     /// 工作档期Grain接口
-    /// key: RootTeamsId
-    /// keyExtension: Manager
+    /// key: Manager（PH7_User.US_ID）
     /// </summary>
-    public interface IWorkScheduleGrain : Phenix.Actor.IGrain, IGrainWithIntegerCompoundKey
+    public interface IWorkScheduleGrain : Phenix.Actor.IGrain, IGrainWithIntegerKey
     {
         /// <summary>
         /// 某人某年某月是否有档期
         /// </summary>
-        Task<bool> HaveWorkSchedule(string worker, short year, short month);
+        Task<bool> HaveWorkSchedule(long worker, short year, short month);
 
         /// <summary>
         /// 获取近期工作档期

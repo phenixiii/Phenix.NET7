@@ -10,34 +10,18 @@ namespace Phenix.TPT.Plugin
 {
     /// <summary>
     /// 工作日Grain
-    /// key: RootTeamsId
-    /// keyExtension: Year
+    /// key: Year
     /// </summary>
     public class WorkdayGrain : GrainBase, IWorkdayGrain
     {
         #region 属性
 
         /// <summary>
-        /// 所属公司ID
-        /// </summary>
-        protected long RootTeamsId
-        {
-            get { return PrimaryKeyLong; }
-        }
-
-        private short? _year;
-
-        /// <summary>
         /// 年
         /// </summary>
-        protected short Year
+        protected long Year
         {
-            get
-            {
-                if (!_year.HasValue)
-                    _year = Int16.Parse(PrimaryKeyExtension);
-                return _year.Value;
-            }
+            get { return PrimaryKeyLong; }
         }
 
         private IDictionary<short, Workday> _currentYearWorkdays;
@@ -53,7 +37,7 @@ namespace Phenix.TPT.Plugin
                 {
                     IDictionary<short, Workday> currentYearWorkdays = Workday.FetchKeyValues(Database,
                         p => p.Month,
-                        p => p.OriginateTeams == RootTeamsId && p.Year == Year);
+                        p => p.Year == Year);
                     if (currentYearWorkdays.Count == 0)
                         for (short i = 1; i <= 12; i++)
                             currentYearWorkdays.Add(i, Workday.New(Database,
@@ -79,7 +63,7 @@ namespace Phenix.TPT.Plugin
                 {
                     IDictionary<short, Workday> nextYearWorkdays = Workday.FetchKeyValues(Database,
                         p => p.Month,
-                        p => p.OriginateTeams == RootTeamsId && p.Year == Year + 1);
+                        p => p.Year == Year + 1);
                     if (nextYearWorkdays.Count == 0)
                         for (short i = 1; i <= 12; i++)
                             nextYearWorkdays.Add(i, Workday.New(Database,
@@ -96,10 +80,8 @@ namespace Phenix.TPT.Plugin
 
         #region 方法
 
-        Task<short> IWorkdayGrain.GetWorkdays(short year, short month)
+        Task<short> IWorkdayGrain.GetWorkdays(short month)
         {
-            if (year < Year || year > Year + 1)
-                throw new ArgumentException(String.Format("查询的工作日仅限于{0}年和{1}年的!", year, year + 1));
             if (month < 1 || month > 12)
                 throw new ArgumentException("查询的工作日月份仅限于1-12之间!");
 

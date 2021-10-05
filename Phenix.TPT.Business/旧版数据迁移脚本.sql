@@ -1,3 +1,29 @@
+insert into PH7_User(
+  US_ID,
+  US_Name,
+  US_RegAlias,
+  US_RegTime,
+  US_Password,
+  US_RequestAddress,
+  US_Root_Teams_ID,
+  US_Teams_ID,
+  US_Position_ID
+) select 
+  US_ID,
+  US_UserNumber,
+  US_Name,
+  sysdate, --US_RegTime
+  '70925DE1792D534BD8E48510929B28D5', --US_Password：初始化口令都为NZ@20211004，升级后由员工自行更改
+  nvl(US_LoginAddress, '*'),
+  655066332286001, --US_Root_Teams_ID：公司8，导入后通过界面纠正
+  655066332286002, --US_PT_ID：软件部，导入后通过界面纠正
+  3 --US_Position_ID：项目经理，导入后通过界面纠正
+from PH_User
+where 
+   US_Locked = 0 or
+   US_ID <= 0
+
+
 insert into PT7_PROJECT_INFO(
    PI_ID,
    PI_CONT_NUMBER,
@@ -47,10 +73,10 @@ insert into PT7_PROJECT_INFO(
    nvl(PI_CONT_APPROVE_DATE, sysdate),
    PI_PROJECT_NAME,
    PI_PROJECT_TYPE_FG,
-   PI_PROJECT_MANAGER,
-   PI_DEVELOP_MANAGER,
-   PI_PROJECT_SUPERVISOR,
-   PI_SALES_MANAGER,
+   nvl((select US_ID from PH_User where PH_User.US_Name=PI_PROJECT_MANAGER), 0),
+   nvl((select US_ID from PH_User where PH_User.US_Name=PI_DEVELOP_MANAGER), 0),
+   nvl((select US_ID from PH_User where PH_User.US_Name=PI_PROJECT_SUPERVISOR), 0),
+   nvl((select US_ID from PH_User where PH_User.US_Name=PI_SALES_MANAGER), 0),
    PI_CUSTOMER, --PI_SALES_AREA
    PI_CUSTOMER,
    PI_CONT_AMOUNT,
@@ -78,7 +104,7 @@ insert into PT7_PROJECT_INFO(
    PI_MAINTENANCE_WORK_FG,
    PI_ORIGINATOR,
    PI_ORIGINATETIME,
-   652899774068004, --PI_ORIGINATE_TEAMS
+   655066332286001, --PI_ORIGINATE_TEAMS：公司8
    PI_INPUTER,
    PI_INPUTTIME,
    PI_CLOSED_DATE,

@@ -43,6 +43,7 @@ namespace Phenix.TPT.Plugin
         }
 
         [ProjectControlFilter]
+        [Authorize]
         [HttpPut]
         public async Task Put()
         {
@@ -51,6 +52,7 @@ namespace Phenix.TPT.Plugin
         }
 
         [ProjectControlFilter]
+        [Authorize]
         [HttpDelete]
         public async Task Close(long id, DateTime closedDate)
         {

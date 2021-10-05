@@ -76,10 +76,10 @@
                                         <p class="text-wrapper" v-text="(projectInfo.ContNumber??'').replace(/（/,'\n\r（')"></p>
                                     </div>
                                     <div class="panel-list-column" style="width: 6%; padding-left: 10px; margin-top: 5px; text-align: center;">
-                                        <p>{{projectInfo.ProjectManager}}</p>
+                                        <p>{{parseUserName(projectInfo.ProjectManager)}}</p>
                                     </div>
                                     <div class="panel-list-column" style="width: 6%; padding-left: 10px; margin-top: 5px; text-align: center;">
-                                        <p>{{projectInfo.DevelopManager}}</p>
+                                        <p>{{parseUserName(projectInfo.DevelopManager)}}</p>
                                     </div>
                                     <div class="panel-list-column" style="width: 9%; padding-left: 10px; margin-top: 5px; padding-right: 5px;">
                                         <i class="fa fa-tag" type="buttonon" @click="onShowMonthlyReport(projectInfo)" title="展开月报" v-if="!projectInfo.showingMonthlyReport"></i>
@@ -111,7 +111,21 @@
                                             <div class="panel-fold-info-item">
                                                 <label>项目类型:</label>
                                                 <select v-model="projectInfo.ProjectType">
-                                                    <option v-for="(item) in projectTypes" :key="item.Key" :label="item.Caption" :value="item.Value"></option>
+                                                    <option v-for="(item) in projectTypes" :value="item.Value">{{item.Caption}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div style="clear: both;">
+                                            <div class="panel-fold-info-item">
+                                                <label>项目经理:</label>
+                                                <select v-model="projectInfo.ProjectManager">
+                                                    <option v-for="(item) in projectManagers" :value="item.Id">{{item.RegAlias}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>开发经理:</label>
+                                                <select v-model="projectInfo.DevelopManager">
+                                                    <option v-for="(item) in developManagers" :value="item.Id">{{item.RegAlias}}</option>
                                                 </select>
                                             </div>
                                         </div>

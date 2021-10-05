@@ -7,10 +7,9 @@ namespace Phenix.TPT.Contract
 {
     /// <summary>
     /// 工作人员Grain接口
-    /// key: RootTeamsId
-    /// keyExtension: Worker
+    /// key: Worker（PH7_User.US_ID）
     /// </summary>
-    public interface IWorkerGrain : Phenix.Actor.IGrain, IGrainWithIntegerCompoundKey
+    public interface IWorkerGrain : Phenix.Actor.IGrain, IGrainWithIntegerKey
     {
         /// <summary>
         /// 获取某年某月项目工作量

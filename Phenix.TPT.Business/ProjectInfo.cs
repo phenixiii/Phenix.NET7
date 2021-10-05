@@ -42,7 +42,7 @@ namespace Phenix.TPT.Business
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
         protected ProjectInfo(string dataSourceKey,
-            long id, string contNumber, DateTime contApproveDate, string projectName, ProjectType projectType, string projectManager, string developManager, string maintenanceManager, string salesManager, string salesArea, string customer, decimal contAmount, decimal contMargin, string productVersion, decimal productPrice, decimal maintenancePrice, string contPayClause, string contBreachClause, string contSealingClause, string contDefensiveClause, string contDurationClause, string contAcceptanceClause, string contAcceptanceDocs, string contDocsPath, DateTime? onlinePlanDate, DateTime? onlineActualDate, DateTime? acceptDate, int? estimateWorkload, bool manageWork, bool investigateWork, bool developWork, bool testWork, bool implementWork, bool maintenanceWork, long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime, DateTime? closedDate, string currentStatus, string annualMilestone, decimal totalReceivables, decimal totalInvoiceAmount, decimal totalReimbursementAmount) 
+            long id, string contNumber, DateTime contApproveDate, string projectName, ProjectType projectType, long projectManager, long developManager, long maintenanceManager, long salesManager, string salesArea, string customer, decimal contAmount, decimal contMargin, string productVersion, decimal productPrice, decimal maintenancePrice, string contPayClause, string contBreachClause, string contSealingClause, string contDefensiveClause, string contDurationClause, string contAcceptanceClause, string contAcceptanceDocs, string contDocsPath, DateTime? onlinePlanDate, DateTime? onlineActualDate, DateTime? acceptDate, int? estimateWorkload, bool manageWork, bool investigateWork, bool developWork, bool testWork, bool implementWork, bool maintenanceWork, long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime, DateTime? closedDate, string currentStatus, string annualMilestone, decimal totalReceivables, decimal totalInvoiceAmount, decimal totalReimbursementAmount) 
             : base(dataSourceKey)
         {
             _id = id;
@@ -156,49 +156,49 @@ namespace Phenix.TPT.Business
             set { _projectType = value; }
         }
 
-        private string _projectManager;
+        private long _projectManager;
         /// <summary>
         /// 项目经理
         /// </summary>
         [Display(Description = @"项目经理")]
         [Column("PI_PROJECT_MANAGER")]
-        public string ProjectManager
+        public long ProjectManager
         {
             get { return _projectManager; }
             set { _projectManager = value; }
         }
 
-        private string _developManager;
+        private long _developManager;
         /// <summary>
         /// 开发经理
         /// </summary>
         [Display(Description = @"开发经理")]
         [Column("PI_DEVELOP_MANAGER")]
-        public string DevelopManager
+        public long DevelopManager
         {
             get { return _developManager; }
             set { _developManager = value; }
         }
 
-        private string _maintenanceManager;
+        private long _maintenanceManager;
         /// <summary>
         /// 维护经理
         /// </summary>
         [Display(Description = @"维护经理")]
         [Column("PI_MAINTENANCE_MANAGER")]
-        public string MaintenanceManager
+        public long MaintenanceManager
         {
             get { return _maintenanceManager; }
             set { _maintenanceManager = value; }
         }
 
-        private string _salesManager;
+        private long _salesManager;
         /// <summary>
         /// 客户经理
         /// </summary>
         [Display(Description = @"客户经理")]
         [Column("PI_SALES_MANAGER")]
-        public string SalesManager
+        public long SalesManager
         {
             get { return _salesManager; }
             set { _salesManager = value; }

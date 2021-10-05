@@ -1,5 +1,6 @@
 $(function() {
     fetchProjectTypes();
+    fetchProjectManagers();
     fetchProjectInfos(true);
 });
 
@@ -13,12 +14,12 @@ function isMyProject(projectInfo) {
         return false;
     return myself.Position == null ||
         myself.Position.Roles.indexOf(base.projectRoles.经营管理) >= 0 ||
-        myself.Position.Roles.indexOf(base.projectRoles.项目管理) >= 0 &&
-        (projectInfo == null ||
-            myself.Name === projectInfo.ProjectManager ||
-            myself.Name === projectInfo.DevelopManager ||
-            myself.Name === projectInfo.MaintenanceManager ||
-            myself.Name === projectInfo.SalesManager);
+        projectInfo == null && myself.Position.Roles.indexOf(base.projectRoles.项目管理) >= 0 ||
+        projectInfo != null &&
+        (myself.Id === projectInfo.ProjectManager ||
+            myself.Id === projectInfo.DevelopManager ||
+            myself.Id === projectInfo.MaintenanceManager ||
+            myself.Id === projectInfo.SalesManager);
 }
 
 function fetchProjectTypes() {
@@ -29,6 +30,30 @@ function fetchProjectTypes() {
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
             zdalert('获取项目类型失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+        },
+    });
+}
+
+function fetchProjectManagers() {
+    phAjax.getMyselfCompanyUsers({
+        onSuccess: function (result) {
+            vue.myselfCompanyUsers = result;
+            result.forEach((item, index) => {
+                if (item.Position.Name === base.position.项目经理) {
+                    vue.projectManagers.push(item);
+                    vue.developManagers.push(item);
+                }
+                else if (item.Position.Name === base.position.开发经理 || item.Position.Name === base.position.集成经理 || item.Position.Name === base.position.数据管理)
+                    vue.developManagers.push(item);
+                else if (item.Position.Name === base.position.销售经理)
+                    vue.salesManagers.push(item);
+                if (item.Position.Roles.indexOf(base.projectRoles.质保维保) >= 0)
+                    vue.maintenanceManagers.push(item);
+            });
+        },
+        onError: function(XMLHttpRequest, textStatus) {
+            vue.logonHint = XMLHttpRequest.responseText;
+            zdalert('获取公司员工资料失败', XMLHttpRequest.responseText);
         },
     });
 }
@@ -74,16 +99,15 @@ function filterProjectInfos(projectInfos) {
     vue.filteredProjectInfos.forEach((item, index) => {
         hideMonthlyReportPanel(item);
     });
+    vue.currentProjectInfo = null;
     vue.filteredProjectInfos = [];
 
-    var currentProjectId = vue.currentProjectInfo != null
-        ? vue.currentProjectInfo.Id
-        : window.localStorage.hasOwnProperty(currentProjectInfoCacheKey)
-        ? window.localStorage.getItem(currentProjectInfoCacheKey)
-        : null;
-    vue.currentProjectInfo = null;
-
     if (projectInfos != null) {
+        var currentProjectId = vue.currentProjectInfo != null
+            ? vue.currentProjectInfo.Id
+            : window.localStorage.hasOwnProperty(currentProjectInfoCacheKey)
+            ? window.localStorage.getItem(currentProjectInfoCacheKey)
+            : null;
         projectInfos.forEach((item, index) => {
             pushProjectStatuses(item.CurrentStatus);
             pushProjectStatuses(item.AnnualMilestone);
@@ -104,21 +128,33 @@ function filterProjectInfos(projectInfos) {
                 break;
             }
 
+            var queryUser = null;
+            if (vue.queryPerson != null) {
+                vue.myselfCompanyUsers.forEach((item, index) => {
+                    if (item.Name === vue.queryPerson ||
+                        item.RegAlias === vue.queryPerson) {
+                        queryUser = item;
+                        return;
+                    }
+                });
+            };
+
             if ((vue.queryName == null ||
                     item.ProjectName.indexOf(vue.queryName) >= 0 ||
                     item.Customer.indexOf(vue.queryName) >= 0 ||
                     item.SalesArea.indexOf(vue.queryName) >= 0 ||
                     item.ContNumber.indexOf(vue.queryMame) >= 0) &&
                 (vue.queryPerson == null ||
-                    item.ProjectManager === vue.queryPerson ||
-                    item.DevelopManager === vue.queryPerson ||
-                    item.MaintenanceManager === vue.queryPerson ||
-                    item.SalesManager === vue.queryPerson ||
+                    queryUser != null &&
+                    (item.ProjectManager === queryUser.Id ||
+                        item.DevelopManager === queryUser.Id ||
+                        item.MaintenanceManager === queryUser.Id ||
+                        item.SalesManager === queryUser.Id) ||
                     item.ProductVersion != null && item.ProductVersion.indexOf(vue.queryPerson) >= 0 ||
                     item.CurrentStatus != null && item.CurrentStatus.indexOf(vue.queryPerson) >= 0)) {
                 if (item.monthlyReports == null)
                     item.monthlyReports = [];
-                if (currentProjectId === item.Id)
+                if (item.Id === currentProjectId)
                     vue.currentProjectInfo = item;
                 vue.filteredProjectInfos.push(item);
             }
@@ -171,6 +207,27 @@ function addProjectInfo() {
     });
 }
 
+function putProjectInfo(projectInfo) {
+    base.call({
+        type: "PUT",
+        path: '/api/project-info',
+        data: projectInfo,
+        onSuccess: function(result) {
+            zdconfirm('成功提交资料',
+                '是否需要合上资料面板?',
+                function(result) {
+                    if (result) {
+                        hideProjectInfoPanel(projectInfo);
+                        locatingProjectInfo(projectInfo);
+                    }
+                });
+        },
+        onError: function(XMLHttpRequest, textStatus, validityError) {
+            zdalert('提交资料失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+        },
+    });
+}
+
 function closeProject(projectInfo, closedDate) {
     base.call({
         type: 'DELETE',
@@ -208,11 +265,7 @@ function nextMonthlyReport(projectInfo) {
 
     base.call({
         path: '/api/project-monthly-report',
-        pathParam: {
-            projectInfoId: projectInfo.Id,
-            year: year,
-            month: month
-        },
+        pathParam: { projectInfoId: projectInfo.Id, year: year, month: month },
         onSuccess: function(result) {
             pushProjectStatuses(result.Status);
 
@@ -231,9 +284,7 @@ function putMonthlyReport(projectInfo, monthlyReport) {
     base.call({
         type: "PUT",
         path: '/api/project-monthly-report',
-        pathParam: {
-            projectInfoId: projectInfo.Id,
-        },
+        pathParam: { projectInfoId: projectInfo.Id },
         data: monthlyReport,
         onSuccess: function(result) {
             pushProjectStatuses(monthlyReport.Status);
@@ -283,6 +334,12 @@ var vue = new Vue({
         projectStatuses: [],
         projectTypes: [],
 
+        myselfCompanyUsers: [],
+        projectManagers: [],
+        developManagers: [],
+        maintenanceManagers: [],
+        salesManagers: [],
+
         projectInfos: null,
         currentProjectInfo: null, //当前操作对象
         filteredProjectInfos: [], //用于界面绑定的projectInfos子集
@@ -291,6 +348,17 @@ var vue = new Vue({
     },
 
     methods: {
+        parseUserName: function(id) {
+            var result;
+            this.myselfCompanyUsers.forEach((item, index) => {
+                if (item.Id === id) {
+                    result = item.RegAlias;
+                    return;
+                }
+            });
+            return result;
+        },
+
         onPlusMonth: function() {
             var now = new Date();
             if (this.filterTimeInterval.year === now.getFullYear() &&
@@ -362,17 +430,17 @@ var vue = new Vue({
             return isMyProject(projectInfo);
         },
 
-        onShowProjectInfo: function (projectInfo) {
+        onShowProjectInfo: function(projectInfo) {
             this.currentProjectInfo = projectInfo;
             showProjectInfoPanel(projectInfo);
         },
 
-        onPutProjectInfo: function (projectInfo) {
-            window.localStorage.setItem(currentProjectInfoCacheKey, projectInfo.Id);
-            window.location.href = 'project-Info.html';
+        onPutProjectInfo: function(projectInfo) {
+            this.currentProjectInfo = projectInfo;
+            putProjectInfo(projectInfo);
         },
 
-        onHideProjectInfo: function (projectInfo) {
+        onHideProjectInfo: function(projectInfo) {
             hideProjectInfoPanel(projectInfo);
             locatingProjectInfo(projectInfo);
         },

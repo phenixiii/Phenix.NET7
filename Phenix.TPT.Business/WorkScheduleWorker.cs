@@ -41,7 +41,7 @@ namespace Phenix.TPT.Business
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
         protected WorkScheduleWorker(string dataSourceKey,
-            long id, long wsId, string worker) 
+            long id, long wsId, long worker) 
             : base(dataSourceKey)
         {
             _id = id;
@@ -77,13 +77,13 @@ namespace Phenix.TPT.Business
             set { _wsId = value; }
         }
 
-        private string _worker;
+        private long _worker;
         /// <summary>
         /// 工作人员
         /// </summary>
         [Display(Description = @"工作人员")]
         [Column("WW_WORKER")]
-        public string Worker
+        public long Worker
         {
             get { return _worker; }
             set { _worker = value; }

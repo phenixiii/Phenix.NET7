@@ -17,20 +17,20 @@ namespace Phenix.Services.Plugin.Security.Myself
     [ApiController]
     public sealed class CompanyUserController : Phenix.Core.Net.Api.ControllerBase
     {
+        // phAjax.getMyselfCompanyUsers()
         /// <summary>
         /// 获取公司用户资料
         /// </summary>
         /// <returns>公司用户资料</returns>
-        [CompanyAdminFilter]
         [Authorize]
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<string> Get()
         {
             return await EncryptAsync(await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).FetchCompanyUsers());
         }
 
         /// <summary>
-        /// 注册公司用户资料
+        /// 注册公司用户
         /// </summary>
         /// <param name="name">登录名</param>
         /// <param name="phone">手机(注册时可空)</param>

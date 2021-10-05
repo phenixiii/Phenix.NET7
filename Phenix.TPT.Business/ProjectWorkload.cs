@@ -50,7 +50,7 @@ namespace Phenix.TPT.Business
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
         protected ProjectWorkload(string dataSourceKey,
-            long id, short year, short month, string worker, long piId, string projectName, short manageWorkload, short investigateWorkload, short developWorkload, short testWorkload, short implementWorkload, short maintenanceWorkload, long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime) 
+            long id, short year, short month, long worker, long piId, string projectName, short manageWorkload, short investigateWorkload, short developWorkload, short testWorkload, short implementWorkload, short maintenanceWorkload, long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime) 
             : base(dataSourceKey)
         {
             _id = id;
@@ -112,13 +112,13 @@ namespace Phenix.TPT.Business
             set { _month = value; }
         }
 
-        private string _worker;
+        private long _worker;
         /// <summary>
         /// 工作人员
         /// </summary>
         [Display(Description = @"工作人员")]
         [Column("PW_WORKER_WM")]
-        public string Worker
+        public long Worker
         {
             get { return _worker; }
             set { _worker = value; }

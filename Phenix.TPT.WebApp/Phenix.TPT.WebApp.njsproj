@@ -56,9 +56,6 @@
     <Content Include="public\lib\bootstrap\bootstrap.css.map" />
     <Content Include="public\lib\bootstrap\bootstrap.min.css" />
     <Content Include="public\lib\bootstrap\bootstrap.min.css.map" />
-    <Content Include="public\lib\element\element.css" />
-    <Content Include="public\lib\element\fonts\element-icons.ttf" />
-    <Content Include="public\lib\element\fonts\element-icons.woff" />
     <Content Include="public\base-style.css" />
     <Content Include="public\favicon.ico" />
     <Content Include="public\images\legend.jpg" />
@@ -79,7 +76,6 @@
     <Content Include="public\lib\d3.v3.min.js" />
     <Content Include="public\lib\dataTool.js" />
     <Content Include="public\lib\echarts.min.js" />
-    <Content Include="public\lib\element\element.js" />
     <Content Include="public\workload.js" />
     <Content Include="public\lib\jquery.base64.js" />
     <Content Include="public\lib\jquery.cookie.js" />
@@ -110,8 +106,6 @@
   <ItemGroup>
     <Folder Include="dist\" />
     <Folder Include="public\lib\" />
-    <Folder Include="public\lib\element\" />
-    <Folder Include="public\lib\element\fonts\" />
     <Folder Include="src\" />
     <Folder Include="public\" />
     <Folder Include="public\lib\bootstrap\" />
