@@ -35,9 +35,9 @@
                 <div class="panel panel-default">
                     <div class="panel-query panel-body">
                         <label class="panel-query-item txt col-md-1">项目</label>
-                        <input class="panel-query-item txt-input col-md-4 form-control" placeholder="模糊查：项目名称/服务客户/销售区域/合同号" v-model="queryName">
+                        <input class="panel-query-item txt-input col-md-4 form-control" v-model="queryName" placeholder="项目名称/服务客户/销售区域/合同号" title="可模糊查">
                         <label class="panel-query-item txt col-md-1">负责人</label>
-                        <input class="panel-query-item txt-input col-md-4 form-control" placeholder="模糊查：负责人姓名/产品版本/当前状态" v-model="queryPerson">
+                        <input class="panel-query-item txt-input col-md-4 form-control" v-model="queryPerson" placeholder="负责人姓名/产品版本/当前状态" title="可模糊查">
                         <button class="panel-query-item btn btn-primary col-md-1" @click="onQueryProject()">查询</button>
                         <button class="panel-query-item btn btn-primary col-md-1" v-bind:disabled="!canAddProject()" @click="onAddProject()">添加</button>
                     </div>
@@ -51,29 +51,29 @@
                                         <p class="text-wrapper" v-text="projectInfo.ContApproveDate"></p>
                                     </div>
                                     <div class="panel-list-column" style="width: 15%; padding-left: 10px; margin-top: 5px; text-align: center;">
-                                        <p class="text-wrapper" v-text="(projectInfo.CurrentStatus??'')+'\n\r[ '+(projectInfo.AnnualMilestone??'') + ' ]'"></p>
+                                        <p class="text-wrapper" v-text="(projectInfo.CurrentStatus??'')+'\n\r[ '+(projectInfo.AnnualMilestone??'') + ' ]'" v-bind:title="'计划上线: ' + (projectInfo.OnlinePlanDate??'') + '\n\r实际上线: '+ (projectInfo.OnlineActualDate??'') + '\n\r验收时间: '+ (projectInfo.AcceptDate??'')"></p>
                                     </div>
                                     <div class="panel-list-column" style="width: 40%; padding-left: 10px;">
                                         <div>
-                                            <hr class="badge-chapter manage-color" v-bind:title="base.projectRoles.项目管理" v-if="projectInfo.ManageWork" />
-                                            <hr class="badge-chapter no-color" v-bind:title="base.projectRoles.项目管理" v-else />
-                                            <hr class="badge-chapter investigate-color" v-bind:title="base.projectRoles.调研分析" v-if="projectInfo.InvestigateWork" />
-                                            <hr class="badge-chapter no-color" v-bind:title="base.projectRoles.调研分析" v-else />
-                                            <hr class="badge-chapter develop-color" v-bind:title="base.projectRoles.设计开发" v-if="projectInfo.DevelopWork" />
-                                            <hr class="badge-chapter no-color" v-bind:title="base.projectRoles.设计开发" v-else />
-                                            <hr class="badge-chapter test-color" v-bind:title="base.projectRoles.测试联调" v-if="projectInfo.TestWork" />
-                                            <hr class="badge-chapter no-color" v-bind:title="base.projectRoles.测试联调" v-else />
-                                            <hr class="badge-chapter implement-color" v-bind:title="base.projectRoles.培训实施" v-if="projectInfo.ImplementWork" />
-                                            <hr class="badge-chapter no-color" v-bind:title="base.projectRoles.培训实施" v-else />
-                                            <hr class="badge-chapter maintenance-color" v-bind:title="base.projectRoles.质保维保" v-if="projectInfo.MaintenanceWork" />
-                                            <hr class="badge-chapter no-color" v-bind:title="base.projectRoles.质保维保" v-else />
+                                            <hr class="badge-chapter manage-color" title="可填报项目管理" v-if="projectInfo.ManageWork" />
+                                            <hr class="badge-chapter no-color" title="不可填报项目管理" v-else />
+                                            <hr class="badge-chapter investigate-color" title="可填报调研分析" v-if="projectInfo.InvestigateWork" />
+                                            <hr class="badge-chapter no-color" title="不可填报调研分析" v-else />
+                                            <hr class="badge-chapter develop-color" title="可填报设计开发" v-if="projectInfo.DevelopWork" />
+                                            <hr class="badge-chapter no-color" title="不可填报设计开发" v-else />
+                                            <hr class="badge-chapter test-color" title="可填报联调测试" v-if="projectInfo.TestWork" />
+                                            <hr class="badge-chapter no-color" title="不可填报联调测试" v-else />
+                                            <hr class="badge-chapter implement-color" title="可填报培训实施" v-if="projectInfo.ImplementWork" />
+                                            <hr class="badge-chapter no-color" title="不可填报培训实施" v-else />
+                                            <hr class="badge-chapter maintenance-color" title="可填报质保维保" v-if="projectInfo.MaintenanceWork" />
+                                            <hr class="badge-chapter no-color" title="不可填报质保维保" v-else />
                                         </div>
                                         <div class="panel-list-column" style="word-wrap: break-word; word-break: break-all; height: auto; width: 100%;">
-                                            <p class="text-wrapper">{{projectInfo.ProjectName}}</p>
+                                            <p class="text-wrapper" v-bind:title="'\n\r应收总额: '+ projectInfo.TotalReceivables + '\n\r开票总额: '+ projectInfo.TotalInvoiceAmount + '\n\r报销总额: '+ projectInfo.TotalReimbursementAmount">{{projectInfo.ProjectName}}</p>
                                         </div>
                                     </div>
                                     <div class="panel-list-column" style="width: 15%; padding-left: 10px; margin-top: 5px; text-align: center;">
-                                        <p class="text-wrapper" v-text="(projectInfo.ContNumber??'').replace(/（/,'\n\r（')"></p>
+                                        <p class="text-wrapper" v-text="(projectInfo.ContNumber??'').replace(/（/,'\n\r（')" v-bind:title="'销售区域: ' + (projectInfo.SalesArea??'') + '\n\r服务客户: '+ (projectInfo.Customer??'')"></p>
                                     </div>
                                     <div class="panel-list-column" style="width: 6%; padding-left: 10px; margin-top: 5px; text-align: center;">
                                         <p>{{parseUserName(projectInfo.ProjectManager)}}</p>
@@ -85,28 +85,26 @@
                                         <i class="fa fa-tag" type="buttonon" @click="onShowMonthlyReport(projectInfo)" title="展开月报" v-if="!projectInfo.showingMonthlyReport"></i>
                                         <i class="fa fa-tags" type="buttonon" @click="onHideMonthlyReport(projectInfo)" title="收起月报" v-else></i>
                                         <i class="fa fa-toggle-on" type="buttonon" @click="showCloseProjectDialog(projectInfo)" title="项目归档" v-if="!projectInfo.showingProjectInfo && canCloseProject(projectInfo)"></i>
-                                        <i class="fa fa-toggle-off" title="已归档" v-else v-if="!projectInfo.showingProjectInfo && !canCloseProject(projectInfo)"></i>
+                                        <i class="fa fa-toggle-off" title="已归档" v-else v-if="!projectInfo.showingProjectInfo && !canCloseProject(projectInfo)" v-bind:title="'关闭日期: ' + projectInfo.ClosedDate"></i>
                                         <i class="fa fa-chevron-down" type="buttonon" @click="onShowProjectInfo(projectInfo)" title="展开项目" v-if="!projectInfo.showingProjectInfo && canEditProject(projectInfo)"></i>
                                         <i class="fa fa-save" type="buttonon" @click="onPutProjectInfo(projectInfo)" title="提交项目" v-else v-if="projectInfo.showingProjectInfo && canEditProject(projectInfo)"></i>
                                         <i class="fa fa-chevron-up" type="buttonon" @click="onHideProjectInfo(projectInfo)" title="收起项目" v-else v-if="projectInfo.showingProjectInfo"></i>
                                     </div>
                                 </div>
-                                <div class="panel panel-fold" v-show="projectInfo.showingProjectInfo">
+                                <div class="panel panel-fold" style="height: 2436px;" v-show="projectInfo.showingProjectInfo">
                                     <div class="panel-fold-info">
                                         <div style="clear: both;">
                                             <div class="panel-fold-info-item">
                                                 <label>合 同 号:</label>
-                                                <input v-model="projectInfo.ContNumber">
+                                                <input v-model.trim="projectInfo.ContNumber">
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>流转日期:</label>
                                                 <input type="date" v-model="projectInfo.ContApproveDate">
                                             </div>
-                                        </div>
-                                        <div style="clear: both;">
                                             <div class="panel-fold-info-item">
                                                 <label>项目名称:</label>
-                                                <input v-model="projectInfo.ProjectName">
+                                                <input v-model.trim="projectInfo.ProjectName">
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>项目类型:</label>
@@ -114,8 +112,6 @@
                                                     <option v-for="(item) in projectTypes" :value="item.Value">{{item.Caption}}</option>
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div style="clear: both;">
                                             <div class="panel-fold-info-item">
                                                 <label>项目经理:</label>
                                                 <select v-model="projectInfo.ProjectManager">
@@ -128,12 +124,125 @@
                                                     <option v-for="(item) in developManagers" :value="item.Id">{{item.RegAlias}}</option>
                                                 </select>
                                             </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>维护经理:</label>
+                                                <select v-model="projectInfo.MaintenanceManager">
+                                                    <option v-for="(item) in maintenanceManagers" :value="item.Id">{{item.RegAlias}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>客户经理:</label>
+                                                <select v-model="projectInfo.SalesManager">
+                                                    <option v-for="(item) in salesManagers" :value="item.Id">{{item.RegAlias}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>销售区域:</label>
+                                                <datalist id="sales-areas">
+                                                    <option v-for="item in salesAreas">{{item}}</option>
+                                                </datalist>
+                                                <input type="search" list="sales-areas" v-model="projectInfo.SalesArea" @blur="projectInfo.SalesArea=$event.target.value">
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>服务客户:</label>
+                                                <datalist id="customers">
+                                                    <option v-for="item in customers">{{item}}</option>
+                                                </datalist>
+                                                <input type="search" list="customers" v-model="projectInfo.Customer" @blur="projectInfo.Customer=$event.target.value">
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>合同金额:</label>
+                                                <input type="number" v-model.number="projectInfo.ContAmount">
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>合同毛利:</label>
+                                                <input type="number" v-model.number="projectInfo.ContMargin">
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>产品版本:</label>
+                                                <input v-model.trim="projectInfo.ProductVersion">
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>产品价格:</label>
+                                                <input type="number" v-model.number="projectInfo.ProductPrice">
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>计划上线:</label>
+                                                <input type="date" v-model="projectInfo.OnlinePlanDate">
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>实际上线:</label>
+                                                <input type="date" v-model="projectInfo.OnlineActualDate">
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>验收时间:</label>
+                                                <input type="date" v-model="projectInfo.AcceptDate">
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>维保价格:</label>
+                                                <input type="number" v-model.number="projectInfo.MaintenancePrice">
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>估算人天:</label>
+                                                <input type="number" v-model.number="projectInfo.EstimateWorkload">
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(128, 100, 162);">
+                                                    <input type="checkbox" v-model="projectInfo.ManageWork">项目管理
+                                                </label>
+                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(0, 112, 192);">
+                                                    <input type="checkbox" v-model="projectInfo.InvestigateWork">调研分析
+                                                </label>
+                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(247, 150, 70);">
+                                                    <input type="checkbox" v-model="projectInfo.DevelopWork">设计开发
+                                                </label>
+                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(255, 255, 0);">
+                                                    <input type="checkbox" v-model="projectInfo.TestWork">联调测试
+                                                </label>
+                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(0, 176, 240);">
+                                                    <input type="checkbox" v-model="projectInfo.ImplementWork">培训实施
+                                                </label>
+                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(146, 208, 80);">
+                                                    <input type="checkbox" v-model="projectInfo.MaintenanceWork">质保维保
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div style="clear: both;">
+                                            <label>合同内容</label>
+                                        </div>
+                                        <div class="panel-fold-area" style="width: 100%;">
+                                            <span>违约条款</span>
+                                            <textarea v-model="projectInfo.ContPayClause"></textarea>
+                                        </div>
+                                        <div class="panel-fold-area" style="width: 100%;">
+                                            <span>违约条款</span>
+                                            <textarea v-model="projectInfo.ContBreachClause"></textarea>
+                                        </div>
+                                        <div class="panel-fold-area" style="width: 100%;">
+                                            <span>封闭性条款</span>
+                                            <textarea v-model="projectInfo.ContSealingClause"></textarea>
+                                        </div>
+                                        <div class="panel-fold-area" style="width: 100%;">
+                                            <span>防御性条款</span>
+                                            <textarea v-model="projectInfo.ContDefensiveClause"></textarea>
+                                        </div>
+                                        <div class="panel-fold-area" style="width: 100%;">
+                                            <span>里程碑要求</span>
+                                            <textarea v-model="projectInfo.ContDurationClause"></textarea>
+                                        </div>
+                                        <div class="panel-fold-area" style="width: 100%;">
+                                            <span>验收条款</span>
+                                            <textarea v-model="projectInfo.ContAcceptanceClause"></textarea>
+                                        </div>
+                                        <div class="panel-fold-area" style="width: 100%;">
+                                            <span>验收文档</span>
+                                            <textarea v-model="projectInfo.ContAcceptanceDocs"></textarea>
                                         </div>
                                     </div>
-                                </div>
+                                 </div>
                                 <ul class="panel" v-show="projectInfo.showingMonthlyReport">
                                     <li v-for="(monthlyReport, index) in projectInfo.monthlyReports">
-                                        <div class="panel panel-fold">
+                                        <div class="panel panel-fold" style="height: 310px;">
                                             <div>
                                                 <div class="panel-fold-header-item" style="width: 7%;">
                                                     <input v-bind:readonly="true" v-model="monthlyReport.Month">

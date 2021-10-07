@@ -63,6 +63,16 @@ function pushProjectStatuses(status) {
         vue.projectStatuses.push(status);
 }
 
+function pushSalesAreas(salesArea) {
+    if (!vue.salesAreas.includes(salesArea))
+        vue.salesAreas.push(salesArea);
+}
+
+function pushCustomers(customer) {
+    if (!vue.customers.includes(customer))
+        vue.customers.push(customer);
+}
+
 function locatingProjectInfo(projectInfo) {
     if (projectInfo != null) {
         var offsetTop = $('#' + projectInfo.Id).offset().top; // :id="projectInfo.Id"
@@ -111,7 +121,19 @@ function filterProjectInfos(projectInfos) {
         projectInfos.forEach((item, index) => {
             pushProjectStatuses(item.CurrentStatus);
             pushProjectStatuses(item.AnnualMilestone);
-            item.ContApproveDate = new Date(item.ContApproveDate).format('yyyy-MM-dd');
+            pushSalesAreas(item.SalesArea);
+            pushCustomers(item.Customer);
+
+            if (item.ContApproveDate != null)
+                item.ContApproveDate = new Date(item.ContApproveDate).format('yyyy-MM-dd');
+            if (item.OnlinePlanDate != null)
+                item.OnlinePlanDate = new Date(item.OnlinePlanDate).format('yyyy-MM-dd');
+            if (item.OnlineActualDate != null)
+                item.OnlineActualDate = new Date(item.OnlineActualDate).format('yyyy-MM-dd');
+            if (item.AcceptDate != null)
+                item.AcceptDate = new Date(item.AcceptDate).format('yyyy-MM-dd');
+            if (item.ClosedDate != null)
+                item.ClosedDate = new Date(item.ClosedDate).format('yyyy-MM-dd');
 
             switch (vue.filterState) {
             case 0: //显示当月自己负责项目
@@ -212,7 +234,10 @@ function putProjectInfo(projectInfo) {
         type: "PUT",
         path: '/api/project-info',
         data: projectInfo,
-        onSuccess: function(result) {
+        onSuccess: function (result) {
+            pushSalesAreas(projectInfo.SalesArea);
+            pushCustomers(projectInfo.Customer);
+
             zdconfirm('成功提交资料',
                 '是否需要合上资料面板?',
                 function(result) {
@@ -331,8 +356,11 @@ var vue = new Vue({
         queryName: window.localStorage.hasOwnProperty(queryNameCacheKey) ? window.localStorage.getItem(queryNameCacheKey) : null,
         queryPerson: window.localStorage.hasOwnProperty(queryPersonCacheKey) ? window.localStorage.getItem(queryPersonCacheKey) : null,
 
-        projectStatuses: [],
         projectTypes: [],
+
+        projectStatuses: [],
+        salesAreas: [],
+        customers: [],
 
         myselfCompanyUsers: [],
         projectManagers: [],
