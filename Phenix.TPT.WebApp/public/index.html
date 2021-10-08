@@ -82,8 +82,8 @@
                                         <p>{{parseUserName(projectInfo.DevelopManager)}}</p>
                                     </div>
                                     <div class="panel-list-column" style="width: 9%; padding-left: 10px; margin-top: 5px; padding-right: 5px;">
-                                        <i class="fa fa-tag" type="buttonon" @click="onShowMonthlyReport(projectInfo)" title="展开月报" v-if="!projectInfo.showingMonthlyReport"></i>
-                                        <i class="fa fa-tags" type="buttonon" @click="onHideMonthlyReport(projectInfo)" title="收起月报" v-else></i>
+                                        <i class="fa fa-tag" type="buttonon" @click="onShowPlan(projectInfo)" title="展开计划" v-if="!projectInfo.showingPlan"></i>
+                                        <i class="fa fa-tags" type="buttonon" @click="onHidePlan(projectInfo)" title="收起计划" v-else></i>
                                         <i class="fa fa-toggle-on" type="buttonon" @click="showCloseProjectDialog(projectInfo)" title="项目归档" v-if="!projectInfo.showingProjectInfo && canCloseProject(projectInfo)"></i>
                                         <i class="fa fa-toggle-off" title="已归档" v-else v-if="!projectInfo.showingProjectInfo && !canCloseProject(projectInfo)" v-bind:title="'关闭日期: ' + projectInfo.ClosedDate"></i>
                                         <i class="fa fa-chevron-down" type="buttonon" @click="onShowProjectInfo(projectInfo)" title="展开项目" v-if="!projectInfo.showingProjectInfo && canEditProject(projectInfo)"></i>
@@ -94,6 +94,30 @@
                                 <div class="panel panel-fold" style="height: 2436px;" v-show="projectInfo.showingProjectInfo">
                                     <div class="panel-fold-info">
                                         <div style="clear: both;">
+                                            <div class="panel-fold-info-item">
+                                                <label>估算人天:</label>
+                                                <input type="number" v-model.number="projectInfo.EstimateWorkload">
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(128, 100, 162);">
+                                                    <input type="checkbox" v-model="projectInfo.ManageWork">项目管理
+                                                </label>
+                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(0, 112, 192);">
+                                                    <input type="checkbox" v-model="projectInfo.InvestigateWork">调研分析
+                                                </label>
+                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(247, 150, 70);">
+                                                    <input type="checkbox" v-model="projectInfo.DevelopWork">设计开发
+                                                </label>
+                                                <label style="margin: 1% 0% 1% 0%; color: #717171; background-color: rgb(255, 255, 0); ">
+                                                    <input type="checkbox" v-model="projectInfo.TestWork">联调测试
+                                                </label>
+                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(0, 176, 240);">
+                                                    <input type="checkbox" v-model="projectInfo.ImplementWork">培训实施
+                                                </label>
+                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(146, 208, 80);">
+                                                    <input type="checkbox" v-model="projectInfo.MaintenanceWork">质保维保
+                                                </label>
+                                            </div>
                                             <div class="panel-fold-info-item">
                                                 <label>合 同 号:</label>
                                                 <input v-model.trim="projectInfo.ContNumber">
@@ -182,36 +206,12 @@
                                                 <label>维保价格:</label>
                                                 <input type="number" v-model.number="projectInfo.MaintenancePrice">
                                             </div>
-                                            <div class="panel-fold-info-item">
-                                                <label>估算人天:</label>
-                                                <input type="number" v-model.number="projectInfo.EstimateWorkload">
-                                            </div>
-                                            <div class="panel-fold-info-item">
-                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(128, 100, 162);">
-                                                    <input type="checkbox" v-model="projectInfo.ManageWork">项目管理
-                                                </label>
-                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(0, 112, 192);">
-                                                    <input type="checkbox" v-model="projectInfo.InvestigateWork">调研分析
-                                                </label>
-                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(247, 150, 70);">
-                                                    <input type="checkbox" v-model="projectInfo.DevelopWork">设计开发
-                                                </label>
-                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(255, 255, 0);">
-                                                    <input type="checkbox" v-model="projectInfo.TestWork">联调测试
-                                                </label>
-                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(0, 176, 240);">
-                                                    <input type="checkbox" v-model="projectInfo.ImplementWork">培训实施
-                                                </label>
-                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(146, 208, 80);">
-                                                    <input type="checkbox" v-model="projectInfo.MaintenanceWork">质保维保
-                                                </label>
-                                            </div>
                                         </div>
                                         <div style="clear: both;">
-                                            <label>合同内容</label>
+                                            <label>合同精要</label>
                                         </div>
                                         <div class="panel-fold-area" style="width: 100%;">
-                                            <span>违约条款</span>
+                                            <span>付款条款</span>
                                             <textarea v-model="projectInfo.ContPayClause"></textarea>
                                         </div>
                                         <div class="panel-fold-area" style="width: 100%;">
@@ -239,47 +239,71 @@
                                             <textarea v-model="projectInfo.ContAcceptanceDocs"></textarea>
                                         </div>
                                     </div>
-                                 </div>
-                                <ul class="panel" v-show="projectInfo.showingMonthlyReport">
-                                    <li v-for="(monthlyReport, index) in projectInfo.monthlyReports">
-                                        <div class="panel panel-fold" style="height: 310px;">
+                                </div>
+                                <ul class="panel" v-show="projectInfo.showingPlan">
+                                    <li v-for="(annualPlan, annualPlanIndex) in projectInfo.annualPlans">
+                                        <div class="panel panel-fold" style="height: 80px;">
                                             <div>
                                                 <div class="panel-fold-header-item" style="width: 7%;">
-                                                    <input v-bind:readonly="true" v-model="monthlyReport.Month">
+                                                    <input v-bind:readonly="true" v-model="annualPlan.Year">
                                                 </div>
                                                 <div class="panel-fold-header-item" style="width: 15%;">
-                                                    <datalist id="project-statuses">
+                                                    <datalist id="annual-milestone">
                                                         <option v-for="item in projectStatuses">{{item}}</option>
                                                     </datalist>
-                                                    <input type="search" list="project-statuses" placeholder="填写/选择：项目状态" v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.Status" @blur="monthlyReport.Status=$event.target.value">
+                                                    <input type="search" list="annual-milestone" placeholder="填写/选择：年里程碑" v-bind:readonly="!canPutAnnualPlan(projectInfo, annualPlan)" v-model="annualPlan.AnnualMilestone" @blur="annualPlan.AnnualMilestone=$event.target.value">
                                                 </div>
-                                                <i class="fa fa-save" type="buttonon" @click="onPutMonthlyReport(projectInfo, monthlyReport)" title="提交月报" v-show="canPutMonthlyReport(projectInfo, monthlyReport)"></i>
+                                                <i class="fa fa-save" type="buttonon" @click="onPutAnnualPlan(projectInfo, annualPlan)" title="提交年度计划" v-show="canPutAnnualPlan(projectInfo, annualPlan)"></i>
                                             </div>
                                             <div style="clear: both;">
-                                                <div class="panel-fold-area" style="width: 22%; margin-right: 1%;">
-                                                    <span>月度计划</span>
-                                                    <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.MonthlyPlan"></textarea>
+                                                <div class="panel-fold-info-item">
+                                                    <label>年应收款:</label>
+                                                    <input type="number" v-model.number="annualPlan.AnnualReceivables">
                                                 </div>
-                                                <div class="panel-fold-area" style="width: 22%; margin-right: 1%;">
-                                                    <span>实绩完成</span>
-                                                    <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.MonthlyAchieve"></textarea>
-                                                </div>
-                                                <div class="panel-fold-area" style="width: 22%; margin-right: 1%;">
-                                                    <span>下月计划</span>
-                                                    <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.NextMonthlyPlan"></textarea>
-                                                </div>
-                                                <div class="panel-fold-area" style="width: 10%; margin-right: 1%;">
-                                                    <span>风险警示</span>
-                                                    <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.RiskCaution"></textarea>
-                                                </div>
-                                                <div class="panel-fold-area" style="width: 20%;">
-                                                    <span>协调需求</span>
-                                                    <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.DemandCoordination"></textarea>
-                                                </div>
-                                                <i class="fa fa-chevron-down" type="buttonon" @click="onNextMonthlyReport(projectInfo)" title="以往月报" v-show="index===projectInfo.monthlyReports.length-1"></i>
-                                                <i class="fa fa-chevron-up" type="buttonon" @click="onHideMonthlyReport(projectInfo)" title="收起月报"></i>
                                             </div>
                                         </div>
+                                        <ul class="panel">
+                                            <li v-for="(monthlyReport, monthlyReportIndex) in annualPlan.monthlyReports">
+                                                <div class="panel panel-fold" style="height: 310px;">
+                                                    <div>
+                                                        <div class="panel-fold-header-item" style="width: 7%;">
+                                                            <input v-bind:readonly="true" v-model="monthlyReport.Month">
+                                                        </div>
+                                                        <div class="panel-fold-header-item" style="width: 15%;">
+                                                            <datalist id="project-statuses">
+                                                                <option v-for="item in projectStatuses">{{item}}</option>
+                                                            </datalist>
+                                                            <input type="search" list="project-statuses" placeholder="填写/选择：项目状态" v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.Status" @blur="monthlyReport.Status=$event.target.value">
+                                                        </div>
+                                                        <i class="fa fa-save" type="buttonon" @click="onPutMonthlyReport(projectInfo, monthlyReport)" title="提交月报" v-show="canPutMonthlyReport(projectInfo, monthlyReport)"></i>
+                                                    </div>
+                                                    <div style="clear: both;">
+                                                        <div class="panel-fold-area" style="width: 22%; margin-right: 1%;">
+                                                            <span>月度计划</span>
+                                                            <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.MonthlyPlan"></textarea>
+                                                        </div>
+                                                        <div class="panel-fold-area" style="width: 22%; margin-right: 1%;">
+                                                            <span>实绩完成</span>
+                                                            <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.MonthlyAchieve"></textarea>
+                                                        </div>
+                                                        <div class="panel-fold-area" style="width: 22%; margin-right: 1%;">
+                                                            <span>下月计划</span>
+                                                            <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.NextMonthlyPlan"></textarea>
+                                                        </div>
+                                                        <div class="panel-fold-area" style="width: 10%; margin-right: 1%;">
+                                                            <span>风险警示</span>
+                                                            <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.RiskCaution"></textarea>
+                                                        </div>
+                                                        <div class="panel-fold-area" style="width: 20%;">
+                                                            <span>协调需求</span>
+                                                            <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.DemandCoordination"></textarea>
+                                                        </div>
+                                                        <i class="fa fa-chevron-down" type="buttonon" @click="onNextMonthlyReport(projectInfo, annualPlan)" title="以往计划" v-show="monthlyReportIndex===annualPlan.monthlyReports.length-1 && annualPlanIndex===projectInfo.annualPlans.length-1"></i>
+                                                        <i class="fa fa-chevron-up" type="buttonon" @click="onHidePlan(projectInfo)" title="收起计划"></i>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </li>
                                 </ul>
                             </div>

@@ -36,20 +36,25 @@ function fetchProjectTypes() {
 
 function fetchProjectManagers() {
     phAjax.getMyselfCompanyUsers({
-        onSuccess: function (result) {
+        onSuccess: function(result) {
             vue.myselfCompanyUsers = result;
             result.forEach((item, index) => {
                 if (item.Position.Name === base.position.项目经理) {
                     vue.projectManagers.push(item);
                     vue.developManagers.push(item);
-                }
-                else if (item.Position.Name === base.position.开发经理 || item.Position.Name === base.position.集成经理 || item.Position.Name === base.position.数据管理)
+                } else if (item.Position.Name === base.position.开发经理 ||
+                    item.Position.Name === base.position.集成经理 ||
+                    item.Position.Name === base.position.数据管理)
                     vue.developManagers.push(item);
                 else if (item.Position.Name === base.position.销售经理)
                     vue.salesManagers.push(item);
                 if (item.Position.Roles.indexOf(base.projectRoles.质保维保) >= 0)
                     vue.maintenanceManagers.push(item);
             });
+
+            if (vue.queryPerson != null && vue.projectInfos != null)
+                filterProjectInfos(vue.projectInfos); //如果有按负责人姓名查询的可能性则要等获取到公司员工资料后再执行本函数
+            vue.$forceUpdate();
         },
         onError: function(XMLHttpRequest, textStatus) {
             vue.logonHint = XMLHttpRequest.responseText;
@@ -97,17 +102,20 @@ function hideCloseProjectDialog() {
     $('#closeProjectDialog').modal('hide'); //id="closeProjectDialog"
 }
 
-function showMonthlyReportPanel(projectInfo) {
-    Vue.set(projectInfo, 'showingMonthlyReport', true);
+function showPlanPanel(projectInfo) {
+    Vue.set(projectInfo, 'showingPlan', true);
 }
 
-function hideMonthlyReportPanel(projectInfo) {
-    Vue.delete(projectInfo, 'showingMonthlyReport');
+function hidePlanPanel(projectInfo) {
+    Vue.delete(projectInfo, 'showingPlan');
 }
 
 function filterProjectInfos(projectInfos) {
+    if (vue.queryPerson != null && vue.myselfCompanyUsers == null) //如果有按负责人姓名查询的可能性则要等获取到公司员工资料后再执行本函数
+        return;
+
     vue.filteredProjectInfos.forEach((item, index) => {
-        hideMonthlyReportPanel(item);
+        hidePlanPanel(item);
     });
     vue.currentProjectInfo = null;
     vue.filteredProjectInfos = [];
@@ -151,7 +159,7 @@ function filterProjectInfos(projectInfos) {
             }
 
             var queryUser = null;
-            if (vue.queryPerson != null) {
+            if (vue.queryPerson != null)
                 vue.myselfCompanyUsers.forEach((item, index) => {
                     if (item.Name === vue.queryPerson ||
                         item.RegAlias === vue.queryPerson) {
@@ -159,7 +167,6 @@ function filterProjectInfos(projectInfos) {
                         return;
                     }
                 });
-            };
 
             if ((vue.queryName == null ||
                     item.ProjectName.indexOf(vue.queryName) >= 0 ||
@@ -174,8 +181,8 @@ function filterProjectInfos(projectInfos) {
                         item.SalesManager === queryUser.Id) ||
                     item.ProductVersion != null && item.ProductVersion.indexOf(vue.queryPerson) >= 0 ||
                     item.CurrentStatus != null && item.CurrentStatus.indexOf(vue.queryPerson) >= 0)) {
-                if (item.monthlyReports == null)
-                    item.monthlyReports = [];
+                if (item.annualPlans == null)
+                    item.annualPlans = [];
                 if (item.Id === currentProjectId)
                     vue.currentProjectInfo = item;
                 vue.filteredProjectInfos.push(item);
@@ -217,7 +224,7 @@ function addProjectInfo() {
     base.call({
         path: '/api/project-info',
         onSuccess: function(result) {
-            result.monthlyReports = [];
+            result.annualPlans = [];
             vue.currentProjectInfo = result;
             vue.filteredProjectInfos.unshift(result);
             vue.projectInfos.unshift(result);
@@ -270,34 +277,86 @@ function closeProject(projectInfo, closedDate) {
     });
 }
 
-function nextMonthlyReport(projectInfo) {
+function nextAnnualPlan(projectInfo) {
     var year;
-    var month;
-    if (projectInfo.monthlyReports.length > 0) {
-        var monthlyReport = projectInfo.monthlyReports[projectInfo.monthlyReports.length - 1];
-        if (monthlyReport.Month === 1) {
-            year = monthlyReport.Year - 1;
-            month = 12;
-        } else {
-            year = monthlyReport.Year;
-            month = monthlyReport.Month - 1;
-        }
-    } else {
+    if (projectInfo.annualPlans.length > 0)
+        year = projectInfo.annualPlans[projectInfo.annualPlans.length - 1].Year - 1;
+    else {
         var date = projectInfo.ClosedDate != null ? new Date(projectInfo.ClosedDate) : new Date();
         year = date.getFullYear();
-        month = date.getMonth() + 1;
+    }
+
+    base.call({
+        path: '/api/project-annual-plan',
+        pathParam: { projectId: projectInfo.Id, year: year },
+        onSuccess: function(result) {
+            pushProjectStatuses(result.AnnualMilestone);
+
+            result.monthlyReports = [];
+            projectInfo.annualPlans.push(result);
+            vue.$forceUpdate();
+
+            nextMonthlyReport(projectInfo, result);
+        },
+        onError: function(XMLHttpRequest, textStatus, validityError) {
+            zdalert('获取年度计划失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+        },
+    });
+}
+
+function putAnnualPlan(projectInfo, annualPlan) {
+    base.call({
+        type: "PUT",
+        path: '/api/project-annual-plan',
+        pathParam: { projectId: projectInfo.Id },
+        data: annualPlan,
+        onSuccess: function(result) {
+            pushProjectStatuses(annualPlan.AnnualMilestone);
+
+            var now = new Date();
+            if (annualPlan.Year === now.getFullYear())
+                Vue.set(projectInfo, 'AnnualMilestone', annualPlan.AnnualMilestone);
+
+            zdconfirm('成功提交年度计划',
+                '是否需要合上计划面板?',
+                function(result) {
+                    if (result) {
+                        hidePlanPanel(projectInfo);
+                        locatingProjectInfo(projectInfo);
+                    }
+                });
+        },
+        onError: function(XMLHttpRequest, textStatus, validityError) {
+            zdalert('提交年度计划失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+        },
+    });
+}
+
+function nextMonthlyReport(projectInfo, annualPlan) {
+    var year = annualPlan.Year;
+    var month;
+    if (annualPlan.monthlyReports.length > 0) {
+        var monthlyReport = annualPlan.monthlyReports[annualPlan.monthlyReports.length - 1];
+        if (monthlyReport.Month === 1) {
+            nextAnnualPlan(projectInfo);
+            return;
+        }
+        month = monthlyReport.Month - 1;
+    } else {
+        var date = projectInfo.ClosedDate != null ? new Date(projectInfo.ClosedDate) : new Date();
+        month = year === date.getFullYear() ? date.getMonth() + 1 : 12;
     }
 
     base.call({
         path: '/api/project-monthly-report',
-        pathParam: { projectInfoId: projectInfo.Id, year: year, month: month },
+        pathParam: { projectId: projectInfo.Id, year: year, month: month },
         onSuccess: function(result) {
             pushProjectStatuses(result.Status);
 
-            projectInfo.monthlyReports.push(result);
+            annualPlan.monthlyReports.push(result);
             vue.$forceUpdate();
 
-            showMonthlyReportPanel(projectInfo);
+            showPlanPanel(projectInfo);
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
             zdalert('获取月报失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
@@ -309,7 +368,7 @@ function putMonthlyReport(projectInfo, monthlyReport) {
     base.call({
         type: "PUT",
         path: '/api/project-monthly-report',
-        pathParam: { projectInfoId: projectInfo.Id },
+        pathParam: { projectId: projectInfo.Id },
         data: monthlyReport,
         onSuccess: function(result) {
             pushProjectStatuses(monthlyReport.Status);
@@ -320,10 +379,10 @@ function putMonthlyReport(projectInfo, monthlyReport) {
                 Vue.set(projectInfo, 'CurrentStatus', monthlyReport.Status);
 
             zdconfirm('成功提交月报',
-                '是否需要合上月报面板?',
+                '是否需要合上计划面板?',
                 function(result) {
                     if (result) {
-                        hideMonthlyReportPanel(projectInfo);
+                        hidePlanPanel(projectInfo);
                         locatingProjectInfo(projectInfo);
                     }
                 });
@@ -362,7 +421,7 @@ var vue = new Vue({
         salesAreas: [],
         customers: [],
 
-        myselfCompanyUsers: [],
+        myselfCompanyUsers: null,
         projectManagers: [],
         developManagers: [],
         maintenanceManagers: [],
@@ -377,13 +436,14 @@ var vue = new Vue({
 
     methods: {
         parseUserName: function(id) {
-            var result;
-            this.myselfCompanyUsers.forEach((item, index) => {
-                if (item.Id === id) {
-                    result = item.RegAlias;
-                    return;
-                }
-            });
+            var result = null;
+            if (this.myselfCompanyUsers != null)
+                this.myselfCompanyUsers.forEach((item, index) => {
+                    if (item.Id === id) {
+                        result = item.RegAlias;
+                        return;
+                    }
+                });
             return result;
         },
 
@@ -496,30 +556,44 @@ var vue = new Vue({
             closeProject(this.currentProjectInfo, this.closedDate);
         },
 
-        onShowMonthlyReport: function(projectInfo) {
+        onShowPlan: function(projectInfo) {
             this.currentProjectInfo = projectInfo;
-            if (projectInfo.monthlyReports.length === 0)
-                nextMonthlyReport(projectInfo);
+            if (projectInfo.annualPlans.length === 0)
+                nextAnnualPlan(projectInfo);
             else
-                showMonthlyReportPanel(projectInfo);
+                showPlanPanel(projectInfo);
         },
 
-        onNextMonthlyReport: function(projectInfo) {
+        onHidePlan: function(projectInfo) {
             this.currentProjectInfo = projectInfo;
-            nextMonthlyReport(projectInfo);
-        },
-
-        onHideMonthlyReport: function(projectInfo) {
-            this.currentProjectInfo = projectInfo;
-            hideMonthlyReportPanel(projectInfo);
+            hidePlanPanel(projectInfo);
             locatingProjectInfo(projectInfo);
+        },
+
+        canPutAnnualPlan: function(projectInfo, annualPlan) {
+            if (!isMyProject(projectInfo))
+                return false;
+            var now = new Date();
+            if (projectInfo.ClosedDate != null && new Date(projectInfo.ClosedDate) < now.setDate(1)) //上月或更久已关闭项目
+                return false;
+            return new Date(annualPlan.Year + 1, 1, 1) >= now; //今年或之后的年度计划
+        },
+
+        onPutAnnualPlan: function(projectInfo, annualPlan) {
+            this.currentProjectInfo = projectInfo;
+            putAnnualPlan(projectInfo, annualPlan);
+        },
+
+        onNextMonthlyReport: function(projectInfo, annualPlan) {
+            this.currentProjectInfo = projectInfo;
+            nextMonthlyReport(projectInfo, annualPlan);
         },
 
         canPutMonthlyReport: function(projectInfo, monthlyReport) {
             if (!isMyProject(projectInfo))
                 return false;
             var now = new Date();
-            if (projectInfo.ClosedDate != null && new Date(projectInfo.ClosedDate) < now.setDate(1)) // 上月或更久已关闭项目
+            if (projectInfo.ClosedDate != null && new Date(projectInfo.ClosedDate) < now.setDate(1)) //上月或更久已关闭项目
                 return false;
             return new Date(monthlyReport.Year, monthlyReport.Month, 1) >= now.setMonth(now.getMonth() - 1, 1); //上月或之后的月报
         },

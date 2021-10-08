@@ -63,7 +63,6 @@
     <Content Include="public\register.html" />
     <Content Include="public\login.html" />
     <Content Include="public\index.html" />
-    <Content Include="public\project-info.html" />
     <Content Include="public\schedule.html" />
     <Content Include="public\base-func.js" />
     <Content Include="public\statistic.js" />
@@ -93,7 +92,6 @@
     <Content Include="public\register.js" />
     <Content Include="public\login.js" />
     <Content Include="public\index.js" />
-    <Content Include="public\project-info.js" />
     <Content Include="public\schedule.js" />
     <Content Include="public\account.js" />
     <Content Include="public\account.html" />

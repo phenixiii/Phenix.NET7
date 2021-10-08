@@ -45,18 +45,30 @@ namespace Phenix.Services.Host
                             }).Ignore();
                         }
             };
-            
-            Console.WriteLine("设为调试状态（正式环境下请注释掉）");
+
+#if DEBUG
             AppRun.Debugging = true;
+            Console.WriteLine("调试状态（Phenix.Core.AppRun.Debugging)为: {0}（正式环境下请关闭）", AppRun.Debugging);
+#endif
+            try
+            {
+                Console.WriteLine("正在从缺省数据库加载数据字典到本地以便加快服务的响应速度...");
+                Console.WriteLine("缺省数据库（Phenix.Core.Data.Database.Default.DataSource）为：{0}", Database.Default.DataSource);
+                Database.Default.MetaData.FillingCache();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                Console.WriteLine("请检查当前目录下配置库（Phenix.Core.db文件）中数据库连接串(DataSourceKey：{0})是否正确！", Database.Default.DataSourceKey);
+                Console.ReadLine();
+                return;
+            }
 
-            Console.WriteLine("从缺省数据库加载元数据到本地...（如果加载时间过长，请检查当前目录下Phenix.Core.db中数据库连接串是否配置正确！）");
-            Database.Default.MetaData.FillingCache();
-
-            Console.WriteLine("注册获取用户身份方法");
             Phenix.Core.Security.Principal.FetchIdentity = Phenix.Services.Plugin.Security.Identity.Fetch;
 
-            Console.WriteLine("构建并启动Host以加载Orleans和WebAPI的服务...");
+            Console.WriteLine("构建Orleans和WebAPI的服务...");
             _host = CreateHostBuilder(args).Build();
+            Console.WriteLine("启动Orleans和WebAPI的服务");
             _host.Run();
         }
 

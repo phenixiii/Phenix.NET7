@@ -9,19 +9,19 @@ using Phenix.TPT.Plugin.Filters;
 namespace Phenix.TPT.Plugin
 {
     /// <summary>
-    /// 项目月报控制器
+    /// 项目年度计划控制器
     /// </summary>
-    [Route(WebApiConfig.ProjectMonthlyReportPath)]
+    [Route(WebApiConfig.ProjectAnnualPlanPath)]
     [ApiController]
-    public sealed class ProjectMonthlyReportController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class ProjectAnnualPlanController : Phenix.Core.Net.Api.ControllerBase
     {
         #region 方法
 
         [Authorize]
         [HttpGet]
-        public async Task<ProjectMonthlyReport> Get(long projectId, int year, int month)
+        public async Task<ProjectAnnualPlan> Get(long projectId, int year)
         {
-            return await ClusterClient.Default.GetGrain<IProjectGrain>(projectId).GetProjectMonthlyReport(year, month);
+            return await ClusterClient.Default.GetGrain<IProjectGrain>(projectId).GetProjectAnnualPlan(year);
         }
 
         [ProjectControlFilter]
@@ -29,7 +29,7 @@ namespace Phenix.TPT.Plugin
         [HttpPut]
         public async Task Put(long projectId)
         {
-            await ClusterClient.Default.GetGrain<IProjectGrain>(projectId).PutProjectMonthlyReport(await Request.ReadBodyAsync<ProjectMonthlyReport>());
+            await ClusterClient.Default.GetGrain<IProjectGrain>(projectId).PutProjectAnnualPlan(await Request.ReadBodyAsync<ProjectAnnualPlan>());
         }
 
         #endregion

@@ -9,11 +9,11 @@ namespace Phenix.TPT.Business.Norm
     [Serializable]
     public enum ProjectType
     {
-        [EnumCaption("软件技术服务")]
-        软件技术服务 = 0,
+        [EnumCaption("技术服务")]
+        技术服务 = 0,
 
-        [EnumCaption("集成技术服务")]
-        集成技术服务 = 1,
+        [EnumCaption("集成服务")]
+        集成服务 = 1,
 
         [EnumCaption("运维服务")]
         运维服务 = 2,

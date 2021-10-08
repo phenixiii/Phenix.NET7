@@ -6,7 +6,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAABAAABEAABAAAAAAAAAIAAABgAAAAAAACAAUAACA=</HashCode>
+      <HashCode>AAAABAAABEAABAAAAAAAAAAAAABgAAAAAAACAAEAACA=</HashCode>
       <FileName>WorkdayGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -17,7 +17,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>QCAACAAAAAAAAAAgAAAAQAAAAAAABABAIAABABQACAA=</HashCode>
+      <HashCode>QCAACAAAAAAAAAAgAAAAQAAAAAAABABAIAABABAACAA=</HashCode>
       <FileName>WorkScheduleGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -28,7 +28,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>QoABAAAAAAEAAAADgCgQAgQAgAAAIAQRAAABAQAAQgQ=</HashCode>
+      <HashCode>QsABAAAAAAEAAAADgCgQAgQAgAAAIAQRAAABAQAAQgQ=</HashCode>
       <FileName>ProjectGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -39,7 +39,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAABAAAAAAAAAAAQAAAAAAAAAAAABAIAAAAAQQSAA=</HashCode>
+      <HashCode>AAAAABAAAAAAAAAAAQAAAAAAAAAAAABAIAAAAAAQSAA=</HashCode>
       <FileName>WorkerGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -47,7 +47,7 @@
   <Class Name="Phenix.TPT.Plugin.ProjectInfoController">
     <Position X="4" Y="8.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAgAAAACAAAg=</HashCode>
       <FileName>ProjectInfoController.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -56,6 +56,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
       <FileName>ProjectMonthlyReportController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.TPT.Plugin.ProjectAnnualPlanController">
+    <Position X="8.75" Y="8.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>ProjectAnnualPlanController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Microsoft YaHei UI" Size="9" />
