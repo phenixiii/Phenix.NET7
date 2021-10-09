@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
@@ -25,7 +26,7 @@ namespace Phenix.Services.Plugin.Security.Myself
         [HttpGet]
         public async Task<Teams> Get()
         {
-            return await ClusterClient.Default.GetGrain<ICompanyTeamsGrain>(User.Identity.CompanyName).FetchKernel();
+            return await ClusterClient.Default.GetGrain<ICompanyGrain>(User.Identity.CompanyName).FetchKernel();
         }
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace Phenix.Services.Plugin.Security.Myself
         [HttpPatch]
         public async Task Patch()
         {
-            await ClusterClient.Default.GetGrain<ICompanyTeamsGrain>(User.Identity.CompanyName).PatchKernel(await Request.ReadBodyAsync<Teams>());
+            await ClusterClient.Default.GetGrain<ICompanyGrain>(User.Identity.CompanyName).PatchKernel(await Request.ReadBodyAsync<Dictionary<string, object>>());
         }
     }
 }

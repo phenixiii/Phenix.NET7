@@ -90,7 +90,7 @@ namespace Phenix.Services.Host
                      * 按照就近原则 Action 上的标签优先于 Controller 上的标签（即忽略 Controller 上的标签）
                      *
                      * [AllowAnonymous]标签等同于不打[Authorize]标签
-                     * [Authorize]标签声明的 Roles 应该与 Phenix.Core.Security.Identity.CurrentIdentity.User.Position.Roles（即 PH7_Position 表的 PT_Roles 字段）处于一套语境（注意大小写敏感）
+                     * [Authorize]标签应与 PH7_Position 表的 PT_Roles 字段内容处于一套语境（注意大小写敏感）
                      * [Authorize]标签无参数（即 Roles 属性值为 null）时，不允许匿名用户访问但允许所有注册用户访问
                      * [Authorize]标签 Roles 声明的多个角色用‘|’分隔，互相为 or 关系
                      * 在 Controller/Action 上允许打多个[Authorize]标签，互相为 and 关系（也可以写在一个标签里用‘,’分隔）

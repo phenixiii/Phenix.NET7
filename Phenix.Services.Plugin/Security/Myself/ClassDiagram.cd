@@ -14,25 +14,25 @@
       <FileName>Security\Myself\CompanyTeamsController.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Phenix.Services.Plugin.Security.Myself.CompanyTeamsGrain">
-    <Position X="5" Y="0.5" Width="2" />
+  <Class Name="Phenix.Services.Plugin.Security.Myself.CompanyGrain">
+    <Position X="0.5" Y="3.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
-      <FileName>Security\Myself\CompanyTeamsGrain.cs</FileName>
+      <FileName>Security\Myself\CompanyGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.Services.Plugin.Security.Myself.CompanyUserController">
-    <Position X="7.25" Y="0.5" Width="2" />
+    <Position X="5" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAQAAAAAAAAAAAAAg=</HashCode>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAABQAAAAAAAAAAAAAA=</HashCode>
       <FileName>Security\Myself\CompanyUserController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.Services.Plugin.Security.Myself.PasswordController">
-    <Position X="0.5" Y="3" Width="1.75" />
+    <Position X="7.25" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAg=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
       <FileName>Security\Myself\PasswordController.cs</FileName>
     </TypeIdentifier>
   </Class>

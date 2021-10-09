@@ -10,66 +10,6 @@ namespace Phenix.Services.Business.Security
     [Serializable]
     public class User : User<User>
     {
-        /// <summary>
-        /// for CreateInstance
-        /// </summary>
-        private User()
-        {
-            //禁止添加代码
-        }
-
-        [Newtonsoft.Json.JsonConstructor]
-        private User(string dataSourceKey,
-            long id, string name, string phone, string eMail, string regAlias, DateTime regTime,
-            long rootTeamsId, long teamsId, long? positionId,
-            bool locked, DateTime? lockedTime, bool disabled, DateTime? disabledTime,
-            Teams teams, Position position)
-            : base(dataSourceKey,
-                id, name, phone, eMail, regAlias, regTime,
-                rootTeamsId, teamsId, positionId,
-                locked, lockedTime, disabled, disabledTime)
-        {
-            _teams = teams;
-            _position = position;
-        }
-
-        #region 属性
-
-        private Teams _teams;
-
-        /// <summary>
-        /// 所属部门
-        /// </summary>
-        public Teams Teams
-        {
-            get { return _teams; }
-        }
-
-        private Position _position;
-
-        /// <summary>
-        /// 担任岗位
-        /// </summary>
-        public Position Position
-        {
-            get { return _position; }
-        }
-
-        #endregion
-
-        #region 方法
-
-        /// <summary>
-        /// 获取自己用户资料
-        /// </summary>
-        public User FetchMyself(Teams teams, Position position)
-        {
-            _teams = teams;
-            _position = position;
-            return this;
-        }
-
-        #endregion
     }
 
     /// <summary>

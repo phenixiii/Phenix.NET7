@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Orleans;
 using Phenix.Actor;
 using Phenix.Services.Business.Security;
@@ -77,10 +76,5 @@ namespace Phenix.Services.Contract.Security
         /// 获取用户资料
         /// </summary>
         Task<User> FetchMyself();
-
-        /// <summary>
-        /// 获取公司用户资料
-        /// </summary>
-        Task<IList<User>> FetchCompanyUsers();
     }
 }

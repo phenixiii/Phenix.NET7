@@ -12,9 +12,8 @@ function isMyProject(projectInfo) {
     var myself = phAjax.getMyself();
     if (myself == null)
         return false;
-    return myself.Position == null ||
-        myself.Position.Roles.indexOf(base.projectRoles.经营管理) >= 0 ||
-        projectInfo == null && myself.Position.Roles.indexOf(base.projectRoles.项目管理) >= 0 ||
+    return phAjax.isInRole(base.projectRoles.经营管理) ||
+        projectInfo == null && phAjax.isInRole(base.projectRoles.项目管理) ||
         projectInfo != null &&
         (myself.Id === projectInfo.ProjectManager ||
             myself.Id === projectInfo.DevelopManager ||
@@ -39,17 +38,22 @@ function fetchProjectManagers() {
         onSuccess: function(result) {
             vue.myselfCompanyUsers = result;
             result.forEach((item, index) => {
-                if (item.Position.Name === base.position.项目经理) {
-                    vue.projectManagers.push(item);
-                    vue.developManagers.push(item);
-                } else if (item.Position.Name === base.position.开发经理 ||
-                    item.Position.Name === base.position.集成经理 ||
-                    item.Position.Name === base.position.数据管理)
-                    vue.developManagers.push(item);
-                else if (item.Position.Name === base.position.销售经理)
-                    vue.salesManagers.push(item);
-                if (item.Position.Roles.indexOf(base.projectRoles.质保维保) >= 0)
-                    vue.maintenanceManagers.push(item);
+                phAjax.getPosition({
+                    positionId: item.PositionId,
+                    onSuccess: function(result) {
+                        if (result.Name === base.position.项目经理) {
+                            vue.projectManagers.push(item);
+                            vue.developManagers.push(item);
+                        } else if (result.Name === base.position.开发经理 ||
+                            result.Name === base.position.集成经理 ||
+                            result.Name === base.position.数据管理)
+                            vue.developManagers.push(item);
+                        else if (result.Name === base.position.销售经理)
+                            vue.salesManagers.push(item);
+                        if (result.Roles.includes(base.projectRoles.质保维保))
+                            vue.maintenanceManagers.push(item);
+                    }
+                });
             });
 
             if (vue.queryPerson != null && vue.projectInfos != null)
@@ -158,15 +162,9 @@ function filterProjectInfos(projectInfos) {
                 break;
             }
 
-            var queryUser = null;
-            if (vue.queryPerson != null)
-                vue.myselfCompanyUsers.forEach((item, index) => {
-                    if (item.Name === vue.queryPerson ||
-                        item.RegAlias === vue.queryPerson) {
-                        queryUser = item;
-                        return;
-                    }
-                });
+            var queryUser = vue.queryPerson != null
+                ? vue.myselfCompanyUsers.find(item => item.Name === vue.queryPerson || item.RegAlias === vue.queryPerson)
+                : null;
 
             if ((vue.queryName == null ||
                     item.ProjectName.indexOf(vue.queryName) >= 0 ||
@@ -436,15 +434,12 @@ var vue = new Vue({
 
     methods: {
         parseUserName: function(id) {
-            var result = null;
-            if (this.myselfCompanyUsers != null)
-                this.myselfCompanyUsers.forEach((item, index) => {
-                    if (item.Id === id) {
-                        result = item.RegAlias;
-                        return;
-                    }
-                });
-            return result;
+            if (this.myselfCompanyUsers != null) {
+                var user = this.myselfCompanyUsers.find(item => item.Id === id);
+                if (user != null)
+                    return user.RegAlias;
+            }
+            return null;
         },
 
         onPlusMonth: function() {

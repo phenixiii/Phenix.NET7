@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
+using Phenix.Core.Data;
 using Phenix.Core.Net.Filters;
 using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security;
@@ -26,7 +27,7 @@ namespace Phenix.Services.Plugin.Security.Myself
         [HttpGet("all")]
         public async Task<string> Get()
         {
-            return await EncryptAsync(await ClusterClient.Default.GetGrain<IUserGrain>(User.Identity.PrimaryKey).FetchCompanyUsers());
+            return await EncryptAsync(Phenix.Services.Business.Security.User.FetchList(Database.Default, p => p.RootTeamsId == User.Identity.RootTeamsId && p.RootTeamsId != p.TeamsId));
         }
 
         /// <summary>

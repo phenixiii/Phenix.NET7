@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Data;
+using Phenix.Core.Net.Filters;
 using Phenix.Services.Business.Security;
 using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security;
@@ -17,6 +18,7 @@ namespace Phenix.Services.Plugin.Security
     [ApiController]
     public sealed class PositionController : Phenix.Core.Net.Api.ControllerBase
     {
+        // phAjax.getPositions()
         /// <summary>
         /// 获取岗位资料
         /// </summary>
@@ -29,15 +31,15 @@ namespace Phenix.Services.Plugin.Security
         }
 
         /// <summary>
-        /// 获取岗位资料
+        /// 更新岗位资料
         /// </summary>
         /// <param name="id">ID</param>
-        /// <returns>岗位资料</returns>
+        [CompanyAdminFilter]
         [Authorize]
-        [HttpGet]
-        public async Task<Position> Get(long id)
+        [HttpPatch]
+        public async Task Patch(long id)
         {
-            return await ClusterClient.Default.GetGrain<IPositionGrain>(id).FetchKernel();
+            await ClusterClient.Default.GetGrain<IPositionGrain>(id).PatchKernel(await Request.ReadBodyAsync<Dictionary<string, object>>());
         }
     }
 }

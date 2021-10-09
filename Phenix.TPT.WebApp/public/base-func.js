@@ -83,13 +83,11 @@ $(function() {
         phAjax.getMyself({
             onSuccess: function(result) {
                 $('#userName').html('您好，' + (result.RegAlias ?? result.Name));
-                if (result.Position == null)
-                    base.gotoIndex();
-                else if (result.Position.Roles.indexOf(base.projectRoles.经营管理) >= 0)
-                    base.gotoAccount();
+                if (phAjax.isInRole(base.projectRoles.经营管理))
+                    base.gotoIndex(); //base.gotoAccount();
                 else {
                     document.getElementById('account').style.color = 'gray';
-                    if (result.Position.Roles.indexOf(base.projectRoles.项目管理) >= 0)
+                    if (phAjax.isInRole(base.projectRoles.项目管理))
                         base.gotoIndex();
                     else
                         base.gotoWorkload();
@@ -199,8 +197,7 @@ var base = (function($) {
 
         gotoAccount: function() {
             if (window.location.href.indexOf('account.html') === -1) {
-                var myself = phAjax.getMyself();
-                if (myself.Position == null || myself.Position.Roles.indexOf(base.projectRoles.经营管理) >= 0)
+                if (phAjax.isInRole(base.projectRoles.经营管理))
                     window.location.href = 'account.html';
             }
         },

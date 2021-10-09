@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Phenix.Actor;
 using Phenix.Core.Data.Expressions;
 using Phenix.Core.Security.Auth;
@@ -48,9 +46,9 @@ namespace Phenix.Services.Plugin.Security
         /// <summary>
         /// 公司团队Grain接口
         /// </summary>
-        protected ICompanyTeamsGrain CompanyTeamsGrain
+        protected ICompanyGrain CompanyTeamsGrain
         {
-            get { return ClusterClient.GetGrain<ICompanyTeamsGrain>(CompanyName); }
+            get { return ClusterClient.GetGrain<ICompanyGrain>(CompanyName); }
         }
 
         private long? _rootTeamsId;
@@ -105,7 +103,7 @@ namespace Phenix.Services.Plugin.Security
                 return _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
             }
 
-            if (await ClusterClient.GetGrain<ICompanyTeamsGrain>(CompanyName).ExistKernel())
+            if (await ClusterClient.GetGrain<ICompanyGrain>(CompanyName).ExistKernel())
                 throw new System.ComponentModel.DataAnnotations.ValidationException("公司名已被其他用户注册!");
 
             await CompanyTeamsGrain.CreateKernel(NameValue.Set<Teams>(p => p.Name, CompanyName));
@@ -185,28 +183,12 @@ namespace Phenix.Services.Plugin.Security
             return Task.FromResult(Kernel.Decrypt(cipherText));
         }
 
-        async Task<User> IUserGrain.FetchMyself()
+        Task<User> IUserGrain.FetchMyself()
         {
             if (Kernel == null)
                 throw new UserNotFoundException();
 
-            Teams teams = await CompanyTeamsGrain.GetNode(Kernel.TeamsId);
-            Position position = Kernel.PositionId.HasValue ? await ClusterClient.GetGrain<IPositionGrain>(Kernel.PositionId.Value).FetchKernel() : null;
-            return Kernel.FetchMyself(teams, position);
-        }
-
-        async Task<IList<User>> IUserGrain.FetchCompanyUsers()
-        {
-            if (Kernel == null)
-                throw new UserNotFoundException();
-
-            IList<User> result = Phenix.Services.Business.Security.User.FetchList(Database, p => p.RootTeamsId == RootTeamsId && p.RootTeamsId != p.TeamsId);
-            Teams companyTeams = await CompanyTeamsGrain.FetchKernel();
-            IDictionary<long, Position> positions = Position.FetchKeyValues(Database, p => p.Id);
-            foreach (User item in result)
-                item.FetchMyself(companyTeams.FindInBranch(p => p.Id == item.TeamsId),
-                    item.PositionId.HasValue && positions.TryGetValue(item.PositionId.Value, out Position position) ? position : null);
-            return result;
+            return Task.FromResult(Kernel);
         }
 
         #endregion

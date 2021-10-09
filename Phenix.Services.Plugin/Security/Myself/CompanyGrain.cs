@@ -5,10 +5,10 @@ using Phenix.Services.Contract.Security.Myself;
 namespace Phenix.Services.Plugin.Security.Myself
 {
     /// <summary>
-    /// 公司团体Grain
+    /// 公司Grain
     /// key: CompanyName
     /// </summary>
-    public class CompanyTeamsGrain : TreeEntityGrainBase<Teams>, ICompanyTeamsGrain
+    public class CompanyGrain : TreeEntityGrainBase<Teams>, ICompanyGrain
     {
         #region 属性
 

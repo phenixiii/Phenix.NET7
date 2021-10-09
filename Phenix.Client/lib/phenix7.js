@@ -22,7 +22,9 @@ var phAjax = (function($) {
     const companyNameCookieName = 'PH-CN';
     const userNameCookieName = 'PH-UN';
     const sessionCookieName = 'PH-SS';
+    const positionsCookieName = 'PH-PT';
     const myselfCookieName = 'PH-MS';
+    const myselfCompanyCookieName = 'PH-MC';
 
     const methodOverrideHeaderName = 'X-HTTP-Method-Override';
     const authorizationHeaderName = 'PH-Authorization';
@@ -44,7 +46,7 @@ var phAjax = (function($) {
             result = window.localStorage.getItem(baseAddressCookieName);
         } catch (e) {
             result = $.cookie(baseAddressCookieName);
-        };
+        }
         return result != null ? result : window.location.origin.replace(window.location.port, 5000);
     };
 
@@ -63,7 +65,7 @@ var phAjax = (function($) {
             result = window.localStorage.getItem(companyNameCookieName);
         } catch (e) {
             result = $.cookie(companyNameCookieName);
-        };
+        }
         return result != null ? result : '';
     };
 
@@ -82,7 +84,7 @@ var phAjax = (function($) {
             result = window.localStorage.getItem(userNameCookieName);
         } catch (e) {
             result = $.cookie(userNameCookieName);
-        };
+        }
         return result != null ? result : '';
     };
 
@@ -113,14 +115,31 @@ var phAjax = (function($) {
     // 身份验证token: [公司名],[登录名],[会话签名]
     var initializeComplexAuthorization = function(companyName, userName, password) {
         return encodeURIComponent(companyName) + ',' + encodeURIComponent(userName) + ',' +
-            (password != null
-                ? getSession(password)
-                : phUtils.encrypt(phUtils.random(9) + new Date().toISOString(), getSession(null)));
+            (password != null ? getSession(password) : phUtils.encrypt(phUtils.random(9) + new Date().toISOString(), getSession(null)));
     };
 
     // 身份验证token: [公司名],[登录名],[会话签名]
     var formatComplexAuthorization = function() {
         return initializeComplexAuthorization(getCompanyName(), getUserName(), null);
+    };
+
+    var setPositions = function(value) {
+        try {
+            window.localStorage.removeItem(positionsCookieName);
+            if (value != null)
+                window.localStorage.setItem(positionsCookieName, JSON.stringify(value));
+        } catch (e) {
+            $.cookie(positionsCookieName, value != null ? JSON.stringify(value) : null, { path: '/' });
+        }
+    };
+    var getPositions = function() {
+        var result;
+        try {
+            result = window.localStorage.getItem(positionsCookieName);
+        } catch (e) {
+            result = $.cookie(positionsCookieName);
+        }
+        return result != null ? JSON.parse(result) : null;
     };
 
     var setMyself = function(value) {
@@ -138,6 +157,25 @@ var phAjax = (function($) {
             result = window.localStorage.getItem(myselfCookieName);
         } catch (e) {
             result = $.cookie(myselfCookieName);
+        }
+        return result != null ? JSON.parse(result) : null;
+    };
+
+    var setMyselfCompany = function(value) {
+        try {
+            window.localStorage.removeItem(myselfCompanyCookieName);
+            if (value != null)
+                window.localStorage.setItem(myselfCompanyCookieName, JSON.stringify(value));
+        } catch (e) {
+            $.cookie(myselfCompanyCookieName, value != null ? JSON.stringify(value) : null, { path: '/' });
+        }
+    };
+    var getMyselfCompany = function() {
+        var result;
+        try {
+            result = window.localStorage.getItem(myselfCompanyCookieName);
+        } catch (e) {
+            result = $.cookie(myselfCompanyCookieName);
         }
         return result != null ? JSON.parse(result) : null;
     };
@@ -189,6 +227,8 @@ var phAjax = (function($) {
                 options.userName = CryptoJS.MD5(options.userName).toString().toUpperCase();
             setSession(null);
             setMyself(null);
+            setMyselfCompany(null);
+            setPositions(null);
             setBaseAddress(options.baseAddress);
             phAjax.call({
                 anonymity: true,
@@ -220,6 +260,8 @@ var phAjax = (function($) {
                 options.userName = CryptoJS.MD5(options.userName).toString().toUpperCase();
             setSession(null);
             setMyself(null);
+            setMyselfCompany(null);
+            setPositions(null);
             $.ajax({
                 type: 'GET',
                 url: options.baseAddress + phUtils.addUrlParam('/api/security/gate', { companyName: options.companyName, userName: options.userName }),
@@ -266,6 +308,8 @@ var phAjax = (function($) {
                 options.userName = CryptoJS.MD5(options.userName).toString().toUpperCase();
             setSession(null);
             setMyself(null);
+            setMyselfCompany(null);
+            setPositions(null);
             $.ajax({
                 type: 'PUT',
                 url: options.baseAddress + '/api/security/gate',
@@ -278,10 +322,11 @@ var phAjax = (function($) {
                 },
                 data: phUtils.encrypt(options.tag, CryptoJS.MD5(options.password).toString().toUpperCase()),
                 complete: function(XMLHttpRequest, textStatus) {
-                    if (XMLHttpRequest.status == 200) {
+                    if (XMLHttpRequest.status === 200) {
                         setBaseAddress(options.baseAddress);
                         setCompanyName(options.companyName);
                         setUserName(options.userName);
+                        phAjax.getMyself({ reset: true });
                         if (typeof options.onSuccess === 'function')
                             options.onSuccess(XMLHttpRequest.responseText);
                     } else {
@@ -333,8 +378,100 @@ var phAjax = (function($) {
                     }
                     setSession(null);
                     setMyself(null);
+                    setMyselfCompany(null);
+                    setPositions(null);
                 },
             });
+        },
+
+        // 获取岗位资料
+        getPositions: function(options) {
+            var defaults = {
+                reset: false, //是否重新获取
+                onSuccess: null, //调用成功的回调函数, 参数(result)为返回的Position对象的key-value数组
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
+            };
+            options = $.extend(defaults, options);
+            if (!options.reset) {
+                var result = getPositions();
+                if (result != null) {
+                    if (typeof options.onSuccess === 'function')
+                        options.onSuccess(result);
+                    return result;
+                }
+            };
+            phAjax.call({
+                path: '/api/security/position/all',
+                onSuccess: function(result) {
+                    var positions = {};
+                    result.forEach((item, index) => {
+                        positions[item.Id] = item;
+                    });
+                    setPositions(positions);
+                    if (typeof options.onSuccess === 'function')
+                        options.onSuccess(positions);
+                },
+                onError: options.onError,
+            });
+        },
+
+        // 获取岗位资料
+        getPosition: function(options) {
+            var defaults = {
+                positionId: null, //默认为Myself岗位ID
+                onSuccess: null, //调用成功的回调函数, 参数(result)为返回的Position对象
+                onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
+            };
+            options = $.extend(defaults, options);
+            if (options.positionId == null) {
+                var myself = phAjax.getMyself();
+                if (myself != null) {
+                    options.positionId = myself.PositionId;
+                    if (options.positionId == null)
+                        return null;
+                } else
+                    return null;
+            }
+            var positions = phAjax.getPositions({
+                onSuccess: function(result) {
+                    if (typeof options.onSuccess === 'function') {
+                        options.onSuccess(result != null && Object.prototype.hasOwnProperty.call(result, options.positionId) ? result[options.positionId] : null);
+                        options.onSuccess = null;
+                    }
+                },
+                onError: options.onError,
+            });
+            if (positions != null) {
+                var result = positions != null && Object.prototype.hasOwnProperty.call(positions, options.positionId) ? positions[options.positionId] : null;
+                if (typeof options.onSuccess === 'function') {
+                    options.onSuccess(result);
+                    options.onSuccess = null;
+                }
+                return result;
+            }
+            return null;
+        },
+
+        isInRole: function(role, positionId) {
+            if (role == null || role === '')
+                return true;
+
+            if (positionId == null) {
+                var myself = phAjax.getMyself();
+                if (myself != null) {
+                    positionId = myself.PositionId;
+                    if (positionId == null)
+                        return true;
+                } else
+                    return false;
+            }
+
+            var positions = phAjax.getPositions();
+            if (positions != null && Object.prototype.hasOwnProperty.call(positions, positionId)) {
+                var position = positions[positionId];
+                return position.Roles != null && position.Roles.includes(role);
+            }
+            return false;
         },
 
         // 获取自己资料
@@ -346,13 +483,15 @@ var phAjax = (function($) {
             };
             options = $.extend(defaults, options);
             if (!options.reset) {
-                var myself = getMyself();
-                if (myself != null) {
+                var result = getMyself();
+                if (result != null) {
                     if (typeof options.onSuccess === 'function')
-                        options.onSuccess(myself);
-                    return myself;
+                        options.onSuccess(result);
+                    return result;
                 }
-            };
+            }
+            phAjax.getPositions({ reset: options.reset });
+            phAjax.getMyselfCompany({ reset: options.reset });
             phAjax.call({
                 path: '/api/security/myself',
                 decryptResult: true,
@@ -393,13 +532,26 @@ var phAjax = (function($) {
         // 获取自己公司资料
         getMyselfCompany: function(options) {
             var defaults = {
-                onSuccess: null, //调用成功的回调函数, 参数(result)为返回的Teams对象
+                reset: false, //是否重新获取
+                onSuccess: null, //调用成功的回调函数, 参数(result)为返回的Teams对象树
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
             };
             options = $.extend(defaults, options);
+            if (!options.reset) {
+                var result = getMyselfCompany();
+                if (result != null) {
+                    if (typeof options.onSuccess === 'function')
+                        options.onSuccess(result);
+                    return result;
+                }
+            }
             phAjax.call({
                 path: '/api/security/myself/company',
-                onSuccess: options.onSuccess,
+                onSuccess: function(result) {
+                    setMyselfCompany(result);
+                    if (typeof options.onSuccess === 'function')
+                        options.onSuccess(result);
+                },
                 onError: options.onError,
             });
         },
@@ -411,6 +563,8 @@ var phAjax = (function($) {
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
             };
             options = $.extend(defaults, options);
+            phAjax.getPositions({ reset: options.reset });
+            phAjax.getMyselfCompany({ reset: options.reset });
             phAjax.call({
                 path: '/api/security/myself/company-user/all',
                 decryptResult: true,
@@ -610,9 +764,8 @@ var phAjax = (function($) {
                         var file = options.files[i];
                         phAjax.uploadFileChunk(options.path, options.message, file, 1, options.onProgress, options.onSuccess, options.onError);
                     }
-                } else {
+                } else
                     phAjax.uploadFileChunk(options.path, options.message, options.files, 1, options.onProgress, options.onSuccess, options.onError);
-                }
         },
 
         uploadFileChunk: function(path, message, file, chunkNumber, onProgress, onSuccess, onError) {
@@ -622,7 +775,7 @@ var phAjax = (function($) {
             if (chunkNumber > 0) {
                 var p = maxChunkSize * (chunkNumber - 1);
                 formData.append('chunkBody', file.slice(p, p + chunkSize), file.name);
-            };
+            }
             phAjax.call({
                 type: 'PUT',
                 path: path,
@@ -696,46 +849,61 @@ var phAjax = (function($) {
                 data: options.encryptData ? phAjax.encrypt(options.data) : options.data,
                 success: function(result) {
                     if (typeof options.onSuccess === 'function') {
-                        if (options.decryptResult) {
-                            var s = phAjax.decrypt(result);
+                        if (options.decryptResult)
                             try {
-                                options.onSuccess(JSON.parse(s));
+                                result = phAjax.decrypt(result);
                             } catch (e) {
-                                options.onSuccess(s);
+                                options.onSuccess(result);
+                                options.onSuccess = null;
+                                return;
                             }
-                        } else
+                        var obj;
+                        try {
+                            obj = JSON.parse(result);
+                        } catch (e) {
                             options.onSuccess(result);
+                            options.onSuccess = null;
+                            return;
+                        }
+                        options.onSuccess(obj);
                         options.onSuccess = null;
                     }
                 },
                 complete: function(XMLHttpRequest, textStatus) {
                     if (XMLHttpRequest.status === 200) {
                         if (typeof options.onSuccess === 'function') {
-                            if (options.decryptResult) {
-                                var s = phAjax.decrypt(XMLHttpRequest.responseText);
+                            var result = XMLHttpRequest.responseText;
+                            if (options.decryptResult)
                                 try {
-                                    options.onSuccess(JSON.parse(s));
+                                    result = phAjax.decrypt(result);
                                 } catch (e) {
-                                    options.onSuccess(s);
+                                    options.onSuccess(result);
+                                    options.onSuccess = null;
+                                    return;
                                 }
-                            } else
-                                options.onSuccess(XMLHttpRequest.responseText);
+                            var obj;
+                            try {
+                                obj = JSON.parse(result);
+                            } catch (e) {
+                                options.onSuccess(result);
+                                options.onSuccess = null;
+                                return;
+                            }
+                            options.onSuccess(obj);
                             options.onSuccess = null;
                         }
-                    }
-                    else if (XMLHttpRequest.status >= 400) {
+                    } else if (XMLHttpRequest.status >= 400) {
                         if (XMLHttpRequest.status === 409) {
                             if (typeof options.onError === 'function')
                                 options.onError(XMLHttpRequest, textStatus, JSON.parse(XMLHttpRequest.responseText));
-                        }
-                        else {
+                        } else {
                             if (typeof options.onError === 'function')
                                 options.onError(XMLHttpRequest, textStatus);
                         }
-                    };
+                    }
                     if (typeof options.onComplete === 'function')
                         options.onComplete(XMLHttpRequest, textStatus);
-                },
+                }
             });
         },
     }
@@ -788,10 +956,9 @@ var phUtils = (function() {
         toUrlParam: function(data) {
             if (data != null && typeof data === 'object') {
                 var result = '';
-                for (let p in data) {
+                for (let p in data)
                     if (Object.prototype.hasOwnProperty.call(data, p))
                         result += '&' + p[0].toLowerCase() + p.substring(1) + '=' + encodeURIComponent(data[p] ?? '');
-                }
                 return result === '' ? result : result.substring(1);
             }
             return data;
@@ -799,9 +966,7 @@ var phUtils = (function() {
 
         addUrlParam: function(url, data) {
             var param = phUtils.toUrlParam(data);
-            return param != null && param !== ''
-                ? url + (url.indexOf('?') < 0 ? '?' : '') + param
-                : url;
+            return param != null && param !== '' ? url + (url.indexOf('?') < 0 ? '?' : '') + param : url;
         },
 
         trimData: function(data, trimDataEmptyProperty, trimDataLocalProperty) {
@@ -810,7 +975,7 @@ var phUtils = (function() {
                     return phUtils.trimArrayData(data, trimDataEmptyProperty, trimDataLocalProperty);
                 } else {
                     var result = {};
-                    for (let p in data) {
+                    for (let p in data)
                         if (Object.prototype.hasOwnProperty.call(data, p)) {
                             if (trimDataLocalProperty && p[0] === p[0].toLowerCase())
                                 continue;
@@ -823,7 +988,6 @@ var phUtils = (function() {
                                     : phUtils.trimData(value, trimDataEmptyProperty, trimDataLocalProperty))
                                 : value;
                         }
-                    }
                     return result;
                 }
             return data;
@@ -843,9 +1007,8 @@ var phUtils = (function() {
                             );
                     });
                     return result;
-                } else {
+                } else
                     return phUtils.trimData(array, trimDataEmptyProperty, trimDataLocalProperty);
-                }
             return array;
         }
     }
