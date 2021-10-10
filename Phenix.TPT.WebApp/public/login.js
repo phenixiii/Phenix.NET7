@@ -37,12 +37,16 @@ function jumpPage() {
             vue.logonHint = '您好, ' + result.RegAlias;
             if (result.EMail == null || result.RegAlias == null)
                 $('#patchMyselfDialog').modal('show');
-            else
+            else if (phAjax.isInRole('经营管理'))
+                window.location.href = 'account.html';
+            else if (phAjax.isInRole('项目管理'))
                 window.location.href = 'index.html';
+            else
+                window.location.href = 'workload.html';
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
             vue.logonHint = validityError != null ? validityError.Hint : XMLHttpRequest.responseText;
-            zdalert('获取个人资料失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+            alert('获取个人资料失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
     });
 }
@@ -54,11 +58,11 @@ function checkIn() {
         userName: vue.userName.trim(),
         onSuccess: function(result) {
             vue.logonHint = result;
-            zdalert('成功登记', result);
+            alert('成功登记:\n' + result);
         },
         onError: function(XMLHttpRequest, textStatus) {
             vue.logonHint = XMLHttpRequest.responseText;
-            zdalert('登记失败', XMLHttpRequest.responseText);
+            alert('登记失败:\n' + XMLHttpRequest.responseText);
         },
     });
 }
@@ -75,7 +79,7 @@ function logon() {
         },
         onError: function(XMLHttpRequest, textStatus) {
             vue.logonHint = XMLHttpRequest.responseText;
-            zdalert('登录失败', XMLHttpRequest.responseText);
+            alert('登录失败:\n' + XMLHttpRequest.responseText);
         },
     });
 }
@@ -91,7 +95,7 @@ function patchMyself() {
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
             vue.logonHint = validityError != null ? validityError.Hint : XMLHttpRequest.responseText;
-            zdalert('更新失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+            alert('更新失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
     });
 }

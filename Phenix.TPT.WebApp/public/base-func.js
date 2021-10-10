@@ -83,22 +83,15 @@ $(function() {
         phAjax.getMyself({
             onSuccess: function(result) {
                 $('#userName').html('您好，' + (result.RegAlias ?? result.Name));
-                if (phAjax.isInRole(base.projectRoles.经营管理))
-                    base.gotoIndex(); //base.gotoAccount();
-                else {
+                if (!phAjax.isInRole('经营管理')) {
                     document.getElementById('account').style.color = 'gray';
-                    if (phAjax.isInRole(base.projectRoles.项目管理))
-                        base.gotoIndex();
-                    else
-                        base.gotoWorkload();
+                    if (window.location.href.indexOf('account.html') >= 0)
+                        base.gotoLogin();
                 }
             },
-            onError: function(XMLHttpRequest, textStatus) {
-                zdalert('获取个人资料失败',
-                    XMLHttpRequest.responseText,
-                    function(result) {
-                        base.gotoLogin();
-                    });
+            onError: function(XMLHttpRequest, textStatus, validityError) {
+                alert('获取个人资料失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
+                base.gotoLogin();
             },
         });
     }
@@ -197,7 +190,7 @@ var base = (function($) {
 
         gotoAccount: function() {
             if (window.location.href.indexOf('account.html') === -1) {
-                if (phAjax.isInRole(base.projectRoles.经营管理))
+                if (phAjax.isInRole('经营管理'))
                     window.location.href = 'account.html';
             }
         },
@@ -210,37 +203,6 @@ var base = (function($) {
         gotoMyself: function() {
             if (window.location.href.indexOf('myself.html') === -1)
                 window.location.href = 'myself.html';
-        },
-
-        get position() {
-            return {
-                公司高层: "公司高层",
-                公司中层: "公司中层",
-                项目经理: "项目经理",
-                开发经理: "开发经理",
-                集成经理: "集成经理",
-                数据管理: "数据管理",
-                软件开发: "软件开发",
-                集成工程: "集成工程",
-                质量管理: "质量管理",
-                产品经理: "产品经理",
-                销售经理: "销售经理",
-            };
-        },
-
-        get projectRoles() {
-            return {
-                经营管理: "经营管理",
-                项目管理: "项目管理",
-                调研分析: "调研分析",
-                设计开发: "设计开发",
-                测试联调: "测试联调",
-                培训实施: "培训实施",
-                质保维保: "质保维保",
-                方案设计: "方案设计",
-                采购施工: "采购施工",
-                交付验收: "交付验收",
-            };
         },
     }
 })(jQuery);

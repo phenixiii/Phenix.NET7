@@ -51,7 +51,7 @@
                                         <p class="text-wrapper" v-text="projectInfo.ContApproveDate"></p>
                                     </div>
                                     <div class="panel-list-column" style="width: 15%; padding-left: 10px; margin-top: 5px; text-align: center;">
-                                        <p class="text-wrapper" v-text="(projectInfo.CurrentStatus??'')+'\n\r[ '+(projectInfo.AnnualMilestone??'') + ' ]'" v-bind:title="'计划上线: ' + (projectInfo.OnlinePlanDate??'') + '\n\r实际上线: '+ (projectInfo.OnlineActualDate??'') + '\n\r验收时间: '+ (projectInfo.AcceptDate??'')"></p>
+                                        <p class="text-wrapper" v-text="(projectInfo.CurrentStatus??'')+'\n[ '+(projectInfo.AnnualMilestone??'') + ' ]'" v-bind:title="'计划上线: ' + (projectInfo.OnlinePlanDate??'') + '\n实际上线: '+ (projectInfo.OnlineActualDate??'') + '\n验收时间: '+ (projectInfo.AcceptDate??'')"></p>
                                     </div>
                                     <div class="panel-list-column" style="width: 40%; padding-left: 10px;">
                                         <div>
@@ -69,11 +69,11 @@
                                             <hr class="badge-chapter no-color" title="不可填报质保维保" v-else />
                                         </div>
                                         <div class="panel-list-column" style="word-wrap: break-word; word-break: break-all; height: auto; width: 100%;">
-                                            <p class="text-wrapper" v-bind:title="'\n\r应收总额: '+ projectInfo.TotalReceivables + '\n\r开票总额: '+ projectInfo.TotalInvoiceAmount + '\n\r报销总额: '+ projectInfo.TotalReimbursementAmount">{{projectInfo.ProjectName}}</p>
+                                            <p class="text-wrapper" v-bind:title="'应收总额: '+ projectInfo.TotalReceivables + '\n开票总额: '+ projectInfo.TotalInvoiceAmount + '\n报销总额: '+ projectInfo.TotalReimbursementAmount">{{projectInfo.ProjectName}}</p>
                                         </div>
                                     </div>
                                     <div class="panel-list-column" style="width: 15%; padding-left: 10px; margin-top: 5px; text-align: center;">
-                                        <p class="text-wrapper" v-text="(projectInfo.ContNumber??'').replace(/（/,'\n\r（')" v-bind:title="'销售区域: ' + (projectInfo.SalesArea??'') + '\n\r服务客户: '+ (projectInfo.Customer??'')"></p>
+                                        <p class="text-wrapper" v-text="(projectInfo.ContNumber??'').replace(/（/,'\n（')" v-bind:title="'销售区域: ' + (projectInfo.SalesArea??'') + '\n服务客户: '+ (projectInfo.Customer??'')"></p>
                                     </div>
                                     <div class="panel-list-column" style="width: 6%; padding-left: 10px; margin-top: 5px; text-align: center;">
                                         <p>{{parseUserName(projectInfo.ProjectManager)}}</p>
@@ -350,7 +350,6 @@
 
     <script type="text/javascript" src="lib/vue.min.js"></script>
     <script type="text/javascript" src="lib/bootstrap/bootstrap.min.js"></script>
-    <script type="text/javascript" src="lib/mesgbox.js"></script>
 
     <script type="text/javascript" src="base-func.js?v=1"></script>
     <script>

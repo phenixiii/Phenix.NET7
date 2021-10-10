@@ -12,8 +12,8 @@ function isMyProject(projectInfo) {
     var myself = phAjax.getMyself();
     if (myself == null)
         return false;
-    return phAjax.isInRole(base.projectRoles.经营管理) ||
-        projectInfo == null && phAjax.isInRole(base.projectRoles.项目管理) ||
+    return phAjax.isInRole('经营管理') ||
+        projectInfo == null && phAjax.isInRole('项目管理') ||
         projectInfo != null &&
         (myself.Id === projectInfo.ProjectManager ||
             myself.Id === projectInfo.DevelopManager ||
@@ -28,7 +28,7 @@ function fetchProjectTypes() {
             vue.projectTypes = result;
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
-            zdalert('获取项目类型失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+            alert('获取项目类型失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
     });
 }
@@ -41,16 +41,16 @@ function fetchProjectManagers() {
                 phAjax.getPosition({
                     positionId: item.PositionId,
                     onSuccess: function(result) {
-                        if (result.Name === base.position.项目经理) {
+                        if (result.Name === '项目经理') {
                             vue.projectManagers.push(item);
                             vue.developManagers.push(item);
-                        } else if (result.Name === base.position.开发经理 ||
-                            result.Name === base.position.集成经理 ||
-                            result.Name === base.position.数据管理)
+                        } else if (result.Name === '开发经理' ||
+                            result.Name === '集成经理' ||
+                            result.Name === '数据管理')
                             vue.developManagers.push(item);
-                        else if (result.Name === base.position.销售经理)
+                        else if (result.Name === '销售经理')
                             vue.salesManagers.push(item);
-                        if (result.Roles.includes(base.projectRoles.质保维保))
+                        if (result.Roles.includes('质保维保'))
                             vue.maintenanceManagers.push(item);
                     }
                 });
@@ -60,9 +60,9 @@ function fetchProjectManagers() {
                 filterProjectInfos(vue.projectInfos); //如果有按负责人姓名查询的可能性则要等获取到公司员工资料后再执行本函数
             vue.$forceUpdate();
         },
-        onError: function(XMLHttpRequest, textStatus) {
+        onError: function(XMLHttpRequest, textStatus, validityError) {
             vue.logonHint = XMLHttpRequest.responseText;
-            zdalert('获取公司员工资料失败', XMLHttpRequest.responseText);
+            alert('获取公司员工资料失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
     });
 }
@@ -211,7 +211,7 @@ function fetchProjectInfos(reset) {
             },
             onError: function(XMLHttpRequest, textStatus, validityError) {
                 vue.projectInfos = null;
-                zdalert('获取项目失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+                alert('获取项目失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
             },
         });
     else
@@ -229,7 +229,7 @@ function addProjectInfo() {
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
             vue.projectInfos = null;
-            zdalert('添加项目失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+            alert('添加项目失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
     });
 }
@@ -243,17 +243,13 @@ function putProjectInfo(projectInfo) {
             pushSalesAreas(projectInfo.SalesArea);
             pushCustomers(projectInfo.Customer);
 
-            zdconfirm('成功提交资料',
-                '是否需要合上资料面板?',
-                function(result) {
-                    if (result) {
-                        hideProjectInfoPanel(projectInfo);
-                        locatingProjectInfo(projectInfo);
-                    }
-                });
+            if (confirm('成功提交资料, 是否需要合上资料面板?')) {
+                hideProjectInfoPanel(projectInfo);
+                locatingProjectInfo(projectInfo);
+            }
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
-            zdalert('提交资料失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+            alert('提交资料失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
     });
 }
@@ -266,11 +262,11 @@ function closeProject(projectInfo, closedDate) {
         onSuccess: function (result) {
             Vue.set(projectInfo, 'ClosedDate', closedDate);
             hideCloseProjectDialog();
-            zdalert('成功归档', projectInfo.ProjectName);
+            alert(projectInfo.ProjectName + ' 已成功归档!');
         },
         onError: function (XMLHttpRequest, textStatus, validityError) {
             vue.projectInfos = null;
-            zdalert('项目归档失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+            alert('项目归档失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
     });
 }
@@ -297,7 +293,7 @@ function nextAnnualPlan(projectInfo) {
             nextMonthlyReport(projectInfo, result);
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
-            zdalert('获取年度计划失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+            alert('获取年度计划失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
     });
 }
@@ -315,17 +311,13 @@ function putAnnualPlan(projectInfo, annualPlan) {
             if (annualPlan.Year === now.getFullYear())
                 Vue.set(projectInfo, 'AnnualMilestone', annualPlan.AnnualMilestone);
 
-            zdconfirm('成功提交年度计划',
-                '是否需要合上计划面板?',
-                function(result) {
-                    if (result) {
-                        hidePlanPanel(projectInfo);
-                        locatingProjectInfo(projectInfo);
-                    }
-                });
+            if (confirm('成功提交年度计划, 是否需要合上计划面板?')) {
+                hidePlanPanel(projectInfo);
+                locatingProjectInfo(projectInfo);
+            }
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
-            zdalert('提交年度计划失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+            alert('提交年度计划失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
     });
 }
@@ -357,7 +349,7 @@ function nextMonthlyReport(projectInfo, annualPlan) {
             showPlanPanel(projectInfo);
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
-            zdalert('获取月报失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+            alert('获取月报失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
     });
 }
@@ -376,17 +368,13 @@ function putMonthlyReport(projectInfo, monthlyReport) {
                 monthlyReport.Month === now.getMonth() + 1)
                 Vue.set(projectInfo, 'CurrentStatus', monthlyReport.Status);
 
-            zdconfirm('成功提交月报',
-                '是否需要合上计划面板?',
-                function(result) {
-                    if (result) {
-                        hidePlanPanel(projectInfo);
-                        locatingProjectInfo(projectInfo);
-                    }
-                });
+            if (confirm('成功提交月报, 是否需要合上计划面板?')) {
+                hidePlanPanel(projectInfo);
+                locatingProjectInfo(projectInfo);
+            }
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
-            zdalert('提交月报失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+            alert('提交月报失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
     });
 }
@@ -446,7 +434,7 @@ var vue = new Vue({
             var now = new Date();
             if (this.filterTimeInterval.year === now.getFullYear() &&
                 this.filterTimeInterval.month === now.getMonth() + 1) {
-                zdalert('切换月份', '物来顺应，未来不迎~');
+                alert('物来顺应，未来不迎~');
                 return;
             }
 
@@ -470,7 +458,7 @@ var vue = new Vue({
         onPlusYear: function() {
             var now = new Date();
             if (this.filterTimeInterval.year === now.getFullYear()) {
-                zdalert('切换年份', '珍惜当下，安然即好~');
+                alert('珍惜当下，安然即好~');
                 return;
             }
 
@@ -536,15 +524,12 @@ var vue = new Vue({
 
         showCloseProjectDialog: function(projectInfo) {
             this.currentProjectInfo = projectInfo;
-            if (projectInfo.ContAmount > projectInfo.TotalInvoiceAmount) {
-                zdconfirm('项目归档',
-                    projectInfo.ProjectName + ' 项目还有 ' + (projectInfo.ContAmount - projectInfo.TotalInvoiceAmount) + ' 万元应收款未开票，归档后将无法更新! 是否继续?',
-                    function (result) {
-                        if (result)
-                            showCloseProjectDialog();
-                    });
-            } else
-                showCloseProjectDialog();
+            if (projectInfo.ContAmount > projectInfo.TotalInvoiceAmount)
+                if (!confirm('项目 ' + projectInfo.ProjectName + ' 还有 ' +
+                    (projectInfo.ContAmount - projectInfo.TotalInvoiceAmount) +
+                    ' 万元应收款未开票，归档后将无法整理开票信息! 是否还要继续归档?'))
+                    return;
+            showCloseProjectDialog();
         },
 
         onCloseProject: function() {

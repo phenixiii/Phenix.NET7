@@ -81,7 +81,7 @@ function register() {
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
             vue.registerHint = validityError != null ? validityError.Hint : XMLHttpRequest.responseText;
-            zdalert('注册失败', validityError != null ? validityError.Hint : XMLHttpRequest.responseText);
+            alert('注册失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
     });
 }
@@ -93,18 +93,14 @@ function changePassword() {
         hashName: false,
         password: vue.password,
         newPassword: vue.newPassword,
-        onSuccess: function (result) {
-            zdconfirm('成功修改口令',
-                '是否需要自动跳转到登录界面?',
-                function (result) {
-                    if (result)
-                        window.location.href = 'login.html';
-                    else
-                        $('#changePasswordDialog').modal('hide');
-                });
+        onSuccess: function(result) {
+            if (confirm('成功修改口令:\n是否需要自动跳转到登录界面?'))
+                window.location.href = 'login.html';
+            else
+                $('#changePasswordDialog').modal('hide');
         },
-        onError: function (XMLHttpRequest, textStatus) {
-            zdalert('修改口令失败', XMLHttpRequest.responseText);
+        onError: function(XMLHttpRequest, textStatus) {
+            alert('修改口令失败:\n' + XMLHttpRequest.responseText);
             $("#password").focus();
         },
     });

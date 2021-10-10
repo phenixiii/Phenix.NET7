@@ -81,7 +81,6 @@
     <Content Include="public\lib\jquery.min.js" />
     <Content Include="public\lib\jquery.min.map" />
     <Content Include="public\lib\json2.js" />
-    <Content Include="public\lib\mesgbox.js" />
     <Content Include="public\lib\phenix7.js" />
     <Content Include="public\lib\signalr.js" />
     <Content Include="public\lib\signalr.js.map" />
