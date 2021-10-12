@@ -58,109 +58,94 @@
 
     <div id="menu"></div>
 
-    <div class="content" id="content">
+    <div class="content" id="content" v-cloak>
         <div class="container">
-            <div class="row pad-botm">
-                <div class="col-md-12">
-                    <div class="header-line">
-                        <h4 style="float:left;margin-top:2.5%;margin-bottom:0%">月工作量</h4>
-                        <h5 v-cloak v-if="myremain>0" style="float:left;margin:2.7% 0% 0% 2%;color:rgb(180,180,180)">您还有{{myremain}}天可填报</h5>
-                        <div class="time" id="time">
-                            <div class="month button" style="float:right;margin-left: 1%; ">
-                                <span class="arrow arrow-up " style="display: block;cursor:pointer;" @click="addMonth() "></span>
-                                <label v-cloak style="text-align:center;display: block ;margin: 0px">{{date.Month}}</label>
-                                <span class="arrow arrow-down " style="display: block;cursor:pointer;" @click="minusMonth() "></span>
-                            </div>
-                            <div class="year button" style="float: right;margin-left: 1%;">
-                                <span class="arrow arrow-up" style="display: block;cursor:pointer;" @click="addYear() "></span>
-                                <label v-cloak style="text-align: center;display:block; margin: 0px">{{date.Year}}</label>
-                                <span class="arrow arrow-down " style="display: block;cursor:pointer;" @click="minusYear() "></span>
-                            </div>
-                            <div class="button" style="float: right;width:45px;text-align: center;cursor: pointer;" @click="filter()" :title="(globaluser.Department.Name == '公司管理' || globaluser.Position.Name == '管理')?'过滤':(globaluser.Roles.项目管理 ||filterstate!=2)?filtertitle[filterstate]:filtertitle[filterstate+1]">
-                                <i class="fa fa-filter" aria-hidden="true" style="color: rgb(128, 128, 128);font-size: 45px;"></i>
-                            </div>
-                        </div>
-                    </div>
+            <div class="header-line col-md-12">
+                <h4>{{stateTitle[state]}}</h4>
+                <div class="arrow-button">
+                    <span class="arrow arrow-up" @click="onPlusMonth()" title="下一月"></span>
+                    <label class="txt">{{filterTimeInterval.month}}</label>
+                    <span class="arrow arrow-down" @click="onMinusMonth()" title="上一月"></span>
                 </div>
+                <div class="arrow-button">
+                    <span class="arrow arrow-up" @click="onPlusYear()" title="下一年"></span>
+                    <label class="txt">{{filterTimeInterval.year}}</label>
+                    <span class="arrow arrow-down" @click="onMinusYear()" title="上一年"></span>
+                </div>
+                <div class="filter-button fa fa-filter" @click="onFilerProject()" v-bind:title="filterStateTitle[state]"></div>
             </div>
-            <div style="clear:both;" class="col-md-12">
+            <div style="clear: both;" class="col-md-12">
                 <table class="table1" style="margin: 0 auto;">
-                    <tbody>
                     <thead id="tablehead">
                         <tr>
                             <th class="col-md-3" id="thfirst">
-                                <div id="iconbtn" style="float:right">
-                                    <i class="fa fa-step-backward myhide" id="trh" style="color:gray;font-size: 20px;cursor:pointer;" aria-hidden="true" @click="firstpage() "></i>
-                                    <i class="fa fa-chevron-left" id="trh" style="color: gray; font-size: 18px;cursor:pointer;" aria-hidden="true" @click="prepage() "></i>
+                                <div id="iconbtn" style="float: right">
+                                    <i class="fa fa-step-backward myhide" id="trh" style="color: gray; font-size: 20px; cursor: pointer;" aria-hidden="true" @click="firstpage() "></i>
+                                    <i class="fa fa-chevron-left" id="trh" style="color: gray; font-size: 18px; cursor: pointer;" aria-hidden="true" @click="prepage() "></i>
                                 </div>
                             </th>
-                            <th v-cloak class="coworkers" id="coworkers" v-for="item in projecttime[0]" style="text-align: center;font-family:Microsoft YaHei, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-weight: normal;color:royalblue;width:55px;vertical-align:bottom;">{{item.Worker}}</th>
+                            <th class="coworkers" id="coworkers" v-for="item in projecttime[0]" style="text-align: center; font-family: Microsoft YaHei, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: normal; color: royalblue; width: 55px; vertical-align: bottom;">{{item.Worker}}</th>
                             <th>
-                                <div style="float:left;">
-                                    <i class="fa fa-chevron-right" id="trh" style="color: gray;font-size: 18px;cursor:pointer;" aria-hidden="true " @click="nextpage() "></i>
-                                    <i class="fa fa-step-forward" id="trh" style="color: gray;font-size: 20px;cursor:pointer;" aria-hidden="true " @click="lastpage()"></i>
+                                <div style="float: left;">
+                                    <i class="fa fa-chevron-right" id="trh" style="color: gray; font-size: 18px; cursor: pointer;" aria-hidden="true" @click="nextpage() "></i>
+                                    <i class="fa fa-step-forward" id="trh" style="color: gray; font-size: 20px; cursor: pointer;" aria-hidden="true" @click="lastpage()"></i>
                                 </div>
                             </th>
                         </tr>
                     </thead>
-                    <tr v-cloak id="datatr" v-for='(item, index) in projecttime'>
-                        <td class="col-md-3" @click="showproject(index)" style="background-color: white;
-                                                                        color: royalblue;height: 55px;min-width: 200px;">
-                            <div style="float: right;width:100%;" v-show="projects[index].ProjectName!='休假'&& projects[index].ProjectName!='其他'">
-                                <hr class="project-hr maintenance-color" v-if="projects[index].MaintenanceWork" />
-                                <hr class="project-hr no-color" v-else />
-                                <hr class="project-hr implement-color" v-if="projects[index].ImplementWork" />
-                                <hr class="project-hr no-color" v-else />
-                                <hr class="project-hr test-color" v-if="projects[index].TestWork" />
-                                <hr class="project-hr no-color" v-else />
-                                <hr class="project-hr develop-color" v-if="projects[index].DevelopWork" />
-                                <hr class="project-hr no-color" v-else />
-                                <hr class="project-hr investigate-color" v-if="projects[index].InvestigateWork" />
-                                <hr class="project-hr no-color" v-else />
-                                <hr class="project-hr manage-color" v-if="projects[index].ManageWork" />
-                                <hr class="project-hr no-color" v-else />
-                            </div>
-                            <div v-cloak class="project-name">
-                                {{projects[index].ProjectName}}
-                            </div>
-                        </td>
-                        <td v-if="item[0].ProjectName=='休假'" class="workloadtd" v-for='(items,indexs) in item'>
-                            <input v-if="vm.user.Department.Name == items.Department && (vm.user.Position.Name == '管理' || vm.user.UserName ==items.Worker || vm.user.UserName == items.ProjectManager || vm.user.UserName == items.DevlopManager)" class="xiujiainput" :value="items.Workload>0?items.Workload:null"
-                                   type="text" min="0" @input="changexiujia(items,index,indexs,$event)" onkeypress='return( /[\d]/.test(String.fromCharCode(event.keyCode) ) )'>
-                            <p class="workloadnum" v-else v-show="items.Workload>0">{{items.Workload}}</p>
-                        </td>
-                        <td v-if="item[0].ProjectName!='休假'" class="mypopover workload" id="mypopover" type="buttonon" data-container="body" data-toggle="popover" valign="top" v-for='(items,indexs) in item' @click="showpopover($event,items,index,indexs)">
-                            <div class="popodiv" id="popodiv" style="clear:both;margin:0%;padding:0%;height:12px">
-                                <div style="clear:both">
-                                    <hr class="develop-color workload-hr" v-if="items.DevelopWorkloadRole>0" />
-                                    <hr class="no-color workload-hr" v-else />
-                                    <hr class="investigate-color workload-hr" v-if="items.InvestigateWorkloadRole>0" />
-                                    <hr class="no-color workload-hr" v-else />
-                                    <hr class="manage-color workload-hr" v-if="items.ManageWorkloadRole>0" />
-                                    <hr class="no-color workload-hr" v-else />
+                    <tbody>
+                        <tr id="datatr" v-for='(item, index) in projecttime'>
+                            <td class="col-md-3" @click="showproject(index)" style="background-color: white; color: royalblue; height: 55px; min-width: 200px;">
+                                <div style="float: right; width: 100%;" v-show="projects[index].ProjectName!='休假'&& projects[index].ProjectName!='其他'">
+                                    <hr class="project-hr maintenance-color" v-if="projects[index].MaintenanceWork" />
+                                    <hr class="project-hr no-color" v-else />
+                                    <hr class="project-hr implement-color" v-if="projects[index].ImplementWork" />
+                                    <hr class="project-hr no-color" v-else />
+                                    <hr class="project-hr test-color" v-if="projects[index].TestWork" />
+                                    <hr class="project-hr no-color" v-else />
+                                    <hr class="project-hr develop-color" v-if="projects[index].DevelopWork" />
+                                    <hr class="project-hr no-color" v-else />
+                                    <hr class="project-hr investigate-color" v-if="projects[index].InvestigateWork" />
+                                    <hr class="project-hr no-color" v-else />
+                                    <hr class="project-hr manage-color" v-if="projects[index].ManageWork" />
+                                    <hr class="project-hr no-color" v-else />
                                 </div>
-                                <div style="clear:both">
-                                    <hr class="maintenance-color workload-hr" v-if="items.MaintenanceWorkloadRole>0" />
-                                    <hr class="no-color workload-hr" v-else />
-                                    <hr class="implement-color workload-hr" v-if="items.ImplementWorkloadRole>0" />
-                                    <hr class="no-color workload-hr" v-else />
-                                    <hr class="test-color workload-hr" v-if="items.TestWorkloadRole>0" />
-                                    <hr class="no-color workload-hr" v-else />
+                                <div class="project-name">
+                                    {{projects[index].ProjectName}}
                                 </div>
-                            </div>
-                            <p class="workloadnum" v-show="items.Workload>0">{{items.Workload}}</p>
-                        </td>
-                        <td style="background-color: white;color:royalblue;font-weight: lighter;text-align:left;">
-                            {{totalprojecttime[index]}}
-                        </td>
-                    </tr>
-                    <tr style="background: white">
-                        <td style="background: white"></td>
-                        <td v-cloak v-for="item in coworkers " style="background: white">
-                            <p style="text-align: center;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;margin:0%;font-weight:lighter;color:royalblue;">{{workday}}</p>
-                        </td>
-                        <td style="background: white"></td>
-                    </tr>
+                            </td>
+                            <td v-if="item[0].ProjectName!='休假'" class="mypopover workload" id="mypopover" type="buttonon" data-container="body" data-toggle="popover" valign="top" v-for='(items,indexs) in item' @click="showpopover($event,items,index,indexs)">
+                                <div class="popodiv" id="popodiv" style="clear: both; margin: 0%; padding: 0%; height: 12px;">
+                                    <div style="clear: both;">
+                                        <hr class="develop-color workload-hr" v-if="items.DevelopWorkloadRole>0" />
+                                        <hr class="no-color workload-hr" v-else />
+                                        <hr class="investigate-color workload-hr" v-if="items.InvestigateWorkloadRole>0" />
+                                        <hr class="no-color workload-hr" v-else />
+                                        <hr class="manage-color workload-hr" v-if="items.ManageWorkloadRole>0" />
+                                        <hr class="no-color workload-hr" v-else />
+                                    </div>
+                                    <div style="clear: both;">
+                                        <hr class="maintenance-color workload-hr" v-if="items.MaintenanceWorkloadRole>0" />
+                                        <hr class="no-color workload-hr" v-else />
+                                        <hr class="implement-color workload-hr" v-if="items.ImplementWorkloadRole>0" />
+                                        <hr class="no-color workload-hr" v-else />
+                                        <hr class="test-color workload-hr" v-if="items.TestWorkloadRole>0" />
+                                        <hr class="no-color workload-hr" v-else />
+                                    </div>
+                                </div>
+                                <p class="workloadnum" v-show="items.Workload>0">{{items.Workload}}</p>
+                            </td>
+                            <td style="background-color: white; color: royalblue; font-weight: lighter; text-align: left;">
+                                {{totalprojecttime[index]}}
+                            </td>
+                        </tr>
+                        <tr style="background: white">
+                            <td style="background: white"></td>
+                            <td v-for="item in coworkers " style="background: white">
+                                <p style="text-align: center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0%; font-weight: lighter; color: royalblue;">{{workday}}</p>
+                            </td>
+                            <td style="background: white"></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

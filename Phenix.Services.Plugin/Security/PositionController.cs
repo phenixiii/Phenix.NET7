@@ -25,7 +25,7 @@ namespace Phenix.Services.Plugin.Security
         /// <returns>岗位资料</returns>
         [Authorize]
         [HttpGet("all")]
-        public IList<Position> Get()
+        public IList<Position> GetAll()
         {
             return Position.FetchList(Database.Default);
         }

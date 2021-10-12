@@ -1,25 +1,12 @@
 $(function() {
-    fetchProjectTypes();
-    fetchProjectManagers();
+    extractMyselfCompanyUsers();
     fetchProjectInfos(true);
+    fetchProjectTypes();
 });
 
 const queryNameCacheKey = 'index-query-name';
 const queryPersonCacheKey = 'index-query-person';
 const currentProjectInfoCacheKey = 'index-current-project-info';
-
-function isMyProject(projectInfo) {
-    var myself = phAjax.getMyself();
-    if (myself == null)
-        return false;
-    return phAjax.isInRole('经营管理') ||
-        projectInfo == null && phAjax.isInRole('项目管理') ||
-        projectInfo != null &&
-        (myself.Id === projectInfo.ProjectManager ||
-            myself.Id === projectInfo.DevelopManager ||
-            myself.Id === projectInfo.MaintenanceManager ||
-            myself.Id === projectInfo.SalesManager);
-}
 
 function fetchProjectTypes() {
     base.call({
@@ -33,7 +20,7 @@ function fetchProjectTypes() {
     });
 }
 
-function fetchProjectManagers() {
+function extractMyselfCompanyUsers() {
     phAjax.getMyselfCompanyUsers({
         onSuccess: function(result) {
             vue.myselfCompanyUsers = result;
@@ -84,9 +71,9 @@ function pushCustomers(customer) {
 
 function locatingProjectInfo(projectInfo) {
     if (projectInfo != null) {
-        var offsetTop = $('#' + projectInfo.Id).offset().top; // :id="projectInfo.Id"
-        if (offsetTop < document.documentElement.scrollTop)
-            setTimeout(function() { $('html,body').animate({ scrollTop: offsetTop }, 1000); }, 100);
+        var top = $('#' + projectInfo.Id).offset().top; // :id="projectInfo.Id"
+        if (top < document.documentElement.scrollTop)
+            setTimeout(function() { $('html,body').animate({ scrollTop: top }, 1000); }, 100);
     }
 }
 
@@ -147,12 +134,12 @@ function filterProjectInfos(projectInfos) {
             if (item.ClosedDate != null)
                 item.ClosedDate = new Date(item.ClosedDate).format('yyyy-MM-dd');
 
-            switch (vue.filterState) {
-            case 0: //显示当月自己负责项目
-                if (!isMyProject(item))
+            switch (vue.state) {
+            case 1: //当月自己负责项目
+                if (!base.isMyProject(item))
                     return;
                 break;
-            case 1: //显示当月关闭的项目
+            case 2: //当月关闭的项目
                 if (item.ClosedDate === null)
                     return;
                 var closedDate = new Date(item.ClosedDate);
@@ -302,7 +289,6 @@ function putAnnualPlan(projectInfo, annualPlan) {
     base.call({
         type: "PUT",
         path: '/api/project-annual-plan',
-        pathParam: { projectId: projectInfo.Id },
         data: annualPlan,
         onSuccess: function(result) {
             pushProjectStatuses(annualPlan.AnnualMilestone);
@@ -358,7 +344,6 @@ function putMonthlyReport(projectInfo, monthlyReport) {
     base.call({
         type: "PUT",
         path: '/api/project-monthly-report',
-        pathParam: { projectId: projectInfo.Id },
         data: monthlyReport,
         onSuccess: function(result) {
             pushProjectStatuses(monthlyReport.Status);
@@ -384,15 +369,14 @@ var vue = new Vue({
     data: {
         state: 0,
         stateTitle: [
-            '当月全部项目',
+            '当月项目',
             '当月自己负责项目',
             '当月关闭的项目',
         ],
-        filterState: 0,
         filterStateTitle: [
             '显示当月自己负责项目',
             '显示当月关闭的项目',
-            '显示当月全部项目',
+            '显示当月项目',
         ],
         filterTimeInterval: {
             year: new Date().getFullYear(),
@@ -475,13 +459,7 @@ var vue = new Vue({
         },
 
         onFilerProject: function() {
-            if (this.filterState === 2) {
-                this.state = 0;
-                this.filterState = 0;
-            } else {
-                this.state = this.state + 1;
-                this.filterState = this.filterState + 1;
-            }
+            this.state = this.state >= 2 ? 0 : this.state + 1;
             fetchProjectInfos(false);
         },
 
@@ -489,24 +467,22 @@ var vue = new Vue({
             fetchProjectInfos(false);
         },
 
-        canAddProject: function() {
-            return isMyProject();
-        },
-
         onAddProject: function() {
+            if (!base.isMyProject())
+                return;
             addProjectInfo();
         },
 
-        canEditProject: function(projectInfo) {
-            return isMyProject(projectInfo);
-        },
-
-        onShowProjectInfo: function(projectInfo) {
+        onShowProjectInfo: function (projectInfo) {
+            if (!base.isMyProject(projectInfo))
+                return;
             this.currentProjectInfo = projectInfo;
             showProjectInfoPanel(projectInfo);
         },
 
-        onPutProjectInfo: function(projectInfo) {
+        onPutProjectInfo:function (projectInfo) {
+            if (!base.isMyProject(projectInfo))
+                return;
             this.currentProjectInfo = projectInfo;
             putProjectInfo(projectInfo);
         },
@@ -516,13 +492,9 @@ var vue = new Vue({
             locatingProjectInfo(projectInfo);
         },
 
-        canCloseProject: function(projectInfo) {
-            if (!isMyProject(projectInfo))
-                return false;
-            return projectInfo.ClosedDate == null;
-        },
-
         showCloseProjectDialog: function(projectInfo) {
+            if (!base.isMyProject(projectInfo))
+                return;
             this.currentProjectInfo = projectInfo;
             if (projectInfo.ContAmount > projectInfo.TotalInvoiceAmount)
                 if (!confirm('项目 ' + projectInfo.ProjectName + ' 还有 ' +
@@ -533,6 +505,8 @@ var vue = new Vue({
         },
 
         onCloseProject: function() {
+            if (!base.isMyProject(this.currentProjectInfo))
+                return;
             closeProject(this.currentProjectInfo, this.closedDate);
         },
 
@@ -551,7 +525,7 @@ var vue = new Vue({
         },
 
         canPutAnnualPlan: function(projectInfo, annualPlan) {
-            if (!isMyProject(projectInfo))
+            if (!base.isMyProject(projectInfo))
                 return false;
             var now = new Date();
             if (projectInfo.ClosedDate != null && new Date(projectInfo.ClosedDate) < now.setDate(1)) //上月或更久已关闭项目
@@ -560,6 +534,8 @@ var vue = new Vue({
         },
 
         onPutAnnualPlan: function(projectInfo, annualPlan) {
+            if (!base.isMyProject(projectInfo))
+                return;
             this.currentProjectInfo = projectInfo;
             putAnnualPlan(projectInfo, annualPlan);
         },
@@ -570,7 +546,7 @@ var vue = new Vue({
         },
 
         canPutMonthlyReport: function(projectInfo, monthlyReport) {
-            if (!isMyProject(projectInfo))
+            if (!base.isMyProject(projectInfo))
                 return false;
             var now = new Date();
             if (projectInfo.ClosedDate != null && new Date(projectInfo.ClosedDate) < now.setDate(1)) //上月或更久已关闭项目
@@ -579,6 +555,8 @@ var vue = new Vue({
         },
 
         onPutMonthlyReport: function(projectInfo, monthlyReport) {
+            if (!base.isMyProject(projectInfo))
+                return;
             this.currentProjectInfo = projectInfo;
             putMonthlyReport(projectInfo, monthlyReport);
         },

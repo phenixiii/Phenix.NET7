@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Data;
+using Phenix.Core.Data.Expressions;
 using Phenix.Core.Net.Filters;
 using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security;
@@ -22,12 +23,17 @@ namespace Phenix.Services.Plugin.Security.Myself
         /// <summary>
         /// 获取公司用户资料
         /// </summary>
+        /// <param name="includeDisabled">包含已注销的</param>
         /// <returns>公司用户资料</returns>
         [Authorize]
         [HttpGet("all")]
-        public async Task<string> Get()
+        public async Task<string> GetAll(bool includeDisabled)
         {
-            return await EncryptAsync(Phenix.Services.Business.Security.User.FetchList(Database.Default, p => p.RootTeamsId == User.Identity.RootTeamsId && p.RootTeamsId != p.TeamsId));
+            return await EncryptAsync(Phenix.Services.Business.Security.User.FetchList(Database.Default,
+                includeDisabled
+                    ? p => p.RootTeamsId == User.Identity.RootTeamsId && p.RootTeamsId != p.TeamsId
+                    : p => p.RootTeamsId == User.Identity.RootTeamsId && p.RootTeamsId != p.TeamsId && !p.Disabled,
+                OrderBy.Ascending<Phenix.Services.Business.Security.User>(p => p.RegAlias)));
         }
 
         /// <summary>

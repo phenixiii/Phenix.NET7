@@ -17,19 +17,28 @@ namespace Phenix.TPT.Plugin
     {
         #region 方法
 
+        /// <summary>
+        /// 获取项目年度计划(如不存在则返回初始对象)
+        /// </summary>
+        /// <param name="projectId">项目ID</param>
+        /// <param name="year">年</param>
         [Authorize]
         [HttpGet]
-        public async Task<ProjectAnnualPlan> Get(long projectId, int year)
+        public async Task<ProjectAnnualPlan> Get(long projectId, short year)
         {
             return await ClusterClient.Default.GetGrain<IProjectGrain>(projectId).GetProjectAnnualPlan(year);
         }
 
+        /// <summary>
+        /// 更新项目年度计划(如不存在则新增)
+        /// </summary>
         [ProjectControlFilter]
         [Authorize]
         [HttpPut]
-        public async Task Put(long projectId)
+        public async Task Put()
         {
-            await ClusterClient.Default.GetGrain<IProjectGrain>(projectId).PutProjectAnnualPlan(await Request.ReadBodyAsync<ProjectAnnualPlan>());
+            ProjectAnnualPlan projectAnnualPlan = await Request.ReadBodyAsync<ProjectAnnualPlan>();
+            await ClusterClient.Default.GetGrain<IProjectGrain>(projectAnnualPlan.PiId).PutProjectAnnualPlan(projectAnnualPlan);
         }
 
         #endregion

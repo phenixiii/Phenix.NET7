@@ -24,6 +24,20 @@
         /// /api/project-monthly-report
         /// </summary>
         public const string ProjectMonthlyReportPath = "/api/project-monthly-report";
+
+        /// <summary>
+        /// /api/workday
+        /// </summary>
+        public const string WorkdayPath = "/api/workday";
         
+        /// <summary>
+        /// /api/work-schedule
+        /// </summary>
+        public const string WorkSchedulePath = "/api/work-schedule";
+
+        /// <summary>
+        /// /api/project-workload
+        /// </summary>
+        public const string ProjectWorkloadPath = "/api/project-workload";
     }
 }

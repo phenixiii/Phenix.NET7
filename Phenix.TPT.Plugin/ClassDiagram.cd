@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Phenix.TPT.Plugin.WorkdayGrain">
-    <Position X="0.5" Y="0.5" Width="3.25" />
+    <Position X="0.5" Y="7" Width="3.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAABAAABEAABAAAAAAAAAAAAABgAAAAAAACAAEAACA=</HashCode>
+      <HashCode>AAAAAAAABEAABAAAAAAAAAAAAABgAAAAAAACAAEAACA=</HashCode>
       <FileName>WorkdayGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.TPT.Plugin.WorkScheduleGrain">
-    <Position X="4" Y="0.5" Width="3.75" />
+    <Position X="0.5" Y="10.75" Width="3.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -23,18 +23,18 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.TPT.Plugin.ProjectGrain">
-    <Position X="0.5" Y="4.75" Width="3.25" />
+    <Position X="0.5" Y="0.5" Width="3.25" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>QsABAAAAAAEAAAADgCgQAgQAgAAAIAQRAAABAQAAQgQ=</HashCode>
+      <HashCode>QsABAAAAAAEAAAABgCgQAgQAgAAAIAQQAAABAQAAQgQ=</HashCode>
       <FileName>ProjectGrain.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.TPT.Plugin.WorkerGrain">
-    <Position X="4" Y="4.75" Width="2.75" />
+    <Position X="0.5" Y="15" Width="2.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -45,24 +45,38 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Phenix.TPT.Plugin.ProjectInfoController">
-    <Position X="4" Y="8.75" Width="1.75" />
+    <Position X="4" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAgAAAACAAAg=</HashCode>
       <FileName>ProjectInfoController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.TPT.Plugin.ProjectMonthlyReportController">
-    <Position X="6" Y="8.75" Width="2.5" />
+    <Position X="6" Y="0.5" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
       <FileName>ProjectMonthlyReportController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.TPT.Plugin.ProjectAnnualPlanController">
-    <Position X="8.75" Y="8.75" Width="2.25" />
+    <Position X="8.75" Y="0.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
       <FileName>ProjectAnnualPlanController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.TPT.Plugin.ProjectWorkloadController">
+    <Position X="3.5" Y="15" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ProjectWorkloadController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.TPT.Plugin.WorkdayController">
+    <Position X="4" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>WorkdayController.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Microsoft YaHei UI" Size="9" />

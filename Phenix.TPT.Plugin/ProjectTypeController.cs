@@ -16,9 +16,12 @@ namespace Phenix.TPT.Plugin
     {
         #region 方法
 
+        /// <summary>
+        /// 获取项目类型
+        /// </summary>
         [Authorize]
         [HttpGet("all")]
-        public IList<EnumKeyValue> Get()
+        public IList<EnumKeyValue> GetAll()
         {
             return EnumKeyValue.Fetch<ProjectType>();
         }

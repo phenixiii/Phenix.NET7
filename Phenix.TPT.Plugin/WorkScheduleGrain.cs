@@ -50,7 +50,7 @@ namespace Phenix.TPT.Plugin
         private IDictionary<DateTime, WorkSchedule> _immediateWorkSchedules;
 
         /// <summary>
-        /// 近期工作档期
+        /// 前6个月之后的工作档期
         /// </summary>
         protected IDictionary<DateTime, WorkSchedule> ImmediateWorkSchedules
         {
@@ -58,12 +58,11 @@ namespace Phenix.TPT.Plugin
             {
                 if (_immediateWorkSchedules == null)
                 {
-                    int year = DateTime.Today.Year;
-                    int month = DateTime.Today.Month;
+                    DateTime startDay = DateTime.Today.AddMonths(-6);
                     _immediateWorkSchedules = WorkSchedule.FetchKeyValues(Database,
                         p => p.YearMonth,
                         p => p.Manager == Manager &&
-                             (p.Year == year && p.Month >= month || p.Year > year));
+                             (p.Year == startDay.Year && p.Month >= startDay.Month || p.Year > startDay.Year));
                 }
 
                 return _immediateWorkSchedules;
@@ -83,6 +82,7 @@ namespace Phenix.TPT.Plugin
             if (content == Manager.ToString())
                 return Task.CompletedTask;
 
+            //通知receiver刷新项目工作量
             return ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.RefreshProjectWorkloadsStreamId, receiver.ToString()).OnNextAsync(content);
         }
 
@@ -93,6 +93,7 @@ namespace Phenix.TPT.Plugin
         /// <param name="token">StreamSequenceToken</param>
         protected override Task OnReceiving(string content, StreamSequenceToken token)
         {
+            //传达给到自己团队成员Grain
             List<long> workers = new List<long>();
             foreach (KeyValuePair<DateTime, WorkSchedule> kvp in ImmediateWorkSchedules)
             foreach (long worker in kvp.Value.Workers)
@@ -123,13 +124,13 @@ namespace Phenix.TPT.Plugin
 
         Task IWorkScheduleGrain.PutWorkSchedule(WorkSchedule source)
         {
-            int year = DateTime.Today.Year;
-            if (source.Year < year || source.Year > year + 1)
-                throw new ValidationException(String.Format("提交的工作档期仅限于{0}年和{1}年的!", year, year + 1));
+            DateTime today = DateTime.Today;
+            if (source.Year < today.Year || source.Year > today.Year + 1)
+                throw new ValidationException("仅限于管理今明两年的的工作档期!");
+            if (source.Year == today.Year && (source.Month < today.Month))
+                throw new ValidationException("不允许修改已经过时了的工作档期!");
             if (source.Month < 1 || source.Month > 12)
-                throw new ValidationException("提交的工作档期月份仅限于1-12之间!");
-            if (source.Manager != Manager)
-                throw new ValidationException(String.Format("提交的工作档期管理人员应该是{0}!", Manager));
+                throw new ValidationException(String.Format("咱这可没{0}月份唉!", source.Month));
 
             List<long> workers = new List<long>();
             DateTime yearMonth = Standards.FormatYearMonth(source.Year, source.Month);

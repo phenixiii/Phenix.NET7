@@ -90,10 +90,10 @@ namespace Phenix.TPT.Plugin
 
         #region Stream
 
-        private Task SendEventForRefreshProjectWorkloads(string receiver)
+        private Task SendEventForRefreshProjectWorkloads(long receiver)
         {
-            return ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.RefreshProjectWorkloadsStreamId,
-                Standards.FormatCompoundKey(Kernel.OriginateTeams, receiver)).OnNextAsync(receiver);
+            //通知receiver刷新项目工作量
+            return ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.RefreshProjectWorkloadsStreamId, receiver.ToString()).OnNextAsync(receiver.ToString());
         }
 
         #endregion
@@ -125,23 +125,25 @@ namespace Phenix.TPT.Plugin
         {
             if (executeAction == ExecuteAction.Update)
             {
+                //项目负责人发生变更后需要通知到他们的Grain
                 dynamic old = tag;
                 if ((long) old.ProjectManager != Kernel.ProjectManager)
                 {
-                    SendEventForRefreshProjectWorkloads((string) old.ProjectManager);
-                    SendEventForRefreshProjectWorkloads(Kernel.ProjectManager.ToString());
+                    SendEventForRefreshProjectWorkloads((long) old.ProjectManager);
+                    SendEventForRefreshProjectWorkloads(Kernel.ProjectManager);
                 }
 
                 if ((long) old.DevelopManager != Kernel.DevelopManager)
                 {
-                    SendEventForRefreshProjectWorkloads((string) old.DevelopManager);
-                    SendEventForRefreshProjectWorkloads(Kernel.DevelopManager.ToString());
+                    SendEventForRefreshProjectWorkloads((long) old.DevelopManager);
+                    SendEventForRefreshProjectWorkloads(Kernel.DevelopManager);
                 }
             }
             else
             {
-                SendEventForRefreshProjectWorkloads(Kernel.ProjectManager.ToString());
-                SendEventForRefreshProjectWorkloads(Kernel.DevelopManager.ToString());
+                //（未开发但以防未来实现）项目删除后需要通知到他们的Grain
+                SendEventForRefreshProjectWorkloads(Kernel.ProjectManager);
+                SendEventForRefreshProjectWorkloads(Kernel.DevelopManager);
             }
         }
 
@@ -177,15 +179,7 @@ namespace Phenix.TPT.Plugin
 
         #region 项目年度计划
 
-        Task<IList<ProjectAnnualPlan>> IProjectGrain.GetAllProjectAnnualPlan()
-        {
-            if (Kernel == null)
-                throw new ProjectNotFoundException();
-
-            return Task.FromResult(ProjectAnnualPlanList);
-        }
-
-        Task<ProjectAnnualPlan> IProjectGrain.GetProjectAnnualPlan(int year)
+        Task<ProjectAnnualPlan> IProjectGrain.GetProjectAnnualPlan(short year)
         {
             if (Kernel == null)
                 throw new ProjectNotFoundException();
@@ -249,15 +243,7 @@ namespace Phenix.TPT.Plugin
 
         #region 项目月报
 
-        Task<IList<ProjectMonthlyReport>> IProjectGrain.GetAllProjectMonthlyReport()
-        {
-            if (Kernel == null)
-                throw new ProjectNotFoundException();
-
-            return Task.FromResult(ProjectMonthlyReportList);
-        }
-
-        Task<ProjectMonthlyReport> IProjectGrain.GetProjectMonthlyReport(int year, int month)
+        Task<ProjectMonthlyReport> IProjectGrain.GetProjectMonthlyReport(short year, short month)
         {
             if (Kernel == null)
                 throw new ProjectNotFoundException();
@@ -366,7 +352,7 @@ namespace Phenix.TPT.Plugin
                 }
 
             if (projectProceeds == null)
-                throw new ValidationException(String.Format("未找到{0}可删除的开票记录!", Kernel.ProjectName));
+                throw new ValidationException(String.Format("未找到 {0} 可删除的开票记录!", Kernel.ProjectName));
 
             Database.Execute((DbTransaction dbTransaction) =>
             {
@@ -421,7 +407,7 @@ namespace Phenix.TPT.Plugin
                 }
 
             if (projectExpenses == null)
-                throw new ValidationException(String.Format("未找到{0}可删除的报销记录!", Kernel.ProjectName));
+                throw new ValidationException(String.Format("未找到 {0} 可删除的报销记录!", Kernel.ProjectName));
 
             Database.Execute((DbTransaction dbTransaction) =>
             {

@@ -16,22 +16,19 @@ namespace Phenix.TPT.Contract
         /// <summary>
         /// 关闭项目
         /// </summary>
+        /// <param name="closedDate">关闭日期</param>
         Task Close(DateTime closedDate);
 
         #region 项目年度计划
 
         /// <summary>
-        /// 获取所有年度计划
+        /// 获取项目年度计划(如不存在则返回初始对象)
+        /// <param name="year">年</param>
         /// </summary>
-        Task<IList<ProjectAnnualPlan>> GetAllProjectAnnualPlan();
+        Task<ProjectAnnualPlan> GetProjectAnnualPlan(short year);
 
         /// <summary>
-        /// 获取当年年度计划(如不存在则新增)
-        /// </summary>
-        Task<ProjectAnnualPlan> GetProjectAnnualPlan(int year);
-
-        /// <summary>
-        /// 更新年度计划(如不存在则新增)
+        /// 更新项目年度计划(如不存在则新增)
         /// </summary>
         /// <param name="source">数据源</param>
         Task PutProjectAnnualPlan(ProjectAnnualPlan source);
@@ -41,14 +38,11 @@ namespace Phenix.TPT.Contract
         #region 项目月报
 
         /// <summary>
-        /// 获取所有项目月报
+        /// 获取项目月报(如不存在则返回初始对象)
         /// </summary>
-        Task<IList<ProjectMonthlyReport>> GetAllProjectMonthlyReport();
-
-        /// <summary>
-        /// 获取当月项目月报(如不存在则新增)
-        /// </summary>
-        Task<ProjectMonthlyReport> GetProjectMonthlyReport(int year, int month);
+        /// <param name="year">年</param>
+        /// <param name="month">月</param>
+        Task<ProjectMonthlyReport> GetProjectMonthlyReport(short year, short month);
 
         /// <summary>
         /// 更新项目月报(如不存在则新增)

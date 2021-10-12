@@ -12,7 +12,7 @@ using Phenix.TPT.Contract;
 namespace Phenix.TPT.Plugin
 {
     /// <summary>
-    /// 工作人员Grain
+    /// 打工人Grain
     /// key: Worker（PH7_User.US_ID）
     /// </summary>
     public class WorkerGrain : StreamGrainBase<string>, IWorkerGrain
@@ -40,7 +40,7 @@ namespace Phenix.TPT.Plugin
         #endregion
 
         /// <summary>
-        /// 工作人员
+        /// 打工人
         /// </summary>
         protected long Worker
         {
@@ -64,6 +64,7 @@ namespace Phenix.TPT.Plugin
         /// <param name="token">StreamSequenceToken</param>
         protected override Task OnReceiving(string content, StreamSequenceToken token)
         {
+            //刷新项目工作量
             _projectWorkloads.Clear();
             return Task.CompletedTask;
         }
@@ -72,6 +73,9 @@ namespace Phenix.TPT.Plugin
 
         Task<IList<ProjectWorkload>> IWorkerGrain.GetProjectWorkloads(short year, short month)
         {
+            if (month < 1 || month > 12)
+                throw new ValidationException(String.Format("咱这可没{0}月份唉!", month));
+
             DateTime yearMonth = Standards.FormatYearMonth(year, month);
             IList<ProjectWorkload> result = new List<ProjectWorkload>(_projectWorkloads.GetValue(yearMonth, () =>
             {
@@ -105,8 +109,8 @@ namespace Phenix.TPT.Plugin
 
         async Task IWorkerGrain.PutProjectWorkload(ProjectWorkload source)
         {
-            int year = DateTime.Today.Year;
-            if (source.Year < year - 1 || source.Year > year + 1)
+            DateTime today = DateTime.Today;
+            if (source.Year < today.Year - 1 || source.Year > today.Year + 1)
                 throw new ValidationException("提交的项目工作量仅限于前后一年内的!");
             if (source.Month < 1 || source.Month > 12)
                 throw new ValidationException("提交的项目工作量月份仅限于1-12之间!");
@@ -120,7 +124,7 @@ namespace Phenix.TPT.Plugin
                 int oldAllWorkload = 0;
                 foreach (KeyValuePair<long, ProjectWorkload> kvp in projectWorkloads)
                     oldAllWorkload = oldAllWorkload + kvp.Value.Workload;
-                int overmuchWorkload = oldAllWorkload - projectWorkload.Workload + source.Workload - await ClusterClient.GetGrain<IWorkdayGrain>(source.Year).GetWorkdays(source.Month);
+                int overmuchWorkload = oldAllWorkload - projectWorkload.Workload + source.Workload - (await ClusterClient.GetGrain<IWorkdayGrain>(source.Year).GetCurrentYearWorkday(source.Month)).Days;
                 if (overmuchWorkload > 0)
                     throw new ValidationException(String.Format("提交的{0}年{1}月{2}项目工作量相比当月工作日余量多出{3}人天!", source.Year, source.Month, source.ProjectName, overmuchWorkload));
                 

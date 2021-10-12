@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Phenix.Actor;
+using Phenix.Core.Data.Expressions;
 using Phenix.TPT.Business;
 using Phenix.TPT.Contract;
 
@@ -37,7 +38,8 @@ namespace Phenix.TPT.Plugin
                 {
                     IDictionary<short, Workday> currentYearWorkdays = Workday.FetchKeyValues(Database,
                         p => p.Month,
-                        p => p.Year == Year);
+                        p => p.Year == Year, 
+                        OrderBy.Ascending<Workday>(p => p.Month));
                     if (currentYearWorkdays.Count == 0)
                         for (short i = 1; i <= 12; i++)
                             currentYearWorkdays.Add(i, Workday.New(Database,
@@ -63,7 +65,8 @@ namespace Phenix.TPT.Plugin
                 {
                     IDictionary<short, Workday> nextYearWorkdays = Workday.FetchKeyValues(Database,
                         p => p.Month,
-                        p => p.Year == Year + 1);
+                        p => p.Year == Year + 1,
+                        OrderBy.Ascending<Workday>(p => p.Month));
                     if (nextYearWorkdays.Count == 0)
                         for (short i = 1; i <= 12; i++)
                             nextYearWorkdays.Add(i, Workday.New(Database,
@@ -80,16 +83,12 @@ namespace Phenix.TPT.Plugin
 
         #region 方法
 
-        Task<short> IWorkdayGrain.GetWorkdays(short month)
+        Task<Workday> IWorkdayGrain.GetCurrentYearWorkday(short month)
         {
             if (month < 1 || month > 12)
-                throw new ArgumentException("查询的工作日月份仅限于1-12之间!");
+                throw new ValidationException(String.Format("咱这可没{0}月份唉!", month));
 
-            Workday workday = CurrentYearWorkdays[month];
-            if (workday.Days == 0)
-                throw new InvalidOperationException(String.Format("{0}年{1}月的工作日还未设置哦!", Year, month));
-
-            return Task.FromResult(workday.Days);
+            return Task.FromResult(CurrentYearWorkdays[month]);
         }
 
         Task<IList<Workday>> IWorkdayGrain.GetCurrentYearWorkdays()
@@ -107,15 +106,15 @@ namespace Phenix.TPT.Plugin
         Task IWorkdayGrain.PutWorkday(Workday source)
         {
             if (source.Month < 1 || source.Month > 12)
-                throw new ValidationException("提交的工作日月份仅限于1-12之间!");
-            if (source.Days < 15 || source.Days > 25)
-                throw new ValidationException("提交的工作日天数仅限于15-25之间!");
+                throw new ValidationException(String.Format("咱这可没{0}月份唉!", source.Month));
+            if (source.Days < 1 || source.Days > 31)
+                throw new ValidationException("躺平和加班一样糟糕，最好对标法定工作日哦!");
 
             Workday workday = source.Year == Year
                 ? CurrentYearWorkdays[source.Month]
                 : source.Year == Year + 1
                     ? NextYearWorkdays[source.Month]
-                    : throw new ValidationException(String.Format("提交的工作日仅限于{0}年和{1}年的!", Year, Year + 1));
+                    : throw new ValidationException(String.Format("提交的工作日仅限于{0}、{1}年的!", Year, Year + 1));
 
             if (workday.Days == 0)
             {

@@ -204,6 +204,19 @@ var base = (function($) {
             if (window.location.href.indexOf('myself.html') === -1)
                 window.location.href = 'myself.html';
         },
+        
+        isMyProject: function(projectInfo) {
+            var myself = phAjax.getMyself();
+            if (myself == null)
+                return false;
+            return phAjax.isInRole('经营管理') ||
+                projectInfo == null && phAjax.isInRole('项目管理') ||
+                projectInfo != null &&
+                (myself.Id === projectInfo.ProjectManager ||
+                    myself.Id === projectInfo.DevelopManager ||
+                    myself.Id === projectInfo.MaintenanceManager ||
+                    myself.Id === projectInfo.SalesManager);
+        },
     }
 })(jQuery);
 

@@ -559,14 +559,16 @@ var phAjax = (function($) {
         // 获取自己公司用户资料
         getMyselfCompanyUsers: function(options) {
             var defaults = {
+                includeDisabled: false, //默认不包含已注销的
                 onSuccess: null, //调用成功的回调函数, 参数(result)为返回的User对象集合
                 onError: null, //调用失败的回调函数, 参数(XMLHttpRequest, textStatus, validityError), validityError为有效性错误对象{ Key, StatusCode, Hint, MessageType }
             };
             options = $.extend(defaults, options);
-            phAjax.getPositions({ reset: options.reset });
-            phAjax.getMyselfCompany({ reset: options.reset });
+            phAjax.getPositions();
+            phAjax.getMyselfCompany();
             phAjax.call({
                 path: '/api/security/myself/company-user/all',
+                pathParam: { includeDisabled: options.includeDisabled },
                 decryptResult: true,
                 onSuccess: options.onSuccess,
                 onError: options.onError,

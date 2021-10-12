@@ -12,17 +12,17 @@ namespace Phenix.TPT.Contract
     public interface IWorkdayGrain : Phenix.Actor.IGrain, IGrainWithIntegerKey
     {
         /// <summary>
-        /// 获取本年度某月工作日
+        /// 获取本年度某月工作日(如不存在则返回初始对象)
         /// </summary>
-        Task<short> GetWorkdays(short month);
+        Task<Workday> GetCurrentYearWorkday(short month);
 
         /// <summary>
-        /// 获取本年度工作日
+        /// 获取本年度工作日(如不存在则返回初始对象)
         /// </summary>
         Task<IList<Workday>> GetCurrentYearWorkdays();
 
         /// <summary>
-        /// 获取次年度工作日
+        /// 获取次年度工作日(如不存在则返回初始对象)
         /// </summary>
         Task<IList<Workday>> GetNextYearWorkdays();
 

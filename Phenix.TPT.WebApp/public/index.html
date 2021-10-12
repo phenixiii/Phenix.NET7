@@ -29,7 +29,7 @@
                     <label class="txt">{{filterTimeInterval.year}}</label>
                     <span class="arrow arrow-down" @click="onMinusYear()" title="上一年"></span>
                 </div>
-                <div class="filter-button fa fa-filter" @click="onFilerProject()" :title="filterStateTitle[filterState]"></div>
+                <div class="filter-button fa fa-filter" @click="onFilerProject()" v-bind:title="filterStateTitle[state]"></div>
             </div>
             <div class="panel col-md-12">
                 <div class="panel panel-default">
@@ -39,7 +39,7 @@
                         <label class="panel-query-item txt col-md-1">负责人</label>
                         <input class="panel-query-item txt-input col-md-4 form-control" v-model="queryPerson" placeholder="负责人姓名/产品版本/当前状态" title="可模糊查">
                         <button class="panel-query-item btn btn-primary col-md-1" @click="onQueryProject()">查询</button>
-                        <button class="panel-query-item btn btn-primary col-md-1" v-bind:disabled="!canAddProject()" @click="onAddProject()">添加</button>
+                        <button class="panel-query-item btn btn-primary col-md-1" v-bind:disabled="!base.isMyProject()" @click="onAddProject()">添加</button>
                     </div>
                 </div>
                 <ul class="panel panel-default">
@@ -51,29 +51,29 @@
                                         <p class="text-wrapper" v-text="projectInfo.ContApproveDate"></p>
                                     </div>
                                     <div class="panel-list-column" style="width: 15%; padding-left: 10px; margin-top: 5px; text-align: center;">
-                                        <p class="text-wrapper" v-text="(projectInfo.CurrentStatus??'')+'\n[ '+(projectInfo.AnnualMilestone??'') + ' ]'" v-bind:title="'计划上线: ' + (projectInfo.OnlinePlanDate??'') + '\n实际上线: '+ (projectInfo.OnlineActualDate??'') + '\n验收时间: '+ (projectInfo.AcceptDate??'')"></p>
+                                        <p class="text-wrapper" v-text="(projectInfo.CurrentStatus??'') + '\n[ ' + (projectInfo.AnnualMilestone??'') + ' ]'" v-bind:title="'计划上线: ' + (projectInfo.OnlinePlanDate??'') + '\n实际上线: ' + (projectInfo.OnlineActualDate??'') + '\n验收时间: ' + (projectInfo.AcceptDate??'')"></p>
                                     </div>
                                     <div class="panel-list-column" style="width: 40%; padding-left: 10px;">
                                         <div>
-                                            <hr class="badge-chapter manage-color" title="可填报项目管理" v-if="projectInfo.ManageWork" />
-                                            <hr class="badge-chapter no-color" title="不可填报项目管理" v-else />
-                                            <hr class="badge-chapter investigate-color" title="可填报调研分析" v-if="projectInfo.InvestigateWork" />
-                                            <hr class="badge-chapter no-color" title="不可填报调研分析" v-else />
-                                            <hr class="badge-chapter develop-color" title="可填报设计开发" v-if="projectInfo.DevelopWork" />
-                                            <hr class="badge-chapter no-color" title="不可填报设计开发" v-else />
-                                            <hr class="badge-chapter test-color" title="可填报联调测试" v-if="projectInfo.TestWork" />
-                                            <hr class="badge-chapter no-color" title="不可填报联调测试" v-else />
-                                            <hr class="badge-chapter implement-color" title="可填报培训实施" v-if="projectInfo.ImplementWork" />
-                                            <hr class="badge-chapter no-color" title="不可填报培训实施" v-else />
-                                            <hr class="badge-chapter maintenance-color" title="可填报质保维保" v-if="projectInfo.MaintenanceWork" />
-                                            <hr class="badge-chapter no-color" title="不可填报质保维保" v-else />
+                                            <hr class="badge-chapter manage-color" title="可填报项目管理工作量" v-if="projectInfo.ManageWork" />
+                                            <hr class="badge-chapter no-color" title="不可填报项目管理工作量" v-else />
+                                            <hr class="badge-chapter investigate-color" title="可填报调研分析工作量" v-if="projectInfo.InvestigateWork" />
+                                            <hr class="badge-chapter no-color" title="不可填报调研分析工作量" v-else />
+                                            <hr class="badge-chapter develop-color" title="可填报设计开发工作量" v-if="projectInfo.DevelopWork" />
+                                            <hr class="badge-chapter no-color" title="不可填报设计开发工作量" v-else />
+                                            <hr class="badge-chapter test-color" title="可填报联调测试工作量" v-if="projectInfo.TestWork" />
+                                            <hr class="badge-chapter no-color" title="不可填报联调测试工作量" v-else />
+                                            <hr class="badge-chapter implement-color" title="可填报培训实施工作量" v-if="projectInfo.ImplementWork" />
+                                            <hr class="badge-chapter no-color" title="不可填报培训实施工作量" v-else />
+                                            <hr class="badge-chapter maintenance-color" title="可填报质保维保工作量" v-if="projectInfo.MaintenanceWork" />
+                                            <hr class="badge-chapter no-color" title="不可填报质保维保工作量" v-else />
                                         </div>
                                         <div class="panel-list-column" style="word-wrap: break-word; word-break: break-all; height: auto; width: 100%;">
-                                            <p class="text-wrapper" v-bind:title="'应收总额: '+ projectInfo.TotalReceivables + '\n开票总额: '+ projectInfo.TotalInvoiceAmount + '\n报销总额: '+ projectInfo.TotalReimbursementAmount">{{projectInfo.ProjectName}}</p>
+                                            <p class="text-wrapper" v-bind:title="'应收总额: ' + projectInfo.TotalReceivables + '\n开票总额: ' + projectInfo.TotalInvoiceAmount + '\n报销总额: ' + projectInfo.TotalReimbursementAmount">{{projectInfo.ProjectName}}</p>
                                         </div>
                                     </div>
                                     <div class="panel-list-column" style="width: 15%; padding-left: 10px; margin-top: 5px; text-align: center;">
-                                        <p class="text-wrapper" v-text="(projectInfo.ContNumber??'').replace(/（/,'\n（')" v-bind:title="'销售区域: ' + (projectInfo.SalesArea??'') + '\n服务客户: '+ (projectInfo.Customer??'')"></p>
+                                        <p class="text-wrapper" v-text="(projectInfo.ContNumber??'').replace(/（/,'\n（')" v-bind:title="'销售区域: ' + (projectInfo.SalesArea??'') + '\n服务客户: ' + (projectInfo.Customer??'')"></p>
                                     </div>
                                     <div class="panel-list-column" style="width: 6%; padding-left: 10px; margin-top: 5px; text-align: center;">
                                         <p>{{parseUserName(projectInfo.ProjectManager)}}</p>
@@ -84,39 +84,39 @@
                                     <div class="panel-list-column" style="width: 9%; padding-left: 10px; margin-top: 5px; padding-right: 5px;">
                                         <i class="fa fa-tag" type="buttonon" @click="onShowPlan(projectInfo)" title="展开计划" v-if="!projectInfo.showingPlan"></i>
                                         <i class="fa fa-tags" type="buttonon" @click="onHidePlan(projectInfo)" title="收起计划" v-else></i>
-                                        <i class="fa fa-toggle-on" type="buttonon" @click="showCloseProjectDialog(projectInfo)" title="项目归档" v-if="!projectInfo.showingProjectInfo && canCloseProject(projectInfo)"></i>
-                                        <i class="fa fa-toggle-off" title="已归档" v-else v-if="!projectInfo.showingProjectInfo && !canCloseProject(projectInfo)" v-bind:title="'关闭日期: ' + projectInfo.ClosedDate"></i>
-                                        <i class="fa fa-chevron-down" type="buttonon" @click="onShowProjectInfo(projectInfo)" title="展开项目" v-if="!projectInfo.showingProjectInfo && canEditProject(projectInfo)"></i>
-                                        <i class="fa fa-save" type="buttonon" @click="onPutProjectInfo(projectInfo)" title="提交项目" v-else v-if="projectInfo.showingProjectInfo && canEditProject(projectInfo)"></i>
-                                        <i class="fa fa-chevron-up" type="buttonon" @click="onHideProjectInfo(projectInfo)" title="收起项目" v-else v-if="projectInfo.showingProjectInfo"></i>
+                                        <i class="fa fa-toggle-on" type="buttonon" @click="showCloseProjectDialog(projectInfo)" title="项目归档" v-if="!projectInfo.showingProjectInfo && projectInfo.ClosedDate == null"></i>
+                                        <i class="fa fa-toggle-off" title="已归档" v-if="!projectInfo.showingProjectInfo && projectInfo.ClosedDate != null" v-bind:title="'关闭日期: ' + projectInfo.ClosedDate"></i>
+                                        <i class="fa fa-save" type="buttonon" @click="onPutProjectInfo(projectInfo)" title="提交项目" v-if="projectInfo.showingProjectInfo"></i>
+                                        <i class="fa fa-chevron-down" type="buttonon" @click="onShowProjectInfo(projectInfo)" title="展开项目" v-if="!projectInfo.showingProjectInfo"></i>
+                                        <i class="fa fa-chevron-up" type="buttonon" @click="onHideProjectInfo(projectInfo)" title="收起项目" v-else></i>
                                     </div>
                                 </div>
                                 <div class="panel panel-fold" style="height: 2436px;" v-show="projectInfo.showingProjectInfo">
                                     <div class="panel-fold-info">
                                         <div style="clear: both;">
                                             <div class="panel-fold-info-item">
-                                                <label>估算人天:</label>
-                                                <input type="number" v-model.number="projectInfo.EstimateWorkload">
-                                            </div>
-                                            <div class="panel-fold-info-item">
-                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(128, 100, 162);">
+                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(128, 100, 162);" title="是否可填报项目管理工作量">
                                                     <input type="checkbox" v-model="projectInfo.ManageWork">项目管理
                                                 </label>
-                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(0, 112, 192);">
+                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(0, 112, 192);" title="是否可填报调研分析工作量">
                                                     <input type="checkbox" v-model="projectInfo.InvestigateWork">调研分析
                                                 </label>
-                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(247, 150, 70);">
+                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(247, 150, 70);" title="是否可填报设计开发工作量">
                                                     <input type="checkbox" v-model="projectInfo.DevelopWork">设计开发
                                                 </label>
-                                                <label style="margin: 1% 0% 1% 0%; color: #717171; background-color: rgb(255, 255, 0); ">
+                                                <label style="margin: 1% 0% 1% 0%; color: #717171; background-color: rgb(255, 255, 0);" title="是否可填报联调测试工作量">
                                                     <input type="checkbox" v-model="projectInfo.TestWork">联调测试
                                                 </label>
-                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(0, 176, 240);">
+                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(0, 176, 240);" title="是否可填报培训实施工作量">
                                                     <input type="checkbox" v-model="projectInfo.ImplementWork">培训实施
                                                 </label>
-                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(146, 208, 80);">
+                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(146, 208, 80);" title="是否可填报质保维保工作量">
                                                     <input type="checkbox" v-model="projectInfo.MaintenanceWork">质保维保
                                                 </label>
+                                            </div>
+                                            <div class="panel-fold-info-item">
+                                                <label>估算人天:</label>
+                                                <input type="number" v-model.number="projectInfo.EstimateWorkload">
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>合 同 号:</label>
@@ -208,7 +208,7 @@
                                             </div>
                                         </div>
                                         <div style="clear: both;">
-                                            <label>合同精要</label>
+                                            <label>合同摘要</label>
                                         </div>
                                         <div class="panel-fold-area" style="width: 100%;">
                                             <span>付款条款</span>
@@ -298,7 +298,7 @@
                                                             <span>协调需求</span>
                                                             <textarea v-bind:readonly="!canPutMonthlyReport(projectInfo, monthlyReport)" v-model="monthlyReport.DemandCoordination"></textarea>
                                                         </div>
-                                                        <i class="fa fa-chevron-down" type="buttonon" @click="onNextMonthlyReport(projectInfo, annualPlan)" title="以往计划" v-show="monthlyReportIndex===annualPlan.monthlyReports.length-1 && annualPlanIndex===projectInfo.annualPlans.length-1"></i>
+                                                        <i class="fa fa-chevron-down" type="buttonon" @click="onNextMonthlyReport(projectInfo, annualPlan)" title="以往计划" v-show="monthlyReportIndex === annualPlan.monthlyReports.length - 1 && annualPlanIndex === projectInfo.annualPlans.length - 1"></i>
                                                         <i class="fa fa-chevron-up" type="buttonon" @click="onHidePlan(projectInfo)" title="收起计划"></i>
                                                     </div>
                                                 </div>

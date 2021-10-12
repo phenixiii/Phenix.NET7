@@ -12,7 +12,7 @@ namespace Phenix.TPT.Contract
     public interface IWorkScheduleGrain : Phenix.Actor.IGrain, IGrainWithIntegerKey
     {
         /// <summary>
-        /// 某人某年某月是否有档期
+        /// 是否有档期
         /// </summary>
         Task<bool> HaveWorkSchedule(long worker, short year, short month);
 

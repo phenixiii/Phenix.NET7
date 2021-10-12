@@ -21,9 +21,14 @@ namespace Phenix.TPT.Plugin
     {
         #region 方法
 
+        /// <summary>
+        /// 获取当月已制单且月初还未关闭的项目资料
+        /// </summary>
+        /// <param name="year">年</param>
+        /// <param name="month">月</param>
         [Authorize]
         [HttpGet("all")]
-        public IList<ProjectInfo> GetAll(int year, int month)
+        public IList<ProjectInfo> GetAll(short year, short month)
         {
             DateTime firstDay = new DateTime(year, month, 1);
             DateTime lastDay = month < 12
@@ -35,6 +40,10 @@ namespace Phenix.TPT.Plugin
                     Descending(p => p.UpdateTime));
         }
 
+        /// <summary>
+        /// 获取项目资料(如不存在则返回初始对象)
+        /// </summary>
+        /// <param name="id">项目ID</param>
         [Authorize]
         [HttpGet]
         public async Task<ProjectInfo> Get(long? id)
@@ -42,6 +51,9 @@ namespace Phenix.TPT.Plugin
             return await ClusterClient.Default.GetGrain<IProjectGrain>(id ?? Database.Default.Sequence.Value).FetchKernel(true);
         }
 
+        /// <summary>
+        /// 更新项目资料(如不存在则新增)
+        /// </summary>
         [ProjectControlFilter]
         [Authorize]
         [HttpPut]
@@ -51,6 +63,11 @@ namespace Phenix.TPT.Plugin
             await ClusterClient.Default.GetGrain<IProjectGrain>(projectInfo.Id).PutKernel(projectInfo);
         }
 
+        /// <summary>
+        /// 关闭项目
+        /// </summary>
+        /// <param name="id">项目ID</param>
+        /// <param name="closedDate">关闭日期</param>
         [ProjectControlFilter]
         [Authorize]
         [HttpDelete]
