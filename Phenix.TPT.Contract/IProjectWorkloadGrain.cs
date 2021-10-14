@@ -6,15 +6,16 @@ using Phenix.TPT.Business;
 namespace Phenix.TPT.Contract
 {
     /// <summary>
-    /// 打工人Grain接口
+    /// 项目工作量Grain接口
     /// key: Worker（PH7_User.US_ID）
+    /// keyExtension: Standards.FormatYearMonth(year, month)
     /// </summary>
-    public interface IWorkerGrain : Phenix.Actor.IGrain, IGrainWithIntegerKey
+    public interface IProjectWorkloadGrain : Phenix.Actor.IGrain, IGrainWithIntegerCompoundKey
     {
         /// <summary>
         /// 获取项目工作量(如不存在则返回初始对象)
         /// </summary>
-        Task<IList<ProjectWorkload>> GetProjectWorkloads(short year, short month);
+        Task<IList<ProjectWorkload>> GetProjectWorkloads();
 
         /// <summary>
         /// 更新项目工作量(如不存在则新增)

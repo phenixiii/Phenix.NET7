@@ -14,18 +14,13 @@ namespace Phenix.TPT.Contract
         /// <summary>
         /// 获取本年度某月工作日(如不存在则返回初始对象)
         /// </summary>
-        Task<Workday> GetCurrentYearWorkday(short month);
+        Task<Workday> GetWorkday(short month);
 
         /// <summary>
         /// 获取本年度工作日(如不存在则返回初始对象)
         /// </summary>
-        Task<IList<Workday>> GetCurrentYearWorkdays();
-
-        /// <summary>
-        /// 获取次年度工作日(如不存在则返回初始对象)
-        /// </summary>
-        Task<IList<Workday>> GetNextYearWorkdays();
-
+        Task<IList<Workday>> GetWorkdays();
+        
         /// <summary>
         /// 更新工作日(如不存在则新增)
         /// </summary>

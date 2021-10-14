@@ -8,7 +8,6 @@ using Phenix.Core.Data;
 using Phenix.Core.Data.Expressions;
 using Phenix.TPT.Business;
 using Phenix.TPT.Contract;
-using Phenix.TPT.Plugin.Filters;
 
 namespace Phenix.TPT.Plugin
 {
@@ -54,7 +53,6 @@ namespace Phenix.TPT.Plugin
         /// <summary>
         /// 更新项目资料(如不存在则新增)
         /// </summary>
-        [ProjectControlFilter]
         [Authorize]
         [HttpPut]
         public async Task Put()
@@ -68,7 +66,6 @@ namespace Phenix.TPT.Plugin
         /// </summary>
         /// <param name="id">项目ID</param>
         /// <param name="closedDate">关闭日期</param>
-        [ProjectControlFilter]
         [Authorize]
         [HttpDelete]
         public async Task Close(long id, DateTime closedDate)

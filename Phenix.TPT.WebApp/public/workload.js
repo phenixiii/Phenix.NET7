@@ -1,4 +1,8 @@
-﻿$(function() {
+﻿$(function () {
+    fetchMyselfCompanyUsers();
+    fetchProjectWorkloads(true);
+    fetchWorkday();
+
     var tableHeadTop;
     $(window).scroll(function() {
         //获取要定位元素距离浏览器顶部的距离
@@ -17,20 +21,37 @@
     });
 });
 
-function extractMyselfCompanyUsers() {
+function fetchWorkday() {
+    var result = vue.workdays.find(item => item.Year === vue.filterTimeInterval.year && item.Month === vue.filterTimeInterval.month);
+    if (result != null)
+        return result;
+    base.call({
+        path: '/api/workday',
+        pathParam: vue.filterTimeInterval,
+        onSuccess: function(result) {
+            vue.workdays.add(result);
+        },
+        onError: function(XMLHttpRequest, textStatus, validityError) {
+            alert('获取工作日失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
+        },
+    });
+}
+
+function fetchMyselfCompanyUsers() {
     phAjax.getMyselfCompanyUsers({
         includeDisabled: true,
-        onSuccess: function (result) {
+        onSuccess: function(result) {
             vue.myselfCompanyUsers = result;
-            if (vue.queryPerson != null && vue.projectInfos != null)
-                filterProjectInfos(vue.projectInfos); //如果有按负责人姓名查询的可能性则要等获取到公司员工资料后再执行本函数
+            fetchProjectWorkloads(false);
             vue.$forceUpdate();
         },
-        onError: function (XMLHttpRequest, textStatus, validityError) {
-            vue.logonHint = XMLHttpRequest.responseText;
+        onError: function(XMLHttpRequest, textStatus, validityError) {
             alert('获取公司员工资料失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
     });
+}
+
+function filterMyselfCompanyUsers(myselfCompanyUsers) {
 }
 
 function filterProjectInfos(projectInfos) {
@@ -138,29 +159,21 @@ function fetchProjectInfos(reset) {
 }
 
 
-function fetchWorday(year, month) {
-    //phAjax.ajax({
-    //    uri: "Workday?year=" + year + "&month=" + month,
-    //    onSuccess: function(result) {
-    //        vm.workday = result;
-    //    },
-    //    onError: function(XMLHttpRequest, textStatus, errorThrown) {
-    //        console.log("调用countService失败! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
-    //    },
-    //});
-};
-
-function fetchWorkerCount(year, month) {
-    //phAjax.ajax({
-    //    uri: "Worker/WorkerCount?year=" + year + "&month=" + month,
-    //    onSuccess: function(result) {
-    //        vm.workercount = result;
-    //    },
-    //    onError: function(XMLHttpRequest, textStatus, errorThrown) {
-    //        console.log("调用workdayService失败! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
-    //    },
-    //});
-};
+function fetchProjectWorkloads(worker) {
+    phAjax.call({
+        path: '/api/project-workload/all',
+        pathParam: { worker: worker, year: vue.filterTimeInterval.year, month: vue.filterTimeInterval.month },
+        onSuccess: function(result) {
+            vue.projectWorkloads.push(result);
+            if (result)
+                vue.filteredProjectWorkloads.push(result);
+        },
+        onError: function(XMLHttpRequest, textStatus, validityError) {
+            vue.projectInfos = null;
+            alert('获取项目工作量失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
+        },
+    });
+}
 
 var writeworkload = _.debounce(function(PW_PI_ID, year, month, worker, manageWorkloadRole, investigateWorkloadRole, developWorkloadRole, testWorkloadRole, implementWorkloadRole, maintenanceWorkloadRole, index, indexs, changeprojecttime) {
     //phAjax.ajax({
@@ -177,56 +190,6 @@ var writeworkload = _.debounce(function(PW_PI_ID, year, month, worker, manageWor
     //    },
     //})
 }, 500);
-
-function fetchworkSchedule(year, month) {
-    //phAjax.ajax({
-    //    uri: "WorkSchedule/?year=" + year + "&month=" + month,
-    //    onSuccess: function(result) {
-    //        vm.workSchedule = result;
-    //    },
-    //    onError: function(XMLHttpRequest, textStatus, errorThrown) {
-    //        console.log("调用scheduleService失败! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
-    //    },
-    //});
-}
-
-function fetchProject(year, month) {
-    //phAjax.ajax({
-    //    uri: "ProjectInfo/?year=" + year + "&month=" + month,
-    //    onSuccess: function(result) {
-    //        vm.dataprojects = [];
-    //        if (result.length <= 2 && vm.user.Position.Name == "管理") {
-    //            window.location.href = "projectinfo.html"
-    //        } else if (result.length > 2) {
-    //            var xiujia;
-    //            var qita;
-    //            for (var i = 0; i < result.length; i++) {
-    //                if (result[i].ProjectName == "休假") {
-    //                    xiujia = result[i];
-    //                    result.splice(i, 1);
-    //                    i--;
-    //                } else if (result[i].ProjectName == "其他") {
-    //                    qita = result[i];
-    //                    result.splice(i, 1);
-    //                    i--;
-    //                }
-    //            }
-    //            result.sort(function(a, b) {
-    //                return a.ProjectName.localeCompare(b.ProjectName, 'zh-Hans-CN', {
-    //                    sensitivity: 'accent'
-    //                })
-    //            });
-    //            vm.dataprojects = result;
-    //            vm.dataprojects.push(xiujia);
-    //            vm.dataprojects.push(qita);
-    //            fetchTotalWorkloads(vm.date.Year, vm.date.Month, vm.workercount);
-    //        }
-    //    },
-    //    onError: function(XMLHttpRequest, textStatus, errorThrown) {
-    //        console.log("调用projectService失败! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
-    //    },
-    //});
-}
 
 /*function fetchWorker(year, month, pageSize, pageNo) {
     phAjax.beforeSend(function(XMLHttpRequest) {
@@ -408,7 +371,7 @@ var vue = new Vue({
     data: {
         state: 0,
         stateTitle: [
-            '当月自己的工作量', //含自己管理工作档期内的员工
+            '当月自己的工作量', //含自己团队的
             '当月全员的工作量',
         ],
         filterStateTitle: [
@@ -420,10 +383,13 @@ var vue = new Vue({
             month: new Date().getMonth() + 1,
         },
 
+        workdays: [],
+
         myselfCompanyUsers: null,
         filteredMyselfCompanyUsers: [], //用于界面绑定的myselfCompanyUsers子集
-        Workloads: null,
-        filteredWorkloads: [], //用于界面绑定的projectInfos子集
+
+        projectWorkloads: null,
+        filteredProjectWorkloads: [], //用于界面绑定的projectWorkloads子集
 
         date: (localStorage.getItem('date') != undefined && JSON.parse(localStorage.getItem('date'))) ? JSON.parse(localStorage.getItem('date')) : {
             Year: new Date().getDate() > 8 ? new Date().getFullYear() : getPastDate(new Date().getFullYear(), new Date().getMonth() + 1, 1).getFullYear(),
@@ -431,7 +397,6 @@ var vue = new Vue({
         },
         projects: [],
         coworkers: [],
-        workday: 0,
         projecttime: [],
         totalprojecttime: [],
         pageSize: 10,
@@ -486,6 +451,65 @@ var vue = new Vue({
         },
     },
     methods: {
+        parseUserName: function(id) {
+            if (this.myselfCompanyUsers != null) {
+                var user = this.myselfCompanyUsers.find(item => item.Id === id);
+                if (user != null)
+                    return user.RegAlias;
+            }
+            return null;
+        },
+
+        onPlusMonth: function () {
+            var now = new Date();
+            if (this.filterTimeInterval.year === now.getFullYear() &&
+                this.filterTimeInterval.month === now.getMonth() + 1) {
+                alert('物来顺应，未来不迎~');
+                return;
+            }
+
+            if (this.filterTimeInterval.month === 12) {
+                this.filterTimeInterval.year = this.filterTimeInterval.year + 1;
+                this.filterTimeInterval.month = 1;
+            } else
+                this.filterTimeInterval.month = this.filterTimeInterval.month + 1;
+            fetchProjectInfos(true);
+        },
+
+        onMinusMonth: function () {
+            if (this.filterTimeInterval.month === 1) {
+                this.filterTimeInterval.year = this.filterTimeInterval.year - 1;
+                this.filterTimeInterval.month = 12;
+            } else
+                this.filterTimeInterval.month = this.filterTimeInterval.month - 1;
+            fetchProjectInfos(true);
+        },
+
+        onPlusYear: function () {
+            var now = new Date();
+            if (this.filterTimeInterval.year === now.getFullYear()) {
+                alert('珍惜当下，安然即好~');
+                return;
+            }
+
+            if (this.filterTimeInterval.year === now.getFullYear() - 1 &&
+                this.filterTimeInterval.month > now.getMonth() + 1)
+                this.filterTimeInterval.month = now.getMonth() + 1;
+            this.filterTimeInterval.year = this.filterTimeInterval.year + 1;
+            fetchProjectInfos(true);
+        },
+
+        onMinusYear: function () {
+            this.filterTimeInterval.year = this.filterTimeInterval.year - 1;
+            fetchProjectInfos(true);
+        },
+
+        onFilerProjectInfo: function () {
+            this.state = this.state >= 2 ? 0 : this.state + 1;
+            fetchProjectInfos(false);
+        },
+
+
         filter: function() {
             if (this.user.Department.Name == "公司管理" || this.user.Position.Name == "管理") {} else {
                 if ((this.filterstate == 2 && !(this.user.Roles.项目管理)) || this.filterstate == 3) {

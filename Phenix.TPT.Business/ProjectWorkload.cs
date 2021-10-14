@@ -8,7 +8,7 @@ using Phenix.Core.Data.Schema;
    build time: 2021-08-17 15:15:24
    mapping to: PT7_PROJECT_WORKLOAD 项目工作量
    revision record: 
-    1，添加Workload属性用于统计工作量
+    1，添加TotalWorkload属性用于统计工作量
 */
 
 namespace Phenix.TPT.Business
@@ -20,9 +20,10 @@ namespace Phenix.TPT.Business
     public class ProjectWorkload : ProjectWorkload<ProjectWorkload>
     {
         /// <summary>
-        /// 人天
+        /// 人天合计
         /// </summary>
-        public int Workload
+        [Newtonsoft.Json.JsonIgnore]
+        public int TotalWorkload
         {
             get { return ManageWorkload + InvestigateWorkload + DevelopWorkload + TestWorkload + ImplementWorkload + MaintenanceWorkload; }
         }

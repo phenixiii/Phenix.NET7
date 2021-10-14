@@ -151,17 +151,33 @@ namespace Phenix.TPT.Plugin
         /// 获取根实体对象
         /// </summary>
         /// <param name="autoNew">不存在则新增</param>
-        /// <returns>根实体对象</returns>
-        protected override ProjectInfo FetchKernel(bool autoNew = false)
+        protected override async Task<ProjectInfo> FetchKernel(bool autoNew = false)
         {
             if (Kernel != null)
                 return Kernel;
 
-            ProjectInfo result = base.FetchKernel(autoNew);
+            ProjectInfo result = await base.FetchKernel(autoNew);
             if (result != null)
+            {
                 result.Apply(NameValue.Set<ProjectInfo>(p => p.ContApproveDate, DateTime.Today).
                     Set(p => p.ProjectType, ProjectType.技术服务));
+                if (await User.Identity.IsInRole(ProjectRoles.项目管理))
+                    result.Apply(NameValue.Set<ProjectInfo>(p => p.ProjectManager, User.Identity.Id));
+            }
+
             return result;
+        }
+
+        /// <summary>
+        /// 新增或更新根实体对象
+        /// </summary>
+        /// <param name="source">数据源</param>
+        protected override async Task PutKernel(ProjectInfo source)
+        {
+            if (!await IsMyProject())
+                throw new SecurityException("非请毋动!");
+
+            await base.PutKernel(source);
         }
 
         async Task IProjectGrain.Close(DateTime closedDate)
@@ -183,11 +199,7 @@ namespace Phenix.TPT.Plugin
         {
             if (Kernel == null)
                 throw new ProjectNotFoundException();
-
-            //DateTime today = DateTime.Today;
-            //if (today.Year < year)
-            //    throw new ValidationException("未来不可期~");
-
+            
             foreach (ProjectAnnualPlan item in ProjectAnnualPlanList)
                 if (item.Year == year)
                     return Task.FromResult(item);
@@ -202,11 +214,9 @@ namespace Phenix.TPT.Plugin
                 throw new ProjectNotFoundException();
 
             if (!await IsMyProject())
-                throw new SecurityException("非请毋改!");
+                throw new SecurityException("非请毋动!");
 
-            //DateTime today = DateTime.Today;
-            //if (today.Year < source.Year)
-            //    throw new ValidationException("未来不可期~");
+            DateTime today = DateTime.Today;
 
             foreach (ProjectAnnualPlan item in ProjectAnnualPlanList)
                 if (item.Year == source.Year)
@@ -218,9 +228,13 @@ namespace Phenix.TPT.Plugin
                     Database.Execute((DbTransaction dbTransaction) =>
                     {
                         item.UpdateSelf(dbTransaction, source);
-                        Kernel.UpdateSelf(dbTransaction,
-                            NameValue.Set<ProjectInfo>(p => p.AnnualMilestone, source.AnnualMilestone).
-                                Set(p => p.TotalReceivables, p => p.TotalReceivables - item.AnnualReceivables + source.AnnualReceivables));
+                        if (today.Year == source.Year)
+                            Kernel.UpdateSelf(dbTransaction,
+                                NameValue.Set<ProjectInfo>(p => p.TotalReceivables, p => p.TotalReceivables - item.AnnualReceivables + source.AnnualReceivables).
+                                    Set(p => p.AnnualMilestone, source.AnnualMilestone));
+                        else
+                            Kernel.UpdateSelf(dbTransaction,
+                                NameValue.Set<ProjectInfo>(p => p.TotalReceivables, p => p.TotalReceivables - item.AnnualReceivables + source.AnnualReceivables));
                     });
                     return;
                 }
@@ -232,9 +246,14 @@ namespace Phenix.TPT.Plugin
             Database.Execute((DbTransaction dbTransaction) =>
             {
                 source.InsertSelf(dbTransaction);
-                Kernel.UpdateSelf(dbTransaction,
-                    NameValue.Set<ProjectInfo>(p => p.AnnualMilestone, source.AnnualMilestone).
-                        Set(p => p.TotalReceivables, p => p.TotalReceivables + source.AnnualReceivables));
+                if (today.Year == source.Year)
+                    Kernel.UpdateSelf(dbTransaction,
+                        NameValue.Set<ProjectInfo>(p => p.TotalReceivables, p => p.TotalReceivables + source.AnnualReceivables).
+                            Set(p => p.AnnualMilestone, source.AnnualMilestone));
+                else
+                    Kernel.UpdateSelf(dbTransaction,
+                        NameValue.Set<ProjectInfo>(p => p.TotalReceivables, p => p.TotalReceivables + source.AnnualReceivables));
+
             });
             ProjectAnnualPlanList.Add(source);
         }
@@ -248,12 +267,8 @@ namespace Phenix.TPT.Plugin
             if (Kernel == null)
                 throw new ProjectNotFoundException();
 
-            DateTime today = DateTime.Today;
-            if (today.Year < year || today.Year == year && today.Month < month)
-                throw new ValidationException("未来不可得~");
-
-            DateTime ultimo = new DateTime(year, month, 1).AddMilliseconds(-1);
             ProjectMonthlyReport ultimoReport = null;
+            DateTime ultimo = new DateTime(year, month, 1).AddMilliseconds(-1);
             foreach (ProjectMonthlyReport item in ProjectMonthlyReportList)
                 if (item.Year == year && item.Month == month)
                     return Task.FromResult(item);
@@ -273,11 +288,14 @@ namespace Phenix.TPT.Plugin
                 throw new ProjectNotFoundException();
 
             if (!await IsMyProject())
-                throw new SecurityException("非请毋改!");
+                throw new SecurityException("非请毋动!");
+
+            if (source.Month < 1 || source.Month > 12)
+                throw new ValidationException(String.Format("咱这可没{0}月份唉!", source.Month));
 
             DateTime today = DateTime.Today;
             if (today.Year < source.Year || today.Year == source.Year && today.Month < source.Month)
-                throw new ValidationException("未来不可得~");
+                throw new ValidationException("未来不可期~");
 
             foreach (ProjectMonthlyReport item in ProjectMonthlyReportList)
                 if (item.Year == source.Year && item.Month == source.Month)

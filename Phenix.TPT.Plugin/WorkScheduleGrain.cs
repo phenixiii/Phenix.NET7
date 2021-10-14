@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
+using System.Security;
 using System.Threading.Tasks;
 using Orleans.Streams;
 using Phenix.Actor;
 using Phenix.Core.Data;
+using Phenix.Core.Data.Expressions;
 using Phenix.TPT.Business;
 using Phenix.TPT.Contract;
 
@@ -14,8 +16,9 @@ namespace Phenix.TPT.Plugin
     /// <summary>
     /// 工作档期Grain接口
     /// key: Manager（PH7_User.US_ID）
+    /// keyExtension: Standards.FormatYearMonth(year, month)
     /// </summary>
-    public class WorkScheduleGrain : StreamGrainBase<string>, IWorkScheduleGrain
+    public class WorkScheduleGrain : StreamEntityGrainBase<WorkSchedule, string>, IWorkScheduleGrain
     {
         #region 属性
 
@@ -47,25 +50,29 @@ namespace Phenix.TPT.Plugin
             get { return PrimaryKeyLong; }
         }
 
-        private IDictionary<DateTime, WorkSchedule> _immediateWorkSchedules;
+        private DateTime? _yearMonth;
 
         /// <summary>
-        /// 前6个月之后的工作档期
+        /// 年月
         /// </summary>
-        protected IDictionary<DateTime, WorkSchedule> ImmediateWorkSchedules
+        protected DateTime YearMonth
+        {
+            get { return _yearMonth ??= DateTime.Parse(PrimaryKeyExtension); }
+        }
+
+        /// <summary>
+        /// 根实体对象
+        /// </summary>
+        protected override WorkSchedule Kernel
         {
             get
             {
-                if (_immediateWorkSchedules == null)
-                {
-                    DateTime startDay = DateTime.Today.AddMonths(-6);
-                    _immediateWorkSchedules = WorkSchedule.FetchKeyValues(Database,
-                        p => p.YearMonth,
-                        p => p.Manager == Manager &&
-                             (p.Year == startDay.Year && p.Month >= startDay.Month || p.Year > startDay.Year));
-                }
-
-                return _immediateWorkSchedules;
+                return base.Kernel ??= WorkSchedule.FetchRoot(Database,
+                    p => p.Manager == Manager && p.Year == YearMonth.Year && p.Month == YearMonth.Month, () =>
+                        WorkSchedule.New(Database, 
+                            NameValue.Set<WorkSchedule>(p => p.Manager, Manager).
+                                Set(p => p.Year, YearMonth.Year).
+                                Set(p => p.Month, YearMonth.Month)));
             }
         }
 
@@ -75,15 +82,14 @@ namespace Phenix.TPT.Plugin
 
         #region Stream
 
-        private Task SendEventForRefreshProjectWorkloads(long receiver, string content)
+        private Task SendEventForRefreshProjectWorkloads(long receiver, string content, StreamSequenceToken token = null)
         {
             if (receiver == Manager)
                 return Task.CompletedTask;
             if (content == Manager.ToString())
                 return Task.CompletedTask;
 
-            //通知receiver刷新项目工作量
-            return ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.RefreshProjectWorkloadsStreamId, receiver.ToString()).OnNextAsync(content);
+            return ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.RefreshProjectWorkloadsStreamId, receiver.ToString()).OnNextAsync(content, token);
         }
 
         /// <summary>
@@ -93,68 +99,48 @@ namespace Phenix.TPT.Plugin
         /// <param name="token">StreamSequenceToken</param>
         protected override Task OnReceiving(string content, StreamSequenceToken token)
         {
-            //传达给到自己团队成员Grain
-            List<long> workers = new List<long>();
-            foreach (KeyValuePair<DateTime, WorkSchedule> kvp in ImmediateWorkSchedules)
-            foreach (long worker in kvp.Value.Workers)
-                if (!workers.Contains(worker))
-                    workers.Add(worker);
-            foreach (long worker in workers)
-                SendEventForRefreshProjectWorkloads(worker, content);
+            foreach (long receiver in Kernel.Workers)
+                SendEventForRefreshProjectWorkloads(receiver, content, token);
             return Task.CompletedTask;
         }
 
         #endregion
 
-        Task<bool> IWorkScheduleGrain.HaveWorkSchedule(long worker, short year, short month)
-        {
-            if (worker == Manager)
-                return Task.FromResult(true);
-            if (ImmediateWorkSchedules.TryGetValue(Standards.FormatYearMonth(year, month), out WorkSchedule workSchedule))
-                return Task.FromResult(workSchedule.Workers.Contains(worker));
-
-            throw new ValidationException(String.Format("查询不到{0}年{1}月{2}的工作档期记录!", year, month, worker));
-        }
-
-        Task<IList<WorkSchedule>> IWorkScheduleGrain.GetImmediateWorkSchedules()
-        {
-            IList<WorkSchedule> result = new List<WorkSchedule>(ImmediateWorkSchedules.Values);
-            return Task.FromResult(result);
-        }
-
-        Task IWorkScheduleGrain.PutWorkSchedule(WorkSchedule source)
+        /// <summary>
+        /// 新增或更新根实体对象
+        /// </summary>
+        /// <param name="source">数据源</param>
+        protected override async Task PutKernel(WorkSchedule source)
         {
             DateTime today = DateTime.Today;
             if (source.Year < today.Year || source.Year > today.Year + 1)
                 throw new ValidationException("仅限于管理今明两年的的工作档期!");
             if (source.Year == today.Year && (source.Month < today.Month))
                 throw new ValidationException("不允许修改已经过时了的工作档期!");
-            if (source.Month < 1 || source.Month > 12)
-                throw new ValidationException(String.Format("咱这可没{0}月份唉!", source.Month));
 
-            List<long> workers = new List<long>();
-            DateTime yearMonth = Standards.FormatYearMonth(source.Year, source.Month);
-            if (ImmediateWorkSchedules.TryGetValue(yearMonth, out WorkSchedule workSchedule))
-                Database.Execute((DbTransaction dbTransaction) =>
-                {
-                    workers.AddRange(workSchedule.Workers);
-                    workSchedule.UpdateSelf(dbTransaction, source);
-                    ResetWorkers(dbTransaction, workSchedule);
-                });
-            else
-                Database.Execute((DbTransaction dbTransaction) =>
+            if (User.Identity.Id != Manager && !User.Identity.IsCompanyAdmin)
+                throw new SecurityException("管好自己的工作档期就行啦!"); ;
+
+            List<long> receivers = new List<long>(Kernel.Workers);
+            if (Kernel.Workers == null)
+                Database.Execute(dbTransaction =>
                 {
                     source.InsertSelf(dbTransaction);
                     ResetWorkers(dbTransaction, source);
-                    ImmediateWorkSchedules[yearMonth] = source;
+                    Kernel = source;
+                });
+            else
+                Database.Execute(dbTransaction =>
+                {
+                    Kernel.UpdateSelf(dbTransaction, source);
+                    ResetWorkers(dbTransaction, Kernel);
                 });
 
-            foreach (long worker in source.Workers)
-                if (!workers.Contains(worker))
-                    workers.Add(worker);
-            foreach (long worker in workers)
-                SendEventForRefreshProjectWorkloads(worker, Manager.ToString());
-            return Task.CompletedTask;
+            foreach (long receiver in source.Workers)
+                if (!receivers.Contains(receiver))
+                    receivers.Add(receiver);
+            foreach (long receiver in receivers)
+                await SendEventForRefreshProjectWorkloads(receiver, Manager.ToString());
         }
 
         private void ResetWorkers(DbTransaction dbTransaction, WorkSchedule workSchedule)

@@ -20,8 +20,8 @@ insert into PH7_User(
   3 --US_Position_ID：项目经理，导入后通过界面纠正
 from PH_User
 where 
-   US_Locked = 0 or
-   US_ID <= 0
+   US_Locked = 0 and
+   US_ID > 0
 
 
 insert into PT7_PROJECT_INFO(

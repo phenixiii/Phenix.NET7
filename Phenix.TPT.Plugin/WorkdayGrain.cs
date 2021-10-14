@@ -25,57 +25,30 @@ namespace Phenix.TPT.Plugin
             get { return PrimaryKeyLong; }
         }
 
-        private IDictionary<short, Workday> _currentYearWorkdays;
+        private IDictionary<short, Workday> _kernel;
 
         /// <summary>
-        /// 本年度工作日
+        /// 月-工作日
         /// </summary>
-        protected IDictionary<short, Workday> CurrentYearWorkdays
+        protected IDictionary<short, Workday> Kernel
         {
             get
             {
-                if (_currentYearWorkdays == null)
+                if (_kernel == null)
                 {
-                    IDictionary<short, Workday> currentYearWorkdays = Workday.FetchKeyValues(Database,
+                    IDictionary<short, Workday> result = Workday.FetchKeyValues(Database,
                         p => p.Month,
                         p => p.Year == Year, 
                         OrderBy.Ascending<Workday>(p => p.Month));
-                    if (currentYearWorkdays.Count == 0)
+                    if (result.Count == 0)
                         for (short i = 1; i <= 12; i++)
-                            currentYearWorkdays.Add(i, Workday.New(Database,
+                            result.Add(i, Workday.New(Database,
                                 Workday.Set(p => p.Year, Year).
                                     Set(p => p.Month, i)));
-                    _currentYearWorkdays = currentYearWorkdays;
+                    _kernel = result;
                 }
 
-                return _currentYearWorkdays;
-            }
-        }
-
-        private IDictionary<short, Workday> _nextYearWorkdays;
-
-        /// <summary>
-        /// 次年度工作日
-        /// </summary>
-        protected IDictionary<short, Workday> NextYearWorkdays
-        {
-            get
-            {
-                if (_nextYearWorkdays == null)
-                {
-                    IDictionary<short, Workday> nextYearWorkdays = Workday.FetchKeyValues(Database,
-                        p => p.Month,
-                        p => p.Year == Year + 1,
-                        OrderBy.Ascending<Workday>(p => p.Month));
-                    if (nextYearWorkdays.Count == 0)
-                        for (short i = 1; i <= 12; i++)
-                            nextYearWorkdays.Add(i, Workday.New(Database,
-                                Workday.Set(p => p.Year, Year + 1).
-                                    Set(p => p.Month, i)));
-                    _nextYearWorkdays = nextYearWorkdays;
-                }
-
-                return _nextYearWorkdays;
+                return _kernel;
             }
         }
 
@@ -83,23 +56,17 @@ namespace Phenix.TPT.Plugin
 
         #region 方法
 
-        Task<Workday> IWorkdayGrain.GetCurrentYearWorkday(short month)
+        Task<Workday> IWorkdayGrain.GetWorkday(short month)
         {
             if (month < 1 || month > 12)
                 throw new ValidationException(String.Format("咱这可没{0}月份唉!", month));
 
-            return Task.FromResult(CurrentYearWorkdays[month]);
+            return Task.FromResult(Kernel[month]);
         }
 
-        Task<IList<Workday>> IWorkdayGrain.GetCurrentYearWorkdays()
+        Task<IList<Workday>> IWorkdayGrain.GetWorkdays()
         {
-            IList<Workday> result = new List<Workday>(CurrentYearWorkdays.Values);
-            return Task.FromResult(result);
-        }
-
-        Task<IList<Workday>> IWorkdayGrain.GetNextYearWorkdays()
-        {
-            IList<Workday> result = new List<Workday>(NextYearWorkdays.Values);
+            IList<Workday> result = new List<Workday>(Kernel.Values);
             return Task.FromResult(result);
         }
 
@@ -110,12 +77,7 @@ namespace Phenix.TPT.Plugin
             if (source.Days < 1 || source.Days > 31)
                 throw new ValidationException("躺平和加班一样糟糕，最好对标法定工作日哦!");
 
-            Workday workday = source.Year == Year
-                ? CurrentYearWorkdays[source.Month]
-                : source.Year == Year + 1
-                    ? NextYearWorkdays[source.Month]
-                    : throw new ValidationException(String.Format("提交的工作日仅限于{0}、{1}年的!", Year, Year + 1));
-
+            Workday workday = Kernel[source.Month];
             if (workday.Days == 0)
             {
                 workday.Apply(Workday.Set(p => p.Days, source.Days));

@@ -45,13 +45,13 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="autoNew">不存在则新增</param>
         /// <returns>根实体对象</returns>
-        protected override TKernel FetchKernel(bool autoNew = false)
+        protected override Task<TKernel> FetchKernel(bool autoNew = false)
         {
-            return Kernel == null && autoNew
+            return Task.FromResult(Kernel == null && autoNew
                 ? this is IGrainWithIntegerKey
                     ? TreeEntityBase<TKernel>.NewRoot(Database, NameValue.Set<TKernel>(p => p.PrimaryKeyLong, PrimaryKeyLong))
                     : TreeEntityBase<TKernel>.NewRoot(Database)
-                : Kernel;
+                : Kernel);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
-        protected override void CreateKernel(IDictionary<string, object> propertyValues, bool throwIfFound = true)
+        protected override Task CreateKernel(IDictionary<string, object> propertyValues, bool throwIfFound = true)
         {
             if (Kernel != null)
                 if (throwIfFound)
@@ -82,12 +82,14 @@ namespace Phenix.Actor
                 TreeEntityBase<TKernel>.NewRoot(Database, propertyValues).InsertSelf();
                 OnKernelOperated(ExecuteAction.Insert, tag);
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>
         /// 删除根实体对象
         /// </summary>
-        protected override void DeleteKernel()
+        protected override Task DeleteKernel()
         {
             if (Kernel != null)
             {
@@ -95,6 +97,8 @@ namespace Phenix.Actor
                 Kernel.DeleteBranch();
                 OnKernelOperated(ExecuteAction.Delete, tag);
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Phenix.Core.Data;
 using Phenix.Core.Data.Model;
 using Phenix.Core.Data.Schema;
 
@@ -10,8 +9,7 @@ using Phenix.Core.Data.Schema;
    build time: 2021-08-09 17:34:10
    mapping to: PT7_WORK_SCHEDULE 工作档期
    revision record: 
-    1，属性Workers类型改成IList<string>
-    2，添加YearMonth属性用于FetchKeyValues
+    1，属性Workers类型改成IList<long>
 */
 
 namespace Phenix.TPT.Business
@@ -22,18 +20,6 @@ namespace Phenix.TPT.Business
     [Serializable]
     public class WorkSchedule : WorkSchedule<WorkSchedule>
     {
-        #region 属性
-
-        /// <summary>
-        /// 年月
-        /// </summary>
-        [Newtonsoft.Json.JsonIgnore]
-        public DateTime YearMonth
-        {
-            get { return Standards.FormatYearMonth(Year, Month); }
-        }
-
-        #endregion
     }
 
     /// <summary>

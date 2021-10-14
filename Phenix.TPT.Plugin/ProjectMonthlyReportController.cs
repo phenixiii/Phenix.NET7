@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.TPT.Business;
 using Phenix.TPT.Contract;
-using Phenix.TPT.Plugin.Filters;
 
 namespace Phenix.TPT.Plugin
 {
@@ -23,7 +22,6 @@ namespace Phenix.TPT.Plugin
         /// <param name="projectId">项目ID</param>
         /// <param name="year">年</param>
         /// <param name="month">月</param>
-        /// <returns>项目月报</returns>
         [Authorize]
         [HttpGet]
         public async Task<ProjectMonthlyReport> Get(long projectId, short year, short month)
@@ -34,7 +32,6 @@ namespace Phenix.TPT.Plugin
         /// <summary>
         /// 更新项目月报(如不存在则新增)
         /// </summary>
-        [ProjectControlFilter]
         [Authorize]
         [HttpPut]
         public async Task Put()

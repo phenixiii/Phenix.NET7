@@ -13,7 +13,6 @@ namespace Phenix.Services.Contract.Security.Cryptography
         /// <summary>
         /// 获取公钥
         /// </summary>
-        /// <returns>公钥</returns>
         Task<string> GetPublicKey();
 
         /// <summary>

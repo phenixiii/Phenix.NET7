@@ -44,11 +44,10 @@ function extractMyselfCompanyUsers() {
             });
 
             if (vue.queryPerson != null && vue.projectInfos != null)
-                filterProjectInfos(vue.projectInfos); //如果有按负责人姓名查询的可能性则要等获取到公司员工资料后再执行本函数
+                filterProjectInfos(vue.projectInfos); //如果vue.queryPerson有按负责人姓名查询的可能性则要等获取到vue.myselfCompanyUsers后再执行本函数
             vue.$forceUpdate();
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
-            vue.logonHint = XMLHttpRequest.responseText;
             alert('获取公司员工资料失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
     });
@@ -102,7 +101,7 @@ function hidePlanPanel(projectInfo) {
 }
 
 function filterProjectInfos(projectInfos) {
-    if (vue.queryPerson != null && vue.myselfCompanyUsers == null) //如果有按负责人姓名查询的可能性则要等获取到公司员工资料后再执行本函数
+    if (vue.queryPerson != null && vue.myselfCompanyUsers == null) //如果vue.queryPerson有按负责人姓名查询的可能性则要等获取到vue.myselfCompanyUsers后再执行本函数
         return;
 
     vue.filteredProjectInfos.forEach((item, index) => {
@@ -210,9 +209,10 @@ function addProjectInfo() {
         path: '/api/project-info',
         onSuccess: function(result) {
             result.annualPlans = [];
-            vue.currentProjectInfo = result;
             vue.filteredProjectInfos.unshift(result);
             vue.projectInfos.unshift(result);
+            vue.currentProjectInfo = result;
+            showProjectInfoPanel(result);
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
             vue.projectInfos = null;
@@ -226,13 +226,16 @@ function putProjectInfo(projectInfo) {
         type: "PUT",
         path: '/api/project-info',
         data: projectInfo,
-        onSuccess: function (result) {
+        onSuccess: function(result) {
             pushSalesAreas(projectInfo.SalesArea);
             pushCustomers(projectInfo.Customer);
 
             if (confirm('成功提交资料, 是否需要合上资料面板?')) {
                 hideProjectInfoPanel(projectInfo);
                 locatingProjectInfo(projectInfo);
+                if (projectInfo.annualPlans.length === 0)
+                    if (confirm('是否需要展开计划面板以便跟踪项目状况?'))
+                        nextAnnualPlan(projectInfo);
             }
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
@@ -246,12 +249,12 @@ function closeProject(projectInfo, closedDate) {
         type: 'DELETE',
         path: '/api/project-info',
         pathParam: { id: projectInfo.Id, closedDate: closedDate },
-        onSuccess: function (result) {
+        onSuccess: function(result) {
             Vue.set(projectInfo, 'ClosedDate', closedDate);
             hideCloseProjectDialog();
             alert(projectInfo.ProjectName + ' 已成功归档!');
         },
-        onError: function (XMLHttpRequest, textStatus, validityError) {
+        onError: function(XMLHttpRequest, textStatus, validityError) {
             vue.projectInfos = null;
             alert('项目归档失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
@@ -458,29 +461,50 @@ var vue = new Vue({
             fetchProjectInfos(true);
         },
 
-        onFilerProject: function() {
+        onFilerProjectInfo: function() {
             this.state = this.state >= 2 ? 0 : this.state + 1;
             fetchProjectInfos(false);
         },
 
-        onQueryProject: function() {
+        onQueryProjectInfo: function() {
             fetchProjectInfos(false);
         },
 
-        onAddProject: function() {
+        onAddProjectInfo: function() {
             if (!base.isMyProject())
                 return;
             addProjectInfo();
         },
 
-        onShowProjectInfo: function (projectInfo) {
+        showMilestone: function(projectInfo) {
+            return '计划上线: ' + (projectInfo.OnlinePlanDate ?? '') +
+                '\n实际上线: ' + (projectInfo.OnlineActualDate ?? '') +
+                '\n验收时间: ' + (projectInfo.AcceptDate ?? '');
+        },
+
+        showPaymentsReceipts: function(projectInfo) {
+            if (!base.isMyProject(projectInfo))
+                return;
+            return '应收总额: ' + projectInfo.TotalReceivables +
+                '\n开票总额: ' + projectInfo.TotalInvoiceAmount +
+                '\n报销总额: ' + projectInfo.TotalReimbursementAmount;
+        },
+
+        showSalesData: function(projectInfo) {
+            if (!base.isMyProject(projectInfo))
+                return;
+            return (projectInfo.SalesArea != null ? '销售区域: ' : '') + (projectInfo.SalesArea ?? '') +
+                (projectInfo.Customer != null ? '\n服务客户: ' : '') + (projectInfo.Customer ?? '');
+        },
+
+        onShowProjectInfo: function(projectInfo) {
             if (!base.isMyProject(projectInfo))
                 return;
             this.currentProjectInfo = projectInfo;
             showProjectInfoPanel(projectInfo);
         },
 
-        onPutProjectInfo:function (projectInfo) {
+        onPutProjectInfo: function(projectInfo) {
             if (!base.isMyProject(projectInfo))
                 return;
             this.currentProjectInfo = projectInfo;

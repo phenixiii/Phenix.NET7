@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans;
 using Phenix.Core.Data;
@@ -59,17 +58,17 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="autoNew">不存在则新增</param>
         /// <returns>根实体对象</returns>
-        protected virtual TKernel FetchKernel(bool autoNew = false)
+        protected virtual Task<TKernel> FetchKernel(bool autoNew = false)
         {
-            return Kernel == null && autoNew
+            return Task.FromResult(Kernel == null && autoNew
                 ? this is IGrainWithIntegerKey
                     ? EntityBase<TKernel>.New(Database, NameValue.Set<TKernel>(p => p.PrimaryKeyLong, PrimaryKeyLong))
                     : EntityBase<TKernel>.New(Database)
-                : Kernel;
+                : Kernel);
         }
         Task<TKernel> IEntityGrain<TKernel>.FetchKernel(bool autoNew)
         {
-            return Task.FromResult(FetchKernel(autoNew));
+            return FetchKernel(autoNew);
         }
 
         /// <summary>
@@ -97,7 +96,7 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="source">数据源</param>
         /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
-        protected virtual void CreateKernel(TKernel source, bool throwIfFound = true)
+        protected virtual Task CreateKernel(TKernel source, bool throwIfFound = true)
         {
             if (Kernel != null)
                 if (throwIfFound)
@@ -120,11 +119,12 @@ namespace Phenix.Actor
                 source.InsertSelf();
                 OnKernelOperated(ExecuteAction.Insert, tag);
             }
+
+            return Task.CompletedTask;
         }
         Task IEntityGrain<TKernel>.CreateKernel(TKernel source, bool throwIfFound)
         {
-            CreateKernel(source, throwIfFound);
-            return Task.CompletedTask;
+            return CreateKernel(source, throwIfFound);
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
-        protected virtual void CreateKernel(IDictionary<string, object> propertyValues, bool throwIfFound = true)
+        protected virtual Task CreateKernel(IDictionary<string, object> propertyValues, bool throwIfFound = true)
         {
             if (Kernel != null)
                 if (throwIfFound)
@@ -155,66 +155,63 @@ namespace Phenix.Actor
                 EntityBase<TKernel>.New(Database, propertyValues).InsertSelf();
                 OnKernelOperated(ExecuteAction.Insert, tag);
             }
+
+            return Task.CompletedTask;
         }
         Task IEntityGrain.CreateKernel(IDictionary<string, object> propertyValues, bool throwIfFound)
         {
-            CreateKernel(propertyValues, throwIfFound);
-            return Task.CompletedTask;
+            return CreateKernel(propertyValues, throwIfFound);
         }
         Task IEntityGrain.CreateKernel(params NameValue[] propertyValues)
         {
-            CreateKernel(NameValue.ToDictionary(propertyValues));
-            return Task.CompletedTask;
+            return CreateKernel(NameValue.ToDictionary(propertyValues));
         }
         Task IEntityGrain<TKernel>.CreateKernel(params NameValue<TKernel>[] propertyValues)
         {
-            CreateKernel(NameValue<TKernel>.ToDictionary(propertyValues));
-            return Task.CompletedTask;
+            return CreateKernel(NameValue<TKernel>.ToDictionary(propertyValues));
         }
 
         /// <summary>
         /// 新增或更新根实体对象
         /// </summary>
         /// <param name="source">数据源</param>
-        protected virtual void PutKernel(TKernel source)
+        protected virtual Task PutKernel(TKernel source)
         {
            CreateKernel(source, false);
+           return Task.CompletedTask;
         }
         Task IEntityGrain<TKernel>.PutKernel(TKernel source)
         {
-            PutKernel(source);
-            return Task.CompletedTask;
+            return PutKernel(source);
         }
 
         /// <summary>
         /// 新增或更新根实体对象
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
-        protected virtual void PutKernel(IDictionary<string, object> propertyValues)
+        protected virtual Task PutKernel(IDictionary<string, object> propertyValues)
         {
             CreateKernel(propertyValues, false);
+            return Task.CompletedTask;
         }
         Task IEntityGrain.PutKernel(IDictionary<string, object> propertyValues)
         {
-            PutKernel(propertyValues);
-            return Task.CompletedTask;
+            return PutKernel(propertyValues);
         }
         Task IEntityGrain.PutKernel(params NameValue[] propertyValues)
         {
-            PutKernel(NameValue.ToDictionary(propertyValues));
-            return Task.CompletedTask;
+            return PutKernel(NameValue.ToDictionary(propertyValues));
         }
         Task IEntityGrain<TKernel>.PutKernel(params NameValue<TKernel>[] propertyValues)
         {
-            PutKernel(NameValue<TKernel>.ToDictionary(propertyValues));
-            return Task.CompletedTask;
+            return PutKernel(NameValue<TKernel>.ToDictionary(propertyValues));
         }
 
         /// <summary>
         /// 更新根实体对象(如不存在则引发 InvalidOperationException)
         /// </summary>
         /// <param name="source">数据源</param>
-        protected virtual void PatchKernel(TKernel source)
+        protected virtual Task PatchKernel(TKernel source)
         {
             if (Kernel == null)
                 throw new System.ComponentModel.DataAnnotations.ValidationException("未发现待更新的对象!");
@@ -222,18 +219,18 @@ namespace Phenix.Actor
             OnKernelOperating(ExecuteAction.Update, out object tag);
             Kernel.UpdateSelf(source);
             OnKernelOperated(ExecuteAction.Update, tag);
+            return Task.CompletedTask;
         }
         Task IEntityGrain<TKernel>.PatchKernel(TKernel source)
         {
-            PatchKernel(source);
-            return Task.CompletedTask;
+            return PatchKernel(source);
         }
 
         /// <summary>
         /// 更新根实体对象(如不存在则引发 InvalidOperationException)
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
-        protected virtual void PatchKernel(IDictionary<string, object> propertyValues)
+        protected virtual Task PatchKernel(IDictionary<string, object> propertyValues)
         {
             if (Kernel == null)
                 throw new System.ComponentModel.DataAnnotations.ValidationException("未发现待更新的对象!");
@@ -241,27 +238,25 @@ namespace Phenix.Actor
             OnKernelOperating(ExecuteAction.Update, out object tag);
             Kernel.UpdateSelf(propertyValues);
             OnKernelOperated(ExecuteAction.Update, tag);
+            return Task.CompletedTask;
         }
         Task IEntityGrain.PatchKernel(IDictionary<string, object> propertyValues)
         {
-            PatchKernel(propertyValues);
-            return Task.CompletedTask;
+            return PatchKernel(propertyValues);
         }
         Task IEntityGrain.PatchKernel(params NameValue[] propertyValues)
         {
-            PatchKernel(NameValue.ToDictionary(propertyValues));
-            return Task.CompletedTask;
+            return PatchKernel(NameValue.ToDictionary(propertyValues));
         }
         Task IEntityGrain<TKernel>.PatchKernel(params NameValue<TKernel>[] propertyValues)
         {
-            PatchKernel(NameValue<TKernel>.ToDictionary(propertyValues));
-            return Task.CompletedTask;
+            return PatchKernel(NameValue<TKernel>.ToDictionary(propertyValues));
         }
 
         /// <summary>
         /// 删除根实体对象
         /// </summary>
-        protected virtual void DeleteKernel()
+        protected virtual Task DeleteKernel()
         {
             if (Kernel != null)
             {
@@ -269,23 +264,24 @@ namespace Phenix.Actor
                 Kernel.DeleteSelf();
                 OnKernelOperated(ExecuteAction.Delete, tag);
             }
+            
+            return Task.CompletedTask;
         }
         Task IEntityGrain.DeleteKernel()
         {
-            DeleteKernel();
-            return Task.CompletedTask;
+            return DeleteKernel();
         }
 
-        private object GetKernelPropertyValue(string propertyName)
+        private Task<object> GetKernelPropertyValue(string propertyName)
         {
             if (Kernel == null)
                 throw new System.ComponentModel.DataAnnotations.ValidationException("无法获取不存在的根实体对象的属性值!");
 
-            return Utilities.GetMemberValue(Kernel, propertyName);
+            return Task.FromResult(Utilities.GetMemberValue(Kernel, propertyName));
         }
         Task<object> IEntityGrain.GetKernelPropertyValue(string propertyName)
         {
-            return Task.FromResult(GetKernelPropertyValue(propertyName));
+            return GetKernelPropertyValue(propertyName);
         }
 
         #endregion
