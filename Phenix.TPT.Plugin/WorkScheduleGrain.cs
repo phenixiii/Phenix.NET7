@@ -9,6 +9,7 @@ using Phenix.Actor;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Expressions;
 using Phenix.TPT.Business;
+using Phenix.TPT.Business.Norm;
 using Phenix.TPT.Contract;
 
 namespace Phenix.TPT.Plugin
@@ -68,11 +69,7 @@ namespace Phenix.TPT.Plugin
             get
             {
                 return base.Kernel ??= WorkSchedule.FetchRoot(Database,
-                    p => p.Manager == Manager && p.Year == YearMonth.Year && p.Month == YearMonth.Month, () =>
-                        WorkSchedule.New(Database, 
-                            NameValue.Set<WorkSchedule>(p => p.Manager, Manager).
-                                Set(p => p.Year, YearMonth.Year).
-                                Set(p => p.Month, YearMonth.Month)));
+                    p => p.Manager == Manager && p.Year == YearMonth.Year && p.Month == YearMonth.Month);
             }
         }
 
@@ -107,18 +104,33 @@ namespace Phenix.TPT.Plugin
         #endregion
 
         /// <summary>
+        /// 获取根实体对象
+        /// </summary>
+        /// <param name="autoNew">不存在则新增</param>
+        protected override Task<WorkSchedule> FetchKernel(bool autoNew = false)
+        {
+            return Task.FromResult(Kernel ?? (autoNew
+                ? WorkSchedule.New(Database,
+                    NameValue.Set<WorkSchedule>(p => p.Manager, Manager).
+                        Set(p => p.Year, YearMonth.Year).
+                        Set(p => p.Month, YearMonth.Month).
+                        Set(p => p.Workers, new List<long>()))
+                : null));
+        }
+
+        /// <summary>
         /// 新增或更新根实体对象
         /// </summary>
         /// <param name="source">数据源</param>
         protected override async Task PutKernel(WorkSchedule source)
         {
             DateTime today = DateTime.Today;
-            if (source.Year < today.Year || source.Year > today.Year + 1)
-                throw new ValidationException("仅限于管理今明两年的的工作档期!");
-            if (source.Year == today.Year && (source.Month < today.Month))
-                throw new ValidationException("不允许修改已经过时了的工作档期!");
-
-            if (User.Identity.Id != Manager && !User.Identity.IsCompanyAdmin)
+            if (source.Year > today.AddYears(1).Year)
+                throw new ValidationException("仅限于管理近一年的的工作档期!");
+            if (new DateTime(source.Year, source.Month, 28) < today.AddMonths(-1) && !await User.Identity.IsInRole(ProjectRoles.经营管理) || //次次月28日后之后不允许修改
+                new DateTime(source.Year, source.Month, 28) < today && !await User.Identity.IsInRole(ProjectRoles.经营管理, ProjectRoles.项目管理))  //次月28日后之后不允许修改
+                throw new ValidationException("不允许修改已归档的工作档期!");
+            if (User.Identity.Id != Manager && !await User.Identity.IsInRole(ProjectRoles.经营管理))
                 throw new SecurityException("管好自己的工作档期就行啦!"); ;
 
             List<long> receivers = new List<long>(Kernel.Workers);

@@ -294,7 +294,7 @@ namespace Phenix.TPT.Plugin
                 throw new ValidationException(String.Format("咱这可没{0}月份唉!", source.Month));
 
             DateTime today = DateTime.Today;
-            if (today.Year < source.Year || today.Year == source.Year && today.Month < source.Month)
+            if (source.Year > today.Year || source.Year == today.Year && source.Month > today.Month)
                 throw new ValidationException("未来不可期~");
 
             foreach (ProjectMonthlyReport item in ProjectMonthlyReportList)

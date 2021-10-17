@@ -36,11 +36,6 @@
         public const string WorkSchedulePath = "/api/work-schedule";
         
         /// <summary>
-        /// /api/project-worker
-        /// </summary>
-        public const string ProjectWorkerPath = "/api/project-worker";
-
-        /// <summary>
         /// /api/project-workload
         /// </summary>
         public const string ProjectWorkloadPath = "/api/project-workload";

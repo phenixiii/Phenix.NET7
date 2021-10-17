@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Orleans.Streams;
 using Phenix.Actor;
 using Phenix.TPT.Business;
+using Phenix.TPT.Business.Norm;
 using Phenix.TPT.Contract;
 
 namespace Phenix.TPT.Plugin
@@ -132,8 +133,11 @@ namespace Phenix.TPT.Plugin
         async Task IProjectWorkloadGrain.PutProjectWorkload(ProjectWorkload source)
         {
             DateTime today = DateTime.Today;
-            if (today.Year < source.Year || today.Year == source.Year && today.Month < source.Month)
+            if (source.Year > today.Year || source.Year == today.Year && source.Month > today.Month)
                 throw new ValidationException("未来不可得~");
+            if (new DateTime(source.Year, source.Month, 28) < today.AddMonths(-1) && !await User.Identity.IsInRole(ProjectRoles.经营管理) || //次次月28日后之后不允许修改
+                new DateTime(source.Year, source.Month, 28) < today && !await User.Identity.IsInRole(ProjectRoles.经营管理, ProjectRoles.项目管理))  //次月28日后之后不允许修改
+                throw new ValidationException("不允许修改已归档的工作量!");
 
             if (Kernel.TryGetValue(source.PiId, out ProjectWorkload projectWorkload))
             {
@@ -141,10 +145,10 @@ namespace Phenix.TPT.Plugin
                 int oldAllWorkload = 0;
                 foreach (KeyValuePair<long, ProjectWorkload> kvp in Kernel)
                     oldAllWorkload = oldAllWorkload + kvp.Value.TotalWorkload;
-                //不允许提交source后新的汇总数超出当月工作日
+                //不允许新汇总数超出当月工作日
                 int overmuchWorkload = oldAllWorkload - projectWorkload.TotalWorkload + source.TotalWorkload - (await ClusterClient.GetGrain<IWorkdayGrain>(source.Year).GetWorkday(source.Month)).Days;
                 if (overmuchWorkload > 0)
-                    throw new ValidationException(String.Format("提交的{0}年{1}月{2}项目工作量相比当月工作日余量多出{3}人天!", source.Year, source.Month, source.ProjectName, overmuchWorkload));
+                    throw new ValidationException(String.Format("在每个项目上填报的工作量，本质上是自己投入到每个项目上的工作精力在当月工作日天数的占比数额（仅对应您年薪的固定部分，绩效奖金另有评价体系对应哦）。所以，请将多余的 {0} 天数抹平掉哦!", overmuchWorkload));
                 //持久化
                 if (projectWorkload.TotalWorkload == 0)
                 {
@@ -166,8 +170,7 @@ namespace Phenix.TPT.Plugin
                 }
             }
             else
-                throw new ValidationException(String.Format("提交的{0}年{1}月{2}项目工作量是无中生有的!",
-                    source.Year, source.Month, source.Worker, source.ProjectName));
+                throw new ValidationException(String.Format("您好像不是 {0} 项目组的人呃，填不上工作量!", source.ProjectName));
         }
 
         #endregion
