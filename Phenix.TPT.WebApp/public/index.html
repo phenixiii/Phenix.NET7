@@ -29,16 +29,16 @@
                     <label class="txt">{{filterTimeInterval.year}}</label>
                     <span class="arrow arrow-down" @click="onMinusYear()" title="上一年"></span>
                 </div>
-                <div class="filter-button fa fa-filter" @click="onFilerProjectInfo()" v-bind:title="filterStateTitle[state]"></div>
+                <div class="filter-button fa fa-filter" @click="onFiler()" v-bind:title="filterStateTitle[state]"></div>
             </div>
             <div class="panel col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-query panel-body">
                         <label class="panel-query-item txt col-md-1">项目</label>
-                        <input class="panel-query-item txt-input col-md-4 form-control" v-model="queryName" placeholder="名称/服务客户/销售区域/合同号" title="可模糊查">
+                        <input class="panel-query-item txt-input col-md-4 form-control" v-model="queryName" placeholder="名称/销售区域/服务客户/合同号" title="可模糊查">
                         <label class="panel-query-item txt col-md-1">负责人</label>
                         <input class="panel-query-item txt-input col-md-4 form-control" v-model="queryPerson" placeholder="负责人姓名/产品版本/当前状态" title="可模糊查">
-                        <button class="panel-query-item btn btn-primary col-md-1" @click="onQueryProjectInfo()">查询</button>
+                        <button class="panel-query-item btn btn-primary col-md-1" @click="onQueryProjectInfos()">查询</button>
                         <button class="panel-query-item btn btn-primary col-md-1" v-bind:disabled="!base.isMyProject()" @click="onAddProjectInfo()">添加</button>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                                         <p class="text-wrapper" v-text="projectInfo.ContApproveDate"></p>
                                     </div>
                                     <div class="panel-list-column" style="width: 15%; padding-left: 10px; margin-top: 5px; text-align: center;">
-                                        <p class="text-wrapper" v-text="(projectInfo.CurrentStatus??'') + '\n[ ' + (projectInfo.AnnualMilestone??'') + ' ]'" v-bind:title="showMilestone(projectInfo)"></p>
+                                        <p class="text-wrapper" v-text="(projectInfo.CurrentStatus??'') + '\n[ ' + (projectInfo.AnnualMilestone??'') + ' ]'"></p>
                                     </div>
                                     <div class="panel-list-column" style="width: 40%; padding-left: 10px;">
                                         <div>
@@ -69,7 +69,7 @@
                                             <hr class="badge-chapter no-color" title="不可填报质保维保工作量" v-else />
                                         </div>
                                         <div class="panel-list-column" style="word-wrap: break-word; word-break: break-all; height: auto; width: 100%;">
-                                            <p class="text-wrapper" v-bind:title="showPaymentsReceipts(projectInfo)">{{projectInfo.ProjectName}}</p>
+                                            <p class="text-wrapper">{{projectInfo.ProjectName}}</p>
                                         </div>
                                     </div>
                                     <div class="panel-list-column" style="width: 15%; padding-left: 10px; margin-top: 5px; text-align: center;">

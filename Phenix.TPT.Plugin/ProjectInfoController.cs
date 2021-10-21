@@ -27,16 +27,17 @@ namespace Phenix.TPT.Plugin
         /// <param name="month">月</param>
         [Authorize]
         [HttpGet("all")]
-        public IList<ProjectInfo> GetAll(short year, short month)
+        public IList<ProjectInfoS> GetAll(short year, short month)
         {
             DateTime firstDay = new DateTime(year, month, 1);
             DateTime lastDay = month < 12
                 ? new DateTime(year, month + 1, 1).AddMilliseconds(-1)
                 : new DateTime(year + 1, 1, 1).AddMilliseconds(-1);
-            return ProjectInfo.FetchList(Database.Default,
+            return ProjectInfoS.FetchList(Database.Default,
                 p => p.OriginateTime <= lastDay && (p.ClosedDate == null || p.ClosedDate >= firstDay),
-                OrderBy.Descending<ProjectInfo>(p => p.ContApproveDate).
-                    Descending(p => p.UpdateTime));
+                OrderBy.Descending<ProjectInfoS>(p => p.ContApproveDate).
+                    Descending(p => p.UpdateTime).
+                    Descending(p => p.OriginateTime));
         }
 
         /// <summary>

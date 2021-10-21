@@ -80,8 +80,7 @@ namespace Phenix.TPT.Plugin
                                 ProjectWorkload.Set(p => p.Year, YearMonth.Year).
                                     Set(p => p.Month, YearMonth.Month).
                                     Set(p => p.Worker, Worker).
-                                    Set(p => p.PiId, item.Id).
-                                    Set(p => p.ProjectName, item.ProjectName)));
+                                    Set(p => p.PiId, item.Id)));
                     //补漏有自己负责项目的ProjectWorkload初始化对象
                     DateTime lastDay = YearMonth.Month < 12
                         ? new DateTime(YearMonth.Year, YearMonth.Month + 1, 1).AddMilliseconds(-1)
@@ -94,8 +93,7 @@ namespace Phenix.TPT.Plugin
                                 ProjectWorkload.Set(p => p.Year, YearMonth.Year).
                                     Set(p => p.Month, YearMonth.Month).
                                     Set(p => p.Worker, Worker).
-                                    Set(p => p.PiId, item.Id).
-                                    Set(p => p.ProjectName, item.ProjectName)));
+                                    Set(p => p.PiId, item.Id)));
                     _kernel = result;
                 }
 
@@ -170,7 +168,7 @@ namespace Phenix.TPT.Plugin
                 }
             }
             else
-                throw new ValidationException(String.Format("您好像不是 {0} 项目组的人呃，填不上工作量!", source.ProjectName));
+                throw new ValidationException("您好像不是本项目组的人呃，填不上工作量!");
         }
 
         #endregion

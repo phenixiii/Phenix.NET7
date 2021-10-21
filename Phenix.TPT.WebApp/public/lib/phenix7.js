@@ -938,14 +938,14 @@ var phUtils = (function() {
             }
             return null;
         },
-        
+
         decrypt: function(cipherText, key) {
             if (typeof key === 'string')
                 key = CryptoJS.MD5(CryptoJS.enc.Utf8.parse(key));
             var result = CryptoJS.AES.decrypt(cipherText, key, { iv: key, mode: CryptoJS.mode.CBC });
             return result.toString(CryptoJS.enc.Utf8);
         },
-        
+
         toUint8Array: function(byteStr) {
             var i = byteStr.length;
             var result = new Uint8Array(i);
@@ -979,7 +979,7 @@ var phUtils = (function() {
                     var result = {};
                     for (let p in data)
                         if (Object.prototype.hasOwnProperty.call(data, p)) {
-                            if (trimDataLocalProperty && p[0] === p[0].toLowerCase())
+                            if (trimDataLocalProperty && !/^[A-Z]+$/.test(p[0]))
                                 continue;
                             var value = data[p];
                             if (trimDataEmptyProperty && (value == null || value === ''))

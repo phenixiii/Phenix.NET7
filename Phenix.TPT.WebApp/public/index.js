@@ -1,7 +1,7 @@
 $(function() {
-    extractMyselfCompanyUsers();
-    fetchProjectInfos(true);
     fetchProjectTypes();
+    fetchMyselfCompanyUsers();
+    fetchProjectInfos(true);
 });
 
 const queryNameCacheKey = 'index-query-name';
@@ -20,32 +20,12 @@ function fetchProjectTypes() {
     });
 }
 
-function extractMyselfCompanyUsers() {
+function fetchMyselfCompanyUsers() {
     phAjax.getMyselfCompanyUsers({
+        includeDisabled: true,
         onSuccess: function(result) {
             vue.myselfCompanyUsers = result;
-            result.forEach((item, index) => {
-                phAjax.getPosition({
-                    positionId: item.PositionId,
-                    onSuccess: function(result) {
-                        if (result.Name === '项目经理') {
-                            vue.projectManagers.push(item);
-                            vue.developManagers.push(item);
-                        } else if (result.Name === '开发经理' ||
-                            result.Name === '集成经理' ||
-                            result.Name === '数据管理')
-                            vue.developManagers.push(item);
-                        else if (result.Name === '销售经理')
-                            vue.salesManagers.push(item);
-                        if (result.Roles.includes('质保维保'))
-                            vue.maintenanceManagers.push(item);
-                    }
-                });
-            });
-
-            if (vue.queryPerson != null && vue.projectInfos != null)
-                filterProjectInfos(vue.projectInfos); //如果vue.queryPerson有按负责人姓名查询的可能性则要等获取到vue.myselfCompanyUsers后再执行本函数
-            vue.$forceUpdate();
+            filterProjectInfos(vue.projectInfos, result, true);
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
             alert('获取公司员工资料失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
@@ -53,19 +33,24 @@ function extractMyselfCompanyUsers() {
     });
 }
 
-function pushProjectStatuses(status) {
-    if (!vue.projectStatuses.includes(status))
-        vue.projectStatuses.push(status);
-}
-
-function pushSalesAreas(salesArea) {
-    if (!vue.salesAreas.includes(salesArea))
-        vue.salesAreas.push(salesArea);
-}
-
-function pushCustomers(customer) {
-    if (!vue.customers.includes(customer))
-        vue.customers.push(customer);
+function fetchProjectInfos(reset) {
+    if (reset)
+        vue.projectInfos = null;
+    if (vue.projectInfos == null)
+        base.call({
+            path: '/api/project-info/all',
+            pathParam: vue.filterTimeInterval,
+            onSuccess: function(result) {
+                vue.projectInfos = result;
+                filterProjectInfos(result, vue.myselfCompanyUsers, reset);
+            },
+            onError: function(XMLHttpRequest, textStatus, validityError) {
+                vue.projectInfos = null;
+                alert('获取项目失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
+            },
+        });
+    else
+        filterProjectInfos(vue.projectInfos, vue.myselfCompanyUsers, reset);
 }
 
 function locatingProjectInfo(projectInfo) {
@@ -100,108 +85,130 @@ function hidePlanPanel(projectInfo) {
     Vue.delete(projectInfo, 'showingPlan');
 }
 
-function filterProjectInfos(projectInfos) {
-    if (vue.queryPerson != null && vue.myselfCompanyUsers == null) //如果vue.queryPerson有按负责人姓名查询的可能性则要等获取到vue.myselfCompanyUsers后再执行本函数
-        return;
+function pushProjectStatuses(status) {
+    if (!vue.projectStatuses.includes(status))
+        vue.projectStatuses.push(status);
+}
 
+function pushSalesAreas(salesArea) {
+    if (!vue.salesAreas.includes(salesArea))
+        vue.salesAreas.push(salesArea);
+}
+
+function pushCustomers(customer) {
+    if (!vue.customers.includes(customer))
+        vue.customers.push(customer);
+}
+
+function filterProjectInfos(projectInfos, myselfCompanyUsers, reset) {
+    if (projectInfos == null || myselfCompanyUsers == null)
+        return;
+    //清理界面
     vue.filteredProjectInfos.forEach((item, index) => {
         hidePlanPanel(item);
     });
-    vue.currentProjectInfo = null;
     vue.filteredProjectInfos = [];
-
-    if (projectInfos != null) {
-        var currentProjectId = vue.currentProjectInfo != null
-            ? vue.currentProjectInfo.Id
-            : window.localStorage.hasOwnProperty(currentProjectInfoCacheKey)
-            ? window.localStorage.getItem(currentProjectInfoCacheKey)
-            : null;
-        projectInfos.forEach((item, index) => {
-            pushProjectStatuses(item.CurrentStatus);
-            pushProjectStatuses(item.AnnualMilestone);
-            pushSalesAreas(item.SalesArea);
-            pushCustomers(item.Customer);
-
-            if (item.ContApproveDate != null)
-                item.ContApproveDate = new Date(item.ContApproveDate).format('yyyy-MM-dd');
-            if (item.OnlinePlanDate != null)
-                item.OnlinePlanDate = new Date(item.OnlinePlanDate).format('yyyy-MM-dd');
-            if (item.OnlineActualDate != null)
-                item.OnlineActualDate = new Date(item.OnlineActualDate).format('yyyy-MM-dd');
-            if (item.AcceptDate != null)
-                item.AcceptDate = new Date(item.AcceptDate).format('yyyy-MM-dd');
-            if (item.ClosedDate != null)
-                item.ClosedDate = new Date(item.ClosedDate).format('yyyy-MM-dd');
-
-            switch (vue.state) {
-            case 1: //当月自己负责项目
-                if (!base.isMyProject(item))
-                    return;
-                break;
-            case 2: //当月关闭的项目
-                if (item.ClosedDate === null)
-                    return;
-                var closedDate = new Date(item.ClosedDate);
-                if (closedDate.getFullYear() !== vue.filterTimeInterval.year ||
-                    closedDate.getMonth() + 1 !== vue.filterTimeInterval.month)
-                    return;
-                break;
-            }
-
-            var queryUser = vue.queryPerson != null
-                ? vue.myselfCompanyUsers.find(item => item.Name === vue.queryPerson || item.RegAlias === vue.queryPerson)
-                : null;
-
-            if ((vue.queryName == null ||
-                    item.ProjectName.indexOf(vue.queryName) >= 0 ||
-                    item.Customer.indexOf(vue.queryName) >= 0 ||
-                    item.SalesArea.indexOf(vue.queryName) >= 0 ||
-                    item.ContNumber.indexOf(vue.queryMame) >= 0) &&
-                (vue.queryPerson == null ||
-                    queryUser != null &&
-                    (item.ProjectManager === queryUser.Id ||
-                        item.DevelopManager === queryUser.Id ||
-                        item.MaintenanceManager === queryUser.Id ||
-                        item.SalesManager === queryUser.Id) ||
-                    item.ProductVersion != null && item.ProductVersion.indexOf(vue.queryPerson) >= 0 ||
-                    item.CurrentStatus != null && item.CurrentStatus.indexOf(vue.queryPerson) >= 0)) {
-                if (item.annualPlans == null)
-                    item.annualPlans = [];
-                if (item.Id === currentProjectId)
-                    vue.currentProjectInfo = item;
-                vue.filteredProjectInfos.push(item);
-            }
+    //重置关联数据
+    if (reset) {
+        var lastDay = new Date(vue.filterTimeInterval.year, vue.filterTimeInterval.month, 1).setMonth(vue.filterTimeInterval.month, 0); //月度最后一天
+        var projectManagers = [];
+        var developManagers = [];
+        var salesManagers = [];
+        var maintenanceManagers = [];
+        myselfCompanyUsers.forEach((item, index) => {
+            if (new Date(item.RegTime) <= lastDay &&
+                (item.DisabledTime == null || new Date(item.DisabledTime) > lastDay))
+                phAjax.getPosition({
+                    positionId: item.PositionId,
+                    onSuccess: function(result) {
+                        if (result.Name === '项目经理') {
+                            projectManagers.push(item);
+                            developManagers.push(item);
+                        } else if (result.Name === '开发经理' ||
+                            result.Name === '集成经理' ||
+                            result.Name === '数据管理')
+                            developManagers.push(item);
+                        else if (result.Name === '销售经理')
+                            salesManagers.push(item);
+                        if (result.Roles.includes('质保维保'))
+                            maintenanceManagers.push(item);
+                    }
+                });
         });
-
-        if (vue.queryName != null)
-            window.localStorage.setItem(queryNameCacheKey, vue.queryName);
-        else
-            window.localStorage.removeItem(queryNameCacheKey);
-        if (vue.queryPerson != null)
-            window.localStorage.setItem(queryPersonCacheKey, vue.queryPerson);
-        else
-            window.localStorage.removeItem(queryPersonCacheKey);
-
-        locatingProjectInfo(vue.currentProjectInfo);
+        vue.projectManagers = projectManagers;
+        vue.developManagers = developManagers;
+        vue.salesManagers = salesManagers;
+        vue.maintenanceManagers = maintenanceManagers;
     }
-}
+    //记住处理中的项目
+    var currentProjectId = vue.currentProjectInfo != null
+        ? vue.currentProjectInfo.Id
+        : window.localStorage.hasOwnProperty(currentProjectInfoCacheKey)
+        ? window.localStorage.getItem(currentProjectInfoCacheKey)
+        : null;
+    vue.currentProjectInfo = null;
+    //过滤出可处理的项目
+    var filteredProjectInfos = [];
+    projectInfos.forEach((item, index) => {
+        pushProjectStatuses(item.CurrentStatus);
+        pushProjectStatuses(item.AnnualMilestone);
+        pushSalesAreas(item.SalesArea);
+        pushCustomers(item.Customer);
 
-function fetchProjectInfos(reset) {
-    if (reset || vue.projectInfos == null)
-        base.call({
-            path: '/api/project-info/all',
-            pathParam: vue.filterTimeInterval,
-            onSuccess: function(result) {
-                vue.projectInfos = result;
-                filterProjectInfos(result);
-            },
-            onError: function(XMLHttpRequest, textStatus, validityError) {
-                vue.projectInfos = null;
-                alert('获取项目失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
-            },
-        });
+        if (item.ContApproveDate != null)
+            item.ContApproveDate = new Date(item.ContApproveDate).format('yyyy-MM-dd');
+
+        switch (vue.state) {
+        case 1: //当月自己负责项目
+            if (!base.isMyProject(item))
+                return;
+            break;
+        case 2: //当月关闭的项目
+            if (item.ClosedDate === null)
+                return;
+            var closedDate = new Date(item.ClosedDate);
+            if (closedDate.getFullYear() !== vue.filterTimeInterval.year ||
+                closedDate.getMonth() + 1 !== vue.filterTimeInterval.month)
+                return;
+            break;
+        }
+
+        var queryUser = vue.queryPerson != null
+            ? myselfCompanyUsers.find(item => item.Name === vue.queryPerson || item.RegAlias === vue.queryPerson)
+            : null;
+
+        if ((vue.queryName == null ||
+                item.ProjectName.indexOf(vue.queryName) >= 0 ||
+                item.Customer.indexOf(vue.queryName) >= 0 ||
+                item.SalesArea.indexOf(vue.queryName) >= 0 ||
+                item.ContNumber.indexOf(vue.queryMame) >= 0) &&
+            (vue.queryPerson == null ||
+                queryUser != null &&
+                (item.ProjectManager === queryUser.Id ||
+                    item.DevelopManager === queryUser.Id ||
+                    item.MaintenanceManager === queryUser.Id ||
+                    item.SalesManager === queryUser.Id) ||
+                item.ProductVersion != null && item.ProductVersion.indexOf(vue.queryPerson) >= 0 ||
+                item.CurrentStatus != null && item.CurrentStatus.indexOf(vue.queryPerson) >= 0)) {
+            if (item.annualPlans == null)
+                item.annualPlans = [];
+            if (item.Id === currentProjectId)
+                vue.currentProjectInfo = item;
+            filteredProjectInfos.push(item);
+        }
+    });
+    vue.filteredProjectInfos = filteredProjectInfos;
+    //缓存查询条件
+    if (vue.queryName != null)
+        window.localStorage.setItem(queryNameCacheKey, vue.queryName);
     else
-        filterProjectInfos(vue.projectInfos);
+        window.localStorage.removeItem(queryNameCacheKey);
+    if (vue.queryPerson != null)
+        window.localStorage.setItem(queryPersonCacheKey, vue.queryPerson);
+    else
+        window.localStorage.removeItem(queryPersonCacheKey);
+    //重新定位到处理中的项目
+    locatingProjectInfo(vue.currentProjectInfo);
 }
 
 function addProjectInfo() {
@@ -209,14 +216,43 @@ function addProjectInfo() {
         path: '/api/project-info',
         onSuccess: function(result) {
             result.annualPlans = [];
-            vue.filteredProjectInfos.unshift(result);
             vue.projectInfos.unshift(result);
+            vue.filteredProjectInfos.unshift(result);
             vue.currentProjectInfo = result;
             showProjectInfoPanel(result);
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
             vue.projectInfos = null;
             alert('添加项目失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
+        },
+    });
+}
+
+function showProjectInfo(projectInfo) {
+    base.call({
+        path: '/api/project-info',
+        pathParam: { id: projectInfo.Id },
+        onSuccess: function(result) {
+            result.annualPlans = [];
+            if (result.ContApproveDate != null)
+                result.ContApproveDate = new Date(result.ContApproveDate).format('yyyy-MM-dd');
+            if (result.OnlinePlanDate != null)
+                result.OnlinePlanDate = new Date(result.OnlinePlanDate).format('yyyy-MM-dd');
+            if (result.OnlineActualDate != null)
+                result.OnlineActualDate = new Date(result.OnlineActualDate).format('yyyy-MM-dd');
+            if (result.AcceptDate != null)
+                result.AcceptDate = new Date(result.AcceptDate).format('yyyy-MM-dd');
+            if (result.ClosedDate != null)
+                result.ClosedDate = new Date(result.ClosedDate).format('yyyy-MM-dd');
+
+            vue.projectInfos.splice(vue.projectInfos.indexOf(projectInfo), 1, result);
+            vue.filteredProjectInfos.splice(vue.filteredProjectInfos.indexOf(projectInfo), 1, result);
+            vue.currentProjectInfo = result;
+            showProjectInfoPanel(result);
+        },
+        onError: function(XMLHttpRequest, textStatus, validityError) {
+            vue.projectInfos = null;
+            alert('获取项目失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
     });
 }
@@ -401,8 +437,8 @@ var vue = new Vue({
         salesManagers: [],
 
         projectInfos: null,
-        currentProjectInfo: null, //当前操作对象
         filteredProjectInfos: [], //用于界面绑定的projectInfos子集
+        currentProjectInfo: null,
 
         closedDate: new Date().format('yyyy-MM-dd'),
     },
@@ -461,13 +497,22 @@ var vue = new Vue({
             fetchProjectInfos(true);
         },
 
-        onFilerProjectInfo: function() {
+        onFiler: function() {
             this.state = this.state >= 2 ? 0 : this.state + 1;
             fetchProjectInfos(false);
         },
 
-        onQueryProjectInfo: function() {
+        onQueryProjectInfos: function() {
             fetchProjectInfos(false);
+        },
+
+        showSalesData: function(projectInfo) {
+            if (!base.isMyProject(projectInfo))
+                return;
+            return (projectInfo.SalesArea != null ? '客户经理: ' : '') + this.parseUserName(projectInfo.SalesManager) +
+                (projectInfo.SalesArea != null ? '\n销售区域: ' : '') + (projectInfo.SalesArea ?? '') +
+                (projectInfo.Customer != null ? '\n服务客户: ' : '') + (projectInfo.Customer ?? '') +
+                (projectInfo.SalesArea != null ? '\n维护经理: ' : '') + this.parseUserName(projectInfo.MaintenanceManager);
         },
 
         onAddProjectInfo: function() {
@@ -476,38 +521,15 @@ var vue = new Vue({
             addProjectInfo();
         },
 
-        showMilestone: function(projectInfo) {
-            return '计划上线: ' + (projectInfo.OnlinePlanDate ?? '') +
-                '\n实际上线: ' + (projectInfo.OnlineActualDate ?? '') +
-                '\n验收时间: ' + (projectInfo.AcceptDate ?? '');
-        },
-
-        showPaymentsReceipts: function(projectInfo) {
-            if (!base.isMyProject(projectInfo))
-                return;
-            return '应收总额: ' + projectInfo.TotalReceivables +
-                '\n开票总额: ' + projectInfo.TotalInvoiceAmount +
-                '\n报销总额: ' + projectInfo.TotalReimbursementAmount;
-        },
-
-        showSalesData: function(projectInfo) {
-            if (!base.isMyProject(projectInfo))
-                return;
-            return (projectInfo.SalesArea != null ? '销售区域: ' : '') + (projectInfo.SalesArea ?? '') +
-                (projectInfo.Customer != null ? '\n服务客户: ' : '') + (projectInfo.Customer ?? '');
-        },
-
         onShowProjectInfo: function(projectInfo) {
             if (!base.isMyProject(projectInfo))
                 return;
-            this.currentProjectInfo = projectInfo;
-            showProjectInfoPanel(projectInfo);
+            showProjectInfo(projectInfo);
         },
 
         onPutProjectInfo: function(projectInfo) {
             if (!base.isMyProject(projectInfo))
                 return;
-            this.currentProjectInfo = projectInfo;
             putProjectInfo(projectInfo);
         },
 

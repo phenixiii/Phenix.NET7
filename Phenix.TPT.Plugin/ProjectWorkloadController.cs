@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Data;
+using Phenix.Core.SyncCollections;
 using Phenix.TPT.Business;
 using Phenix.TPT.Contract;
 
@@ -20,16 +22,28 @@ namespace Phenix.TPT.Plugin
         #region 方法
 
         /// <summary>
-        /// 获取项目工作量(如不存在则返回初始对象)
+        /// 获取worker-项目工作量(如不存在则返回初始对象)
         /// </summary>
-        /// <param name="worker">打工人</param>
+        /// <param name="workers">打工人</param>
         /// <param name="year">年</param>
         /// <param name="month">月</param>
         [Authorize]
         [HttpGet("all")]
-        public async Task<IList<ProjectWorkload>> GetAll(long worker, short year, short month)
+        public IDictionary<long, IList<ProjectWorkload>> GetAll(string workers, short year, short month)
         {
-            return await ClusterClient.Default.GetGrain<IProjectWorkloadGrain>(worker, Standards.FormatYearMonth(year, month).ToString(CultureInfo.InvariantCulture)).GetProjectWorkloads();
+            SynchronizedDictionary<long, IList<ProjectWorkload>> result = new SynchronizedDictionary<long, IList<ProjectWorkload>>();
+            List<Task> tasks = new List<Task>();
+            foreach (string s in workers.Split(',', StringSplitOptions.RemoveEmptyEntries))
+            {
+                long worker = Int64.Parse(s);
+                tasks.Add(Task.Run(async () =>
+                {
+                    result.Add(worker, await ClusterClient.Default.GetGrain<IProjectWorkloadGrain>(worker, Standards.FormatYearMonth(year, month).ToString(CultureInfo.InvariantCulture)).GetProjectWorkloads());
+                }));
+            }
+
+            Task.WaitAll(tasks.ToArray());
+            return result;
         }
 
         /// <summary>
