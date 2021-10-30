@@ -41,7 +41,7 @@ namespace Phenix.TPT.Business
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
         protected ProjectAnnualPlan(string dataSourceKey,
-            long id, long piId, short year, string annualMilestone, decimal annualReceivables, long originator, DateTime originateTime, long updater, DateTime updateTime) 
+            long id, long piId, short year, string annualMilestone, decimal annualReceivables, string annualPlan, string annualAchieve, long originator, DateTime originateTime, long updater, DateTime updateTime) 
             : base(dataSourceKey)
         {
             _id = id;
@@ -49,6 +49,8 @@ namespace Phenix.TPT.Business
             _year = year;
             _annualMilestone = annualMilestone;
             _annualReceivables = annualReceivables;
+            _annualPlan = annualPlan;
+            _annualAchieve = annualAchieve;
             _originator = originator;
             _originateTime = originateTime;
             _updater = updater;
@@ -117,6 +119,30 @@ namespace Phenix.TPT.Business
         {
             get { return _annualReceivables; }
             set { _annualReceivables = value; }
+        }
+
+        private string _annualPlan;
+        /// <summary>
+        /// 年度计划
+        /// </summary>
+        [Display(Description = @"年度计划")]
+        [Column("PA_ANNUAL_PLAN")]
+        public string AnnualPlan
+        {
+            get { return _annualPlan; }
+            set { _annualPlan = value; }
+        }
+
+        private string _annualAchieve;
+        /// <summary>
+        /// 实绩完成
+        /// </summary>
+        [Display(Description = @"实绩完成")]
+        [Column("PM_ANNUAL_ACHIEVE")]
+        public string AnnualAchieve
+        {
+            get { return _annualAchieve; }
+            set { _annualAchieve = value; }
         }
 
         private long _originator;

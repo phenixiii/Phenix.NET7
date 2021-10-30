@@ -8,8 +8,8 @@ namespace Phenix.TPT.Contract
     public static class StreamConfig
     {
         /// <summary>
-        /// 刷新项目工作量StreamId
+        /// 项目StreamId
         /// </summary>
-        public static Guid RefreshProjectWorkloadsStreamId = new Guid("F18D8258-82FA-4BE9-A949-1F74EE907764");
+        public static Guid ProjectStreamId = new Guid("F18D8258-82FA-4BE9-A949-1F74EE907764");
     }
 }

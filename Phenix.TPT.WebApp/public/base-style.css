@@ -28,13 +28,12 @@ tbody {
 }
 
 .logo {
+    font-family: "Papyrus", cursive;
     position: absolute;
-    left: 50%;
     -ms-transform: translate(-50%, 0%);
     -webkit-transform: translate(-50%, 0%);
     transform: translate(-50%, 0%);
-    ext-align: center;
-    margin-top: 2%;
+    text-align: center;
 }
 
 .center-group {
@@ -252,14 +251,14 @@ tbody {
 }
 
 .arrow-down {
-    border-top: 12.5px solid rgb(128, 128, 128);
+    border-top: 12.5px solid;
     border-left: 22px solid transparent;
     border-right: 22px solid transparent;
     display: block;
 }
 
 .arrow-up {
-    border-bottom: 12.5px solid rgb(128, 128, 128);
+    border-bottom: 12.5px solid;
     border-left: 22px solid transparent;
     border-right: 22px solid transparent;
     display: block;
@@ -268,24 +267,31 @@ tbody {
 .arrow-left {
     border-top: 22px solid transparent;
     border-bottom: 22px solid transparent;
-    border-right: 12.5px solid rgb(128, 128, 128);
+    border-right: 12.5px solid;
     display: block;
 }
 
 .arrow-right {
     border-top: 22px solid transparent;
     border-bottom: 22px solid transparent;
-    border-left: 12.5px solid rgb(128, 128, 128);
+    border-left: 12.5px solid;
     display: block;
+}
+
+.arrow-page {
+    font-size: 16px;
+    color: rgb(31, 73, 125);
+    cursor: pointer;
 }
 
 .arrow-button {
     border: 1px solid rgb(220, 220, 220);
+    background-color: #fafafa;
+    color: rgb(31, 73, 125);
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     -ms-border-radius: 3px;
     border-radius: 3px;
-    background-color: #fafafa;
     text-align: center;
     float: right;
     width: 46px;
@@ -295,17 +301,17 @@ tbody {
 
 .filter-button {
     border: 1px solid rgb(220, 220, 220);
+    background-color: #fafafa;
+    color: rgb(31, 73, 125);
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     -ms-border-radius: 3px;
     border-radius: 3px;
-    background-color: #fafafa;
     text-align: center;
     float: right;
     width: 46px;
     margin-left: 1%;
     cursor: pointer;
-    color: rgb(128, 128, 128);
     font-size: 45px;
 }
 
@@ -317,17 +323,16 @@ tbody {
     z-index: 10;
 }
 
-.goto-top-button a{
+.goto-top-button a {
     border: 1px solid rgb(220, 220, 220);
+    background-color: #fafafa;
+    color: rgb(31, 73, 125);
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
     -ms-border-radius: 3px;
     border-radius: 3px;
-    background-color: #fafafa;
     float: right;
     padding: 6px 10.5px;
-}
-
-.goto-top-button fa {
-    color: rgb(128, 128, 128);
 }
 
 .panel {
@@ -368,6 +373,7 @@ tbody {
 }
 
 .panel-list-item i.fa {
+    color: rgb(31, 73, 125);
     float: right;
     margin: 1% 0% 1% 0%;
     padding: 0 5px;
@@ -451,86 +457,60 @@ tbody {
     white-space: pre-wrap;
 }
 
+.badge-chapter {
+    margin: 0% 2% 0% 0%;
+    width: 1em;
+    height: 4px;
+    float: left;
+}
+
+.badge-chapter-small {
+    margin: 0% 0% 0% 2%;
+    width: 0.7em;
+    height: 3px;
+    float: right;
+}
+
 .no-color {
     background-color: rgb(245, 245, 255);
     color: rgb(245, 245, 255);
-    margin: 0%;
-    width: 1em;
-    height: 4px;
     border-top: 1px solid rgb(245, 245, 255);
 }
 
 .manage-color {
     background-color: rgb(128, 100, 162);
     color: rgb(128, 100, 162);
-    margin: 0%;
-    width: 1em;
-    height: 4px;
     border-top: 1px solid rgb(245, 245, 255);
 }
 
 .investigate-color {
     background-color: rgb(0, 112, 192);
     color: rgb(0, 112, 192);
-    margin: 0%;
-    width: 1em;
-    height: 4px;
     border-top: 1px solid rgb(245, 245, 255);
 }
 
 .develop-color {
     background-color: rgb(247, 150, 70);
     color: rgb(247, 150, 70);
-    margin: 0%;
-    width: 1em;
-    height: 4px;
     border-top: 1px solid rgb(245, 245, 255);
 }
 
 .test-color {
     background-color: rgb(255, 255, 0);
     color: rgb(255, 255, 0);
-    margin: 0%;
-    width: 1em;
-    height: 4px;
     border-top: 1px solid rgb(245, 245, 255);
 }
 
 .implement-color {
     background-color: rgb(0, 176, 240);
     color: rgb(0, 176, 240);
-    margin: 0%;
-    width: 1em;
-    height: 4px;
     border-top: 1px solid rgb(245, 245, 255);
 }
 
 .maintenance-color {
     background-color: rgb(146, 208, 80);
     color: rgb(146, 208, 80);
-    margin: 0%;
-    width: 1em;
-    height: 4px;
     border-top: 1px solid rgb(245, 245, 255);
-}
-
-.badge-chapter {
-    margin: 0% 2% 0% 0%;
-    float: left;
-}
-
-#wait-hold {
-    cursor: wait;
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-}
-
-#trh {
-    margin-top: 50%;
 }
 
 table.table1 {
@@ -553,7 +533,7 @@ table.table1 {
     border: 1px solid rgb(255, 255, 255);
     border-bottom: 3px solid rgb(255, 255, 255);
     background-color: rgb(255, 255, 255);
-    background: -webkit-gradient(linear, left bottom, left top, color-stop(0.02, rgb(255, 255, 255)), color-stop(0.51, rgb(255, 255, 255)), color-stop(0.87, rgb(255, 255, 255)));
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0.02%, rgb(255, 255, 255)), color-stop(0.51%, rgb(255, 255, 255)), color-stop(0.87%, rgb(255, 255, 255)));
     background: -moz-linear-gradient(center bottom, rgb(255, 255, 255) 2%, rgb(255, 255, 255) 51%, rgb(255, 255, 255) 87%);
     -webkit-border-top-left-radius: 5px;
     -webkit-border-top-right-radius: 5px;
@@ -577,7 +557,7 @@ table.table1 {
     border: 1px solid rgb(255, 255, 255);
     border-right: 3px solid rgb(255, 255, 255);
     padding: 0px 10px;
-    background: -webkit-gradient( linear, left bottom, right top, color-stop(0.02, rgb(255, 255, 255)), color-stop(0.51, rgb(255, 255, 255)), color-stop(0.87, rgb(255, 255, 255)));
+    background: -webkit-gradient( linear, left bottom, right top, color-stop(0.02%, rgb(255, 255, 255)), color-stop(0.51%, rgb(255, 255, 255)), color-stop(0.87%, rgb(255, 255, 255)));
     background: -moz-linear-gradient( left bottom, rgb(255, 255, 255) 2%, rgb(255, 255, 255) 51%, rgb(255, 255, 255) 87%);
     /*-moz-border-radius: 5px 0px 0px 5px;*/
     -webkit-border-top-left-radius: 5px;
@@ -615,44 +595,18 @@ table.table1 {
     word-wrap: break-word;
 }
 
-.totalworkload {
-    text-align: center;
-    font-family: Microsoft YaHei, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: royalblue;
+.list-group-item {
+    border: 0px solid #ddd;
     padding: 0%;
-    margin: 3px 0% 0% 0%;
-    line-height: 55px;
+    margin: 4% 0% 4% 0%;
 }
 
 .vertical-center {
     position: absolute;
     bottom: 50%;
+    -ms-transform: translate(0%, 50%);
+    -webkit-transform: translate(0%, 50%);
     transform: translate(0%, 50%);
-}
-
-.xiujiainput {
-    border: none;
-    width: 49px;
-    height: 100%;
-    background-color: rgb(245, 245, 255);
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: bold;
-    color: black;
-}
-
-.tabli {
-    float: left;
-    height: 50px;
-    line-height: 50px;
-    margin-right: 3px;
-    padding-left: 10px;
-    padding-right: 10px;
-    border-top: 1.2px solid rgb(187, 187, 187);
-    border-left: 1.2px solid rgb(187, 187, 187);
-    border-right: 1.2px solid rgb(187, 187, 187);
-    border-bottom: 1.2px solid rgb(83, 163, 233);
-    background-color: #fff;
 }
 
 .active {
@@ -663,11 +617,12 @@ table.table1 {
     border-bottom: 1.2px solid #fafafa;
 }
 
-#tablehead {
-    /*overflow-y: scroll;*/
-    overflow-x: hidden;
-}
-
-.myhide {
-    visibility: hidden;
+#wait-hold {
+    cursor: wait;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
 }

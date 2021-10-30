@@ -51,6 +51,15 @@ function jumpPage() {
     });
 }
 
+function resetBaseAddress() {
+    var baseAddress = prompt('请输入正确的数据服务IP地址: ', phAjax.baseAddress);
+    if (baseAddress !== phAjax.baseAddress && baseAddress != null && baseAddress !== '') {
+        phAjax.baseAddress = baseAddress;
+        return true;
+    }
+    return false;
+}
+
 function checkIn() {
     vue.logonHint = '正在登记, 请稍等...';
     phAjax.checkIn({
@@ -63,6 +72,8 @@ function checkIn() {
         onError: function(XMLHttpRequest, textStatus) {
             vue.logonHint = XMLHttpRequest.responseText;
             alert('登记失败:\n' + XMLHttpRequest.responseText);
+            if (resetBaseAddress())
+                checkIn();
         },
     });
 }
@@ -80,6 +91,8 @@ function logon() {
         onError: function(XMLHttpRequest, textStatus) {
             vue.logonHint = XMLHttpRequest.responseText;
             alert('登录失败:\n' + XMLHttpRequest.responseText);
+            if (resetBaseAddress())
+                logon();
         },
     });
 }
@@ -103,9 +116,9 @@ function patchMyself() {
 var vue = new Vue({
     el: '#content',
     data: {
-        userName: null,
+        userName: phAjax.userName,
         password: null,
-        companyName: null,
+        companyName: phAjax.companyName,
         eMail: null,
         regAlias: null,
 

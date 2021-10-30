@@ -65,6 +65,15 @@ function isValidPasswordInfo() {
     return true;
 }
 
+function resetBaseAddress() {
+    var baseAddress = prompt('请输入正确的数据服务IP地址: ', phAjax.baseAddress);
+    if (baseAddress !== phAjax.baseAddress && baseAddress != null && baseAddress !== '') {
+        phAjax.baseAddress = baseAddress;
+        return true;
+    }
+    return false;
+}
+
 function register() {
     vue.registerHint = '正在注册企业会员, 请稍等...';
     phAjax.register({
@@ -82,6 +91,8 @@ function register() {
         onError: function(XMLHttpRequest, textStatus, validityError) {
             vue.registerHint = validityError != null ? validityError.Hint : XMLHttpRequest.responseText;
             alert('注册失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
+            if (resetBaseAddress())
+                register();
         },
     });
 }

@@ -21,15 +21,15 @@
                 <h4>{{stateTitle[state]}}</h4>
                 <div class="arrow-button">
                     <span class="arrow arrow-up" @click="onPlusMonth()" title="下一月"></span>
-                    <label class="txt">{{filterTimeInterval.month}}</label>
+                    <label class="txt">{{month}}</label>
                     <span class="arrow arrow-down" @click="onMinusMonth()" title="上一月"></span>
                 </div>
                 <div class="arrow-button">
                     <span class="arrow arrow-up" @click="onPlusYear()" title="下一年"></span>
-                    <label class="txt">{{filterTimeInterval.year}}</label>
+                    <label class="txt">{{year}}</label>
                     <span class="arrow arrow-down" @click="onMinusYear()" title="上一年"></span>
                 </div>
-                <div class="filter-button fa fa-filter" @click="onFiler()" v-bind:title="filterStateTitle[state]"></div>
+                <div class="filter-button fa fa-filter" @click="onFiler()" :title="filterStateTitle[state]"></div>
             </div>
             <div class="panel col-md-12">
                 <div class="panel panel-default">
@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <ul class="panel panel-default">
-                    <li v-for="(projectInfo) in filteredProjectInfos">
+                    <li v-for="projectInfo in filteredProjectInfos">
                         <div class="panel panel-default" :id="projectInfo.Id">
                             <div class="panel-list-item panel-body">
                                 <div style="display: block; overflow: hidden;">
@@ -73,7 +73,7 @@
                                         </div>
                                     </div>
                                     <div class="panel-list-column" style="width: 15%; padding-left: 10px; margin-top: 5px; text-align: center;">
-                                        <p class="text-wrapper" v-text="(projectInfo.ContNumber??'').replace(/（/,'\n（')" v-bind:title="showSalesData(projectInfo)"></p>
+                                        <p class="text-wrapper" v-text="(projectInfo.ContNumber??'').replace(/（/,'\n（')" :title="getSalesData(projectInfo)"></p>
                                     </div>
                                     <div class="panel-list-column" style="width: 6%; padding-left: 10px; margin-top: 5px; text-align: center;">
                                         <p>{{parseUserName(projectInfo.ProjectManager)}}</p>
@@ -84,8 +84,8 @@
                                     <div class="panel-list-column" style="width: 9%; padding-left: 10px; margin-top: 5px; padding-right: 5px;">
                                         <i class="fa fa-tag" type="buttonon" @click="onShowPlan(projectInfo)" title="展开计划" v-if="!projectInfo.showingPlan"></i>
                                         <i class="fa fa-tags" type="buttonon" @click="onHidePlan(projectInfo)" title="收起计划" v-else></i>
-                                        <i class="fa fa-toggle-on" type="buttonon" @click="showCloseProjectDialog(projectInfo)" title="项目归档" v-if="!projectInfo.showingProjectInfo && projectInfo.ClosedDate == null"></i>
-                                        <i class="fa fa-toggle-off" title="已归档" v-if="!projectInfo.showingProjectInfo && projectInfo.ClosedDate != null" v-bind:title="'关闭日期: ' + projectInfo.ClosedDate"></i>
+                                        <i class="fa fa-toggle-on" type="buttonon" @click="onShowCloseProjectDialog(projectInfo)" title="项目归档" v-if="!projectInfo.showingProjectInfo && projectInfo.ClosedDate == null"></i>
+                                        <i class="fa fa-toggle-off" v-if="!projectInfo.showingProjectInfo && projectInfo.ClosedDate != null" :title="'归档日期: ' + projectInfo.ClosedDate"></i>
                                         <i class="fa fa-save" type="buttonon" @click="onPutProjectInfo(projectInfo)" title="提交项目" v-if="projectInfo.showingProjectInfo"></i>
                                         <i class="fa fa-chevron-down" type="buttonon" @click="onShowProjectInfo(projectInfo)" title="展开项目" v-if="!projectInfo.showingProjectInfo"></i>
                                         <i class="fa fa-chevron-up" type="buttonon" @click="onHideProjectInfo(projectInfo)" title="收起项目" v-else></i>
@@ -95,28 +95,32 @@
                                     <div class="panel-fold-info">
                                         <div style="clear: both;">
                                             <div class="panel-fold-info-item">
-                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(128, 100, 162);" title="是否可填报项目管理工作量">
+                                                <label class="manage-color" style="margin: 1% 0% 1% 0%; color: #fafafa;" title="是否可填报项目管理工作量">
                                                     <input type="checkbox" v-model="projectInfo.ManageWork">项目管理
                                                 </label>
-                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(0, 112, 192);" title="是否可填报调研分析工作量">
+                                                <label class="investigate-color" style="margin: 1% 0% 1% 0%; color: #fafafa;" title="是否可填报调研分析工作量">
                                                     <input type="checkbox" v-model="projectInfo.InvestigateWork">调研分析
                                                 </label>
-                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(247, 150, 70);" title="是否可填报设计开发工作量">
+                                                <label class="develop-color" style="margin: 1% 0% 1% 0%; color: #fafafa;" title="是否可填报设计开发工作量">
                                                     <input type="checkbox" v-model="projectInfo.DevelopWork">设计开发
                                                 </label>
-                                                <label style="margin: 1% 0% 1% 0%; color: #717171; background-color: rgb(255, 255, 0);" title="是否可填报联调测试工作量">
+                                                <label class="test-color" style="margin: 1% 0% 1% 0%; color: #717171;" title="是否可填报联调测试工作量">
                                                     <input type="checkbox" v-model="projectInfo.TestWork">联调测试
                                                 </label>
-                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(0, 176, 240);" title="是否可填报培训实施工作量">
+                                                <label class="implement-color" style="margin: 1% 0% 1% 0%; color: #fafafa;" title="是否可填报培训实施工作量">
                                                     <input type="checkbox" v-model="projectInfo.ImplementWork">培训实施
                                                 </label>
-                                                <label style="margin: 1% 0% 1% 0%; color: #fafafa; background-color: rgb(146, 208, 80);" title="是否可填报质保维保工作量">
+                                                <label class="maintenance-color" style="margin: 1% 0% 1% 0%; color: #fafafa;" title="是否可填报质保维保工作量">
                                                     <input type="checkbox" v-model="projectInfo.MaintenanceWork">质保维保
                                                 </label>
                                             </div>
-                                            <div class="panel-fold-info-item">
+                                            <div class="panel-fold-info-item" style="width: 24%;">
                                                 <label>估算人天:</label>
-                                                <input type="number" v-model.number="projectInfo.EstimateWorkload">
+                                                <input type="number" style="width: 54%;" v-model.number="projectInfo.EstimateWorkload">
+                                            </div>
+                                            <div class="panel-fold-info-item" style="width: 24%;">
+                                                <label>已用人天:</label>
+                                                <input type="number" style="width: 50%;" readonly="readonly" v-model.number="projectInfo.totalWorkload">
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>合 同 号:</label>
@@ -133,31 +137,31 @@
                                             <div class="panel-fold-info-item">
                                                 <label>项目类型:</label>
                                                 <select v-model="projectInfo.ProjectType">
-                                                    <option v-for="(item) in projectTypes" :value="item.Value">{{item.Caption}}</option>
+                                                    <option v-for="item in projectTypes" :value="item.Value">{{item.Caption}}</option>
                                                 </select>
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>项目经理:</label>
                                                 <select v-model="projectInfo.ProjectManager">
-                                                    <option v-for="(item) in projectManagers" :value="item.Id">{{item.RegAlias}}</option>
+                                                    <option v-for="item in projectManagers" :value="item.Id">{{item.RegAlias}}</option>
                                                 </select>
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>开发经理:</label>
                                                 <select v-model="projectInfo.DevelopManager">
-                                                    <option v-for="(item) in developManagers" :value="item.Id">{{item.RegAlias}}</option>
+                                                    <option v-for="item in developManagers" :value="item.Id">{{item.RegAlias}}</option>
                                                 </select>
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>维护经理:</label>
                                                 <select v-model="projectInfo.MaintenanceManager">
-                                                    <option v-for="(item) in maintenanceManagers" :value="item.Id">{{item.RegAlias}}</option>
+                                                    <option v-for="item in maintenanceManagers" :value="item.Id">{{item.RegAlias}}</option>
                                                 </select>
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>客户经理:</label>
                                                 <select v-model="projectInfo.SalesManager">
-                                                    <option v-for="(item) in salesManagers" :value="item.Id">{{item.RegAlias}}</option>
+                                                    <option v-for="item in salesManagers" :value="item.Id">{{item.RegAlias}}</option>
                                                 </select>
                                             </div>
                                             <div class="panel-fold-info-item">
@@ -242,7 +246,7 @@
                                 </div>
                                 <ul class="panel" v-show="projectInfo.showingPlan">
                                     <li v-for="(annualPlan, annualPlanIndex) in projectInfo.annualPlans">
-                                        <div class="panel panel-fold" style="height: 80px;">
+                                        <div class="panel panel-fold" style="height: 365px;">
                                             <div>
                                                 <div class="panel-fold-header-item" style="width: 7%;">
                                                     <input v-bind:readonly="true" v-model="annualPlan.Year">
@@ -258,7 +262,17 @@
                                             <div style="clear: both;">
                                                 <div class="panel-fold-info-item">
                                                     <label>年应收款:</label>
-                                                    <input type="number" v-model.number="annualPlan.AnnualReceivables">
+                                                    <input type="number" v-bind:readonly="!canPutAnnualPlan(projectInfo, annualPlan)" v-model.number="annualPlan.AnnualReceivables">
+                                                </div>
+                                            </div>
+                                            <div style="clear: both;">
+                                                <div class="panel-fold-area" style="width: 55%; margin-right: 1%;">
+                                                    <span>年度计划</span>
+                                                    <textarea v-bind:readonly="!canPutAnnualPlan(projectInfo, annualPlan)" v-model="annualPlan.AnnualPlan"></textarea>
+                                                </div>
+                                                <div class="panel-fold-area" style="width: 44%;">
+                                                    <span>实绩完成</span>
+                                                    <textarea v-bind:readonly="!canPutAnnualPlan(projectInfo, annualPlan)" v-model="annualPlan.AnnualAchieve"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -356,7 +370,7 @@
         document.write("<script type='text/javascript' src='index.js?v=" + new Date().toLocaleDateString() + "'><\/script>");
     </script>
 
-    <div id="wait-hold"></div>
+    <div id="wait-hold" style="display: none"></div>
 </body>
 
 </html>

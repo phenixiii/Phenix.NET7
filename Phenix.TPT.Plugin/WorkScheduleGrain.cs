@@ -30,7 +30,7 @@ namespace Phenix.TPT.Plugin
         /// </summary>
         protected override Guid StreamId
         {
-            get { return StreamConfig.RefreshProjectWorkloadsStreamId; }
+            get { return StreamConfig.ProjectStreamId; }
         }
 
         /// <summary>
@@ -79,6 +79,12 @@ namespace Phenix.TPT.Plugin
 
         #region Stream
 
+        /// <summary>
+        /// 发送消息刷新项目工作量
+        /// </summary>
+        /// <param name="receiver">侦听者</param>
+        /// <param name="content">消息内容</param>
+        /// <param name="token">StreamSequenceToken</param>
         private Task SendEventForRefreshProjectWorkloads(long receiver, string content, StreamSequenceToken token = null)
         {
             if (receiver == Manager)
@@ -86,7 +92,7 @@ namespace Phenix.TPT.Plugin
             if (content == Manager.ToString())
                 return Task.CompletedTask;
 
-            return ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.RefreshProjectWorkloadsStreamId, receiver.ToString()).OnNextAsync(content, token);
+            return ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.ProjectStreamId, receiver.ToString()).OnNextAsync(content, token);
         }
 
         /// <summary>
@@ -128,31 +134,37 @@ namespace Phenix.TPT.Plugin
             if (source.Year > today.AddYears(1).Year)
                 throw new ValidationException("仅限于管理近一年的的工作档期!");
             if (new DateTime(source.Year, source.Month, 28) < today.AddMonths(-1) && !await User.Identity.IsInRole(ProjectRoles.经营管理) || //次次月28日后之后不允许修改
-                new DateTime(source.Year, source.Month, 28) < today && !await User.Identity.IsInRole(ProjectRoles.经营管理, ProjectRoles.项目管理))  //次月28日后之后不允许修改
+                new DateTime(source.Year, source.Month, 28) < today && !await User.Identity.IsInRole(ProjectRoles.经营管理, ProjectRoles.项目管理)) //次月28日后之后不允许修改
                 throw new ValidationException("不允许修改已归档的工作档期!");
             if (User.Identity.Id != Manager && !await User.Identity.IsInRole(ProjectRoles.经营管理))
-                throw new SecurityException("管好自己的工作档期就行啦!"); ;
+                throw new SecurityException("管好自己的工作档期就行啦!");
 
-            List<long> receivers = new List<long>(Kernel.Workers);
-            if (Kernel.Workers == null)
+            List<long> receivers = new List<long>();
+            if (Kernel.Workers != null)
+            {
+                receivers.AddRange(Kernel.Workers);
+                Database.Execute(dbTransaction =>
+                {
+                    Kernel.UpdateSelf(dbTransaction, source);
+                    ResetWorkers(dbTransaction, Kernel);
+                });
+                foreach (long item in source.Workers)
+                    if (!receivers.Contains(item))
+                        receivers.Add(item);
+            }
+            else
+            {
                 Database.Execute(dbTransaction =>
                 {
                     source.InsertSelf(dbTransaction);
                     ResetWorkers(dbTransaction, source);
                     Kernel = source;
                 });
-            else
-                Database.Execute(dbTransaction =>
-                {
-                    Kernel.UpdateSelf(dbTransaction, source);
-                    ResetWorkers(dbTransaction, Kernel);
-                });
-
-            foreach (long receiver in source.Workers)
-                if (!receivers.Contains(receiver))
-                    receivers.Add(receiver);
-            foreach (long receiver in receivers)
-                await SendEventForRefreshProjectWorkloads(receiver, Manager.ToString());
+                receivers.AddRange(source.Workers);
+            }
+            //播报
+            foreach (long item in receivers)
+                await SendEventForRefreshProjectWorkloads(item, Manager.ToString());
         }
 
         private void ResetWorkers(DbTransaction dbTransaction, WorkSchedule workSchedule)

@@ -11,8 +11,8 @@ $(function() {
             '        <div class="col-md-12">',
             '            <span title="显示菜单">',
             '                <i class="fa fa-bars pull-left fa-2x menu-open-icon"></i>',
+            '                <h1 class="logo" style="left: 45%; top: -20%;">Teamwork Project Tracker</h1>',
             '            </span>',
-            '            <font face="Papyrus" size="6" color="black">Teamwork Project Tracker</font>',
             '            <i class="pull-right">',
             '                <a class="logout">退出</a>',
             '                <a id="userName">请稍等...</a>',
@@ -102,7 +102,7 @@ var base = (function($) {
 
     function await() {
         awaitCount = awaitCount + 1;
-        var waitHold = document.getElementById('wait-hold'); // <div id="wait-hold"></div>
+        var waitHold = document.getElementById('wait-hold'); // <div id="wait-hold" style="display: block"></div>
         if (waitHold !== null)
             waitHold.style.display = 'block';
     }
@@ -110,7 +110,7 @@ var base = (function($) {
     function waitOut() {
         awaitCount = awaitCount - 1;
         if (awaitCount === 0) {
-            var waitHold = document.getElementById('wait-hold'); // <div id="wait-hold"></div>
+            var waitHold = document.getElementById('wait-hold'); // <div id="wait-hold" style="display: none"></div>
             if (waitHold !== null)
                 waitHold.style.display = 'none';
         }
@@ -138,7 +138,8 @@ var base = (function($) {
                 onComplete: null, //调用完成的回调函数, 参数(XMLHttpRequest, textStatus)
             };
             options = $.extend(defaults, options);
-            await();
+            if (options.type !== 'GET')
+                await();
             phAjax.call({
                 anonymity: options.anonymity,
                 type: options.type,
@@ -154,13 +155,15 @@ var base = (function($) {
                 cache: options.cache,
                 timeout: options.timeout,
                 async: options.async,
-                onSuccess: function(result) {
-                    waitOut();
+                onSuccess: function (result) {
+                    if (options.type !== 'GET')
+                        waitOut();
                     if (typeof options.onSuccess === 'function')
                         options.onSuccess(result);
                 },
                 onError: function(XMLHttpRequest, textStatus, validityError) {
-                    waitOut();
+                    if (options.type !== 'GET')
+                        waitOut();
                     if (typeof options.onError === 'function')
                         options.onError(XMLHttpRequest, textStatus, validityError);
                 },

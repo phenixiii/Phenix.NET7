@@ -26,7 +26,7 @@ namespace Phenix.TPT.Plugin
         /// </summary>
         protected override Guid StreamId
         {
-            get { return StreamConfig.RefreshProjectWorkloadsStreamId; }
+            get { return StreamConfig.ProjectStreamId; }
         }
 
         /// <summary>
@@ -106,7 +106,6 @@ namespace Phenix.TPT.Plugin
 
         #region 方法
 
-
         #region Stream
 
         /// <summary>
@@ -118,6 +117,15 @@ namespace Phenix.TPT.Plugin
         {
             _kernel = null;
             return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// 发送消息刷新项目工作量
+        /// </summary>
+        /// <param name="receiver">侦听者</param>
+        private Task SendEventForRefreshProjectWorkloads(long receiver)
+        {
+            return ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.ProjectStreamId, receiver.ToString()).OnNextAsync(receiver.ToString());
         }
 
         #endregion
@@ -166,6 +174,8 @@ namespace Phenix.TPT.Plugin
                         Kernel[source.PiId] = source;
                     }
                 }
+                //播报
+                await SendEventForRefreshProjectWorkloads(source.PiId);
             }
             else
                 throw new ValidationException("您好像不是本项目组的人呃，填不上工作量!");

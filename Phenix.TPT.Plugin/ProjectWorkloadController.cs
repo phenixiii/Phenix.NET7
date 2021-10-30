@@ -47,6 +47,17 @@ namespace Phenix.TPT.Plugin
         }
 
         /// <summary>
+        /// 获取项目工作量总数
+        /// </summary>
+        /// <param name="projectId">项目ID</param>
+        [Authorize]
+        [HttpGet("total")]
+        public async Task<int> Total(long projectId)
+        {
+            return await ClusterClient.Default.GetGrain<IProjectGrain>(projectId).TotalProjectWorkload();
+        }
+
+        /// <summary>
         /// 更新项目工作量(如不存在则新增)
         /// </summary>
         [Authorize]

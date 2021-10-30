@@ -91,5 +91,14 @@ namespace Phenix.TPT.Contract
         Task DeleteProjectExpenses(long id);
 
         #endregion
+
+        #region 项目工作量
+
+        /// <summary>
+        /// 获取项目工作量总数
+        /// </summary>
+        Task<int> TotalProjectWorkload();
+
+        #endregion
     }
 }

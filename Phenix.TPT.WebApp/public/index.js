@@ -1,7 +1,7 @@
 $(function() {
     fetchProjectTypes();
-    fetchMyselfCompanyUsers();
-    fetchProjectInfos(true);
+    fetchMyselfCompanyUsers(vue.year, vue.month, vue.state);
+    fetchProjectInfos(vue.year, vue.month, vue.state, true);
 });
 
 const queryNameCacheKey = 'index-query-name';
@@ -20,12 +20,12 @@ function fetchProjectTypes() {
     });
 }
 
-function fetchMyselfCompanyUsers() {
+function fetchMyselfCompanyUsers(year, month, state) {
     phAjax.getMyselfCompanyUsers({
         includeDisabled: true,
         onSuccess: function(result) {
             vue.myselfCompanyUsers = result;
-            filterProjectInfos(vue.projectInfos, result, true);
+            filterProjectInfos(vue.projectInfos, result, year, month, state, true);
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
             alert('获取公司员工资料失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
@@ -33,16 +33,16 @@ function fetchMyselfCompanyUsers() {
     });
 }
 
-function fetchProjectInfos(reset) {
+function fetchProjectInfos(year, month, state, reset) {
     if (reset)
         vue.projectInfos = null;
     if (vue.projectInfos == null)
         base.call({
             path: '/api/project-info/all',
-            pathParam: vue.filterTimeInterval,
+            pathParam: { year: year, month: month },
             onSuccess: function(result) {
                 vue.projectInfos = result;
-                filterProjectInfos(result, vue.myselfCompanyUsers, reset);
+                filterProjectInfos(result, vue.myselfCompanyUsers, year, month, state, reset);
             },
             onError: function(XMLHttpRequest, textStatus, validityError) {
                 vue.projectInfos = null;
@@ -50,15 +50,30 @@ function fetchProjectInfos(reset) {
             },
         });
     else
-        filterProjectInfos(vue.projectInfos, vue.myselfCompanyUsers, reset);
+        filterProjectInfos(vue.projectInfos, vue.myselfCompanyUsers, year, month, state, reset);
+}
+
+function totalProjectWorkload(projectInfo) {
+    if (projectInfo.totalWorkload != null)
+        return;
+    base.call({
+        path: '/api/project-workload/total',
+        pathParam: { projectId: projectInfo.Id },
+        onSuccess: function(result) {
+            Vue.set(projectInfo, 'totalWorkload', result);
+        },
+        onError: function(XMLHttpRequest, textStatus, validityError) {
+            alert('汇总项目工作量失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
+        },
+    });
 }
 
 function locatingProjectInfo(projectInfo) {
-    if (projectInfo != null) {
-        var top = $('#' + projectInfo.Id).offset().top; // :id="projectInfo.Id"
-        if (top < document.documentElement.scrollTop)
-            setTimeout(function() { $('html,body').animate({ scrollTop: top }, 1000); }, 100);
-    }
+    if (projectInfo == null)
+        return;
+    var top = $('#' + projectInfo.Id).offset().top; // :id="projectInfo.Id"
+    if (top < document.documentElement.scrollTop)
+        setTimeout(function() { $('html,body').animate({ scrollTop: top }, 1000); }, 100);
 }
 
 function showProjectInfoPanel(projectInfo) {
@@ -100,7 +115,7 @@ function pushCustomers(customer) {
         vue.customers.push(customer);
 }
 
-function filterProjectInfos(projectInfos, myselfCompanyUsers, reset) {
+function filterProjectInfos(projectInfos, myselfCompanyUsers, year, month, state, reset) {
     if (projectInfos == null || myselfCompanyUsers == null)
         return;
     //清理界面
@@ -110,14 +125,14 @@ function filterProjectInfos(projectInfos, myselfCompanyUsers, reset) {
     vue.filteredProjectInfos = [];
     //重置关联数据
     if (reset) {
-        var lastDay = new Date(vue.filterTimeInterval.year, vue.filterTimeInterval.month, 1).setMonth(vue.filterTimeInterval.month, 0); //月度最后一天
+        var lastDay = new Date(year, month, 1).setMonth(month, 0); //月度最后一天
         var projectManagers = [];
         var developManagers = [];
         var salesManagers = [];
         var maintenanceManagers = [];
         myselfCompanyUsers.forEach((item, index) => {
             if (new Date(item.RegTime) <= lastDay &&
-                (item.DisabledTime == null || new Date(item.DisabledTime) > lastDay))
+                (!item.Disabled || item.DisabledTime == null || new Date(item.DisabledTime) > lastDay))
                 phAjax.getPosition({
                     positionId: item.PositionId,
                     onSuccess: function(result) {
@@ -158,7 +173,7 @@ function filterProjectInfos(projectInfos, myselfCompanyUsers, reset) {
         if (item.ContApproveDate != null)
             item.ContApproveDate = new Date(item.ContApproveDate).format('yyyy-MM-dd');
 
-        switch (vue.state) {
+        switch (state) {
         case 1: //当月自己负责项目
             if (!base.isMyProject(item))
                 return;
@@ -167,8 +182,8 @@ function filterProjectInfos(projectInfos, myselfCompanyUsers, reset) {
             if (item.ClosedDate === null)
                 return;
             var closedDate = new Date(item.ClosedDate);
-            if (closedDate.getFullYear() !== vue.filterTimeInterval.year ||
-                closedDate.getMonth() + 1 !== vue.filterTimeInterval.month)
+            if (closedDate.getFullYear() !== year ||
+                closedDate.getMonth() + 1 !== month)
                 return;
             break;
         }
@@ -198,6 +213,9 @@ function filterProjectInfos(projectInfos, myselfCompanyUsers, reset) {
         }
     });
     vue.filteredProjectInfos = filteredProjectInfos;
+    vue.year = year;
+    vue.month = month;
+    vue.state = state;
     //缓存查询条件
     if (vue.queryName != null)
         window.localStorage.setItem(queryNameCacheKey, vue.queryName);
@@ -249,6 +267,7 @@ function showProjectInfo(projectInfo) {
             vue.filteredProjectInfos.splice(vue.filteredProjectInfos.indexOf(projectInfo), 1, result);
             vue.currentProjectInfo = result;
             showProjectInfoPanel(result);
+            totalProjectWorkload(result);
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
             vue.projectInfos = null;
@@ -406,6 +425,8 @@ function putMonthlyReport(projectInfo, monthlyReport) {
 var vue = new Vue({
     el: '#content',
     data: {
+        year: new Date().getFullYear(),
+        month: new Date().getMonth() + 1,
         state: 0,
         stateTitle: [
             '当月项目',
@@ -417,10 +438,7 @@ var vue = new Vue({
             '显示当月关闭的项目',
             '显示当月项目',
         ],
-        filterTimeInterval: {
-            year: new Date().getFullYear(),
-            month: new Date().getMonth() + 1,
-        },
+
         queryName: window.localStorage.hasOwnProperty(queryNameCacheKey) ? window.localStorage.getItem(queryNameCacheKey) : null,
         queryPerson: window.localStorage.hasOwnProperty(queryPersonCacheKey) ? window.localStorage.getItem(queryPersonCacheKey) : null,
 
@@ -455,58 +473,62 @@ var vue = new Vue({
 
         onPlusMonth: function() {
             var now = new Date();
-            if (this.filterTimeInterval.year === now.getFullYear() &&
-                this.filterTimeInterval.month === now.getMonth() + 1) {
+            var year = this.year;
+            var month = this.month;
+            if (year === now.getFullYear() &&
+                month === now.getMonth() + 1) {
                 alert('物来顺应，未来不迎~');
                 return;
             }
 
-            if (this.filterTimeInterval.month === 12) {
-                this.filterTimeInterval.year = this.filterTimeInterval.year + 1;
-                this.filterTimeInterval.month = 1;
+            if (month === 12) {
+                year = year + 1;
+                month = 1;
             } else
-                this.filterTimeInterval.month = this.filterTimeInterval.month + 1;
-            fetchProjectInfos(true);
+                month = month + 1;
+            fetchProjectInfos(year, month, this.state, true);
         },
 
-        onMinusMonth: function() {
-            if (this.filterTimeInterval.month === 1) {
-                this.filterTimeInterval.year = this.filterTimeInterval.year - 1;
-                this.filterTimeInterval.month = 12;
+        onMinusMonth: function () {
+            var year = this.year;
+            var month = this.month;
+            if (month === 1) {
+                year = year - 1;
+                month = 12;
             } else
-                this.filterTimeInterval.month = this.filterTimeInterval.month - 1;
-            fetchProjectInfos(true);
+                month = month - 1;
+            fetchProjectInfos(year, month, this.state, true);
         },
 
         onPlusYear: function() {
             var now = new Date();
-            if (this.filterTimeInterval.year === now.getFullYear()) {
+            var year = this.year;
+            var month = this.month;
+            if (year === now.getFullYear()) {
                 alert('珍惜当下，安然即好~');
                 return;
             }
 
-            if (this.filterTimeInterval.year === now.getFullYear() - 1 &&
-                this.filterTimeInterval.month > now.getMonth() + 1)
-                this.filterTimeInterval.month = now.getMonth() + 1;
-            this.filterTimeInterval.year = this.filterTimeInterval.year + 1;
-            fetchProjectInfos(true);
+            if (year === now.getFullYear() - 1 &&
+                month > now.getMonth() + 1)
+                month = now.getMonth() + 1;
+            year = year + 1;
+            fetchProjectInfos(year, month, this.state, true);
         },
 
         onMinusYear: function() {
-            this.filterTimeInterval.year = this.filterTimeInterval.year - 1;
-            fetchProjectInfos(true);
+            fetchProjectInfos(this.year - 1, this.month, this.state, true);
         },
 
         onFiler: function() {
-            this.state = this.state >= 2 ? 0 : this.state + 1;
-            fetchProjectInfos(false);
+            fetchProjectInfos(this.year, this.month, this.state >= 2 ? 0 : this.state + 1, false);
         },
 
         onQueryProjectInfos: function() {
-            fetchProjectInfos(false);
+            fetchProjectInfos(this.year, this.month, this.state, false);
         },
 
-        showSalesData: function(projectInfo) {
+        getSalesData: function(projectInfo) {
             if (!base.isMyProject(projectInfo))
                 return;
             return (projectInfo.SalesArea != null ? '客户经理: ' : '') + this.parseUserName(projectInfo.SalesManager) +
@@ -538,7 +560,7 @@ var vue = new Vue({
             locatingProjectInfo(projectInfo);
         },
 
-        showCloseProjectDialog: function(projectInfo) {
+        onShowCloseProjectDialog: function(projectInfo) {
             if (!base.isMyProject(projectInfo))
                 return;
             this.currentProjectInfo = projectInfo;

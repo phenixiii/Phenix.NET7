@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
 using System.Security;
 using System.Threading.Tasks;
+using Orleans.Streams;
 using Phenix.Actor;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Expressions;
@@ -17,9 +18,29 @@ namespace Phenix.TPT.Plugin
     /// 项目Grain
     /// key: ID
     /// </summary>
-    public class ProjectGrain : EntityGrainBase<ProjectInfo>, IProjectGrain
+    public class ProjectGrain : StreamEntityGrainBase<ProjectInfo, string>, IProjectGrain
     {
         #region 属性
+
+        #region Stream
+
+        /// <summary>
+        /// StreamId
+        /// </summary>
+        protected override Guid StreamId
+        {
+            get { return StreamConfig.ProjectStreamId; }
+        }
+
+        /// <summary>
+        /// (自己作为Observer)侦听的一组StreamNamespace
+        /// </summary>
+        protected override string[] ListenStreamNamespaces
+        {
+            get { return new string[] { PrimaryKeyLong.ToString() }; }
+        }
+
+        #endregion
 
         private IList<ProjectAnnualPlan> _projectAnnualPlanList;
 
@@ -73,6 +94,8 @@ namespace Phenix.TPT.Plugin
             }
         }
 
+        private IList<ProjectWorkload> _projectWorkloads;
+        
         #endregion
 
         #region 方法
@@ -90,10 +113,24 @@ namespace Phenix.TPT.Plugin
 
         #region Stream
 
+        /// <summary>
+        /// 接收消息
+        /// </summary>
+        /// <param name="content">消息内容</param>
+        /// <param name="token">StreamSequenceToken</param>
+        protected override Task OnReceiving(string content, StreamSequenceToken token)
+        {
+            _projectWorkloads = null;
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// 发送消息刷新项目工作量
+        /// </summary>
+        /// <param name="receiver">侦听者</param>
         private Task SendEventForRefreshProjectWorkloads(long receiver)
         {
-            //通知receiver刷新项目工作量
-            return ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.RefreshProjectWorkloadsStreamId, receiver.ToString()).OnNextAsync(receiver.ToString());
+            return ClusterClient.GetStreamProvider().GetStream<string>(StreamConfig.ProjectStreamId, receiver.ToString()).OnNextAsync(receiver.ToString());
         }
 
         #endregion
@@ -123,9 +160,9 @@ namespace Phenix.TPT.Plugin
         /// <param name="tag">标记</param>
         protected override void OnKernelOperated(ExecuteAction executeAction, object tag)
         {
+            //播报
             if (executeAction == ExecuteAction.Update)
             {
-                //项目负责人发生变更后需要通知到他们的Grain
                 dynamic old = tag;
                 if ((long) old.ProjectManager != Kernel.ProjectManager)
                 {
@@ -141,7 +178,6 @@ namespace Phenix.TPT.Plugin
             }
             else
             {
-                //（未开发但以防未来实现）项目删除后需要通知到他们的Grain
                 SendEventForRefreshProjectWorkloads(Kernel.ProjectManager);
                 SendEventForRefreshProjectWorkloads(Kernel.DevelopManager);
             }
@@ -434,6 +470,22 @@ namespace Phenix.TPT.Plugin
                     NameValue.Set<ProjectInfo>(p => p.TotalReimbursementAmount, p => p.TotalReimbursementAmount - projectExpenses.ReimbursementAmount));
             });
             ProjectExpensesList.Remove(projectExpenses);
+        }
+
+        #endregion
+
+        #region 项目工作量
+
+        Task<int> IProjectGrain.TotalProjectWorkload()
+        {
+            int result = 0;
+            foreach (ProjectWorkload item in _projectWorkloads ??= ProjectWorkload.FetchList(Database,
+                p => p.PiId == PrimaryKeyLong,
+                OrderBy.Ascending<ProjectWorkload>(p => p.Year).
+                    Ascending(p => p.Month).
+                    Ascending(p => p.Worker)))
+                result = result + item.TotalWorkload;
+            return Task.FromResult(result);
         }
 
         #endregion
