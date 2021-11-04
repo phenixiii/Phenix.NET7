@@ -116,15 +116,15 @@
                                             </div>
                                             <div class="panel-fold-info-item" style="width: 24%;">
                                                 <label>估算人天:</label>
-                                                <input type="number" style="width: 54%;" v-model.number="projectInfo.EstimateWorkload">
+                                                <input type="number" style="width: 54%;" :number="projectInfo.EstimateWorkload">
                                             </div>
                                             <div class="panel-fold-info-item" style="width: 24%;">
                                                 <label>已用人天:</label>
-                                                <input type="number" style="width: 50%;" readonly="readonly" v-model.number="projectInfo.totalWorkload">
+                                                <input type="number" style="width: 50%;" readonly="readonly" :number="projectInfo.totalWorkload">
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>合 同 号:</label>
-                                                <input v-model.trim="projectInfo.ContNumber">
+                                                <input :trim="projectInfo.ContNumber">
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>流转日期:</label>
@@ -132,7 +132,7 @@
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>项目名称:</label>
-                                                <input v-model.trim="projectInfo.ProjectName">
+                                                <input :trim="projectInfo.ProjectName">
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>项目类型:</label>
@@ -180,19 +180,19 @@
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>合同金额:</label>
-                                                <input type="number" v-model.number="projectInfo.ContAmount">
+                                                <input type="number" :number="projectInfo.ContAmount">
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>合同毛利:</label>
-                                                <input type="number" v-model.number="projectInfo.ContMargin">
+                                                <input type="number" :number="projectInfo.ContMargin">
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>产品版本:</label>
-                                                <input v-model.trim="projectInfo.ProductVersion">
+                                                <input :trim="projectInfo.ProductVersion">
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>产品价格:</label>
-                                                <input type="number" v-model.number="projectInfo.ProductPrice">
+                                                <input type="number" :number="projectInfo.ProductPrice">
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>计划上线:</label>
@@ -208,7 +208,7 @@
                                             </div>
                                             <div class="panel-fold-info-item">
                                                 <label>维保价格:</label>
-                                                <input type="number" v-model.number="projectInfo.MaintenancePrice">
+                                                <input type="number" :number="projectInfo.MaintenancePrice">
                                             </div>
                                         </div>
                                         <div style="clear: both;">
@@ -262,7 +262,7 @@
                                             <div style="clear: both;">
                                                 <div class="panel-fold-info-item">
                                                     <label>年应收款:</label>
-                                                    <input type="number" v-bind:readonly="!canPutAnnualPlan(projectInfo, annualPlan)" v-model.number="annualPlan.AnnualReceivables">
+                                                    <input type="number" v-bind:readonly="!canPutAnnualPlan(projectInfo, annualPlan)" :number="annualPlan.AnnualReceivables">
                                                 </div>
                                             </div>
                                             <div style="clear: both;">

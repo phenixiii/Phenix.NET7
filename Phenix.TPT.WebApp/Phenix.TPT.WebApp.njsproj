@@ -86,8 +86,6 @@
     <Content Include="public\lib\signalr.js.map" />
     <Content Include="public\lib\signalr.min.js" />
     <Content Include="public\lib\signalr.min.js.map" />
-    <Content Include="public\lib\lodash.core.js" />
-    <Content Include="public\lib\lodash.js" />
     <Content Include="public\register.js" />
     <Content Include="public\login.js" />
     <Content Include="public\index.js" />

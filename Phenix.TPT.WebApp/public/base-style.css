@@ -217,11 +217,6 @@ tbody {
     font-size: 16px;
 }
 
-.menu-close-icon,
-.menu-open-icon {
-    cursor: pointer;
-}
-
 .header-line {
     font-weight: 900;
     padding-bottom: 10px;
@@ -599,14 +594,6 @@ table.table1 {
     border: 0px solid #ddd;
     padding: 0%;
     margin: 4% 0% 4% 0%;
-}
-
-.vertical-center {
-    position: absolute;
-    bottom: 50%;
-    -ms-transform: translate(0%, 50%);
-    -webkit-transform: translate(0%, 50%);
-    transform: translate(0%, 50%);
 }
 
 .active {

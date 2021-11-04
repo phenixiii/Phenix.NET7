@@ -9,7 +9,7 @@
       "Phenix.Core\/7.5.52": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.1",
-          "Oracle.ManagedDataAccess.Core": "3.21.3",
+          "Oracle.ManagedDataAccess.Core": "3.21.4",
           "System.Data.SQLite.Core": "1.0.115"
         },
         "runtime": {
@@ -36,7 +36,7 @@
           }
         }
       },
-      "Oracle.ManagedDataAccess.Core\/3.21.3": {
+      "Oracle.ManagedDataAccess.Core\/3.21.4": {
         "dependencies": {
           "System.Diagnostics.PerformanceCounter": "5.0.1",
           "System.DirectoryServices": "5.0.0",
@@ -254,12 +254,12 @@
       "path": "newtonsoft.json\/13.0.1",
       "hashPath": "newtonsoft.json.13.0.1.nupkg.sha512"
     },
-    "Oracle.ManagedDataAccess.Core\/3.21.3": {
+    "Oracle.ManagedDataAccess.Core\/3.21.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-GKnvuXPWHHuSFSHAQIalXrmTfdu9wfLXL+gZQcwtlUQHwNmQcuxWt5SbET8E67Rrkn4\/5ushZ0eG2bYAYvZoWw==",
-      "path": "oracle.manageddataaccess.core\/3.21.3",
-      "hashPath": "oracle.manageddataaccess.core.3.21.3.nupkg.sha512"
+      "sha512": "sha512-LK\/4pUzCnTCnrxNVjgF5OMI0UGO1X3pdLvxQE6UFKGmtSa3qaS89INh799OAtCtQn+vEZURAH5UGkVJkWr8WeQ==",
+      "path": "oracle.manageddataaccess.core\/3.21.4",
+      "hashPath": "oracle.manageddataaccess.core.3.21.4.nupkg.sha512"
     },
     "Stub.System.Data.SQLite.Core.NetStandard\/1.0.115": {
       "type": "package",

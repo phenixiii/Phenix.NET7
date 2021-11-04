@@ -9,8 +9,8 @@ $(function() {
             '<div class="container">',
             '    <div class="row">',
             '        <div class="col-md-12">',
-            '            <span title="显示菜单">',
-            '                <i class="fa fa-bars pull-left fa-2x menu-open-icon"></i>',
+            '            <span class="pull-left">',
+            '                <i class="fa fa-bars fa-2x" style="cursor: pointer;" title="显示菜单"></i>',
             '                <h1 class="logo" style="left: 45%; top: -20%;">Teamwork Project Tracker</h1>',
             '            </span>',
             '            <i class="pull-right">',
@@ -27,32 +27,32 @@ $(function() {
         sideMenu.id = 'side-menu';
         sideMenu.innerHTML = [
             '<ul>',
-            '    <li title="关闭菜单">',
-            '        <i class="fa fa-close fa-2x menu-close-icon"></i>',
+            '    <li title="关闭菜单" style="cursor: pointer;">',
+            '        <i class="fa fa-close fa-2x"></i>',
             '    </li>',
             '    <li title="项目管理" onclick="base.gotoIndex()">',
-            '        <i id="index" class="fa fa-cog fa-2x"></i>',
+            '        <i class="fa fa-tasks fa-2x"></i>',
             '    </li>',
             '    <li title="工作档期" onclick="base.gotoSchedule()">',
-            '        <i id="schedule" class="fa fa-tasks fa-2x"></i>',
+            '        <i class="fa fa-group fa-2x"></i>',
             '    </li>',
             '    <li title="月工作量" onclick="base.gotoWorkload()">',
-            '        <i id="workload" class="fa fa-calendar fa-2x"></i>',
+            '        <i class="fa fa-calendar fa-2x"></i>',
             '    </li>',
             '    <li title="收支管理" onclick="base.gotoAccount()">',
-            '        <i id="account" class="fa fa-jpy fa-2x"></i>',
+            '        <i class="fa fa-jpy fa-2x"></i>',
             '    </li>',
             '    <li title="数据分析" onclick="base.gotoStatistic()">',
-            '        <i id="statistic" class="fa fa-bar-chart fa-2x"></i>',
+            '        <i class="fa fa-bar-chart fa-2x"></i>',
             '    </li>',
             '    <li title="修改密码" onclick="base.gotoMyself()">',
-            '        <i id="myself" class="fa fa-key fa-2x"></i>',
+            '        <i class="fa fa-key fa-2x"></i>',
             '    </li>',
             '</ul>',
         ].join('');
         menu.appendChild(sideMenu);
 
-        $('.menu-open-icon').click(function (e) {
+        $('.fa-bars').click(function(e) {
             e.preventDefault();
             var left = $('#side-menu').offset().left;
             if (left === -250) {
@@ -67,14 +67,14 @@ $(function() {
             }
         });
 
-        $('.menu-close-icon').click(function (e) {
+        $('.fa-close').click(function(e) {
             e.preventDefault();
             $('#side-menu').animate({
                 left: '-250px'
             });
         });
 
-        $('.logout').click(function (e) {
+        $('.logout').click(function(e) {
             e.preventDefault();
             phAjax.logout();
             base.gotoLogin();
@@ -166,6 +166,8 @@ var base = (function($) {
                         waitOut();
                     if (typeof options.onError === 'function')
                         options.onError(XMLHttpRequest, textStatus, validityError);
+                    if (XMLHttpRequest.status === 401) //AuthenticationException
+                        base.gotoLogin();
                 },
                 onComplete: options.onComplete,
             });

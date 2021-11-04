@@ -53,9 +53,11 @@
                     <tfoot id="table-foot" style="overflow-x: hidden;" v-show="filteredMyselfCompanyUserPages.count > 0">
                         <tr>
                             <th class="col-md-3" id="table-foot-first">
-                                <div style="float: right; width: 100%; text-align: right; font-size: 13px; font-weight: lighter; color: royalblue;">当月人天合计</div>
+                                <div style="float: right; width: 100%; text-align: right; font-size: 13px; font-weight: lighter; color: royalblue;">剩余可填报天数</div>
                             </th>
-                            <th v-for="item in filteredMyselfCompanyUserPages[pageNo]" style="width: 52px; text-align: center; font-size: 13px; font-weight: lighter; color: royalblue;" v-text="getTotalWorkload(item)"></th>
+                            <th v-for="item in filteredMyselfCompanyUserPages[pageNo]" style="width: 52px; text-align: center; font-size: 13px; font-weight: lighter; color: royalblue;">
+                                {{workerProjectWorkloads != null ? Object.prototype.hasOwnProperty.call(workerProjectWorkloads, item.Id) ? workerProjectWorkloads[item.Id].remainDays : '' : ''}}
+                            </th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -77,94 +79,35 @@
                                 </div>
                                 <div style="float: right; width: 100%; height: 48px; word-wrap: break-word; word-break: break-all; overflow: hidden; font-size: 13px; font-weight: lighter; text-align: right;">{{projectInfo.ProjectName}}</div>
                             </td>
-                            <td v-for="filteredMyselfCompanyUser in filteredMyselfCompanyUserPages[pageNo]" style="width: 52px; height: 52px; cursor: pointer;" @click="showChangeWorkloadDialog($event, projectInfo, filteredMyselfCompanyUser)">
+                            <td v-for="myselfCompanyUser in filteredMyselfCompanyUserPages[pageNo]" style="width: 52px; height: 52px; cursor: pointer;" @click="showChangeWorkloadPopover($event, projectInfo, myselfCompanyUser)">
                                 <div style="clear: both; margin-top: -10px;">
                                     <div style="clear: both;">
-                                        <hr class="badge-chapter-small develop-color" title="设计开发" v-if="projectInfo[filteredMyselfCompanyUser.Id] != null && projectInfo[filteredMyselfCompanyUser.Id].DevelopWorkload > 0" />
+                                        <hr class="badge-chapter-small develop-color" title="设计开发" v-if="projectInfo[myselfCompanyUser.Id] != null && projectInfo[myselfCompanyUser.Id].DevelopWorkload > 0" />
                                         <hr class="badge-chapter-small no-color" title="设计开发" v-else />
-                                        <hr class="badge-chapter-small investigate-color" title="调研分析" v-if="projectInfo[filteredMyselfCompanyUser.Id] != null && projectInfo[filteredMyselfCompanyUser.Id].InvestigateWorkload > 0" />
+                                        <hr class="badge-chapter-small investigate-color" title="调研分析" v-if="projectInfo[myselfCompanyUser.Id] != null && projectInfo[myselfCompanyUser.Id].InvestigateWorkload > 0" />
                                         <hr class="badge-chapter-small no-color" title="调研分析" v-else />
-                                        <hr class="badge-chapter-small manage-color" title="项目管理" v-if="projectInfo[filteredMyselfCompanyUser.Id] != null && projectInfo[filteredMyselfCompanyUser.Id].ManageWorkload > 0" />
+                                        <hr class="badge-chapter-small manage-color" title="项目管理" v-if="projectInfo[myselfCompanyUser.Id] != null && projectInfo[myselfCompanyUser.Id].ManageWorkload > 0" />
                                         <hr class="badge-chapter-small no-color" title="项目管理" v-else />
                                     </div>
                                     <div style="clear: both;">
-                                        <hr class="badge-chapter-small maintenance-color" title="质保维保" v-if="projectInfo[filteredMyselfCompanyUser.Id] != null && projectInfo[filteredMyselfCompanyUser.Id].MaintenanceWorkload > 0" />
+                                        <hr class="badge-chapter-small maintenance-color" title="质保维保" v-if="projectInfo[myselfCompanyUser.Id] != null && projectInfo[myselfCompanyUser.Id].MaintenanceWorkload > 0" />
                                         <hr class="badge-chapter-small no-color" title="质保维保" v-else />
-                                        <hr class="badge-chapter-small implement-color" title="培训实施" v-if="projectInfo[filteredMyselfCompanyUser.Id] != null && projectInfo[filteredMyselfCompanyUser.Id].ImplementWorkload > 0" />
+                                        <hr class="badge-chapter-small implement-color" title="培训实施" v-if="projectInfo[myselfCompanyUser.Id] != null && projectInfo[myselfCompanyUser.Id].ImplementWorkload > 0" />
                                         <hr class="badge-chapter-small no-color " title="培训实施" v-else />
-                                        <hr class="badge-chapter-small test-color" title="联调测试" v-if="projectInfo[filteredMyselfCompanyUser.Id] != null && projectInfo[filteredMyselfCompanyUser.Id].TestWorkload > 0" />
+                                        <hr class="badge-chapter-small test-color" title="联调测试" v-if="projectInfo[myselfCompanyUser.Id] != null && projectInfo[myselfCompanyUser.Id].TestWorkload > 0" />
                                         <hr class="badge-chapter-small no-color" title="联调测试" v-else />
                                     </div>
                                 </div>
-                                <label style="width: 100%; margin-top: 4px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; text-align: center; color: rgb(31, 73, 125);">
-                                    {{projectInfo[filteredMyselfCompanyUser.Id] != null && projectInfo[filteredMyselfCompanyUser.Id].totalWorkload > 0 ? projectInfo[filteredMyselfCompanyUser.Id].totalWorkload : ''}}
-                                </label>
+                                <div style="clear: both; margin-top: 10px;">
+                                    <label style="color: rgb(31, 73, 125); width: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; text-align: center; cursor: pointer;">
+                                        {{Object.prototype.hasOwnProperty.call(projectInfo, myselfCompanyUser.Id) && projectInfo[myselfCompanyUser.Id].totalWorkload > 0 ? projectInfo[myselfCompanyUser.Id].totalWorkload : ''}}
+                                    </label>
+                                </div>
                             </td>
-                            <td style="background-color: white; color: royalblue; font-weight: lighter; text-align: left;">{{projectInfo.totalWorkload}}</td>
+                            <td style="background-color: white; color: royalblue; font-size: 13px; font-weight: lighter; text-align: left;">{{projectInfo.totalWorkload}}</td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
-        <div id="storepopover" class="hide">
-            <div id="changework">
-                <div v-else>
-                    <ul class="list-group" style="padding: 0%;margin:0%;width: 250px">
-                        <li v-if="remaindays>0" class="list-group-item">
-                            <div style="color:orange">
-                                {{nowchoose.Worker}}还剩{{remaindays}}天可填报
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="lidiv">
-                                <hr class="vertical-center manage-color" style="float: left;" />
-                                <p class="lip" title="人员、产品、过程和项目进行分析和管理等工作" style="margin: 0% 6% 0% 8%;display: inline;">管理</p>
-                                <input v-if="canedit && manageedit" class="liinput" :value="nowchoose.ManageWorkloadRole" style="text-align: center; display: inline;" onkeypress='return( /[\d]/.test(String.fromCharCode(event.keyCode)))' @input="changedata($event,'0')" />
-                                <input disabled="disabled" v-else title="不允许填写" style="text-align: center;display: inline;background:rgb(246, 246, 246)" :value="nowchoose.ManageWorkloadRole" />
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="lidiv">
-                                <hr class="vertical-center investigate-color" style="float: left;" />
-                                <p class="lip " title="收集，分析，调研，撰写项目需求等工作 " style="margin: 0% 6% 0% 8%;display: inline; ">需求</p>
-                                <input v-if="canedit && investigateedit" class="liinput " :value="nowchoose.InvestigateWorkloadRole " style="text-align: center;display: inline;" onkeypress='return( /[\d]/.test(String.fromCharCode(event.keyCode)))' @input="changedata($event, '1') ">
-                                <input disabled="disabled" v-else title="不允许填写" :value="nowchoose.InvestigateWorkloadRole" style="text-align: center;display: inline;background:rgb(246, 246, 246)" />
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="lidiv">
-                                <hr class="vertical-center develop-color" style="float: left;" />
-                                <p class="lip " title="项目的需求和维保期提出的新增需求等开发工作 " style="margin: 0% 6% 0% 8%;display: inline; ">研发</p>
-                                <input v-if="canedit && developedit" class="liinput" :value="nowchoose.DevelopWorkloadRole" style="text-align: center;display: inline;" onkeypress='return( /[\d]/.test(String.fromCharCode(event.keyCode)))' @input="changedata($event, '2')">
-                                <input disabled="disabled" v-else title="不允许填写" :value="nowchoose.DevelopWorkloadRole" style="text-align: center;display: inline;background:rgb(246, 246, 246)" />
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="lidiv">
-                                <hr class="vertical-center test-color" style="float: left;" />
-                                <p class="lip " title="测试项目，检验项目是否满足需求等工作" style="margin: 0% 6% 0% 8%;display: inline;">测试</p>
-                                <input v-if="canedit && testedit" class="liinput" :value="nowchoose.TestWorkloadRole" style="text-align: center;display: inline;" onkeypress='return( /[\d]/.test(String.fromCharCode(event.keyCode)))' @input="changedata($event, '3')">
-                                <input disabled="disabled" v-else title="不允许填写" :value="nowchoose.TestWorkloadRole" style="text-align: center;display: inline;background:rgb(246, 246, 246)" />
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="lidiv">
-                                <hr class="vertical-center implement-color" style="float: left;" />
-                                <p class="lip " title="安装实施项目，项目培训，协助项目验收,验收之前的维护等工作 " style="margin: 0% 6% 0% 8%;display: inline;">实施</p>
-                                <input v-if="canedit && implementedit" class="liinput" :value="nowchoose.ImplementWorkloadRole" style="text-align: center;display: inline;" onkeypress='return( /[\d]/.test(String.fromCharCode(event.keyCode)))' @input="changedata($event, '4')">
-                                <input disabled="disabled" v-else title="不允许填写" :value="nowchoose.ImplementWorkloadRole" style="text-align: center;display: inline;background:rgb(246, 246, 246)" />
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="lidiv">
-                                <hr class="vertical-center maintenance-color" style="float: left;" />
-                                <p class="lip " title="质保期和维保期处理电话、排除bug，解决客户使用问题等工作。如果开发项目未进入质保期，相关工作量请填写到实施栏中 " style="margin: 0% 6% 0% 8%;display: inline;">维保</p>
-                                <input v-if="canedit && maintenanceedit" class="liinput" :value="nowchoose.MaintenanceWorkloadRole" style="text-align: center;display: inline;" onkeypress='return( /[\d]/.test(String.fromCharCode(event.keyCode)))' @input="changedata($event, '5')">
-                                <input disabled="disabled" v-else title="不允许填写" :value="nowchoose.MaintenanceWorkloadRole" style="text-align: center;display: inline;background:rgb(246, 246, 246);" />
-                            </div>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </div>
         <div class="goto-top-button">
@@ -188,7 +131,6 @@
 
     <script type="text/javascript" src="lib/vue.min.js"></script>
     <script type="text/javascript" src="lib/bootstrap/bootstrap.min.js"></script>
-    <script type="text/javascript" src="lib/lodash.js"></script>
 
     <script type="text/javascript" src="base-func.js?v=1"></script>
     <script>
