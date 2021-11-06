@@ -217,10 +217,10 @@ function filterProjectInfos(projectInfos, myselfCompanyUsers, year, month, state
             filteredProjectInfos.push(item);
         }
     });
-    vue.filteredProjectInfos = filteredProjectInfos;
     vue.year = year;
     vue.month = month;
     vue.state = state;
+    vue.filteredProjectInfos = filteredProjectInfos;
     //缓存查询条件
     if (vue.queryName != null)
         window.localStorage.setItem(queryNameCacheKey, vue.queryName);
@@ -281,21 +281,21 @@ function showProjectInfo(projectInfo) {
     });
 }
 
-function putProjectInfo(projectInfo) {
+function putProjectInfo(data) {
     base.call({
         type: "PUT",
         path: '/api/project-info',
-        data: projectInfo,
+        data: data,
         onSuccess: function(result) {
-            pushSalesAreas(projectInfo.SalesArea);
-            pushCustomers(projectInfo.Customer);
+            pushSalesAreas(data.SalesArea);
+            pushCustomers(data.Customer);
 
             if (confirm('成功提交资料, 是否需要合上资料面板?')) {
-                hideProjectInfoPanel(projectInfo);
-                locatingProjectInfo(projectInfo);
-                if (projectInfo.annualPlans.length === 0)
+                hideProjectInfoPanel(data);
+                locatingProjectInfo(data);
+                if (data.annualPlans.length === 0)
                     if (confirm('是否需要展开计划面板以便跟踪项目状况?'))
-                        nextAnnualPlan(projectInfo);
+                        nextAnnualPlan(data);
             }
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
@@ -348,17 +348,17 @@ function nextAnnualPlan(projectInfo) {
     });
 }
 
-function putAnnualPlan(projectInfo, annualPlan) {
+function putAnnualPlan(projectInfo, data) {
     base.call({
         type: "PUT",
         path: '/api/project-annual-plan',
-        data: annualPlan,
+        data: data,
         onSuccess: function(result) {
-            pushProjectStatuses(annualPlan.AnnualMilestone);
+            pushProjectStatuses(data.AnnualMilestone);
 
             var now = new Date();
-            if (annualPlan.Year === now.getFullYear())
-                Vue.set(projectInfo, 'AnnualMilestone', annualPlan.AnnualMilestone);
+            if (data.Year === now.getFullYear())
+                Vue.set(projectInfo, 'AnnualMilestone', data.AnnualMilestone);
 
             if (confirm('成功提交年度计划, 是否需要合上计划面板?')) {
                 hidePlanPanel(projectInfo);
@@ -403,18 +403,18 @@ function nextMonthlyReport(projectInfo, annualPlan) {
     });
 }
 
-function putMonthlyReport(projectInfo, monthlyReport) {
+function putMonthlyReport(projectInfo, data) {
     base.call({
         type: "PUT",
         path: '/api/project-monthly-report',
-        data: monthlyReport,
+        data: data,
         onSuccess: function(result) {
-            pushProjectStatuses(monthlyReport.Status);
+            pushProjectStatuses(data.Status);
 
             var now = new Date();
-            if (monthlyReport.Year === now.getFullYear() &&
-                monthlyReport.Month === now.getMonth() + 1)
-                Vue.set(projectInfo, 'CurrentStatus', monthlyReport.Status);
+            if (data.Year === now.getFullYear() &&
+                data.Month === now.getMonth() + 1)
+                Vue.set(projectInfo, 'CurrentStatus', data.Status);
 
             if (confirm('成功提交月报, 是否需要合上计划面板?')) {
                 hidePlanPanel(projectInfo);
@@ -604,10 +604,9 @@ var vue = new Vue({
         canPutAnnualPlan: function(projectInfo, annualPlan) {
             if (!base.isMyProject(projectInfo))
                 return false;
-            var now = new Date();
-            if (projectInfo.ClosedDate != null && new Date(projectInfo.ClosedDate) < now.setDate(1)) //上月或更久已关闭项目
+            if (projectInfo.ClosedDate != null && new Date(projectInfo.ClosedDate) < new Date().setDate(1)) //上月或更久已关闭项目
                 return false;
-            return new Date(annualPlan.Year + 1, 1, 1) >= now; //今年或之后的年度计划
+            return new Date(annualPlan.Year + 1, 1, 1) >= new Date(); //今年或之后的年度计划
         },
 
         onPutAnnualPlan: function(projectInfo, annualPlan) {
@@ -625,10 +624,9 @@ var vue = new Vue({
         canPutMonthlyReport: function(projectInfo, monthlyReport) {
             if (!base.isMyProject(projectInfo))
                 return false;
-            var now = new Date();
-            if (projectInfo.ClosedDate != null && new Date(projectInfo.ClosedDate) < now.setDate(1)) //上月或更久已关闭项目
+            if (projectInfo.ClosedDate != null && new Date(projectInfo.ClosedDate) < new Date().setDate(1)) //上月或更久已关闭项目
                 return false;
-            return new Date(monthlyReport.Year, monthlyReport.Month, 1) >= now.setMonth(now.getMonth() - 1, 1); //上月或之后的月报
+            return new Date(monthlyReport.Year, monthlyReport.Month, 1) >= new Date().setMonth(new Date().getMonth() - 1, 1); //上月或之后的月报
         },
 
         onPutMonthlyReport: function(projectInfo, monthlyReport) {

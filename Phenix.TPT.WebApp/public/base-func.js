@@ -116,6 +116,8 @@ var base = (function($) {
         }
     }
 
+    var logging = false;
+
     return {
         call: function(options) {
             var defaults = {
@@ -164,10 +166,12 @@ var base = (function($) {
                 onError: function(XMLHttpRequest, textStatus, validityError) {
                     if (options.type !== 'GET')
                         waitOut();
-                    if (typeof options.onError === 'function')
+                    if (typeof options.onError === 'function' && !logging)
                         options.onError(XMLHttpRequest, textStatus, validityError);
-                    if (XMLHttpRequest.status === 401) //AuthenticationException
+                    if (XMLHttpRequest.status === 401) { //AuthenticationException
+                        logging = true;
                         base.gotoLogin();
+                    }
                 },
                 onComplete: options.onComplete,
             });
