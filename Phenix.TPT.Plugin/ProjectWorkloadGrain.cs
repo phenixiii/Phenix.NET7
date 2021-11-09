@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security;
 using System.Threading.Tasks;
 using Orleans.Streams;
 using Phenix.Actor;
@@ -87,7 +88,7 @@ namespace Phenix.TPT.Plugin
                         : new DateTime(YearMonth.Year + 1, 1, 1).AddMilliseconds(-1);
                     foreach (ProjectInfo item in ProjectInfo.FetchList(Database,
                         p => p.OriginateTime <= lastDay && (p.ClosedDate == null || p.ClosedDate >= YearMonth) &&
-                             (p.ProjectManager == Worker || p.DevelopManager == Worker || p.MaintenanceManager == Worker)))
+                             (p.ProjectManager == Worker || p.DevelopManager == Worker || p.MaintenanceManager == Worker || p.SalesManager == Worker)))
                         if (!result.ContainsKey(item.Id))
                             result.Add(item.Id, ProjectWorkload.New(Database,
                                 ProjectWorkload.Set(p => p.Year, YearMonth.Year).
@@ -136,17 +137,29 @@ namespace Phenix.TPT.Plugin
             return Task.FromResult(result);
         }
 
+        private DateTime GetDeadline()
+        {
+            DateTime now = DateTime.Now;
+            return now.Day > 5 ? new DateTime(now.Year, now.Month, 5) : new DateTime(now.Year, now.Month, 5).AddMonths(-1);
+        }
+
         async Task IProjectWorkloadGrain.PutProjectWorkload(ProjectWorkload source)
         {
             DateTime today = DateTime.Today;
             if (source.Year > today.Year || source.Year == today.Year && source.Month > today.Month)
                 throw new ValidationException("未来不可得~");
-            if (new DateTime(source.Year, source.Month, 28) < today.AddMonths(-1) && !await User.Identity.IsInRole(ProjectRoles.经营管理) || //次次月28日后之后不允许修改
-                new DateTime(source.Year, source.Month, 28) < today && !await User.Identity.IsInRole(ProjectRoles.经营管理, ProjectRoles.项目管理))  //次月28日后之后不允许修改
+            bool unlimited = await User.Identity.IsInRole(ProjectRoles.经营管理);
+            if (!(unlimited || new DateTime(source.Year, source.Month, 1).AddDays(DateTime.Now.Day - 1) < GetDeadline()))
                 throw new ValidationException("不允许修改已归档的工作量!");
 
             if (Kernel.TryGetValue(source.PiId, out ProjectWorkload projectWorkload))
             {
+                ProjectInfo projectInfo = await ClusterClient.GetGrain<IProjectGrain>(source.PiId).FetchKernel();
+                if (projectInfo == null)
+                    throw new ValidationException("项目不存在!");
+                if (!(unlimited || User.Identity.Id == source.Worker || User.Identity.Id == projectInfo.ProjectManager || User.Identity.Id == projectInfo.DevelopManager))
+                    throw new SecurityException("管好自己的工作量就行啦!");
+
                 //汇总当前已登记项目工作量
                 int oldAllWorkload = 0;
                 foreach (KeyValuePair<long, ProjectWorkload> kvp in Kernel)
@@ -154,7 +167,7 @@ namespace Phenix.TPT.Plugin
                 //不允许新汇总数超出当月工作日
                 int overmuchWorkload = oldAllWorkload - projectWorkload.TotalWorkload + source.TotalWorkload - (await ClusterClient.GetGrain<IWorkdayGrain>(source.Year).GetWorkday(source.Month)).Days;
                 if (overmuchWorkload > 0)
-                    throw new ValidationException(String.Format("在每个项目上填报的工作量，本质上是自己投入到每个项目上的工作精力在当月工作日天数的占比数额（仅对应您年薪的固定部分，绩效奖金另有评价体系对应哦）。所以，请将多余的 {0} 天数抹平掉哦!", overmuchWorkload));
+                    throw new ValidationException(String.Format("请将超出当月工作日的 {0} 天摊到所有参与项目上以尽可能体现真实的投入占比!", overmuchWorkload));
                 //持久化
                 if (projectWorkload.TotalWorkload == 0)
                 {
@@ -174,11 +187,12 @@ namespace Phenix.TPT.Plugin
                         Kernel[source.PiId] = source;
                     }
                 }
+
                 //播报
                 await SendEventForRefreshProjectWorkloads(source.PiId);
             }
             else
-                throw new ValidationException("您好像不是本项目组的人呃，填不上工作量!");
+                throw new ValidationException("非项目组成员是填报不了工作量的!");
         }
 
         #endregion

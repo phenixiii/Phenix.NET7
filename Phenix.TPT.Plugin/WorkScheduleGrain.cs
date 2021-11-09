@@ -124,19 +124,22 @@ namespace Phenix.TPT.Plugin
                 : null));
         }
 
+        private DateTime GetDeadline()
+        {
+            DateTime now = DateTime.Now;
+            return now.Day > 5 ? new DateTime(now.Year, now.Month, 5) : new DateTime(now.Year, now.Month, 5).AddMonths(-1);
+        }
+
         /// <summary>
         /// 新增或更新根实体对象
         /// </summary>
         /// <param name="source">数据源</param>
         protected override async Task PutKernel(WorkSchedule source)
         {
-            DateTime today = DateTime.Today;
-            if (source.Year > today.AddYears(1).Year)
-                throw new ValidationException("仅限于管理近一年的的工作档期!");
-            if (new DateTime(source.Year, source.Month, 28) < today.AddMonths(-1) && !await User.Identity.IsInRole(ProjectRoles.经营管理) || //次次月28日后之后不允许修改
-                new DateTime(source.Year, source.Month, 28) < today && !await User.Identity.IsInRole(ProjectRoles.经营管理, ProjectRoles.项目管理)) //次月28日后之后不允许修改
-                throw new ValidationException("不允许修改已归档的工作档期!");
-            if (User.Identity.Id != Manager && !await User.Identity.IsInRole(ProjectRoles.经营管理))
+            bool unlimited = await User.Identity.IsInRole(ProjectRoles.经营管理);
+            if (!(unlimited || new DateTime(source.Year, source.Month, 1).AddDays(DateTime.Now.Day - 1) < GetDeadline()))
+                throw new ValidationException("不允许修改已归档的工作量!");
+            if (!(unlimited || User.Identity.Id == Manager))
                 throw new SecurityException("管好自己的工作档期就行啦!");
 
             List<long> receivers = new List<long>();

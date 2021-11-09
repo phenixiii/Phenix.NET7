@@ -430,12 +430,8 @@ function putMonthlyReport(projectInfo, data) {
 var vue = new Vue({
     el: '#content',
     data: {
-        year: new Date().getDate() > 5
-            ? new Date().getFullYear()
-            : new Date(new Date().setMonth(new Date().getMonth() - 1, 1)).getFullYear(),
-        month: new Date().getDate() > 5
-            ? new Date().getMonth() + 1
-            : new Date(new Date().setMonth(new Date().getMonth() - 1, 1)).getMonth() + 1,
+        year: base.getDeadline().getFullYear(),
+        month: base.getDeadline().getMonth() + 1,
         state: 0,
         stateTitle: [
             '当月项目',

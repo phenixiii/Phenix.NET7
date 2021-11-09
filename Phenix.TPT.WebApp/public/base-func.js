@@ -226,6 +226,11 @@ var base = (function($) {
                     myself.Id === projectInfo.MaintenanceManager ||
                     myself.Id === projectInfo.SalesManager);
         },
+
+        getDeadline: function() {
+            var now = new Date();
+            return new Date(now.getDate() > 5 ? now.setDate(5) : now.setMonth(now.getMonth() - 1, 5));
+        },
     }
 })(jQuery);
 

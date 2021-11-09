@@ -59,7 +59,7 @@ function fetchWorkday(year, month, state, pageNo) {
         onSuccess: function(result) {
             if (!workdays.includes(result)) {
                 workdays.push(result);
-                filterProjectInfos(vue.workerProjectWorkloads, projectInfos, result, year, month, state, pageNo);
+                filterProjectInfos(projectInfos, vue.workerProjectWorkloads, result, year, month, state, pageNo);
             }
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
@@ -113,8 +113,8 @@ function fetchWorkSchedule(year, month, state, pageNo, reset) {
         fetchWorkerProjectWorkloads(filterMyselfCompanyUsers(myselfCompanyUsers, workSchedule, year, month, state), year, month, state, pageNo);
 }
 
-function filterMyselfCompanyUsers(myselfCompanyUsers, workSchedules, year, month, state) {
-    if (myselfCompanyUsers == null || workSchedules == null)
+function filterMyselfCompanyUsers(myselfCompanyUsers, workSchedule, year, month, state) {
+    if (myselfCompanyUsers == null || workSchedule == null)
         return null;
     vue.filteredMyselfCompanyUserPages = {};
     var filteredMyselfCompanyUserPages = {};
@@ -130,7 +130,7 @@ function filterMyselfCompanyUsers(myselfCompanyUsers, workSchedules, year, month
             filteredMyselfCompanyUsers = [];
         } else if (new Date(item.RegTime) <= lastDay &&
             (!item.Disabled || item.DisabledTime == null || new Date(item.DisabledTime) > lastDay) &&
-            (state !== 0 || workSchedules.Workers.includes(item.Id)))
+            (state !== 0 || workSchedule.Workers.includes(item.Id)))
             filteredMyselfCompanyUsers.push(item);
     });
     if (filteredMyselfCompanyUsers.length > 0) {
@@ -150,7 +150,7 @@ function fetchWorkerProjectWorkloads(filteredMyselfCompanyUserPages, year, month
             path: '/api/project-workload/all',
             pathParam: { workers: workers.toString(), year: year, month: month },
             onSuccess: function(result) {
-                filterProjectInfos(result, projectInfos, fetchWorkday(year, month, state, pageNo), year, month, state, pageNo);
+                filterProjectInfos(projectInfos, result, fetchWorkday(year, month, state, pageNo), year, month, state, pageNo);
                 vue.workerProjectWorkloads = result;
             },
             onError: function(XMLHttpRequest, textStatus, validityError) {
@@ -169,7 +169,7 @@ function fetchProjectInfos(year, month, state, pageNo, reset) {
             pathParam: { year: year, month: month },
             onSuccess: function(result) {
                 projectInfos = result;
-                filterProjectInfos(vue.workerProjectWorkloads, result, fetchWorkday(year, month, state, pageNo), year, month, state, pageNo);
+                filterProjectInfos(result, vue.workerProjectWorkloads, fetchWorkday(year, month, state, pageNo), year, month, state, pageNo);
             },
             onError: function(XMLHttpRequest, textStatus, validityError) {
                 projectInfos = null;
@@ -177,11 +177,11 @@ function fetchProjectInfos(year, month, state, pageNo, reset) {
             },
         });
     else
-        filterProjectInfos(vue.workerProjectWorkloads, projectInfos, fetchWorkday(year, month, state, pageNo), year, month, state, pageNo);
+        filterProjectInfos(projectInfos, vue.workerProjectWorkloads, fetchWorkday(year, month, state, pageNo), year, month, state, pageNo);
 }
 
-function filterProjectInfos(workerProjectWorkloads, projectInfos, workdays, year, month, state, pageNo) {
-    if (workerProjectWorkloads == null || projectInfos == null || workdays == null)
+function filterProjectInfos(projectInfos, workerProjectWorkloads, workdays, year, month, state, pageNo) {
+    if (projectInfos == null || workerProjectWorkloads == null || workdays == null)
         return;
     var filteredProjectInfos = [];
     for (let worker in workerProjectWorkloads)
@@ -279,12 +279,8 @@ function putWorkerProjectWorkload(currentWorkerProjectWorkload, data, target, pr
 var vue = new Vue({
     el: '#content',
     data: {
-        year: new Date().getDate() > 5
-            ? new Date().getFullYear()
-            : new Date(new Date().setMonth(new Date().getMonth() - 1, 1)).getFullYear(),
-        month: new Date().getDate() > 5
-            ? new Date().getMonth() + 1
-            : new Date(new Date().setMonth(new Date().getMonth() - 1, 1)).getMonth() + 1,
+        year: base.getDeadline().getFullYear(),
+        month: base.getDeadline().getMonth() + 1,
         state: 0,
         stateTitle: [
             '当月项目的工作量',
@@ -391,64 +387,56 @@ var vue = new Vue({
             destroyChangeWorkloadPopover(this.currentWorkerProjectWorkload, title);
             var workerProjectWorkload = projectInfo[myselfCompanyUser.Id];
             if (workerProjectWorkload == null) {
-                workerProjectWorkload = {
-                    Year: year,
-                    Month: month,
-                    Worker: myselfCompanyUser.Id,
-                    PiId: projectInfo.Id,
-                    ManageWorkload: 0,
-                    InvestigateWorkload: 0,
-                    DevelopWorkload: 0,
-                    TestWorkload: 0,
-                    ImplementWorkload: 0,
-                    MaintenanceWorkload: 0,
-                }
-                workerProjectWorkload.totalWorkload = 0;
-                projectInfo[myselfCompanyUser.Id] = workerProjectWorkload;
+                alert('非项目组成员是填报不了工作量的~');
+                return;
             }
-            var byLock = new Date(year, month - 1, 28) < new Date().setMonth(new Date().getMonth() - 1) && !phAjax.isInRole('经营管理') || //次次月28日后之后不允许修改
-                new Date(year, month - 1, 28) < new Date() && !(phAjax.isInRole('经营管理') || phAjax.isInRole('项目管理'));  //次月28日后之后不允许修改
+            var editable = phAjax.isInRole('经营管理') ||
+                new Date().setYear(year).setMonth(month) >= base.getDeadline() &&
+                (phAjax.getMyself().Id === workerProjectWorkload.Worker ||
+                    workSchedule.Workers.includes(workerProjectWorkload.Worker) &&
+                    (phAjax.getMyself().Id === workerProjectWorkload.projectInfo.ProjectManager ||
+                        phAjax.getMyself().Id === workerProjectWorkload.projectInfo.DevelopManager));
             var content =
                 '<div>' +
                 '   <ul class="list-group" style="padding: 0%; margin:0%; width: 240px;">' +
                 '        <li class="list-group-item">' +
                 '            <label class="manage-color" style="margin: 1% 5% 1% 0%; color: #fafafa; white-space: pre;" title="项目管理、开发管理、团队管理、内外协调等方面的工作（含维护阶段新增需求的项目管理）"> 项目管理 </label>' +
-                (!byLock && phAjax.isInRole('项目管理', myselfCompanyUser.PositionId)
+                (editable && phAjax.isInRole('项目管理', myselfCompanyUser.PositionId)
                     ? '      <input style="width: 60%; text-align: center;" type="number" min="0" max="31" value="manageWorkload" oninput="vue.onChangeManageWorkload(event)" />'
                     : '      <input disabled="disabled" style="width: 60%; text-align: center; background: rgb(246, 246, 246);" title="如需填写请联系项目负责人开通权限" value="manageWorkload" /> ').
                     replace(/manageWorkload/g, workerProjectWorkload.ManageWorkload) +
                 '        </li>' +
                 '        <li class="list-group-item">' +
                 '            <label class="investigate-color" style="margin: 1% 5% 1% 0%; color: #fafafa; white-space: pre;" title="需求调研、需求分析、需求确认、可行性分析、方案撰写等方面的工作（含维护阶段新增需求的调研分析）"> 调研分析 </label>' +
-                (!byLock && phAjax.isInRole('调研分析', myselfCompanyUser.PositionId)
+                (editable && phAjax.isInRole('调研分析', myselfCompanyUser.PositionId)
                     ? '      <input style="width: 60%; text-align: center;" type="number" min="0" max="31" value="investigateWorkload" oninput="vue.onChangeInvestigateWorkload(event)">'
                     : '      <input disabled="disabled" style="width: 60%; text-align: center; background: rgb(246, 246, 246);" title="如需填写请联系项目负责人开通权限" value="investigateWorkload" />').
                     replace(/investigateWorkload/g, workerProjectWorkload.InvestigateWorkload) +
                 '        </li>' +
                 '        <li class="list-group-item">' +
                 '            <label class="develop-color" style="margin: 1% 5% 1% 0%; color: #fafafa; white-space: pre;" title="系统设计、编码开发、单元测试、方案设计等方面的工作（含维护阶段新增需求的设计开发）"> 设计开发 </label>' +
-                (!byLock && phAjax.isInRole('设计开发', myselfCompanyUser.PositionId) || phAjax.isInRole('方案设计', myselfCompanyUser.PositionId)
+                (editable && phAjax.isInRole('设计开发', myselfCompanyUser.PositionId) || phAjax.isInRole('方案设计', myselfCompanyUser.PositionId)
                     ? '      <input style="width: 60%; text-align: center;" type="number" min="0" max="31" value="developWorkload" oninput="vue.onChangeDevelopWorkload(event)" />'
                     : '      <input disabled="disabled" style="width: 60%; text-align: center; background: rgb(246, 246, 246);" title="如需填写请联系项目负责人开通权限" value="developWorkload" />').
                     replace(/developWorkload/g, workerProjectWorkload.DevelopWorkload) +
                 '        </li>' +
                 '        <li class="list-group-item">' +
                 '            <label class="test-color" style="margin: 1% 5% 1% 0%; color: #717171; white-space: pre;" title="功能验证、整体联调、缺陷修正、采购施工等方面的工作（含维护阶段新增需求的联调测试）"> 联调测试 </label>' +
-                (!byLock && phAjax.isInRole('测试联调', myselfCompanyUser.PositionId) || phAjax.isInRole('采购施工', myselfCompanyUser.PositionId)
+                (editable && phAjax.isInRole('测试联调', myselfCompanyUser.PositionId) || phAjax.isInRole('采购施工', myselfCompanyUser.PositionId)
                     ? '      <input style="width: 60%; text-align: center;" type="number" min="0" max="31" value="testWorkload" oninput="vue.onChangeTestWorkload(event)" />'
                     : '      <input disabled="disabled" style="width: 60%; text-align: center; background: rgb(246, 246, 246);" title="如需填写请联系项目负责人开通权限" value="testWorkload" />').
                     replace(/testWorkload/g, workerProjectWorkload.TestWorkload) +
                 '        </li>' +
                 '        <li class="list-group-item">' +
                 '            <label class="implement-color" style="margin: 1% 5% 1% 0%; color: #fafafa; white-space: pre;" title="系统培训、部署、上线、交付验收等方面的工作（含维护阶段新增需求的部署升级）"> 培训实施 </label>' +
-                (!byLock && phAjax.isInRole('培训实施', myselfCompanyUser.PositionId) || phAjax.isInRole('交付验收', myselfCompanyUser.PositionId)
+                (editable && phAjax.isInRole('培训实施', myselfCompanyUser.PositionId) || phAjax.isInRole('交付验收', myselfCompanyUser.PositionId)
                     ? '      <input style="width: 60%; text-align: center;" type="number" min="0" max="31" value="implementWorkload" oninput="vue.onChangeImplementWorkload(event)" />'
                     : '      <input disabled="disabled" style="width: 60%; text-align: center; background: rgb(246, 246, 246);" title="如需填写请联系项目负责人开通权限" value="implementWorkload" />').
                     replace(/implementWorkload/g, workerProjectWorkload.ImplementWorkload) +
                 '        </li>' +
                 '        <li class="list-group-item">' +
                 '            <label class="maintenance-color" style="margin: 1% 5% 1% 0%; color: #fafafa; white-space: pre;" title="系统上线后的质保和维保期间的接故、排故、咨询服务等方面的工作（不含新增需求的处理）"> 质保维保 </label>' +
-                (!byLock && phAjax.isInRole('质保维保', myselfCompanyUser.PositionId)
+                (editable && phAjax.isInRole('质保维保', myselfCompanyUser.PositionId)
                     ? '      <input style="width: 60%; text-align: center;" type="number" min="0" max="31" value="maintenanceWorkload" oninput="vue.onChangeMaintenanceWorkload(event)" />'
                     : '      <input disabled="disabled" style="width: 60%; text-align: center; background: rgb(246, 246, 246);" title="如需填写请联系项目负责人开通权限" value="maintenanceWorkload" />').
                     replace(/maintenanceWorkload/g, workerProjectWorkload.MaintenanceWorkload) +
