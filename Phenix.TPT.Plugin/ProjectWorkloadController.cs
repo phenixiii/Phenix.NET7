@@ -52,7 +52,7 @@ namespace Phenix.TPT.Plugin
         /// <param name="projectId">项目ID</param>
         [Authorize]
         [HttpGet("total")]
-        public async Task<int> Total(long projectId)
+        public async Task<int> GetTotal(long projectId)
         {
             return await ClusterClient.Default.GetGrain<IProjectGrain>(projectId).TotalProjectWorkload();
         }

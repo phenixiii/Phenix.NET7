@@ -9,8 +9,8 @@
       "Phenix.Core\/7.5.52": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.1",
-          "Npgsql": "5.0.10",
-          "System.Data.SQLite.Core": "1.0.115"
+          "Npgsql": "6.0.0",
+          "System.Data.SQLite.Core": "1.0.115.5"
         },
         "runtime": {
           "Phenix.Core.dll": {}
@@ -24,22 +24,22 @@
           }
         }
       },
-      "Npgsql\/5.0.10": {
+      "Npgsql\/6.0.0": {
         "dependencies": {
-          "System.Runtime.CompilerServices.Unsafe": "4.6.0"
+          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         },
         "runtime": {
           "lib\/net5.0\/Npgsql.dll": {
-            "assemblyVersion": "5.0.10.0",
-            "fileVersion": "5.0.10.0"
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.0.0"
           }
         }
       },
-      "Stub.System.Data.SQLite.Core.NetStandard\/1.0.115": {
+      "Stub.System.Data.SQLite.Core.NetStandard\/1.0.115.5": {
         "runtime": {
           "lib\/netstandard2.1\/System.Data.SQLite.dll": {
-            "assemblyVersion": "1.0.115.0",
-            "fileVersion": "1.0.115.0"
+            "assemblyVersion": "1.0.115.5",
+            "fileVersion": "1.0.115.5"
           }
         },
         "runtimeTargets": {
@@ -56,21 +56,28 @@
           "runtimes\/win-x64\/native\/SQLite.Interop.dll": {
             "rid": "win-x64",
             "assetType": "native",
-            "fileVersion": "1.0.115.0"
+            "fileVersion": "1.0.115.5"
           },
           "runtimes\/win-x86\/native\/SQLite.Interop.dll": {
             "rid": "win-x86",
             "assetType": "native",
-            "fileVersion": "1.0.115.0"
+            "fileVersion": "1.0.115.5"
           }
         }
       },
-      "System.Data.SQLite.Core\/1.0.115": {
+      "System.Data.SQLite.Core\/1.0.115.5": {
         "dependencies": {
-          "Stub.System.Data.SQLite.Core.NetStandard": "1.0.115"
+          "Stub.System.Data.SQLite.Core.NetStandard": "1.0.115.5"
         }
       },
-      "System.Runtime.CompilerServices.Unsafe\/4.6.0": {}
+      "System.Runtime.CompilerServices.Unsafe\/6.0.0": {
+        "runtime": {
+          "lib\/netcoreapp3.1\/System.Runtime.CompilerServices.Unsafe.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.21.52210"
+          }
+        }
+      }
     }
   },
   "libraries": {
@@ -86,33 +93,33 @@
       "path": "newtonsoft.json\/13.0.1",
       "hashPath": "newtonsoft.json.13.0.1.nupkg.sha512"
     },
-    "Npgsql\/5.0.10": {
+    "Npgsql\/6.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-3TB9le3lfu5Hc+LSHqMCVLcA+qUPg1enyM4+u0pMUBmNNGwc0sVPrnfnys2TVZIdkF8Aww\/AZlnJHDsnEGqD0g==",
-      "path": "npgsql\/5.0.10",
-      "hashPath": "npgsql.5.0.10.nupkg.sha512"
+      "sha512": "sha512-8m2AXZgX7b\/VYL6D7aQ1M\/hu7vQ+QvVHxaHelriupN2hZqEhcwJkPiICLBVSX\/+xm+iN8mZVEUvD7ujmgpTgLw==",
+      "path": "npgsql\/6.0.0",
+      "hashPath": "npgsql.6.0.0.nupkg.sha512"
     },
-    "Stub.System.Data.SQLite.Core.NetStandard\/1.0.115": {
+    "Stub.System.Data.SQLite.Core.NetStandard\/1.0.115.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-afpVRUKjuLZ17W2iv779YORpWQN40rJ82g\/ASC6Yq1J4emO+8hL316AISf5nJWfXecygLdqevzXxQZR7z2yRww==",
-      "path": "stub.system.data.sqlite.core.netstandard\/1.0.115",
-      "hashPath": "stub.system.data.sqlite.core.netstandard.1.0.115.nupkg.sha512"
+      "sha512": "sha512-WfrqQg6WL+r4H1sVKTenNj6ERLXUukUxqcjH1rqPqXadeIWccTVpydESieD7cZ\/NWQVSKLYIHuoBX5du+BFhIQ==",
+      "path": "stub.system.data.sqlite.core.netstandard\/1.0.115.5",
+      "hashPath": "stub.system.data.sqlite.core.netstandard.1.0.115.5.nupkg.sha512"
     },
-    "System.Data.SQLite.Core\/1.0.115": {
+    "System.Data.SQLite.Core\/1.0.115.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-OuzSKnAnXtbsB7MUddjLiLAUEuEu8kJco3jWllZs+zgYmuiK5VHUHafD74C65HwnnmWVHUvFBrJ0NDAKINuGNQ==",
-      "path": "system.data.sqlite.core\/1.0.115",
-      "hashPath": "system.data.sqlite.core.1.0.115.nupkg.sha512"
+      "sha512": "sha512-vADIqqgpxaC5xR6qOV8\/KMZkQeSDCfmmWpVOtQx0oEr3Yjq2XdTxX7+jfE4+oO2xPovAbYiz6Q5cLRbSsDkq6Q==",
+      "path": "system.data.sqlite.core\/1.0.115.5",
+      "hashPath": "system.data.sqlite.core.1.0.115.5.nupkg.sha512"
     },
-    "System.Runtime.CompilerServices.Unsafe\/4.6.0": {
+    "System.Runtime.CompilerServices.Unsafe\/6.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-HxozeSlipUK7dAroTYwIcGwKDeOVpQnJlpVaOkBz7CM4TsE5b\/tKlQBZecTjh6FzcSbxndYaxxpsBMz+wMJeyw==",
-      "path": "system.runtime.compilerservices.unsafe\/4.6.0",
-      "hashPath": "system.runtime.compilerservices.unsafe.4.6.0.nupkg.sha512"
+      "sha512": "sha512-\/iUeP3tq1S0XdNNoMz5C9twLSrM\/TH+qElHkXWaPvuNOt+99G75NrV0OS2EqHx5wMN7popYjpc8oTjC1y16DLg==",
+      "path": "system.runtime.compilerservices.unsafe\/6.0.0",
+      "hashPath": "system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
     }
   }
 }

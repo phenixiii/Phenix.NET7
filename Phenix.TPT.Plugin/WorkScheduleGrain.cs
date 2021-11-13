@@ -113,15 +113,18 @@ namespace Phenix.TPT.Plugin
         /// 获取根实体对象
         /// </summary>
         /// <param name="autoNew">不存在则新增</param>
-        protected override Task<WorkSchedule> FetchKernel(bool autoNew = false)
+        protected override async Task<WorkSchedule> FetchKernel(bool autoNew = false)
         {
-            return Task.FromResult(Kernel ?? (autoNew
+            if (!(await User.Identity.IsInRole(ProjectRoles.经营管理, ProjectRoles.项目管理)))
+                throw new SecurityException("仅允许管理层调配员工、项目负责人组织团队!");
+
+            return Kernel ?? (autoNew
                 ? WorkSchedule.New(Database,
                     NameValue.Set<WorkSchedule>(p => p.Manager, Manager).
                         Set(p => p.Year, YearMonth.Year).
                         Set(p => p.Month, YearMonth.Month).
                         Set(p => p.Workers, new List<long>()))
-                : null));
+                : null);
         }
 
         private DateTime GetDeadline()
@@ -143,9 +146,10 @@ namespace Phenix.TPT.Plugin
                 throw new SecurityException("管好自己的工作档期就行啦!");
 
             List<long> receivers = new List<long>();
-            if (Kernel.Workers != null)
+            if (Kernel != null)
             {
-                receivers.AddRange(Kernel.Workers);
+                if (Kernel.Workers != null)
+                    receivers.AddRange(Kernel.Workers);
                 Database.Execute(dbTransaction =>
                 {
                     Kernel.UpdateSelf(dbTransaction, source);
@@ -165,6 +169,7 @@ namespace Phenix.TPT.Plugin
                 });
                 receivers.AddRange(source.Workers);
             }
+
             //播报
             foreach (long item in receivers)
                 await SendEventForRefreshProjectWorkloads(item, Manager.ToString());

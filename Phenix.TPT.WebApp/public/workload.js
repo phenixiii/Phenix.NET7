@@ -130,7 +130,7 @@ function filterMyselfCompanyUsers(myselfCompanyUsers, workSchedule, year, month,
             filteredMyselfCompanyUsers = [];
         } else if (new Date(item.RegTime) <= lastDay &&
             (!item.Disabled || item.DisabledTime == null || new Date(item.DisabledTime) > lastDay) &&
-            (state !== 0 || workSchedule.Workers.includes(item.Id)))
+            (state !== 0 || workSchedule.Workers.includes(item.Id) || phAjax.isInRole('经营管理')))
             filteredMyselfCompanyUsers.push(item);
     });
     if (filteredMyselfCompanyUsers.length > 0) {
@@ -383,7 +383,7 @@ var vue = new Vue({
         onShowChangeWorkloadPopover: function(e, projectInfo, myselfCompanyUser) {
             var year = this.year;
             var month = this.month;
-            var title = year + '-' + month + ' ' + myselfCompanyUser.RegAlias + ': ' + projectInfo.ProjectName;
+            var title = year + '.' + month + ' ' + myselfCompanyUser.RegAlias + ': ' + projectInfo.ProjectName;
             destroyChangeWorkloadPopover(this.currentWorkerProjectWorkload, title);
             var workerProjectWorkload = projectInfo[myselfCompanyUser.Id];
             if (workerProjectWorkload == null) {
