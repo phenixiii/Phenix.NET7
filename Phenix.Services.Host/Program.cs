@@ -74,7 +74,18 @@ namespace Phenix.Services.Host
             Console.WriteLine("构建Orleans和WebAPI的服务...");
             _host = CreateHostBuilder(args).Build();
             Console.WriteLine("启动Orleans和WebAPI的服务");
-            _host.Run(); //Orleans.Runtime.MembershipService.OrleansClusterConnectivityCheckFailedException
+            try
+            {
+                _host.Run();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                if (ex is Orleans.Runtime.MembershipService.OrleansClusterConnectivityCheckFailedException)
+                    Console.WriteLine("请等待旧的Orleans节点都已确认退群再重启本服务程序以便重建新的集群!");
+                Console.ReadLine();
+                return;
+            }
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args)

@@ -165,14 +165,20 @@ var vue = new Vue({
             eventTime = setTimeout(function() {
                     vue.currentWorkSchedule = workSchedule;
                     vue.myselfCompanyUsers.forEach((user, userIndex) => {
-                        user.checked = workSchedule.Workers.find(item => item.Id === user.Id) != null;
+                        user.checked = workSchedule.Workers.find(item => item === user.Id) != null;
                     });
                     showChangeWorkScheduleDialog();
                 }, 300);
         },
 
         onChangeWorkSchedule: function() {
-
+            var data = JSON.parse(JSON.stringify(phUtils.trimData(this.currentWorkSchedule, false, true)));
+            vue.myselfCompanyUsers.forEach((user, userIndex) => {
+                if (user.checked)
+                    data.Workers.push(user.Id);
+            });
+            putWorkSchedule(this.currentWorkSchedule, data);
+            hideChangeWorkScheduleDialog();
         },
     }
 })
