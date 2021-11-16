@@ -198,7 +198,7 @@ Copyright © 2007, 2021 Phenixヾ Studio
 
 20210807
 1，持久化引擎添加InsertOrUpdate功能以支持Put服务请求
-2，提供Phenix.TPT.XXX工程源码，TPT为Teamwork Project Tracker系统名缩写，是一款SAAS版的项目跟踪工具
+2，提供Phenix.TPT.XXX工程源码，TPT为Teamwork Project Tracker系统名缩写，是一款SAAS版的项目跟踪管理工具
 
 
 20210830
@@ -209,7 +209,13 @@ Copyright © 2007, 2021 Phenixヾ Studio
 
 20210920
 1，优化用户访问授权功能
-2，更新Phenix.TPT.XXX工程源码
+2，升级Phenix.TPT.XXX工程源码
+
+
+20211116
+1，优化数据类型转换功能
+2，实体类弃用Newtonsoft.Json.JsonConstructor
+2，升级Phenix.TPT.XXX工程源码
 
 
 

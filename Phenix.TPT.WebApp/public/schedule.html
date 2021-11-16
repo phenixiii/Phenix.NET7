@@ -98,48 +98,50 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <table id="example1" class="table table-bordered">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th v-for="item in timeline">{{item.year+'.'+item.month}}</th>
+                                <td></td>
+                                <th v-for="item in timeline" style="text-align: center;">{{item.year+'.'+item.month}}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(item,index) in workSchedule">
-                                <td>{{item[0].Customer}}</td>
-                                <td v-for="(items,indexs) in item" data-toggle="modal" @click="select(index,indexs,$event)" @dblclick="copy(index,indexs)" :title="items.Managers==null?'该客户没有项目':''">
-                                    <em style="color: #2e6da4; margin: 0%; font-style: normal" v-if='indexs<3' v-html="fullworkeritem(items.Year,items.Month,items.Customer).join(' ')"></em>
-                                    <em style="color: black; margin: 0%; font-style: normal" v-if='indexs>2'>{{items.Worker}}</em>
-                                    <em style="color: gray; margin: 0%; font-style: normal" v-else v-html='surplus(items.Worker,fullworkeritem(items.Year,items.Month,items.Customer))'></em>
-                                </td>
-                                <!--td v-for="(items,indexs) in item" data-toggle="modal" @click="select(index,indexs,$event)" @dblclick="copy(index,indexs)" :style="indexs>1?'color:black':'color:gray'" :title="items.Managers==null?'该客户没有项目':''">{{items.Worker}}</td-->
-                            </tr>
-                            <tr style="background-color: rgb(230, 230, 255)">
-                                <td>未分配</td>
-                                <td v-for="(item,index) in unchoose" v-html="item.join(' ')">
-                                </td>
+                            <tr v-for="myselfCompanyUser in filteredMyselfCompanyUsers">
+                                <td>{{myselfCompanyUser.RegAlias}}</td>
+                                <th v-for="(workSchedule, workScheduleIndex) in myselfCompanyUser.workSchedules">
+                                    <label style="color: rgb(31, 73, 125); margin: 0%; font-style: normal; white-space: pre-wrap; cursor: pointer;" v-if="allowChangeWorkSchedule(workSchedule, workScheduleIndex)" @click="onShowChangeWorkScheduleDialog(workSchedule)" @dblclick="extendWorkSchedule(workSchedule)">
+                                        {{parseUserNames(workSchedule.Workers).join(" ")}}
+                                    </label>
+                                    <label style="color: gray; margin: 0%; font-style: normal; white-space: pre-wrap;" v-else>
+                                        {{parseUserNames(workSchedule.Workers).join(" ")}}
+                                    </label>
+                                </th>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="changeWorkScheduleDialog" tabindex="-1" role="dialog" aria-labelledby="changeWorkScheduleDialogLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" aria-hidden="true" @click="closemodal()">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel" v-html="workSchedule[openindex][openindexs].Customer+workSchedule[openindex][openindexs].Year+'年'+workSchedule[openindex][openindexs].Month+'月人员安排'"></h4>
+                        <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="changeWorkScheduleDialogLabel">
+                            {{currentWorkSchedule.manager.RegAlias + ' ' + currentWorkSchedule.Month + '月份人员安排'}}
+                        </h4>
                     </div>
                     <div class="modal-body">
-                        <template v-for="(item,index) in allworker">
-                            <input type="checkbox" :id="'checkbox-7-'+index" v-model="chooseworker[index]" :disabled="canchange">
-                            <label class="checklabel" :for="'checkbox-7-'+index" style="width:19%"><span>{{item}}</span></label>
+                        <template v-for="(item, index) in myselfCompanyUsers">
+                            <input type="checkbox" :id="'checkbox-7-' + index" v-model="item.checked">
+                            <label :for="'checkbox-7-' + index" style="width: 19%;">
+                                <span>{{item.RegAlias}}</span>
+                            </label>
                         </template>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" @click="closemodal()">关闭</button>
-                        <button type="button" class="btn btn-primary" @click="saveschedule()">保存</button>
+                        <button class="btn btn-default" type="button" data-dismiss="modal">取消</button>
+                        <button class="btn btn-primary" type="button" @click="onChangeWorkSchedule()">提交</button>
                     </div>
                 </div>
             </div>

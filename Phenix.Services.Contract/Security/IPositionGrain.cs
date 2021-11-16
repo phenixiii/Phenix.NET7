@@ -17,6 +17,6 @@ namespace Phenix.Services.Contract.Security
         /// </summary>
         /// <param name="roles">指定的一组角色</param>
         /// <returns>存在交集</returns>
-        Task<bool> IsInRole(IList<string> roles);
+        Task<bool> IsInRole(string[] roles);
     }
 }

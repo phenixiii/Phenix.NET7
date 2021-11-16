@@ -38,40 +38,6 @@ namespace Phenix.TPT.Business
     public abstract class ProjectWorkload<T> : EntityBase<T>
         where T : ProjectWorkload<T>
     {
-        /// <summary>
-        /// for CreateInstance
-        /// </summary>
-        protected ProjectWorkload()
-        {
-            // used to fetch object, do not add code
-        }
-
-        /// <summary>
-        /// 项目工作量
-        /// </summary>
-        [Newtonsoft.Json.JsonConstructor]
-        protected ProjectWorkload(string dataSourceKey,
-            long id, short year, short month, long worker, long piId, short manageWorkload, short investigateWorkload, short developWorkload, short testWorkload, short implementWorkload, short maintenanceWorkload, long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime) 
-            : base(dataSourceKey)
-        {
-            _id = id;
-            _year = year;
-            _month = month;
-            _worker = worker;
-            _piId = piId;
-            _manageWorkload = manageWorkload;
-            _investigateWorkload = investigateWorkload;
-            _developWorkload = developWorkload;
-            _testWorkload = testWorkload;
-            _implementWorkload = implementWorkload;
-            _maintenanceWorkload = maintenanceWorkload;
-            _originator = originator;
-            _originateTime = originateTime;
-            _originateTeams = originateTeams;
-            _updater = updater;
-            _updateTime = updateTime;
-        }
-
         protected override void InitializeSelf()
         {
         }

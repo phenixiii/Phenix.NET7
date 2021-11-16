@@ -10,6 +10,28 @@ namespace Phenix.Services.Business.Security
     [Serializable]
     public class User : User<User>
     {
+        /// <summary>
+        /// for CreateInstance
+        /// </summary>
+        protected User()
+        {
+            //禁止添加代码
+        }
+
+        /// <summary>
+        /// for Newtonsoft.Json.JsonConstructor
+        /// </summary>
+        [Newtonsoft.Json.JsonConstructor]
+        protected User(string dataSourceKey,
+            long id, string name, string phone, string eMail, string regAlias, DateTime regTime,
+            long rootTeamsId, long teamsId, long? positionId,
+            bool locked, DateTime? lockedTime, bool disabled, DateTime? disabledTime)
+            : base(dataSourceKey,
+                id, name, phone, eMail, regAlias, regTime,
+                rootTeamsId, teamsId, positionId,
+                locked, lockedTime, disabled, disabledTime)
+        {
+        }
     }
 
     /// <summary>
@@ -28,9 +50,8 @@ namespace Phenix.Services.Business.Security
         }
 
         /// <summary>
-        /// 初始化
+        /// for Newtonsoft.Json.JsonConstructor
         /// </summary>
-        [Newtonsoft.Json.JsonConstructor]
         protected User(string dataSourceKey,
             long id, string name, string phone, string eMail, string regAlias, DateTime regTime,
             long rootTeamsId, long teamsId, long? positionId,

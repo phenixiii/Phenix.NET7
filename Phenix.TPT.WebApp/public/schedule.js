@@ -1,39 +1,19 @@
 $(function() {
+    fetchMyselfCompanyUsers(vue.state);
     fetchWorkSchedules(vue.state);
 });
 
 const pastMonths = 3;
 const newMonths = 6;
 
-function fetchWorkSchedules(state) {
-    vue.myselfCompanyUsers = [];
-    vue.filteredMyselfCompanyUsers = [];
+var workSchedules = null;
+
+function fetchMyselfCompanyUsers(state) {
     phAjax.getMyselfCompanyUsers({
         includeDisabled: false,
         onSuccess: function(result) {
             vue.myselfCompanyUsers = result;
-            result.forEach((item, index) => {
-                if (phAjax.isInRole('项目管理', item.PositionId)) {
-                    if (state !== 0 || phAjax.isInRole('经营管理'))
-                        vue.filteredMyselfCompanyUsers.push(item);
-                    else if (item.Id === phAjax.getMyself().Id)
-                        vue.filteredMyselfCompanyUsers.unshift(item); //自己的排第一
-                    else
-                        return;
-                    base.call({
-                        path: '/api/work-schedule/all',
-                        pathParam: { manager: item.Id, pastMonths: pastMonths, newMonths: newMonths },
-                        onSuccess: function(result) {
-                            item.workSchedules = result;
-                        },
-                        onError: function(XMLHttpRequest, textStatus, validityError) {
-                            alert('获取工作档期失败:\n' +
-                                (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
-                        },
-                    });
-                }
-            });
-            vue.state = state;
+            filterMyselfCompanyUsers(result, workSchedules, state);
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
             alert('获取公司员工资料失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
@@ -41,19 +21,71 @@ function fetchWorkSchedules(state) {
     });
 }
 
-function saveWorkSchedule(item) {
-    phAjax.ajax({
-        type: "POST",
-        uri: "WorkSchedule",
-        data: item,
-        onComplete: function(XMLHttpRequest, textStatus) {
-            if (XMLHttpRequest.status == 200) {}
+function fetchWorkSchedules(state) {
+    base.call({
+        path: '/api/work-schedule/all',
+        pathParam: { pastMonths: pastMonths, newMonths: newMonths },
+        onSuccess: function(result) {
+            workSchedules = result;
+            filterMyselfCompanyUsers(vue.myselfCompanyUsers, result, state);
         },
-        onError: function(XMLHttpRequest, textStatus, errorThrown) {
-            zdalert('系统提示', "工作档期写入失败! status: " + XMLHttpRequest.statusText + ", response: " + XMLHttpRequest.responseText);
+        onError: function(XMLHttpRequest, textStatus, validityError) {
+            alert('获取工作档期失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
         },
     });
 }
+
+function filterMyselfCompanyUsers(myselfCompanyUsers, workSchedules, state) {
+    if (myselfCompanyUsers == null || workSchedules == null)
+        return;
+    vue.filteredMyselfCompanyUsers = [];
+    var filteredMyselfCompanyUsers = [];
+    myselfCompanyUsers.forEach((user, userIndex) => {
+        if (workSchedules[user.Id] != null) {
+            if (user.Id === phAjax.getMyself().Id)
+                filteredMyselfCompanyUsers.unshift(user); //自己的排第一
+            else if (state !== 0 || phAjax.isInRole('经营管理') || !phAjax.isInRole('项目管理'))
+                filteredMyselfCompanyUsers.push(user);
+            else
+                return;
+            var priorWorkSchedule = null;
+            user.workSchedules = workSchedules[user.Id];
+            user.workSchedules.forEach((workSchedule, workScheduleIndex) => {
+                workSchedule.manager = user; //绑定用
+                if (priorWorkSchedule != null)
+                    priorWorkSchedule.next = workSchedule; //导航用
+                priorWorkSchedule = workSchedule;
+            });
+        }
+    });
+    vue.filteredMyselfCompanyUsers = filteredMyselfCompanyUsers;
+    vue.state = state;
+}
+
+function putWorkSchedule(workSchedule, data) {
+    base.call({
+        type: "PUT",
+        path: '/api/work-schedule',
+        data: data,
+        onSuccess: function(result) {
+            workSchedule.Workers = data.Workers;
+            vue.$forceUpdate();
+        },
+        onError: function(XMLHttpRequest, textStatus, validityError) {
+            alert('提交工作档期失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
+        },
+    });
+}
+
+function showChangeWorkScheduleDialog() {
+    $('#changeWorkScheduleDialog').modal('show'); // id="changeWorkScheduleDialog"
+}
+
+function hideChangeWorkScheduleDialog() {
+    $('#changeWorkScheduleDialog').modal('hide'); //id="changeWorkScheduleDialog"
+}
+
+var eventTime = null;
 
 var vue = new Vue({
     el: '#content',
@@ -71,6 +103,8 @@ var vue = new Vue({
 
         myselfCompanyUsers: [],
         filteredMyselfCompanyUsers: [],
+
+        currentWorkSchedule: { manager: {} },
     },
     created: function() {
         var year = base.getDeadline().getFullYear();
@@ -94,100 +128,51 @@ var vue = new Vue({
             }
         }
     },
-    //watch: {
-    //    workSchedule: {
-    //        handler: function(newval, oldval) {
-    //            if (newval[0][1].Year != undefined) {
-    //                this.unchoose = [];
-    //                for (let i = 0; i < newval[0].length; i++) {
-    //                    this.unchoose.push(deepClone(this.allworker));
-    //                    for (let j = 0; j < newval.length; j++) {
-    //                        console.log(newval[j][i].Worker);
-    //                        if (newval[j][i].Worker) {
-    //                            let result = newval[j][i].Worker.split(" ");
-    //                            console.log(j + '/' + i);
-    //                            console.log(result);
-    //                            for (let m = 0; m < result.length - 1; m++) {
-    //                                let index = this.unchoose[i].indexOf(result[m]);
-    //                                if (index > -1) {
-    //                                    this.unchoose[i].splice(index, 1);
-    //                                }
-    //                            }
-    //                            console.log(this.unchoose[i]);
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        },
-    //        deep: true,
-    //        immediate: true,
-    //    }
-    //},
     methods: {
-        onFiler: function () {
-            fetchWorkSchedules(this.state >= 1 ? 0 : this.state + 1);
+        parseUserNames: function(ids) {
+            if (this.myselfCompanyUsers != null) {
+                var result = [];
+                ids.forEach((id, index) => {
+                    var user = this.myselfCompanyUsers.find(item => item.Id === id);
+                    if (user != null)
+                        result.push(user.RegAlias);
+                });
+                return result;
+            }
+            return ' ';
         },
 
-        fullworkeritem: function(year, month, customer) {
-            var result = new Array();
-            this.fullworker.filter(function(c) { return c.Year == year && c.Month == month && c.Customer == customer }).forEach(function(a) {
-                result.push(a.Worker);
-            });
-            return result;
+        onFiler: function() {
+            filterMyselfCompanyUsers(this.myselfCompanyUsers, workSchedules, this.state >= 1 ? 0 : this.state + 1);
         },
-        surplus: function(total, minus) {
-            if (total != null) {
-                var result = total.split(" ");
-                minus.forEach(function(a) {
-                    var index = result.indexOf(a);
-                    if (index > -1) {
-                        result.splice(index, 1);
-                    }
-                })
-                return result.join(" ");
+
+        allowChangeWorkSchedule: function(workSchedule, workScheduleIndex) {
+            return workScheduleIndex >= pastMonths &&
+                (workSchedule.Manager === phAjax.getMyself().Id || phAjax.isInRole('经营管理'));
+        },
+
+        extendWorkSchedule: function(workSchedule) {
+            clearTimeout(eventTime); //清除计时器
+            if (workSchedule.next != null) {
+                var data = JSON.parse(JSON.stringify(phUtils.trimData(workSchedule.next, false, true)));
+                data.Workers = JSON.parse(JSON.stringify(workSchedule.Workers));
+                putWorkSchedule(workSchedule.next, data);
             }
         },
-        select: function(index, indexs, e) {
-            clearTimeout(time); //首先清除计时器
-            time = setTimeout(function() {
-                if (vm.workSchedule[index][indexs].Managers == null) {
-                    zdalert("系统提示", "该客户没有项目");
-                } else if (indexs > 2 && globaluser.Department.Name != "公司管理") {
-                    vm.openindex = index;
-                    vm.openindexs = indexs;
-                    for (var i = 0; i < vm.chooseworker.length; i++) {
-                        if (vm.workSchedule[vm.openindex][vm.openindexs].Worker != null && vm.workSchedule[vm.openindex][vm.openindexs].Worker.indexOf(vm.allworker[i]) > -1) {
-                            Vue.set(vm.chooseworker, i, true);
-                        } else Vue.set(vm.chooseworker, i, false);
-                    }
-                    if (vm.workSchedule[vm.openindex][vm.openindexs].Managers.indexOf(globaluser.UserName) > -1 || (globaluser.Position != null && globaluser.Position.Name == "管理"))
-                        vm.canchange = false;
-                    else vm.canchange = true;
-                    $("#myModal").modal('show');
-                }
-            }, 300);
+
+        onShowChangeWorkScheduleDialog: function(workSchedule) {
+            clearTimeout(eventTime); //清除计时器
+            eventTime = setTimeout(function() {
+                    vue.currentWorkSchedule = workSchedule;
+                    vue.myselfCompanyUsers.forEach((user, userIndex) => {
+                        user.checked = workSchedule.Workers.find(item => item.Id === user.Id) != null;
+                    });
+                    showChangeWorkScheduleDialog();
+                }, 300);
         },
-        closemodal: function() {
-            $("#myModal").modal('hide');
+
+        onChangeWorkSchedule: function() {
+
         },
-        saveschedule: function() {
-            this.workSchedule[this.openindex][this.openindexs].Worker = "";
-            for (var i = 0; i < this.chooseworker.length; i++) {
-                if (this.chooseworker[i]) {
-                    this.workSchedule[this.openindex][this.openindexs].Worker += this.allworker[i] + " ";
-                }
-            }
-            saveWorkSchedule(this.workSchedule[this.openindex][this.openindexs]);
-            $("#myModal").modal('hide');
-        },
-        copy: function(index, indexs) {
-            clearTimeout(time);
-            if (this.workSchedule[index][indexs].Managers.indexOf(globaluser.UserName) > -1 || (globaluser.Position != null && globaluser.Position.Name == "管理")) {
-                if (indexs + 1 > 1 && this.workSchedule[index][indexs + 1].Managers != null) {
-                    this.workSchedule[index][indexs + 1].Worker = this.workSchedule[index][indexs].Worker;
-                    saveWorkSchedule(this.workSchedule[index][indexs + 1]);
-                }
-            }
-        }
     }
 })

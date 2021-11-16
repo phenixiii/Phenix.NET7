@@ -123,18 +123,9 @@ namespace {4}{5}{6}
     /// {3}
     /// </summary>
     [Serializable]
-    public class {9} : {9}<{9}>
-    {{
-    }}
-
-    /// <summary>
-    /// {3}
-    /// </summary>
-    [Serializable]
     [Display(Description = @""{3}"")]
     [Sheet(""{7}"", PrimaryKeyName = {8})]
-    public abstract class {9}<T> : BusinessBase<T>
-        where T : {9}<T>
+    public class {9} : BusinessBase<{9}>
     {{
         /// <summary>
         /// for CreateInstance
@@ -145,7 +136,7 @@ namespace {4}{5}{6}
         }}
 
         /// <summary>
-        /// {3}
+        /// for Newtonsoft.Json.JsonConstructor
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
         protected {9}(string dataSourceKey, bool? isNew, bool? isSelfDeleted, bool? isSelfDirty, IDictionary<string, object> oldPropertyValues, IDictionary<string, bool?> dirtyPropertyNames,
@@ -211,8 +202,7 @@ namespace {4}{5}{6}
 
             codeBuilder.Append(@"
     }
-}
-");
+}");
 
             using (StreamWriter writer = File.CreateText(filePath))
             {

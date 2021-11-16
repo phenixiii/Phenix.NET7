@@ -29,69 +29,6 @@ namespace Phenix.TPT.Business
     public abstract class ProjectInfo<T> : EntityBase<T>
         where T : ProjectInfo<T>
     {
-        /// <summary>
-        /// for CreateInstance
-        /// </summary>
-        protected ProjectInfo()
-        {
-            // used to fetch object, do not add code
-        }
-
-        /// <summary>
-        /// 项目资料
-        /// </summary>
-        [Newtonsoft.Json.JsonConstructor]
-        protected ProjectInfo(string dataSourceKey,
-            long id, string contNumber, DateTime contApproveDate, string projectName, ProjectType projectType, long projectManager, long developManager, long maintenanceManager, long salesManager, string salesArea, string customer, decimal contAmount, decimal contMargin, string productVersion, decimal productPrice, decimal maintenancePrice, string contPayClause, string contBreachClause, string contSealingClause, string contDefensiveClause, string contDurationClause, string contAcceptanceClause, string contAcceptanceDocs, string contDocsPath, DateTime? onlinePlanDate, DateTime? onlineActualDate, DateTime? acceptDate, int? estimateWorkload, bool manageWork, bool investigateWork, bool developWork, bool testWork, bool implementWork, bool maintenanceWork, long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime, DateTime? closedDate, string currentStatus, string annualMilestone, decimal totalReceivables, decimal totalInvoiceAmount, decimal totalReimbursementAmount) 
-            : base(dataSourceKey)
-        {
-            _id = id;
-            _contNumber = contNumber;
-            _contApproveDate = contApproveDate;
-            _projectName = projectName;
-            _projectType = projectType;
-            _projectManager = projectManager;
-            _developManager = developManager;
-            _maintenanceManager = maintenanceManager;
-            _salesManager = salesManager;
-            _salesArea = salesArea;
-            _customer = customer;
-            _contAmount = contAmount;
-            _contMargin = contMargin;
-            _productVersion = productVersion;
-            _productPrice = productPrice;
-            _maintenancePrice = maintenancePrice;
-            _contPayClause = contPayClause;
-            _contBreachClause = contBreachClause;
-            _contSealingClause = contSealingClause;
-            _contDefensiveClause = contDefensiveClause;
-            _contDurationClause = contDurationClause;
-            _contAcceptanceClause = contAcceptanceClause;
-            _contAcceptanceDocs = contAcceptanceDocs;
-            _contDocsPath = contDocsPath;
-            _onlinePlanDate = onlinePlanDate;
-            _onlineActualDate = onlineActualDate;
-            _acceptDate = acceptDate;
-            _estimateWorkload = estimateWorkload;
-            _manageWork = manageWork;
-            _investigateWork = investigateWork;
-            _developWork = developWork;
-            _testWork = testWork;
-            _implementWork = implementWork;
-            _maintenanceWork = maintenanceWork;
-            _originator = originator;
-            _originateTime = originateTime;
-            _originateTeams = originateTeams;
-            _updater = updater;
-            _updateTime = updateTime;
-            _closedDate = closedDate;
-            _currentStatus = currentStatus;
-            _annualMilestone = annualMilestone;
-            _totalReceivables = totalReceivables;
-            _totalInvoiceAmount = totalInvoiceAmount;
-            _totalReimbursementAmount = totalReimbursementAmount;
-        }
-
         protected override void InitializeSelf()
         {
         }

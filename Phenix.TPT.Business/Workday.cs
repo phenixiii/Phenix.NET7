@@ -28,28 +28,6 @@ namespace Phenix.TPT.Business
     public abstract class Workday<T> : EntityBase<T>
         where T : Workday<T>
     {
-        /// <summary>
-        /// for CreateInstance
-        /// </summary>
-        protected Workday()
-        {
-            // used to fetch object, do not add code
-        }
-
-        /// <summary>
-        /// 工作日
-        /// </summary>
-        [Newtonsoft.Json.JsonConstructor]
-        protected Workday(string dataSourceKey,
-            long id, short year, short month, short days) 
-            : base(dataSourceKey)
-        {
-            _id = id;
-            _year = year;
-            _month = month;
-            _days = days;
-        }
-
         protected override void InitializeSelf()
         {
         }

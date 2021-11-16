@@ -74,7 +74,7 @@ namespace Phenix.Services.Host
             Console.WriteLine("构建Orleans和WebAPI的服务...");
             _host = CreateHostBuilder(args).Build();
             Console.WriteLine("启动Orleans和WebAPI的服务");
-            _host.Run();
+            _host.Run(); //Orleans.Runtime.MembershipService.OrleansClusterConnectivityCheckFailedException
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args)

@@ -28,35 +28,6 @@ namespace Phenix.TPT.Business
     public abstract class ProjectAnnualPlan<T> : EntityBase<T>
         where T : ProjectAnnualPlan<T>
     {
-        /// <summary>
-        /// for CreateInstance
-        /// </summary>
-        protected ProjectAnnualPlan()
-        {
-            // used to fetch object, do not add code
-        }
-
-        /// <summary>
-        /// 项目年度计划
-        /// </summary>
-        [Newtonsoft.Json.JsonConstructor]
-        protected ProjectAnnualPlan(string dataSourceKey,
-            long id, long piId, short year, string annualMilestone, decimal annualReceivables, string annualPlan, string annualAchieve, long originator, DateTime originateTime, long updater, DateTime updateTime) 
-            : base(dataSourceKey)
-        {
-            _id = id;
-            _piId = piId;
-            _year = year;
-            _annualMilestone = annualMilestone;
-            _annualReceivables = annualReceivables;
-            _annualPlan = annualPlan;
-            _annualAchieve = annualAchieve;
-            _originator = originator;
-            _originateTime = originateTime;
-            _updater = updater;
-            _updateTime = updateTime;
-        }
-
         protected override void InitializeSelf()
         {
         }

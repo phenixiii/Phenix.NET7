@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Phenix.Core.Data.Expressions;
 using Phenix.Core.Data.Model;
 
@@ -11,6 +10,22 @@ namespace Phenix.Services.Business.Security
     [Serializable]
     public class Teams : Teams<Teams>
     {
+        /// <summary>
+        /// for CreateInstance
+        /// </summary>
+        protected Teams()
+        {
+            //禁止添加代码
+        }
+
+        /// <summary>
+        /// for Newtonsoft.Json.JsonConstructor
+        /// </summary>
+        [Newtonsoft.Json.JsonConstructor]
+        protected Teams(string dataSourceKey, long id, long rootId, long parentId, Teams[] children, string name)
+            : base(dataSourceKey, id, rootId, parentId, children, name)
+        {
+        }
     }
 
     /// <summary>
@@ -28,8 +43,10 @@ namespace Phenix.Services.Business.Security
             //禁止添加代码
         }
 
-        [Newtonsoft.Json.JsonConstructor]
-        protected Teams(string dataSourceKey, long id, long rootId, long parentId, IList<Teams> children, string name)
+        /// <summary>
+        /// for Newtonsoft.Json.JsonConstructor
+        /// </summary>
+        protected Teams(string dataSourceKey, long id, long rootId, long parentId, Teams[] children, string name)
             : base(dataSourceKey, id, rootId, parentId, children)
         {
             _name = name;

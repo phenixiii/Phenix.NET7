@@ -28,35 +28,6 @@ namespace Phenix.TPT.Business
     public abstract class ProjectExpenses<T> : EntityBase<T>
         where T : ProjectExpenses<T>
     {
-        /// <summary>
-        /// for CreateInstance
-        /// </summary>
-        protected ProjectExpenses()
-        {
-            // used to fetch object, do not add code
-        }
-
-        /// <summary>
-        /// 项目开支
-        /// </summary>
-        [Newtonsoft.Json.JsonConstructor]
-        protected ProjectExpenses(string dataSourceKey,
-            long id, long piId, decimal reimbursementAmount, DateTime reimbursementDate, string remark, string reimbursementApplicant, string reimbursementVerifier, long originator, DateTime originateTime, long updater, DateTime updateTime) 
-            : base(dataSourceKey)
-        {
-            _id = id;
-            _piId = piId;
-            _reimbursementAmount = reimbursementAmount;
-            _reimbursementDate = reimbursementDate;
-            _remark = remark;
-            _reimbursementApplicant = reimbursementApplicant;
-            _reimbursementVerifier = reimbursementVerifier;
-            _originator = originator;
-            _originateTime = originateTime;
-            _updater = updater;
-            _updateTime = updateTime;
-        }
-
         protected override void InitializeSelf()
         {
         }

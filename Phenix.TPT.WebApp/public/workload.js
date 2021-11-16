@@ -205,11 +205,11 @@ function filterProjectInfos(projectInfos, workerProjectWorkloads, workdays, year
                         workerProjectWorkload.ImplementWorkload +
                         workerProjectWorkload.MaintenanceWorkload;
                     workerProjectWorkload.totalWorkload = totalWorkload;
-                    projectInfo.totalWorkload = projectInfo.totalWorkload + totalWorkload;
+                    projectInfo.totalWorkload = projectInfo.totalWorkload + totalWorkload; //绑定用
                     remainDays = remainDays - totalWorkload;
                 }
             });
-            workerProjectWorkloads[worker].remainDays = remainDays;
+            workerProjectWorkloads[worker].remainDays = remainDays; //绑定用
         }
     filteredProjectInfos = filteredProjectInfos.sort(function (a, b) {
         return a.ProjectName.localeCompare(b.ProjectName);
@@ -254,8 +254,8 @@ function fetchAll(year, month, state, pageNo, reset) {
     fetchProjectInfos(year, month, state, pageNo, reset);
 }
 
-function putWorkerProjectWorkload(currentWorkerProjectWorkload, data, target, propertyName) {
-    var oldValue = currentWorkerProjectWorkload[propertyName];
+function putWorkerProjectWorkload(workerProjectWorkload, data, targetControl, propertyName) {
+    var oldValue = workerProjectWorkload[propertyName];
     base.call({
         type: "PUT",
         path: '/api/project-workload',
@@ -263,15 +263,15 @@ function putWorkerProjectWorkload(currentWorkerProjectWorkload, data, target, pr
         onSuccess: function(result) {
             var newValue = data[propertyName];
             var diffValue = newValue - oldValue;
-            currentWorkerProjectWorkload[propertyName] = newValue;
-            currentWorkerProjectWorkload.totalWorkload = currentWorkerProjectWorkload.totalWorkload + diffValue;
-            currentWorkerProjectWorkload.projectInfo.totalWorkload = currentWorkerProjectWorkload.projectInfo.totalWorkload + diffValue;
-            currentWorkerProjectWorkload.workerProjectWorkloads.remainDays = currentWorkerProjectWorkload.workerProjectWorkloads.remainDays - diffValue;
+            workerProjectWorkload[propertyName] = newValue;
+            workerProjectWorkload.totalWorkload = workerProjectWorkload.totalWorkload + diffValue;
+            workerProjectWorkload.projectInfo.totalWorkload = workerProjectWorkload.projectInfo.totalWorkload + diffValue;
+            workerProjectWorkload.workerProjectWorkloads.remainDays = workerProjectWorkload.workerProjectWorkloads.remainDays - diffValue;
             vue.$forceUpdate();
         },
         onError: function(XMLHttpRequest, textStatus, validityError) {
             alert('填报工作量失败:\n' + (validityError != null ? validityError.Hint : XMLHttpRequest.responseText));
-            target.value = oldValue;
+            targetControl.value = oldValue;
         },
     });
 }

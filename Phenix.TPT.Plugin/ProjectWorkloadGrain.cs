@@ -83,9 +83,7 @@ namespace Phenix.TPT.Plugin
                                     Set(p => p.Worker, Worker).
                                     Set(p => p.PiId, item.Id)));
                     //补漏有自己负责项目的ProjectWorkload初始化对象
-                    DateTime lastDay = YearMonth.Month < 12
-                        ? new DateTime(YearMonth.Year, YearMonth.Month + 1, 1).AddMilliseconds(-1)
-                        : new DateTime(YearMonth.Year + 1, 1, 1).AddMilliseconds(-1);
+                    DateTime lastDay = YearMonth.AddMonths(1).AddMilliseconds(-1);
                     foreach (ProjectInfo item in ProjectInfo.FetchList(Database,
                         p => p.OriginateTime <= lastDay && (p.ClosedDate == null || p.ClosedDate >= YearMonth) &&
                              (p.ProjectManager == Worker || p.DevelopManager == Worker || p.MaintenanceManager == Worker || p.SalesManager == Worker)))

@@ -135,42 +135,19 @@ namespace {4}{5}{6}
     [Sheet(""{7}"", PrimaryKeyName = {8})]
     public abstract class {9}<T> : EntityBase<T>
         where T : {9}<T>
-    {{
-        /// <summary>
-        /// for CreateInstance
-        /// </summary>
-        protected {9}()
-        {{
-            // used to fetch object, do not add code
-        }}
-
-        /// <summary>
-        /// {3}
-        /// </summary>
-        [Newtonsoft.Json.JsonConstructor]
-        protected {9}(string dataSourceKey,
-            ",
+    {{",
                 Environment.UserName, DateTime.Now, sheet.Name, sheet.Description, sheet.Owner.Database.DatabaseName,
                 !String.IsNullOrEmpty(sheet.Prefix) ? "." : null,
                 !String.IsNullOrEmpty(sheet.Prefix) ? sheet.Prefix.ToUpper() : null,
                 sheet.Name,
                 primaryKeyColumn != null ? String.Format("\"{0}\"", primaryKeyColumn.Name) : "null",
-                sheet.ClassName));
-            foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
-                codeBuilder.Append(String.Format("{0} {1}, ", kvp.Value.MappingTypeName, kvp.Value.ParameterName));
-            codeBuilder[codeBuilder.Length - 2] = ')';
-            codeBuilder.Append(@"
-            : base(dataSourceKey)
-        {");
-            foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
-                codeBuilder.Append(String.Format(@"
-            {0} = {1};",
-                    kvp.Value.FieldName, kvp.Value.ParameterName));
-            codeBuilder.Append(@"
-        }
+                sheet.ClassName)
+            );
 
+            codeBuilder.Append(@"
         protected override void InitializeSelf()
         {");
+
             if (primaryKeyColumn != null)
                 foreach (KeyValuePair<string, Column> kvp in sheet.Columns)
                     if (!String.IsNullOrEmpty(kvp.Value.DataDefault) && kvp.Value.TableColumn == primaryKeyColumn.TableColumn)
@@ -211,8 +188,7 @@ namespace {4}{5}{6}
 
             codeBuilder.Append(@"
     }
-}
-");
+}");
 
             using (StreamWriter writer = File.CreateText(filePath))
             {

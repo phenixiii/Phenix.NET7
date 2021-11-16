@@ -28,28 +28,6 @@ namespace Phenix.TPT.Business
     public abstract class ProjectWorkerV<T> : EntityBase<T>
         where T : ProjectWorkerV<T>
     {
-        /// <summary>
-        /// for CreateInstance
-        /// </summary>
-        protected ProjectWorkerV()
-        {
-            // used to fetch object, do not add code
-        }
-
-        /// <summary>
-        /// 项目工作人员
-        /// </summary>
-        [Newtonsoft.Json.JsonConstructor]
-        protected ProjectWorkerV(string dataSourceKey,
-            long id, short year, short month, long worker) 
-            : base(dataSourceKey)
-        {
-            _id = id;
-            _year = year;
-            _month = month;
-            _worker = worker;
-        }
-
         protected override void InitializeSelf()
         {
         }

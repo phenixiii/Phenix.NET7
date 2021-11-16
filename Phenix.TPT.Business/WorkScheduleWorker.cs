@@ -28,27 +28,6 @@ namespace Phenix.TPT.Business
     public abstract class WorkScheduleWorker<T> : EntityBase<T>
         where T : WorkScheduleWorker<T>
     {
-        /// <summary>
-        /// for CreateInstance
-        /// </summary>
-        protected WorkScheduleWorker()
-        {
-            // used to fetch object, do not add code
-        }
-
-        /// <summary>
-        /// 工作档期工作人员
-        /// </summary>
-        [Newtonsoft.Json.JsonConstructor]
-        protected WorkScheduleWorker(string dataSourceKey,
-            long id, long wsId, long worker) 
-            : base(dataSourceKey)
-        {
-            _id = id;
-            _wsId = wsId;
-            _worker = worker;
-        }
-
         protected override void InitializeSelf()
         {
         }

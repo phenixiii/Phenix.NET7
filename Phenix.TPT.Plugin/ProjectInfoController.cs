@@ -30,9 +30,7 @@ namespace Phenix.TPT.Plugin
         public IList<ProjectInfoS> GetAll(short year, short month)
         {
             DateTime firstDay = new DateTime(year, month, 1);
-            DateTime lastDay = month < 12
-                ? new DateTime(year, month + 1, 1).AddMilliseconds(-1)
-                : new DateTime(year + 1, 1, 1).AddMilliseconds(-1);
+            DateTime lastDay = firstDay.AddMonths(1).AddMilliseconds(-1);
             return ProjectInfoS.FetchList(Database.Default,
                 p => p.OriginateTime <= lastDay && (p.ClosedDate == null || p.ClosedDate >= firstDay),
                 OrderBy.Descending<ProjectInfoS>(p => p.ContApproveDate).

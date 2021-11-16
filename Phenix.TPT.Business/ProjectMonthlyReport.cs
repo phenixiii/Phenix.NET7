@@ -28,38 +28,6 @@ namespace Phenix.TPT.Business
     public abstract class ProjectMonthlyReport<T> : EntityBase<T>
         where T : ProjectMonthlyReport<T>
     {
-        /// <summary>
-        /// for CreateInstance
-        /// </summary>
-        protected ProjectMonthlyReport()
-        {
-            // used to fetch object, do not add code
-        }
-
-        /// <summary>
-        /// 项目月报
-        /// </summary>
-        [Newtonsoft.Json.JsonConstructor]
-        protected ProjectMonthlyReport(string dataSourceKey,
-            long id, long piId, short year, short month, string status, string monthlyPlan, string monthlyAchieve, string nextMonthlyPlan, string riskCaution, string demandCoordination, long originator, DateTime originateTime, long updater, DateTime updateTime) 
-            : base(dataSourceKey)
-        {
-            _id = id;
-            _piId = piId;
-            _year = year;
-            _month = month;
-            _status = status;
-            _monthlyPlan = monthlyPlan;
-            _monthlyAchieve = monthlyAchieve;
-            _nextMonthlyPlan = nextMonthlyPlan;
-            _riskCaution = riskCaution;
-            _demandCoordination = demandCoordination;
-            _originator = originator;
-            _originateTime = originateTime;
-            _updater = updater;
-            _updateTime = updateTime;
-        }
-
         protected override void InitializeSelf()
         {
         }

@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Phenix.Core.Data;
 using Phenix.Core.Data.Model;
 using Phenix.Core.Data.Schema;
 
@@ -9,7 +9,8 @@ using Phenix.Core.Data.Schema;
    build time: 2021-08-09 17:34:10
    mapping to: PT7_WORK_SCHEDULE 工作档期
    revision record: 
-    1，属性Workers类型改成IList<long>
+    1，属性Workers类型 string -> long[]
+    2，添加YearMonth属性用于字典检索
 */
 
 namespace Phenix.TPT.Business
@@ -20,6 +21,14 @@ namespace Phenix.TPT.Business
     [Serializable]
     public class WorkSchedule : WorkSchedule<WorkSchedule>
     {
+        /// <summary>
+        /// 年月
+        /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
+        public DateTime YearMonth
+        {
+            get { return Standards.FormatYearMonth(Year, Month); }
+        }
     }
 
     /// <summary>
@@ -31,34 +40,6 @@ namespace Phenix.TPT.Business
     public abstract class WorkSchedule<T> : EntityBase<T>
         where T : WorkSchedule<T>
     {
-        /// <summary>
-        /// for CreateInstance
-        /// </summary>
-        protected WorkSchedule()
-        {
-            // used to fetch object, do not add code
-        }
-
-        /// <summary>
-        /// 工作档期
-        /// </summary>
-        [Newtonsoft.Json.JsonConstructor]
-        protected WorkSchedule(string dataSourceKey,
-            long id, short year, short month, long manager, IList<long> workers, long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime) 
-            : base(dataSourceKey)
-        {
-            _id = id;
-            _year = year;
-            _month = month;
-            _manager = manager;
-            _workers = workers;
-            _originator = originator;
-            _originateTime = originateTime;
-            _originateTeams = originateTeams;
-            _updater = updater;
-            _updateTime = updateTime;
-        }
-
         protected override void InitializeSelf()
         {
         }
@@ -111,16 +92,17 @@ namespace Phenix.TPT.Business
             set { _manager = value; }
         }
 
-        //* 改写：string -> IList<long>
-        private IList<long> _workers;
+        //* 改写：string -> long[]
+        private long[] _workers;
         /// <summary>
         /// 工作人员
         /// </summary>
         [Display(Description = @"工作人员")]
         [Column("WS_WORKERS")]
-        public IList<long> Workers
+        public long[] Workers
         {
             get { return _workers; }
+            set { _workers = value; }
         }
 
         private long _originator;
