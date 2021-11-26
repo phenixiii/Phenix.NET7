@@ -55,14 +55,16 @@ namespace Phenix.Actor
         }
 
         /// <summary>
-        /// 新增根实体对象并自动持久化
+        /// 新增或更新根实体对象
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
-        protected override Task CreateKernel(IDictionary<string, object> propertyValues, bool throwIfFound = true)
+        /// <param name="throwIfNotOwn">如果为 true, 则发现制单人不是自己时引发 InvalidOperationException，否则覆盖更新它</param>
+        protected override Task PutKernel(IDictionary<string, object> propertyValues, bool throwIfFound = false, bool? throwIfNotOwn = null)
         {
             if (Kernel != null)
-                if (throwIfFound)
+                if (throwIfFound && !throwIfNotOwn.HasValue ||
+                    throwIfNotOwn.HasValue && throwIfNotOwn.Value && (long) Kernel.GetValue("Originator") != User.Identity.Id)
                     throw new System.ComponentModel.DataAnnotations.ValidationException("不允许重复新增!");
                 else
                 {

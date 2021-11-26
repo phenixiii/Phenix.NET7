@@ -22,11 +22,10 @@ namespace Phenix.Actor
         /// 新增根实体对象并自动持久化
         /// </summary>
         /// <param name="source">数据源</param>
-        /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
-        Task CreateKernel(TKernel source, bool throwIfFound = true);
+        Task CreateKernel(TKernel source);
 
         /// <summary>
-        /// 新增根实体对象并自动持久化(如存在则引发 InvalidOperationException)
+        /// 新增根实体对象并自动持久化
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
         Task CreateKernel(params NameValue<TKernel>[] propertyValues);
@@ -35,7 +34,9 @@ namespace Phenix.Actor
         /// 新增或更新根实体对象
         /// </summary>
         /// <param name="source">数据源</param>
-        Task PutKernel(TKernel source);
+        /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
+        /// <param name="throwIfNotOwn">如果为 true, 则发现制单人不是自己时引发 InvalidOperationException，否则覆盖更新它</param>
+        Task PutKernel(TKernel source, bool throwIfFound = false, bool? throwIfNotOwn = null);
 
         /// <summary>
         /// 新增或更新根实体对象
@@ -75,11 +76,10 @@ namespace Phenix.Actor
         /// 新增根实体对象并自动持久化
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
-        /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
-        Task CreateKernel(IDictionary<string, object> propertyValues, bool throwIfFound = true);
+        Task CreateKernel(IDictionary<string, object> propertyValues);
 
         /// <summary>
-        /// 新增根实体对象并自动持久化(如存在则引发 InvalidOperationException)
+        /// 新增根实体对象并自动持久化
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
         Task CreateKernel(params NameValue[] propertyValues);
@@ -88,7 +88,17 @@ namespace Phenix.Actor
         /// 新增或更新根实体对象
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
-        Task PutKernel(IDictionary<string, object> propertyValues);
+        /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
+        /// <param name="throwIfNotOwn">如果为 true, 则发现制单人不是自己时引发 InvalidOperationException，否则覆盖更新它</param>
+        Task PutKernel(IDictionary<string, object> propertyValues, bool throwIfFound = false, bool? throwIfNotOwn = null);
+
+        /// <summary>
+        /// 新增或更新根实体对象
+        /// </summary>
+        /// <param name="propertyValue">待更新属性值</param>
+        /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
+        /// <param name="throwIfNotOwn">如果为 true, 则发现制单人不是自己时引发 InvalidOperationException，否则覆盖更新它</param>
+        Task PutKernel(NameValue propertyValue, bool throwIfFound = false, bool? throwIfNotOwn = null);
 
         /// <summary>
         /// 新增或更新根实体对象

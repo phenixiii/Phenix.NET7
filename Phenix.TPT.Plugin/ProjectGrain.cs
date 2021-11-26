@@ -208,12 +208,14 @@ namespace Phenix.TPT.Plugin
         /// 新增或更新根实体对象
         /// </summary>
         /// <param name="source">数据源</param>
-        protected override async Task PutKernel(ProjectInfo source)
+        /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
+        /// <param name="throwIfNotOwn">如果为 true, 则发现制单人不是自己时引发 InvalidOperationException，否则覆盖更新它</param>
+        protected override async Task PutKernel(ProjectInfo source, bool throwIfFound = false, bool? throwIfNotOwn = null)
         {
             if (!await IsMyProject())
                 throw new SecurityException("非请毋动!");
 
-            await base.PutKernel(source);
+            await base.PutKernel(source, throwIfFound, throwIfNotOwn);
         }
 
         async Task IProjectGrain.Close(DateTime closedDate)

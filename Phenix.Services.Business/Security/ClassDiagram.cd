@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Phenix.Services.Business.Security.Teams&lt;T&gt;">
-    <Position X="4.25" Y="3.75" Width="2.5" />
+    <Position X="4.5" Y="3.75" Width="2.5" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAAIAAAAAAAAAAAAAAAAEQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAQAIAAAAAAAARAEAAEAQEYAAAAAAAAAAAQBAQAAAAA=</HashCode>
       <FileName>Security\Teams.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -16,16 +16,12 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAAACgAAAAAAAAAgAAAAAAAAAAAAAAAAQAAAgAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Security\User.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="Teams" />
-      <Property Name="Position" />
-    </ShowAsAssociation>
   </Class>
   <Class Name="Phenix.Services.Business.Security.Position">
-    <Position X="2.5" Y="3.75" Width="1.5" />
+    <Position X="2.5" Y="3.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Security\Position.cs</FileName>
@@ -37,12 +33,12 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAACIAAAAAAAAAAAAABAAAQAAgAAAAAAAAABAAAAAAA=</HashCode>
+      <HashCode>AAQCIAAAAAAAARAEAAFAQAYAAgAAAAAAAAQBAQAAAAA=</HashCode>
       <FileName>Security\Position.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.Services.Business.Security.Teams">
-    <Position X="7" Y="3.75" Width="1.5" />
+    <Position X="7.25" Y="3.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Security\Teams.cs</FileName>
@@ -51,7 +47,7 @@
   <Class Name="Phenix.Services.Business.Security.User&lt;T&gt;">
     <Position X="0.5" Y="0.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgABAAABAAAAAAAABAAAAAAEgBAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAgABAAABAAAIAAAABAAAAAAEgBAAAAAA=</HashCode>
       <FileName>Security\User.cs</FileName>
     </TypeIdentifier>
   </Class>

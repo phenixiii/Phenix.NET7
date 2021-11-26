@@ -95,11 +95,49 @@ namespace Phenix.Actor
         /// 新增根实体对象并自动持久化
         /// </summary>
         /// <param name="source">数据源</param>
+        protected Task CreateKernel(TKernel source)
+        {
+            PutKernel(source, true);
+            return Task.CompletedTask;
+        }
+        Task IEntityGrain<TKernel>.CreateKernel(TKernel source)
+        {
+            return CreateKernel(source);
+        }
+
+        /// <summary>
+        /// 新增根实体对象并自动持久化
+        /// </summary>
+        /// <param name="propertyValues">待更新属性值队列</param>
+        protected Task CreateKernel(IDictionary<string, object> propertyValues)
+        {
+            PutKernel(propertyValues, true);
+            return Task.CompletedTask;
+        }
+        Task IEntityGrain.CreateKernel(IDictionary<string, object> propertyValues)
+        {
+            return CreateKernel(propertyValues);
+        }
+        Task IEntityGrain.CreateKernel(params NameValue[] propertyValues)
+        {
+            return CreateKernel(NameValue.ToDictionary(propertyValues));
+        }
+        Task IEntityGrain<TKernel>.CreateKernel(params NameValue<TKernel>[] propertyValues)
+        {
+            return CreateKernel(NameValue<TKernel>.ToDictionary(propertyValues));
+        }
+
+        /// <summary>
+        /// 新增或更新根实体对象
+        /// </summary>
+        /// <param name="source">数据源</param>
         /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
-        protected virtual Task CreateKernel(TKernel source, bool throwIfFound = true)
+        /// <param name="throwIfNotOwn">如果为 true, 则发现制单人不是自己时引发 InvalidOperationException，否则覆盖更新它</param>
+        protected virtual Task PutKernel(TKernel source, bool throwIfFound = false, bool? throwIfNotOwn = null)
         {
             if (Kernel != null)
-                if (throwIfFound)
+                if (throwIfFound && !throwIfNotOwn.HasValue ||
+                    throwIfNotOwn.HasValue && throwIfNotOwn.Value && (long) Kernel.GetValue("Originator") != User.Identity.Id)
                     throw new System.ComponentModel.DataAnnotations.ValidationException("不允许重复新增!");
                 else
                 {
@@ -122,20 +160,22 @@ namespace Phenix.Actor
 
             return Task.CompletedTask;
         }
-        Task IEntityGrain<TKernel>.CreateKernel(TKernel source, bool throwIfFound)
+        Task IEntityGrain<TKernel>.PutKernel(TKernel source, bool throwIfFound, bool? throwIfNotOwn)
         {
-            return CreateKernel(source, throwIfFound);
+            return PutKernel(source, throwIfFound, throwIfNotOwn);
         }
 
         /// <summary>
-        /// 新增根实体对象并自动持久化
+        /// 新增或更新根实体对象
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
         /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
-        protected virtual Task CreateKernel(IDictionary<string, object> propertyValues, bool throwIfFound = true)
+        /// <param name="throwIfNotOwn">如果为 true, 则发现制单人不是自己时引发 InvalidOperationException，否则覆盖更新它</param>
+        protected virtual Task PutKernel(IDictionary<string, object> propertyValues, bool throwIfFound = false, bool? throwIfNotOwn = null)
         {
             if (Kernel != null)
-                if (throwIfFound)
+                if (throwIfFound && !throwIfNotOwn.HasValue ||
+                    throwIfNotOwn.HasValue && throwIfNotOwn.Value && (long) Kernel.GetValue("Originator") != User.Identity.Id)
                     throw new System.ComponentModel.DataAnnotations.ValidationException("不允许重复新增!");
                 else
                 {
@@ -158,45 +198,13 @@ namespace Phenix.Actor
 
             return Task.CompletedTask;
         }
-        Task IEntityGrain.CreateKernel(IDictionary<string, object> propertyValues, bool throwIfFound)
+        Task IEntityGrain.PutKernel(IDictionary<string, object> propertyValues, bool throwIfFound, bool? throwIfNotOwn)
         {
-            return CreateKernel(propertyValues, throwIfFound);
+            return PutKernel(propertyValues, throwIfFound, throwIfNotOwn);
         }
-        Task IEntityGrain.CreateKernel(params NameValue[] propertyValues)
+        Task IEntityGrain.PutKernel(NameValue propertyValue, bool throwIfFound, bool? throwIfNotOwn)
         {
-            return CreateKernel(NameValue.ToDictionary(propertyValues));
-        }
-        Task IEntityGrain<TKernel>.CreateKernel(params NameValue<TKernel>[] propertyValues)
-        {
-            return CreateKernel(NameValue<TKernel>.ToDictionary(propertyValues));
-        }
-
-        /// <summary>
-        /// 新增或更新根实体对象
-        /// </summary>
-        /// <param name="source">数据源</param>
-        protected virtual Task PutKernel(TKernel source)
-        {
-           CreateKernel(source, false);
-           return Task.CompletedTask;
-        }
-        Task IEntityGrain<TKernel>.PutKernel(TKernel source)
-        {
-            return PutKernel(source);
-        }
-
-        /// <summary>
-        /// 新增或更新根实体对象
-        /// </summary>
-        /// <param name="propertyValues">待更新属性值队列</param>
-        protected virtual Task PutKernel(IDictionary<string, object> propertyValues)
-        {
-            CreateKernel(propertyValues, false);
-            return Task.CompletedTask;
-        }
-        Task IEntityGrain.PutKernel(IDictionary<string, object> propertyValues)
-        {
-            return PutKernel(propertyValues);
+            return PutKernel(NameValue.ToDictionary(propertyValue), throwIfFound, throwIfNotOwn);
         }
         Task IEntityGrain.PutKernel(params NameValue[] propertyValues)
         {

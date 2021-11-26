@@ -103,10 +103,10 @@ namespace Phenix.Services.Plugin.Security
                 return _service != null ? await _service.OnRegistered(Kernel, initialPassword) : null;
             }
 
-            if (await ClusterClient.GetGrain<ICompanyGrain>(CompanyName).ExistKernel())
-                throw new System.ComponentModel.DataAnnotations.ValidationException("公司名已被其他用户注册!");
+            if (await CompanyTeamsGrain.IsValid())
+                throw new System.ComponentModel.DataAnnotations.ValidationException("公司已被其他组织使用!");
 
-            await CompanyTeamsGrain.CreateKernel(NameValue.Set<Teams>(p => p.Name, CompanyName));
+            await CompanyTeamsGrain.PutKernel(NameValue.Set<Teams>(p => p.Name, CompanyName), true, true);
             try
             {
                 string initialPassword = UserName;

@@ -1,4 +1,5 @@
-﻿using Phenix.Actor;
+﻿using System.Threading.Tasks;
+using Phenix.Actor;
 using Phenix.Services.Business.Security;
 using Phenix.Services.Contract.Security.Myself;
 
@@ -26,6 +27,15 @@ namespace Phenix.Services.Plugin.Security.Myself
         protected override Teams Kernel
         {
             get { return base.Kernel ??= Teams.FetchTree(Database, p => p.Name == CompanyName && p.Id == p.RootId); }
+        }
+
+        #endregion
+
+        #region 方法
+
+        Task<bool> ICompanyGrain.IsValid()
+        {
+            return Task.FromResult(Kernel != null && Kernel.Children.Length > 0);
         }
 
         #endregion

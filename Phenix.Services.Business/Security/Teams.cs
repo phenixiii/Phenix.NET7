@@ -22,8 +22,9 @@ namespace Phenix.Services.Business.Security
         /// for Newtonsoft.Json.JsonConstructor
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
-        protected Teams(string dataSourceKey, long id, long rootId, long parentId, Teams[] children, string name)
-            : base(dataSourceKey, id, rootId, parentId, children, name)
+        protected Teams(string dataSourceKey, long id, long rootId, long parentId, Teams[] children, string name,
+            long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime)
+            : base(dataSourceKey, id, rootId, parentId, children, name, originator, originateTime, originateTeams, updater, updateTime)
         {
         }
     }
@@ -46,10 +47,16 @@ namespace Phenix.Services.Business.Security
         /// <summary>
         /// for Newtonsoft.Json.JsonConstructor
         /// </summary>
-        protected Teams(string dataSourceKey, long id, long rootId, long parentId, Teams[] children, string name)
+        protected Teams(string dataSourceKey, long id, long rootId, long parentId, Teams[] children, string name,
+            long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime)
             : base(dataSourceKey, id, rootId, parentId, children)
         {
             _name = name;
+            _originator = originator;
+            _originateTime = originateTime;
+            _originateTeams = originateTeams;
+            _updater = updater;
+            _updateTime = updateTime;
         }
 
         #region 属性
@@ -62,6 +69,56 @@ namespace Phenix.Services.Business.Security
         public string Name
         {
             get { return _name; }
+        }
+
+        private long _originator;
+
+        /// <summary>
+        /// 制单人
+        /// </summary>
+        public long Originator
+        {
+            get { return _originator; }
+        }
+
+        private DateTime _originateTime;
+
+        /// <summary>
+        /// 制单时间
+        /// </summary>
+        public DateTime OriginateTime
+        {
+            get { return _originateTime; }
+        }
+
+        private long _originateTeams;
+
+        /// <summary>
+        /// 制单团体
+        /// </summary>
+        public long OriginateTeams
+        {
+            get { return _originateTeams; }
+        }
+
+        private long _updater;
+
+        /// <summary>
+        /// 更新人
+        /// </summary>
+        public long Updater
+        {
+            get { return _updater; }
+        }
+
+        private DateTime _updateTime;
+
+        /// <summary>
+        /// 更新时间
+        /// </summary>
+        public DateTime UpdateTime
+        {
+            get { return _updateTime; }
         }
 
         #endregion

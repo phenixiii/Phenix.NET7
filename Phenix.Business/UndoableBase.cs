@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -235,15 +234,17 @@ namespace Phenix.Business
         /// <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
         public object GetOldValue(Expression<Func<T, object>> propertyLambda, bool throwIfNotFound = true)
         {
+            if (propertyLambda == null)
+                throw new ArgumentNullException(nameof(propertyLambda));
             if (!IsSelfDirty)
                 throw new System.ComponentModel.DataAnnotations.ValidationException("仅允许查询编辑状态的对象旧值");
 
-            PropertyInfo propertyInfo = Utilities.GetPropertyInfo(propertyLambda);
-            if (_oldPropertyValues != null && _oldPropertyValues.TryGetValue(propertyInfo.Name, out object result))
+            PropertyInfo propertyInfo = Utilities.GetPropertyInfo(propertyLambda, throwIfNotFound);
+            if (propertyInfo != null && _oldPropertyValues != null && _oldPropertyValues.TryGetValue(propertyInfo.Name, out object result))
                 return Utilities.ChangeType(result, propertyInfo.PropertyType);
 
             if (throwIfNotFound)
-                throw new InvalidOperationException(String.Format("类 {0}.{1} 属性未映射表字段或可能是水印字段", this.GetType().FullName, propertyInfo.Name));
+                throw new InvalidOperationException(String.Format("{0} 应该是类 {1} 某个映射表字段且不是水印字段的属性表达式", propertyLambda.Name, typeof(T).FullName));
             return null;
         }
 

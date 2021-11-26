@@ -77,7 +77,7 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Phenix.Core.db">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Phenix.Core.Init.db">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
