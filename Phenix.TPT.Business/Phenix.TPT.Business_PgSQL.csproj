@@ -7,7 +7,7 @@
 		<FileVersion>7.5.50.0807</FileVersion>
 		<Description>Teamwork Project Tracker 2.0</Description>
 		<Authors>ming</Authors>
-		<DefineConstants>TRACE;ORA</DefineConstants>
+		<DefineConstants>TRACE;PgSQL</DefineConstants>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<AssemblyName>Phenix.TPT.Business</AssemblyName>
 		<RootNamespace>Phenix.TPT.Business</RootNamespace>

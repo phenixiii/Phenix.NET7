@@ -8,7 +8,7 @@ namespace Demo
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("**** 演示 Phenix.Algorithm.CombinatorialOptimization 功能 ****");
+            Console.WriteLine("**** 演示 Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsack 功能 ****");
             Console.WriteLine();
 
             Console.WriteLine("提供一组物品：");
@@ -22,7 +22,7 @@ namespace Demo
             Console.WriteLine();
 
             Console.WriteLine("挑选出打包价值最大化的可装入打包规格为{0}的背包的子集:", 20);
-            foreach (Goods item in ZeroOneKnapsackProblem.Pack(goodsList, 20))
+            foreach (Goods item in ZeroOneKnapsack.Pack(goodsList, 20))
                 Console.WriteLine("Index:{0}, Size={1}, Value={2}", item.Index, item.Weight, item.Value);
             Console.Write("请按任意键继续");
             Console.ReadKey();
@@ -30,14 +30,14 @@ namespace Demo
             Console.WriteLine();
 
             Console.WriteLine("挑选出打包价值最大化的可装入打包规格为{0}—{1}的背包的子集:", 15, 10);
-            IList<IGoods> packedList = ZeroOneKnapsackProblem.Pack(goodsList, 15, 10);
+            IList<IGoods> packedList = ZeroOneKnapsack.Pack(goodsList, 15, 10);
             if (packedList != null)
                 foreach (Goods item in packedList)
                     Console.WriteLine("Index:{0}, Size={1}, Value={2}", item.Index, item.Weight, item.Value);
             else
                 Console.WriteLine("无解");
             Console.WriteLine("挑选出趋向最小规格且忽略打包价值最大化的可装入打包规格为{0}—{1}的背包的子集:", 15, 10);
-            packedList = ZeroOneKnapsackProblem.Pack(goodsList, 15, 10, true);
+            packedList = ZeroOneKnapsack.Pack(goodsList, 15, 10, true);
             if (packedList != null)
                 foreach (Goods item in packedList)
                     Console.WriteLine("Index:{0}, Size={1}, Value={2}", item.Index, item.Weight, item.Value);
@@ -49,7 +49,7 @@ namespace Demo
             Console.WriteLine();
 
             Console.WriteLine("挑选出打包价值最大化的可装入打包规格为{0}—{1}的背包且打包价值不低于{2}的子集:", 15, 10, 7);
-            IDictionary<int, IList<IGoods>> packedDictionary = ZeroOneKnapsackProblem.Pack(goodsList, 15, 10, 7);
+            IDictionary<int, IList<IGoods>> packedDictionary = ZeroOneKnapsack.Pack(goodsList, 15, 10, 7);
             if (packedDictionary != null && packedDictionary.Count > 0)
                 foreach (KeyValuePair<int, IList<IGoods>> kvp in packedDictionary)
                 {
@@ -61,7 +61,7 @@ namespace Demo
             else
                 Console.WriteLine("无解");
             Console.WriteLine("挑选出趋向最小规格且只要满足最低打包价值{2}的可装入打包规格为{0}—{1}的背包的子集:", 15, 10, 7);
-            packedDictionary = ZeroOneKnapsackProblem.Pack(goodsList, 15, 10, 7, true);
+            packedDictionary = ZeroOneKnapsack.Pack(goodsList, 15, 10, 7, true);
             if (packedDictionary != null && packedDictionary.Count > 0)
                 foreach (KeyValuePair<int, IList<IGoods>> kvp in packedDictionary)
                 {

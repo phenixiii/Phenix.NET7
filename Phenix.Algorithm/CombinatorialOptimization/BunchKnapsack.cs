@@ -7,7 +7,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
     /// 集束背包问题的动态规划+贪心算法
     /// 从M支集束的N个物品中挑选出一个尽可能整支和价值高的子集使其装满容量为W且允许有一定超载范围的背包
     /// </summary>
-    public static class BunchKnapsackProblem
+    public static class BunchKnapsack
     {
         #region 属性
 

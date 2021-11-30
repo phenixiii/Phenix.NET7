@@ -35,10 +35,10 @@
 		<Reference Include="Phenix.Core">
 			<HintPath>..\Bin_MySQL\net5.0\Phenix.Core.dll</HintPath>
 		</Reference>
-		<Reference Include="Phenix.Services.Business">
+		<Reference Include="Phenix.TPT.Business">
 			<HintPath>..\Bin_MySQL\net5.0\Phenix.TPT.Business.dll</HintPath>
 		</Reference>
-		<Reference Include="Phenix.Services.Business">
+		<Reference Include="Phenix.TPT.Contract">
 			<HintPath>..\Bin_MySQL\net5.0\Phenix.TPT.Contract.dll</HintPath>
 		</Reference>
 	</ItemGroup>

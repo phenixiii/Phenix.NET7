@@ -35,7 +35,7 @@
 		<Reference Include="Phenix.Core">
 			<HintPath>..\Bin_ORA\net5.0\Phenix.Core.dll</HintPath>
 		</Reference>
-		<Reference Include="Phenix.Services.Business">
+		<Reference Include="Phenix.TPT.Business">
 			<HintPath>..\Bin_ORA\net5.0\Phenix.TPT.Business.dll</HintPath>
 		</Reference>
 	</ItemGroup>

@@ -7,7 +7,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
     /// 0-1背包问题的动态规划算法
     /// 从N个物品中挑选出一个价值最高的子集使其尽可能装满容量为W的背包
     /// </summary>
-    public static class ZeroOneKnapsackProblem
+    public static class ZeroOneKnapsack
     {
         #region 属性
 
