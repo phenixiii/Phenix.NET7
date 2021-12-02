@@ -1,41 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsackProblem">
-    <Position X="4" Y="0.5" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>CombinatorialOptimization\ZeroOneKnapsackProblem.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="Phenix.Algorithm.CombinatorialOptimization.PackedBunches">
     <Position X="0.5" Y="2.25" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>ABBAAAAQAAAAABAAAAAAAAAAAAAAAAAAAAAgAAAEAAA=</HashCode>
+      <HashCode>ABBAAAAQAAAAgAAAAAAAAAAAAAAAAAAAAAAgAAIEAAA=</HashCode>
       <FileName>CombinatorialOptimization\PackedBunches.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
-      <Property Name="AtomicValue" />
       <Property Name="Value" />
+      <Property Name="AtomicValue" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="Phenix.Algorithm.CombinatorialOptimization.BunchKnapsackProblem">
-    <Position X="6.5" Y="0.5" Width="2" />
+  <Class Name="Phenix.Algorithm.CombinatorialOptimization.BunchKnapsack">
+    <Position X="2.75" Y="2.25" Width="1.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
-    <NestedTypes>
-      <Class Name="Phenix.Algorithm.CombinatorialOptimization.BunchKnapsackProblem.PackedInfo" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>CombinatorialOptimization\BunchKnapsackProblem.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Class>
-    </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AIAAAAAFAIAAAAQAAAAgAgAAABAEAEVAQCACAAAAACA=</HashCode>
-      <FileName>CombinatorialOptimization\BunchKnapsackProblem.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAIQAAAAAAAACAAAAAAAAACAAAEAAAAA=</HashCode>
+      <FileName>CombinatorialOptimization\BunchKnapsack.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsack">
+    <Position X="4.75" Y="2.25" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIQAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>CombinatorialOptimization\ZeroOneKnapsack.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="Phenix.Algorithm.CombinatorialOptimization.IGoods">
@@ -48,7 +44,7 @@
   <Interface Name="Phenix.Algorithm.CombinatorialOptimization.IGoodsBunch">
     <Position X="2.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAACAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>CombinatorialOptimization\IGoodsBunch.cs</FileName>
     </TypeIdentifier>
   </Interface>
