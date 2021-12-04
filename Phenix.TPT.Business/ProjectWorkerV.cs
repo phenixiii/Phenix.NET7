@@ -28,6 +28,9 @@ namespace Phenix.TPT.Business
     public abstract class ProjectWorkerV<T> : EntityBase<T>
         where T : ProjectWorkerV<T>
     {
+        /// <summary>
+        /// initialize self
+        /// </summary>
         protected override void InitializeSelf()
         {
         }

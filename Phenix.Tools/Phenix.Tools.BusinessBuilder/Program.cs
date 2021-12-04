@@ -160,6 +160,9 @@ namespace {4}{5}{6}
             codeBuilder.Append(@"
         }
 
+        /// <summary>
+        /// initialize self
+        /// </summary>
         protected override void InitializeSelf()
         {");
             if (primaryKeyColumn != null)

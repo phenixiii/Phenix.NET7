@@ -28,6 +28,9 @@ namespace Phenix.TPT.Business
     public abstract class ProjectExpenses<T> : EntityBase<T>
         where T : ProjectExpenses<T>
     {
+        /// <summary>
+        /// initialize self
+        /// </summary>
         protected override void InitializeSelf()
         {
         }

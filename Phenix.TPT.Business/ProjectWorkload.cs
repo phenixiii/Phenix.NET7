@@ -38,6 +38,9 @@ namespace Phenix.TPT.Business
     public abstract class ProjectWorkload<T> : EntityBase<T>
         where T : ProjectWorkload<T>
     {
+        /// <summary>
+        /// initialize self
+        /// </summary>
         protected override void InitializeSelf()
         {
         }

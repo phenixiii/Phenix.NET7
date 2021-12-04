@@ -28,6 +28,9 @@ namespace Phenix.TPT.Business
     public abstract class WorkScheduleWorker<T> : EntityBase<T>
         where T : WorkScheduleWorker<T>
     {
+        /// <summary>
+        /// initialize self
+        /// </summary>
         protected override void InitializeSelf()
         {
         }

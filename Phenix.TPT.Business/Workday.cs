@@ -28,6 +28,9 @@ namespace Phenix.TPT.Business
     public abstract class Workday<T> : EntityBase<T>
         where T : Workday<T>
     {
+        /// <summary>
+        /// initialize self
+        /// </summary>
         protected override void InitializeSelf()
         {
         }

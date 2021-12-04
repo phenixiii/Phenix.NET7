@@ -17,6 +17,7 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<OutputPath>..\Bin_MySQL\</OutputPath>
+		<DocumentationFile>..\Bin_MySQL\Phenix.TPT.Business.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

@@ -17,6 +17,7 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<OutputPath>..\Bin_PgSQL\</OutputPath>
+		<DocumentationFile>..\Bin_PgSQL\Phenix.Services.Business.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
