@@ -122,16 +122,16 @@ namespace Phenix.Actor
                         if (context.Grain is ITraceLogContext)
                         {
                             long traceKey;
-                            if (RequestContext.Get(ContextConfig.traceKey) == null)
+                            if (RequestContext.Get(ContextConfig.TraceKey) == null)
                             {
                                 traceKey = Phenix.Core.Data.Database.Default.Sequence.Value;
-                                RequestContext.Set(ContextConfig.traceKey, traceKey);
+                                RequestContext.Set(ContextConfig.TraceKey, traceKey);
                             }
                             else
-                                traceKey = (long) RequestContext.Get(ContextConfig.traceKey);
+                                traceKey = (long) RequestContext.Get(ContextConfig.TraceKey);
 
-                            int traceOrder = RequestContext.Get(ContextConfig.traceOrder) != null ? (int) RequestContext.Get(ContextConfig.traceOrder) + 1 : 0;
-                            RequestContext.Set(ContextConfig.traceOrder, traceOrder);
+                            int traceOrder = RequestContext.Get(ContextConfig.TraceOrder) != null ? (int) RequestContext.Get(ContextConfig.TraceOrder) + 1 : 0;
+                            RequestContext.Set(ContextConfig.TraceOrder, traceOrder);
 
                             Task.Run(() => EventLog.Save(context.InterfaceMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder));
                             try

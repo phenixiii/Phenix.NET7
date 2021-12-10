@@ -20,11 +20,11 @@
         /// <summary>
         /// Trace.Key
         /// </summary>
-        public const string traceKey = "Trace.Key";
+        public const string TraceKey = "Trace.Key";
 
         /// <summary>
         /// Trace.Order
         /// </summary>
-        public const string traceOrder = "Trace.Order";
+        public const string TraceOrder = "Trace.Order";
     }
 }

@@ -145,7 +145,7 @@ namespace Orleans.Hosting
                         ? Principal.FetchIdentity(companyName, userName, cultureName, null)
                         : null;
 
-                    if (context.Grain is ITraceLogContext && RequestContext.Get(ContextConfig.traceKey) is long traceKey && RequestContext.Get(ContextConfig.traceOrder) is int traceOrder)
+                    if (context.Grain is ITraceLogContext && RequestContext.Get(ContextConfig.TraceKey) is long traceKey && RequestContext.Get(ContextConfig.TraceOrder) is int traceOrder)
                     {
                         Task.Run(() => EventLog.Save(context.ImplementationMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder));
                         try
