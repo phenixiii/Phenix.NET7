@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
-using System.Threading;
-using System.Threading.Tasks;
+using System.IO;
+using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -9,52 +9,26 @@ using Orleans;
 using Orleans.Hosting;
 using Phenix.Core;
 using Phenix.Core.Data;
+using Phenix.Core.Plugin;
 
 namespace Phenix.Services.Host
 {
     public static class Program
     {
-        #region 属性
-
-        private static readonly object _lock = new object();
-        private static IHost _host;
-        private static bool _hostStopping;
-        private static readonly ManualResetEvent _hostStopped = new ManualResetEvent(false);
-
-        #endregion
-
         #region 方法
 
         public static void Main(string[] args)
         {
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("zh-CN", true)
             {
-                DateTimeFormat = {ShortDatePattern = "yyyy-MM-dd", FullDateTimePattern = "yyyy-MM-dd HH:mm:ss", LongTimePattern = "HH:mm:ss" } //兼容Linux（CentOS）环境
-            };
-            AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) =>
-            {
-                Phenix.Core.Log.EventLog.SaveLocal("An unhandled exception occurred in the current domain", (Exception) eventArgs.ExceptionObject);
-            };
-            Console.CancelKeyPress += (sender, eventArgs) =>
-            {
-                eventArgs.Cancel = true;
-                if (!_hostStopping)
-                    lock (_lock)
-                        if (!_hostStopping)
-                        {
-                            _hostStopping = true;
-                            Task.Run(() =>
-                            {
-                                _host.StopAsync();
-                                _hostStopped.Set();
-                            }).Ignore();
-                        }
+                DateTimeFormat = {ShortDatePattern = "yyyy-MM-dd", FullDateTimePattern = "yyyy-MM-dd HH:mm:ss", LongTimePattern = "HH:mm:ss"} //兼容Linux（CentOS）环境
             };
 
 #if DEBUG
             AppRun.Debugging = true;
             Console.WriteLine("调试状态（Phenix.Core.AppRun.Debugging)为: {0}（正式环境下请关闭）", AppRun.Debugging);
 #endif
+
             try
             {
                 Console.WriteLine("正在从缺省数据库加载数据字典到本地以便加快服务的响应速度...");
@@ -70,21 +44,38 @@ namespace Phenix.Services.Host
             }
 
             Phenix.Core.Security.Principal.FetchIdentity = Phenix.Services.Plugin.Security.Identity.Fetch;
+            AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) => { Phenix.Core.Log.EventLog.SaveLocal("An unhandled exception occurred in the current domain", (Exception)eventArgs.ExceptionObject); };
+            RunHost(args);
+        }
 
+        private static void RunHost(string[] args)
+        {
             Console.WriteLine("构建Orleans和WebAPI的服务...");
-            _host = CreateHostBuilder(args).Build();
-            Console.WriteLine("启动Orleans和WebAPI的服务");
-            try
+            using (IHost host = CreateHostBuilder(args).Build())
             {
-                _host.Run();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                if (ex is Orleans.Runtime.MembershipService.OrleansClusterConnectivityCheckFailedException)
-                    Console.WriteLine("请等待旧的Orleans节点都已确认退群再重启本服务程序以便重建新的集群!");
-                Console.ReadLine();
-                return;
+                Console.WriteLine("启动Orleans和WebAPI的服务...");
+                host.Start();
+
+                Console.WriteLine("启动插件...");
+                foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
+                    try
+                    {
+                        Console.WriteLine("加载插件程序集：{0}", fileName);
+                        Assembly assembly = Assembly.LoadFrom(fileName);
+                        PluginHost.Default.GetPlugin(assembly, (_, message) =>
+                        {
+                            Console.WriteLine(message);
+                            return null;
+                        }).Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("启动插件{0}失败：{1}", fileName, ex.Message);
+                    }
+
+                Console.WriteLine("启动插件完毕.");
+
+                host.WaitForShutdown();
             }
         }
 

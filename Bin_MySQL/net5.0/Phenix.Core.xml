@@ -972,29 +972,36 @@
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DataReader.CreateParameter(System.String,System.Object,NpgsqlTypes.NpgsqlDbType,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Data.Common.DataReader.CreateParameter(System.String,System.Object,System.Data.SqlDbType,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DataReader.SelectEntity``2(System.Linq.Expressions.Expression{System.Func{``1,``0}})">
+        <member name="M:Phenix.Core.Data.Common.DataReader.ReadEntity``2(System.Linq.Expressions.Expression{System.Func{``1,``0}})">
             <summary>
-            获取记录
+            读取Entity记录
             </summary>
             <param name="keyLambda">键 lambda 表达式</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DataReader.SelectEntity``1(System.Boolean)">
+        <member name="M:Phenix.Core.Data.Common.DataReader.ReadEntity``1(System.Boolean)">
             <summary>
-            获取记录
+            读取Entity记录
             </summary>
             <param name="first">是否返回第一条记录</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DataReader.SelectRecord(System.Boolean)">
+        <member name="M:Phenix.Core.Data.Common.DataReader.ReadJson(System.Boolean)">
             <summary>
-            获取记录(属性名为表/视图的字段名/别名)
+            读取JSON记录(属性名为表/视图的字段名/别名)
             </summary>
             <param name="first">是否返回第一条记录</param>
             <returns>记录(JSON格式)</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Common.DataReader.ReadDictionary(System.Boolean)">
+            <summary>
+            读取Dictionary记录(表/视图的字段名/别名-值)
+            </summary>
+            <param name="first">是否返回第一条记录</param>
+            <returns>记录(表/视图的字段名/别名-值)</returns>
         </member>
         <member name="T:Phenix.Core.Data.Common.DbCommandHelper">
             <summary>
@@ -1207,22 +1214,22 @@
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,NpgsqlTypes.NpgsqlDbType,System.Data.ParameterDirection)">
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Data.SqlDbType,System.Data.ParameterDirection)">
             <summary>
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,NpgsqlTypes.NpgsqlDbType,System.Data.ParameterDirection,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Data.SqlDbType,System.Data.ParameterDirection,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,NpgsqlTypes.NpgsqlDbType,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,System.Data.SqlDbType,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,NpgsqlTypes.NpgsqlDbType,System.Data.ParameterDirection,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,System.Data.SqlDbType,System.Data.ParameterDirection,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
             </summary>
@@ -1643,7 +1650,7 @@
             <param name="name">名称</param>
             <param name="value">值</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.ParamValue.Input(System.String,System.Object,NpgsqlTypes.NpgsqlDbType)">
+        <member name="M:Phenix.Core.Data.Common.ParamValue.Input(System.String,System.Object,System.Data.SqlDbType)">
             <summary>
             输入输出参数
             </summary>
@@ -1651,7 +1658,7 @@
             <param name="value">值</param>
             <param name="dbType">参数类型</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.ParamValue.InputOutput(System.String,System.Object,NpgsqlTypes.NpgsqlDbType)">
+        <member name="M:Phenix.Core.Data.Common.ParamValue.InputOutput(System.String,System.Object,System.Data.SqlDbType)">
             <summary>
             输入输出参数
             </summary>
@@ -1659,14 +1666,14 @@
             <param name="value">值</param>
             <param name="dbType">参数类型</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.ParamValue.Output(System.String,NpgsqlTypes.NpgsqlDbType)">
+        <member name="M:Phenix.Core.Data.Common.ParamValue.Output(System.String,System.Data.SqlDbType)">
             <summary>
             输出参数
             </summary>
             <param name="name">名称</param>
             <param name="dbType">参数类型</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.ParamValue.ReturnValue(System.String,NpgsqlTypes.NpgsqlDbType)">
+        <member name="M:Phenix.Core.Data.Common.ParamValue.ReturnValue(System.String,System.Data.SqlDbType)">
             <summary>
             返回值
             </summary>
@@ -1836,7 +1843,7 @@
             获取数据库入口
             </summary>
             <param name="dataSourceKey">数据源键(null或*代表默认入口)</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>数据库入口</returns>
         </member>
         <member name="M:Phenix.Core.Data.Database.RegisterDefault(System.String,System.Nullable{System.Int32},System.String,System.String,System.String,System.Boolean,System.Int32,System.Int32,System.Int32)">
@@ -2704,6 +2711,26 @@
             读取JSON格式数据(属性名为表/视图的字段名/别名)
             </summary>
         </member>
+        <member name="M:Phenix.Core.Data.Database.ReadDictionaryData(System.String,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            读取Dictionary格式数据(属性名为表/视图的字段名/别名)
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.ReadDictionaryData(System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            读取Dictionary格式数据(属性名为表/视图的字段名/别名)
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.ReadDictionaryData(System.String,System.Data.CommandBehavior,Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            读取Dictionary格式数据(属性名为表/视图的字段名/别名)
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Data.Database.ReadDictionaryData(System.String,System.Data.CommandBehavior,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
+            <summary>
+            读取Dictionary格式数据(属性名为表/视图的字段名/别名)
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Data.Database.FillDataSet(System.String,Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             填充 DataSet
@@ -2761,27 +2788,20 @@
             枚举键值
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.EnumKeyValue.Fetch``1(System.Predicate{Phenix.Core.Data.EnumKeyValue})">
+        <member name="M:Phenix.Core.Data.EnumKeyValue.Fetch``1">
             <summary>
             根据枚举类型定义构建
             </summary>
-            <param name="match">用于定义要搜索的元素应满足的条件</param>
         </member>
-        <member name="M:Phenix.Core.Data.EnumKeyValue.Fetch(System.Type,System.Predicate{Phenix.Core.Data.EnumKeyValue})">
+        <member name="M:Phenix.Core.Data.EnumKeyValue.Fetch(System.Type)">
             <summary>
             根据枚举类型定义构建
             </summary>
             <param name="enumType">枚举类型</param>
-            <param name="match">用于定义要搜索的元素应满足的条件</param>
         </member>
         <member name="M:Phenix.Core.Data.EnumKeyValue.Fetch(System.Enum)">
             <summary>
             根据枚举值构建填充
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.EnumKeyValue.EnumCaption">
-            <summary>
-            枚举字段标签
             </summary>
         </member>
         <member name="F:Phenix.Core.Data.EnumKeyValue._value">
@@ -2792,11 +2812,6 @@
         <member name="P:Phenix.Core.Data.EnumKeyValue.Value">
             <summary>
             值
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Data.EnumKeyValue.Flag">
-            <summary>
-            标记
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.EnumKeyValue.Key">
@@ -2814,11 +2829,10 @@
             标记
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.EnumKeyValue.GetEnumFirst``1(System.Predicate{Phenix.Core.Data.EnumKeyValue})">
+        <member name="P:Phenix.Core.Data.EnumKeyValue.Flag">
             <summary>
-            取第一个匹配的枚举值
+            标记
             </summary>
-            <param name="match">用于定义要搜索的元素应满足的条件</param>
         </member>
         <member name="M:Phenix.Core.Data.EnumKeyValue.CaptionsToFlags``1(System.String,System.Char)">
             <summary>
@@ -4080,6 +4094,11 @@
             <param name="criteria">条件对象/JSON格式字符串/属性值队列</param>
             <param name="orderBys">排序队列</param>
         </member>
+        <member name="F:Phenix.Core.Data.Model.EntityBase`1._dataSourceKey">
+            <summary>
+            数据源键
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Data.Model.EntityBase`1.DataSourceKey">
             <summary>
             数据源键
@@ -4329,6 +4348,29 @@
             <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
             <returns>更新记录数</returns>
         </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.InsertSelf(System.Int64)">
+            <summary>
+            新增自己
+            </summary>
+            <param name="primaryKeyLong">主键值</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.InsertSelf(System.Data.Common.DbConnection,System.Int64)">
+            <summary>
+            新增自己
+            </summary>
+            <param name="connection">DbConnection(注意跨库风险未作校验)</param>
+            <param name="primaryKeyLong">主键值</param>
+            <returns>更新记录数</returns>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.InsertSelf(System.Data.Common.DbTransaction,System.Int64)">
+            <summary>
+            新增自己
+            </summary>
+            <param name="transaction">DbTransaction(注意跨库风险未作校验)</param>
+            <param name="primaryKeyLong">主键值</param>
+            <returns>更新记录数</returns>
+        </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.Set(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Object)">
             <summary>
             设置属性值
@@ -4354,6 +4396,20 @@
             应用属性值
             </summary>
             <param name="propertyValues">待更新属性值队列(如果没有set语句的话就直接更新字段)</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.GetValue(System.Linq.Expressions.Expression{System.Func{`0,System.Object}},System.Boolean)">
+            <summary>
+            提取属性值
+            </summary>
+            <param name="propertyLambda">含类属性的 lambda 表达式</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
+        </member>
+        <member name="M:Phenix.Core.Data.Model.EntityBase`1.GetValue(System.String,System.Boolean)">
+            <summary>
+            提取属性值
+            </summary>
+            <param name="propertyName">属性名</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
         </member>
         <member name="M:Phenix.Core.Data.Model.EntityBase`1.GetDirtValues(`0)">
             <summary>
@@ -5621,7 +5677,7 @@
             for CreateInstance
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.#ctor(System.String,System.Int64,System.Int64,System.Int64,System.Collections.Generic.IList{`0})">
+        <member name="M:Phenix.Core.Data.Model.TreeEntityBase`1.#ctor(System.String,System.Int64,System.Int64,System.Int64,`0[])">
             <summary>
             for Newtonsoft.Json.JsonConstructor
             </summary>
@@ -5888,14 +5944,29 @@
             <param name="orderBys">排序队列</param>
             <returns>根实体对象</returns>
         </member>
+        <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._id">
+            <summary>
+            主键属性(映射表ID字段)
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.Id">
             <summary>
             主键属性(映射表ID字段)
             </summary>
         </member>
+        <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._rootId">
+            <summary>
+            根节点ID(映射表Root_ID字段)
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.RootId">
             <summary>
             根节点ID(映射表Root_ID字段)
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._parentId">
+            <summary>
+            父节点ID(映射表Parent_ID字段)
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.ParentId">
@@ -5911,6 +5982,11 @@
         <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.Parent">
             <summary>
             父实体
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Data.Model.TreeEntityBase`1._children">
+            <summary>
+            儿孙
             </summary>
         </member>
         <member name="P:Phenix.Core.Data.Model.TreeEntityBase`1.Children">
@@ -6406,7 +6482,7 @@
             获取字段映射类属性
             </summary>
             <param name="entityType">实体类</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>类属性</returns>
         </member>
         <member name="T:Phenix.Core.Data.Schema.ColumnAttribute">
@@ -6597,7 +6673,7 @@
             检索表/视图
             </summary>
             <param name="name">表/视图名</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheet(System.String,System.Action{Phenix.Core.Data.Database},System.Boolean)">
@@ -6606,14 +6682,14 @@
             </summary>
             <param name="name">表/视图名</param>
             <param name="doCreate">如果没有找到表/视图则调用本函数新增</param>
-            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheet``1(System.Boolean)">
             <summary>
             检索表/视图
             </summary>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表/视图</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheet(System.Type,System.Boolean)">
@@ -6621,7 +6697,7 @@
             检索表/视图
             </summary>
             <param name="entityType">实体类</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表/视图</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheet``1(System.Action{Phenix.Core.Data.Database},System.Boolean)">
@@ -6629,7 +6705,7 @@
             检索表/视图
             </summary>
             <param name="doCreate">如果没有映射的表/视图则调用本函数新增</param>
-            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表/视图</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindSheet(System.Type,System.Action{Phenix.Core.Data.Database},System.Boolean)">
@@ -6638,14 +6714,14 @@
             </summary>
             <param name="entityType">实体类</param>
             <param name="doCreate">如果没有映射的表/视图则调用本函数新增</param>
-            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表/视图</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindTable``1(System.Boolean)">
             <summary>
             检索表
             </summary>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindTable(System.Type,System.Boolean)">
@@ -6653,7 +6729,7 @@
             检索表
             </summary>
             <param name="entityType">实体类</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindTable``1(System.Action{Phenix.Core.Data.Database},System.Boolean)">
@@ -6661,7 +6737,7 @@
             检索表
             </summary>
             <param name="doCreate">如果没有映射的表则调用本函数新增</param>
-            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindTable(System.Type,System.Action{Phenix.Core.Data.Database},System.Boolean)">
@@ -6670,7 +6746,7 @@
             </summary>
             <param name="entityType">实体类</param>
             <param name="doCreate">如果没有映射的表则调用本函数新增</param>
-            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindTable(System.String,System.Boolean)">
@@ -6678,7 +6754,7 @@
             检索表
             </summary>
             <param name="tableName">表名</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindTable(System.String,System.Action{Phenix.Core.Data.Database},System.Boolean)">
@@ -6687,14 +6763,14 @@
             </summary>
             <param name="tableName">表名</param>
             <param name="doCreate">如果没有找到表则调用本函数新增</param>
-            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>表</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindView``1(System.Boolean)">
             <summary>
             检索视图
             </summary>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>视图</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindView(System.Type,System.Boolean)">
@@ -6702,7 +6778,7 @@
             检索视图
             </summary>
             <param name="entityType">实体类</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>视图</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindView``1(System.Action{Phenix.Core.Data.Database},System.Boolean)">
@@ -6710,7 +6786,7 @@
             检索视图
             </summary>
             <param name="doCreate">如果没有映射的视图则调用本函数新增</param>
-            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>视图</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindView(System.Type,System.Action{Phenix.Core.Data.Database},System.Boolean)">
@@ -6719,7 +6795,7 @@
             </summary>
             <param name="entityType">实体类</param>
             <param name="doCreate">如果没有映射的视图则调用本函数新增</param>
-            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>视图</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindView(System.String,System.Boolean)">
@@ -6727,7 +6803,7 @@
             检索视图
             </summary>
             <param name="viewName">视图名</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>视图</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.FindView(System.String,System.Action{Phenix.Core.Data.Database},System.Boolean)">
@@ -6736,7 +6812,7 @@
             </summary>
             <param name="viewName">视图名</param>
             <param name="doCreate">如果没有找到视图则调用本函数新增</param>
-            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true 且 doCreate 为 null, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>视图</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.MetaData.ExtractViewTables(System.String)">
@@ -6946,7 +7022,7 @@
             </summary>
             <param name="entityType">实体类</param>
             <param name="fieldName">字段名</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>类字段</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.GetProperties(System.Type,Phenix.Core.Data.Schema.Sheet,System.Nullable{System.Boolean},System.Nullable{System.Boolean})">
@@ -6964,7 +7040,7 @@
             获取数据映射类属性
             </summary>
             <param name="propertyLambda">含类属性的 lambda 表达式</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>类属性</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.GetProperty(System.Type,System.String,System.Boolean)">
@@ -6973,7 +7049,7 @@
             </summary>
             <param name="entityType">实体类</param>
             <param name="propertyName">属性名</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>类属性</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.GetPrimaryKeyProperty(System.Type,System.Boolean)">
@@ -6981,7 +7057,7 @@
             检索主键表字段映射类属性
             </summary>
             <param name="entityType">实体类</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>类属性</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.FindColumn(System.String,System.Boolean)">
@@ -6989,7 +7065,7 @@
             检索字段
             </summary>
             <param name="name">字段名/类属性名/类字段名</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>字段</returns>
         </member>
         <member name="M:Phenix.Core.Data.Schema.Sheet.GetColumns(System.Boolean,System.Boolean)">
@@ -9883,11 +9959,11 @@
             <param name="trim">是否整理</param>
             <param name="prefixCount">前缀字符数</param>
         </member>
-        <member name="M:Phenix.Core.Data.Standards.GetPrefixByTableName(System.String,System.Int32)">
+        <member name="M:Phenix.Core.Data.Standards.GetPrefixBySheetName(System.String,System.Int32)">
             <summary>
             取前缀
             </summary>
-            <param name="tableName">表名</param>
+            <param name="sheetName">表/视图名</param>
             <param name="prefixCount">前缀字符数</param>
         </member>
         <member name="M:Phenix.Core.Data.Standards.TrimViewName(System.String,System.Int32,System.Int32)">
@@ -9908,13 +9984,6 @@
             <param name="trim">是否整理</param>
             <param name="prefixCount">前缀字符数</param>
             <param name="suffixCount">后缀字符数</param>
-        </member>
-        <member name="M:Phenix.Core.Data.Standards.GetPrefixByViewName(System.String,System.Int32)">
-            <summary>
-            取前缀
-            </summary>
-            <param name="viewName">表名</param>
-            <param name="prefixCount">前缀字符数</param>
         </member>
         <member name="M:Phenix.Core.Data.Standards.TrimColumnName(System.String,System.Int32)">
             <summary>
@@ -9982,7 +10051,7 @@
             分解复合键
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Standards.FormatYearMonth(System.Int32,System.Int32)">
+        <member name="M:Phenix.Core.Data.Standards.FormatYearMonth(System.Int16,System.Int16)">
             <summary>
             格式化年月
             </summary>
@@ -10555,6 +10624,11 @@
             for CreateInstance
             </summary>
         </member>
+        <member name="M:Phenix.Core.Net.Filters.ControllerRole.#ctor(System.String,System.Int64,System.String,System.String,System.String[])">
+            <summary>
+            for Newtonsoft.Json.JsonConstructor
+            </summary>
+        </member>
         <member name="M:Phenix.Core.Net.Filters.ControllerRole.Fetch(System.Reflection.TypeInfo,System.Reflection.MethodInfo)">
             <summary>
             获取控制器的授权角色
@@ -10651,7 +10725,7 @@
             数据验证结果
             </summary>
         </member>
-        <member name="M:Phenix.Core.Net.Filters.ValidationResult.#ctor(System.Int32,System.Collections.Generic.List{Phenix.Core.Data.Rule.ValidationMessage})">
+        <member name="M:Phenix.Core.Net.Filters.ValidationResult.#ctor(System.Int32,Phenix.Core.Data.Rule.ValidationMessage[])">
             <summary>
             初始化
             </summary>
@@ -10674,6 +10748,146 @@
         <member name="P:Phenix.Core.Net.NetConfig.LocalAddress">
             <summary>
             本机IP地址
+            </summary>
+        </member>
+        <member name="T:Phenix.Core.Plugin.IPlugin">
+            <summary>
+            插件接口
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Plugin.IPlugin.State">
+            <summary>
+            插件状态
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Plugin.IPlugin.Start">
+            <summary>
+            启动
+            </summary>
+            <returns>确定启动</returns>
+        </member>
+        <member name="M:Phenix.Core.Plugin.IPlugin.Suspend">
+            <summary>
+            暂停
+            </summary>
+            <returns>确定停止</returns>
+        </member>
+        <member name="M:Phenix.Core.Plugin.IPlugin.ReceiveMessage(System.Object)">
+            <summary>
+            接收消息
+            </summary>
+            <param name="message">消息</param>
+            <returns>按需返回</returns>
+        </member>
+        <member name="T:Phenix.Core.Plugin.PluginBase">
+            <summary>
+            插件抽象类
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Plugin.PluginBase.Owner">
+            <summary>
+            插件容器
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Plugin.PluginBase.State">
+            <summary>
+            插件状态
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Plugin.PluginBase.FindPluginType(System.String,System.Boolean)">
+            <summary>
+            检索插件类
+            </summary>
+            <param name="assemblyName">程序集名称</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <returns>插件类</returns>
+        </member>
+        <member name="M:Phenix.Core.Plugin.PluginBase.FindPluginType(System.Reflection.Assembly,System.Boolean)">
+            <summary>
+            检索插件类
+            </summary>
+            <param name="assembly">程序集</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <returns>插件类</returns>
+        </member>
+        <member name="M:Phenix.Core.Plugin.PluginBase.Start">
+            <summary>
+            启动
+            </summary>
+            <returns>确定启动</returns>
+        </member>
+        <member name="M:Phenix.Core.Plugin.PluginBase.Suspend">
+            <summary>
+            暂停
+            </summary>
+            <returns>确定停止</returns>
+        </member>
+        <member name="M:Phenix.Core.Plugin.PluginBase.ReceiveMessage(System.Object)">
+            <summary>
+            接收消息
+            </summary>
+            <param name="message">消息</param>
+            <returns>按需返回</returns>
+        </member>
+        <member name="M:Phenix.Core.Plugin.PluginBase.SendMessage(System.Object)">
+            <summary>
+            发送消息
+            </summary>
+            <param name="message">消息</param>
+            <returns>按需返回</returns>
+        </member>
+        <member name="T:Phenix.Core.Plugin.PluginHost">
+            <summary>
+            插件容器
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Plugin.PluginHost.Default">
+            <summary>
+            单例
+            </summary>
+        </member>
+        <member name="M:Phenix.Core.Plugin.PluginHost.GetPlugin(System.String,System.Func{Phenix.Core.Plugin.IPlugin,System.Object,System.Object})">
+            <summary>
+            获取插件
+            </summary>
+            <param name="assemblyName">程序集名</param>
+            <param name="onMessage">插件发送过来的消息</param>
+        </member>
+        <member name="M:Phenix.Core.Plugin.PluginHost.GetPlugin(System.Reflection.Assembly,System.Func{Phenix.Core.Plugin.IPlugin,System.Object,System.Object})">
+            <summary>
+            获取插件
+            </summary>
+            <param name="assembly">程序集</param>
+            <param name="onMessage">插件发送过来的消息</param>
+        </member>
+        <member name="T:Phenix.Core.Plugin.PluginState">
+            <summary>
+            插件状态
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Plugin.PluginState.Created">
+            <summary>
+            构建
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Plugin.PluginState.Initialized">
+            <summary>
+            初始化
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Plugin.PluginState.Finalizing">
+            <summary>
+            终止化
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Plugin.PluginState.Started">
+            <summary>
+            启动
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Plugin.PluginState.Suspended">
+            <summary>
+            停止
             </summary>
         </member>
         <member name="T:Phenix.Core.Reflection.DynamicCtorDelegate">
@@ -10761,7 +10975,7 @@
             加载程序集
             </summary>
             <param name="assemblyName">程序集名</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <returns>程序集</returns>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.AssembleFullTypeName(System.String,System.String)">
@@ -10783,53 +10997,6 @@
             抽取类名
             </summary>
             <param name="fullTypeName">完整类名 </param>
-        </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.GetExportedSubclassTypes(System.Collections.Generic.IList{System.Type},System.Type[])">
-             <summary>
-             从类型集合中摘取派生类型
-             </summary>
-            <param name="sourceTypes">类型集合</param>
-            <param name="baseTypes">基础类型、Interface</param>
-            <returns>类型队列</returns>
-        </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.LoadExportedSubclassTypesFromBaseDirectory(System.Type[])">
-            <summary>
-            从基础目录中加载派生类型
-            </summary>
-            <param name="baseTypes">基础类型、Interface</param>
-            <returns>类型队列</returns>
-        </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.LoadExportedSubclassTypesFromBaseDirectory(System.Boolean,System.Type[])">
-            <summary>
-            从基础目录中加载派生类型
-            </summary>
-            <param name="baseTypes">基础类型、Interface</param>
-            <param name="includeAbstract">是否包括抽象类型</param>
-            <returns>类型队列</returns>
-        </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.LoadExportedSubclassTypes(System.String,System.Type[])">
-            <summary>
-            加载派生类型
-            </summary>
-            <param name="fileName">程序集文件名</param>
-            <param name="baseTypes">基础类型、Interface</param>
-            <returns>类型队列</returns>
-        </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.LoadExportedSubclassTypes(System.String,System.Boolean,System.Type[])">
-            <summary>
-            加载派生类型
-            </summary>
-            <param name="fileName">程序集文件名</param>
-            <param name="includeAbstract">是否包括抽象类型</param>
-            <param name="baseTypes">基础类型、Interface</param>
-            <returns>类型队列</returns>
-        </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.LoadExportedClassTypesFromBaseDirectory(System.Boolean)">
-            <summary>
-            从基础目录中加载公共类类型
-            </summary>
-            <param name="includeAbstract">是否包括抽象类型</param>
-            <returns>类型队列</returns>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.LoadExportedClassTypes(System.String,System.Boolean)">
             <summary>
@@ -10913,11 +11080,6 @@
             <param name="propertyName">属性名</param>
             <param name="levelNumber">层级数</param>
         </member>
-        <member name="M:Phenix.Core.Reflection.Utilities.FindFirstAbstractType(System.Type)">
-            <summary>
-            检索第一个抽象类
-            </summary>
-        </member>
         <member name="M:Phenix.Core.Reflection.Utilities.FindPropertyInfo(System.Type,System.String,System.Reflection.BindingFlags)">
             <summary>
             检索属性信息
@@ -10940,7 +11102,7 @@
             </summary>
             <param name="objectType">类</param>
             <param name="memberName">属性/字段名</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.GetMemberType(System.Reflection.MemberInfo)">
             <summary>
@@ -10954,7 +11116,7 @@
             </summary>
             <param name="entity">实体</param>
             <param name="memberName">属性/字段名</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
         </member>
         <member name="M:Phenix.Core.Reflection.Utilities.GetMemberValue``1(``0,System.Reflection.MemberInfo)">
             <summary>
@@ -10968,7 +11130,7 @@
             检索类属性的信息
             </summary>
             <param name="propertyLambda">含类属性的 lambda 表达式</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <exception cref="T:System.ArgumentNullException">lambda</exception>
             <exception cref="T:System.ArgumentException">不存在成员访问</exception>
             <returns>类属性</returns>
@@ -10978,7 +11140,7 @@
             检索类属性的信息
             </summary>
             <param name="propertyLambda">含类属性的 lambda 表达式</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <exception cref="T:System.ArgumentNullException">lambda</exception>
             <exception cref="T:System.ArgumentException">不存在成员访问</exception>
             <returns>类属性</returns>
@@ -10988,7 +11150,7 @@
             检索类字段的信息
             </summary>
             <param name="fieldLambda">含类字段的 lambda 表达式</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <exception cref="T:System.ArgumentNullException">lambda</exception>
             <exception cref="T:System.ArgumentException">不存在成员访问</exception>
             <returns>类属性</returns>
@@ -10998,7 +11160,7 @@
             检索类字段的信息
             </summary>
             <param name="fieldLambda">含类字段的 lambda 表达式</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <exception cref="T:System.ArgumentNullException">lambda</exception>
             <exception cref="T:System.ArgumentException">不存在成员访问</exception>
             <returns>类属性</returns>
@@ -11008,7 +11170,7 @@
             检索类属性/类字段的信息
             </summary>
             <param name="memberLambda">含类属性/类字段的 lambda 表达式</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <exception cref="T:System.ArgumentNullException">lambda</exception>
             <exception cref="T:System.ArgumentException">不存在成员访问</exception>
             <returns>类属性/类字段</returns>
@@ -11018,7 +11180,7 @@
             检索类属性/类字段的信息
             </summary>
             <param name="memberLambda">含类属性/类字段的 lambda 表达式</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <exception cref="T:System.ArgumentNullException">lambda</exception>
             <exception cref="T:System.ArgumentException">不存在成员访问</exception>
             <returns>类属性/类字段</returns>
@@ -11028,7 +11190,7 @@
             检索类方法的信息
             </summary>
             <param name="methodLambda">含类方法的 lambda 表达式</param>
-            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+            <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
             <exception cref="T:System.ArgumentNullException">lambda</exception>
             <exception cref="T:System.ArgumentException">不存在方法调用</exception>
             <returns>类方法</returns>
@@ -11185,32 +11347,12 @@
             序列化
             </summary>
         </member>
-        <member name="T:Phenix.Core.Security.Auth.MultiSessionRequestException">
-            <summary>
-            多会话请求禁止异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Security.Auth.MultiSessionRequestException.#ctor(System.Exception)">
-            <summary>
-            多会话请求禁止异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Security.Auth.MultiSessionRequestException.#ctor(System.String,System.Exception)">
-            <summary>
-            多会话请求禁止异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Security.Auth.MultiSessionRequestException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            序列化
-            </summary>
-        </member>
         <member name="T:Phenix.Core.Security.Auth.OvertimeRequestException">
             <summary>
             服务请求超时异常
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.Auth.OvertimeRequestException.#ctor(System.Int32)">
+        <member name="M:Phenix.Core.Security.Auth.OvertimeRequestException.#ctor(System.Double)">
             <summary>
             服务请求超时异常
             </summary>
@@ -11771,28 +11913,20 @@
             </summary>
             <param name="keyExtension">扩展主键</param>
         </member>
-        <member name="M:Phenix.Core.Security.IIdentity.IsValidLogon(System.String,System.String,System.String,System.String,System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Security.IIdentity.Logon(System.String,System.String,System.String)">
             <summary>
-            核对登录有效性
+            登录
             </summary>
-            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-            <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
-            <param name="tag">捎带数据(未解密, 默认是客户端当前时间)</param>
+            <param name="signature">会话签名</param>
+            <param name="tag">(默认是客户端时间也可以是修改的新密码)</param>
             <param name="requestAddress">服务请求方IP地址</param>
-            <param name="requestSession">服务请求会话签名</param>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
-            <returns>是否正确</returns>
         </member>
-        <member name="M:Phenix.Core.Security.IIdentity.IsValid(System.String,System.String,System.String,System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Security.IIdentity.Verify(System.String,System.String)">
             <summary>
-            核对有效性
+            验证
             </summary>
-            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-            <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
+            <param name="signature">会话签名</param>
             <param name="requestAddress">服务请求方IP地址</param>
-            <param name="requestSession">服务请求会话签名</param>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
-            <returns>是否正确</returns>
         </member>
         <member name="M:Phenix.Core.Security.IIdentity.Encrypt(System.Object)">
             <summary>
@@ -11809,12 +11943,12 @@
             </summary>
             <param name="cipherText">密文(Base64字符串)</param>
         </member>
-        <member name="M:Phenix.Core.Security.IIdentity.IsInRole(System.String)">
+        <member name="M:Phenix.Core.Security.IIdentity.IsInRole(System.String[])">
             <summary>
-            确定是否属于指定的角色
+            确定是否属于指定的一组角色
             </summary>
-            <param name="role">角色</param>
-            <returns>属于指定的角色</returns>
+            <param name="roles">指定的一组角色</param>
+            <returns>存在交集</returns>
         </member>
         <member name="T:Phenix.Core.Security.Principal">
             <summary>
@@ -11841,6 +11975,60 @@
             <summary>
             获取用户身份方法
             Identity Fetch(string companyName, string userName, string cultureName, int? cacheDiscardIntervalHours = null)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Principal.RequestFailureCountMaximum">
+            <summary>
+            服务请求失败次数极限
+            默认：5(>=3)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Principal.RequestFailureLockedMinutes">
+            <summary>
+            服务请求失败锁定周期(分钟)
+            默认：30(>=10)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Principal.AllowMultiAddressRequest">
+            <summary>
+            允许多处终端发起请求
+            默认：false
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Principal.RequestIdleIntervalLimitMinutes">
+            <summary>
+            服务请求空闲间隔极限(分钟)
+            默认：120(>=10)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Principal.RequestClockOffsetLimitMinutes">
+            <summary>
+            服务请求(客户端与服务端)时钟差极限(分钟)
+            默认：30(>=10)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Principal.BreakRequestIntensityPerMinute">
+            <summary>
+            中断服务请求强度阈值(每分钟次数)
+            默认：6000(>=6000)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Principal.PasswordLengthMinimum">
+            <summary>
+            口令长度最小值
+            默认：6(>=6)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Principal.PasswordComplexityMinimum">
+            <summary>
+            口令复杂度最小值(含数字、大写字母、小写字母、特殊字符的种类)
+            默认：3(>=1)
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.Principal.DynamicPasswordValidityMinutes">
+            <summary>
+            动态口令有效周期(分钟)
+            默认：10(>=3)
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.Principal.Identity">
@@ -11872,69 +12060,14 @@
             for CreateInstance
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.User`1.#ctor(System.String,System.Int64,System.String,System.String,System.String,System.String,System.DateTime,System.String,System.Int32,System.Nullable{System.DateTime},System.Int64,System.Int64,System.Nullable{System.Int64},System.Boolean,System.Nullable{System.DateTime},System.Boolean,System.Nullable{System.DateTime})">
+        <member name="M:Phenix.Core.Security.User`1.#ctor(System.String,System.Int64,System.String,System.String,System.String,System.String,System.DateTime,System.Int64,System.Int64,System.Nullable{System.Int64},System.Boolean,System.Nullable{System.DateTime},System.Boolean,System.Nullable{System.DateTime})">
             <summary>
-            初始化
+            for Newtonsoft.Json.JsonConstructor
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User`1.RequestFailureCountMaximum">
+        <member name="F:Phenix.Core.Security.User`1._id">
             <summary>
-            服务请求失败次数极限
-            默认：5(次>=3)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User`1.RequestFailureLockedMinutes">
-            <summary>
-            服务请求失败锁定周期
-            默认：30(分钟>=10)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User`1.AllowMultiAddressRequest">
-            <summary>
-            允许多处终端发起请求
-            默认：true
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User`1.AllowMultiSessionRequest">
-            <summary>
-            允许多处会话发起请求
-            默认：true
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User`1.RequestOvertimeLimitMinutes">
-            <summary>
-            服务请求超时时限(与服务端时钟差值)
-            默认：30(分钟>=10)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User`1.BreakRequestIntensityPerMinute">
-            <summary>
-            中断服务请求强度阈值(每分钟次数)
-            默认：6000(>=6000)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User`1.PasswordLengthMinimum">
-            <summary>
-            口令长度最小值
-            默认：6(个>=6)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User`1.PasswordComplexityMinimum">
-            <summary>
-            口令复杂度最小值(含数字、大写字母、小写字母、特殊字符的种类)
-            默认：3(个>=1)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User`1.DynamicPasswordValidityMinutes">
-            <summary>
-            动态口令有效周期
-            默认：10(分钟>=3)
-            </summary>
-        </member>
-        <member name="P:Phenix.Core.Security.User`1.AllowRepeatTimestamp">
-            <summary>
-            允许时间戳重发
-            默认：false
+            主键
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User`1.Id">
@@ -11942,9 +12075,19 @@
             主键
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User`1._name">
+            <summary>
+            登录名
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User`1.Name">
             <summary>
             登录名
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User`1._phone">
+            <summary>
+            手机
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User`1.Phone">
@@ -11952,9 +12095,19 @@
             手机
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User`1._eMail">
+            <summary>
+            邮箱
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User`1.EMail">
             <summary>
             邮箱
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User`1._regAlias">
+            <summary>
+            注册昵称
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User`1.RegAlias">
@@ -11962,9 +12115,19 @@
             注册昵称
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User`1._regTime">
+            <summary>
+            注册时间
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User`1.RegTime">
             <summary>
             注册时间
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User`1._requestAddress">
+            <summary>
+            服务请求方IP地址
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User`1.RequestAddress">
@@ -11972,9 +12135,19 @@
             服务请求方IP地址
             </summary>
         </member>
-        <member name="P:Phenix.Core.Security.User`1.RequestSession">
+        <member name="F:Phenix.Core.Security.User`1._requestSignature">
             <summary>
             服务请求会话签名
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.User`1.RequestSignature">
+            <summary>
+            服务请求会话签名
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User`1._requestFailureCount">
+            <summary>
+            服务请求失败次数
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User`1.RequestFailureCount">
@@ -11982,9 +12155,19 @@
             服务请求失败次数
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User`1._requestFailureTime">
+            <summary>
+            服务请求失败时间
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User`1.RequestFailureTime">
             <summary>
             服务请求失败时间
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User`1._rootTeamsId">
+            <summary>
+            所属公司ID
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User`1.RootTeamsId">
@@ -11992,9 +12175,19 @@
             所属公司ID
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User`1._teamsId">
+            <summary>
+            所属部门ID
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User`1.TeamsId">
             <summary>
             所属部门ID
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User`1._positionId">
+            <summary>
+            担任岗位ID
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User`1.PositionId">
@@ -12002,9 +12195,19 @@
             担任岗位ID
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User`1._locked">
+            <summary>
+            是否锁定
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User`1.Locked">
             <summary>
             是否锁定
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User`1._lockedTime">
+            <summary>
+            锁定时间
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User`1.LockedTime">
@@ -12012,9 +12215,19 @@
             锁定时间
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User`1._disabled">
+            <summary>
+            是否注销
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User`1.Disabled">
             <summary>
             是否注销
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User`1._disabledTime">
+            <summary>
+            注销时间
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User`1.DisabledTime">
@@ -12022,9 +12235,20 @@
             注销时间
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User`1._password">
+            <summary>
+            登录口令(散列值)
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User`1.Password">
             <summary>
             登录口令(散列值)
+            </summary>
+        </member>
+        <member name="F:Phenix.Core.Security.User`1._dynamicPassword">
+            <summary>
+            动态口令(散列值)
+            为空时用登录口令
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User`1.DynamicPassword">
@@ -12033,9 +12257,19 @@
             为空时用登录口令
             </summary>
         </member>
+        <member name="F:Phenix.Core.Security.User`1._dynamicPasswordCreateTime">
+            <summary>
+            动态口令生成时间
+            </summary>
+        </member>
         <member name="P:Phenix.Core.Security.User`1.DynamicPasswordCreateTime">
             <summary>
             动态口令生成时间
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.Security.User`1.IsInitialPassword">
+            <summary>
+            是否初始口令?
             </summary>
         </member>
         <member name="P:Phenix.Core.Security.User`1.IsCompanyAdmin">
@@ -12064,85 +12298,60 @@
             <param name="cipherText">密文(Base64字符串)</param>
             <returns>原文</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User`1.SetAuthenticated(System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Security.User`1.Logon(System.String,System.String@,System.String)">
             <summary>
-            通过身份验证
+            登录
             </summary>
-            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-            <param name="reset">重置比对池</param>
-        </member>
-        <member name="M:Phenix.Core.Security.User`1.IsValid(System.Boolean)">
-            <summary>
-            核对有效性
-            </summary>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
-            <returns>是否正确</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.User`1.IsValid(System.String,System.String,System.String,System.String,System.Boolean)">
-            <summary>
-            核对有效性
-            </summary>
-            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-            <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
+            <param name="signature">会话签名</param>
+            <param name="tag">捎带数据(默认是客户端时间也可以是修改的新密码)</param>
             <param name="requestAddress">服务请求方IP地址</param>
-            <param name="requestSession">服务请求会话签名</param>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或禁止多终端登录时会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserMultiAddressRequestException异常而不是返回false</param>
-            <returns>是否正确</returns>
+        </member>
+        <member name="M:Phenix.Core.Security.User`1.Verify(System.String,System.String)">
+            <summary>
+            验证
+            </summary>
+            <param name="signature">会话签名</param>
+            <param name="requestAddress">服务请求方IP地址</param>
         </member>
         <member name="M:Phenix.Core.Security.User`1.Logout">
             <summary>
-            核对有效性
+            登出
             </summary>
         </member>
-        <member name="M:Phenix.Core.Security.User`1.IsValidLogon(System.String,System.String,System.String,System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Security.User`1.ResetPassword">
             <summary>
-            核对登录有效性
+            重置登录口令
             </summary>
-            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-            <param name="signature">签名(二次MD5登录口令/动态口令AES加密时间戳的Base64字符串)</param>
+        </member>
+        <member name="M:Phenix.Core.Security.User`1.ChangePassword(System.String)">
+            <summary>
+            修改登录口令
+            </summary>
+            <param name="newPassword">新登录口令</param>
+        </member>
+        <member name="M:Phenix.Core.Security.User`1.ApplyDynamicPassword(System.String)">
+            <summary>
+            申请动态口令
+            </summary>
             <param name="requestAddress">服务请求方IP地址</param>
-            <param name="requestSession">服务请求会话签名</param>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
-            <returns>是否正确</returns>
+            <returns>动态口令(6位数字一般作为验证码用短信发送给到用户)</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User`1.IsValidDynamicPassword(System.String,System.String,System.String,System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Security.User`1.Activate">
             <summary>
-            核对动态口令有效性
+            激活
             </summary>
-            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-            <param name="dynamicPassword">动态口令</param>
-            <param name="requestAddress">服务请求方IP地址</param>
-            <param name="requestSession">服务请求会话签名</param>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
-            <returns>是否正确</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User`1.IsValidPassword(System.String,System.String,System.String,System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Security.User`1.Disable">
             <summary>
-            核对登录口令有效性
+            注销
             </summary>
-            <param name="timestamp">时间戳(9位长随机数+ISO格式当前时间)</param>
-            <param name="password">登录口令(散列值)</param>
-            <param name="requestAddress">服务请求方IP地址</param>
-            <param name="requestSession">服务请求会话签名</param>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令错误或口令失效时会抛出UserNotFoundException/UserLockedException/UserVerifyException异常而不是返回false</param>
-            <returns>是否正确</returns>
         </member>
-        <member name="M:Phenix.Core.Security.User`1.EqualityNamePassword(System.String,System.String,System.Boolean)">
+        <member name="M:Phenix.Core.Security.User`1.VerifyPasswordComplexity(System.String,System.String)">
             <summary>
-            比对登录名与口令
+            登录口令是否规范
             </summary>
             <param name="name">登录名</param>
             <param name="password">登录口令</param>
-            <param name="throwIfNotConform">如果为 true, 登录口令无效时会抛出PasswordComplexityException异常而不是返回false</param>
-            <returns>是否正确</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.User`1.IsValidPasswordComplexity(System.String,System.String,System.Boolean)">
-            <summary>
-            登录口令是否有效
-            </summary>
-            <param name="name">登录名</param>
-            <param name="password">登录口令</param>
-            <param name="throwIfNotConform">如果为 true, 登录口令无效时会抛出PasswordComplexityException异常而不是返回false</param>
             <returns>是否正确</returns>
         </member>
         <member name="M:Phenix.Core.Security.User`1.BuildPassword">
@@ -12156,42 +12365,6 @@
             构建动态口令
             </summary>
             <returns>动态口令</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.User`1.ResetPassword">
-            <summary>
-            重置登录口令
-            </summary>
-            <returns>是否成功</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.User`1.ChangePassword(System.String@,System.String@,System.Boolean,System.String,System.String,System.Boolean)">
-            <summary>
-            修改登录口令
-            </summary>
-            <param name="password">登录口令</param>
-            <param name="newPassword">新登录口令</param>
-            <param name="hashPassword">需HASH登录口令</param>
-            <param name="requestAddress">服务请求方IP地址</param>
-            <param name="requestSession">服务请求会话签名</param>
-            <param name="throwIfNotConform">如果为 true, 账号无效或口令不规范会抛出UserNotFoundException/UserLockedException/UserVerifyException/UserPasswordComplexityException异常而不是返回false</param>
-            <returns>是否成功</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.User`1.ApplyDynamicPassword(System.String,System.Boolean)">
-            <summary>
-            申请动态口令
-            </summary>
-            <param name="requestAddress">服务请求方IP地址</param>
-            <param name="throwIfNotConform">如果为 true, 核对有效性不符会抛出UserNotFoundException/UserLockedException异常而不是返回false</param>
-            <returns>动态口令(6位数字一般作为验证码用短信发送给到用户)</returns>
-        </member>
-        <member name="M:Phenix.Core.Security.User`1.Activate">
-            <summary>
-            激活
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Security.User`1.Disable">
-            <summary>
-            注销
-            </summary>
         </member>
         <member name="T:Phenix.Core.SyncCollections.CachedObject`1">
             <summary>
@@ -12216,6 +12389,11 @@
             失效时间
             </summary>
         </member>
+        <member name="P:Phenix.Core.SyncCollections.CachedObject`1.IsInvalid">
+            <summary>
+            是否失效
+            </summary>
+        </member>
         <member name="T:Phenix.Core.SyncCollections.ICachedObject">
             <summary>
             缓存对象接口
@@ -12224,6 +12402,11 @@
         <member name="P:Phenix.Core.SyncCollections.ICachedObject.InvalidTime">
             <summary>
             失效时间
+            </summary>
+        </member>
+        <member name="P:Phenix.Core.SyncCollections.ICachedObject.IsInvalid">
+            <summary>
+            是否失效
             </summary>
         </member>
         <member name="T:Phenix.Core.SyncCollections.SynchronizedDictionary`2">
@@ -14006,6 +14189,14 @@
             <returns>报文主体</returns>
         </member>
         <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.ReadBodyAsStringAsync(Microsoft.AspNetCore.Http.HttpRequest,System.Boolean)">
+            <summary>
+            获取报文主体
+            </summary>
+            <param name="request">HttpRequest</param>
+            <param name="decrypt">需要解密</param>
+            <returns>报文主体</returns>
+        </member>
+        <member name="M:Microsoft.AspNetCore.Mvc.HttpRequestExtension.ReadBodyAsDynamicAsync(Microsoft.AspNetCore.Http.HttpRequest,System.Boolean)">
             <summary>
             获取报文主体
             </summary>

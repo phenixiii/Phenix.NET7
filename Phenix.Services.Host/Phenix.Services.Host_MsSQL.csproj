@@ -2,9 +2,9 @@
 
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
-		<Version>7.5.52</Version>
-		<AssemblyVersion>7.5.52.0920</AssemblyVersion>
-		<FileVersion>7.5.52.0920</FileVersion>
+		<Version>7.5.54</Version>
+		<AssemblyVersion>7.5.54.1212</AssemblyVersion>
+		<FileVersion>7.5.54.1212</FileVersion>
 		<Description>Phenix Framework 7.5 for .NET 5</Description>
 		<Authors>ming</Authors>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
