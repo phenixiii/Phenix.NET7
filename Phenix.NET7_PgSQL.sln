@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.352
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Core_PgSQL", "Phenix.Core\Phenix.Core_PgSQL.csproj", "{EB09C083-59A9-4C00-BB4C-8185F8D09B68}"
 EndProject
@@ -91,8 +91,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "crypto-js", "crypto-js", "{
 		Phenix.Client\lib\crypto-js\md5-min.js = Phenix.Client\lib\crypto-js\md5-min.js
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Norm_PgSQL", "Phenix.Norm\Phenix.Norm_PgSQL.csproj", "{879242CD-4E9A-4010-89C1-DF4E40B35903}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.TPT.Plugin_PgSQL", "Phenix.TPT.Plugin\Phenix.TPT.Plugin_PgSQL.csproj", "{38BBFB2C-915C-441A-8CC8-9380035189E8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5534C041-BC9F-4DCE-BB6C-A2693D70E33D} = {5534C041-BC9F-4DCE-BB6C-A2693D70E33D}
@@ -113,6 +111,12 @@ EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Phenix.TPT.WebApp", "Phenix.TPT.WebApp\Phenix.TPT.WebApp.njsproj", "{C54F28DB-323B-4F17-A2EB-B31D0A473C41}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsack", "Demo_PgSQL\Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsack\Demo.Phenix.Algorithm.CombinatorialOptimization.ZeroOneKnapsack.csproj", "{5FEE4433-CE13-4E97-8AD8-06F18F0BF916}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Phenix.iPost.ROS", "Phenix.iPost.ROS", "{661754D1-600A-4482-9CA3-142FCEB29983}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.iPost.ROS.Contract_PgSQL", "Phenix.iPost.ROS\Phenix.iPost.ROS.Contract\Phenix.iPost.ROS.Contract_PgSQL.csproj", "{72FE5ACB-6156-4D15-A46F-0E7707701FD9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.iPost.ROS.Plugin_PgSQL", "Phenix.iPost.ROS\Phenix.iPost.ROS.Plugin\Phenix.iPost.ROS.Plugin_PgSQL.csproj", "{233C8BCD-4F09-4B3D-9BC7-B26627000961}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -188,10 +192,6 @@ Global
 		{1D6BFC2E-B2F1-4EC8-9AEE-10BF5DD085DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D6BFC2E-B2F1-4EC8-9AEE-10BF5DD085DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D6BFC2E-B2F1-4EC8-9AEE-10BF5DD085DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{879242CD-4E9A-4010-89C1-DF4E40B35903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{879242CD-4E9A-4010-89C1-DF4E40B35903}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{879242CD-4E9A-4010-89C1-DF4E40B35903}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{879242CD-4E9A-4010-89C1-DF4E40B35903}.Release|Any CPU.Build.0 = Release|Any CPU
 		{38BBFB2C-915C-441A-8CC8-9380035189E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{38BBFB2C-915C-441A-8CC8-9380035189E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38BBFB2C-915C-441A-8CC8-9380035189E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -212,6 +212,14 @@ Global
 		{5FEE4433-CE13-4E97-8AD8-06F18F0BF916}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FEE4433-CE13-4E97-8AD8-06F18F0BF916}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FEE4433-CE13-4E97-8AD8-06F18F0BF916}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72FE5ACB-6156-4D15-A46F-0E7707701FD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72FE5ACB-6156-4D15-A46F-0E7707701FD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72FE5ACB-6156-4D15-A46F-0E7707701FD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72FE5ACB-6156-4D15-A46F-0E7707701FD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{233C8BCD-4F09-4B3D-9BC7-B26627000961}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{233C8BCD-4F09-4B3D-9BC7-B26627000961}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{233C8BCD-4F09-4B3D-9BC7-B26627000961}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{233C8BCD-4F09-4B3D-9BC7-B26627000961}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -229,6 +237,8 @@ Global
 		{D2F49C2F-D51C-4391-B8C6-35A65D427A71} = {D699CC37-CB5A-4A28-96E9-D75A55CD828A}
 		{EB7F7FE4-F183-4893-83CF-3DB21DF4397B} = {62DFAED0-722A-462A-BEB9-3C5526578985}
 		{5FEE4433-CE13-4E97-8AD8-06F18F0BF916} = {B7AA29AA-B690-4002-8703-AC8C7DD37E2C}
+		{72FE5ACB-6156-4D15-A46F-0E7707701FD9} = {661754D1-600A-4482-9CA3-142FCEB29983}
+		{233C8BCD-4F09-4B3D-9BC7-B26627000961} = {661754D1-600A-4482-9CA3-142FCEB29983}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9C8CF59-EE51-4301-9EAC-22750A624DD2}

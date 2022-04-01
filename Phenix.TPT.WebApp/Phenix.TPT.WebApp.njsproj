@@ -30,6 +30,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="babel.config.js" />
+    <Content Include="libman.json" />
     <Content Include="public\lib\fonts\font-awesome.css" />
     <Content Include="public\lib\fonts\font-awesome.min.css" />
     <Content Include="public\lib\fonts\fontawesome-webfont.eot" />

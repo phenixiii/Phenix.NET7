@@ -1,0 +1,290 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,Chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="css/page.css" charset="UTF-8">
+    <link rel="stylesheet" href="css/fonts/font-awesome.min.css" charset="UTF-8">
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/element.css">
+    <title>查询</title>
+</head>
+
+<body style="background-color: rgb(245, 245, 245)">
+    <style>
+        .invoiceinput {
+            width: 25% !important;
+            vertical-align: middle;
+            text-align: center;
+            background-color: rgb(245, 245, 245);
+            border: none;
+            padding: 0%;
+        }
+        
+        .invoicehead {
+            width: 20%;
+            display: table-cell;
+            vertical-align: middle;
+            color: rgb(31, 73, 125);
+        }
+        
+        .searchhr {
+            width: 13%;
+            margin: 0% 2% 0% 0%;
+            float: left;
+        }
+        
+        .el-input__inner {
+            width: 100%;
+            border: 0px;
+            outline: none;
+            height: 100%;
+            line-height: 100%;
+            padding: 0%;
+            border-radius: 0px;
+            background-color: rgb(245, 245, 245);
+            text-align: center;
+        }
+        
+        .el-input__icon {
+            line-height: 100%;
+        }
+        
+        .el-input.is-disabled .el-input__inner {
+            color: #333;
+        }
+    </style>
+    <div class="content" id="content">
+        <div id="menu">
+            <section class="sec-menu">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span class="menu-open-icon" title="显示菜单"> <i class="fa fa-bars pull-left fa-2x b-clr"
+                                    style="color:black"></i>
+                            </span>
+                            <font face="Papyrus" size="6" color="black">Teamwork Project Tracker</font>
+                            <i class="pull-right">
+                                <p style="font-style:normal;font-size: 14px;margin-bottom: 0%;margin-top:20px;color:black">
+                                    <a style="color:black;cursor:pointer;float:right;margin-left: 15px;" onclick="logout()">退出</a>
+                                        <el-rate v-if="Score>0" :value="Score" style="float:right" disabled show-score text-color="#ff9900" score-template="{value}">
+                                        </el-rate>
+                                        <a id="username" style="color:black;text-decoration:none;margin-right: 15px;float:right">您好，</a>
+                                </p>
+                            </i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div id="side-menu">
+                <ul>
+                    <li style="border-bottom:0px;">
+                        <a href="#" title="关闭菜单">
+                            <i class="fa fa-close fa-2x menu-close-icon b-clr" style="color:black"></i>
+                        </a>
+                    </li>
+                    <li title="月工作量" style="cursor: pointer" onclick="gotoMW()">
+                        <i id="MW" class="fa fa-calendar fa-2x" style="color:black"></i>
+                    </li>
+                    <li title="工作档期" style="cursor: pointer" onclick="gotoWS()">
+                        <i id="WS" class="fa fa-sliders fa-2x" style="color:black"></i>
+                    </li>
+                    <li title="工匠精神" style="cursor:pointer" onclick="gotoTU()">
+                        <i id="TU" class="fa fa-thumbs-up fa-2x" style="color:black"></i>
+                    </li>
+                    <li title="项目管理" style="cursor: pointer" onclick="gotoPM()">
+                        <i id="PM" class="fa fa-cog fa-2x" style="color:black"></i>
+                    </li>
+                    <li title="开票跟踪" style="cursor: pointer" onclick="gotoSearch()">
+                        <i id="Search" class="fa fa-jpy fa-2x" style="color:black"></i>
+                    </li>
+                    <li title="数据分析" style="cursor: pointer" onclick="gotoBI()">
+                        <i id="BI" class="fa fa-bar-chart fa-2x" style="color:black"></i>
+                    </li>
+                    <li title="修改密码" style="cursor: pointer" onclick="gotoCP()">
+                        <i id="CP" class="fa fa-key fa-2x" style="color:black"></i>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row pad-botm">
+                <div class="col-md-12">
+                    <div class="header-line" style="border-bottom: 1px solid rgb(214, 214, 255)">
+                        <h4 style="float:left;margin-top:2.5%;margin-bottom:0%">开票跟踪</h4>
+                    </div>
+                </div>
+            </div>
+            <div style="padding:1%;background-color:rgb(255, 255, 255);border-radius: 2px;overflow: hidden;">
+                <div style="width:20%;float: left">
+                    <select class="form-control" style="border-color:rgb(200, 200, 255)" v-model="category">
+                        <option value="project">项目开票情况</option>
+                        <option value="annual">年度开票情况</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" style="float:right;" @click="search()">查询</button>
+                <div style="float: right;margin-right:2%">
+                    <select class="form-control" v-model="option" style="border-color:rgb(214, 214, 255)">
+                        <option v-cloak v-for="(item,index) in optionlist" style="font-weight: normal">{{item}}</option>
+                    </select>
+                </div>
+                <div style="float: right;margin-right:2%;height:34px;padding-top: 7px">
+                    <el-switch style="display:block" v-model="sortvalue" active-color="#13ce66" inactive-color="rgb(66,158,253)" active-text="工作量" inactive-text="合同金额">
+                    </el-switch>
+                </div>
+                <div style="float: left;margin-left:4%">
+                    <!--select class="form-control" style="border-color:rgb(200, 200, 255)">
+                        <option></option>
+                    </select-->
+                    <!--label style="padding: 6px 12px;margin:0%;height: 34px;">部门</label-->
+                    <div class="radio" style="float: left;padding: 6px 12px;height:34px;margin: 0%">
+                        <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="Customer" v-model="rule">
+                            服务客户
+                        </label>
+                    </div>
+                    <div class="radio" style="float: left;padding: 6px 12px;height:34px;margin: 0%">
+                        <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="SalesManager" v-model="rule">
+                            客户经理
+                        </label>
+                    </div>
+                    <div class="radio" style="float: left;padding: 6px 12px;height:34px;margin: 0%">
+                        <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios3" value="ProjectManager" v-model="rule">
+                           项目经理
+                        </label>
+                    </div>
+                    <div class="radio" style="float: left;padding: 6px 12px;height:34px;margin: 0%">
+                        <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios3" value="DevelopManager" v-model="rule">
+                           开发经理
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div :style="departmentproject.length>0?null:hide" id="chart" style="height:400px;background-color: rgb(255,255,255);margin-top:1.5%"></div>
+            <div v-show="departmentproject.length>0">
+                <ul style="padding: 0%">
+                    <li>
+                        <div style="overflow:hidden;display: block;border:1px solid rgb(245, 245, 245);margin-top:0.5%;padding-top:1%;padding-bottom: 1%;border-radius:5px;position: relative;background-color: rgb(255,255,255)">
+                            <div style="width:8%;float:left;color:rgb(31, 73, 125);" v-html="rule=='Customer'?'客户':rule=='SalesManager'?'客户经理':rule=='ProjectManager'?'项目经理':rule=='DevelopManager'?'开发经理':''"></div>
+                            <div style="width:25%;float:left;color:rgb(31, 73, 125);">项目</div>
+                            <div v-if="category=='project'" style="width:8%;float:left;color:rgb(31, 73, 125);">合同金额</div>
+                            <div v-else style="width:8%;float:left;color:rgb(31, 73, 125);">年度预算</div>
+                            <div v-if="category=='project'" style="width:8%;float: left;color:rgb(31, 73, 125);">开票金额</div>
+                            <div v-else style="width:8%;float: left;color:rgb(31, 73, 125);">年度开票</div>
+                            <div style="width:25%;float:left;color:rgb(31, 73, 125);">付款条款</div>
+                            <div style="width:10%;float:left;color:rgb(31, 73, 125);">年度目标</div>
+                            <div style="width:8%;float:left;color:rgb(31, 73, 125);">当前状态</div>
+                            <div style="width:8%;float:left;color:rgb(31, 73, 125);padding-right:1%">查看明细</div>
+                        </div>
+                    </li>
+                    <li v-for="(item,index) in departmentproject" :style="((category=='annual' &&item.AnnualAmount==item.AnnualInvoiceAmount)||(category=='project' &&item.ContAmount==item.ContInvoiceAmount))?'color:gray':'color:black'">
+                        <div :id="item.ProjectName" style="overflow: hidden;display: table;width: 100%;border:1px solid rgb(245, 245, 245);margin-top:0.5%;padding-top:1%;padding-bottom: 1%;border-radius:5px;position: relative;background-color: rgb(255,255,255)">
+                            <!--v-show="index==0 || item.Customer!=departmentproject[index-1].Customer"-->
+                            <div style="width:8%;display: table-cell;vertical-align: middle;color:black" :style="(index==0 || item[rule]!=departmentproject[index-1][rule])?null:hide">{{item[rule]}}</div>
+                            <div style="width:25%;display: table-cell;vertical-align: middle;padding-left:1%" @click="showproject(index)">
+                                <div style="min-height: 5px;padding-left:25%;padding-right:25%">
+                                    <hr class="manage-color searchhr" v-if="item.ManageWork" />
+                                    <hr class="no-color searchhr" v-else />
+                                    <hr class="investigate-color searchhr" v-if="item.InvestigateWork" />
+                                    <hr class="no-color searchhr" v-else />
+                                    <hr class="develop-color searchhr" v-if="item.DevelopWork" />
+                                    <hr class="no-color searchhr" v-else />
+                                    <hr class="test-color searchhr" v-if="item.TestWork" />
+                                    <hr class="no-color searchhr" v-else />
+                                    <hr class="implement-color searchhr" v-if="item.ImplementWork" />
+                                    <hr class="no-color searchhr" v-else />
+                                    <hr class="maintenance-color searchhr" v-if="item.MaintenanceWork" />
+                                    <hr class="no-color searchhr" v-else />
+                                </div>
+                                <div>
+                                    {{item.ProjectName}}
+                                </div>
+                            </div>
+                            <div style="width:8%;display: table-cell;vertical-align: middle;">{{category=='project'?item.ContAmount:item.AnnualAmount}}</div>
+                            <div style="width:8%;display: table-cell;vertical-align: middle;">{{category=='project'?item.ContInvoiceAmount:item.AnnualInvoiceAmount}}</div>
+                            <div style="width:25%;display: table-cell;vertical-align: middle;">{{item.ContPayClause}}</div>
+                            <div style="width:10%;display: table-cell;vertical-align: middle;">{{item.AnnualAim}}</div>
+                            <div style="width:8%;display: table-cell;vertical-align: middle;padding-right:10px" v-html="JSON.parse(JSON.stringify(item.CurrentStatus).replace(/（/,'<br/>（'))"></div>
+                            <div class="btn-group" :class="dropup[index]" style="width:8%;display: table-cell;vertical-align: middle;padding-right:1%">
+                                <button class="btn buttonon1" style="padding:6px;border:solid 2px rgb(23,181,84);background-color: rgb(23,181,84);color:rgb(255,255,255);" @click="searchinvoice(index)">开票明细<span class="caret" style="color:rgb(255,255,255)"></span></button>
+                            </div>
+                        </div>
+                        <div v-if="showinvoice[index]" style="border-left:solid 1px rgb(214, 214, 214);border-right:solid 1px rgb(214, 214, 214);">
+                            <!--div v-if="invoicedata[index].length==0" style="border-bottom: solid 1px rgb(214, 214, 214);">暂无开票记录！</div-->
+                            <div>
+                                <!--v-else-->
+                                <ul style="padding:0%">
+                                    <li>
+                                        <div style="overflow: hidden;display: table;width: 100%;border-bottom: solid 1px rgb(214, 214, 214);padding:0.5% 20% ">
+                                            <div class="invoicehead">开票金额</div>
+                                            <div class="invoicehead">开票日期</div>
+                                            <div class="invoicehead">开票说明</div>
+                                        </div>
+                                    </li>
+                                    <li v-if="invoicedata[index].length!=0" v-for="(item,indexs) in invoicedata[index]">
+                                        <div style="overflow: hidden;display: table;width: 100%;border-bottom: solid 1px rgb(214, 214, 214);padding: 0.5% 0% 0.5% 20%">
+                                            <input class="invoice invoiceamount invoiceinput" disabled="disabled" :value="item.Amount" onkeyup="value=value.replace(/[^\-?\d.]/g, '')">
+                                            <el-date-picker class="invoice invoiceinput" :disabled="datedisable" v-model="item.Date" value-format=" yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
+                                            <input class="invoice invoiceinput" disabled="disabled" v-model="item.Remark">
+                                            <i v-if="user.Department.Name == departmentproject[0].Department && user.Position.Name == '管理'" class='fa fa-pencil' title="修改" style="width:20%;padding-left:18%;padding-right:6px;cursor: pointer;" @click="write($event)"></i>
+                                            <span v-else style="width: 25%;padding-left:25%"></span>
+                                            <i v-if="user.Department.Name == departmentproject[0].Department && user.Position.Name == '管理'" class='fa fa-check hide' title="保存" style="width:20%;padding-left:18%;padding-right:6px;cursor: pointer;" @click="saveinvoice(index,indexs,$event)"></i>
+                                            <i v-if="user.Department.Name == departmentproject[0].Department && user.Position.Name == '管理'" class='fa fa-trash' style="padding-right:2%;cursor: pointer;" @click="deleteinvoice(item.PI_ID,index,indexs,$event)" title="删除"></i>
+                                        </div>
+                                    </li>
+                                    <li class="newrecord hide">
+                                        <div class="newdiv" style="overflow: hidden;display: table;width: 100%;border-bottom: solid 1px rgb(214, 214, 214);padding: 0.5% 0% 0.5% 20%">
+                                            <input class="invoiceinput" v-model="newinvoice.Amount" onkeyup="value=value.replace(/[^\-?\d.]/g, '')">
+                                            <el-date-picker class="invoiceinput" id="invoicedate" v-model="newinvoice.Date" value-format=" yyyy-MM-dd" format="yyyy-MM-dd"></el-date-picker>
+                                            <input class="invoiceinput" v-model="newinvoice.Remark">
+                                            <i class='fa fa-check' title="保存" style="width:20%;padding-left:18%;padding-right:6px;cursor: pointer;" @click="saveinvoice(index,-1,$event)"></i>
+                                            <i class='fa fa-trash' style="padding-right:2%;cursor: pointer;" @click="deleteinvoice(item.PI_ID,index,-1,$event)" title="删除"></i>
+                                        </div>
+                                    </li>
+                                    <li class="addli" style="border-bottom: solid 1px rgb(214, 214, 214);">
+                                        <div v-if="invoicedata[index].length==0 ||( user.Department.Name == departmentproject[0].Department && user.Position.Name == '管理')||user.Department.Name=='公司管理'" style="overflow: hidden;display: table;width: 100%;padding: 0.5% 0%">
+                                            <span v-if="invoicedata[index].length==0">暂无开票信息！</span>
+                                            <a class="addicon" v-if="user.Department.Name == departmentproject[index].Department && user.Position.Name == '管理'" @click="add($event)"><i class='fa fa-plus' style="padding:0px 6px"></i>新增</a>
+                                            <a class="addicon" v-if="(user.Department.Name == departmentproject[index].Department && user.Position.Name == '管理')||user.UserName==departmentproject[index].SalesManager" @click="end(index,$event)"><i class='fa fa-stop-circle-o' style="padding:0px 6px"></i>完结</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div style="overflow: hidden;position: fixed;right: 30px;bottom: 20px;z-index: 10;">
+            <div style="overflow: hidden;">
+                <div> <a href="#" title="返回顶部" style="float: right;padding:6px 10.5px" class="btns button"><i class="fa fa-angle-up fa-2x"
+                            title="返回顶部" style="cursor:pointer;color: rgb(155, 155, 155)" aria-hidden="true" type="buttonon"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="scripts/crypto-js/core-min.js"></script>
+    <script type="text/javascript" src="scripts/crypto-js/cipher-core-min.js"></script>
+    <script type="text/javascript" src="scripts/crypto-js/aes-min.js"></script>
+    <script type="text/javascript" src="scripts/crypto-js/md5-min.js"></script>
+
+    <script type="text/javascript" src="scripts/lib/common.min.js"></script>
+    <script type="text/javascript" src="scripts/phenix7.js"></script>
+
+    <script type="text/javascript" src="scripts/echarts.min.js"></script>
+    <script type="text/javascript" src="scripts/basefunc.js?v=1"></script>
+    <script type="text/javascript" src="scripts/mesgbox.js"></script>
+    <script src="scripts/element.js"></script>
+    <script>
+        document.write("<script type='text/javascript' src='scripts/search.js?v=" + new Date().toLocaleDateString() +
+            "'><\/script>");
+    </script>
+</body>
+
+</html>

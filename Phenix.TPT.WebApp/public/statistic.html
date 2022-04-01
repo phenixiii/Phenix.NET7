@@ -1,0 +1,253 @@
+﻿<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,Chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+    <script>
+        document.write("<link rel='stylesheet' href='css/page.css?v=" + new Date().toLocaleDateString() + "' charset='UTF-8'>");
+    </script>
+    <!--link rel="stylesheet" href="css/page.css?time=New Date()" charset="UTF-8"-->
+    <link rel="stylesheet" href="css/fonts/font-awesome.min.css" charset="UTF-8">
+    <link rel="stylesheet" href="css/element.css">
+    <title>数据分析</title>
+</head>
+
+<body>
+    <style>
+        body {
+            margin: 0%
+        }
+        
+        .content {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .FlexContainer {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        .flex1 {
+            flex: 1;
+        }
+        
+        .showflex {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+    <div class="content" id="content">
+        <div class="FlexContainer">
+            <div id="menu" style="width:100%">
+                <section class="sec-menu">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span class="menu-open-icon" title="显示菜单"> <i class="fa fa-bars pull-left fa-2x b-clr"
+                                        style="color:black"></i>
+                                </span>
+                                <font face="Papyrus" size="6" color="black">Teamwork Project Tracker</font>
+                                <i class="pull-right">
+                                    <p style="font-style:normal;font-size: 14px;margin-bottom: 0%;margin-top:20px;color:black">
+                                        <a style="color:black;cursor:pointer;float:right;margin-left: 15px;" onclick="logout()">退出</a>
+                                        <el-rate v-if="Score>0" :value="Score" style="float:right" disabled show-score text-color="#ff9900" score-template="{value}">
+                                        </el-rate>
+                                        <a id="username" style="color:black;text-decoration:none;margin-right: 15px;float:right">您好，</a>
+                                    </p>
+                                </i>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div id="side-menu">
+                    <ul>
+                        <li style="border-bottom:0px;">
+                            <a href="#" title="关闭菜单">
+                                <i class="fa fa-close fa-2x menu-close-icon b-clr" style="color:black"></i>
+                            </a>
+                        </li>
+                        <li title="月工作量" style="cursor: pointer" onclick="gotoMW()">
+                            <i id="MW" class="fa fa-calendar fa-2x" style="color:black"></i>
+                        </li>
+                        <li title="工作档期" style="cursor: pointer" onclick="gotoWS()">
+                            <i id="WS" class="fa fa-sliders fa-2x" style="color:black"></i>
+                        </li>
+                        <li title="工匠精神" style="cursor:pointer" onclick="gotoTU()">
+                            <i id="TU" class="fa fa-thumbs-up fa-2x" style="color:black"></i>
+                        </li>
+                        <li title="项目管理" style="cursor: pointer" onclick="gotoPM()">
+                            <i id="PM" class="fa fa-cog fa-2x" style="color:black"></i>
+                        </li>
+                        <li title="开票跟踪" style="cursor: pointer" onclick="gotoSearch()">
+                            <i id="Search" class="fa fa-jpy fa-2x" style="color:black"></i>
+                        </li>
+                        <li title="数据分析" style="cursor: pointer" onclick="gotoBI()">
+                            <i id="BI" class="fa fa-bar-chart fa-2x" style="color:black"></i>
+                        </li>
+                        <li title="修改密码" style="cursor: pointer" onclick="gotoCP()">
+                            <i id="CP" class="fa fa-key fa-2x" style="color:black"></i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="container flex1 showflex">
+                <div class="row pad-botm">
+                    <div class="col-md-12">
+                        <div class="header-line">
+                            <h4 style="float:left;margin-top:2.5%;margin-bottom:0%">数据分析</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row flex1 showflex">
+                    <div class="col-md-12 flex1 showflex">
+                        <div class="panel panel-info flex1 showflex" style="margin:0% 0% 1% 0%">
+                            <div class="panel-heading" style="overflow: hidden">
+                                <div style="float: left;">
+                                    <select class="form-control" v-model="charttype">
+                                        <option value="workerbar" title="项目经理和开发经理检查每月工作量填写情况">项目人力资源堆叠图</option>
+                                        <option value="projectbar">项目人力资源涨落图</option>
+                                        <option v-if="globaluser.Department.Name == '公司管理' || globaluser.Position.Name == '管理' || globaluser.Roles.项目管理" value="bubble">项目人力资源分摊图</option>
+                                        <option value="circlelink">员工工作关系交织图</option>
+                                        <option value="forcelink">员工工作关系导向图</option>
+                                        <option value="managelink">部门管理关系导向图</option>
+                                        <option value="box">部门角色分布箱线图</option>
+                                        <option value="bar">部门角色分布堆叠图</option>
+                                        <option value="radar">员工参与角色雷达图</option>
+                                        <option value="parallel">员工参与项目关系图</option>
+                                        <option value="projectlink">员工参与项目导向图</option>
+                                        <!--option value="lines">项目人力资源涨落图</option-->
+                                    </select>
+                                </div>
+                                <button class="btn btn-info" style="float: right;" @click="draw()">查询</button>
+                                <!--div class="col-md-3" style="float:right;padding:0%;margin-right:1%">
+                                <input class="col-md-5" id="barend" style="float:right;margin:0% 1% 0% 0%" v-model="barendtime">
+                                <p class="col-md-1" style="float:right;margin:2px 1% 0% 0%">-</p>
+                                <input class="col-md-5" id="barstart" style="float:right;margin:0% 1% 0% 0%" v-model="barstarttime">
+                            </div>
+                            <p style="float:right;margin:2px 1% 0% 0%">查询日期</p v-if="charttype=='workerbar'"-->
+                                <div v-if="charttype=='workerbar' && value3" style="float:right;margin:0% 2% 0% 0%">
+                                    <el-date-picker style="float:left" v-model="workerbartime" type="month" placeholder="选择月">
+                                    </el-date-picker>
+                                </div>
+                                <div v-if="charttype=='workerbar'" style="float:right;margin:0% 2% 0% 0%;padding:6px 0px">
+                                    <el-switch style="display:block" v-model="value3" active-color="#13ce66" inactive-color="rgb(66,158,253)" active-text="单月" inactive-text="全部">
+                                    </el-switch>
+                                </div>
+                                <div v-if="charttype=='parallel'" style="float:right;margin:0% 2% 0% 0%;padding:6px 0px">
+                                    <el-switch style="display:block" v-model="value4" active-color="#13ce66" inactive-color="rgb(66,158,253)" active-text="管理&客户" inactive-text="员工&项目">
+                                    </el-switch>
+                                </div>
+                                <div v-if="charttype=='projectbar'||charttype=='workerbar'" style="float:right;margin:0% 2% 0% 0%;padding:6px 0px">
+                                    <el-switch style="display:block" v-model="value5" active-color="#13ce66" inactive-color="rgb(66,158,253)" active-text="客户" inactive-text="项目">
+                                    </el-switch>
+                                </div>
+                                <div v-if="(charttype=='workerbar' ||charttype=='projectbar') && globaluser.Roles.项目管理" style="float:right;margin:0% 2% 0% 0%;padding:7px 0px 0px 0px">
+                                    <el-checkbox v-model="onlyme">只显示我的</el-checkbox>
+                                </div>
+                                <div v-if="charttype!='parallel' && charttype!='lines' && !(charttype=='bar'?interval='4':false) &&charttype!='projectbar' &&(charttype!='workerbar')" style="float:right">
+                                    <div class="radio" style="display: inline">
+                                        <label style="padding: 6px 12px;margin:0%;height: 34px;">
+                                            <input type="radio" name="intervalRadios" id="intervalRadios1" value="1"
+                                                v-model="interval">一个月
+                                        </label>
+                                    </div>
+                                    <div class="radio" style="display: inline">
+                                        <label style="padding: 6px 12px;margin:0%;height: 34px;">
+                                            <input type="radio" name="intervalRadios" id="intervalRadios2" value="2"
+                                                v-model="interval">三个月
+                                        </label>
+                                    </div>
+                                    <div class="radio" style="display: inline">
+                                        <label style="padding: 6px 12px;margin:0%;height: 34px;">
+                                            <input type="radio" name="intervalRadios" id="intervalRadios3" value="3"
+                                                v-model="interval">半年
+                                        </label>
+                                    </div>
+                                    <div class="radio" style="display: inline">
+                                        <label style="padding: 6px 12px;margin:0%;height: 34px;">
+                                            <input type="radio" name="intervalRadios" id="intervalRadios4" value="4"
+                                                v-model="interval">一年
+                                        </label>
+                                    </div>
+                                    <div v-if="new Date().getMonth()!=0" class="radio" style="display: inline">
+                                        <label style="padding: 6px 12px;margin:0%;height: 34px;">
+                                            <input type="radio" name="intervalRadios" id="intervalRadios4" value="5"
+                                                v-model="interval">当年
+                                        </label>
+                                    </div>
+                                </div>
+                                <div v-if="charttype=='radar'|| charttype=='parallel'||charttype=='bubble'|| charttype=='lines'||charttype=='workerbar'||charttype=='projectbar'" style="float:right;margin:0% 2% 0% 0%;float: right;">
+                                    <div style="float:right;max-width: 400px;">
+                                        <select class="form-control" name="manage" v-model="option" style="display: inline">
+                                            <option v-cloak v-for="item in allitem" style="font-weight: normal">{{item}}</option>
+                                        </select>
+                                    </div>
+                                    <div style="float:right">
+                                        <label v-if="charttype=='parallel'|| charttype=='bubble'|| charttype=='lines'||charttype=='workerbar'?checkedValue='3':false||charttype=='projectbar'?checkedValue='3':false" style="padding: 6px 12px;margin:0%;height: 34px;"><!--部门--></label>
+                                        <div v-else>
+                                            <div class="radio" style="display: inline">
+                                                <label style="padding: 6px 12px;margin:0%;height: 34px;">
+                                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="1"
+                                                        v-model="checkedValue">员工
+                                                </label>
+                                            </div>
+                                            <div class="radio" style="display: inline">
+                                                <label style="padding: 6px 12px;margin:0%;height: 34px;">
+                                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="2"
+                                                        v-model="checkedValue">项目
+                                                </label>
+                                            </div>
+                                            <div class="radio" style="display: inline">
+                                                <label style="padding: 6px 12px;margin:0%;height: 34px;">
+                                                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="3"
+                                                        v-model="checkedValue">部门
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="Graph" class="panel-body flex1" style="padding:0%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="overflow: hidden;position: fixed;right: 30px;bottom: 20px;z-index: 10;">
+            <div style="overflow: hidden;">
+                <div> <a href="#" title="返回顶部" style="float: right;padding:6px 10.5px" class="btns button"><i class="fa fa-angle-up fa-2x" title="返回顶部" style="cursor:pointer;color: rgb(155, 155, 155)" aria-hidden="true" type="buttonon"></i></a> </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="scripts/crypto-js/core-min.js"></script>
+    <script type="text/javascript" src="scripts/crypto-js/cipher-core-min.js"></script>
+    <script type="text/javascript" src="scripts/crypto-js/aes-min.js"></script>
+    <script type="text/javascript" src="scripts/crypto-js/md5-min.js"></script>
+
+    <script type="text/javascript" src="scripts/lib/common.min.js"></script>
+    <script type="text/javascript" src="scripts/phenix7.js"></script>
+
+    <script type="text/javascript" src="scripts/d3.v3.min.js"></script>
+    <script type="text/javascript" src="scripts/echarts.min.js"></script>
+    <script type="text/javascript" src="scripts/dataTool.js"></script>
+    <script type="text/javascript" src="scripts/basefunc.js?v=1"></script>
+    <script type="text/javascript" src="scripts/mesgbox.js"></script>
+    <script type="text/javascript" src="scripts/element.js"></script>
+    <!--script src="https://unpkg.com/element-ui/lib/index.js"></script-->
+    <script>
+        document.write("<script type='text/javascript' src='scripts/bi.js?vs=" + new Date().toLocaleDateString() +
+            "'><\/script>");
+    </script>
+    <!--script type="text/javascript" src="scripts/bi.js?time=New Date()" charset="UTF-8"></script-->
+
+</body>
+
+</html>

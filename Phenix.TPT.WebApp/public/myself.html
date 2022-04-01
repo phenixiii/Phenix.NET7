@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,Chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+    <script>
+        document.write("<link rel='stylesheet' href='css/page.css?v=" + new Date().toLocaleDateString() + "' charset='UTF-8'>");
+    </script>
+    <!--link rel="stylesheet" href="css/page.css?time=New Date()" charset="UTF-8"-->
+    <link rel="stylesheet" href="css/fonts/font-awesome.min.css" charset="UTF-8">
+    <link rel="stylesheet" href="css/element.css">
+    <title>修改密码</title>
+</head>
+
+<body>
+    <div class="content" id="content">
+        <div id="menu">
+            <section class="sec-menu">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span class="menu-open-icon" title="显示菜单"> <i class="fa fa-bars pull-left fa-2x b-clr" style="color:black"></i>
+                                </span>
+                            <font face="Papyrus" size="6" color="black">Teamwork Project Tracker</font>
+                            <i class="pull-right">
+                                    <p style="font-style:normal;font-size: 14px;margin-bottom: 0%;margin-top:20px;color:black">
+                                        <a style="color:black;cursor:pointer;float:right;margin-left: 15px;" onclick="logout()">退出</a>
+                                        <el-rate v-if="Score>0" :value="Score" style="float:right" disabled show-score text-color="#ff9900" score-template="{value}">
+                                        </el-rate>
+                                        <a id="username" style="color:black;text-decoration:none;margin-right: 15px;float:right">您好，</a>
+                                    </p>
+                                </i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div id="side-menu">
+                <ul>
+                    <li style="border-bottom:0px;">
+                        <a href="#" title="关闭菜单">
+                            <i class="fa fa-close fa-2x menu-close-icon b-clr" style="color:black"></i>
+                        </a>
+                    </li>
+                    <li title="月工作量" style="cursor: pointer" onclick="gotoMW()">
+                        <i id="MW" class="fa fa-calendar fa-2x" style="color:black"></i>
+                    </li>
+                    <li title="工作档期" style="cursor: pointer" onclick="gotoWS()">
+                        <i id="WS" class="fa fa-sliders fa-2x" style="color:black"></i>
+                    </li>
+                    <li title="工匠精神" style="cursor:pointer" onclick="gotoTU()">
+                        <i id="TU" class="fa fa-thumbs-up fa-2x" style="color:black"></i>
+                    </li>
+                    <li title="项目管理" style="cursor: pointer" onclick="gotoPM()">
+                        <i id="PM" class="fa fa-cog fa-2x" style="color:black"></i>
+                    </li>
+                    <li title="开票跟踪" style="cursor: pointer" onclick="gotoSearch()">
+                        <i id="Search" class="fa fa-jpy fa-2x" style="color:black"></i>
+                    </li>
+                    <li title="数据分析" style="cursor: pointer" onclick="gotoBI()">
+                        <i id="BI" class="fa fa-bar-chart fa-2x" style="color:black"></i>
+                    </li>
+                    <li title="修改密码" style="cursor: pointer" onclick="gotoCP()">
+                        <i id="CP" class="fa fa-key fa-2x" style="color:black"></i>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row pad-botm">
+                <div class="col-md-12">
+                    <div class="header-line">
+                        <h4 style="float:left;margin-top:2.5%;margin-bottom:0%">修改密码</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default" style="bottom:0%">
+                        <div class="panel-body" style="margin: 0 auto;">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6" style="margin-top:2%">
+                                <div style="margin-bottom: 2%;overflow: hidden;">
+                                    <label class="col-md-4" style="text-align: right;font-weight: normal">原登录密码：</label>
+                                    <input class="col-md-6" type="password" v-model="oldpassword">
+                                </div>
+                                <div style="margin-bottom: 2%;overflow: hidden">
+                                    <label class="col-md-4" style="text-align: right;font-weight: normal">新登录密码：</label>
+                                    <input class="col-md-6" type="password" v-model="newpassword">
+                                </div>
+                                <div style="margin-bottom: 2%;overflow: hidden">
+                                    <label class="col-md-4" style="text-align: right;font-weight: normal">确认新密码：</label>
+                                    <input id="confirmpw" class="col-md-6" type="password" v-model="confirmpw" @input="checkpassword()">
+                                    <label v-if="differ" style="font-weight:normal;color:red;margin-top:2%">两次密码不一致</label>
+                                </div>
+                                <div style="margin-bottom: 2%;overflow: hidden">
+                                    <label class="col-md-4"></label>
+                                    <input id='commit' :class="check()" disabled="disabled" type="button" value="确认修改" @click="changePassword()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="scripts/crypto-js/core-min.js"></script>
+    <script type="text/javascript" src="scripts/crypto-js/cipher-core-min.js"></script>
+    <script type="text/javascript" src="scripts/crypto-js/aes-min.js"></script>
+    <script type="text/javascript" src="scripts/crypto-js/md5-min.js"></script>
+
+    <script type="text/javascript" src="scripts/lib/common.min.js"></script>
+    <script type="text/javascript" src="scripts/phenix7.js"></script>
+
+    <script type="text/javascript" src="scripts/basefunc.js"></script>
+    <script type="text/javascript" src="scripts/mesgbox.js"></script>
+    <script src="scripts/element.js"></script>
+    <script>
+        document.write("<script type='text/javascript' src='scripts/changepassword.js?v=" + new Date().toLocaleDateString() + "'><\/script>");
+    </script>
+    <!--script type="text/javascript" src="scripts/changepassword.js?time=New Date()" charset="UTF-8"></script-->
+</body>
+
+</html>
