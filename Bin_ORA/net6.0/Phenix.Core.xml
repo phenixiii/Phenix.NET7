@@ -972,7 +972,7 @@
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DataReader.CreateParameter(System.String,System.Object,System.Data.SqlDbType,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Data.Common.DataReader.CreateParameter(System.String,System.Object,Oracle.ManagedDataAccess.Client.OracleDbType,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
             </summary>
@@ -1214,22 +1214,22 @@
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Data.SqlDbType,System.Data.ParameterDirection)">
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,Oracle.ManagedDataAccess.Client.OracleDbType,System.Data.ParameterDirection)">
             <summary>
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Data.SqlDbType,System.Data.ParameterDirection,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,Oracle.ManagedDataAccess.Client.OracleDbType,System.Data.ParameterDirection,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,System.Data.SqlDbType,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,Oracle.ManagedDataAccess.Client.OracleDbType,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,System.Data.SqlDbType,System.Data.ParameterDirection,System.Nullable{System.Int32})">
+        <member name="M:Phenix.Core.Data.Common.DbCommandHelper.CreateParameter(System.Data.Common.DbCommand,System.String,System.Object,Oracle.ManagedDataAccess.Client.OracleDbType,System.Data.ParameterDirection,System.Nullable{System.Int32})">
             <summary>
             构建 DbParameter
             </summary>
@@ -1650,7 +1650,7 @@
             <param name="name">名称</param>
             <param name="value">值</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.ParamValue.Input(System.String,System.Object,System.Data.SqlDbType)">
+        <member name="M:Phenix.Core.Data.Common.ParamValue.Input(System.String,System.Object,Oracle.ManagedDataAccess.Client.OracleDbType)">
             <summary>
             输入输出参数
             </summary>
@@ -1658,7 +1658,7 @@
             <param name="value">值</param>
             <param name="dbType">参数类型</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.ParamValue.InputOutput(System.String,System.Object,System.Data.SqlDbType)">
+        <member name="M:Phenix.Core.Data.Common.ParamValue.InputOutput(System.String,System.Object,Oracle.ManagedDataAccess.Client.OracleDbType)">
             <summary>
             输入输出参数
             </summary>
@@ -1666,14 +1666,14 @@
             <param name="value">值</param>
             <param name="dbType">参数类型</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.ParamValue.Output(System.String,System.Data.SqlDbType)">
+        <member name="M:Phenix.Core.Data.Common.ParamValue.Output(System.String,Oracle.ManagedDataAccess.Client.OracleDbType)">
             <summary>
             输出参数
             </summary>
             <param name="name">名称</param>
             <param name="dbType">参数类型</param>
         </member>
-        <member name="M:Phenix.Core.Data.Common.ParamValue.ReturnValue(System.String,System.Data.SqlDbType)">
+        <member name="M:Phenix.Core.Data.Common.ParamValue.ReturnValue(System.String,Oracle.ManagedDataAccess.Client.OracleDbType)">
             <summary>
             返回值
             </summary>
@@ -12599,11 +12599,25 @@
             </summary>
             <param name="item">项</param>
         </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1},System.Func{`1,System.Boolean})">
+            <summary>
+            移除项
+            </summary>
+            <param name="item">项</param>
+            <param name="allow">是否允许的函数(null代表true)</param>
+        </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.Remove(`0)">
             <summary>
             移除所指定的键的值
             </summary>
             <param name="key">键</param>
+        </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.Remove(`0,System.Func{`1,System.Boolean})">
+            <summary>
+            移除所指定的键的值
+            </summary>
+            <param name="key">键</param>
+            <param name="allow">是否允许的函数(null代表true)</param>
         </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.Clear">
             <summary>
@@ -13668,11 +13682,25 @@
             </summary>
             <param name="item">项</param>
         </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1},System.Func{`1,System.Boolean})">
+            <summary>
+            移除项
+            </summary>
+            <param name="item">项</param>
+            <param name="allow">是否允许的函数(null代表true)</param>
+        </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.Remove(`0)">
             <summary>
             移除所指定的键的值
             </summary>
             <param name="key">键</param>
+        </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.Remove(`0,System.Func{`1,System.Boolean})">
+            <summary>
+            移除所指定的键的值
+            </summary>
+            <param name="key">键</param>
+            <param name="allow">是否允许的函数(null代表true)</param>
         </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.Clear">
             <summary>

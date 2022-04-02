@@ -6,11 +6,11 @@
 	<Version>7.5.48</Version>
 	<AssemblyVersion>7.5.48.0415</AssemblyVersion>
 	<FileVersion>7.5.48.0415</FileVersion>
-	<Description>Phenix Framework 7.5 for .NET 5</Description>
+	<Description>Phenix Framework 7.6 for .NET 6</Description>
     <Authors>ming</Authors>
     <AssemblyName>Phenix.Tools.BusinessBuilder</AssemblyName>
     <RootNamespace>Phenix.Tools.BusinessBuilder</RootNamespace>
-    <Copyright>Copyright © 2007, 2021 Phenixヾ Studio</Copyright>
+    <Copyright>Copyright © 2007, 2022 Phenixヾ Studio</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <Reference Include="Phenix.Core">
-      <HintPath>..\..\Bin_ORA\net5.0\Phenix.Core.dll</HintPath>
+      <HintPath>..\..\Bin_ORA\net6.0\Phenix.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

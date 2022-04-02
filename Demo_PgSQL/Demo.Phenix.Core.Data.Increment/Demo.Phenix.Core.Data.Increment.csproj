@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Demo</RootNamespace>
   </PropertyGroup>
 
@@ -16,14 +16,14 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Npgsql" Version="5.0.7" />
+    <PackageReference Include="Npgsql" Version="6.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.114.3" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.115.5" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Phenix.Core">
-      <HintPath>..\..\Bin_PgSQL\net5.0\Phenix.Core.dll</HintPath>
+      <HintPath>..\..\Bin_PgSQL\net6.0\Phenix.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

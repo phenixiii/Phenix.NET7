@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Demo</RootNamespace>
   </PropertyGroup>
 
@@ -17,13 +17,13 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.3" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.114.3" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.50" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.115.5" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Phenix.Core">
-      <HintPath>..\..\Bin_ORA\net5.0\Phenix.Core.dll</HintPath>
+      <HintPath>..\..\Bin_ORA\net6.0\Phenix.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -1,6 +1,6 @@
 ﻿/*
-    Phenix Framework 7.5 for .NET 5
-    Copyright © 2007, 2021 Phenixヾ Studio All rights reserved.
+    Phenix Framework 7.6 for .NET 6
+    Copyright © 2007, 2022 Phenixヾ Studio All rights reserved.
 
     <script type="text/javascript" src="../lib/crypto-js/core-min.js"></script>
     <script type="text/javascript" src="../lib/crypto-js/enc-base64-min.js"></script>

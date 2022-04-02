@@ -5,13 +5,13 @@
 		<Version>7.5.53</Version>
 		<AssemblyVersion>7.5.53.1116</AssemblyVersion>
 		<FileVersion>7.5.53.1116</FileVersion>
-		<Description>Phenix Framework 7.5 for .NET 5</Description>
+		<Description>Phenix Framework 7.6 for .NET 6</Description>
 		<Authors>ming</Authors>
 		<DefineConstants>TRACE;MySQL</DefineConstants>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<AssemblyName>Phenix.Actor</AssemblyName>
 		<RootNamespace>Phenix.Actor</RootNamespace>
-		<Copyright>Copyright © 2007, 2021 Phenixヾ Studio</Copyright>
+		<Copyright>Copyright © 2007, 2022 Phenixヾ Studio</Copyright>
 		<Company />
 	</PropertyGroup>
 
@@ -43,7 +43,7 @@
 
 	<ItemGroup>
 		<Reference Include="Phenix.Core">
-			<HintPath>..\Bin_MySQL\net5.0\Phenix.Core.dll</HintPath>
+			<HintPath>..\Bin_MySQL\net6.0\Phenix.Core.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 

@@ -5,12 +5,12 @@
 		<Version>7.5.54</Version>
 		<AssemblyVersion>7.5.54.1212</AssemblyVersion>
 		<FileVersion>7.5.54.1212</FileVersion>
-		<Description>Phenix Framework 7.5 for .NET 5</Description>
+		<Description>Phenix Framework 7.6 for .NET 6</Description>
 		<Authors>ming</Authors>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<AssemblyName>Phenix.Services.Host</AssemblyName>
 		<RootNamespace>Phenix.Services.Host</RootNamespace>
-		<Copyright>Copyright © 2007, 2021 Phenixヾ Studio</Copyright>
+		<Copyright>Copyright © 2007, 2022 Phenixヾ Studio</Copyright>
 		<Product>Phenix.Services.Host</Product>
 		<PackageId>Phenix.Services.Host</PackageId>
 	</PropertyGroup>
@@ -56,7 +56,7 @@
 			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Actor.dll</HintPath>
 		</Reference>
 		<Reference Include="Phenix.Core">
-			<HintPath>..\Bin_PgSQL\net5.0\Phenix.Core.dll</HintPath>
+			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Core.dll</HintPath>
 		</Reference>
 		<Reference Include="Phenix.Services.Contract">
 			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Services.Contract.dll</HintPath>

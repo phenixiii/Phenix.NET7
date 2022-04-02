@@ -5,13 +5,13 @@
 		<Version>7.5.52</Version>
 		<AssemblyVersion>7.5.52.0920</AssemblyVersion>
 		<FileVersion>7.5.52.0920</FileVersion>
-		<Description>Phenix Framework 7.5 for .NET 5</Description>
+		<Description>Phenix Framework 7.6 for .NET 6</Description>
 		<Authors>ming</Authors>
 		<DefineConstants>TRACE;PgSQL</DefineConstants>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<AssemblyName>Phenix.Services.Business</AssemblyName>
 		<RootNamespace>Phenix.Services.Business</RootNamespace>
-		<Copyright>Copyright © 2007, 2021 Phenixヾ Studio</Copyright>
+		<Copyright>Copyright © 2007, 2022 Phenixヾ Studio</Copyright>
 		<Company />
 	</PropertyGroup>
 
@@ -31,7 +31,7 @@
 
 	<ItemGroup>
 		<Reference Include="Phenix.Core">
-			<HintPath>..\Bin_PgSQL\net5.0\Phenix.Core.dll</HintPath>
+			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Core.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 

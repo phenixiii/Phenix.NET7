@@ -12599,11 +12599,25 @@
             </summary>
             <param name="item">项</param>
         </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1},System.Func{`1,System.Boolean})">
+            <summary>
+            移除项
+            </summary>
+            <param name="item">项</param>
+            <param name="allow">是否允许的函数(null代表true)</param>
+        </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.Remove(`0)">
             <summary>
             移除所指定的键的值
             </summary>
             <param name="key">键</param>
+        </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.Remove(`0,System.Func{`1,System.Boolean})">
+            <summary>
+            移除所指定的键的值
+            </summary>
+            <param name="key">键</param>
+            <param name="allow">是否允许的函数(null代表true)</param>
         </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedDictionary`2.Clear">
             <summary>
@@ -13668,11 +13682,25 @@
             </summary>
             <param name="item">项</param>
         </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.Remove(System.Collections.Generic.KeyValuePair{`0,`1},System.Func{`1,System.Boolean})">
+            <summary>
+            移除项
+            </summary>
+            <param name="item">项</param>
+            <param name="allow">是否允许的函数(null代表true)</param>
+        </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.Remove(`0)">
             <summary>
             移除所指定的键的值
             </summary>
             <param name="key">键</param>
+        </member>
+        <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.Remove(`0,System.Func{`1,System.Boolean})">
+            <summary>
+            移除所指定的键的值
+            </summary>
+            <param name="key">键</param>
+            <param name="allow">是否允许的函数(null代表true)</param>
         </member>
         <member name="M:Phenix.Core.SyncCollections.SynchronizedSortedDictionary`2.Clear">
             <summary>

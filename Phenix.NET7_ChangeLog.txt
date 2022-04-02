@@ -1,5 +1,5 @@
-Phenix Framework 7.5 for .net 5
-Copyright © 2007, 2021 Phenixヾ Studio
+Phenix Framework 7.6 for .net 6
+Copyright © 2007, 2022 Phenixヾ Studio
 使用开发框架的目的，首要的是对软件过程的有效管控，让团队保持一致的编写风格，提升协作效率、开发速度和代码质量，保证软件产品的可维护性
 
 发布地址：https://github.com/phenixiii/Phenix.NET7
@@ -57,7 +57,7 @@ Copyright © 2007, 2021 Phenixヾ Studio
 
 
 20191013
-1，升级至for .net core3.0，开发工具 Visual Studio 2019 16.3.x及以上版本
+1，升级至 for .net core 3.0，开发工具 Visual Studio 2019 16.3.x及以上版本
 2，提供服务接口IFileService以扩展系统自身的个性化的文件上传下载功能，框架代码见Phenix.Services.Extend工程里的FileService类，测试网页file.html
 
 
@@ -163,7 +163,7 @@ Copyright © 2007, 2021 Phenixヾ Studio
 
 
 20201109
-1，升级至for .net core5，开发工具 Visual Studio 2019 16.8.x及以上版本
+1，升级至 for .net 5，开发工具 Visual Studio 2019 16.8.x及以上版本
 2，Phenix.Core.AppSettings应用系统配置工具支持中英文切换，写入的中英文用‘|’分隔，读取时会判断Thread.CurrentThread.CurrentCulture.Name是否为'zh-'截取前半截还是后半截
 
 
@@ -225,4 +225,4 @@ Copyright © 2007, 2021 Phenixヾ Studio
 
 20220331
 1，添加Phenix.iPost.ROS.全智能码头实时作业调度系统设计方案
-2，除Phenix.Core.dll外都升级到net6
+2，升级至 for .net 6
