@@ -105,7 +105,7 @@ namespace Phenix.Actor
                         foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Contract.dll"))
                             parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
                     })
-                    .AddSimpleMessageStreamProvider(StreamProviderProxy.StreamProviderName)
+                    .AddSimpleMessageStreamProvider(StreamProviderProxy.SimpleMessageStreamProviderName)
                     .AddOutgoingGrainCallFilter(context =>
                     {
                         if (context.Grain is ISecurityContext)

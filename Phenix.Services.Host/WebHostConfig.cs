@@ -2,9 +2,13 @@
 
 namespace Phenix.Services.Host
 {
+    /// <summary>
+    /// WebHost配置信息
+    /// </summary>
     public static class WebHostConfig
     {
         private static string _urls;
+
         /// <summary>
         /// Urls
         /// 默认：http://*:5000

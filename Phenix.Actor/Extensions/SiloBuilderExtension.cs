@@ -27,7 +27,7 @@ namespace Orleans.Hosting
         /// 设置Clustering、GrainStorage、Reminder数据库：Phenix.Core.Data.Database.Default
         /// 设置Silo端口：EndpointOptions.DEFAULT_SILO_PORT
         /// 设置Gateway端口：EndpointOptions.DEFAULT_GATEWAY_PORT
-        /// 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProviderExtension.StreamProviderName
+        /// 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProviderExtension.SimpleMessageStreamProviderName
         /// </summary>
         /// <param name="builder">ISiloBuilder</param>
         /// <param name="database">数据库入口</param>
@@ -134,8 +134,8 @@ namespace Orleans.Hosting
                     foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
                         parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
                 })
-                .AddSimpleMessageStreamProvider(StreamProviderProxy.StreamProviderName)
-                .AddMemoryGrainStorage("PubSubStore") //正式环境下请使用Event Hubs、ServiceBus、Azure Queues、Apache Kafka之一，要么自己实现PersistentStreamProvider组件
+                .AddSimpleMessageStreamProvider(StreamProviderProxy.SimpleMessageStreamProviderName)
+                .AddMemoryGrainStorage("PubSubStore")
                 .AddIncomingGrainCallFilter(context =>
                 {
                     Principal.CurrentIdentity = context.Grain is ISecurityContext &&

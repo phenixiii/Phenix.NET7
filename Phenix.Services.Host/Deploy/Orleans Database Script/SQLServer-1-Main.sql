@@ -20,27 +20,27 @@ Implementation notes:
    Orleans handles exception as a failure and will retry.
 
 7) The implementation follows the Extended Orleans membership protocol. For more information, see at:
-        https://dotnet.github.io/orleans/Documentation/Runtime-Implementation-Details/Runtime-Tables.html
-        https://dotnet.github.io/orleans/Documentation/Runtime-Implementation-Details/Cluster-Management.html
-        https://github.com/dotnet/orleans/blob/master/src/Orleans.Core/SystemTargetInterfaces/IMembershipTable.cs
+        https://docs.microsoft.com/dotnet/orleans/implementation/cluster-management
+        https://github.com/dotnet/orleans/blob/main/src/Orleans.Core/SystemTargetInterfaces/IMembershipTable.cs
 */
+
+-- These settings improves throughput of the database by reducing locking by better separating readers from writers.
+-- SQL Server 2012 and newer can refer to itself as CURRENT. Older ones need a workaround.
+DECLARE @current NVARCHAR(256);
+DECLARE @snapshotSettings NVARCHAR(612);
+
+SELECT @current = N'[' + (SELECT DB_NAME()) + N']';
+SET @snapshotSettings = N'ALTER DATABASE ' + @current + N' SET READ_COMMITTED_SNAPSHOT ON; ALTER DATABASE ' + @current + N' SET ALLOW_SNAPSHOT_ISOLATION ON;';
+
+EXECUTE sp_executesql @snapshotSettings;
 
 -- This table defines Orleans operational queries. Orleans uses these to manage its operations,
 -- these are the only queries Orleans issues to the database.
 -- These can be redefined (e.g. to provide non-destructive updates) provided the stated interface principles hold.
-CREATE TABLE "ORLEANSQUERY"
+CREATE TABLE OrleansQuery
 (
-    "QUERYKEY" VARCHAR2(64 BYTE) NOT NULL ENABLE,
-    "QUERYTEXT" VARCHAR2(4000 BYTE),
+	QueryKey VARCHAR(64) NOT NULL,
+	QueryText VARCHAR(8000) NOT NULL,
 
-    CONSTRAINT "ORLEANSQUERY_PK" PRIMARY KEY ("QUERYKEY")
+	CONSTRAINT OrleansQuery_Key PRIMARY KEY(QueryKey)
 );
-/
-
-COMMIT;
-
--- Oracle specific implementation note:
--- Some OrleansQueries are implemented as functions and differ from the scripts of other databases.
--- The main reason for this is the fact, that oracle doesn't support returning variables from queries
--- directly. So in the case that a variable value is needed as output of a OrleansQuery (e.g. version)
--- a function is used.

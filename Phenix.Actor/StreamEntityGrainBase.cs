@@ -69,7 +69,7 @@ namespace Phenix.Actor
                     string[] listenStreamNamespaces = ListenStreamNamespaces;
                     if (listenStreamNamespaces != null)
                         foreach (string streamNamespace in listenStreamNamespaces)
-                            result[streamNamespace] = ClusterClient.GetStreamProvider().GetStream<TEvent>(StreamId, streamNamespace);
+                            result[streamNamespace] = ClusterClient.GetSimpleMessageStreamProvider().GetStream<TEvent>(StreamId, streamNamespace);
                     _listenStreamWorkers = result;
                 }
 
@@ -100,7 +100,7 @@ namespace Phenix.Actor
         /// </summary>
         protected Task Send(TEvent content, string streamNamespace = Standards.UnknownValue, StreamSequenceToken token = null)
         {
-            return ClusterClient.GetStreamProvider().GetStream<TEvent>(StreamId, streamNamespace).OnNextAsync(content, token);
+            return ClusterClient.GetSimpleMessageStreamProvider().GetStream<TEvent>(StreamId, streamNamespace).OnNextAsync(content, token);
         }
 
         #endregion
@@ -124,7 +124,7 @@ namespace Phenix.Actor
         /// <param name="token">StreamSequenceToken</param>
         protected async Task SubscribeAsync(string streamNamespaces, StreamSequenceToken token = null)
         {
-            IAsyncStream<TEvent> worker = ClusterClient.GetStreamProvider().GetStream<TEvent>(StreamId, streamNamespaces);
+            IAsyncStream<TEvent> worker = ClusterClient.GetSimpleMessageStreamProvider().GetStream<TEvent>(StreamId, streamNamespaces);
             await SubscribeAsync(worker, token);
             ListenStreamWorkers[streamNamespaces] = worker;
         }

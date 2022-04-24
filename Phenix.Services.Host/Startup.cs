@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
@@ -45,6 +46,13 @@ namespace Phenix.Services.Host
              * 开启SignalR服务
              */
             services.AddSignalR(options => { options.MaximumReceiveMessageSize = Int16.MaxValue; }).AddMessagePackProtocol();
+
+            /*
+             * 装配DaprClient
+             */
+            services.AddDaprClient(builder => builder
+                .UseHttpEndpoint($"http://localhost:{Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? DaprClientConfig.DaprHttpPort}")
+                .UseGrpcEndpoint($"http://localhost:{Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? DaprClientConfig.DaprGrpcPort}"));
 
             /*
              * 注入分组/用户消息服务，响应 phAjax.subscribeMessage() 请求 
@@ -128,8 +136,9 @@ namespace Phenix.Services.Host
                     options.SerializerSettings.DateFormatString = Utilities.JsonDateFormatString;
                     options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
                     options.UseMemberCasing();
-                });
-             
+                })
+                .AddDapr();
+
             /*
              * 关闭自动验证——模型验证
              */
@@ -163,6 +172,21 @@ namespace Phenix.Services.Host
             //        new CultureInfo("en")
             //    }
             //});
+
+            /*
+             * 开启重复读取Body
+             */
+            app.Use((context, next) =>
+            {
+                context.Request.EnableBuffering();
+                return next();
+            });
+
+            /*
+             * 使用CloudEvents中间件
+             * 将解包使用 CloudEvents 结构化格式的请求，以便接收方法可以直接读取事件负载
+             */
+            app.UseCloudEvents();
 
             /*
              * 使用转接头中间件（代理服务器和负载均衡器）
@@ -200,6 +224,12 @@ namespace Phenix.Services.Host
             {
                 endpoints.MapControllers();
                 endpoints.MapDefaultControllerRoute().RequireAuthorization();
+
+                /*
+                 * 添加 Dapr 订阅终结点
+                 * 自动查找使用该属性修饰的所有 WebAPI 操作方法，并指示 Dapr 为它们创建订阅
+                 */
+                endpoints.MapSubscribeHandler();
 
                 /*
                  * 使用分组/用户消息服务，响应 phAjax.subscribeMessage() 请求

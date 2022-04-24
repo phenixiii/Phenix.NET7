@@ -2,9 +2,9 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<Version>7.5.54</Version>
-		<AssemblyVersion>7.5.54.1212</AssemblyVersion>
-		<FileVersion>7.5.54.1212</FileVersion>
+		<Version>7.6.56</Version>
+		<AssemblyVersion>7.6.56.0401</AssemblyVersion>
+		<FileVersion>7.6.56.0401</FileVersion>
 		<Description>Phenix Framework 7.6 for .NET 6</Description>
 		<Authors>ming</Authors>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -31,20 +31,21 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Dapr.AspNetCore" Version="1.7.0" />
 		<PackageReference Include="MailKit" Version="3.2.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.3" />
-		<PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="6.0.3" />
-		<PackageReference Include="Microsoft.Orleans.Client" Version="3.6.1" />
-		<PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="3.6.1" />
-		<PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.6.1">
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.4" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="6.0.4" />
+		<PackageReference Include="Microsoft.Orleans.Client" Version="3.6.2" />
+		<PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="3.6.2" />
+		<PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.6.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Orleans.OrleansCodeGenerator" Version="3.6.1" />
-		<PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="3.6.1" />
-		<PackageReference Include="Microsoft.Orleans.Reminders.AdoNet" Version="3.6.1" />
-		<PackageReference Include="Microsoft.Orleans.Serialization.Bond" Version="3.6.1" />
-		<PackageReference Include="Microsoft.Orleans.Server" Version="3.6.1" />
+		<PackageReference Include="Microsoft.Orleans.OrleansCodeGenerator" Version="3.6.2" />
+		<PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="3.6.2" />
+		<PackageReference Include="Microsoft.Orleans.Reminders.AdoNet" Version="3.6.2" />
+		<PackageReference Include="Microsoft.Orleans.Serialization.Bond" Version="3.6.2" />
+		<PackageReference Include="Microsoft.Orleans.Server" Version="3.6.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="OrleansDashboard" Version="3.6.1" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
@@ -67,6 +68,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Update="DaprRun.bat">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="DockerBuild.bat">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

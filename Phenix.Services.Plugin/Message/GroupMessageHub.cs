@@ -111,7 +111,7 @@ namespace Phenix.Services.Plugin.Message
             _subscribers.GetValue(groupName, async () =>
             {
                 Subscriber subscriber = new Subscriber(this, groupName);
-                await subscriber.SubscribeAsync(ClusterClient.Default.GetStreamProvider().GetStream<string>(StreamConfig.GroupStreamId, groupName));
+                await subscriber.SubscribeAsync(ClusterClient.Default.GetSimpleMessageStreamProvider().GetStream<string>(StreamConfig.GroupStreamId, groupName));
                 return subscriber;
             });
         }

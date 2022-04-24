@@ -102,12 +102,12 @@ namespace Phenix.Services.Host
                      */
                     .UseDashboard(options =>
                     {
-                        options.Username = OrleansConfig.DashboardUsername; //设置用于访问Dashboard的用户名（基本身份验证）
-                        options.Password = OrleansConfig.DashboardPassword; //设置用于访问Dashboard的用户口令（基本身份验证）
-                        options.Host = OrleansConfig.DashboardHost; //将Web服务器绑定到的主机名（默认为*）
-                        options.Port = OrleansConfig.DashboardPort; //设置Dashboard可视化页面访问的端口（默认为8088）
-                        options.HostSelf = OrleansConfig.DashboardHostSelf; //将Dashboard设置为托管自己的http服务器（默认为true）
-                        options.CounterUpdateIntervalMs = OrleansConfig.DashboardCounterUpdateIntervalMs; //采样计数器之间的更新间隔（以毫秒为单位，默认为1000）
+                        options.Username = DashboardConfig.Username; //设置用于访问Dashboard的用户名（基本身份验证）
+                        options.Password = DashboardConfig.Password; //设置用于访问Dashboard的用户口令（基本身份验证）
+                        options.Host = DashboardConfig.Host; //将Web服务器绑定到的主机名（默认为*）
+                        options.Port = DashboardConfig.Port; //设置Dashboard可视化页面访问的端口（默认为8088）
+                        options.HostSelf = DashboardConfig.HostSelf; //将Dashboard设置为托管自己的http服务器（默认为true）
+                        options.CounterUpdateIntervalMs = DashboardConfig.CounterUpdateIntervalMs; //采样计数器之间的更新间隔（以毫秒为单位，默认为1000）
                     }))
                 /*
                  * 启动WebAPI服务

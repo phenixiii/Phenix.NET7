@@ -1,4 +1,4 @@
-Phenix Framework 7.6 for .net 6
+Phenix.NET7
 Copyright © 2007, 2022 Phenixヾ Studio
 使用开发框架的目的，首要的是对软件过程的有效管控，让团队保持一致的编写风格，提升协作效率、开发速度和代码质量，保证软件产品的可维护性
 
@@ -223,7 +223,8 @@ Copyright © 2007, 2022 Phenixヾ Studio
 2，为Phenix.Services.Host工程添加Host启动时加载Plugin功能
 
 
-20220331
+20220401
 1，升级至 for .net 6
 2，添加Phenix.iPost解决方案
-3，添加Phenix.Common工程
+3，升级Phenix.Services.Host工程，以支持Dapr
+

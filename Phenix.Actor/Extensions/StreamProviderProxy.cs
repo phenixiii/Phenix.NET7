@@ -14,9 +14,9 @@ namespace Phenix.Actor
         #region 配置项
 
         /// <summary>
-        /// 名称
+        /// 遵循FIFO原则的SimpleMessageStream提供者名称
         /// </summary>
-        public static string StreamProviderName
+        public static string SimpleMessageStreamProviderName
         {
             get { return "SMSProvider"; }
         }
@@ -28,16 +28,16 @@ namespace Phenix.Actor
         #region 方法
 
         /// <summary>
-        /// 获取Orleans流提供者
+        /// 获取遵循FIFO原则的SimpleMessageStream提供者
         /// </summary>
         /// <param name="clusterClient">Orleans服务集群客户端</param>
         /// <returns>流提供者</returns>
-        public static IStreamProvider GetStreamProvider(this IClusterClient clusterClient)
+        public static IStreamProvider GetSimpleMessageStreamProvider(this IClusterClient clusterClient)
         {
             if (clusterClient == null)
                 throw new ArgumentNullException(nameof(clusterClient));
 
-            return clusterClient.GetStreamProvider(StreamProviderName);
+            return clusterClient.GetStreamProvider(SimpleMessageStreamProviderName);
         }
 
         #endregion
