@@ -10,7 +10,7 @@ namespace Phenix.Services.Plugin.Data
     /// </summary>
     [Route(WebApiConfig.DataIncrementPath)]
     [ApiController]
-    public sealed class IncrementController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class IncrementController : Phenix.Net.Api.ControllerBase
     {
         // phAjax.getIncrement()
         /// <summary>

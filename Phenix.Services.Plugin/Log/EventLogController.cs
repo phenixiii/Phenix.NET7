@@ -10,7 +10,7 @@ namespace Phenix.Services.Plugin.Log
     /// </summary>
     [Route(WebApiConfig.LogEventLogPath)]
     [ApiController]
-    public sealed class EventLogController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class EventLogController : Phenix.Net.Api.ControllerBase
     {
         /// <summary>
         /// 保存

@@ -1,4 +1,4 @@
-﻿using Phenix.Core.Data.Model;
+﻿using Phenix.Mapper;
 
 namespace Phenix.Business
 {

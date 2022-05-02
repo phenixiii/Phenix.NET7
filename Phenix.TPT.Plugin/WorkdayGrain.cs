@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Phenix.Actor;
-using Phenix.Core.Data.Expressions;
+using Phenix.Mapper.Expressions;
 using Phenix.TPT.Business;
 using Phenix.TPT.Contract;
 

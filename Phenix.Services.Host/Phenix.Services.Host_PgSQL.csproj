@@ -48,7 +48,7 @@
 		<PackageReference Include="Microsoft.Orleans.Server" Version="3.6.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="Npgsql" Version="6.0.4" />
-		<PackageReference Include="OrleansDashboard" Version="3.6.1" />
+		<PackageReference Include="OrleansDashboard" Version="3.6.2" />
 		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.115.5" />
 	</ItemGroup>
 
@@ -56,14 +56,26 @@
 		<Reference Include="Phenix.Actor">
 			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Actor.dll</HintPath>
 		</Reference>
+		<Reference Include="Phenix.Business">
+			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Business.dll</HintPath>
+		</Reference>
 		<Reference Include="Phenix.Core">
 			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="Phenix.Mapper">
+			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Mapper.dll</HintPath>
+		</Reference>
+		<Reference Include="Phenix.Net">
+			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Net.dll</HintPath>
 		</Reference>
 		<Reference Include="Phenix.Services.Contract">
 			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Services.Contract.dll</HintPath>
 		</Reference>
 		<Reference Include="Phenix.Services.Plugin">
 			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Services.Plugin.dll</HintPath>
+		</Reference>
+		<Reference Include="Phenix.Sidecar">
+		    <HintPath>..\Bin_PgSQL\net6.0\Phenix.Sidecar.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 

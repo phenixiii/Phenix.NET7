@@ -17,7 +17,7 @@ namespace Phenix.TPT.Plugin
     /// </summary>
     [Route(WebApiConfig.ProjectWorkloadPath)]
     [ApiController]
-    public sealed class ProjectWorkloadController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class ProjectWorkloadController : Phenix.Net.Api.ControllerBase
     {
         #region 方法
 

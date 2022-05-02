@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using Phenix.Core;
 using Phenix.Core.Data;
-using Phenix.Core.Data.Schema;
+using Phenix.Mapper.Schema;
 using Phenix.Core.Reflection;
 
 namespace Phenix.Tools.BusinessBuilder
@@ -62,7 +62,7 @@ namespace Phenix.Tools.BusinessBuilder
                 {
                     Console.WriteLine();
                     Console.WriteLine("Building...");
-                    foreach (KeyValuePair<string, Table> kvp in database.MetaData.Tables)
+                    foreach (KeyValuePair<string, Table> kvp in MetaData.Fetch(database).Tables)
                         Console.WriteLine(BuildClass(kvp.Value, baseDirectory));
                     Console.WriteLine();
                 }
@@ -72,7 +72,7 @@ namespace Phenix.Tools.BusinessBuilder
                 {
                     Console.WriteLine();
                     Console.WriteLine("Building...");
-                    foreach (KeyValuePair<string, View> kvp in database.MetaData.Views)
+                    foreach (KeyValuePair<string, View> kvp in MetaData.Fetch(database).Views)
                         Console.WriteLine(BuildClass(kvp.Value, baseDirectory));
                     Console.WriteLine();
                 }

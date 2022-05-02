@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using Phenix.Core.Data.Model;
-using Phenix.Core.Data.Schema;
+using Phenix.Business;
+using Phenix.Mapper.Schema;
 using Phenix.TPT.Business.Norm;
 
 /* 

@@ -15,7 +15,7 @@ namespace Phenix.Services.Plugin.Security
     /// </summary>
     [Route(WebApiConfig.SecurityMyselfPath)]
     [ApiController]
-    public sealed class MyselfController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class MyselfController : Phenix.Net.Api.ControllerBase
     {
         // phAjax.getMyself()
         /// <summary>

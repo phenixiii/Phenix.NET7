@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Data;
-using Phenix.Core.Data.Expressions;
-using Phenix.Core.Net.Filters;
+using Phenix.Mapper.Expressions;
+using Phenix.Net.Filters;
 using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security;
 
@@ -17,7 +17,7 @@ namespace Phenix.Services.Plugin.Security.Myself
     /// </summary>
     [Route(WebApiConfig.SecurityMyselfCompanyUserPath)]
     [ApiController]
-    public sealed class CompanyUserController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class CompanyUserController : Phenix.Net.Api.ControllerBase
     {
         // phAjax.getMyselfCompanyUsers()
         /// <summary>

@@ -5,8 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
-using Phenix.Core.Data.Model;
-using Phenix.Core.Data.Schema;
+using Phenix.Mapper.Schema;
 using Phenix.Core.Reflection;
 
 namespace Phenix.Business

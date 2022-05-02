@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Phenix.Core.Data.Database">
+    <Position X="0.5" Y="0.5" Width="3" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Phenix.Core.Data.Database.ConnectionInfo">
+        <Compartments>
+          <Compartment Name="Fields" Collapsed="true" />
+        </Compartments>
+        <TypeIdentifier>
+          <NewMemberFileName>Data\Database.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Phenix.Core.Data.Database.TimedTaskInfo">
+        <Compartments>
+          <Compartment Name="Fields" Collapsed="true" />
+        </Compartments>
+        <TypeIdentifier>
+          <NewMemberFileName>Data\Database.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AZRiBgagi4AGgg4oIE9IJUyCKgAZEEALACAAAFGJA1M=</HashCode>
+      <FileName>Data\Database.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Default" />
+      <Property Name="Sequence" />
+      <Property Name="Increment" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Handles" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Phenix.Core.Data.Sequence">
+    <Position X="6.25" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABAAIABCAEAAAAAAAACAAAAQAAAAgBQAAAAgAAAAAAA=</HashCode>
+      <FileName>Data\Sequence.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Database" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Phenix.Core.Data.Increment">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAYAAAAAACAAAAA=</HashCode>
+      <FileName>Data\Increment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Database" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Phenix.Core.Data.EnumCaptionAttribute">
+    <Position X="6" Y="3.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAgAgAAQAAACAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Data\EnumCaptionAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Core.Data.EnumKeyValue">
+    <Position X="3.75" Y="3.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ChAAAAAAAIAgAAQEgAGAAgCAAAACAIAACABgAAAAGiA=</HashCode>
+      <FileName>Data\EnumKeyValue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Enum Name="Phenix.Core.Data.ExecuteAction">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAEAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Data\ExecuteAction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

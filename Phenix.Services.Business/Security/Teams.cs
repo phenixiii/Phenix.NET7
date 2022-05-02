@@ -1,6 +1,6 @@
 ﻿using System;
-using Phenix.Core.Data.Expressions;
-using Phenix.Core.Data.Model;
+using Phenix.Business;
+using Phenix.Mapper.Expressions;
 
 namespace Phenix.Services.Business.Security
 {

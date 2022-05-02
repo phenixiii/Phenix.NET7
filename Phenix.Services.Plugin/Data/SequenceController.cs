@@ -10,7 +10,7 @@ namespace Phenix.Services.Plugin.Data
     /// </summary>
     [Route(WebApiConfig.DataSequencePath)]
     [ApiController]
-    public sealed class SequenceController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class SequenceController : Phenix.Net.Api.ControllerBase
     {
         // phAjax.getSequence()
         /// <summary>

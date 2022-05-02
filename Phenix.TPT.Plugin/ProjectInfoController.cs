@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Data;
-using Phenix.Core.Data.Expressions;
+using Phenix.Mapper.Expressions;
 using Phenix.TPT.Business;
 using Phenix.TPT.Contract;
 
@@ -16,7 +16,7 @@ namespace Phenix.TPT.Plugin
     /// </summary>
     [Route(WebApiConfig.ProjectInfoPath)]
     [ApiController]
-    public sealed class ProjectInfoController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class ProjectInfoController : Phenix.Net.Api.ControllerBase
     {
         #region 方法
 

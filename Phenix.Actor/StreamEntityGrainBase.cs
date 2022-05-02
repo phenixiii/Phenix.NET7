@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans.Streams;
+using Phenix.Business;
 using Phenix.Core.Data;
-using Phenix.Core.Data.Model;
 
 namespace Phenix.Actor
 {

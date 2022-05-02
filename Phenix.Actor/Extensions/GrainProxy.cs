@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Phenix.Core.Data.Model;
+using Phenix.Business;
 using Phenix.Core.Reflection;
 
 namespace Phenix.Actor

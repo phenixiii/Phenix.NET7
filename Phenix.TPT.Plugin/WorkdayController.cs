@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
-using Phenix.Core.Net.Filters;
+using Phenix.Net.Filters;
 using Phenix.TPT.Business;
 using Phenix.TPT.Contract;
 
@@ -13,7 +13,7 @@ namespace Phenix.TPT.Plugin
     /// </summary>
     [Route(WebApiConfig.WorkdayPath)]
     [ApiController]
-    public sealed class WorkdayController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class WorkdayController : Phenix.Net.Api.ControllerBase
     {
         #region 方法
 

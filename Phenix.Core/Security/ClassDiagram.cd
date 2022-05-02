@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Phenix.Core.Security.Principal">
+    <Position X="0.5" Y="0.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BAAQAAgECAAAAAgwBCAAAAQEQAgYAiQBAEQAAAQCCRA=</HashCode>
+      <FileName>Security\Principal.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CurrentPrincipal" />
+      <Property Name="CurrentIdentity" />
+      <Property Name="Identity" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Phenix.Core.Security.IIdentity">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQACQAAAiAAAAQAQIAAAAAAAAACAAAAAAQAABARAgAA=</HashCode>
+      <FileName>Security\IIdentity.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

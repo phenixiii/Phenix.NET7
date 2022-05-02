@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
-using Phenix.Core.DependencyInjection;
+using Phenix.Net.DependencyInjection;
 using Phenix.Core.Reflection;
 
 namespace Phenix.Services.Host
@@ -51,8 +51,8 @@ namespace Phenix.Services.Host
              * 装配DaprClient
              */
             services.AddDaprClient(builder => builder
-                .UseHttpEndpoint($"http://localhost:{Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? DaprClientConfig.DaprHttpPort}")
-                .UseGrpcEndpoint($"http://localhost:{Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? DaprClientConfig.DaprGrpcPort}"));
+                .UseHttpEndpoint($"http://localhost:{Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? DaprClientConfig.HttpPort}")
+                .UseGrpcEndpoint($"http://localhost:{Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? DaprClientConfig.GrpcPort}"));
 
             /*
              * 注入分组/用户消息服务，响应 phAjax.subscribeMessage() 请求 
@@ -103,21 +103,21 @@ namespace Phenix.Services.Host
                      * [Authorize]标签 Roles 声明的多个角色用‘|’分隔，互相为 or 关系
                      * 在 Controller/Action 上允许打多个[Authorize]标签，互相为 and 关系（也可以写在一个标签里用‘,’分隔）
                      *
-                     * 程序运行时 Phenix.Core.Net.Filters.AuthorizationFilter 会尝试把 Controller/Action 上的标签 Roles 写入 PH7_Controller_Role 表中，曾写入过的不会被覆盖
+                     * 程序运行时 Phenix.Net.Filters.AuthorizationFilter 会尝试把 Controller/Action 上的标签 Roles 写入 PH7_Controller_Role 表中，曾写入过的不会被覆盖
                      * PH7_Controller_Role 表 CR_Roles 字段存储的是[Authorize]标签 Roles 属性值，如有多个[Authorize]就用‘,’分隔它们，字段为 null 时等同于[AllowAnonymous]
                      * 访问授权过滤器会优先采纳 PH7_Controller_Role 表的记录（一旦写入表后，代码里的标签会被忽略掉不再有效用，除非删除对应的那条 PH7_Controller_Role 表记录）
                      * 你可以基于 PH7_Controller_Role 表，开发自己系统的 Controller/Action 访问权限的配置管理模块
                      *
                      * 验证失败的话返回 context.Response.StatusCode = 403 Forbidden
                      */
-                    options.Filters.Add<Phenix.Core.Net.Filters.AuthorizationFilter>();
+                    options.Filters.Add<Phenix.Net.Filters.AuthorizationFilter>();
                     /*
                      * 注册数据验证过滤器
                      * 与 Action 参数上的数据验证（[Required]、[StringLength] 等 ValidationAttribute）标签配合完成服务访问参数校验功能
                      *
                      * 验证失败的话返回 context.Response.StatusCode = 400 BadRequest，context.Response.Content 是 ValidationMessage 对象，其 StatusCode 属性为 400，ErrorMessage 属性为验证错误消息
                      */
-                    options.Filters.Add<Phenix.Core.Net.Filters.ValidationFilter>();
+                    options.Filters.Add<Phenix.Net.Filters.ValidationFilter>();
                 })
                 .ConfigureApplicationPartManager(parts =>
                 {

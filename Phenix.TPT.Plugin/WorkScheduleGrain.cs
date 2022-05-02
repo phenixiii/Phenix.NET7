@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Orleans.Streams;
 using Phenix.Actor;
 using Phenix.Core.Data;
-using Phenix.Core.Data.Expressions;
+using Phenix.Mapper.Expressions;
 using Phenix.TPT.Business;
 using Phenix.TPT.Business.Norm;
 using Phenix.TPT.Contract;

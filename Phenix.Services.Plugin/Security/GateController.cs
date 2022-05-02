@@ -14,7 +14,7 @@ namespace Phenix.Services.Plugin.Security
     /// </summary>
     [Route(WebApiConfig.SecurityGatePath)]
     [ApiController]
-    public sealed class GateController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class GateController : Phenix.Net.Api.ControllerBase
     {
         #region 方法
 

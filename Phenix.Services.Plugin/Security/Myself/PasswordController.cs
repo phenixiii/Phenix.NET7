@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
-using Phenix.Core.Net.Filters;
+using Phenix.Net.Filters;
 using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security;
 
@@ -14,7 +14,7 @@ namespace Phenix.Services.Plugin.Security.Myself
     /// </summary>
     [Route(WebApiConfig.SecurityMyselfPasswordPath)]
     [ApiController]
-    public sealed class PasswordController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class PasswordController : Phenix.Net.Api.ControllerBase
     {
         /// <summary>
         /// 重置公司用户登录口令

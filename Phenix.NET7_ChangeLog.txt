@@ -191,11 +191,6 @@ Copyright © 2007, 2022 Phenixヾ Studio
 3，整理Phenix.Services.XXX工程结构
 
 
-20210728
-1，更新《Phenix.NET7.持久层开发方法》
-2，提供Phenix.Norm工程源码，封装标准化的业务逻辑，含默认功能实现，可集成到实体类/业务类，比如IDocs接口
-
-
 20210807
 1，持久化引擎添加InsertOrUpdate功能以支持Put服务请求
 2，提供Phenix.TPT.XXX工程源码，TPT为Teamwork Project Tracker系统名缩写，是一款SAAS版的项目跟踪管理工具
@@ -224,7 +219,8 @@ Copyright © 2007, 2022 Phenixヾ Studio
 
 
 20220401
-1，升级至 for .net 6
-2，添加Phenix.iPost解决方案
-3，升级Phenix.Services.Host工程，以支持Dapr
+1，梳理解决方案，升级至 for .net 6
+2，升级Phenix.Services.Host工程，以支持Dapr
+3，提供Phenix.Sidecar工程源码，以集成Dapr功能
+4，添加Phenix.iPost解决方案
 

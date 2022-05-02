@@ -13,7 +13,7 @@ namespace Phenix.Services.Plugin.Security.Cryptography
     /// </summary>
     [Route(WebApiConfig.SecurityOneOffKeyPairPath)]
     [ApiController]
-    public sealed class OneOffKeyPairController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class OneOffKeyPairController : Phenix.Net.Api.ControllerBase
     {
         #region 属性
 

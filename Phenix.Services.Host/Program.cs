@@ -9,6 +9,7 @@ using Orleans;
 using Orleans.Hosting;
 using Phenix.Core;
 using Phenix.Core.Data;
+using Phenix.Mapper.Schema;
 using Phenix.Core.Plugin;
 
 namespace Phenix.Services.Host
@@ -33,7 +34,7 @@ namespace Phenix.Services.Host
             {
                 Console.WriteLine("正在从缺省数据库加载数据字典到本地以便加快服务的响应速度...");
                 Console.WriteLine("缺省数据库（Phenix.Core.Data.Database.Default.DataSource）为：{0}", Database.Default.DataSource);
-                Database.Default.MetaData.FillingCache();
+                MetaData.Fetch().FillingCache();
             }
             catch (Exception ex)
             {

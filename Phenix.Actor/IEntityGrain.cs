@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Phenix.Core.Data.Expressions;
+using Phenix.Mapper.Expressions;
 
 namespace Phenix.Actor
 {

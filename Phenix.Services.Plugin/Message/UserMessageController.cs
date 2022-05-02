@@ -13,7 +13,7 @@ namespace Phenix.Services.Plugin.Message
     /// </summary>
     [Route(WebApiConfig.MessageUserMessagePath)]
     [ApiController]
-    public sealed class UserMessageController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class UserMessageController : Phenix.Net.Api.ControllerBase
     {
         // phAjax.sendMessage()
         /// <summary>

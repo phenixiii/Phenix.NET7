@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core.Data;
-using Phenix.Core.Net.Filters;
+using Phenix.Net.Filters;
 using Phenix.Services.Business.Security;
 using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security;
@@ -16,7 +16,7 @@ namespace Phenix.Services.Plugin.Security
     /// </summary>
     [Route(WebApiConfig.SecurityPositionPath)]
     [ApiController]
-    public sealed class PositionController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class PositionController : Phenix.Net.Api.ControllerBase
     {
         // phAjax.getPositions()
         /// <summary>

@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Phenix.Core.SyncCollections.SynchronizedLinkedList&lt;T&gt;">
+    <Position X="3" Y="11" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AACIABAAAAAAARAQAAAAJAQgIAAYAAAAAAEiAABQIQA=</HashCode>
+      <FileName>SyncCollections\SynchronizedLinkedList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Core.SyncCollections.SynchronizedDictionary&lt;TKey, TValue&gt;">
+    <Position X="0.5" Y="3.25" Width="3.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CAICEAAAIAIEABASCAAABIQgIAAAgAAAAAAgYARQYRA=</HashCode>
+      <FileName>SyncCollections\SynchronizedDictionary.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Core.SyncCollections.SynchronizedList&lt;T&gt;">
+    <Position X="0.5" Y="11" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AGIACEgAJIBUBBASCAAUFAQiIIAKAAAAKEkiQIFVIRA=</HashCode>
+      <FileName>SyncCollections\SynchronizedList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Core.SyncCollections.SynchronizedQueue&lt;T&gt;">
+    <Position X="8.25" Y="11" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AABAEAABAAAEABAAAAAAAAQgIAACBAAAAAAgAABQIQA=</HashCode>
+      <FileName>SyncCollections\SynchronizedQueue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Core.SyncCollections.SynchronizedSortedDictionary&lt;TKey, TValue&gt;">
+    <Position X="4.5" Y="3.25" Width="3.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CAICEAAAIAIEABASCAAABIQgIAAAgAAAAAAgYARQYRA=</HashCode>
+      <FileName>SyncCollections\SynchronizedSortedDictionary.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Core.SyncCollections.SynchronizedSortedList&lt;TKey, TValue&gt;">
+    <Position X="8.5" Y="3.25" Width="3.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CCICEAAAIAIEABASCAAABIQiIAACgAAACAAkYARQYRA=</HashCode>
+      <FileName>SyncCollections\SynchronizedSortedList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Core.SyncCollections.SynchronizedStack&lt;T&gt;">
+    <Position X="10.75" Y="11" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEABAAAAAAAAQgIACCAAAAAAAgAABQKQA=</HashCode>
+      <FileName>SyncCollections\SynchronizedStack.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Core.SyncCollections.SynchronizedHashSet&lt;T&gt;">
+    <Position X="5.75" Y="11" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAoAABBAACBASBBQAAAAVAQgIAAAACAAAgAgAABQIQA=</HashCode>
+      <FileName>SyncCollections\SynchronizedHashSet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Core.SyncCollections.CachedObject&lt;TValue&gt;">
+    <Position X="2.25" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAgAAEAAAA=</HashCode>
+      <FileName>SyncCollections\CachedObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Core.SyncCollections.SynchronizedMultiSortedList&lt;T&gt;">
+    <Position X="3" Y="16.25" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CAAACAAAIIAUBAAAAAAAAAAAAAAAAAAAAGEAQAABARA=</HashCode>
+      <FileName>SyncCollections\SynchronizedMultiSortedList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Phenix.Core.SyncCollections.ICachedObject">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SyncCollections\ICachedObject.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

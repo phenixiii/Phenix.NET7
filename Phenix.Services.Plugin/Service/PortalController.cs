@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Phenix.Core.Net.Filters;
+using Phenix.Net.Filters;
 using Phenix.Core.Reflection;
 using Phenix.Services.Contract;
 
@@ -15,7 +15,7 @@ namespace Phenix.Services.Plugin.Service
     /// </summary>
     [Route(WebApiConfig.ServicePortalPath)]
     [ApiController]
-    public sealed class PortalController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class PortalController : Phenix.Net.Api.ControllerBase
     {
         /// <summary>
         /// 提交

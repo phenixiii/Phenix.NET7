@@ -12,7 +12,7 @@ namespace Phenix.TPT.Plugin
     /// </summary>
     [Route(WebApiConfig.ProjectMonthlyReportPath)]
     [ApiController]
-    public sealed class ProjectMonthlyReportController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class ProjectMonthlyReportController : Phenix.Net.Api.ControllerBase
     {
         #region 方法
 

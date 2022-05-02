@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Phenix.Core.Log.EventInfo">
+    <Position X="3.5" Y="0.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAHAAgAAACgAAAAAQBAAAAIAAAAgMACEBACYEAIQQA=</HashCode>
+      <FileName>Log\EventInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Core.Log.EventLog">
+    <Position X="0.5" Y="0.5" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAACIBgAEAAIAAAIAAAECAgIAAQEQQgAAAAAABAAAA=</HashCode>
+      <FileName>Log\EventLog.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Phenix.Core.Security.Cryptography.AESCryptoTextProvider">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\Cryptography\AESCryptoTextProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Core.Security.Cryptography.DESCryptoTextProvider">
+    <Position X="2.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\Cryptography\DESCryptoTextProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Core.Security.Cryptography.MD5CryptoTextProvider">
+    <Position X="0.5" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Security\Cryptography\MD5CryptoTextProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Core.Security.Cryptography.RijndaelCryptoTextProvider">
+    <Position X="2.75" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\Cryptography\RijndaelCryptoTextProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Core.Security.Cryptography.RSACryptoTextProvider">
+    <Position X="5" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAQAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\Cryptography\RSACryptoTextProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Core.Security.Cryptography.KeyPair">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAIBAAAQAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\Cryptography\KeyPair.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>

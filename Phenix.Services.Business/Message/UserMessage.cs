@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Common;
-using Phenix.Core;
 using Phenix.Core.Data.Common;
 
 namespace Phenix.Services.Business.Message

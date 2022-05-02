@@ -13,7 +13,7 @@ namespace Phenix.Services.Plugin.Inout
     /// </summary>
     [Route(WebApiConfig.InoutFilePath)]
     [ApiController]
-    public sealed class FileController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class FileController : Phenix.Net.Api.ControllerBase
     {
         #region 方法
 

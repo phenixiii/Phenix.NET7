@@ -1,5 +1,5 @@
 ﻿using System;
-using Phenix.Core.Data.Model;
+using Phenix.Business;
 
 namespace Phenix.Services.Business.Security
 {

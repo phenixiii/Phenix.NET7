@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
-using Phenix.Core.Net.Filters;
+using Phenix.Net.Filters;
 using Phenix.Services.Business.Security;
 using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security.Myself;
@@ -14,7 +14,7 @@ namespace Phenix.Services.Plugin.Security.Myself
     /// </summary>
     [Route(WebApiConfig.SecurityMyselfCompanyTeamsPath)]
     [ApiController]
-    public sealed class CompanyTeamsController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class CompanyTeamsController : Phenix.Net.Api.ControllerBase
     {
         /// <summary>
         /// 添加子节点

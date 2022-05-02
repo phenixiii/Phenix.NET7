@@ -38,7 +38,7 @@ namespace Phenix.Services.Business.Security
     /// 用户资料
     /// </summary>
     [Serializable]
-    public abstract class User<T> : Phenix.Core.Security.User<T>
+    public abstract class User<T> : Phenix.Business.Security.User<T>
         where T : User<T>
     {
         /// <summary>

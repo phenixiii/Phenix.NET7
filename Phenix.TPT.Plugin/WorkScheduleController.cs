@@ -16,7 +16,7 @@ namespace Phenix.TPT.Plugin
     /// </summary>
     [Route(WebApiConfig.WorkSchedulePath)]
     [ApiController]
-    public sealed class WorkScheduleController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class WorkScheduleController : Phenix.Net.Api.ControllerBase
     {
         #region 方法
 

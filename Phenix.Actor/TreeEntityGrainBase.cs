@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Orleans;
+using Phenix.Business;
 using Phenix.Core.Data;
-using Phenix.Core.Data.Expressions;
-using Phenix.Core.Data.Model;
+using Phenix.Mapper.Expressions;
 
 namespace Phenix.Actor
 {

@@ -12,7 +12,7 @@ namespace Phenix.TPT.Plugin
     /// </summary>
     [Route(WebApiConfig.ProjectTypePath)]
     [ApiController]
-    public sealed class ProjectTypeController : Phenix.Core.Net.Api.ControllerBase
+    public sealed class ProjectTypeController : Phenix.Net.Api.ControllerBase
     {
         #region 方法
 

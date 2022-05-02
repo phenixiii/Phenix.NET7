@@ -42,8 +42,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Reference Include="Phenix.Business">
+			<HintPath>..\Bin_ORA\net6.0\Phenix.Business.dll</HintPath>
+		</Reference>
 		<Reference Include="Phenix.Core">
 			<HintPath>..\Bin_ORA\net6.0\Phenix.Core.dll</HintPath>
+		</Reference>
+		<Reference Include="Phenix.Mapper">
+			<HintPath>..\Bin_ORA\net6.0\Phenix.Mapper.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 

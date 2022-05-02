@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Phenix.Core.Data.Common.DbCommandHelper">
+    <Position X="3.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAgACAAAAgEAECAAAAAAAAJAAAAABAAABA=</HashCode>
+      <FileName>Data\Common\DbCommandHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Core.Data.Common.DbConnectionHelper">
+    <Position X="0.5" Y="0.5" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AABAAAABAAAAAAUAAAAAAAIAAQAIAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Data\Common\DbConnectionHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Core.Data.Common.ParamValue">
+    <Position X="9.25" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABAAIAAAAAAAEAAAACAIAAQAEgAAACAgAAAoAAAAAAA=</HashCode>
+      <FileName>Data\Common\ParamValue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Core.Data.Common.SqlHelper">
+    <Position X="6.25" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>IAAhAAAgCACDAIAAIAAAAIKAACAAECAAIABAAAAAEAA=</HashCode>
+      <FileName>Data\Common\SqlHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Core.Data.Common.DataReader">
+    <Position X="0.5" Y="4" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BQC6IJAgYXoAgAUBSCAEJSakgEJ0EGQwKhQRABKhpFg=</HashCode>
+      <FileName>Data\Common\DataReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>

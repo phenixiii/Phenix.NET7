@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using Phenix.Business;
 using Phenix.Core.Data;
-using Phenix.Core.Data.Model;
-using Phenix.Core.Data.Schema;
+using Phenix.Mapper.Schema;
 
 /* 
    builder:    phenixiii

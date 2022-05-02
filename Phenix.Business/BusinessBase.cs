@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
-using Phenix.Core.Data.Expressions;
+using Phenix.Mapper.Expressions;
 using Phenix.Core.SyncCollections;
 
 namespace Phenix.Business
