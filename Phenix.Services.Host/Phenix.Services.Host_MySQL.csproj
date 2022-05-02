@@ -46,7 +46,7 @@
 		<PackageReference Include="Microsoft.Orleans.Reminders.AdoNet" Version="3.6.2" />
 		<PackageReference Include="Microsoft.Orleans.Serialization.Bond" Version="3.6.2" />
 		<PackageReference Include="Microsoft.Orleans.Server" Version="3.6.2" />
-		<PackageReference Include="MySql.Data" Version="8.0.29" />
+		<PackageReference Include="MySql.Data" Version="8.0.28" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="OrleansDashboard" Version="3.6.2" />
 		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.115.5" />

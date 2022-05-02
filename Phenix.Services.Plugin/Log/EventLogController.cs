@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Core.Log;
-using Phenix.Services.Contract;
 
 namespace Phenix.Services.Plugin.Log
 {
     /// <summary>
     /// 事件日志控制器
     /// </summary>
-    [Route(WebApiConfig.LogEventLogPath)]
+    [Route(Phenix.Net.Api.Standards.LogEventLogPath)]
     [ApiController]
     public sealed class EventLogController : Phenix.Net.Api.ControllerBase
     {

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Core;
-using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security.Cryptography;
 
 namespace Phenix.Services.Plugin.Security.Cryptography
@@ -11,7 +10,7 @@ namespace Phenix.Services.Plugin.Security.Cryptography
     /// <summary>
     /// 一次性公钥私钥对控制器
     /// </summary>
-    [Route(WebApiConfig.SecurityOneOffKeyPairPath)]
+    [Route(Phenix.Net.Api.Standards.SecurityOneOffKeyPairPath)]
     [ApiController]
     public sealed class OneOffKeyPairController : Phenix.Net.Api.ControllerBase
     {

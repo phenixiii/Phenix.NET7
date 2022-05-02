@@ -6,7 +6,6 @@ using Phenix.Actor;
 using Phenix.Core.Data;
 using Phenix.Net.Filters;
 using Phenix.Services.Business.Security;
-using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security;
 
 namespace Phenix.Services.Plugin.Security
@@ -14,7 +13,7 @@ namespace Phenix.Services.Plugin.Security
     /// <summary>
     /// 岗位资料控制器
     /// </summary>
-    [Route(WebApiConfig.SecurityPositionPath)]
+    [Route(Phenix.Net.Api.Standards.SecurityPositionPath)]
     [ApiController]
     public sealed class PositionController : Phenix.Net.Api.ControllerBase
     {

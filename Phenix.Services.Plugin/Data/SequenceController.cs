@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Core.Data;
-using Phenix.Services.Contract;
 
 namespace Phenix.Services.Plugin.Data
 {
     /// <summary>
     /// 64位序号控制器
     /// </summary>
-    [Route(WebApiConfig.DataSequencePath)]
+    [Route(Phenix.Net.Api.Standards.DataSequencePath)]
     [ApiController]
     public sealed class SequenceController : Phenix.Net.Api.ControllerBase
     {

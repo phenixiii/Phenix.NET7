@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Services.Business.Inout;
-using Phenix.Services.Contract;
 using Phenix.Services.Contract.Inout;
 
 namespace Phenix.Services.Plugin.Inout
@@ -11,7 +10,7 @@ namespace Phenix.Services.Plugin.Inout
     /// <summary>
     /// 文件存取控制器
     /// </summary>
-    [Route(WebApiConfig.InoutFilePath)]
+    [Route(Phenix.Net.Api.Standards.InoutFilePath)]
     [ApiController]
     public sealed class FileController : Phenix.Net.Api.ControllerBase
     {

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
 using Phenix.Net.Filters;
-using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security;
 
 namespace Phenix.Services.Plugin.Security.Myself
@@ -12,7 +11,7 @@ namespace Phenix.Services.Plugin.Security.Myself
     /// <summary>
     /// 登录口令控制器
     /// </summary>
-    [Route(WebApiConfig.SecurityMyselfPasswordPath)]
+    [Route(Phenix.Net.Api.Standards.SecurityMyselfPasswordPath)]
     [ApiController]
     public sealed class PasswordController : Phenix.Net.Api.ControllerBase
     {

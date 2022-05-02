@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
-using Phenix.Services.Contract;
 using Phenix.Services.Contract.Message;
 
 namespace Phenix.Services.Plugin.Message
@@ -11,7 +10,7 @@ namespace Phenix.Services.Plugin.Message
     /// <summary>
     /// 用户消息控制器
     /// </summary>
-    [Route(WebApiConfig.MessageUserMessagePath)]
+    [Route(Phenix.Net.Api.Standards.MessageUserMessagePath)]
     [ApiController]
     public sealed class UserMessageController : Phenix.Net.Api.ControllerBase
     {

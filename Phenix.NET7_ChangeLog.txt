@@ -219,8 +219,6 @@ Copyright © 2007, 2022 Phenixヾ Studio
 
 
 20220401
-1，梳理解决方案，升级至 for .net 6
-2，升级Phenix.Services.Host工程，以支持Dapr
-3，提供Phenix.Sidecar工程源码，以集成Dapr功能
-4，添加Phenix.iPost解决方案
+1，梳理解决方案，升级至 for .net 6，以支持Dapr
+2，添加Phenix.iPost解决方案
 

@@ -1,9 +1,9 @@
-﻿namespace Phenix.Services.Contract
+﻿namespace Phenix.Net.Api
 {
     /// <summary>
-    /// WebAPI配置信息
+    /// 规格
     /// </summary>
-    public static class WebApiConfig
+    public static class Standards
     {
         /// <summary>
         /// /api/security/user

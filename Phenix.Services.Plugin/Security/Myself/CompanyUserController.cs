@@ -7,7 +7,6 @@ using Phenix.Actor;
 using Phenix.Core.Data;
 using Phenix.Mapper.Expressions;
 using Phenix.Net.Filters;
-using Phenix.Services.Contract;
 using Phenix.Services.Contract.Security;
 
 namespace Phenix.Services.Plugin.Security.Myself
@@ -15,7 +14,7 @@ namespace Phenix.Services.Plugin.Security.Myself
     /// <summary>
     /// 公司用户控制器
     /// </summary>
-    [Route(WebApiConfig.SecurityMyselfCompanyUserPath)]
+    [Route(Phenix.Net.Api.Standards.SecurityMyselfCompanyUserPath)]
     [ApiController]
     public sealed class CompanyUserController : Phenix.Net.Api.ControllerBase
     {

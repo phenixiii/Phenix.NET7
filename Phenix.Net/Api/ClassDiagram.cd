@@ -4,7 +4,7 @@
     <Position X="0.5" Y="0.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
-      <FileName>Net\Api\ControllerBase.cs</FileName>
+      <FileName>Api\ControllerBase.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.Net.Api.DataPageInfo&lt;T&gt;">
@@ -14,7 +14,14 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAIAAAAAAAAAEAAAAAAAAAAAAAUABAIAAAAAEASAAQA=</HashCode>
-      <FileName>Net\Api\DataPageInfo.cs</FileName>
+      <FileName>Api\DataPageInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Net.Api.ContextConfig">
+    <Position X="5.25" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>gAAAAQAACADAAQAAAAAAAAEICABAAADQAQAAAAAgAiA=</HashCode>
+      <FileName>Api\ContextConfig.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Microsoft YaHei UI" Size="9" />
