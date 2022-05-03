@@ -15,7 +15,7 @@ namespace Phenix.TPT.Plugin
     /// <summary>
     /// 项目工作量控制器
     /// </summary>
-    [Route(WebApiConfig.ProjectWorkloadPath)]
+    [Route(WebApiPaths.ProjectWorkloadPath)]
     [ApiController]
     public sealed class ProjectWorkloadController : Phenix.Net.Api.ControllerBase
     {

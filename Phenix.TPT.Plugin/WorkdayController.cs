@@ -11,7 +11,7 @@ namespace Phenix.TPT.Plugin
     /// <summary>
     /// 工作日控制器
     /// </summary>
-    [Route(WebApiConfig.WorkdayPath)]
+    [Route(WebApiPaths.WorkdayPath)]
     [ApiController]
     public sealed class WorkdayController : Phenix.Net.Api.ControllerBase
     {

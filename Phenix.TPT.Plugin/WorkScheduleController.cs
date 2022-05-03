@@ -14,7 +14,7 @@ namespace Phenix.TPT.Plugin
     /// <summary>
     /// 工作档期控制器
     /// </summary>
-    [Route(WebApiConfig.WorkSchedulePath)]
+    [Route(WebApiPaths.WorkSchedulePath)]
     [ApiController]
     public sealed class WorkScheduleController : Phenix.Net.Api.ControllerBase
     {

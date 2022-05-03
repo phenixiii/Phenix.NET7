@@ -77,7 +77,7 @@ namespace Phenix.Net.Http
                 string userName = Uri.UnescapeDataString(strings[1]);
                 string signature = strings[2];
                 IIdentity identity = Principal.FetchIdentity(companyName, userName, context.Request.GetAcceptLanguage(), null);
-                if (String.Compare(context.Request.Path, Phenix.Net.Api.Standards.SecurityGatePath, StringComparison.OrdinalIgnoreCase) == 0 && context.Request.Method == HttpMethod.Put.Method)
+                if (String.Compare(context.Request.Path, Phenix.Net.Api.StandardPaths.SecurityGatePath, StringComparison.OrdinalIgnoreCase) == 0 && context.Request.Method == HttpMethod.Put.Method)
                 {
                     await identity.Logon(signature, await context.Request.ReadBodyAsStringAsync(), context.Request.GetRemoteAddress());
                     Principal.CurrentIdentity = identity;

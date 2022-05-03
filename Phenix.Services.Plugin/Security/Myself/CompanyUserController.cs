@@ -14,7 +14,7 @@ namespace Phenix.Services.Plugin.Security.Myself
     /// <summary>
     /// 公司用户控制器
     /// </summary>
-    [Route(Phenix.Net.Api.Standards.SecurityMyselfCompanyUserPath)]
+    [Route(Phenix.Net.Api.StandardPaths.SecurityMyselfCompanyUserPath)]
     [ApiController]
     public sealed class CompanyUserController : Phenix.Net.Api.ControllerBase
     {

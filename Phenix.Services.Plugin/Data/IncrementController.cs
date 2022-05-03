@@ -7,7 +7,7 @@ namespace Phenix.Services.Plugin.Data
     /// <summary>
     /// 64位增量控制器
     /// </summary>
-    [Route(Phenix.Net.Api.Standards.DataIncrementPath)]
+    [Route(Phenix.Net.Api.StandardPaths.DataIncrementPath)]
     [ApiController]
     public sealed class IncrementController : Phenix.Net.Api.ControllerBase
     {

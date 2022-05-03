@@ -10,7 +10,7 @@ namespace Phenix.Services.Plugin.Message
     /// <summary>
     /// 用户消息控制器
     /// </summary>
-    [Route(Phenix.Net.Api.Standards.MessageUserMessagePath)]
+    [Route(Phenix.Net.Api.StandardPaths.MessageUserMessagePath)]
     [ApiController]
     public sealed class UserMessageController : Phenix.Net.Api.ControllerBase
     {

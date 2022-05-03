@@ -236,8 +236,8 @@ namespace Phenix.Services.Host
                  * 如果部署环境使用了 Nginx 等代理服务器或负载均衡器，类似 proxy_set_header Connection 配置项要从请求头里面获取，比如 proxy_set_header Connection $http_connection;
                  * 负载均衡器应该开启会话保持功能（客户端登录后的请求要一直落到同一台服务器上），配置会话保持类型为源IP（按访问IP的hash结果分配响应的应用服务器）
                  */
-                endpoints.MapHub<Phenix.Services.Plugin.Message.GroupMessageHub>(Phenix.Net.Api.Standards.MessageGroupMessageHubPath);
-                endpoints.MapHub<Phenix.Services.Plugin.Message.UserMessageHub>(Phenix.Net.Api.Standards.MessageUserMessageHubPath);
+                endpoints.MapHub<Phenix.Services.Plugin.Message.GroupMessageHub>(Phenix.Net.Api.StandardPaths.MessageGroupMessageHubPath);
+                endpoints.MapHub<Phenix.Services.Plugin.Message.UserMessageHub>(Phenix.Net.Api.StandardPaths.MessageUserMessageHubPath);
             });
         }
     }

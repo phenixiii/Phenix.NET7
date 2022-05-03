@@ -29,7 +29,7 @@ namespace Phenix.TPT.Plugin
         /// </summary>
         protected override Guid StreamId
         {
-            get { return StreamConfig.ProjectStreamId; }
+            get { return StreamIds.ProjectStreamId; }
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace Phenix.TPT.Plugin
         /// <param name="receiver">侦听者</param>
         private Task SendEventForRefreshProjectWorkloads(long receiver)
         {
-            return ClusterClient.GetSimpleMessageStreamProvider().GetStream<string>(StreamConfig.ProjectStreamId, receiver.ToString()).OnNextAsync(receiver.ToString());
+            return ClusterClient.GetSimpleMessageStreamProvider().GetStream<string>(StreamIds.ProjectStreamId, receiver.ToString()).OnNextAsync(receiver.ToString());
         }
 
         #endregion

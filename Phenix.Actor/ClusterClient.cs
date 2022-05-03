@@ -113,25 +113,25 @@ namespace Phenix.Actor
                             IIdentity currentIdentity = Principal.CurrentIdentity;
                             if (currentIdentity != null)
                             {
-                                RequestContext.Set(ContextConfig.CurrentIdentityCompanyName, currentIdentity.CompanyName);
-                                RequestContext.Set(ContextConfig.CurrentIdentityUserName, currentIdentity.UserName);
-                                RequestContext.Set(ContextConfig.CurrentIdentityCultureName, currentIdentity.CultureName);
+                                RequestContext.Set(ContextKeys.CurrentIdentityCompanyName, currentIdentity.CompanyName);
+                                RequestContext.Set(ContextKeys.CurrentIdentityUserName, currentIdentity.UserName);
+                                RequestContext.Set(ContextKeys.CurrentIdentityCultureName, currentIdentity.CultureName);
                             }
                         }
 
                         if (context.Grain is ITraceLogContext)
                         {
                             long traceKey;
-                            if (RequestContext.Get(ContextConfig.TraceKey) == null)
+                            if (RequestContext.Get(ContextKeys.TraceKey) == null)
                             {
-                                traceKey = Phenix.Core.Data.Database.Default.Sequence.Value;
-                                RequestContext.Set(ContextConfig.TraceKey, traceKey);
+                                traceKey = Database.Default.Sequence.Value;
+                                RequestContext.Set(ContextKeys.TraceKey, traceKey);
                             }
                             else
-                                traceKey = (long) RequestContext.Get(ContextConfig.TraceKey);
+                                traceKey = (long) RequestContext.Get(ContextKeys.TraceKey);
 
-                            int traceOrder = RequestContext.Get(ContextConfig.TraceOrder) != null ? (int) RequestContext.Get(ContextConfig.TraceOrder) + 1 : 0;
-                            RequestContext.Set(ContextConfig.TraceOrder, traceOrder);
+                            int traceOrder = RequestContext.Get(ContextKeys.TraceOrder) != null ? (int) RequestContext.Get(ContextKeys.TraceOrder) + 1 : 0;
+                            RequestContext.Set(ContextKeys.TraceOrder, traceOrder);
 
                             Task.Run(() => EventLog.Save(context.InterfaceMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder));
                             try

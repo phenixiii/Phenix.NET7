@@ -3,7 +3,7 @@
     /// <summary>
     /// WebAPI配置信息
     /// </summary>
-    public static class WebApiConfig
+    public static class WebApiPaths
     {
         /// <summary>
         /// /api/project-type

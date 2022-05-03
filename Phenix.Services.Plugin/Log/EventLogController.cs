@@ -7,7 +7,7 @@ namespace Phenix.Services.Plugin.Log
     /// <summary>
     /// 事件日志控制器
     /// </summary>
-    [Route(Phenix.Net.Api.Standards.LogEventLogPath)]
+    [Route(Phenix.Net.Api.StandardPaths.LogEventLogPath)]
     [ApiController]
     public sealed class EventLogController : Phenix.Net.Api.ControllerBase
     {

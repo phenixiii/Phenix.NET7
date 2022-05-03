@@ -14,7 +14,7 @@ namespace Phenix.TPT.Plugin
     /// <summary>
     /// 项目资料控制器
     /// </summary>
-    [Route(WebApiConfig.ProjectInfoPath)]
+    [Route(WebApiPaths.ProjectInfoPath)]
     [ApiController]
     public sealed class ProjectInfoController : Phenix.Net.Api.ControllerBase
     {

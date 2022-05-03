@@ -1,6 +1,6 @@
 ﻿namespace Phenix.Actor
 {
-    internal static class ContextConfig
+    internal static class ContextKeys
     {
         /// <summary>
         /// CurrentIdentity.CompanyName

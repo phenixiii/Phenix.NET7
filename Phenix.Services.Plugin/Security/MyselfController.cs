@@ -12,7 +12,7 @@ namespace Phenix.Services.Plugin.Security
     /// <summary>
     /// 用户自己控制器
     /// </summary>
-    [Route(Phenix.Net.Api.Standards.SecurityMyselfPath)]
+    [Route(Phenix.Net.Api.StandardPaths.SecurityMyselfPath)]
     [ApiController]
     public sealed class MyselfController : Phenix.Net.Api.ControllerBase
     {

@@ -9,8 +9,8 @@ using Orleans;
 using Orleans.Hosting;
 using Phenix.Core;
 using Phenix.Core.Data;
-using Phenix.Mapper.Schema;
 using Phenix.Core.Plugin;
+using Phenix.Mapper.Schema;
 
 namespace Phenix.Services.Host
 {

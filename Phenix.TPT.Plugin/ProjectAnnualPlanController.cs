@@ -10,7 +10,7 @@ namespace Phenix.TPT.Plugin
     /// <summary>
     /// 项目年度计划控制器
     /// </summary>
-    [Route(WebApiConfig.ProjectAnnualPlanPath)]
+    [Route(WebApiPaths.ProjectAnnualPlanPath)]
     [ApiController]
     public sealed class ProjectAnnualPlanController : Phenix.Net.Api.ControllerBase
     {

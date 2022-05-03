@@ -13,7 +13,7 @@ namespace Phenix.Services.Plugin.Security
     /// <summary>
     /// 岗位资料控制器
     /// </summary>
-    [Route(Phenix.Net.Api.Standards.SecurityPositionPath)]
+    [Route(Phenix.Net.Api.StandardPaths.SecurityPositionPath)]
     [ApiController]
     public sealed class PositionController : Phenix.Net.Api.ControllerBase
     {

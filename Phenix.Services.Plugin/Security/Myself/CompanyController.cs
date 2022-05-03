@@ -12,7 +12,7 @@ namespace Phenix.Services.Plugin.Security.Myself
     /// <summary>
     /// 公司资料控制器
     /// </summary>
-    [Route(Phenix.Net.Api.Standards.SecurityMyselfCompanyPath)]
+    [Route(Phenix.Net.Api.StandardPaths.SecurityMyselfCompanyPath)]
     [ApiController]
     public sealed class CompanyController : Phenix.Net.Api.ControllerBase
     {

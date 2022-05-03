@@ -139,13 +139,13 @@ namespace Orleans.Hosting
                 .AddIncomingGrainCallFilter(context =>
                 {
                     Principal.CurrentIdentity = context.Grain is ISecurityContext &&
-                                                RequestContext.Get(ContextConfig.CurrentIdentityCompanyName) is string companyName &&
-                                                RequestContext.Get(ContextConfig.CurrentIdentityUserName) is string userName &&
-                                                RequestContext.Get(ContextConfig.CurrentIdentityCultureName) is string cultureName
+                                                RequestContext.Get(ContextKeys.CurrentIdentityCompanyName) is string companyName &&
+                                                RequestContext.Get(ContextKeys.CurrentIdentityUserName) is string userName &&
+                                                RequestContext.Get(ContextKeys.CurrentIdentityCultureName) is string cultureName
                         ? Principal.FetchIdentity(companyName, userName, cultureName, null)
                         : null;
 
-                    if (context.Grain is ITraceLogContext && RequestContext.Get(ContextConfig.TraceKey) is long traceKey && RequestContext.Get(ContextConfig.TraceOrder) is int traceOrder)
+                    if (context.Grain is ITraceLogContext && RequestContext.Get(ContextKeys.TraceKey) is long traceKey && RequestContext.Get(ContextKeys.TraceOrder) is int traceOrder)
                     {
                         Task.Run(() => EventLog.Save(context.ImplementationMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder));
                         try

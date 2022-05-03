@@ -3,7 +3,7 @@
     /// <summary>
     /// 规格
     /// </summary>
-    public static class Standards
+    public static class StandardPaths
     {
         /// <summary>
         /// /api/security/user

@@ -29,7 +29,7 @@ namespace Phenix.TPT.Plugin
         /// </summary>
         protected override Guid StreamId
         {
-            get { return StreamConfig.ProjectStreamId; }
+            get { return StreamIds.ProjectStreamId; }
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Phenix.TPT.Plugin
             if (content == Manager.ToString())
                 return Task.CompletedTask;
 
-            return ClusterClient.GetSimpleMessageStreamProvider().GetStream<string>(StreamConfig.ProjectStreamId, receiver.ToString()).OnNextAsync(content, token);
+            return ClusterClient.GetSimpleMessageStreamProvider().GetStream<string>(StreamIds.ProjectStreamId, receiver.ToString()).OnNextAsync(content, token);
         }
 
         /// <summary>

@@ -11,7 +11,7 @@ namespace Phenix.Services.Plugin.Security
     /// <summary>
     /// 系统入口控制器
     /// </summary>
-    [Route(Phenix.Net.Api.Standards.SecurityGatePath)]
+    [Route(Phenix.Net.Api.StandardPaths.SecurityGatePath)]
     [ApiController]
     public sealed class GateController : Phenix.Net.Api.ControllerBase
     {

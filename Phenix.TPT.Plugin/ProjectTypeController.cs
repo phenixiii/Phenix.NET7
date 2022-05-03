@@ -10,7 +10,7 @@ namespace Phenix.TPT.Plugin
     /// <summary>
     /// 项目类型控制器
     /// </summary>
-    [Route(WebApiConfig.ProjectTypePath)]
+    [Route(WebApiPaths.ProjectTypePath)]
     [ApiController]
     public sealed class ProjectTypeController : Phenix.Net.Api.ControllerBase
     {
