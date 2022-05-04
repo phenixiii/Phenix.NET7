@@ -157,7 +157,6 @@ namespace Phenix.Core
             while (error != null)
             {
                 if (error is OutOfMemoryException && !(error is InsufficientMemoryException) ||
-                    error is ThreadAbortException ||
                     error is AccessViolationException ||
                     error is SEHException)
                     return true;

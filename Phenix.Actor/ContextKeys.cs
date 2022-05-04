@@ -26,5 +26,10 @@
         /// Trace.Order
         /// </summary>
         public const string TraceOrder = "Trace.Order";
+
+        /// <summary>
+        /// 遵循FIFO原则的SimpleMessageStream提供者名称
+        /// </summary>
+        public const string SimpleMessageStreamProviderName = "SMSProvider";
     }
 }

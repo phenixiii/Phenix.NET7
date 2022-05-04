@@ -12,8 +12,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
-using Phenix.Net.DependencyInjection;
+using Phenix.Core.Event;
 using Phenix.Core.Reflection;
+using Phenix.Net.DependencyInjection;
+using Phenix.Services.Host.Library;
 
 namespace Phenix.Services.Host
 {
@@ -53,6 +55,11 @@ namespace Phenix.Services.Host
             services.AddDaprClient(builder => builder
                 .UseHttpEndpoint($"http://localhost:{Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? DaprClientConfig.HttpPort}")
                 .UseGrpcEndpoint($"http://localhost:{Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? DaprClientConfig.GrpcPort}"));
+
+            /*
+             * 注入Dapr事件总线
+             */
+            services.AddScoped<IEventBus, DaprEventBus>();
 
             /*
              * 注入分组/用户消息服务，响应 phAjax.subscribeMessage() 请求 

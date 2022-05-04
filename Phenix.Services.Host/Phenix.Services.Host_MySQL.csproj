@@ -46,7 +46,7 @@
 		<PackageReference Include="Microsoft.Orleans.Reminders.AdoNet" Version="3.6.2" />
 		<PackageReference Include="Microsoft.Orleans.Serialization.Bond" Version="3.6.2" />
 		<PackageReference Include="Microsoft.Orleans.Server" Version="3.6.2" />
-		<PackageReference Include="MySql.Data" Version="8.0.28" />
+		<PackageReference Include="MySql.Data" Version="8.0.29" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="OrleansDashboard" Version="3.6.2" />
 		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.115.5" />
@@ -73,9 +73,6 @@
 		</Reference>
 		<Reference Include="Phenix.Services.Plugin">
 			<HintPath>..\Bin_MySQL\net6.0\Phenix.Services.Plugin.dll</HintPath>
-		</Reference>
-		<Reference Include="Phenix.Sidecar">
-		    <HintPath>..\Bin_MySQL\net6.0\Phenix.Sidecar.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 

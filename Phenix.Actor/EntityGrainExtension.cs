@@ -7,12 +7,10 @@ using Phenix.Core.Reflection;
 namespace Phenix.Actor
 {
     /// <summary>
-    /// ClusterClient扩展
+    /// EntityGrain扩展
     /// </summary>
-    public static class GrainProxy
+    public static class EntityGrainExtension
     {
-        #region IEntityGrain
-
         /// <summary>
         /// 获取根实体对象属性值
         /// </summary>
@@ -27,7 +25,5 @@ namespace Phenix.Actor
 
             return Utilities.ChangeType<TValue>(await entityGrain.GetKernelPropertyValue(Utilities.GetPropertyInfo(propertyLambda).Name));
         }
-
-        #endregion
     }
 }

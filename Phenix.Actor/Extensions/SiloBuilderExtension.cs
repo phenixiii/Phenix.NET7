@@ -134,7 +134,7 @@ namespace Orleans.Hosting
                     foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
                         parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
                 })
-                .AddSimpleMessageStreamProvider(StreamProviderProxy.SimpleMessageStreamProviderName)
+                .AddSimpleMessageStreamProvider(ContextKeys.SimpleMessageStreamProviderName)
                 .AddMemoryGrainStorage("PubSubStore")
                 .AddIncomingGrainCallFilter(context =>
                 {

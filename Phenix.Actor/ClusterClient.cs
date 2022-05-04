@@ -8,6 +8,7 @@ using Orleans.Hosting;
 using Orleans.Runtime;
 using Orleans.Runtime.Messaging;
 using Orleans.Serialization;
+using Orleans.Streams;
 using Phenix.Core.Data;
 using Phenix.Core.Log;
 using Phenix.Core.Security;
@@ -23,8 +24,7 @@ namespace Phenix.Actor
     {
         #region 属性
 
-        private static readonly SynchronizedDictionary<string, IClusterClient> _cache =
-            new SynchronizedDictionary<string, IClusterClient>(StringComparer.Ordinal);
+        private static readonly SynchronizedDictionary<string, IClusterClient> _cache = new SynchronizedDictionary<string, IClusterClient>(StringComparer.Ordinal);
 
         private static IClusterClient _default;
 
@@ -105,7 +105,7 @@ namespace Phenix.Actor
                         foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Contract.dll"))
                             parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
                     })
-                    .AddSimpleMessageStreamProvider(StreamProviderProxy.SimpleMessageStreamProviderName)
+                    .AddSimpleMessageStreamProvider(ContextKeys.SimpleMessageStreamProviderName)
                     .AddOutgoingGrainCallFilter(context =>
                     {
                         if (context.Grain is ISecurityContext)
@@ -152,6 +152,23 @@ namespace Phenix.Actor
                 return value;
             });
         }
+
+        #region 扩展
+
+        /// <summary>
+        /// 获取遵循FIFO原则的SimpleMessageStream提供者
+        /// </summary>
+        /// <param name="clusterClient">Orleans服务集群客户端</param>
+        /// <returns>流提供者</returns>
+        public static IStreamProvider GetSimpleMessageStreamProvider(this IClusterClient clusterClient)
+        {
+            if (clusterClient == null)
+                throw new ArgumentNullException(nameof(clusterClient));
+
+            return clusterClient.GetStreamProvider(ContextKeys.SimpleMessageStreamProviderName);
+        }
+
+        #endregion
 
         #endregion
     }

@@ -2484,11 +2484,6 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
                     {
                         return;
                     }
-                    catch (ThreadAbortException)
-                    {
-                        Thread.ResetAbort();
-                        return;
-                    }
                     catch (Exception ex)
                     {
                         if (connection != null)

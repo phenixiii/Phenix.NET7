@@ -44,7 +44,6 @@ namespace Phenix.Services.Host
                 return;
             }
 
-            Phenix.Core.Security.Principal.FetchIdentity = Phenix.Services.Plugin.Security.Identity.Fetch;
             AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) => { Phenix.Core.Log.EventLog.SaveLocal("An unhandled exception occurred in the current domain", (Exception)eventArgs.ExceptionObject); };
             RunHost(args);
         }

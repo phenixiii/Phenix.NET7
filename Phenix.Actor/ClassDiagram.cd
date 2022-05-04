@@ -6,7 +6,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>ABAAAAAAAIAAAAAAAAEAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>ABAAAAAAAIAAAAAAAAEAIAAAAAAAQAAAAAAAAAAAAAA=</HashCode>
       <FileName>ClusterClient.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -90,9 +90,9 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Phenix.Actor.ContextKeys">
-    <Position X="5.25" Y="0.5" Width="2.5" />
+    <Position X="5.25" Y="0.5" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAABABAAEAAAAAAAAAQAAAAAAAAAAAAABAA=</HashCode>
+      <HashCode>AAAAAAAAAAABQBAAEAAAAAAAAAQAAAAAAAAAAAAABAA=</HashCode>
       <FileName>ContextKeys.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -106,43 +106,50 @@
       <FileName>OrleansConfig.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Phenix.Actor.EntityGrainExtension">
+    <Position X="2.75" Y="6.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>EntityGrainExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Interface Name="Phenix.Actor.IEntityGrain&lt;TKernel&gt;">
-    <Position X="6.5" Y="4.25" Width="2" />
+    <Position X="6.5" Y="3.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AEACAAEAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IEntityGrain.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Phenix.Actor.ITreeEntityGrain&lt;TKernel&gt;">
-    <Position X="8.75" Y="4.25" Width="2.25" />
+    <Position X="8.75" Y="3.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AACAAAAAAgAAAAAAAAAAAAEAEAAAAQAAAAAAAAIAAAA=</HashCode>
       <FileName>ITreeEntityGrain.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Phenix.Actor.ISecurityContext">
-    <Position X="0.5" Y="3.75" Width="1.5" />
+    <Position X="0.5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ISecurityContext.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Phenix.Actor.ITraceLogContext">
-    <Position X="0.5" Y="4.75" Width="1.75" />
+    <Position X="0.5" Y="4.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ITraceLogContext.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Phenix.Actor.IGrain">
-    <Position X="2.5" Y="4.25" Width="1.5" />
+    <Position X="2.5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IGrain.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Phenix.Actor.IEntityGrain">
-    <Position X="4.25" Y="4.25" Width="2" />
+    <Position X="4.25" Y="3.75" Width="2" />
     <TypeIdentifier>
       <HashCode>QAACAAEAAQAAAAAAAAAAAAIAAAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>IEntityGrain.cs</FileName>

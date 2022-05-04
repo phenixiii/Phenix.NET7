@@ -74,9 +74,6 @@
 		<Reference Include="Phenix.Services.Plugin">
 			<HintPath>..\Bin_MsSQL\net6.0\Phenix.Services.Plugin.dll</HintPath>
 		</Reference>
-		<Reference Include="Phenix.Sidecar">
-		    <HintPath>..\Bin_MsSQL\net6.0\Phenix.Sidecar.dll</HintPath>
-		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>
