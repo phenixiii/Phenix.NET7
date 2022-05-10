@@ -5,6 +5,7 @@ namespace Phenix.Core.Event
     /// <summary>
     /// 事件包
     /// </summary>
+    [Serializable]
     public record IntegrationEvent
     {
         /// <summary>
@@ -12,8 +13,8 @@ namespace Phenix.Core.Event
         /// </summary>
         public IntegrationEvent()
         {
-            Id = Guid.NewGuid();
-            CreationDate = DateTime.UtcNow;
+            Id = Guid.NewGuid().ToString();
+            OccurredTime = DateTime.UtcNow;
         }
 
         #region 属性
@@ -21,13 +22,22 @@ namespace Phenix.Core.Event
         /// <summary>
         /// ID
         /// </summary>
-        public Guid Id { get; }
+        public string Id { get; }
 
         /// <summary>
-        /// 生成时间
+        /// 发生时间
         /// </summary>
-        public DateTime CreationDate { get; }
-        
+        public DateTime OccurredTime { get; }
+
+        /// <summary>
+        /// 事件类型
+        /// 默认：类名
+        /// </summary>
+        public virtual string EventName
+        {
+            get { return this.GetType().Name; }
+        }
+
         #endregion
     }
 }
