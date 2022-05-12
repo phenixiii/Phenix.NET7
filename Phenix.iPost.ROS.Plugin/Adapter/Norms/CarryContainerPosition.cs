@@ -3,10 +3,10 @@
 namespace Phenix.iPost.ROS.Plugin.Adapter.Norms
 {
     /// <summary>
-    /// 拖车载箱位置
+    /// 载箱位置
     /// </summary>
     [Serializable]
-    public enum VehicleCarryPosition
+    public enum CarryContainerPosition
     {
         /// <summary>
         /// Fore前箱

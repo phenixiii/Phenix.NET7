@@ -220,5 +220,5 @@ Copyright © 2007, 2022 Phenixヾ Studio
 
 20220401
 1，升级至 for .net 6，梳理解决方案，以支持 dapr
-2，添加Phenix.iPost解决方案
+2，添加Phenix.iPost解决方案，为全智能码头实时作业调度系统可行验证
 
