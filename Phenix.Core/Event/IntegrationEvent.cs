@@ -3,7 +3,7 @@
 namespace Phenix.Core.Event
 {
     /// <summary>
-    /// 事件包
+    /// 事件
     /// </summary>
     [Serializable]
     public record IntegrationEvent
@@ -19,6 +19,11 @@ namespace Phenix.Core.Event
 
         #region 属性
 
+        /// <summary>
+        /// 与发布订阅topic的pubsubname保持一致
+        /// </summary>
+        public const string PubSubName = "pubsub";
+        
         /// <summary>
         /// ID
         /// </summary>

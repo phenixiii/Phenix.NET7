@@ -10,7 +10,7 @@ namespace Phenix.Core.Event
         /// <summary>
         /// 发布
         /// </summary>
-        /// <param name="integrationEvent">事件包</param>
+        /// <param name="integrationEvent">事件</param>
         Task PublishAsync(IntegrationEvent integrationEvent);
     }
 }

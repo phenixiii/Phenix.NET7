@@ -62,6 +62,20 @@ namespace Phenix.Services.Host
             services.AddScoped<IEventBus, DaprEventBus>();
 
             /*
+             * 装配事件处理器
+             * 插件程序集都应该统一采用"*.Plugin.dll"作为文件名的后缀
+             * 插件程序集都应该被部署到本服务容器的执行目录下动态加载
+             * 除了Phenix.Services.Plugin被引用外其他都应该是动态加载
+             */
+            foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
+            foreach (Type classType in Utilities.LoadExportedClassTypes(fileName, false))
+                if (typeof(IIntegrationEventHandler).IsAssignableFrom(classType))
+                {
+                    ServiceAttribute serviceAttribute = (ServiceAttribute) Attribute.GetCustomAttribute(classType, typeof(ServiceAttribute));
+                    services.Add(new ServiceDescriptor(classType, serviceAttribute != null ? serviceAttribute.Lifetime : ServiceLifetime.Scoped));
+                }
+
+            /*
              * 注入分组/用户消息服务，响应 phAjax.subscribeMessage() 请求 
              */
             services.AddSingleton<Phenix.Services.Plugin.Message.GroupMessageHub>();

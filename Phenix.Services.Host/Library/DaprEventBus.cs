@@ -33,9 +33,9 @@ namespace Phenix.Services.Host.Library
         {
             string topicName = @event.GetType().Name;
 
-            _logger.LogInformation("Publishing event {0} to {1}.{2}", @event, EventConfig.PubSubName, topicName);
+            _logger.LogInformation("Publishing event {0} to {1}.{2}", @event, IntegrationEvent.PubSubName, topicName);
 
-            return _client.PublishEventAsync(EventConfig.PubSubName, topicName, (object) @event);
+            return _client.PublishEventAsync(IntegrationEvent.PubSubName, topicName, (object) @event);
         }
 
         #endregion
