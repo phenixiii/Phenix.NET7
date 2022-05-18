@@ -10,7 +10,9 @@ using Orleans.Hosting;
 using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.Plugin;
+using Phenix.Core.Security;
 using Phenix.Mapper.Schema;
+using Phenix.Services.Library.Security;
 
 namespace Phenix.Services.Host
 {
@@ -20,6 +22,8 @@ namespace Phenix.Services.Host
 
         public static void Main(string[] args)
         {
+            Principal.FetchIdentity = Identity.Fetch;
+
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("zh-CN", true)
             {
                 DateTimeFormat = {ShortDatePattern = "yyyy-MM-dd", FullDateTimePattern = "yyyy-MM-dd HH:mm:ss", LongTimePattern = "HH:mm:ss"} //兼容Linux（CentOS）环境
