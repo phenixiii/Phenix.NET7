@@ -49,6 +49,7 @@ namespace Orleans.Hosting
         /// <param name="grainCollectionAgeMinutes">默认的激活体垃圾回收年龄限(分钟)</param>
         /// <param name="siloPort">Silo端口</param>
         /// <param name="gatewayPort">Gateway端口</param>
+        /// <exception cref="ArgumentNullException">builder不允许为空</exception>
         /// <returns>ISiloBuilder</returns>
         public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder, string clusterId, string serviceId, string connectionString,
             int grainCollectionAgeMinutes, int siloPort, int gatewayPort)

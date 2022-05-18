@@ -23,5 +23,12 @@
       <FileName>Security\IIdentity.cs</FileName>
     </TypeIdentifier>
   </Interface>
+  <Interface Name="Phenix.Core.Security.IUser">
+    <Position X="5.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AQACAAAggACAwUBQIADAgAYiACCAgAAGAKEipAQAAAA=</HashCode>
+      <FileName>Security\IUser.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Tahoma" Size="8.25" />
 </ClassDiagram>

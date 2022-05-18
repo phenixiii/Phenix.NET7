@@ -9,7 +9,7 @@
       "Phenix.Mapper/7.6.56": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.1",
-          "Oracle.ManagedDataAccess.Core": "3.21.50",
+          "Oracle.ManagedDataAccess.Core": "3.21.61",
           "Phenix.Core": "7.6.56.401"
         },
         "runtime": {
@@ -41,7 +41,7 @@
           }
         }
       },
-      "Oracle.ManagedDataAccess.Core/3.21.50": {
+      "Oracle.ManagedDataAccess.Core/3.21.61": {
         "dependencies": {
           "System.Diagnostics.PerformanceCounter": "6.0.0",
           "System.DirectoryServices": "5.0.0",
@@ -265,12 +265,12 @@
       "path": "newtonsoft.json/13.0.1",
       "hashPath": "newtonsoft.json.13.0.1.nupkg.sha512"
     },
-    "Oracle.ManagedDataAccess.Core/3.21.50": {
+    "Oracle.ManagedDataAccess.Core/3.21.61": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-WcxS4+MlCTFhIuBKaJDr3brD+OKc2EgW7lvJ4CjTYDa1lUtrXZ2u9B3xPPxSRyrvbCCn9qXc38sv7eS+0MPgTA==",
-      "path": "oracle.manageddataaccess.core/3.21.50",
-      "hashPath": "oracle.manageddataaccess.core.3.21.50.nupkg.sha512"
+      "sha512": "sha512-q5wnpKslkWrucgLtQr0YMWpHHT/zqjxRfErTsyiGzwDnsg3F6r0zW4Hv8g3lsdtyi0/ThUsENx2jisuPochmEQ==",
+      "path": "oracle.manageddataaccess.core/3.21.61",
+      "hashPath": "oracle.manageddataaccess.core.3.21.61.nupkg.sha512"
     },
     "System.Configuration.ConfigurationManager/6.0.0": {
       "type": "package",

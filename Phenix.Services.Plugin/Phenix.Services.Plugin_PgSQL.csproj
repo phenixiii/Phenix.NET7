@@ -24,7 +24,6 @@
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="MailKit" Version="3.2.0" />
 		<PackageReference Include="Microsoft.Orleans.Client" Version="3.6.2" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 	</ItemGroup>
@@ -41,12 +40,6 @@
 		</Reference>
 		<Reference Include="Phenix.Mapper">
 			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Mapper.dll</HintPath>
-		</Reference>
-		<Reference Include="Phenix.Net">
-			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Net.dll</HintPath>
-		</Reference>
-		<Reference Include="Phenix.Services.Business">
-			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Services.Business.dll</HintPath>
 		</Reference>
 		<Reference Include="Phenix.Services.Contract">
 			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Services.Contract.dll</HintPath>

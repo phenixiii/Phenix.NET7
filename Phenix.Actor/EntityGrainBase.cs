@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Orleans;
 using Phenix.Business;
@@ -131,8 +132,9 @@ namespace Phenix.Actor
         /// 新增或更新根实体对象
         /// </summary>
         /// <param name="source">数据源</param>
-        /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
-        /// <param name="throwIfNotOwn">如果为 true, 则发现制单人不是自己时引发 InvalidOperationException，否则覆盖更新它</param>
+        /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 ValidationException，否则覆盖更新它</param>
+        /// <param name="throwIfNotOwn">如果为 true, 则发现制单人不是自己时引发 ValidationException，否则覆盖更新它</param>
+        /// <exception cref="ValidationException">不允许重复新增</exception>
         protected virtual Task PutKernel(TKernel source, bool throwIfFound = false, bool? throwIfNotOwn = null)
         {
             if (Kernel != null)
@@ -169,8 +171,9 @@ namespace Phenix.Actor
         /// 新增或更新根实体对象
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
-        /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
-        /// <param name="throwIfNotOwn">如果为 true, 则发现制单人不是自己时引发 InvalidOperationException，否则覆盖更新它</param>
+        /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 ValidationException，否则覆盖更新它</param>
+        /// <param name="throwIfNotOwn">如果为 true, 则发现制单人不是自己时引发 ValidationException，否则覆盖更新它</param>
+        /// <exception cref="ValidationException">不允许重复新增</exception>
         protected virtual Task PutKernel(IDictionary<string, object> propertyValues, bool throwIfFound = false, bool? throwIfNotOwn = null)
         {
             if (Kernel != null)
@@ -216,9 +219,10 @@ namespace Phenix.Actor
         }
 
         /// <summary>
-        /// 更新根实体对象(如不存在则引发 InvalidOperationException)
+        /// 更新根实体对象
         /// </summary>
         /// <param name="source">数据源</param>
+        /// <exception cref="ValidationException">未发现待更新的对象</exception>
         protected virtual Task PatchKernel(TKernel source)
         {
             if (Kernel == null)
@@ -235,9 +239,10 @@ namespace Phenix.Actor
         }
 
         /// <summary>
-        /// 更新根实体对象(如不存在则引发 InvalidOperationException)
+        /// 更新根实体对象
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
+        /// <exception cref="ValidationException">未发现待更新的对象</exception>
         protected virtual Task PatchKernel(IDictionary<string, object> propertyValues)
         {
             if (Kernel == null)

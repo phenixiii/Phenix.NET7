@@ -24,24 +24,6 @@
 		<DocumentationFile>..\Bin_PgSQL\Phenix.Services.Contract.xml</DocumentationFile>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="Microsoft.Orleans.Client" Version="3.6.2" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="Phenix.Actor">
-			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Actor.dll</HintPath>
-		</Reference>
-		<Reference Include="Phenix.Core">
-			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Core.dll</HintPath>
-		</Reference>
-		<Reference Include="Phenix.Services.Business">
-			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Services.Business.dll</HintPath>
-		</Reference>
-	</ItemGroup>
-
 	<ProjectExtensions>
 		<VisualStudio>
 			<UserProperties Reactor_Enabled="1" />

@@ -30,9 +30,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="Phenix.Business">
-			<HintPath>..\Bin_MySQL\net6.0\Phenix.Business.dll</HintPath>
-		</Reference>
 		<Reference Include="Phenix.Core">
 			<HintPath>..\Bin_MySQL\net6.0\Phenix.Core.dll</HintPath>
 		</Reference>

@@ -12,10 +12,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using Phenix.Core.DependencyInjection;
 using Phenix.Core.Event;
 using Phenix.Core.Reflection;
-using Phenix.Net.DependencyInjection;
+using Phenix.Services.Host.Filters;
+using Phenix.Services.Host.Http;
 using Phenix.Services.Host.Library;
+using Phenix.Services.Library;
+using Phenix.Services.Library.Message;
 
 namespace Phenix.Services.Host
 {
@@ -62,41 +66,27 @@ namespace Phenix.Services.Host
             services.AddScoped<IEventBus, DaprEventBus>();
 
             /*
-             * 装配事件处理器
+             * 装配事件处理器/扩展服务
              * 插件程序集都应该统一采用"*.Plugin.dll"作为文件名的后缀
              * 插件程序集都应该被部署到本服务容器的执行目录下动态加载
-             * 除了Phenix.Services.Plugin被引用外其他都应该是动态加载
+             * 事件处理器需实现IIntegrationEventHandler
+             * 扩展服务类需标记ServiceAttribute
              */
             foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
             foreach (Type classType in Utilities.LoadExportedClassTypes(fileName, false))
+            {
+                ServiceAttribute serviceAttribute = (ServiceAttribute) Attribute.GetCustomAttribute(classType, typeof(ServiceAttribute));
                 if (typeof(IIntegrationEventHandler).IsAssignableFrom(classType))
-                {
-                    ServiceAttribute serviceAttribute = (ServiceAttribute) Attribute.GetCustomAttribute(classType, typeof(ServiceAttribute));
                     services.Add(new ServiceDescriptor(classType, serviceAttribute != null ? serviceAttribute.Lifetime : ServiceLifetime.Scoped));
-                }
+                else if (serviceAttribute != null)
+                    services.Add(new ServiceDescriptor(serviceAttribute.InterfaceType != null ? serviceAttribute.InterfaceType : classType, classType, serviceAttribute.Lifetime));
+            }
 
             /*
              * 注入分组/用户消息服务，响应 phAjax.subscribeMessage() 请求 
              */
-            services.AddSingleton<Phenix.Services.Plugin.Message.GroupMessageHub>();
-            services.AddSingleton<Phenix.Services.Plugin.Message.UserMessageHub>();
-
-            /*
-             * 装配扩展服务
-             * 扩展程序集都应该统一采用"*.Extend.dll"作为文件名的后缀
-             * 扩展程序集都应该部署到本服务容器的执行目录下
-             * 扩展服务都应该用"*Service"为类名和接口名的后缀
-             * 扩展服务如非默认ServiceLifetime.Singleton可用ServiceAttribute标记
-             */
-            foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Extend.dll"))
-            foreach (Type classType in Utilities.LoadExportedClassTypes(fileName, false))
-                if (classType.Name.EndsWith("Service"))
-                    foreach (Type interfaceType in classType.GetInterfaces())
-                        if (interfaceType.Name.EndsWith("Service"))
-                        {
-                            ServiceAttribute serviceAttribute = (ServiceAttribute) Attribute.GetCustomAttribute(classType, typeof(ServiceAttribute));
-                            services.Add(new ServiceDescriptor(interfaceType, classType, serviceAttribute != null ? serviceAttribute.Lifetime : ServiceLifetime.Singleton));
-                        }
+            services.AddSingleton<GroupMessageHub>();
+            services.AddSingleton<UserMessageHub>();
 
             /*
              * 配置Controller策略
@@ -131,14 +121,14 @@ namespace Phenix.Services.Host
                      *
                      * 验证失败的话返回 context.Response.StatusCode = 403 Forbidden
                      */
-                    options.Filters.Add<Phenix.Net.Filters.AuthorizationFilter>();
+                    options.Filters.Add<AuthorizationFilter>();
                     /*
                      * 注册数据验证过滤器
                      * 与 Action 参数上的数据验证（[Required]、[StringLength] 等 ValidationAttribute）标签配合完成服务访问参数校验功能
                      *
                      * 验证失败的话返回 context.Response.StatusCode = 400 BadRequest，context.Response.Content 是 ValidationMessage 对象，其 StatusCode 属性为 400，ErrorMessage 属性为验证错误消息
                      */
-                    options.Filters.Add<Phenix.Net.Filters.ValidationFilter>();
+                    options.Filters.Add<ValidationFilter>();
                 })
                 .ConfigureApplicationPartManager(parts =>
                 {
@@ -146,7 +136,7 @@ namespace Phenix.Services.Host
                      * 装配Controller插件
                      * 插件程序集都应该统一采用"*.Plugin.dll"作为文件名的后缀
                      * 插件程序集都应该被部署到本服务容器的执行目录下动态加载
-                     * 除了Phenix.Services.Plugin被引用外其他都应该是动态加载
+                     * 除了Phenix.Services.Library被引用外其他都应该是动态加载
                      */
                     foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
                         parts.ApplicationParts.Add(new AssemblyPart(Assembly.LoadFrom(fileName)));
@@ -168,7 +158,7 @@ namespace Phenix.Services.Host
             /*
              * 配置转接头中间件（代理服务器和负载均衡器）
              * 如果设备使用 X-Forwarded-For 和 X-Forwarded-Proto 以外的其他标头名称，请设置 ForwardedForHeaderName 和 ForwardedProtoHeaderName 选项，使其与设备所用的标头名称相匹配
-             * 本配置可让 Phenix.Services.Plugin.AuthenticationMiddleware 为系统记录下发起访问的客户端IP地址（见 Phenix.Core.Security.User.RequestAddress 属性值）
+             * 本配置可让 Phenix.Services.Library.AuthenticationMiddleware 为系统记录下发起访问的客户端IP地址（见 Phenix.Core.Security.User.RequestAddress 属性值）
              */
             services.Configure<ForwardedHeadersOptions>(options => { options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto; });
         }
@@ -221,12 +211,12 @@ namespace Phenix.Services.Host
             /*
              * 使用异常处理中间件
              */
-            app.UseMiddleware<Phenix.Net.Http.ExceptionHandlerMiddleware>();
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
 
             /*
              * 使用身份验证中间件
              */
-            app.UseMiddleware<Phenix.Net.Http.AuthenticationMiddleware>();
+            app.UseMiddleware<AuthenticationMiddleware>();
 
             /*
              * 必要的话，请注册第三方客户端IP限流控制中间件
@@ -249,6 +239,7 @@ namespace Phenix.Services.Host
                 /*
                  * 添加 Dapr 订阅终结点
                  * 自动查找使用该属性修饰的所有 WebAPI 操作方法，并指示 Dapr 为它们创建订阅
+                 * 当同一个应用程序的多个实例(相同的 ID) 订阅主题（Topic）时，Dapr 只将每个消息传递给该应用程序的一个实例
                  */
                 endpoints.MapSubscribeHandler();
 
@@ -257,8 +248,8 @@ namespace Phenix.Services.Host
                  * 如果部署环境使用了 Nginx 等代理服务器或负载均衡器，类似 proxy_set_header Connection 配置项要从请求头里面获取，比如 proxy_set_header Connection $http_connection;
                  * 负载均衡器应该开启会话保持功能（客户端登录后的请求要一直落到同一台服务器上），配置会话保持类型为源IP（按访问IP的hash结果分配响应的应用服务器）
                  */
-                endpoints.MapHub<Phenix.Services.Plugin.Message.GroupMessageHub>(Phenix.Net.Api.StandardPaths.MessageGroupMessageHubPath);
-                endpoints.MapHub<Phenix.Services.Plugin.Message.UserMessageHub>(Phenix.Net.Api.StandardPaths.MessageUserMessageHubPath);
+                endpoints.MapHub<GroupMessageHub>(StandardPaths.MessageGroupMessageHubPath);
+                endpoints.MapHub<UserMessageHub>(StandardPaths.MessageUserMessageHubPath);
             });
         }
     }

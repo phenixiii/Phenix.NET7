@@ -44,21 +44,21 @@
     </TypeIdentifier>
   </Class>
   <Interface Name="Phenix.Business.ISupportUndo">
-    <Position X="6.25" Y="2" Width="1.75" />
+    <Position X="6" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAICAAAAAAIAAAAAAAAAAAIAAAQIEAAAAAgBAA=</HashCode>
       <FileName>ISupportUndo.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Phenix.Business.IBusiness">
-    <Position X="8.25" Y="2" Width="1.5" />
+    <Position X="8" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
       <FileName>IBusiness.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Phenix.Business.IRefinedBusiness">
-    <Position X="6.25" Y="0.5" Width="2" />
+    <Position X="8" Y="2" Width="2" />
     <TypeIdentifier>
       <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IRefinedBusiness.cs</FileName>

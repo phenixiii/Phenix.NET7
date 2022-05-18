@@ -33,8 +33,8 @@
 	<ItemGroup>
 		<PackageReference Include="Dapr.AspNetCore" Version="1.7.0" />
 		<PackageReference Include="MailKit" Version="3.2.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.4" />
-		<PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="6.0.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.5" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="6.0.5" />
 		<PackageReference Include="Microsoft.Orleans.Client" Version="3.6.2" />
 		<PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="3.6.2" />
 		<PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.6.2">
@@ -71,8 +71,8 @@
 		<Reference Include="Phenix.Services.Contract">
 			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Services.Contract.dll</HintPath>
 		</Reference>
-		<Reference Include="Phenix.Services.Plugin">
-			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Services.Plugin.dll</HintPath>
+		<Reference Include="Phenix.Services.Library">
+			<HintPath>..\Bin_PgSQL\net6.0\Phenix.Services.Library.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 

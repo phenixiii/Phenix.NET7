@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "Phenix.Mapper/7.6.56": {
         "dependencies": {
-          "MySql.Data": "8.0.28",
+          "MySql.Data": "8.0.29",
           "Newtonsoft.Json": "13.0.1",
           "Phenix.Core": "7.6.56.401"
         },
@@ -24,15 +24,11 @@
           }
         }
       },
-      "Google.Protobuf/3.14.0": {
-        "dependencies": {
-          "System.Memory": "4.5.4",
-          "System.Runtime.CompilerServices.Unsafe": "5.0.0"
-        },
+      "Google.Protobuf/3.19.4": {
         "runtime": {
-          "lib/netstandard2.0/Google.Protobuf.dll": {
-            "assemblyVersion": "3.14.0.0",
-            "fileVersion": "3.14.0.0"
+          "lib/net5.0/Google.Protobuf.dll": {
+            "assemblyVersion": "3.19.4.0",
+            "fileVersion": "3.19.4.0"
           }
         }
       },
@@ -90,10 +86,10 @@
           }
         }
       },
-      "MySql.Data/8.0.28": {
+      "MySql.Data/8.0.29": {
         "dependencies": {
           "BouncyCastle.NetCore": "1.8.5",
-          "Google.Protobuf": "3.14.0",
+          "Google.Protobuf": "3.19.4",
           "K4os.Compression.LZ4.Streams": "1.2.6",
           "System.Buffers": "4.5.1",
           "System.Configuration.ConfigurationManager": "4.4.1",
@@ -103,8 +99,8 @@
         },
         "runtime": {
           "lib/net6.0/MySql.Data.dll": {
-            "assemblyVersion": "8.0.28.0",
-            "fileVersion": "8.0.28.0"
+            "assemblyVersion": "8.0.29.0",
+            "fileVersion": "8.0.29.0"
           },
           "lib/net6.0/Ubiety.Dns.Core.dll": {
             "assemblyVersion": "2.2.1.0",
@@ -254,12 +250,12 @@
       "path": "bouncycastle.netcore/1.8.5",
       "hashPath": "bouncycastle.netcore.1.8.5.nupkg.sha512"
     },
-    "Google.Protobuf/3.14.0": {
+    "Google.Protobuf/3.19.4": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-9AkodyGNmLI+wJJPbwpWLmh4BMHoXDQ9+8qvDPhQQi/BNsleqKMBn3OlyLwC6CALwan2kc5+Cenb8fJSITX3nQ==",
-      "path": "google.protobuf/3.14.0",
-      "hashPath": "google.protobuf.3.14.0.nupkg.sha512"
+      "sha512": "sha512-fd07/ykL4O4FhqrZIELm5lmiyOHfdPg9+o+hWr6tcfRdS7tHXnImg/2wtogLzlW2eEmr0J7j6ZrZvaWOLiJbxQ==",
+      "path": "google.protobuf/3.19.4",
+      "hashPath": "google.protobuf.3.19.4.nupkg.sha512"
     },
     "K4os.Compression.LZ4/1.2.6": {
       "type": "package",
@@ -296,12 +292,12 @@
       "path": "microsoft.win32.systemevents/4.7.0",
       "hashPath": "microsoft.win32.systemevents.4.7.0.nupkg.sha512"
     },
-    "MySql.Data/8.0.28": {
+    "MySql.Data/8.0.29": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-7b699tU9ba0r7SBK7K9snGJB9ulnOdwEXG28kpVvaQSN0hHenfoJ/ADOtdfhcvcn1KStBX8pFK5qIl8scdBL2g==",
-      "path": "mysql.data/8.0.28",
-      "hashPath": "mysql.data.8.0.28.nupkg.sha512"
+      "sha512": "sha512-3I+QUbSDTknNVAWUEr8JEtXU5sk83kofwy79TROew9YMhVQAq39jZwpHQfFNG757JZFGWJ5oa5VA3tZBxJa1jw==",
+      "path": "mysql.data/8.0.29",
+      "hashPath": "mysql.data.8.0.29.nupkg.sha512"
     },
     "Newtonsoft.Json/13.0.1": {
       "type": "package",

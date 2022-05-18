@@ -159,6 +159,7 @@ namespace Phenix.Actor
         /// 获取遵循FIFO原则的SimpleMessageStream提供者
         /// </summary>
         /// <param name="clusterClient">Orleans服务集群客户端</param>
+        /// <exception cref="ArgumentNullException">clusterClient不允许为空</exception>
         /// <returns>流提供者</returns>
         public static IStreamProvider GetSimpleMessageStreamProvider(this IClusterClient clusterClient)
         {

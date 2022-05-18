@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Linq.Expressions;
-using System.Security.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Phenix.Core.Data;
 using Phenix.Mapper.Expressions;
 using Phenix.Mapper.Schema;
-using Phenix.Core.Security;
 
 namespace Phenix.Net.Api
 {
@@ -14,35 +12,9 @@ namespace Phenix.Net.Api
     /// 控制器基类
     /// </summary>
     [EnableCors]
-    public abstract class ControllerBase : Microsoft.AspNetCore.Mvc.ControllerBase
+    public abstract class ControllerBase : Phenix.Core.Net.Api.ControllerBase
     {
-        #region 属性
-
-        /// <summary>
-        /// 用户身份
-        /// </summary>
-        public new Principal User
-        {
-            get { return Principal.CurrentPrincipal; }
-        }
-
-        #endregion
-
         #region 方法
-
-        /// <summary>
-        /// 加密
-        /// Key/IV=登录口令/动态口令
-        /// 对应 phAjax.decrypt 函数
-        /// </summary>
-        /// <param name="sourceData">需加密的对象/字符串</param>
-        protected async Task<string> EncryptAsync(object sourceData)
-        {
-            if (User.Identity == null)
-                throw new AuthenticationException();
-
-            return await User.Identity.Encrypt(sourceData);
-        }
 
         #region SelectRecord
 

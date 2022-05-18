@@ -27,12 +27,12 @@ namespace Phenix.Core.Event
         /// <summary>
         /// ID
         /// </summary>
-        public string Id { get; }
+        public string Id { get; init; }
 
         /// <summary>
         /// 发生时间
         /// </summary>
-        public DateTime OccurredTime { get; }
+        public DateTime OccurredTime { get; init; }
 
         /// <summary>
         /// 事件类型

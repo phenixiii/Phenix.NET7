@@ -8,7 +8,7 @@ namespace Phenix.Services.Host.Library
     /// <summary>
     /// Dapr事件总线
     /// </summary>
-    public class DaprEventBus : IEventBus
+    public sealed class DaprEventBus : IEventBus
     {
         /// <summary>
         /// 初始化

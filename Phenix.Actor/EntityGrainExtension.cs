@@ -16,6 +16,7 @@ namespace Phenix.Actor
         /// </summary>
         /// <param name="entityGrain">实体Grain接口</param>
         /// <param name="propertyLambda">含类属性的 lambda 表达式</param>
+        /// <exception cref="ArgumentNullException">entityGrain不允许为空</exception>
         /// <returns>属性值</returns>
         public static async Task<TValue> GetKernelPropertyValue<TKernel, TValue>(this IEntityGrain<TKernel> entityGrain, Expression<Func<TKernel, TValue>> propertyLambda)
             where TKernel : EntityBase<TKernel>

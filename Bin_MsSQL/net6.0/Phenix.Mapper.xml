@@ -4,6 +4,66 @@
         <name>Phenix.Mapper</name>
     </assembly>
     <members>
+        <member name="T:Phenix.Mapper.DataAnnotations.AssociationDataException">
+            <summary>
+            关联数据异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Mapper.DataAnnotations.AssociationDataException.#ctor(System.Exception)">
+            <summary>
+            关联数据异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Mapper.DataAnnotations.AssociationDataException.#ctor(System.String,System.Exception)">
+            <summary>
+            关联数据异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Mapper.DataAnnotations.AssociationDataException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            序列化
+            </summary>
+        </member>
+        <member name="T:Phenix.Mapper.DataAnnotations.OutdatedDataException">
+            <summary>
+            数据过时异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Mapper.DataAnnotations.OutdatedDataException.#ctor(System.Exception)">
+            <summary>
+            数据过时异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Mapper.DataAnnotations.OutdatedDataException.#ctor(System.String,System.Exception)">
+            <summary>
+            数据过时异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Mapper.DataAnnotations.OutdatedDataException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            序列化
+            </summary>
+        </member>
+        <member name="T:Phenix.Mapper.DataAnnotations.UniqueConstraintException">
+            <summary>
+            唯一约束异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Mapper.DataAnnotations.UniqueConstraintException.#ctor(System.Exception)">
+            <summary>
+            唯一约束异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Mapper.DataAnnotations.UniqueConstraintException.#ctor(System.String,System.String,System.Object)">
+            <summary>
+            唯一约束异常
+            </summary>
+        </member>
+        <member name="M:Phenix.Mapper.DataAnnotations.UniqueConstraintException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            序列化
+            </summary>
+        </member>
         <member name="T:Phenix.Mapper.Expressions.CriteriaExpression">
             <summary>
             条件表达式
@@ -1361,293 +1421,6 @@
         <member name="P:Phenix.Mapper.IEntity.Master">
             <summary>
             主实体
-            </summary>
-        </member>
-        <member name="T:Phenix.Mapper.Rule.AssociationDataException">
-            <summary>
-            关联数据异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.AssociationDataException.#ctor(System.Exception)">
-            <summary>
-            关联数据异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.AssociationDataException.#ctor(System.String,System.Exception)">
-            <summary>
-            关联数据异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.AssociationDataException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            序列化
-            </summary>
-        </member>
-        <member name="T:Phenix.Mapper.Rule.DivisibleAttribute">
-            <summary>
-            可整除某数
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.DivisibleAttribute.#ctor(System.Int32)">
-            <summary>
-            可整除某数
-            </summary>
-            <param name="into">某数</param>
-        </member>
-        <member name="P:Phenix.Mapper.Rule.DivisibleAttribute.Into">
-            <summary>
-            某数
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.DivisibleAttribute.IsValid(System.Object)">
-            <summary>
-            检查有效性
-            </summary>
-            <param name="value">值</param>
-            <returns>是否成功</returns>
-        </member>
-        <member name="T:Phenix.Mapper.Rule.DivisibleByAttribute">
-            <summary>
-            能被某数整除
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.DivisibleByAttribute.#ctor(System.Int32)">
-            <summary>
-            能被某数整除
-            </summary>
-            <param name="by">某数</param>
-        </member>
-        <member name="P:Phenix.Mapper.Rule.DivisibleByAttribute.By">
-            <summary>
-            某数
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.DivisibleByAttribute.IsValid(System.Object)">
-            <summary>
-            检查有效性
-            </summary>
-            <param name="value">值</param>
-            <returns>是否成功</returns>
-        </member>
-        <member name="T:Phenix.Mapper.Rule.IValidation">
-            <summary>
-            验证接口
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.IValidation.Validate(Phenix.Core.Data.ExecuteAction,System.ComponentModel.DataAnnotations.ValidationContext)">
-            <summary>
-            验证上下文
-            </summary>
-            <param name="executeAction">执行动作</param>
-            <param name="validationContext">上下文</param>
-            <returns>包含失败的验证信息</returns>
-        </member>
-        <member name="T:Phenix.Mapper.Rule.OutdatedDataException">
-            <summary>
-            数据过时异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.OutdatedDataException.#ctor(System.Exception)">
-            <summary>
-            数据过时异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.OutdatedDataException.#ctor(System.String,System.Exception)">
-            <summary>
-            数据过时异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.OutdatedDataException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            序列化
-            </summary>
-        </member>
-        <member name="T:Phenix.Mapper.Rule.UniqueConstraintException">
-            <summary>
-            唯一约束异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.UniqueConstraintException.#ctor(System.Exception)">
-            <summary>
-            唯一约束异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.UniqueConstraintException.#ctor(System.String,System.String,System.Object)">
-            <summary>
-            唯一约束异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.UniqueConstraintException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            序列化
-            </summary>
-        </member>
-        <member name="T:Phenix.Mapper.Rule.ValidationException">
-            <summary>
-            数据验证异常
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.ValidationException.#ctor(System.String,System.Int32,System.Exception)">
-            <summary>
-            数据验证异常
-            </summary>
-            <param name="key">键值</param>
-            <param name="statusCode">状态码(1000以下为保留值)</param>
-            <param name="innerException">内嵌异常</param>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.ValidationException.#ctor(System.String,System.Int32,System.String,System.Exception)">
-            <summary>
-            数据验证异常
-            </summary>
-            <param name="key">键值</param>
-            <param name="statusCode">状态码(1000以下为保留值)</param>
-            <param name="message">错误消息</param>
-            <param name="innerException">内嵌异常</param>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.ValidationException.#ctor(Phenix.Mapper.Rule.ValidationMessage,System.Exception)">
-            <summary>
-            数据验证异常
-            </summary>
-            <param name="validationMessage">数据验证消息</param>
-            <param name="innerException">内嵌异常</param>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.ValidationException.#ctor(System.String,System.Int32,System.ComponentModel.DataAnnotations.ValidationResult,System.ComponentModel.DataAnnotations.ValidationAttribute,System.Object)">
-            <summary>
-            数据验证异常
-            </summary>
-            <param name="key">键值</param>
-            <param name="statusCode">状态码(1000以下为保留值)</param>
-            <param name="validationResult">数据验证结果</param>
-            <param name="validatingAttribute">数据验证标签</param>
-            <param name="value">值</param>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.ValidationException.#ctor(System.String,System.Int32,System.String,System.ComponentModel.DataAnnotations.ValidationAttribute,System.Object)">
-            <summary>
-            数据验证异常
-            </summary>
-            <param name="key">键值</param>
-            <param name="statusCode">状态码(1000以下为保留值)</param>
-            <param name="message">错误消息</param>
-            <param name="validatingAttribute">数据验证标签</param>
-            <param name="value">值</param>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.ValidationException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            序列化
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.ValidationException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
-            <summary>
-            反序列化
-            </summary>
-        </member>
-        <member name="P:Phenix.Mapper.Rule.ValidationException.ValidationMessage">
-            <summary>
-            数据验证消息
-            </summary>
-        </member>
-        <member name="T:Phenix.Mapper.Rule.ValidationMessage">
-            <summary>
-            数据验证消息
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.ValidationMessage.#ctor(System.String,System.Int32,System.String,Phenix.Mapper.Rule.ValidationMessageType)">
-            <summary>
-            初始化
-            </summary>
-            <param name="key">键值</param>
-            <param name="statusCode">状态码(1000以下为保留值)</param>
-            <param name="hint">提示</param>
-            <param name="messageType">消息类型</param>
-        </member>
-        <member name="P:Phenix.Mapper.Rule.ValidationMessage.Key">
-            <summary>
-            键值
-            </summary>
-        </member>
-        <member name="P:Phenix.Mapper.Rule.ValidationMessage.StatusCode">
-            <summary>
-            状态码(1000以下为保留值)
-            </summary>
-        </member>
-        <member name="P:Phenix.Mapper.Rule.ValidationMessage.Hint">
-            <summary>
-            提示
-            </summary>
-        </member>
-        <member name="P:Phenix.Mapper.Rule.ValidationMessage.MessageType">
-            <summary>
-            消息类型
-            </summary>
-        </member>
-        <member name="T:Phenix.Mapper.Rule.ValidationMessageType">
-            <summary>
-            数据验证消息类型
-            </summary>
-        </member>
-        <member name="F:Phenix.Mapper.Rule.ValidationMessageType.None">
-            <summary>
-            None
-            </summary>
-        </member>
-        <member name="F:Phenix.Mapper.Rule.ValidationMessageType.Error">
-            <summary>
-            错误
-            </summary>
-        </member>
-        <member name="F:Phenix.Mapper.Rule.ValidationMessageType.Stop">
-            <summary>
-            终止
-            </summary>
-        </member>
-        <member name="F:Phenix.Mapper.Rule.ValidationMessageType.Question">
-            <summary>
-            问题
-            </summary>
-        </member>
-        <member name="F:Phenix.Mapper.Rule.ValidationMessageType.Exclamation">
-            <summary>
-            提醒
-            </summary>
-        </member>
-        <member name="F:Phenix.Mapper.Rule.ValidationMessageType.Warning">
-            <summary>
-            警告
-            </summary>
-        </member>
-        <member name="F:Phenix.Mapper.Rule.ValidationMessageType.Asterisk">
-            <summary>
-            脚注
-            </summary>
-        </member>
-        <member name="F:Phenix.Mapper.Rule.ValidationMessageType.Information">
-            <summary>
-            消息
-            </summary>
-        </member>
-        <member name="T:Phenix.Mapper.Rule.ValidationResult">
-            <summary>
-            数据验证结果
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.ValidationResult.#ctor(System.String)">
-            <summary>
-            数据验证结果
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.ValidationResult.#ctor(System.Collections.Generic.IEnumerable{System.String},System.Object,System.String)">
-            <summary>
-            数据验证结果
-            </summary>
-        </member>
-        <member name="M:Phenix.Mapper.Rule.ValidationResult.#ctor(Phenix.Mapper.Rule.ValidationResult)">
-            <summary>
-            数据验证结果
-            </summary>
-        </member>
-        <member name="P:Phenix.Mapper.Rule.ValidationResult.Value">
-            <summary>
-            值
             </summary>
         </member>
         <member name="T:Phenix.Mapper.Schema.Column">

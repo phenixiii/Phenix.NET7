@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Orleans;
 using Phenix.Business;
@@ -58,8 +59,9 @@ namespace Phenix.Actor
         /// 新增或更新根实体对象
         /// </summary>
         /// <param name="propertyValues">待更新属性值队列</param>
-        /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 InvalidOperationException，否则覆盖更新它</param>
-        /// <param name="throwIfNotOwn">如果为 true, 则发现制单人不是自己时引发 InvalidOperationException，否则覆盖更新它</param>
+        /// <param name="throwIfFound">如果为 true, 则发现已存在时引发 ValidationException，否则覆盖更新它</param>
+        /// <param name="throwIfNotOwn">如果为 true, 则发现制单人不是自己时引发 ValidationException，否则覆盖更新它</param>
+        /// <exception cref="ValidationException">不允许重复新增</exception>
         protected override Task PutKernel(IDictionary<string, object> propertyValues, bool throwIfFound = false, bool? throwIfNotOwn = null)
         {
             if (Kernel != null)
@@ -107,7 +109,7 @@ namespace Phenix.Actor
         /// 获取节点
         /// </summary>
         /// <param name="id">节点ID</param>
-        /// <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
+        /// <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
         /// <returns>节点</returns>
         protected virtual TKernel GetNode(long id, bool throwIfNotFound = true)
         {
