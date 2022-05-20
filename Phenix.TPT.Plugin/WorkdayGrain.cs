@@ -4,8 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Phenix.Actor;
 using Phenix.Mapper.Expressions;
-using Phenix.TPT.Business;
-using Phenix.TPT.Contract;
+using Phenix.TPT.Plugin.Business;
 
 namespace Phenix.TPT.Plugin
 {

@@ -48,9 +48,9 @@ namespace Microsoft.AspNetCore.Http
                 case System.ComponentModel.DataAnnotations.ValidationException _:
                 case InvalidOperationException _:
                     response.StatusCode = (int) HttpStatusCode.Conflict; //等效于 HTTP 状态 409 -> 服务器在完成请求时发生冲突
-                    await response.WriteAsync(error is Phenix.Core.Data.DataAnnotations.ValidationException validationException
+                    await response.WriteAsync(error is Phenix.Core.Data.Validation.ValidationException validationException
                         ? Utilities.JsonSerialize(validationException.ValidationMessage)
-                        : Utilities.JsonSerialize(new Phenix.Core.Data.DataAnnotations.ValidationMessage(null, -1, error.Message)));
+                        : Utilities.JsonSerialize(new Phenix.Core.Data.Validation.ValidationMessage(null, -1, error.Message)));
                     return;
                 case NotSupportedException _:
                 case NotImplementedException _:

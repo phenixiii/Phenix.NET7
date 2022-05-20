@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Phenix.Core.Data.DataAnnotations;
+using Phenix.Core.Data.Validation;
 
 namespace Phenix.Services.Host.Filters
 {

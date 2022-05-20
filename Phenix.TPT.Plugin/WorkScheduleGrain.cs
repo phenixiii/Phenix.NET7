@@ -8,9 +8,8 @@ using Orleans.Streams;
 using Phenix.Actor;
 using Phenix.Core.Data;
 using Phenix.Mapper.Expressions;
-using Phenix.TPT.Business;
-using Phenix.TPT.Business.Norm;
-using Phenix.TPT.Contract;
+using Phenix.TPT.Plugin.Business;
+using Phenix.TPT.Plugin.Business.Norm;
 
 namespace Phenix.TPT.Plugin
 {
@@ -29,7 +28,7 @@ namespace Phenix.TPT.Plugin
         /// </summary>
         protected override Guid StreamId
         {
-            get { return StreamIds.ProjectStreamId; }
+            get { return MessageStreamIds.ProjectStreamId; }
         }
 
         /// <summary>
@@ -93,7 +92,7 @@ namespace Phenix.TPT.Plugin
             if (content == Manager.ToString())
                 return Task.CompletedTask;
 
-            return ClusterClient.GetSimpleMessageStreamProvider().GetStream<string>(StreamIds.ProjectStreamId, receiver.ToString()).OnNextAsync(content, token);
+            return ClusterClient.GetSimpleMessageStreamProvider().GetStream<string>(MessageStreamIds.ProjectStreamId, receiver.ToString()).OnNextAsync(content, token);
         }
 
         /// <summary>

@@ -1,5 +1,5 @@
 ﻿using System;
-using Phenix.Core.Data.DataAnnotations;
+using Phenix.Core.Data.Validation;
 
 namespace Phenix.Services.Host.Filters
 {

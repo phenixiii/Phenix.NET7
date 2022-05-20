@@ -41,15 +41,6 @@
 		<Reference Include="Phenix.Mapper">
 			<HintPath>..\Bin_MySQL\net6.0\Phenix.Mapper.dll</HintPath>
 		</Reference>
-		<Reference Include="Phenix.Net">
-			<HintPath>..\Bin_MySQL\net6.0\Phenix.Net.dll</HintPath>
-		</Reference>
-		<Reference Include="Phenix.TPT.Business">
-			<HintPath>..\Bin_MySQL\net6.0\Phenix.TPT.Business.dll</HintPath>
-		</Reference>
-		<Reference Include="Phenix.TPT.Contract">
-			<HintPath>..\Bin_MySQL\net6.0\Phenix.TPT.Contract.dll</HintPath>
-		</Reference>
 	</ItemGroup>
 
 	<ProjectExtensions>

@@ -31,7 +31,7 @@ namespace System.Net.Http
                 case HttpStatusCode.Forbidden: //等效于 HTTP 状态 403 -> 表示用户验证成功，但是该用户仍然无法访问该资源
                     throw new SecurityException(await message.Content.ReadAsStringAsync());
                 case HttpStatusCode.Conflict: //等效于 HTTP 状态 409 -> 服务器在完成请求时发生冲突
-                    throw new Phenix.Core.Data.DataAnnotations.ValidationException(Utilities.JsonDeserialize<Phenix.Core.Data.DataAnnotations.ValidationMessage>(await message.Content.ReadAsStringAsync()));
+                    throw new Phenix.Core.Data.Validation.ValidationException(Utilities.JsonDeserialize<Phenix.Core.Data.Validation.ValidationMessage>(await message.Content.ReadAsStringAsync()));
                 case HttpStatusCode.NotImplemented: //等效于 HTTP 状态 501 -> 服务器不具备完成请求的功能 
                     throw new NotSupportedException(await message.Content.ReadAsStringAsync());
                 case HttpStatusCode.InternalServerError: //等效于 HTTP 状态 500 -> 服务器遇到错误，无法完成请求
