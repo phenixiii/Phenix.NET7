@@ -10,10 +10,10 @@ namespace Phenix.iPost.ROS.Plugin.Adapter.Events.Pub
     /// <param name="TaskId">任务ID</param>
     /// <param name="TaskStatus">任务状态</param>
     /// <param name="TaskType">任务类型</param>
-    /// <param name="PlanDestination">计划目的位置</param>
+    /// <param name="Destination">目的位置</param>
     [Serializable]
     public record VehicleTaskEvent(string MachineId, string TaskId, TaskStatus TaskStatus,
             VehicleTaskType TaskType,
-            DriveDestinationProperty PlanDestination)
+            DriveDestinationProperty Destination)
         : MachineTaskEvent(MachineId, TaskId, TaskStatus);
 }

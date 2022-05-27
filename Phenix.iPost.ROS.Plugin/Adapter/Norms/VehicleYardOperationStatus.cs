@@ -9,9 +9,9 @@ namespace Phenix.iPost.ROS.Plugin.Adapter.Norms
     public enum VehicleYardOperationStatus
     {
         /// <summary>
-        /// 未知
+        /// 待命
         /// </summary>
-        None,
+        Standby,
 
         /// <summary>
         /// 任务已下达

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Phenix.iPost.ROS.Plugin.Adapter.Norms
+namespace Phenix.iPost.ROS.Plugin.Business.Norms
 {
     /// <summary>
     /// 机械工艺状态

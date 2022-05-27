@@ -3,19 +3,19 @@
 namespace Phenix.iPost.ROS.Plugin.Adapter.Norms
 {
     /// <summary>
-    /// 船舶动作
+    /// 动力类型
     /// </summary>
     [Serializable]
-    public enum VesselAction
+    public enum PowerType
     {
         /// <summary>
-        /// 已靠泊
+        /// 燃油的
         /// </summary>
-        Berthed,
+        Fuel,
 
         /// <summary>
-        /// 已离港
+        /// 电动的
         /// </summary>
-        Departed
+        Electric
     }
 }

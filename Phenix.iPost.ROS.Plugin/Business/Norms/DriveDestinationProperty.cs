@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Phenix.iPost.ROS.Plugin.Adapter.Norms
+namespace Phenix.iPost.ROS.Plugin.Business.Norms
 {
     /// <summary>
     /// 驱车目的地属性

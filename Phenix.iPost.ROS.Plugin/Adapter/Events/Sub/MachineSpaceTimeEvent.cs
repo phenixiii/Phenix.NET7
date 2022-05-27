@@ -14,8 +14,8 @@ namespace Phenix.iPost.ROS.Plugin.Adapter.Events.Sub
     /// <param name="Heading">航向角</param>
     [Serializable]
     public record MachineSpaceTimeEvent(string MachineId,
-            float? X,
-            float? Y,
+            float X,
+            float Y,
             float? Speed,
             string Longitude,
             string Latitude,

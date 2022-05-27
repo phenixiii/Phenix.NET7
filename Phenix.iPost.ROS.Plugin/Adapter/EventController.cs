@@ -55,8 +55,8 @@ namespace Phenix.iPost.ROS.Plugin.Adapter
             [FromServices] VehicleYardOperationEventHandler handler) => handler.Handle(@event);
 
         [HttpPost]
-        [Topic(IntegrationEvent.PubSubName, nameof(VesselActionEvent))]
-        public Task VesselAction(VesselActionEvent @event,
-            [FromServices] VesselActionEventHandler handler) => handler.Handle(@event);
+        [Topic(IntegrationEvent.PubSubName, nameof(VesselStatusEvent))]
+        public Task VesselStatus(VesselStatusEvent @event,
+            [FromServices] VesselStatusEventHandler handler) => handler.Handle(@event);
     }
 }

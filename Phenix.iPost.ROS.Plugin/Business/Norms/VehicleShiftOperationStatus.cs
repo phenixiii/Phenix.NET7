@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Phenix.iPost.ROS.Plugin.Adapter.Norms
+namespace Phenix.iPost.ROS.Plugin.Business.Norms
 {
     /// <summary>
     /// 拖车转堆作业状态
@@ -9,27 +9,32 @@ namespace Phenix.iPost.ROS.Plugin.Adapter.Norms
     public enum VehicleShiftOperationStatus
     {
         /// <summary>
+        /// 开始
+        /// </summary>
+        Start = 0,
+
+        /// <summary>
         /// 堆场收箱1
         /// VehicleYardOperationStatus
         /// </summary>
-        YardReceive1,
+        YardReceive1 = 1,
 
         /// <summary>
         /// 堆场收箱2
         /// VehicleYardOperationStatus
         /// </summary>
-        YardReceive2,
+        YardReceive2 = 2,
 
         /// <summary>
         /// 堆场送箱1
         /// VehicleYardOperationStatus
         /// </summary>
-        YardDeliver1,
+        YardDeliver1 = 3,
 
         /// <summary>
         /// 堆场送箱2
         /// VehicleYardOperationStatus
         /// </summary>
-        YardDeliver2,
+        YardDeliver2 = 4,
     }
 }

@@ -12,8 +12,8 @@ namespace Phenix.iPost.ROS.Plugin.Adapter.Events.Sub
     /// <param name="SurplusCapacityPercent">剩余容量百分比</param>
     [Serializable]
     public record MachinePowerEvent(string MachineId,
-            MachinePowerType PowerType,
-            MachinePowerStatus PowerStatus,
+            PowerType PowerType,
+            PowerStatus PowerStatus,
             int? SurplusCapacityPercent)
         : MachineEvent(MachineId);
 }

@@ -6,15 +6,15 @@ using Phenix.iPost.ROS.Plugin.Adapter.Events.Sub;
 namespace Phenix.iPost.ROS.Plugin.Adapter.EventHandling
 {
     /// <summary>
-    /// 响应船舶动作事件处理器
+    /// 响应船舶状态事件处理器
     /// </summary>
-    public class VesselActionEventHandler : IIntegrationEventHandler<VesselActionEvent>
+    public class VesselStatusEventHandler : IIntegrationEventHandler<VesselStatusEvent>
     {       
         /// <summary>
         /// 初始化
         /// </summary>
         /// <param name="logger">日志</param>
-        public VesselActionEventHandler(ILogger<VesselActionEventHandler> logger)
+        public VesselStatusEventHandler(ILogger<VesselStatusEventHandler> logger)
         {
             _logger = logger;
         }
@@ -31,7 +31,7 @@ namespace Phenix.iPost.ROS.Plugin.Adapter.EventHandling
         /// 处理事件
         /// </summary>
         /// <param name="event">事件</param>
-        public Task Handle(VesselActionEvent @event)
+        public Task Handle(VesselStatusEvent @event)
         {
             throw new System.NotImplementedException();
         }

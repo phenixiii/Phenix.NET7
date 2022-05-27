@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace Phenix.iPost.ROS.Plugin.Adapter.Norms
+namespace Phenix.iPost.ROS.Plugin.Business.Norms
 {
     /// <summary>
-    /// 机械动力状态
+    /// 动力状态
     /// </summary>
     [Serializable]
-    public enum MachinePowerStatus
+    public enum PowerStatus
     {
         /// <summary>
         /// 正常

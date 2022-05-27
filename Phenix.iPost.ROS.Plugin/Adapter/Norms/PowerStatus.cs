@@ -3,10 +3,10 @@
 namespace Phenix.iPost.ROS.Plugin.Adapter.Norms
 {
     /// <summary>
-    /// 机械工艺状态
+    /// 动力状态
     /// </summary>
     [Serializable]
-    public enum MachineTechnicalStatus
+    public enum PowerStatus
     {
         /// <summary>
         /// 正常
@@ -14,20 +14,12 @@ namespace Phenix.iPost.ROS.Plugin.Adapter.Norms
         Green,
 
         /// <summary>
-        /// 还能使用
-        /// 但最好找机会维修
+        /// 由人员检查判断是否需要更换电池/加油
         /// </summary>
         Yellow,
 
         /// <summary>
-        /// 能够完成当前指令
-        /// 但后续无法接指令
-        /// </summary>
-        Orange,
-
-        /// <summary>
-        /// 无法使用
-        /// 需要维修
+        /// 需要立刻更换电池/加油
         /// </summary>
         Red,
     }

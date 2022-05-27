@@ -1,46 +1,41 @@
 ﻿using System;
 
-namespace Phenix.iPost.ROS.Plugin.Adapter.Norms
+namespace Phenix.iPost.ROS.Plugin.Business.Norms
 {
     /// <summary>
-    /// 拖车泊位作业状态
+    /// 拖车堆场作业状态
     /// </summary>
     [Serializable]
-    public enum VehicleBerthOperationStatus
+    public enum VehicleYardOperationStatus
     {
         /// <summary>
         /// 待命
         /// </summary>
-        Standby,
+        Standby = 0,
 
         /// <summary>
-        /// 下达
+        /// 任务已下达
         /// </summary>
-        Issued,
+        Issued = 1,
 
         /// <summary>
-        /// 到达桥吊缓冲区
+        /// 到达堆场围栏
         /// </summary>
-        ArrivedQuayBuffer,
-
-        /// <summary>
-        /// 上档
-        /// </summary>
-        ComeUpToDo,
+        ArrivedFence = 2,
 
         /// <summary>
         /// 到达目的位置
         /// </summary>
-        ArrivedDestination,
+        ArrivedDestination = 3,
 
         /// <summary>
         /// 锁车
         /// </summary>
-        Locked,
-        
+        Locked = 4,
+
         /// <summary>
         /// 离开
         /// </summary>
-        Leave,
+        Leave = 5,
     }
 }
