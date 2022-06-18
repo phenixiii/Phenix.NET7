@@ -123,7 +123,7 @@ namespace Phenix.TPT.Plugin
         /// <param name="receiver">侦听者</param>
         private Task SendEventForRefreshProjectWorkloads(long receiver)
         {
-            return ClusterClient.GetSimpleMessageStreamProvider().GetStream<string>(MessageStreamIds.ProjectStreamId, receiver.ToString()).OnNextAsync(receiver.ToString());
+            return StreamProvider.GetStream<string>(MessageStreamIds.ProjectStreamId, receiver.ToString()).OnNextAsync(receiver.ToString());
         }
 
         #endregion
@@ -151,7 +151,7 @@ namespace Phenix.TPT.Plugin
 
             if (Kernel.TryGetValue(source.PiId, out ProjectWorkload projectWorkload))
             {
-                ProjectInfo projectInfo = await ClusterClient.GetGrain<IProjectGrain>(source.PiId).FetchKernel();
+                ProjectInfo projectInfo = await GrainFactory.GetGrain<IProjectGrain>(source.PiId).FetchKernel();
                 if (projectInfo == null)
                     throw new ValidationException("项目不存在!");
                 if (!(unlimited || User.Identity.Id == source.Worker || User.Identity.Id == projectInfo.ProjectManager || User.Identity.Id == projectInfo.DevelopManager))
@@ -162,7 +162,7 @@ namespace Phenix.TPT.Plugin
                 foreach (KeyValuePair<long, ProjectWorkload> kvp in Kernel)
                     oldAllWorkload = oldAllWorkload + kvp.Value.TotalWorkload;
                 //不允许新汇总数超出当月工作日
-                int overmuchWorkload = oldAllWorkload - projectWorkload.TotalWorkload + source.TotalWorkload - (await ClusterClient.GetGrain<IWorkdayGrain>(source.Year).GetWorkday(source.Month)).Days;
+                int overmuchWorkload = oldAllWorkload - projectWorkload.TotalWorkload + source.TotalWorkload - (await GrainFactory.GetGrain<IWorkdayGrain>(source.Year).GetWorkday(source.Month)).Days;
                 if (overmuchWorkload > 0)
                     throw new ValidationException(String.Format("请将超出当月工作日的 {0} 天摊到所有参与项目上以尽可能体现真实的投入占比!", overmuchWorkload));
                 //持久化

@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Phenix.TPT.Plugin.WebApi.ProjectAnnualPlanController">
+    <Position X="4.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>WebApi\ProjectAnnualPlanController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.TPT.Plugin.WebApi.ProjectInfoController">
+    <Position X="2.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAgAAAACAAAg=</HashCode>
+      <FileName>WebApi\ProjectInfoController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.TPT.Plugin.WebApi.ProjectMonthlyReportController">
+    <Position X="7.25" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>WebApi\ProjectMonthlyReportController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.TPT.Plugin.WebApi.ProjectTypeController">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>WebApi\ProjectTypeController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.TPT.Plugin.WebApi.ProjectWorkloadController">
+    <Position X="10" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAg=</HashCode>
+      <FileName>WebApi\ProjectWorkloadController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.TPT.Plugin.WebApi.WebApiPaths">
+    <Position X="0.5" Y="5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAgAgAAAAAAAAAAAAEAAAAAAABAAAAACEAA=</HashCode>
+      <FileName>WebApi\WebApiPaths.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.TPT.Plugin.WebApi.WorkdayController">
+    <Position X="2.75" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>WebApi\WorkdayController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.TPT.Plugin.WebApi.WorkScheduleController">
+    <Position X="0.5" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAgAAAAAAAAg=</HashCode>
+      <FileName>WebApi\WorkScheduleController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

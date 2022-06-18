@@ -129,7 +129,7 @@ namespace Phenix.TPT.Plugin
         /// <param name="receiver">侦听者</param>
         private Task SendEventForRefreshProjectWorkloads(long receiver)
         {
-            return ClusterClient.GetSimpleMessageStreamProvider().GetStream<string>(MessageStreamIds.ProjectStreamId, receiver.ToString()).OnNextAsync(receiver.ToString());
+            return StreamProvider.GetStream<string>(MessageStreamIds.ProjectStreamId, receiver.ToString()).OnNextAsync(receiver.ToString());
         }
 
         #endregion

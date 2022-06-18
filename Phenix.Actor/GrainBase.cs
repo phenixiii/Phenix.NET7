@@ -1,5 +1,6 @@
 ﻿using System;
 using Orleans;
+using Orleans.Streams;
 using Phenix.Core.Data;
 using Phenix.Core.Security;
 
@@ -26,14 +27,6 @@ namespace Phenix.Actor
         protected virtual Database Database
         {
             get { return Database.Default; }
-        }
-
-        /// <summary>
-        /// Orleans服务集群客户端
-        /// </summary>
-        protected virtual IClusterClient ClusterClient
-        {
-            get { return Phenix.Actor.ClusterClient.Default; }
         }
 
         private string _primaryKeyString;
@@ -142,6 +135,14 @@ namespace Phenix.Actor
 
                 return _primaryKeyExtension;
             }
+        }
+
+        /// <summary>
+        /// 流提供者
+        /// </summary>
+        protected virtual IStreamProvider StreamProvider
+        {
+            get { return Phenix.Actor.ClusterClient.Default.GetStreamProvider(ContextKeys.SimpleMessageStreamProviderName); }
         }
 
         #endregion

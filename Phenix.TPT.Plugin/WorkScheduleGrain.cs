@@ -92,7 +92,7 @@ namespace Phenix.TPT.Plugin
             if (content == Manager.ToString())
                 return Task.CompletedTask;
 
-            return ClusterClient.GetSimpleMessageStreamProvider().GetStream<string>(MessageStreamIds.ProjectStreamId, receiver.ToString()).OnNextAsync(content, token);
+            return StreamProvider.GetStream<string>(MessageStreamIds.ProjectStreamId, receiver.ToString()).OnNextAsync(content, token);
         }
 
         /// <summary>

@@ -48,7 +48,7 @@ namespace Phenix.Services.Library.Security
         /// </summary>
         protected ICompanyGrain CompanyTeamsGrain
         {
-            get { return ClusterClient.GetGrain<ICompanyGrain>(CompanyName); }
+            get { return GrainFactory.GetGrain<ICompanyGrain>(CompanyName); }
         }
 
         private long? _rootTeamsId;
@@ -93,7 +93,7 @@ namespace Phenix.Services.Library.Security
                     throw new System.ComponentModel.DataAnnotations.ValidationException("设置的团队在公司里不存在!");
                 if (!positionId.HasValue)
                     throw new System.ComponentModel.DataAnnotations.ValidationException("公司普通用户必须设置岗位!");
-                if (!await ClusterClient.GetGrain<IPositionGrain>(positionId.Value).ExistKernel())
+                if (!await GrainFactory.GetGrain<IPositionGrain>(positionId.Value).ExistKernel())
                     throw new System.ComponentModel.DataAnnotations.ValidationException("设置的岗位不存在!");
 
                 string initialPassword = UserName;
@@ -143,7 +143,7 @@ namespace Phenix.Services.Library.Security
                 mailBody.Append("&nbsp;如非本人操作，请忽略本邮件。<br/>");
                 try
                 {
-                    await ClusterClient.GetGrain<IEmailGrain>("PH").Send(user.RegAlias ?? user.Name, user.EMail, "获取动态口令", true, mailBody.ToString());
+                    await GrainFactory.GetGrain<IEmailGrain>("PH").Send(user.RegAlias ?? user.Name, user.EMail, "获取动态口令", true, mailBody.ToString());
                 }
                 catch (Exception ex)
                 {

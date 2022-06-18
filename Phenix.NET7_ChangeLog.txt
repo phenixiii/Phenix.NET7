@@ -218,7 +218,14 @@ Copyright © 2007, 2022 Phenixヾ Studio
 2，为Phenix.Services.Host工程添加Host启动时加载Plugin功能
 
 
-20220501
+20220401
 1，升级至 for .net 6，梳理解决方案，以支持 dapr
-2，重构Phenix.Services.Library、Phenix.Services.Plugin、Phenix.TPT.Plugin
+2，从Phenix.Core拆分出Phenix.Net、Phenix.Mapper，开源Phenix.Core、Phenix.Net
+
+
+20220606
+2，重构Phenix.Actor
+3，重构Phenix.Services.Library
+4，重构Phenix.TPT.Plugin
+
 
