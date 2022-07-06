@@ -27,8 +27,7 @@ namespace Phenix.Services.Host.Library
         #endregion
 
         #region 方法
-
-
+        
         Task IEventBus.PublishAsync(IntegrationEvent @event)
         {
             string topicName = @event.GetType().Name;

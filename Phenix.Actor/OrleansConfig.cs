@@ -70,5 +70,17 @@ namespace Phenix.Actor
             get { return AppSettings.GetLocalProperty(ref _defaultGatewayPort, EndpointOptions.DEFAULT_GATEWAY_PORT); }
             set { AppSettings.SetLocalProperty(ref _defaultGatewayPort, value); }
         }
+
+        private static bool? _activeStandbyMode;
+
+        /// <summary>
+        /// 主备集群模式
+        /// 默认：单集群
+        /// </summary>
+        public static bool ActiveStandbyMode
+        {
+            get { return AppSettings.GetLocalProperty(ref _activeStandbyMode, false); }
+            set { AppSettings.SetLocalProperty(ref _activeStandbyMode, value); }
+        }
     }
 }

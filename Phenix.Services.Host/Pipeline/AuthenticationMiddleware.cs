@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Phenix.Core.Data;
 using Phenix.Core.Security;
 
-namespace Phenix.Services.Host.Http
+namespace Phenix.Services.Host.Pipeline
 {
     /// <summary>
     /// 身份验证中间件

@@ -12,12 +12,12 @@ namespace Phenix.Actor
         #region 方法
 
         /// <summary>
-        /// 获取节点
+        /// 检索节点
         /// </summary>
         /// <param name="id">节点ID</param>
         /// <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 ArgumentException; 如果为 false, 则在找不到信息时返回 null</param>
         /// <returns>节点</returns>
-        Task<TKernel> GetNode(long id, bool throwIfNotFound = true);
+        Task<TKernel> FindNode(long id, bool throwIfNotFound = true);
 
         /// <summary>
         /// 是否存在节点

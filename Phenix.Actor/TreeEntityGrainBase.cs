@@ -106,12 +106,12 @@ namespace Phenix.Actor
         }
 
         /// <summary>
-        /// 获取节点
+        /// 检索节点
         /// </summary>
         /// <param name="id">节点ID</param>
         /// <param name="throwIfNotFound">如果为 true, 则会在找不到信息时引发 InvalidOperationException; 如果为 false, 则在找不到信息时返回 null</param>
         /// <returns>节点</returns>
-        protected virtual TKernel GetNode(long id, bool throwIfNotFound = true)
+        protected virtual TKernel FindNode(long id, bool throwIfNotFound = true)
         {
             if (Kernel == null)
                 throw new System.ComponentModel.DataAnnotations.ValidationException("需先有根节点");
@@ -124,14 +124,14 @@ namespace Phenix.Actor
                 throw new InvalidOperationException(String.Format("找不到ID为{0}的节点", id));
             return null;
         }
-        Task<TKernel> ITreeEntityGrain<TKernel>.GetNode(long id, bool throwIfNotFound)
+        Task<TKernel> ITreeEntityGrain<TKernel>.FindNode(long id, bool throwIfNotFound)
         {
-            return Task.FromResult(GetNode(id, throwIfNotFound));
+            return Task.FromResult(FindNode(id, throwIfNotFound));
         }
 
         Task<bool> ITreeEntityGrain<TKernel>.HaveNode(long id, bool throwIfNotFound)
         {
-            return Task.FromResult(GetNode(id, throwIfNotFound) != null);
+            return Task.FromResult(FindNode(id, throwIfNotFound) != null);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace Phenix.Actor
         /// <returns>子节点ID</returns>
         protected virtual long AddChildNode(long parentId, IDictionary<string, object> propertyValues)
         {
-            TKernel childNode = GetNode(parentId).AddChild(() => TreeEntityBase<TKernel>.New(Database, propertyValues));
+            TKernel childNode = FindNode(parentId).AddChild(() => TreeEntityBase<TKernel>.New(Database, propertyValues));
             return childNode.Id;
         }
         Task<long> ITreeEntityGrain<TKernel>.AddChildNode(long parentId, IDictionary<string, object> propertyValues)
@@ -161,7 +161,7 @@ namespace Phenix.Actor
         /// <param name="parentId">父节点ID</param>
         protected virtual void ChangeParentNode(long id, long parentId)
         {
-            GetNode(id).ChangeParent(GetNode(parentId));
+            FindNode(id).ChangeParent(FindNode(parentId));
         }
         Task ITreeEntityGrain<TKernel>.ChangeParentNode(long id, long parentId)
         {
@@ -176,7 +176,7 @@ namespace Phenix.Actor
         /// <param name="propertyValues">待更新属性值队列</param>
         protected virtual void UpdateNode(long id, IDictionary<string, object> propertyValues)
         {
-            GetNode(id).UpdateSelf(propertyValues);
+            FindNode(id).UpdateSelf(propertyValues);
         }
         Task ITreeEntityGrain<TKernel>.UpdateNode(long id, IDictionary<string, object> propertyValues)
         {
@@ -196,7 +196,7 @@ namespace Phenix.Actor
         /// <returns>更新记录数</returns>
         protected virtual int DeleteBranch(long id)
         {
-            return GetNode(id).DeleteBranch();
+            return FindNode(id).DeleteBranch();
         }
         Task<int> ITreeEntityGrain<TKernel>.DeleteBranch(long id)
         {

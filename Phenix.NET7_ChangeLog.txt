@@ -220,12 +220,12 @@ Copyright © 2007, 2022 Phenixヾ Studio
 
 20220401
 1，升级至 for .net 6，梳理解决方案，以支持 dapr
-2，从Phenix.Core拆分出Phenix.Net、Phenix.Mapper，开源Phenix.Core、Phenix.Net
+2，从Phenix.Core拆分出Phenix.Net、Phenix.Mapper
+3，开源Phenix.Core、Phenix.Net
 
 
 20220606
-2，重构Phenix.Actor
-3，重构Phenix.Services.Library
-4，重构Phenix.TPT.Plugin
-
+1，完善Phenix.Actor
+2，从Phenix.Services.Plugin拆分出Phenix.Services.Library
+3，提供Phenix.iPost.CSS.Plugin工程源码，CSS为Integrated Real-Time Scheduling System for Container Terminal系统名缩写，是一款集装箱码头设备集成实时调度系统
 

@@ -16,8 +16,8 @@ using Phenix.Core.DependencyInjection;
 using Phenix.Core.Event;
 using Phenix.Core.Reflection;
 using Phenix.Services.Host.Filters;
-using Phenix.Services.Host.Http;
 using Phenix.Services.Host.Library;
+using Phenix.Services.Host.Pipeline;
 using Phenix.Services.Library;
 using Phenix.Services.Library.Message;
 

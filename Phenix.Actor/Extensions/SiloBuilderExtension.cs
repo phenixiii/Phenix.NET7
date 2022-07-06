@@ -6,6 +6,8 @@ using Orleans.Configuration;
 using Orleans.Runtime;
 using Orleans.Runtime.Messaging;
 using Orleans.Serialization;
+using Orleans.Versions.Compatibility;
+using Orleans.Versions.Selector;
 using Phenix.Actor;
 using Phenix.Core.Data;
 using Phenix.Core.Log;
@@ -20,23 +22,16 @@ namespace Orleans.Hosting
     {
         /// <summary>
         /// 配置Orleans服务集群
-        /// 
-        /// 配置项见Phenix.Actor.OrleansConfig
-        /// 设置集群ID、服务ID：Phenix.Core.Data.Database.Default.DataSourceKey
-        /// 设置默认的激活体垃圾回收年龄限为：OrleansConfig.DefaultGrainCollectionAgeMinutes
-        /// 设置Clustering、GrainStorage、Reminder数据库：Phenix.Core.Data.Database.Default
-        /// 设置Silo端口：EndpointOptions.DEFAULT_SILO_PORT
-        /// 设置Gateway端口：EndpointOptions.DEFAULT_GATEWAY_PORT
-        /// 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProviderExtension.SimpleMessageStreamProviderName
         /// </summary>
         /// <param name="builder">ISiloBuilder</param>
         /// <param name="database">数据库入口</param>
-        /// <returns>ISiloBuilder</returns>
         public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder, Database database)
         {
-            return ConfigureCluster(builder, OrleansConfig.ClusterId, OrleansConfig.ServiceId, 
+            return ConfigureCluster(builder, OrleansConfig.ClusterId, OrleansConfig.ServiceId,
                 database != null ? database.ConnectionString : Database.Default.ConnectionString,
-                OrleansConfig.DefaultGrainCollectionAgeMinutes, OrleansConfig.DefaultSiloPort, OrleansConfig.DefaultGatewayPort);
+                TimeSpan.FromMinutes(OrleansConfig.DefaultGrainCollectionAgeMinutes),
+                OrleansConfig.DefaultSiloPort, OrleansConfig.DefaultGatewayPort,
+                OrleansConfig.ActiveStandbyMode);
         }
 
         /// <summary>
@@ -46,13 +41,12 @@ namespace Orleans.Hosting
         /// <param name="clusterId">Orleans集群的唯一ID</param>
         /// <param name="serviceId">Orleans服务的唯一ID</param>
         /// <param name="connectionString">Orleans数据库连接串</param>
-        /// <param name="grainCollectionAgeMinutes">默认的激活体垃圾回收年龄限(分钟)</param>
+        /// <param name="grainCollectionAge">默认的激活体垃圾回收年龄限</param>
         /// <param name="siloPort">Silo端口</param>
         /// <param name="gatewayPort">Gateway端口</param>
-        /// <exception cref="ArgumentNullException">builder不允许为空</exception>
-        /// <returns>ISiloBuilder</returns>
-        public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder, string clusterId, string serviceId, string connectionString,
-            int grainCollectionAgeMinutes, int siloPort, int gatewayPort)
+        /// <param name="activeStandbyMode">主备集群模式</param>
+        public static ISiloBuilder ConfigureCluster(this ISiloBuilder builder, string clusterId, string serviceId,
+            string connectionString, TimeSpan grainCollectionAge, int siloPort, int gatewayPort, bool activeStandbyMode)
         {
             if (builder == null)
                 throw new ArgumentNullException(nameof(builder));
@@ -69,7 +63,26 @@ namespace Orleans.Hosting
                     options.ClusterId = clusterId;
                     options.ServiceId = serviceId;
                 })
-                .Configure<GrainCollectionOptions>(options => { options.CollectionAge = TimeSpan.FromMinutes(grainCollectionAgeMinutes); })
+                .Configure<GrainCollectionOptions>(options => { options.CollectionAge = grainCollectionAge; })
+                .Configure<GrainVersioningOptions>(options =>
+                {
+                    if (activeStandbyMode) //主备集群流量切换升级策略
+                    {
+                        options.DefaultCompatibilityStrategy = nameof(BackwardCompatible); //向后兼容(默认)
+                        options.DefaultVersionSelectorStrategy = nameof(MinimumVersion); //最小版本
+                    }
+                    else //单集群滚动服务升级策略
+                    {
+                        options.DefaultCompatibilityStrategy = nameof(BackwardCompatible); //向后兼容(默认)
+                        options.DefaultVersionSelectorStrategy = nameof(AllCompatibleVersions); //全部兼容(默认)
+                    }
+                    //options.DefaultCompatibilityStrategy = nameof(BackwardCompatible); //向后兼容(默认)
+                    //options.DefaultCompatibilityStrategy = nameof(AllVersionsCompatible); //任意兼容 
+                    //options.DefaultCompatibilityStrategy = nameof(StrictVersionCompatible); //严格一致 
+                    //options.DefaultVersionSelectorStrategy = nameof(AllCompatibleVersions); //全部兼容(默认)
+                    //options.DefaultVersionSelectorStrategy = nameof(LatestVersion); //最新版本
+                    //options.DefaultVersionSelectorStrategy = nameof(MinimumVersion); //最小版本
+                })
                 .UseAdoNetClustering(options =>
                 {
                     options.ConnectionString = connectionString;
@@ -88,6 +101,7 @@ namespace Orleans.Hosting
                 })
                 .AddAdoNetGrainStorageAsDefault(options =>
                 {
+                    options.UseJsonFormat = true;
                     options.ConnectionString = connectionString;
 #if PgSQL
                     options.Invariant = "Npgsql";

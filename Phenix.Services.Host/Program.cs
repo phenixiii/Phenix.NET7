@@ -2,11 +2,13 @@
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Hosting;
+using Orleans.Statistics;
 using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.Plugin;
@@ -26,7 +28,7 @@ namespace Phenix.Services.Host
 
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("zh-CN", true)
             {
-                DateTimeFormat = {ShortDatePattern = "yyyy-MM-dd", FullDateTimePattern = "yyyy-MM-dd HH:mm:ss", LongTimePattern = "HH:mm:ss"} //兼容Linux（CentOS）环境
+                DateTimeFormat = { ShortDatePattern = "yyyy-MM-dd", FullDateTimePattern = "yyyy-MM-dd HH:mm:ss", LongTimePattern = "HH:mm:ss" } //兼容Linux（CentOS）环境
             };
 
 #if DEBUG
@@ -93,18 +95,19 @@ namespace Phenix.Services.Host
                  * 请事先在数据库中手工添加Orleans配置库，默认是Phenix.Core.Data.Database.Default指向的数据库
                  * Orleans配置库的脚本文件，见Orleans Database Script目录，分为PostgreSQL、MySQL、Oracle、SQLServer四组，建议按需顺序批处理执行
                  */
-                .UseOrleans((context, builder) => builder
-                    .ConfigureLogging(logging => logging.AddConsole())
+                .UseOrleans((context, builder) =>
+                {
+                    builder.ConfigureLogging(logging => logging.AddConsole());
                     /*
                      * 配置Orleans服务集群
                      */
-                    .ConfigureCluster(Database.Default)
+                    builder.ConfigureCluster(Database.Default);
                     /*
                      * 使用Dashboard插件
                      * 本地打开可视化监控工具：http://localhost:8088/
                      * 建议仅向内网开放
                      */
-                    .UseDashboard(options =>
+                    builder.UseDashboard(options =>
                     {
                         options.Username = DashboardConfig.Username; //设置用于访问Dashboard的用户名（基本身份验证）
                         options.Password = DashboardConfig.Password; //设置用于访问Dashboard的用户口令（基本身份验证）
@@ -112,7 +115,15 @@ namespace Phenix.Services.Host
                         options.Port = DashboardConfig.Port; //设置Dashboard可视化页面访问的端口（默认为8088）
                         options.HostSelf = DashboardConfig.HostSelf; //将Dashboard设置为托管自己的http服务器（默认为true）
                         options.CounterUpdateIntervalMs = DashboardConfig.CounterUpdateIntervalMs; //采样计数器之间的更新间隔（以毫秒为单位，默认为1000）
-                    }))
+                    });
+                    /*
+                     * 为Dashboard提供操作系统平台下的性能计数器服务
+                     */
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                        builder.UsePerfCounterEnvironmentStatistics();
+                    else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                        builder.UseLinuxEnvironmentStatistics();
+                })
                 /*
                  * 启动WebAPI服务
                  */

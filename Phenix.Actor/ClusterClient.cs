@@ -42,12 +42,8 @@ namespace Phenix.Actor
 
         /// <summary>
         /// 获取Orleans服务集群客户端
-        /// 设置集群ID、服务ID：Phenix.Core.Data.Database.Default.DataSourceKey
-        /// 设置Clustering、GrainStorage、Reminder数据库：Phenix.Core.Data.Database.Default
-        /// 设置SimpleMessageStreamProvider：Phenix.Actor.StreamProvider.Name
         /// </summary>
         /// <param name="database">数据库入口</param>
-        /// <returns>Orleans服务集群客户端</returns>
         public static IClusterClient Fetch(Database database)
         {
             return Fetch(OrleansConfig.ClusterId, OrleansConfig.ServiceId, database.ConnectionString);
@@ -59,7 +55,6 @@ namespace Phenix.Actor
         /// <param name="clusterId">Orleans集群的唯一ID</param>
         /// <param name="serviceId">Orleans服务的唯一ID</param>
         /// <param name="connectionString">Orleans数据库连接串</param>
-        /// <returns>Orleans服务集群客户端</returns>
         public static IClusterClient Fetch(string clusterId, string serviceId, string connectionString)
         {
             return _cache.GetValue(Standards.FormatCompoundKey(clusterId, serviceId), () =>
