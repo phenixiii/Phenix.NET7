@@ -7,6 +7,7 @@
 		<FileVersion>7.6.57.0606</FileVersion>
 		<Description>Phenix Framework 7.6 for .NET 6</Description>
 		<Authors>ming</Authors>
+		<DefineConstants>TRACE;ORA</DefineConstants>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<AssemblyName>Phenix.Services.Host</AssemblyName>
 		<RootNamespace>Phenix.Services.Host</RootNamespace>
@@ -72,9 +73,6 @@
 		</Reference>
 		<Reference Include="Phenix.Services.Contract">
 			<HintPath>..\Bin_ORA\net6.0\Phenix.Services.Contract.dll</HintPath>
-		</Reference>
-		<Reference Include="Phenix.Services.Library">
-			<HintPath>..\Bin_ORA\net6.0\Phenix.Services.Library.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 

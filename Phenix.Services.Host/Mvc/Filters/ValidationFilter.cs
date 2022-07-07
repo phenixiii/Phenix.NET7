@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Phenix.Core.Data.Validation;
 
-namespace Phenix.Services.Host.Filters
+namespace Phenix.Services.Host.Mvc.Filters
 {
     /// <summary>
     /// 数据验证过滤器标签

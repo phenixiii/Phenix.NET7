@@ -14,7 +14,7 @@ using Phenix.Core.Security;
 using Phenix.Core.Security.Auth;
 using Phenix.Core.SyncCollections;
 
-namespace Phenix.Services.Host.Filters
+namespace Phenix.Services.Host.Mvc.Filters
 {
     /// <summary>
     /// 控制器的授权角色

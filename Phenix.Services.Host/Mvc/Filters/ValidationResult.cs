@@ -1,7 +1,7 @@
 ﻿using System;
 using Phenix.Core.Data.Validation;
 
-namespace Phenix.Services.Host.Filters
+namespace Phenix.Services.Host.Mvc.Filters
 {
     /// <summary>
     /// 数据验证结果

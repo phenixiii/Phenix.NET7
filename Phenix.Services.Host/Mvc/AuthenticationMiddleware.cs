@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Core.Data;
 using Phenix.Core.Security;
+using Phenix.Services.Host.Library;
 
-namespace Phenix.Services.Host.Pipeline
+namespace Phenix.Services.Host.Mvc
 {
     /// <summary>
     /// 身份验证中间件
@@ -77,7 +78,7 @@ namespace Phenix.Services.Host.Pipeline
                 string userName = Uri.UnescapeDataString(strings[1]);
                 string signature = strings[2];
                 IIdentity identity = Principal.FetchIdentity(companyName, userName, context.Request.GetAcceptLanguage(), null);
-                if (String.Compare(context.Request.Path, Phenix.Services.Library.StandardPaths.SecurityGatePath, StringComparison.OrdinalIgnoreCase) == 0 && context.Request.Method == HttpMethod.Put.Method)
+                if (String.Compare(context.Request.Path, StandardPaths.SecurityGatePath, StringComparison.OrdinalIgnoreCase) == 0 && context.Request.Method == HttpMethod.Put.Method)
                 {
                     await identity.Logon(signature, await context.Request.ReadBodyAsStringAsync(), context.Request.GetRemoteAddress());
                     Principal.CurrentIdentity = identity;

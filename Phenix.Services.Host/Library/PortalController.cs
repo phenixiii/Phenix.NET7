@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Core.Reflection;
-using Phenix.Services.Host.Filters;
-using Phenix.Services.Library;
+using Phenix.Services.Host.Mvc.Filters;
 
 namespace Phenix.Services.Host.Library
 {

@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Core_ORA", "Phenix.Core\Phenix.Core_ORA.csproj", "{FC4C581B-081D-4160-A295-D72CDEF22810}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Host_ORA", "Phenix.Services.Host\Phenix.Services.Host_ORA.csproj", "{EEC4928E-95B4-4BCA-B3E6-5471652D7B7E}"
-	ProjectSection(ProjectDependencies) = postProject
-		{B49494A3-3B7B-4C02-8888-D2B4DBF57725} = {B49494A3-3B7B-4C02-8888-D2B4DBF57725}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Business_ORA", "Phenix.Business\Phenix.Business_ORA.csproj", "{68F18727-70A8-4A5F-A5B6-450833D13EDB}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -76,19 +73,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "crypto-js", "crypto-js", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.TPT.Plugin_ORA", "Phenix.TPT.Plugin\Phenix.TPT.Plugin_ORA.csproj", "{DAE3BBA1-1EDA-43CF-8ABD-254611598F7F}"
 	ProjectSection(ProjectDependencies) = postProject
-		{117EED02-AE30-4410-9143-4C3BABEC9523} = {117EED02-AE30-4410-9143-4C3BABEC9523}
 		{16542B94-D102-4EA5-ADD2-7C6585B25579} = {16542B94-D102-4EA5-ADD2-7C6585B25579}
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.TPT.Business_ORA", "Phenix.TPT.Business\Phenix.TPT.Business_ORA.csproj", "{4F42CFB0-F05D-441B-B882-EBC30C0CE37D}"
-	ProjectSection(ProjectDependencies) = postProject
-		{68F18727-70A8-4A5F-A5B6-450833D13EDB} = {68F18727-70A8-4A5F-A5B6-450833D13EDB}
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.TPT.Contract_ORA", "Phenix.TPT.Contract\Phenix.TPT.Contract_ORA.csproj", "{117EED02-AE30-4410-9143-4C3BABEC9523}"
-	ProjectSection(ProjectDependencies) = postProject
-		{16542B94-D102-4EA5-ADD2-7C6585B25579} = {16542B94-D102-4EA5-ADD2-7C6585B25579}
-		{4F42CFB0-F05D-441B-B882-EBC30C0CE37D} = {4F42CFB0-F05D-441B-B882-EBC30C0CE37D}
 	EndProjectSection
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Phenix.TPT.WebApp", "Phenix.TPT.WebApp\Phenix.TPT.WebApp.njsproj", "{C54F28DB-323B-4F17-A2EB-B31D0A473C41}"
@@ -101,12 +86,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Net_ORA", "Phenix.Net\Phenix.Net_ORA.csproj", "{E2075351-D515-4C56-813E-8FB2E3E11F23}"
 	ProjectSection(ProjectDependencies) = postProject
 		{E0434CBD-C058-4AE4-A0DE-0816963414BF} = {E0434CBD-C058-4AE4-A0DE-0816963414BF}
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Library_ORA", "Phenix.Services.Library\Phenix.Services.Library_ORA.csproj", "{B49494A3-3B7B-4C02-8888-D2B4DBF57725}"
-	ProjectSection(ProjectDependencies) = postProject
-		{16542B94-D102-4EA5-ADD2-7C6585B25579} = {16542B94-D102-4EA5-ADD2-7C6585B25579}
-		{655E1FB3-FBF4-4828-BE60-BA888AD1C2C1} = {655E1FB3-FBF4-4828-BE60-BA888AD1C2C1}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Plugin_ORA", "Phenix.Services.Plugin\Phenix.Services.Plugin_ORA.csproj", "{99A2DDAF-9614-402B-AA7C-10E4CAF2ED09}"
@@ -161,14 +140,6 @@ Global
 		{DAE3BBA1-1EDA-43CF-8ABD-254611598F7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAE3BBA1-1EDA-43CF-8ABD-254611598F7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAE3BBA1-1EDA-43CF-8ABD-254611598F7F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4F42CFB0-F05D-441B-B882-EBC30C0CE37D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F42CFB0-F05D-441B-B882-EBC30C0CE37D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F42CFB0-F05D-441B-B882-EBC30C0CE37D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4F42CFB0-F05D-441B-B882-EBC30C0CE37D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{117EED02-AE30-4410-9143-4C3BABEC9523}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{117EED02-AE30-4410-9143-4C3BABEC9523}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{117EED02-AE30-4410-9143-4C3BABEC9523}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{117EED02-AE30-4410-9143-4C3BABEC9523}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C54F28DB-323B-4F17-A2EB-B31D0A473C41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C54F28DB-323B-4F17-A2EB-B31D0A473C41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C54F28DB-323B-4F17-A2EB-B31D0A473C41}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -181,10 +152,6 @@ Global
 		{E2075351-D515-4C56-813E-8FB2E3E11F23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2075351-D515-4C56-813E-8FB2E3E11F23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2075351-D515-4C56-813E-8FB2E3E11F23}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B49494A3-3B7B-4C02-8888-D2B4DBF57725}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B49494A3-3B7B-4C02-8888-D2B4DBF57725}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B49494A3-3B7B-4C02-8888-D2B4DBF57725}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B49494A3-3B7B-4C02-8888-D2B4DBF57725}.Release|Any CPU.Build.0 = Release|Any CPU
 		{99A2DDAF-9614-402B-AA7C-10E4CAF2ED09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{99A2DDAF-9614-402B-AA7C-10E4CAF2ED09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99A2DDAF-9614-402B-AA7C-10E4CAF2ED09}.Release|Any CPU.ActiveCfg = Release|Any CPU

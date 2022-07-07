@@ -15,11 +15,10 @@ using Newtonsoft.Json;
 using Phenix.Core.DependencyInjection;
 using Phenix.Core.Event;
 using Phenix.Core.Reflection;
-using Phenix.Services.Host.Filters;
 using Phenix.Services.Host.Library;
-using Phenix.Services.Host.Pipeline;
-using Phenix.Services.Library;
-using Phenix.Services.Library.Message;
+using Phenix.Services.Host.Library.Message;
+using Phenix.Services.Host.Mvc;
+using Phenix.Services.Host.Mvc.Filters;
 
 namespace Phenix.Services.Host
 {

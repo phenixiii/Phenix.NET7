@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Phenix.Core;
 using Phenix.Core.Log;
 
-namespace Phenix.Services.Host.Pipeline
+namespace Phenix.Services.Host.Mvc
 {
     /// <summary>
     /// 异常处理中间件

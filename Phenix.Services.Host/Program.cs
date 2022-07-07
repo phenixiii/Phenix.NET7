@@ -14,7 +14,7 @@ using Phenix.Core.Data;
 using Phenix.Core.Plugin;
 using Phenix.Core.Security;
 using Phenix.Mapper.Schema;
-using Phenix.Services.Library.Security;
+using Phenix.Services.Host.Library.Security;
 
 namespace Phenix.Services.Host
 {

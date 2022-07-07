@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Phenix.Core.Security;
 using Phenix.Core.Threading;
 
-namespace Phenix.Services.Host.Filters
+namespace Phenix.Services.Host.Mvc.Filters
 {
     /// <summary>
     /// 访问授权过滤器

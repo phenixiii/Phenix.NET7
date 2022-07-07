@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Core_PgSQL", "Phenix.Core\Phenix.Core_PgSQL.csproj", "{EB09C083-59A9-4C00-BB4C-8185F8D09B68}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Host_PgSQL", "Phenix.Services.Host\Phenix.Services.Host_PgSQL.csproj", "{F957AABA-D2A0-48BB-9F0D-1E3CB3DE30EB}"
-	ProjectSection(ProjectDependencies) = postProject
-		{669EA487-55AB-412C-A243-F695ACF89310} = {669EA487-55AB-412C-A243-F695ACF89310}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Business_PgSQL", "Phenix.Business\Phenix.Business_PgSQL.csproj", "{5984092A-CE52-4BD2-91B2-D5557B961CC5}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -77,18 +74,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.TPT.Plugin_PgSQL", "Phenix.TPT.Plugin\Phenix.TPT.Plugin_PgSQL.csproj", "{38BBFB2C-915C-441A-8CC8-9380035189E8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{4EECC35A-2696-416D-A8D8-9CA64D93E9D6} = {4EECC35A-2696-416D-A8D8-9CA64D93E9D6}
-		{43DD85E3-52A2-4E9B-BF28-75181B4E05FB} = {43DD85E3-52A2-4E9B-BF28-75181B4E05FB}
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.TPT.Business_PgSQL", "Phenix.TPT.Business\Phenix.TPT.Business_PgSQL.csproj", "{5534C041-BC9F-4DCE-BB6C-A2693D70E33D}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5984092A-CE52-4BD2-91B2-D5557B961CC5} = {5984092A-CE52-4BD2-91B2-D5557B961CC5}
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.TPT.Contract_PgSQL", "Phenix.TPT.Contract\Phenix.TPT.Contract_PgSQL.csproj", "{43DD85E3-52A2-4E9B-BF28-75181B4E05FB}"
-	ProjectSection(ProjectDependencies) = postProject
-		{5534C041-BC9F-4DCE-BB6C-A2693D70E33D} = {5534C041-BC9F-4DCE-BB6C-A2693D70E33D}
-		{4EECC35A-2696-416D-A8D8-9CA64D93E9D6} = {4EECC35A-2696-416D-A8D8-9CA64D93E9D6}
 	EndProjectSection
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Phenix.TPT.WebApp", "Phenix.TPT.WebApp\Phenix.TPT.WebApp.njsproj", "{C54F28DB-323B-4F17-A2EB-B31D0A473C41}"
@@ -101,12 +86,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Net_PgSQL", "Phenix.Net\Phenix.Net_PgSQL.csproj", "{4F0E3C90-95CB-4082-98C9-8928130B91E6}"
 	ProjectSection(ProjectDependencies) = postProject
 		{43E90862-2271-4EC2-BC5E-B5011A272F12} = {43E90862-2271-4EC2-BC5E-B5011A272F12}
-	EndProjectSection
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Library_PgSQL", "Phenix.Services.Library\Phenix.Services.Library_PgSQL.csproj", "{669EA487-55AB-412C-A243-F695ACF89310}"
-	ProjectSection(ProjectDependencies) = postProject
-		{1D6BFC2E-B2F1-4EC8-9AEE-10BF5DD085DD} = {1D6BFC2E-B2F1-4EC8-9AEE-10BF5DD085DD}
-		{4EECC35A-2696-416D-A8D8-9CA64D93E9D6} = {4EECC35A-2696-416D-A8D8-9CA64D93E9D6}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Plugin_PgSQL", "Phenix.Services.Plugin\Phenix.Services.Plugin_PgSQL.csproj", "{2EBFD84F-0F13-4A4D-BE49-8AFE31974811}"
@@ -161,14 +140,6 @@ Global
 		{38BBFB2C-915C-441A-8CC8-9380035189E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38BBFB2C-915C-441A-8CC8-9380035189E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38BBFB2C-915C-441A-8CC8-9380035189E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5534C041-BC9F-4DCE-BB6C-A2693D70E33D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5534C041-BC9F-4DCE-BB6C-A2693D70E33D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5534C041-BC9F-4DCE-BB6C-A2693D70E33D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5534C041-BC9F-4DCE-BB6C-A2693D70E33D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{43DD85E3-52A2-4E9B-BF28-75181B4E05FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{43DD85E3-52A2-4E9B-BF28-75181B4E05FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{43DD85E3-52A2-4E9B-BF28-75181B4E05FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{43DD85E3-52A2-4E9B-BF28-75181B4E05FB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C54F28DB-323B-4F17-A2EB-B31D0A473C41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C54F28DB-323B-4F17-A2EB-B31D0A473C41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C54F28DB-323B-4F17-A2EB-B31D0A473C41}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -181,10 +152,6 @@ Global
 		{4F0E3C90-95CB-4082-98C9-8928130B91E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F0E3C90-95CB-4082-98C9-8928130B91E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F0E3C90-95CB-4082-98C9-8928130B91E6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{669EA487-55AB-412C-A243-F695ACF89310}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{669EA487-55AB-412C-A243-F695ACF89310}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{669EA487-55AB-412C-A243-F695ACF89310}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{669EA487-55AB-412C-A243-F695ACF89310}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2EBFD84F-0F13-4A4D-BE49-8AFE31974811}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2EBFD84F-0F13-4A4D-BE49-8AFE31974811}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EBFD84F-0F13-4A4D-BE49-8AFE31974811}.Release|Any CPU.ActiveCfg = Release|Any CPU
