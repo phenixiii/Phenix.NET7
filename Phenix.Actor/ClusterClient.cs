@@ -1,17 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
-using Orleans.Runtime;
 using Orleans.Runtime.Messaging;
 using Orleans.Serialization;
 using Orleans.Streams;
+using Phenix.Actor.Filters;
 using Phenix.Core.Data;
-using Phenix.Core.Log;
-using Phenix.Core.Security;
 using Phenix.Core.SyncCollections;
 using Phenix.Core.Threading;
 
@@ -101,47 +98,7 @@ namespace Phenix.Actor
                             parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
                     })
                     .AddSimpleMessageStreamProvider(ContextKeys.SimpleMessageStreamProviderName)
-                    .AddOutgoingGrainCallFilter(context =>
-                    {
-                        if (context.Grain is ISecurityContext)
-                        {
-                            IIdentity currentIdentity = Principal.CurrentIdentity;
-                            if (currentIdentity != null)
-                            {
-                                RequestContext.Set(ContextKeys.CurrentIdentityCompanyName, currentIdentity.CompanyName);
-                                RequestContext.Set(ContextKeys.CurrentIdentityUserName, currentIdentity.UserName);
-                                RequestContext.Set(ContextKeys.CurrentIdentityCultureName, currentIdentity.CultureName);
-                            }
-                        }
-
-                        if (context.Grain is ITraceLogContext)
-                        {
-                            long traceKey;
-                            if (RequestContext.Get(ContextKeys.TraceKey) == null)
-                            {
-                                traceKey = Database.Default.Sequence.Value;
-                                RequestContext.Set(ContextKeys.TraceKey, traceKey);
-                            }
-                            else
-                                traceKey = (long) RequestContext.Get(ContextKeys.TraceKey);
-
-                            int traceOrder = RequestContext.Get(ContextKeys.TraceOrder) != null ? (int) RequestContext.Get(ContextKeys.TraceOrder) + 1 : 0;
-                            RequestContext.Set(ContextKeys.TraceOrder, traceOrder);
-
-                            Task.Run(() => EventLog.Save(context.InterfaceMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder));
-                            try
-                            {
-                                return context.Invoke();
-                            }
-                            catch (Exception ex)
-                            {
-                                Task.Run(() => EventLog.Save(context.InterfaceMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder, ex));
-                                throw;
-                            }
-                        }
-
-                        return context.Invoke();
-                    })
+                    .AddOutgoingGrainCallFilter<OutgoingGrainCallFilter>()
                     .Build();
                 AsyncHelper.RunSync(() => value.Connect());
                 return value;

@@ -30,41 +30,43 @@ namespace Phenix.Services.Host.Library.Message
                 throw new ArgumentException("必须指定接收方!", nameof(receiver));
 
             bool existed = false;
+            using (DbCommand command = DbCommandHelper.CreateCommand(transaction,
 #if PgSQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                       @"
 insert into PH7_UserMessage
   (UM_ID, UM_Sender, UM_Receiver, UM_CreateTime)
 values
-  (@UM_ID, @UM_Sender, @UM_Receiver, now())"))
+  (@UM_ID, @UM_Sender, @UM_Receiver, now())"
 #endif
 #if MsSQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                       @"
 insert into PH7_UserMessage
   (UM_ID, UM_Sender, UM_Receiver, UM_CreateTime)
 values
-  (@UM_ID, @UM_Sender, @UM_Receiver, getdate())"))
+  (@UM_ID, @UM_Sender, @UM_Receiver, getdate())"
 #endif
 #if MySQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                       @"
 insert into PH7_UserMessage
   (UM_ID, UM_Sender, UM_Receiver, UM_CreateTime)
 values
-  (?UM_ID, ?UM_Sender, ?UM_Receiver, now())"))
+  (?UM_ID, ?UM_Sender, ?UM_Receiver, now())"
 #endif
 #if ORA
-            using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                       @"
 insert into PH7_UserMessage
   (UM_ID, UM_Sender, UM_Receiver, UM_CreateTime)
 values
-  (:UM_ID, :UM_Sender, :UM_Receiver, sysdate)"))
+  (:UM_ID, :UM_Sender, :UM_Receiver, sysdate)"
 #endif
+                   ))
             {
                 DbCommandHelper.CreateParameter(command, "UM_ID", id);
                 DbCommandHelper.CreateParameter(command, "UM_Sender", sender);
                 DbCommandHelper.CreateParameter(command, "UM_Receiver", receiver);
                 try
                 {
-                    DbCommandHelper.ExecuteNonQuery(command, false);
+                    DbCommandHelper.ExecuteNonQuery(command);
                 }
                 catch (Exception)
                 {
@@ -74,111 +76,119 @@ values
 
             if (existed)
             {
+                using (DataReader reader = new DataReader(transaction,
 #if PgSQL
-                using (DataReader reader = new DataReader(transaction, @"
+                           @"
 select UM_Content
 from PH7_UserMessage
-where UM_ID = @UM_ID", CommandBehavior.SingleRow, false))
+where UM_ID = @UM_ID",
 #endif
 #if MsSQL
-                using (DataReader reader = new DataReader(transaction, @"
+                           @"
 select UM_Content
 from PH7_UserMessage
-where UM_ID = @UM_ID", CommandBehavior.SingleRow, false))
+where UM_ID = @UM_ID",
 #endif
 #if MySQL
-                using (DataReader reader = new DataReader(transaction, @"
+                           @"
 select UM_Content
 from PH7_UserMessage
-where UM_ID = ?UM_ID", CommandBehavior.SingleRow, false))
+where UM_ID = ?UM_ID",
 #endif
 #if ORA
-                using (DataReader reader = new DataReader(transaction, @"
+                           @"
 select UM_Content
 from PH7_UserMessage
-where UM_ID = :UM_ID", CommandBehavior.SingleRow, false))
+where UM_ID = :UM_ID",
 #endif
+                           CommandBehavior.SingleRow))
                 {
                     reader.CreateParameter("UM_ID", id);
                     if (reader.Read())
                         if (String.CompareOrdinal(reader.GetNullableString(0), content) == 0)
                             return;
                 }
+
+                using (DbCommand command = DbCommandHelper.CreateCommand(transaction,
 #if PgSQL
-                using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                           @"
 update PH7_UserMessage set
   UM_Sender = @UM_Sender,
   UM_Receiver = @UM_Receiver,
   UM_CreateTime = now(),
   UM_SendTime = now(),
   UM_ReceivedTime = null
-where UM_ID = @UM_ID"))
+where UM_ID = @UM_ID"
 #endif
 #if MsSQL
-                using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                           @"
 update PH7_UserMessage set
   UM_Sender = @UM_Sender,
   UM_Receiver = @UM_Receiver,
   UM_CreateTime = getdate(),
   UM_SendTime = getdate(),
   UM_ReceivedTime = null
-where UM_ID = @UM_ID"))
+where UM_ID = @UM_ID"
 #endif
 #if MySQL
-                using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                           @"
 update PH7_UserMessage set
   UM_Sender = ?UM_Sender,
   UM_Receiver = ?UM_Receiver,
   UM_CreateTime = now(),
   UM_SendTime = now(),
   UM_ReceivedTime = null
-where UM_ID = ?UM_ID"))
+where UM_ID = ?UM_ID"
 #endif
 #if ORA
-                using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                           @"
 update PH7_UserMessage set
   UM_Sender = :UM_Sender,
   UM_Receiver = :UM_Receiver,
   UM_CreateTime = sysdate,
   UM_SendTime = sysdate,
   UM_ReceivedTime = null
-where UM_ID = :UM_ID"))
+where UM_ID = :UM_ID"
 #endif
+                       ))
                 {
                     DbCommandHelper.CreateParameter(command, "UM_Sender", sender);
                     DbCommandHelper.CreateParameter(command, "UM_Receiver", receiver);
                     DbCommandHelper.CreateParameter(command, "UM_ID", id);
-                    DbCommandHelper.ExecuteNonQuery(command, false);
+                    DbCommandHelper.ExecuteNonQuery(command);
                 }
             }
+
+            using (DbCommand command = DbCommandHelper.CreateCommand(transaction,
 #if PgSQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                       @"
 update PH7_UserMessage set
   UM_Content = @UM_Content
-where UM_ID = @UM_ID"))
+where UM_ID = @UM_ID"
 #endif
 #if MsSQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                       @"
 update PH7_UserMessage set
   UM_Content = @UM_Content
-where UM_ID = @UM_ID"))
+where UM_ID = @UM_ID"
 #endif
 #if MySQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                       @"
 update PH7_UserMessage set
   UM_Content = ?UM_Content
-where UM_ID = ?UM_ID"))
+where UM_ID = ?UM_ID"
 #endif
 #if ORA
-            using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                       @"
 update PH7_UserMessage set
   UM_Content = :UM_Content
-where UM_ID = :UM_ID"))
+where UM_ID = :UM_ID"
 #endif
+                   ))
             {
                 DbCommandHelper.CreateParameter(command, "UM_Content", content);
                 DbCommandHelper.CreateParameter(command, "UM_ID", id);
-                if (DbCommandHelper.ExecuteNonQuery(command, false) == 0)
+                if (DbCommandHelper.ExecuteNonQuery(command) == 0)
                     throw new InvalidOperationException(String.Format("未能发送消息: {0}-{1}", id, content));
             }
         }
@@ -195,34 +205,36 @@ where UM_ID = :UM_ID"))
                 throw new ArgumentException("必须指定接收方!", nameof(receiver));
 
             Dictionary<long, string> result = new Dictionary<long, string>();
+            using (DataReader reader = new DataReader(connection,
 #if PgSQL
-            using (DataReader reader = new DataReader(connection, @"
+                       @"
 select UM_ID, UM_SendTime, UM_Content
 from PH7_UserMessage
 where UM_ReceivedTime is null and UM_Receiver = @UM_Receiver
-order by UM_CreateTime", CommandBehavior.SingleResult, false))
+order by UM_CreateTime",
 #endif
 #if MsSQL
-            using (DataReader reader = new DataReader(connection, @"
+                       @"
 select UM_ID, UM_SendTime, UM_Content
 from PH7_UserMessage
 where UM_ReceivedTime is null and UM_Receiver = @UM_Receiver
-order by UM_CreateTime", CommandBehavior.SingleResult, false))
+order by UM_CreateTime",
 #endif
 #if MySQL
-            using (DataReader reader = new DataReader(connection, @"
+                       @"
 select UM_ID, UM_SendTime, UM_Content
 from PH7_UserMessage
 where UM_ReceivedTime is null and UM_Receiver = ?UM_Receiver
-order by UM_CreateTime", CommandBehavior.SingleResult, false))
+order by UM_CreateTime",
 #endif
 #if ORA
-            using (DataReader reader = new DataReader(connection, @"
+                       @"
 select UM_ID, UM_SendTime, UM_Content
 from PH7_UserMessage
 where UM_ReceivedTime is null and UM_Receiver = :UM_Receiver
-order by UM_CreateTime", CommandBehavior.SingleResult, false))
+order by UM_CreateTime",
 #endif
+                       CommandBehavior.SingleResult))
             {
                 reader.CreateParameter("UM_Receiver", receiver);
                 while (reader.Read())
@@ -241,59 +253,64 @@ order by UM_CreateTime", CommandBehavior.SingleResult, false))
         public static void AffirmReceived(DbTransaction transaction, long id, bool burn)
         {
             if (burn)
+                using (DbCommand command = DbCommandHelper.CreateCommand(transaction,
 #if PgSQL
-                using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                           @"
 delete from PH7_UserMessage
-where UM_ID = @UM_ID and UM_SendTime is null"))
+where UM_ID = @UM_ID and UM_SendTime is null"
 #endif
 #if MsSQL
-                using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                           @"
 delete from PH7_UserMessage
-where UM_ID = @UM_ID and UM_SendTime is null"))
+where UM_ID = @UM_ID and UM_SendTime is null"
 #endif
 #if MySQL
-                using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                           @"
 delete from PH7_UserMessage
-where UM_ID = ?UM_ID and UM_SendTime is null"))
+where UM_ID = ?UM_ID and UM_SendTime is null"
 #endif
 #if ORA
-                using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                           @"
 delete from PH7_UserMessage
-where UM_ID = :UM_ID and UM_SendTime is null"))
+where UM_ID = :UM_ID and UM_SendTime is null"
 #endif
+                       ))
                 {
                     DbCommandHelper.CreateParameter(command, "UM_ID", id);
-                    if (DbCommandHelper.ExecuteNonQuery(command, false) == 1)
+                    if (DbCommandHelper.ExecuteNonQuery(command) == 1)
                         return;
                 }
+
+            using (DbCommand command = DbCommandHelper.CreateCommand(transaction,
 #if PgSQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                       @"
 update PH7_UserMessage set
   UM_ReceivedTime = now()
-where UM_ID = @UM_ID and UM_SendTime is null or UM_SendTime = @UM_SendTime and UM_SendTime is not null"))
+where UM_ID = @UM_ID and UM_SendTime is null or UM_SendTime = @UM_SendTime and UM_SendTime is not null"
 #endif
 #if MsSQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                       @"
 update PH7_UserMessage set
   UM_ReceivedTime = getdate()
-where UM_ID = @UM_ID and UM_SendTime is null or UM_SendTime = @UM_SendTime and UM_SendTime is not null"))
+where UM_ID = @UM_ID and UM_SendTime is null or UM_SendTime = @UM_SendTime and UM_SendTime is not null"
 #endif
 #if MySQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                       @"
 update PH7_UserMessage set
   UM_ReceivedTime = now()
-where UM_ID = ?UM_ID and UM_SendTime is null or UM_SendTime = ?UM_SendTime and UM_SendTime is not null"))
+where UM_ID = ?UM_ID and UM_SendTime is null or UM_SendTime = ?UM_SendTime and UM_SendTime is not null"
 #endif
 #if ORA
-            using (DbCommand command = DbCommandHelper.CreateCommand(transaction, @"
+                       @"
 update PH7_UserMessage set
   UM_ReceivedTime = sysdate
-where UM_ID = :UM_ID and UM_SendTime is null or UM_SendTime = :UM_SendTime and UM_SendTime is not null"))
+where UM_ID = :UM_ID and UM_SendTime is null or UM_SendTime = :UM_SendTime and UM_SendTime is not null"
 #endif
+                   ))
             {
                 DbCommandHelper.CreateParameter(command, "UM_ID", id);
                 DbCommandHelper.CreateParameter(command, "UM_SendTime", new DateTime(id));
-                DbCommandHelper.ExecuteNonQuery(command, false);
+                DbCommandHelper.ExecuteNonQuery(command);
             }
         }
 
@@ -305,30 +322,32 @@ where UM_ID = :UM_ID and UM_SendTime is null or UM_SendTime = :UM_SendTime and U
         /// <param name="clearMessageDeferMonths">清理几个月前的消息</param>
         public static void Clear(DbConnection connection, string sender, int clearMessageDeferMonths)
         {
+            using (DbCommand command = DbCommandHelper.CreateCommand(connection,
 #if PgSQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                       @"
 delete from PH7_UserMessage
-where UM_Sender = @UM_Sender and UM_CreateTime <= @UM_CreateTime"))
+where UM_Sender = @UM_Sender and UM_CreateTime <= @UM_CreateTime"
 #endif
 #if MsSQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                       @"
 delete from PH7_UserMessage
-where UM_Sender = @UM_Sender and UM_CreateTime <= @UM_CreateTime"))
+where UM_Sender = @UM_Sender and UM_CreateTime <= @UM_CreateTime"
 #endif
 #if MySQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                       @"
 delete from PH7_UserMessage
-where UM_Sender = ?UM_Sender and UM_CreateTime <= ?UM_CreateTime"))
+where UM_Sender = ?UM_Sender and UM_CreateTime <= ?UM_CreateTime"
 #endif
 #if ORA
-            using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                       @"
 delete from PH7_UserMessage
-where UM_Sender = :UM_Sender and UM_CreateTime <= :UM_CreateTime"))
+where UM_Sender = :UM_Sender and UM_CreateTime <= :UM_CreateTime"
 #endif
+                   ))
             {
                 DbCommandHelper.CreateParameter(command, "UM_Sender", sender);
                 DbCommandHelper.CreateParameter(command, "UM_CreateTime", DateTime.Now.AddMonths(-clearMessageDeferMonths));
-                DbCommandHelper.ExecuteNonQuery(command, false);
+                DbCommandHelper.ExecuteNonQuery(command);
             }
         }
 

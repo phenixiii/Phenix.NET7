@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Reflection;
-using System.Threading.Tasks;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
 using Phenix.Core.Log;
@@ -23,8 +22,8 @@ namespace Phenix.Core
 
         private static readonly object _lock = new object();
 
-        private static readonly byte[] _key = {211, 90, 226, 153, 182, 179, 209, 78};
-        private static readonly byte[] _iv = {103, 169, 72, 192, 158, 246, 136, 189};
+        private static readonly byte[] _key = { 211, 90, 226, 153, 182, 179, 209, 78 };
+        private static readonly byte[] _iv = { 103, 169, 72, 192, 158, 246, 136, 189 };
 
         #region สýพÝิด
 
@@ -86,62 +85,64 @@ namespace Phenix.Core
 
             lock (_lock)
             {
+                if (Database.ExecuteNonQuery(
 #if PgSQL
-                if (Database.ExecuteNonQuery(@"
+                        @"
 update PH7_AppSettings set
   AS_Value = @AS_Value,
   AS_ValueEncrypted = @AS_ValueEncrypted
 where AS_Key = @AS_Key",
 #endif
 #if MsSQL
-                if (Database.ExecuteNonQuery(@"
+                        @"
 update PH7_AppSettings set
   AS_Value = @AS_Value,
   AS_ValueEncrypted = @AS_ValueEncrypted
 where AS_Key = @AS_Key",
 #endif
 #if MySQL
-                if (Database.ExecuteNonQuery(@"
+                        @"
 update PH7_AppSettings set
   AS_Value = ?AS_Value,
   AS_ValueEncrypted = ?AS_ValueEncrypted
 where AS_Key = ?AS_Key",
 #endif
 #if ORA
-                if (Database.ExecuteNonQuery(@"
+                        @"
 update PH7_AppSettings set
   AS_Value = :AS_Value,
   AS_ValueEncrypted = :AS_ValueEncrypted
 where AS_Key = :AS_Key",
 #endif
-                    ParamValue.Input("AS_Value", inEncrypt ? Encrypt(value) : value),
-                    ParamValue.Input("AS_ValueEncrypted", inEncrypt ? 1 : 0),
-                    ParamValue.Input("AS_Key", key)) == 1)
+                        ParamValue.Input("AS_Value", inEncrypt ? Encrypt(value) : value),
+                        ParamValue.Input("AS_ValueEncrypted", inEncrypt ? 1 : 0),
+                        ParamValue.Input("AS_Key", key)) == 1)
                     return;
 
+                Database.ExecuteNonQuery(
 #if PgSQL
-                Database.ExecuteNonQuery(@"
+                    @"
 insert into PH7_AppSettings
   (AS_Key, AS_Value, AS_ValueEncrypted)
 values
   (@AS_Key, @AS_Value, @AS_ValueEncrypted)",
 #endif
 #if MsSQL
-                Database.ExecuteNonQuery(@"
+                    @"
 insert into PH7_AppSettings
   (AS_Key, AS_Value, AS_ValueEncrypted)
 values
   (@AS_Key, @AS_Value, @AS_ValueEncrypted)",
 #endif
 #if MySQL
-                Database.ExecuteNonQuery(@"
+                    @"
 insert into PH7_AppSettings
   (AS_Key, AS_Value, AS_ValueEncrypted)
 values
   (?AS_Key, ?AS_Value, ?AS_ValueEncrypted)",
 #endif
 #if ORA
-                Database.ExecuteNonQuery(@"
+                    @"
 insert into PH7_AppSettings
   (AS_Key, AS_Value, AS_ValueEncrypted)
 values
@@ -166,31 +167,32 @@ values
                 return _cache.GetValue(key, () =>
                 {
                     string pendingValue;
+                    using (DataReader reader = Database.CreateDataReader(
 #if PgSQL
-                    using (DataReader reader = Database.CreateDataReader(@"
+                               @"
 select AS_Value, AS_ValueEncrypted
 from PH7_AppSettings
 where AS_Key = @AS_Key",
 #endif
 #if MsSQL
-                    using (DataReader reader = Database.CreateDataReader(@"
+                               @"
 select AS_Value, AS_ValueEncrypted
 from PH7_AppSettings
 where AS_Key = @AS_Key",
 #endif
 #if MySQL
-                    using (DataReader reader = Database.CreateDataReader(@"
+                               @"
 select AS_Value, AS_ValueEncrypted
 from PH7_AppSettings
 where AS_Key = ?AS_Key",
 #endif
 #if ORA
-                    using (DataReader reader = Database.CreateDataReader(@"
+                               @"
 select AS_Value, AS_ValueEncrypted
 from PH7_AppSettings
 where AS_Key = :AS_Key",
 #endif
-                        CommandBehavior.SingleRow))
+                               CommandBehavior.SingleRow))
                     {
                         reader.CreateParameter("AS_Key", key);
                         if (reader.Read())
@@ -213,29 +215,30 @@ where AS_Key = :AS_Key",
                     }
 
                     if (pendingValue != null)
+                        Database.ExecuteNonQuery(
 #if PgSQL
-                        Database.ExecuteNonQuery(@"
+                            @"
 update PH7_AppSettings set
   AS_Value = @AS_Value,
   AS_ValueEncrypted = 1
 where AS_Key = @AS_Key",
 #endif
 #if MsSQL
-                        Database.ExecuteNonQuery(@"
+                            @"
 update PH7_AppSettings set
   AS_Value = @AS_Value,
   AS_ValueEncrypted = 1
 where AS_Key = @AS_Key",
 #endif
 #if MySQL
-                        Database.ExecuteNonQuery(@"
+                            @"
 update PH7_AppSettings set
   AS_Value = ?AS_Value,
   AS_ValueEncrypted = 1
 where AS_Key = ?AS_Key",
 #endif
 #if ORA
-                        Database.ExecuteNonQuery(@"
+                            @"
 update PH7_AppSettings set
   AS_Value = :AS_Value,
   AS_ValueEncrypted = 1
@@ -286,7 +289,7 @@ where AS_Key = :AS_Key",
                 }
                 catch (InvalidCastException ex)
                 {
-                    Task.Run(() => EventLog.Save(MethodBase.GetCurrentMethod(), value, ex));
+                    LogHelper.Error(ex, "{@AppSettingValue}", new { Key = key, Value = value });
                 }
 
             SaveValue(key, Utilities.ChangeType<string>(defaultValue), inEncrypt);
@@ -349,10 +352,9 @@ where AS_Key = :AS_Key",
                 {
                     return Utilities.ChangeType<TValue>(field);
                 }
-                catch (InvalidCastException ex)
+                catch (InvalidCastException)
                 {
-                    TField value = field;
-                    Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), value.ToString(), ex));
+                    // ignored
                 }
 
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod();
@@ -374,10 +376,9 @@ where AS_Key = :AS_Key",
                 {
                     return Utilities.ChangeType<TValue>(field);
                 }
-                catch (InvalidCastException ex)
+                catch (InvalidCastException)
                 {
-                    TField value = field;
-                    Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), value.ToString(), ex));
+                    // ignored
                 }
 
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod();
@@ -395,7 +396,7 @@ where AS_Key = :AS_Key",
                 }
                 catch (InvalidCastException ex)
                 {
-                    Task.Run(() => EventLog.Save(MethodBase.GetCurrentMethod(), value, ex));
+                    LogHelper.Error(ex, "{@AppSettingProperty}", new { Key = key, Value = value });
                 }
 
             field = DoSetProperty<TField, TValue>(key, defaultValue, inEncrypt, allowSave);
@@ -553,7 +554,7 @@ where Key = @Key";
                 }
                 catch (InvalidCastException ex)
                 {
-                    Task.Run(() => EventLog.Save(MethodBase.GetCurrentMethod(), value, ex));
+                    LogHelper.Error(ex, "{@AppSettingLocalValue}", new { Key = key, Value = value });
                 }
 
             SaveLocalValue(key, Utilities.ChangeType<string>(defaultValue), inEncrypt);
@@ -616,10 +617,9 @@ where Key = @Key";
                 {
                     return Utilities.ChangeType<TValue>(field);
                 }
-                catch (InvalidCastException ex)
+                catch (InvalidCastException)
                 {
-                    TField value = field;
-                    Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), value.ToString(), ex));
+                    // ignored
                 }
 
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod();
@@ -641,10 +641,9 @@ where Key = @Key";
                 {
                     return Utilities.ChangeType<TValue>(field);
                 }
-                catch (InvalidCastException ex)
+                catch (InvalidCastException)
                 {
-                    TField value = field;
-                    Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), value.ToString(), ex));
+                    // ignored
                 }
 
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod();
@@ -662,7 +661,7 @@ where Key = @Key";
                 }
                 catch (InvalidCastException ex)
                 {
-                    Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), value, ex));
+                    LogHelper.Error(ex, "{@AppSettingLocalProperty}", new { Key = key, Value = value });
                 }
 
             field = DoSetLocalProperty<TField, TValue>(key, defaultValue, inEncrypt, allowSave);

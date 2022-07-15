@@ -86,7 +86,7 @@ namespace Phenix.Core.Plugin
                 }
 
                 if (throwIfNotFound)
-                    throw new ArgumentException(String.Format("程序集 {0} 中不存在实现IPlugin的插件类", assembly.FullName), nameof(assembly));
+                    throw new InvalidOperationException(String.Format("程序集 {0} 无插件类", assembly.FullName));
                 return null;
             });
         }

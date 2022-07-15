@@ -32,8 +32,8 @@ namespace Phenix.Core.Data
         /// </summary>
         public static int ClearMarkerDeferMonths
         {
-            get { return new[] {AppSettings.GetProperty(ref _clearMarkerDeferMonths, 3), 3}.Max(); }
-            set { AppSettings.SetProperty(ref _clearMarkerDeferMonths, new[] {value, 3}.Max()); }
+            get { return new[] { AppSettings.GetProperty(ref _clearMarkerDeferMonths, 3), 3 }.Max(); }
+            set { AppSettings.SetProperty(ref _clearMarkerDeferMonths, new[] { value, 3 }.Max()); }
         }
 
         #endregion
@@ -94,30 +94,32 @@ namespace Phenix.Core.Data
             bool fetched = false;
             while (true)
             {
+                using (DataReader reader = new DataReader(connection,
 #if PgSQL
-                using (DataReader reader = new DataReader(connection, @"
+                           @"
 select SM_ID
 from PH7_SequenceMarker
-where SM_Address = @SM_Address", CommandBehavior.SingleRow, false))
+where SM_Address = @SM_Address",
 #endif
 #if MsSQL
-                using (DataReader reader = new DataReader(connection, @"
+                           @"
 select SM_ID
 from PH7_SequenceMarker
-where SM_Address = @SM_Address", CommandBehavior.SingleRow, false))
+where SM_Address = @SM_Address",
 #endif
 #if MySQL
-                using (DataReader reader = new DataReader(connection, @"
+                           @"
 select SM_ID
 from PH7_SequenceMarker
-where SM_Address = ?SM_Address", CommandBehavior.SingleRow, false))
+where SM_Address = ?SM_Address",
 #endif
 #if ORA
-                using (DataReader reader = new DataReader(connection, @"
+                           @"
 select SM_ID
 from PH7_SequenceMarker
-where SM_Address = :SM_Address", CommandBehavior.SingleRow, false))
+where SM_Address = :SM_Address",
 #endif
+                           CommandBehavior.SingleRow))
                 {
                     reader.CreateParameter("SM_Address", NetConfig.LocalAddress);
                     if (reader.Read())
@@ -130,34 +132,36 @@ where SM_Address = :SM_Address", CommandBehavior.SingleRow, false))
                 fetched = true;
                 int recordCount = Convert.ToInt32(DbCommandHelper.ExecuteScalar(connection, "select count(*) from PH7_SequenceMarker"));
 
+                using (DbCommand command = DbCommandHelper.CreateCommand(connection,
 #if PgSQL
-                using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                           @"
 insert into PH7_SequenceMarker
   (SM_ID, SM_Address, SM_ActiveTime)
 values
-  (@SM_ID, @SM_Address, now())"))
+  (@SM_ID, @SM_Address, now())"
 #endif
 #if MsSQL
-                using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                           @"
 insert into PH7_SequenceMarker
   (SM_ID, SM_Address, SM_ActiveTime)
 values
-  (@SM_ID, @SM_Address, getdate())"))
+  (@SM_ID, @SM_Address, getdate())"
 #endif
 #if MySQL
-                using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                           @"
 insert into PH7_SequenceMarker
   (SM_ID, SM_Address, SM_ActiveTime)
 values
-  (?SM_ID, ?SM_Address, now())"))
+  (?SM_ID, ?SM_Address, now())"
 #endif
 #if ORA
-                using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                           @"
 insert into PH7_SequenceMarker
   (SM_ID, SM_Address, SM_ActiveTime)
 values
-  (:SM_ID, :SM_Address, sysdate)"))
+  (:SM_ID, :SM_Address, sysdate)"
 #endif
+                       ))
                 {
                     for (int i = recordCount; i < 1000; i++)
                     {
@@ -165,7 +169,7 @@ values
                         DbCommandHelper.CreateParameter(command, "SM_Address", NetConfig.LocalAddress);
                         try
                         {
-                            if (DbCommandHelper.ExecuteNonQuery(command, false) == 1)
+                            if (DbCommandHelper.ExecuteNonQuery(command) == 1)
                                 return i;
                         }
                         catch (Exception)
@@ -180,7 +184,7 @@ values
                         DbCommandHelper.CreateParameter(command, "SM_Address", NetConfig.LocalAddress);
                         try
                         {
-                            if (DbCommandHelper.ExecuteNonQuery(command, false) == 1)
+                            if (DbCommandHelper.ExecuteNonQuery(command) == 1)
                                 return i;
                         }
                         catch (Exception)
@@ -205,61 +209,65 @@ values
 
         private static void ActiveSequenceMarker(DbConnection connection)
         {
+            using (DbCommand command = DbCommandHelper.CreateCommand(connection,
 #if PgSQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                       @"
 update PH7_SequenceMarker set
   SM_ActiveTime = now()
-where SM_Address = @SM_Address"))
+where SM_Address = @SM_Address"
 #endif
 #if MsSQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                       @"
 update PH7_SequenceMarker set
   SM_ActiveTime = getdate()
-where SM_Address = @SM_Address"))
+where SM_Address = @SM_Address"
 #endif
 #if MySQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                       @"
 update PH7_SequenceMarker set
   SM_ActiveTime = now()
-where SM_Address = ?SM_Address"))
+where SM_Address = ?SM_Address"
 #endif
 #if ORA
-            using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                       @"
 update PH7_SequenceMarker set
   SM_ActiveTime = sysdate
-where SM_Address = :SM_Address"))
+where SM_Address = :SM_Address"
 #endif
+                   ))
             {
                 DbCommandHelper.CreateParameter(command, "SM_Address", NetConfig.LocalAddress);
-                DbCommandHelper.ExecuteNonQuery(command, false);
+                DbCommandHelper.ExecuteNonQuery(command);
             }
         }
 
         private void ClearSequenceMarker(DbConnection connection)
         {
+            using (DbCommand command = DbCommandHelper.CreateCommand(connection,
 #if PgSQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                       @"
 delete from PH7_SequenceMarker
-where SM_ActiveTime <= @SM_ActiveTime"))
+where SM_ActiveTime <= @SM_ActiveTime"
 #endif
 #if MsSQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                       @"
 delete from PH7_SequenceMarker
-where SM_ActiveTime <= @SM_ActiveTime"))
+where SM_ActiveTime <= @SM_ActiveTime"
 #endif
 #if MySQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                       @"
 delete from PH7_SequenceMarker
-where SM_ActiveTime <= ?SM_ActiveTime"))
+where SM_ActiveTime <= ?SM_ActiveTime"
 #endif
 #if ORA
-            using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                       @"
 delete from PH7_SequenceMarker
-where SM_ActiveTime <= :SM_ActiveTime"))
+where SM_ActiveTime <= :SM_ActiveTime"
 #endif
+                   ))
             {
                 DbCommandHelper.CreateParameter(command, "SM_ActiveTime", DateTime.Now.AddMonths(-ClearMarkerDeferMonths));
-                DbCommandHelper.ExecuteNonQuery(command, false);
+                DbCommandHelper.ExecuteNonQuery(command);
             }
         }
 

@@ -30,7 +30,7 @@ namespace Phenix.Core.Data
         }
 
         #endregion
-        
+
         #endregion
 
         #region 方法
@@ -52,30 +52,32 @@ namespace Phenix.Core.Data
                 throw new ArgumentException("必须指定key值!", nameof(key));
 
             long? oldValue = null;
+            using (DataReader reader = new DataReader(connection,
 #if PgSQL
-            using (DataReader reader = new DataReader(connection, @"
+                       @"
 select IC_Value
 from PH7_Increment
-where IC_Key = @IC_Key", CommandBehavior.SingleRow, false))
+where IC_Key = @IC_Key",
 #endif
 #if MsSQL
-            using (DataReader reader = new DataReader(connection, @"
+                       @"
 select IC_Value
 from PH7_Increment
-where IC_Key = @IC_Key", CommandBehavior.SingleRow, false))
+where IC_Key = @IC_Key",
 #endif
 #if MySQL
-            using (DataReader reader = new DataReader(connection, @"
+                       @"
 select IC_Value
 from PH7_Increment
-where IC_Key = ?IC_Key", CommandBehavior.SingleRow, false))
+where IC_Key = ?IC_Key",
 #endif
 #if ORA
-            using (DataReader reader = new DataReader(connection, @"
+                       @"
 select IC_Value
 from PH7_Increment
-where IC_Key = :IC_Key", CommandBehavior.SingleRow, false))
+where IC_Key = :IC_Key",
 #endif
+                       CommandBehavior.SingleRow))
             {
                 reader.CreateParameter("IC_Key", key);
                 if (reader.Read())
@@ -84,40 +86,42 @@ where IC_Key = :IC_Key", CommandBehavior.SingleRow, false))
 
             if (!oldValue.HasValue)
             {
+                using (DbCommand command = DbCommandHelper.CreateCommand(connection,
 #if PgSQL
-                using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                           @"
 insert into PH7_Increment
   (IC_Key, IC_Value, IC_Time)
 values
-  (@IC_Key, @IC_Value, now())"))
+  (@IC_Key, @IC_Value, now())"
 #endif
 #if MsSQL
-                using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                           @"
 insert into PH7_Increment
   (IC_Key, IC_Value, IC_Time)
 values
-  (@IC_Key, @IC_Value, getdate())"))
+  (@IC_Key, @IC_Value, getdate())"
 #endif
 #if MySQL
-                using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                           @"
 insert into PH7_Increment
   (IC_Key, IC_Value, IC_Time)
 values
-  (?IC_Key, ?IC_Value, now())"))
+  (?IC_Key, ?IC_Value, now())"
 #endif
 #if ORA
-                using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                           @"
 insert into PH7_Increment
   (IC_Key, IC_Value, IC_Time)
 values
-  (:IC_Key, :IC_Value, sysdate)"))
+  (:IC_Key, :IC_Value, sysdate)"
 #endif
+                       ))
                 {
                     DbCommandHelper.CreateParameter(command, "IC_Key", key);
                     DbCommandHelper.CreateParameter(command, "IC_Value", initialValue);
                     try
                     {
-                        DbCommandHelper.ExecuteNonQuery(command, false);
+                        DbCommandHelper.ExecuteNonQuery(command);
                         return initialValue;
                     }
                     catch (Exception)
@@ -127,38 +131,40 @@ values
                 }
             }
 
+            using (DbCommand command = DbCommandHelper.CreateCommand(connection,
 #if PgSQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                       @"
 update PH7_Increment set
   IC_Value = @New_IC_Value,
   IC_Time = now()
 where IC_Key = @IC_Key
-  and IC_Value = @Old_IC_Value"))
+  and IC_Value = @Old_IC_Value"
 #endif
 #if MsSQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                       @"
 update PH7_Increment set
   IC_Value = @New_IC_Value,
   IC_Time = getdate()
 where IC_Key = @IC_Key
-  and IC_Value = @Old_IC_Value"))
+  and IC_Value = @Old_IC_Value"
 #endif
 #if MySQL
-            using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                       @"
 update PH7_Increment set
   IC_Value = ?New_IC_Value,
   IC_Time = now()
 where IC_Key = ?IC_Key
-  and IC_Value = ?Old_IC_Value"))
+  and IC_Value = ?Old_IC_Value"
 #endif
 #if ORA
-            using (DbCommand command = DbCommandHelper.CreateCommand(connection, @"
+                       @"
 update PH7_Increment set
   IC_Value = :New_IC_Value,
   IC_Time = sysdate
 where IC_Key = :IC_Key
-  and IC_Value = :Old_IC_Value"))
+  and IC_Value = :Old_IC_Value"
 #endif
+                   ))
             {
                 long newValue = oldValue.Value + 1;
                 DbParameter newValueParameter = DbCommandHelper.CreateParameter(command, "New_IC_Value", newValue);
@@ -166,7 +172,7 @@ where IC_Key = :IC_Key
                 DbParameter oldValueParameter = DbCommandHelper.CreateParameter(command, "Old_IC_Value", oldValue);
                 do
                 {
-                    if (DbCommandHelper.ExecuteNonQuery(command, false) == 1)
+                    if (DbCommandHelper.ExecuteNonQuery(command) == 1)
                         return newValue;
                     oldValue = newValue;
                     newValue = newValue + 1;

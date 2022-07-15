@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Data.Common;
-using System.Reflection;
-using System.Threading.Tasks;
 #if PgSQL
 using Npgsql;
 #endif
@@ -167,7 +165,7 @@ namespace Phenix.Core.Data.Common
             }
             catch (Exception ex)
             {
-                Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), connection.DataSource, ex));
+                LogHelper.Error(ex, "{@ConnectionDataSource}", connection.DataSource);
                 throw;
             }
         }

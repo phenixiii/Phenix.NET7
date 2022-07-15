@@ -72,7 +72,7 @@ namespace Phenix.Services.Host.Library.Message
 
             private Task OnSubscribeError(Exception error)
             {
-                EventLog.Save(_groupName, error);
+                LogHelper.Error(error, "{@UserMessageGroup}", _groupName);
                 return Task.CompletedTask;
             }
 

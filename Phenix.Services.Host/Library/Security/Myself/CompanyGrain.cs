@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Phenix.Actor;
+using Phenix.Actor.Security;
 
 namespace Phenix.Services.Host.Library.Security.Myself
 {

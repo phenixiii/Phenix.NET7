@@ -3,7 +3,7 @@
     /// <summary>
     /// Grain接口
     /// </summary>
-    public interface IGrain : ISecurityContext, ITraceLogContext
+    public interface IGrain
     {
     }
 }

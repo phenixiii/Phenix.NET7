@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Phenix.Actor;
 using Phenix.Core;
@@ -34,19 +35,19 @@ namespace Phenix.Services.Host.Library.Inout
         public string DownloadPath
         {
             get { return AppSettings.GetProperty(PrimaryKeyString, ref _downloadPath, AppRun.TempDirectory); }
-            set { AppSettings.SetProperty(PrimaryKeyString, ref _downloadPath, value); }
+            set { AppSettings.SetProperty(PrimaryKeyString, ref _downloadPath, value ?? AppRun.TempDirectory); }
         }
 
         private int? _chunkSize;
 
         /// <summary>
         /// 块最大值
-        /// 默认：64 * 1024
+        /// 默认：64*1024(>=1024)
         /// </summary>
         public int MaxChunkSize
         {
-            get { return AppSettings.GetProperty(PrimaryKeyString, ref _chunkSize, 64 * 1024); }
-            set { AppSettings.SetProperty(PrimaryKeyString, ref _chunkSize, value); }
+            get { return new[] { AppSettings.GetProperty(PrimaryKeyString, ref _chunkSize, 64 * 1024), 1024 }.Max(); }
+            set { AppSettings.SetProperty(PrimaryKeyString, ref _chunkSize, new[] { value, 1024 }.Max()); }
         }
 
         private string _uploadPath;
@@ -58,7 +59,7 @@ namespace Phenix.Services.Host.Library.Inout
         public string UploadPath
         {
             get { return AppSettings.GetProperty(PrimaryKeyString, ref _uploadPath, AppRun.TempDirectory); }
-            set { AppSettings.SetProperty(PrimaryKeyString, ref _uploadPath, value); }
+            set { AppSettings.SetProperty(PrimaryKeyString, ref _uploadPath, value ?? AppRun.TempDirectory); }
         }
 
         #endregion

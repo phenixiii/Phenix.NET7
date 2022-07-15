@@ -1,15 +1,15 @@
 ﻿using System;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 using Phenix.Business;
 using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.Reflection;
-using Phenix.Core.Security;
 using Phenix.Core.Security.Auth;
 using Phenix.Core.Security.Cryptography;
 using Phenix.Core.SyncCollections;
 
-namespace Phenix.Services.Host.Library.Security
+namespace Phenix.Actor.Security
 {
     /// <summary>
     /// 用户资料
@@ -45,7 +45,7 @@ namespace Phenix.Services.Host.Library.Security
     /// 用户资料
     /// </summary>
     [Serializable]
-    public abstract class User<T> : EntityBase<T>, IUser
+    public abstract class User<T> : EntityBase<T>
         where T : User<T>
     {
         /// <summary>
@@ -81,6 +81,118 @@ namespace Phenix.Services.Host.Library.Security
         }
 
         #region 属性
+        
+        #region 配置项
+
+        private static int? _requestFailureCountMaximum;
+
+        /// <summary>
+        /// 服务请求失败次数极限
+        /// 默认：5(>=3)
+        /// </summary>
+        public static int RequestFailureCountMaximum
+        {
+            get { return new[] { AppSettings.GetProperty(ref _requestFailureCountMaximum, 5), 3 }.Max(); }
+            set { AppSettings.SetProperty(ref _requestFailureCountMaximum, new[] { value, 3 }.Max()); }
+        }
+
+        private static int? _requestFailureLockedMinutes;
+
+        /// <summary>
+        /// 服务请求失败锁定周期(分钟)
+        /// 默认：30(>=10)
+        /// </summary>
+        public static int RequestFailureLockedMinutes
+        {
+            get { return new[] { AppSettings.GetProperty(ref _requestFailureLockedMinutes, 30), 10 }.Max(); }
+            set { AppSettings.SetProperty(ref _requestFailureLockedMinutes, new[] { value, 10 }.Max()); }
+        }
+
+        private static bool? _allowMultiAddressRequest;
+
+        /// <summary>
+        /// 允许多处终端发起请求
+        /// 默认：false
+        /// </summary>
+        public static bool AllowMultiAddressRequest
+        {
+            get { return AppRun.Debugging || AppSettings.GetProperty(ref _allowMultiAddressRequest, false); }
+            set { AppSettings.SetProperty(ref _allowMultiAddressRequest, value); }
+        }
+
+        private static int? _requestIdleIntervalLimitMinutes;
+
+        /// <summary>
+        /// 服务请求空闲间隔极限(分钟)
+        /// 默认：120(>=10)
+        /// </summary>
+        public static int RequestIdleIntervalLimitMinutes
+        {
+            get { return new[] { AppSettings.GetProperty(ref _requestIdleIntervalLimitMinutes, 120), 10 }.Max(); }
+            set { AppSettings.SetProperty(ref _requestIdleIntervalLimitMinutes, new[] { value, 10 }.Max()); }
+        }
+
+        private static int? _requestClockOffsetLimitMinutes;
+
+        /// <summary>
+        /// 服务请求(客户端与服务端)时钟差极限(分钟)
+        /// 默认：30(>=10)
+        /// </summary>
+        public static int RequestClockOffsetLimitMinutes
+        {
+            get { return new[] { AppSettings.GetProperty(ref _requestClockOffsetLimitMinutes, 30), 10 }.Max(); }
+            set { AppSettings.SetProperty(ref _requestClockOffsetLimitMinutes, new[] { value, 10 }.Max()); }
+        }
+
+        private static int? _breakRequestIntensityPerMinute;
+
+        /// <summary>
+        /// 中断服务请求强度阈值(每分钟次数)
+        /// 默认：6000(>=6000)
+        /// </summary>
+        public static int BreakRequestIntensityPerMinute
+        {
+            get { return new[] { AppSettings.GetProperty(ref _breakRequestIntensityPerMinute, 6000), 6000 }.Max(); }
+            set { AppSettings.SetProperty(ref _breakRequestIntensityPerMinute, new[] { value, 6000 }.Max()); }
+        }
+
+        private static int? _passwordLengthMinimum;
+
+        /// <summary>
+        /// 口令长度最小值
+        /// 默认：6(>=6)
+        /// </summary>
+        public static int PasswordLengthMinimum
+        {
+            get { return new[] { AppSettings.GetProperty(ref _passwordLengthMinimum, 6), 6 }.Max(); }
+            set { AppSettings.SetProperty(ref _passwordLengthMinimum, new[] { value, 6 }.Max()); }
+        }
+
+        private static int? _passwordComplexityMinimum;
+
+        /// <summary>
+        /// 口令复杂度最小值(含数字、大写字母、小写字母、特殊字符的种类)
+        /// 默认：3(>=1)
+        /// </summary>
+        public static int PasswordComplexityMinimum
+        {
+            get { return new[] { AppSettings.GetProperty(ref _passwordComplexityMinimum, 3), 1 }.Max(); }
+            set { AppSettings.SetProperty(ref _passwordComplexityMinimum, new[] { value, 1 }.Max()); }
+        }
+
+        private static int? _dynamicPasswordValidityMinutes;
+
+        /// <summary>
+        /// 动态口令有效周期(分钟)
+        /// 默认：10(>=3)
+        /// </summary>
+        public static int DynamicPasswordValidityMinutes
+        {
+            get { return new[] { AppSettings.GetProperty(ref _dynamicPasswordValidityMinutes, 10), 3 }.Max(); }
+            set { AppSettings.SetProperty(ref _dynamicPasswordValidityMinutes, new[] { value, 3 }.Max()); }
+        }
+
+        #endregion
 
         private long _id;
 
@@ -376,9 +488,9 @@ namespace Phenix.Services.Host.Library.Security
                 throw new UserNotFoundException();
             if (Locked)
                 throw new UserLockedException(Int32.MaxValue);
-            if (RequestFailureCount > Principal.RequestFailureCountMaximum &&
-                RequestFailureTime.HasValue && RequestFailureTime.Value.AddMinutes(Principal.RequestFailureLockedMinutes) > DateTime.Now)
-                throw new UserLockedException(Principal.RequestFailureLockedMinutes);
+            if (RequestFailureCount > RequestFailureCountMaximum &&
+                RequestFailureTime.HasValue && RequestFailureTime.Value.AddMinutes(RequestFailureLockedMinutes) > DateTime.Now)
+                throw new UserLockedException(RequestFailureLockedMinutes);
         }
 
         private void VerifyTimestamp(string timestamp, bool reset)
@@ -399,7 +511,7 @@ namespace Phenix.Services.Host.Library.Security
                     if (_timestamps.Count >= 10000)
                         try
                         {
-                            if (_timestamps.Count / DateTime.Now.Subtract(_timestampClearedDateTime).TotalMinutes >= Principal.BreakRequestIntensityPerMinute)
+                            if (_timestamps.Count / DateTime.Now.Subtract(_timestampClearedDateTime).TotalMinutes >= BreakRequestIntensityPerMinute)
                                 throw new TimestampException();
                         }
                         finally
@@ -409,11 +521,11 @@ namespace Phenix.Services.Host.Library.Security
                             _timestampClearedDateTime = DateTime.Now;
                         }
 
-                    if (DateTime.Now.Subtract(_timestampClearedDateTime).TotalMinutes > Principal.RequestIdleIntervalLimitMinutes)
+                    if (DateTime.Now.Subtract(_timestampClearedDateTime).TotalMinutes > RequestIdleIntervalLimitMinutes)
                     {
                         string lastTimestamp = _timestamps.FindLast((item) => true);
                         if (String.IsNullOrEmpty(lastTimestamp) ||
-                            time.Subtract(Utilities.ChangeType<DateTime>(lastTimestamp.Substring(9))).TotalMinutes > Principal.RequestIdleIntervalLimitMinutes)
+                            time.Subtract(Utilities.ChangeType<DateTime>(lastTimestamp.Substring(9))).TotalMinutes > RequestIdleIntervalLimitMinutes)
                             throw new UserVerifyException();
                     }
 
@@ -424,7 +536,7 @@ namespace Phenix.Services.Host.Library.Security
                 _timestamps.Add(timestamp);
 
                 double clockOffset = Math.Abs(DateTime.Now.Subtract(time).TotalMinutes);
-                if (clockOffset > Principal.RequestClockOffsetLimitMinutes)
+                if (clockOffset > RequestClockOffsetLimitMinutes)
                     throw new OvertimeRequestException(clockOffset);
             }
             catch (Exception ex)
@@ -435,7 +547,7 @@ namespace Phenix.Services.Host.Library.Security
 
         private void VerifyRequestAddress(string requestAddress)
         {
-            if (!Principal.AllowMultiAddressRequest && String.CompareOrdinal(RequestAddress, requestAddress) != 0)
+            if (!AllowMultiAddressRequest && String.CompareOrdinal(RequestAddress, requestAddress) != 0)
                 throw new MultiAddressRequestException();
         }
         
@@ -457,7 +569,7 @@ namespace Phenix.Services.Host.Library.Security
                     {
                         timestamp = RijndaelCryptoTextProvider.Decrypt(DynamicPassword, signature);
                         tag = RijndaelCryptoTextProvider.Decrypt(DynamicPassword, tag);
-                        if (!DynamicPasswordCreateTime.HasValue || DynamicPasswordCreateTime <= DateTime.Now.AddMinutes(-Principal.DynamicPasswordValidityMinutes))
+                        if (!DynamicPasswordCreateTime.HasValue || DynamicPasswordCreateTime <= DateTime.Now.AddMinutes(-DynamicPasswordValidityMinutes))
                             throw new UserVerifyException();
                     }
                     catch (SystemException) //FormatException & CryptographicException
@@ -489,7 +601,7 @@ namespace Phenix.Services.Host.Library.Security
                 catch
                 {
                     if (IsInitialPassword)
-                        throw new PasswordComplexityException(String.Format(AppSettings.GetValue("登录前需修改口令以符合复杂性要求(长度需大于等于{0}个字符且至少包含数字、大小写字母、特殊字符之{1}种!)"), Principal.PasswordLengthMinimum, Principal.PasswordComplexityMinimum));
+                        throw new PasswordComplexityException(String.Format(AppSettings.GetValue("登录前需修改口令以符合复杂性要求(长度需大于等于{0}个字符且至少包含数字、大小写字母、特殊字符之{1}种!)"), PasswordLengthMinimum, PasswordComplexityMinimum));
                 }
 
                 if (newPassword != null)
@@ -560,8 +672,8 @@ namespace Phenix.Services.Host.Library.Security
         /// <returns>动态口令(6位数字一般作为验证码用短信发送给到用户)</returns>
         public virtual string ApplyDynamicPassword(string requestAddress)
         {
-            if (DynamicPasswordCreateTime.HasValue && DynamicPasswordCreateTime >= DateTime.Now.AddMinutes(-Principal.DynamicPasswordValidityMinutes))
-                throw new UserLockedException(Principal.DynamicPasswordValidityMinutes);
+            if (DynamicPasswordCreateTime.HasValue && DynamicPasswordCreateTime >= DateTime.Now.AddMinutes(-DynamicPasswordValidityMinutes))
+                throw new UserLockedException(DynamicPasswordValidityMinutes);
 
             VerifyStatus();
 
@@ -607,7 +719,7 @@ namespace Phenix.Services.Host.Library.Security
                 name.Contains(password, StringComparison.OrdinalIgnoreCase))
                 throw new PasswordComplexityException(AppSettings.GetValue("登录口令不能为空或与登录名互为一部分!"));
 
-            if (password.Length >= Principal.PasswordLengthMinimum)
+            if (password.Length >= PasswordLengthMinimum)
             {
                 int numberCount = 0; //数字个数
                 int uppercaseCount = 0; //大写字母个数
@@ -632,12 +744,12 @@ namespace Phenix.Services.Host.Library.Security
                         times = times + 1;
                     if (specialCount > 0)
                         times = times + 1;
-                    if (times >= Principal.PasswordComplexityMinimum)
+                    if (times >= PasswordComplexityMinimum)
                         return;
                 }
             }
 
-            throw new PasswordComplexityException(Principal.PasswordLengthMinimum, Principal.PasswordComplexityMinimum);
+            throw new PasswordComplexityException(PasswordLengthMinimum, PasswordComplexityMinimum);
         }
 
         /// <summary>
@@ -648,7 +760,7 @@ namespace Phenix.Services.Host.Library.Security
         {
             string result = String.Empty;
             Random random = new Random();
-            for (int i = 0; i < Principal.PasswordLengthMinimum; i++)
+            for (int i = 0; i < PasswordLengthMinimum; i++)
             {
                 char c;
                 switch (i)

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
+using Phenix.Actor.Security;
 using Phenix.Core.Data;
 using Phenix.Core.Net.Filters;
 using Phenix.Mapper.Expressions;
@@ -27,7 +28,7 @@ namespace Phenix.Services.Host.Library.Security.Myself
         [HttpGet("all")]
         public async Task<string> GetAll(bool includeDisabled)
         {
-            return await EncryptAsync(Phenix.Services.Host.Library.Security.User.FetchList(Database.Default,
+            return await EncryptAsync(Phenix.Actor.Security.User.FetchList(Database.Default,
                 includeDisabled
                     ? p => p.RootTeamsId == User.Identity.RootTeamsId && p.RootTeamsId != p.TeamsId
                     : p => p.RootTeamsId == User.Identity.RootTeamsId && p.RootTeamsId != p.TeamsId && !p.Disabled,

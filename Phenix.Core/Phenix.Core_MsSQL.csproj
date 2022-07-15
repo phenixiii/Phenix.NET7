@@ -2,9 +2,9 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<Version>7.6.56</Version>
-		<AssemblyVersion>7.6.56.0401</AssemblyVersion>
-		<FileVersion>7.6.56.0401</FileVersion>
+		<Version>7.6.58</Version>
+		<AssemblyVersion>7.6.58.0713</AssemblyVersion>
+		<FileVersion>7.6.58.0713</FileVersion>
 		<Description>Phenix Framework 7.6 for .NET 6</Description>
 		<Authors>ming</Authors>
 		<DefineConstants>TRACE;MsSQL</DefineConstants>
@@ -28,8 +28,9 @@
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
-		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.115.5" />
+		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
 	</ItemGroup>
 
 	<ItemGroup>

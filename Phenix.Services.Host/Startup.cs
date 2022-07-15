@@ -157,7 +157,7 @@ namespace Phenix.Services.Host
             /*
              * 配置转接头中间件（代理服务器和负载均衡器）
              * 如果设备使用 X-Forwarded-For 和 X-Forwarded-Proto 以外的其他标头名称，请设置 ForwardedForHeaderName 和 ForwardedProtoHeaderName 选项，使其与设备所用的标头名称相匹配
-             * 本配置可让 Phenix.Services.Library.AuthenticationMiddleware 为系统记录下发起访问的客户端IP地址（见 Phenix.Core.Security.User.RequestAddress 属性值）
+             * 本配置可让 Phenix.Services.Library.AuthenticationMiddleware 为系统记录下发起访问的客户端IP地址（见 Phenix.Core.Security.IUser.RequestAddress 属性值）
              */
             services.Configure<ForwardedHeadersOptions>(options => { options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto; });
         }

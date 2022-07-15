@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Orleans;
-using Phenix.Actor;
 
-namespace Phenix.Services.Host.Library.Security
+namespace Phenix.Actor.Security
 {
     /// <summary>
     /// 岗位资料Grain接口

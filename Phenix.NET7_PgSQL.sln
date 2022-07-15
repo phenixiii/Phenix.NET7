@@ -6,6 +6,10 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Core_PgSQL", "Phenix.Core\Phenix.Core_PgSQL.csproj", "{EB09C083-59A9-4C00-BB4C-8185F8D09B68}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Host_PgSQL", "Phenix.Services.Host\Phenix.Services.Host_PgSQL.csproj", "{F957AABA-D2A0-48BB-9F0D-1E3CB3DE30EB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1D6BFC2E-B2F1-4EC8-9AEE-10BF5DD085DD} = {1D6BFC2E-B2F1-4EC8-9AEE-10BF5DD085DD}
+		{4EECC35A-2696-416D-A8D8-9CA64D93E9D6} = {4EECC35A-2696-416D-A8D8-9CA64D93E9D6}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Business_PgSQL", "Phenix.Business\Phenix.Business_PgSQL.csproj", "{5984092A-CE52-4BD2-91B2-D5557B961CC5}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -76,8 +80,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.TPT.Plugin_PgSQL", "
 		{4EECC35A-2696-416D-A8D8-9CA64D93E9D6} = {4EECC35A-2696-416D-A8D8-9CA64D93E9D6}
 	EndProjectSection
 EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Phenix.TPT.WebApp", "Phenix.TPT.WebApp\Phenix.TPT.WebApp.njsproj", "{C54F28DB-323B-4F17-A2EB-B31D0A473C41}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Mapper_PgSQL", "Phenix.Mapper\Phenix.Mapper_PgSQL.csproj", "{43E90862-2271-4EC2-BC5E-B5011A272F12}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EB09C083-59A9-4C00-BB4C-8185F8D09B68} = {EB09C083-59A9-4C00-BB4C-8185F8D09B68}
@@ -93,6 +95,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Plugin_PgSQ
 		{1D6BFC2E-B2F1-4EC8-9AEE-10BF5DD085DD} = {1D6BFC2E-B2F1-4EC8-9AEE-10BF5DD085DD}
 		{4EECC35A-2696-416D-A8D8-9CA64D93E9D6} = {4EECC35A-2696-416D-A8D8-9CA64D93E9D6}
 	EndProjectSection
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "phenix.tpt.webapp", "Phenix.TPT.WebApp\phenix.tpt.webapp.esproj", "{98E67C84-63CE-4BF6-9941-85D84543DA8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -140,10 +144,6 @@ Global
 		{38BBFB2C-915C-441A-8CC8-9380035189E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38BBFB2C-915C-441A-8CC8-9380035189E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38BBFB2C-915C-441A-8CC8-9380035189E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C54F28DB-323B-4F17-A2EB-B31D0A473C41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C54F28DB-323B-4F17-A2EB-B31D0A473C41}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C54F28DB-323B-4F17-A2EB-B31D0A473C41}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C54F28DB-323B-4F17-A2EB-B31D0A473C41}.Release|Any CPU.Build.0 = Release|Any CPU
 		{43E90862-2271-4EC2-BC5E-B5011A272F12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{43E90862-2271-4EC2-BC5E-B5011A272F12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43E90862-2271-4EC2-BC5E-B5011A272F12}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -156,6 +156,12 @@ Global
 		{2EBFD84F-0F13-4A4D-BE49-8AFE31974811}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EBFD84F-0F13-4A4D-BE49-8AFE31974811}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EBFD84F-0F13-4A4D-BE49-8AFE31974811}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98E67C84-63CE-4BF6-9941-85D84543DA8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98E67C84-63CE-4BF6-9941-85D84543DA8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98E67C84-63CE-4BF6-9941-85D84543DA8A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{98E67C84-63CE-4BF6-9941-85D84543DA8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98E67C84-63CE-4BF6-9941-85D84543DA8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98E67C84-63CE-4BF6-9941-85D84543DA8A}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

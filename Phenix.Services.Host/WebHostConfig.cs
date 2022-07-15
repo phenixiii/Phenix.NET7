@@ -10,8 +10,7 @@ namespace Phenix.Services.Host
         private static string _urls;
 
         /// <summary>
-        /// Urls
-        /// 默认：http://*:5000
+        /// 服务地址
         /// </summary>
         public static string Urls
         {

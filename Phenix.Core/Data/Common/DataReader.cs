@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 #if PgSQL
+using Npgsql;
 using NpgsqlTypes;
 #endif
 #if MsSQL
@@ -31,21 +32,9 @@ namespace Phenix.Core.Data.Common
         /// 初始化
         /// </summary>
         /// <param name="worker">DbDataReader</param>
-        /// <param name="needSaveLog">是否保存日志</param>
-        public DataReader(DbDataReader worker, bool? needSaveLog = null)
+        public DataReader(DbDataReader worker)
         {
             _worker = worker ?? throw new ArgumentNullException(nameof(worker));
-            _needSaveLog = needSaveLog;
-        }
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="command">DbCommand</param>
-        /// <param name="needSaveLog">是否保存日志</param>
-        public DataReader(DbCommand command, bool? needSaveLog)
-            : this(command, CommandBehavior.Default, needSaveLog)
-        {
         }
 
         /// <summary>
@@ -53,12 +42,10 @@ namespace Phenix.Core.Data.Common
         /// </summary>
         /// <param name="command">DbCommand</param>
         /// <param name="behavior">CommandBehavior</param>
-        /// <param name="needSaveLog">是否保存日志</param>
-        public DataReader(DbCommand command, CommandBehavior behavior = CommandBehavior.Default, bool? needSaveLog = null)
+        public DataReader(DbCommand command, CommandBehavior behavior = CommandBehavior.Default)
         {
             _command = command ?? throw new ArgumentNullException(nameof(command));
             _behavior = behavior;
-            _needSaveLog = needSaveLog;
         }
 
         /// <summary>
@@ -68,19 +55,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="sql">SQL 语句</param>
         /// <param name="paramValues">参数值</param>
         public DataReader(DbConnection connection, string sql, params ParamValue[] paramValues)
-            : this(connection, sql, CommandBehavior.Default, null, paramValues)
-        {
-        }
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="connection">DbConnection</param>
-        /// <param name="sql">SQL 语句</param>
-        /// <param name="needSaveLog">是否保存日志</param>
-        /// <param name="paramValues">参数值</param>
-        public DataReader(DbConnection connection, string sql, bool? needSaveLog, params ParamValue[] paramValues)
-            : this(connection, sql, CommandBehavior.Default, needSaveLog, paramValues)
+            : this(connection, sql, CommandBehavior.Default, paramValues)
         {
         }
 
@@ -92,24 +67,10 @@ namespace Phenix.Core.Data.Common
         /// <param name="behavior">CommandBehavior</param>
         /// <param name="paramValues">参数值</param>
         public DataReader(DbConnection connection, string sql, CommandBehavior behavior, params ParamValue[] paramValues)
-            : this(connection, sql, behavior, null, paramValues)
-        {
-        }
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="connection">DbConnection</param>
-        /// <param name="sql">SQL 语句</param>
-        /// <param name="behavior">CommandBehavior</param>
-        /// <param name="needSaveLog">是否保存日志</param>
-        /// <param name="paramValues">参数值</param>
-        public DataReader(DbConnection connection, string sql, CommandBehavior behavior, bool? needSaveLog, params ParamValue[] paramValues)
         {
             _connection = connection ?? throw new ArgumentNullException(nameof(connection));
             _sql = sql;
             _behavior = behavior;
-            _needSaveLog = needSaveLog;
             _paramValues = paramValues;
         }
 
@@ -120,22 +81,10 @@ namespace Phenix.Core.Data.Common
         /// <param name="sql">SQL 语句</param>
         /// <param name="paramValues">参数值</param>
         public DataReader(DbTransaction transaction, string sql, params ParamValue[] paramValues)
-            : this(transaction, sql, CommandBehavior.Default, null, paramValues)
+            : this(transaction, sql, CommandBehavior.Default, paramValues)
         {
         }
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="transaction">DbTransaction</param>
-        /// <param name="sql">SQL 语句</param>
-        /// <param name="needSaveLog">是否保存日志</param>
-        /// <param name="paramValues">参数值</param>
-        public DataReader(DbTransaction transaction, string sql, bool? needSaveLog, params ParamValue[] paramValues)
-            : this(transaction, sql, CommandBehavior.Default, needSaveLog, paramValues)
-        {
-        }
-
+        
         /// <summary>
         /// 初始化
         /// </summary>
@@ -144,24 +93,10 @@ namespace Phenix.Core.Data.Common
         /// <param name="behavior">CommandBehavior</param>
         /// <param name="paramValues">参数值</param>
         public DataReader(DbTransaction transaction, string sql, CommandBehavior behavior, params ParamValue[] paramValues)
-            : this(transaction, sql, behavior, null, paramValues)
-        {
-        }
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="transaction">DbTransaction</param>
-        /// <param name="sql">SQL 语句</param>
-        /// <param name="behavior">CommandBehavior</param>
-        /// <param name="needSaveLog">是否保存日志</param>
-        /// <param name="paramValues">参数值</param>
-        public DataReader(DbTransaction transaction, string sql, CommandBehavior behavior, bool? needSaveLog, params ParamValue[] paramValues)
         {
             _transaction = transaction ?? throw new ArgumentNullException(nameof(transaction));
             _sql = sql;
             _behavior = behavior;
-            _needSaveLog = needSaveLog;
             _paramValues = paramValues;
         }
 
@@ -172,22 +107,10 @@ namespace Phenix.Core.Data.Common
         /// <param name="sql">SQL 语句</param>
         /// <param name="paramValues">参数值</param>
         public DataReader(Database database, string sql, params ParamValue[] paramValues)
-            : this(database, sql, CommandBehavior.Default, null, paramValues)
+            : this(database, sql, CommandBehavior.Default, paramValues)
         {
         }
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="database">数据库入口</param>
-        /// <param name="sql">SQL 语句</param>
-        /// <param name="needSaveLog">是否保存日志</param>
-        /// <param name="paramValues">参数值</param>
-        public DataReader(Database database, string sql, bool? needSaveLog, params ParamValue[] paramValues)
-            : this(database, sql, CommandBehavior.Default, needSaveLog, paramValues)
-        {
-        }
-
+        
         /// <summary>
         /// 初始化
         /// </summary>
@@ -196,24 +119,10 @@ namespace Phenix.Core.Data.Common
         /// <param name="behavior">CommandBehavior</param>
         /// <param name="paramValues">参数值</param>
         public DataReader(Database database, string sql, CommandBehavior behavior, params ParamValue[] paramValues)
-            : this(database, sql, behavior, null, paramValues)
-        {
-        }
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="database">数据库入口</param>
-        /// <param name="sql">SQL 语句</param>
-        /// <param name="behavior">CommandBehavior</param>
-        /// <param name="needSaveLog">是否保存日志</param>
-        /// <param name="paramValues">参数值</param>
-        public DataReader(Database database, string sql, CommandBehavior behavior, bool? needSaveLog, params ParamValue[] paramValues)
         {
             _database = database;
             _sql = sql;
             _behavior = behavior;
-            _needSaveLog = needSaveLog;
             _paramValues = paramValues;
         }
 
@@ -247,16 +156,6 @@ namespace Phenix.Core.Data.Common
         public CommandBehavior Behavior
         {
             get { return _behavior; }
-        }
-
-        private readonly bool? _needSaveLog;
-
-        /// <summary>
-        /// 是否保存日志
-        /// </summary>
-        public bool? NeedSaveLog
-        {
-            get { return _needSaveLog; }
         }
 
         private readonly ParamValue[] _paramValues;
@@ -342,7 +241,7 @@ namespace Phenix.Core.Data.Common
                 if (_worker == null)
                 {
                     _myselfWorker = true;
-                    _worker = DbCommandHelper.ExecuteReader(Command, _behavior, _needSaveLog);
+                    _worker = DbCommandHelper.ExecuteReader(Command, _behavior);
                 }
 
                 return _worker;

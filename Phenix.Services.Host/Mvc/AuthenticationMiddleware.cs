@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Phenix.Actor.Security;
 using Phenix.Core.Data;
 using Phenix.Core.Security;
 using Phenix.Services.Host.Library;
@@ -77,7 +78,7 @@ namespace Phenix.Services.Host.Mvc
                 string companyName = Uri.UnescapeDataString(strings[0]);
                 string userName = Uri.UnescapeDataString(strings[1]);
                 string signature = strings[2];
-                IIdentity identity = Principal.FetchIdentity(companyName, userName, context.Request.GetAcceptLanguage(), null);
+                IIdentity identity = Identity.Fetch(companyName, userName, context.Request.GetAcceptLanguage(), null);
                 if (String.Compare(context.Request.Path, StandardPaths.SecurityGatePath, StringComparison.OrdinalIgnoreCase) == 0 && context.Request.Method == HttpMethod.Put.Method)
                 {
                     await identity.Logon(signature, await context.Request.ReadBodyAsStringAsync(), context.Request.GetRemoteAddress());

@@ -11,10 +11,11 @@ using Orleans.Hosting;
 using Orleans.Statistics;
 using Phenix.Core;
 using Phenix.Core.Data;
+using Phenix.Core.Log;
 using Phenix.Core.Plugin;
-using Phenix.Core.Security;
 using Phenix.Mapper.Schema;
-using Phenix.Services.Host.Library.Security;
+using Serilog;
+using Serilog.Events;
 
 namespace Phenix.Services.Host
 {
@@ -24,8 +25,6 @@ namespace Phenix.Services.Host
 
         public static void Main(string[] args)
         {
-            Principal.FetchIdentity = Identity.Fetch;
-
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("zh-CN", true)
             {
                 DateTimeFormat = { ShortDatePattern = "yyyy-MM-dd", FullDateTimePattern = "yyyy-MM-dd HH:mm:ss", LongTimePattern = "HH:mm:ss" } //兼容Linux（CentOS）环境
@@ -33,62 +32,71 @@ namespace Phenix.Services.Host
 
 #if DEBUG
             AppRun.Debugging = true;
-            Console.WriteLine("调试状态（Phenix.Core.AppRun.Debugging)为: {0}（正式环境下请关闭）", AppRun.Debugging);
 #endif
 
+            Log.Logger = LogHelper.InitializeConfiguration()
+                .WriteTo.Exceptionless(
+                    restrictedToMinimumLevel: AppRun.Debugging ? LogEventLevel.Debug : LogEventLevel.Information, //捕获的最小日志级别
+                    includeProperties: true, //包含Serilog属性
+                    serverUrl: ExceptionlessConfig.ServerUrl,
+                    apiKey: ExceptionlessConfig.ApiKey)
+                .CreateLogger();
             try
             {
-                Console.WriteLine("正在从缺省数据库加载数据字典到本地以便加快服务的响应速度...");
-                Console.WriteLine("缺省数据库（Phenix.Core.Data.Database.Default.DataSource）为：{0}", Database.Default.DataSource);
+                AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) => LogHelper.Error((Exception)eventArgs.ExceptionObject, "An unhandled exception occurred in the current domain");
+
+#if DEBUG
+                LogHelper.Warning("Phenix.Core.AppRun.Debugging = {Debugging}", AppRun.Debugging);
+#else
+                LogHelper.Warning("Phenix.Core.AppRun.Debugging = {Debugging}", AppRun.Debugging);
+                if (AppRun.Debugging)
+                    LogHelper.Warning("Please set this Phenix.Core.AppRun.Debugging parameter to false in the production environment");
+#endif
+
+                LogHelper.Warning("Phenix.Core.Data.Database.Default.DataSource = {@DataSource}", Database.Default.DataSource);
                 MetaData.Fetch().FillingCache();
+
+                using (IHost host = CreateHostBuilder(args).Build())
+                {
+                    host.Start();
+                    LogHelper.Warning("Starting host");
+
+                    foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
+                        try
+                        {
+                            Assembly assembly = Assembly.LoadFrom(fileName);
+                            PluginHost.Default.GetPlugin(assembly, (_, message) =>
+                            {
+                                LogHelper.Information("{Message}", message);
+                                return null;
+                            }).Start();
+                            LogHelper.Information("Loading plugin {@FileName}", fileName);
+                        }
+                        catch (Exception ex)
+                        {
+                            LogHelper.Warning("Loading plugin {@FileName}: {Message}", fileName, ex.Message);
+                        }
+
+                    LogHelper.Warning("Running host");
+                    host.WaitForShutdown();
+                    LogHelper.Warning("Exit host");
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
-                Console.WriteLine("请检查当前目录下配置库（Phenix.Core.db文件）中数据库连接串(DataSourceKey：{0})是否正确！", Database.Default.DataSourceKey);
-                Console.ReadLine();
-                return;
+                LogHelper.Fatal(ex, "Host terminated unexpectedly");
             }
-
-            AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) => { Phenix.Core.Log.EventLog.SaveLocal("An unhandled exception occurred in the current domain", (Exception)eventArgs.ExceptionObject); };
-            RunHost(args);
-        }
-
-        private static void RunHost(string[] args)
-        {
-            Console.WriteLine("构建Orleans和WebAPI的服务...");
-            using (IHost host = CreateHostBuilder(args).Build())
+            finally
             {
-                Console.WriteLine("启动Orleans和WebAPI的服务...");
-                host.Start();
-
-                Console.WriteLine("启动插件...");
-                foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
-                    try
-                    {
-                        Console.WriteLine("加载插件程序集：{0}", fileName);
-                        Assembly assembly = Assembly.LoadFrom(fileName);
-                        PluginHost.Default.GetPlugin(assembly, (_, message) =>
-                        {
-                            Console.WriteLine(message);
-                            return null;
-                        }).Start();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("启动插件{0}失败：{1}", fileName, ex.Message);
-                    }
-
-                Console.WriteLine("启动插件完毕.");
-
-                host.WaitForShutdown();
+                Log.CloseAndFlush();
             }
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
-                .ConfigureLogging(logging => logging.AddConsole())
+                .UseSerilog(dispose: true)
+                .ConfigureLogging(logging => logging.ClearProviders())
                 .UseContentRoot(Phenix.Core.AppRun.BaseDirectory)
                 /*
                  * 启动Orleans服务集群
@@ -97,7 +105,6 @@ namespace Phenix.Services.Host
                  */
                 .UseOrleans((context, builder) =>
                 {
-                    builder.ConfigureLogging(logging => logging.AddConsole());
                     /*
                      * 配置Orleans服务集群
                      */
@@ -128,7 +135,6 @@ namespace Phenix.Services.Host
                  * 启动WebAPI服务
                  */
                 .ConfigureWebHostDefaults(builder => builder
-                    .ConfigureLogging(logging => logging.AddConsole())
                     /*
                      * 使用轻量级跨平台服务 KestrelServer
                      * 请根据自己系统的运行要求配置 KestrelServer 选项

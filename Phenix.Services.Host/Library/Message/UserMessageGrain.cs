@@ -28,8 +28,8 @@ namespace Phenix.Services.Host.Library.Message
         /// </summary>
         public static int ClearMessageDeferMonths
         {
-            get { return new[] {AppSettings.GetProperty(ref _clearMessageDeferMonths, 6), 3}.Max(); }
-            set { AppSettings.SetProperty(ref _clearMessageDeferMonths, new[] {value, 3}.Max()); }
+            get { return new[] { AppSettings.GetProperty(ref _clearMessageDeferMonths, 6), 3 }.Max(); }
+            set { AppSettings.SetProperty(ref _clearMessageDeferMonths, new[] { value, 3 }.Max()); }
         }
 
         #endregion

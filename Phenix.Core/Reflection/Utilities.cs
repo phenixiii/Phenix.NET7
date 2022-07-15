@@ -9,7 +9,6 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -53,11 +52,8 @@ namespace Phenix.Core.Reflection
             }
             catch (FileNotFoundException ex)
             {
-                if (AppRun.Debugging)
-                    Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), assemblyName, ex));
-
                 if (throwIfNotFound)
-                    throw new InvalidOperationException(String.Format("不存在程序集: {0}", assemblyName));
+                    throw new InvalidOperationException(String.Format("不存在程序集: {0}", assemblyName), ex);
                 return null;
             }
         }
@@ -154,16 +150,7 @@ namespace Phenix.Core.Reflection
         /// <returns>类型队列</returns>
         public static IList<Type> LoadExportedClassTypes(string fileName, bool includeAbstract = false)
         {
-            try
-            {
-                return GetExportedClassTypes(Assembly.LoadFile(fileName), includeAbstract);
-            }
-            catch (Exception ex)
-            {
-                if (AppRun.Debugging)
-                    Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), fileName, ex));
-                return new List<Type>(0);
-            }
+            return GetExportedClassTypes(Assembly.LoadFile(fileName), includeAbstract);
         }
 
         /// <summary>
@@ -186,8 +173,7 @@ namespace Phenix.Core.Reflection
                 }
                 catch (Exception ex)
                 {
-                    if (AppRun.Debugging)
-                        Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), item.FullName, ex));
+                    LogHelper.Warning(ex, "{@Assembly}", assembly.GetName().FullName);
                 }
 
             return result;

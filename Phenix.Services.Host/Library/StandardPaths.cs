@@ -86,11 +86,6 @@
         public const string InoutFilePath = "/api/inout/file";
 
         /// <summary>
-        /// /api/log/event-log
-        /// </summary>
-        public const string LogEventLogPath = "/api/log/event-log";
-
-        /// <summary>
         /// /api/service/portal
         /// </summary>
         public const string ServicePortalPath = "/api/service/portal";

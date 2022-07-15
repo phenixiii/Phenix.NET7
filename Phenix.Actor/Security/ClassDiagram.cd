@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Phenix.Actor.Security.Identity">
+    <Position X="0.5" Y="0.5" Width="3" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>UEAGQACAgIBAAAAAKAlBAIAgAACUAEAAAQIAAAYEogI=</HashCode>
+      <FileName>Security\Identity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Actor.Security.Position&lt;T&gt;">
+    <Position X="6.75" Y="0.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAQCIAAAAAAAARAEAAFAQAYAAgAAAAAAAAQBAQAAAAA=</HashCode>
+      <FileName>Security\Position.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Actor.Security.User&lt;T&gt;">
+    <Position X="3.75" Y="0.5" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>VQQS4AggwACAwcBwJCDEwAYiASqRgmRHEKEipASCCRE=</HashCode>
+      <FileName>Security\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Actor.Security.Teams&lt;T&gt;">
+    <Position X="8.75" Y="0.5" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAQAIAAAAAAAARAEAAEAQEYAAAAAAAAAAAQBAQAAAAA=</HashCode>
+      <FileName>Security\Teams.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Phenix.Actor.Security.IPositionGrain">
+    <Position X="2.25" Y="12.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Security\IPositionGrain.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Phenix.Actor.Security.IUserGrain">
+    <Position X="0.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAQAQAAIAAAIAAAABAAAAQAEABAAAAAA=</HashCode>
+      <FileName>Security\IUserGrain.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

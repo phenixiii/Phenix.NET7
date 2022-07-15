@@ -1,6 +1,5 @@
 using System;
 using System.Globalization;
-using System.Linq;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
@@ -58,133 +57,9 @@ namespace Phenix.Core.Security
             }
         }
 
-        private static Func<string, string, string, int?, IIdentity> _fetchIdentity;
-
-        /// <summary>
-        /// 获取用户身份方法
-        /// Identity Fetch(string companyName, string userName, string cultureName, int? cacheDiscardIntervalHours = null)
-        /// </summary>
-        public static Func<string, string, string, int?, IIdentity> FetchIdentity
-        {
-            get { return _fetchIdentity; }
-            set { _fetchIdentity = value; }
-        }
-
         #endregion
 
         #region 属性
-        
-        #region 配置项
-
-        private static int? _requestFailureCountMaximum;
-
-        /// <summary>
-        /// 服务请求失败次数极限
-        /// 默认：5(>=3)
-        /// </summary>
-        public static int RequestFailureCountMaximum
-        {
-            get { return new[] {AppSettings.GetProperty(ref _requestFailureCountMaximum, 5), 3}.Max(); }
-            set { AppSettings.SetProperty(ref _requestFailureCountMaximum, new[] {value, 3}.Max()); }
-        }
-
-        private static int? _requestFailureLockedMinutes;
-
-        /// <summary>
-        /// 服务请求失败锁定周期(分钟)
-        /// 默认：30(>=10)
-        /// </summary>
-        public static int RequestFailureLockedMinutes
-        {
-            get { return new[] {AppSettings.GetProperty(ref _requestFailureLockedMinutes, 30), 10}.Max(); }
-            set { AppSettings.SetProperty(ref _requestFailureLockedMinutes, new[] {value, 10}.Max()); }
-        }
-
-        private static bool? _allowMultiAddressRequest;
-
-        /// <summary>
-        /// 允许多处终端发起请求
-        /// 默认：false
-        /// </summary>
-        public static bool AllowMultiAddressRequest
-        {
-            get { return AppRun.Debugging || AppSettings.GetProperty(ref _allowMultiAddressRequest, false); }
-            set { AppSettings.SetProperty(ref _allowMultiAddressRequest, value); }
-        }
-
-        private static int? _requestIdleIntervalLimitMinutes;
-
-        /// <summary>
-        /// 服务请求空闲间隔极限(分钟)
-        /// 默认：120(>=10)
-        /// </summary>
-        public static int RequestIdleIntervalLimitMinutes
-        {
-            get { return new[] {AppSettings.GetProperty(ref _requestIdleIntervalLimitMinutes, 120), 10}.Max(); }
-            set { AppSettings.SetProperty(ref _requestIdleIntervalLimitMinutes, new[] {value, 10}.Max()); }
-        }
-
-        private static int? _requestClockOffsetLimitMinutes;
-
-        /// <summary>
-        /// 服务请求(客户端与服务端)时钟差极限(分钟)
-        /// 默认：30(>=10)
-        /// </summary>
-        public static int RequestClockOffsetLimitMinutes
-        {
-            get { return new[] {AppSettings.GetProperty(ref _requestClockOffsetLimitMinutes, 30), 10}.Max(); }
-            set { AppSettings.SetProperty(ref _requestClockOffsetLimitMinutes, new[] {value, 10}.Max()); }
-        }
-
-        private static int? _breakRequestIntensityPerMinute;
-
-        /// <summary>
-        /// 中断服务请求强度阈值(每分钟次数)
-        /// 默认：6000(>=6000)
-        /// </summary>
-        public static int BreakRequestIntensityPerMinute
-        {
-            get { return new[] {AppSettings.GetProperty(ref _breakRequestIntensityPerMinute, 6000), 6000}.Max(); }
-            set { AppSettings.SetProperty(ref _breakRequestIntensityPerMinute, new[] {value, 6000}.Max()); }
-        }
-
-        private static int? _passwordLengthMinimum;
-
-        /// <summary>
-        /// 口令长度最小值
-        /// 默认：6(>=6)
-        /// </summary>
-        public static int PasswordLengthMinimum
-        {
-            get { return new[] {AppSettings.GetProperty(ref _passwordLengthMinimum, 6), 6}.Max(); }
-            set { AppSettings.SetProperty(ref _passwordLengthMinimum, new[] {value, 6}.Max()); }
-        }
-
-        private static int? _passwordComplexityMinimum;
-
-        /// <summary>
-        /// 口令复杂度最小值(含数字、大写字母、小写字母、特殊字符的种类)
-        /// 默认：3(>=1)
-        /// </summary>
-        public static int PasswordComplexityMinimum
-        {
-            get { return new[] {AppSettings.GetProperty(ref _passwordComplexityMinimum, 3), 1}.Max(); }
-            set { AppSettings.SetProperty(ref _passwordComplexityMinimum, new[] {value, 1}.Max()); }
-        }
-
-        private static int? _dynamicPasswordValidityMinutes;
-
-        /// <summary>
-        /// 动态口令有效周期(分钟)
-        /// 默认：10(>=3)
-        /// </summary>
-        public static int DynamicPasswordValidityMinutes
-        {
-            get { return new[] {AppSettings.GetProperty(ref _dynamicPasswordValidityMinutes, 10), 3}.Max(); }
-            set { AppSettings.SetProperty(ref _dynamicPasswordValidityMinutes, new[] {value, 3}.Max()); }
-        }
-
-        #endregion
 
         private readonly IIdentity _identity;
 

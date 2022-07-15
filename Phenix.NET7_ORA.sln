@@ -6,6 +6,10 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Core_ORA", "Phenix.Core\Phenix.Core_ORA.csproj", "{FC4C581B-081D-4160-A295-D72CDEF22810}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Host_ORA", "Phenix.Services.Host\Phenix.Services.Host_ORA.csproj", "{EEC4928E-95B4-4BCA-B3E6-5471652D7B7E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{16542B94-D102-4EA5-ADD2-7C6585B25579} = {16542B94-D102-4EA5-ADD2-7C6585B25579}
+		{655E1FB3-FBF4-4828-BE60-BA888AD1C2C1} = {655E1FB3-FBF4-4828-BE60-BA888AD1C2C1}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Business_ORA", "Phenix.Business\Phenix.Business_ORA.csproj", "{68F18727-70A8-4A5F-A5B6-450833D13EDB}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -76,8 +80,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.TPT.Plugin_ORA", "Ph
 		{16542B94-D102-4EA5-ADD2-7C6585B25579} = {16542B94-D102-4EA5-ADD2-7C6585B25579}
 	EndProjectSection
 EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "Phenix.TPT.WebApp", "Phenix.TPT.WebApp\Phenix.TPT.WebApp.njsproj", "{C54F28DB-323B-4F17-A2EB-B31D0A473C41}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Mapper_ORA", "Phenix.Mapper\Phenix.Mapper_ORA.csproj", "{E0434CBD-C058-4AE4-A0DE-0816963414BF}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FC4C581B-081D-4160-A295-D72CDEF22810} = {FC4C581B-081D-4160-A295-D72CDEF22810}
@@ -93,6 +95,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Plugin_ORA"
 		{16542B94-D102-4EA5-ADD2-7C6585B25579} = {16542B94-D102-4EA5-ADD2-7C6585B25579}
 		{655E1FB3-FBF4-4828-BE60-BA888AD1C2C1} = {655E1FB3-FBF4-4828-BE60-BA888AD1C2C1}
 	EndProjectSection
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "phenix.tpt.webapp", "Phenix.TPT.WebApp\phenix.tpt.webapp.esproj", "{98E67C84-63CE-4BF6-9941-85D84543DA8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -140,10 +144,6 @@ Global
 		{DAE3BBA1-1EDA-43CF-8ABD-254611598F7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAE3BBA1-1EDA-43CF-8ABD-254611598F7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAE3BBA1-1EDA-43CF-8ABD-254611598F7F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C54F28DB-323B-4F17-A2EB-B31D0A473C41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C54F28DB-323B-4F17-A2EB-B31D0A473C41}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C54F28DB-323B-4F17-A2EB-B31D0A473C41}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C54F28DB-323B-4F17-A2EB-B31D0A473C41}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E0434CBD-C058-4AE4-A0DE-0816963414BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E0434CBD-C058-4AE4-A0DE-0816963414BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0434CBD-C058-4AE4-A0DE-0816963414BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -156,6 +156,12 @@ Global
 		{99A2DDAF-9614-402B-AA7C-10E4CAF2ED09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99A2DDAF-9614-402B-AA7C-10E4CAF2ED09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99A2DDAF-9614-402B-AA7C-10E4CAF2ED09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98E67C84-63CE-4BF6-9941-85D84543DA8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98E67C84-63CE-4BF6-9941-85D84543DA8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98E67C84-63CE-4BF6-9941-85D84543DA8A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{98E67C84-63CE-4BF6-9941-85D84543DA8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98E67C84-63CE-4BF6-9941-85D84543DA8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98E67C84-63CE-4BF6-9941-85D84543DA8A}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

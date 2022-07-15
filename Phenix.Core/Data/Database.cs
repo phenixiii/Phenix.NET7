@@ -6,9 +6,7 @@ using System.Data.Common;
 using System.Data.SQLite;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
 #if PgSQL
 using Npgsql;
 #endif
@@ -63,7 +61,7 @@ namespace Phenix.Core.Data
             {
                 if (_configFilePath == null)
                 {
-                    string result = Path.Combine(AppRun.BaseDirectory, "Phenix.Common.Init.db");
+                    string result = Path.Combine(AppRun.BaseDirectory, "Phenix.Core.Init.db");
                     if (!File.Exists(result))
                         throw new InvalidOperationException(String.Format("不存在配置库文件: {0}", result));
                     _configFilePath = result;
@@ -188,9 +186,7 @@ from PH7_ConfigLibrary";
                                 while (reader.Read())
                                     try
                                     {
-                                        value.ExecuteNonQuery(reader.GetString(0), false);
-                                        string message = reader.GetString(1);
-                                        Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), message));
+                                        value.ExecuteNonQuery(reader.GetString(0));
                                     }
 #if PgSQL
                                     catch (NpgsqlException ex)
@@ -198,8 +194,7 @@ from PH7_ConfigLibrary";
                                         if (ex.Message.IndexOf("42P07:", StringComparison.Ordinal) == 0 || //表已存在
                                             ex.Message.IndexOf("42701:", StringComparison.Ordinal) == 0) //表中已存在要添加的列
                                             continue;
-                                        string message = reader.GetString(1);
-                                        Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), message, ex));
+                                        LogHelper.Error(ex, reader.GetString(1));
                                     }
 #endif
 #if MsSQL
@@ -207,8 +202,7 @@ from PH7_ConfigLibrary";
                                     {
                                         if (ex.Number == 2714) //数据库中已存在名为 '%.*ls' 的对象
                                             continue;
-                                        string message = reader.GetString(1);
-                                        Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), message, ex));
+                                        LogHelper.Error(ex, reader.GetString(1));
                                     }
 #endif
 #if MySQL
@@ -217,8 +211,7 @@ from PH7_ConfigLibrary";
                                         if (ex.Message.IndexOf("Table ", StringComparison.Ordinal) == 0 || //表已存在
                                             ex.Message.IndexOf("Duplicate ", StringComparison.Ordinal) == 0) //表中已存在要添加的列
                                             continue;
-                                        string message = reader.GetString(1);
-                                        Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), message, ex));
+                                        LogHelper.Error(ex, reader.GetString(1));
                                     }
 #endif
 #if ORA
@@ -227,8 +220,7 @@ from PH7_ConfigLibrary";
                                         if (ex.Message.IndexOf("ORA-00955", StringComparison.Ordinal) == 0 || //表已存在
                                             ex.Message.IndexOf("ORA-01430", StringComparison.Ordinal) == 0) //表中已存在要添加的列
                                             continue;
-                                        string message = reader.GetString(1);
-                                        Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), message, ex));
+                                        LogHelper.Error(ex, reader.GetString(1));
                                     }
 #endif
                             }
@@ -275,8 +267,8 @@ from PH7_ConfigLibrary";
         /// </summary>
         public static int ClearingPoolsThresholdOfExceptionPerMinute
         {
-            get { return new[] {AppSettings.GetProperty(ref _clearingPoolsThresholdOfExceptionPerMinute, 60), 60}.Max(); }
-            set { AppSettings.SetProperty(ref _clearingPoolsThresholdOfExceptionPerMinute, new[] {value, 60}.Max()); }
+            get { return new[] { AppSettings.GetProperty(ref _clearingPoolsThresholdOfExceptionPerMinute, 60), 60 }.Max(); }
+            set { AppSettings.SetProperty(ref _clearingPoolsThresholdOfExceptionPerMinute, new[] { value, 60 }.Max()); }
         }
 
         #endregion
@@ -2243,15 +2235,6 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
         }
 
         /// <summary>
-        /// 执行DbCommand
-        /// </summary>
-        /// <returns>执行记录数</returns>
-        public int ExecuteNonQuery(string sql, bool? needSaveLog, params ParamValue[] paramValues)
-        {
-            return ExecuteGet((Func<DbConnection, string, bool?, ParamValue[], int>) DbCommandHelper.ExecuteNonQuery, sql, needSaveLog, paramValues);
-        }
-
-        /// <summary>
         /// 执行存储过程
         /// </summary>
         /// <returns>结果集(参数名-参数值)</returns>
@@ -2259,16 +2242,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
         {
             return ExecuteGet((Func<DbConnection, string, ParamValue[], IDictionary<string, object>>) DbCommandHelper.ExecuteStoredProc, storedProcedure, paramValues);
         }
-
-        /// <summary>
-        /// 执行存储过程
-        /// </summary>
-        /// <returns>结果集(参数名-参数值)</returns>
-        public IDictionary<string, object> ExecuteStoredProc(string storedProcedure, bool? needSaveLog, params ParamValue[] paramValues)
-        {
-            return ExecuteGet((Func<DbConnection, string, bool?, ParamValue[], IDictionary<string, object>>) DbCommandHelper.ExecuteStoredProc, storedProcedure, needSaveLog, paramValues);
-        }
-
+        
         /// <summary>
         /// 执行查询，并返回查询所返回的结果集中第一行的第一列
         /// </summary>
@@ -2277,46 +2251,21 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
         {
             return ExecuteGet((Func<DbConnection, string, ParamValue[], object>) DbCommandHelper.ExecuteScalar, sql, paramValues);
         }
-
-        /// <summary>
-        /// 执行查询，并返回查询所返回的结果集中第一行的第一列
-        /// </summary>
-        /// <returns>返回值</returns>
-        public object ExecuteScalar(string sql, bool? needSaveLog, params ParamValue[] paramValues)
-        {
-            return ExecuteGet((Func<DbConnection, string, bool?, ParamValue[], object>) DbCommandHelper.ExecuteScalar, sql, needSaveLog, paramValues);
-        }
-
+        
         /// <summary>
         /// 构建 DataReader
         /// </summary>
         public DataReader CreateDataReader(string sql, params ParamValue[] paramValues)
         {
-            return CreateDataReader(sql, CommandBehavior.Default, null, paramValues);
+            return CreateDataReader(sql, CommandBehavior.Default, paramValues);
         }
-
-        /// <summary>
-        /// 构建 DataReader
-        /// </summary>
-        public DataReader CreateDataReader(string sql, bool? needSaveLog, params ParamValue[] paramValues)
-        {
-            return CreateDataReader(sql, CommandBehavior.Default, needSaveLog, paramValues);
-        }
-
+        
         /// <summary>
         /// 构建 DataReader
         /// </summary>
         public DataReader CreateDataReader(string sql, CommandBehavior behavior, params ParamValue[] paramValues)
         {
-            return CreateDataReader(sql, behavior, null, paramValues);
-        }
-
-        /// <summary>
-        /// 构建 DataReader
-        /// </summary>
-        public DataReader CreateDataReader(string sql, CommandBehavior behavior, bool? needSaveLog, params ParamValue[] paramValues)
-        {
-            return new DataReader(this, sql, behavior, needSaveLog, paramValues);
+            return new DataReader(this, sql, behavior, paramValues);
         }
 
         /// <summary>
@@ -2324,31 +2273,15 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
         /// </summary>
         public string ReadJsonData(string sql, params ParamValue[] paramValues)
         {
-            return ReadJsonData(sql, CommandBehavior.Default, null, paramValues);
+            return ReadJsonData(sql, CommandBehavior.Default, paramValues);
         }
-
-        /// <summary>
-        /// 读取JSON格式数据(属性名为表/视图的字段名/别名)
-        /// </summary>
-        public string ReadJsonData(string sql, bool? needSaveLog, params ParamValue[] paramValues)
-        {
-            return ReadJsonData(sql, CommandBehavior.Default, needSaveLog, paramValues);
-        }
-
+        
         /// <summary>
         /// 读取JSON格式数据(属性名为表/视图的字段名/别名)
         /// </summary>
         public string ReadJsonData(string sql, CommandBehavior behavior, params ParamValue[] paramValues)
         {
-            return ReadJsonData(sql, behavior, null, paramValues);
-        }
-
-        /// <summary>
-        /// 读取JSON格式数据(属性名为表/视图的字段名/别名)
-        /// </summary>
-        public string ReadJsonData(string sql, CommandBehavior behavior, bool? needSaveLog, params ParamValue[] paramValues)
-        {
-            using (DataReader dataReader = CreateDataReader(sql, behavior, needSaveLog, paramValues))
+            using (DataReader dataReader = CreateDataReader(sql, behavior, paramValues))
             {
                 return dataReader.ReadJson(behavior == CommandBehavior.SingleRow);
             }
@@ -2359,15 +2292,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
         /// </summary>
         public IList<IDictionary<string, object>> ReadDictionaryData(string sql, params ParamValue[] paramValues)
         {
-            return ReadDictionaryData(sql, CommandBehavior.Default, null, paramValues);
-        }
-
-        /// <summary>
-        /// 读取Dictionary格式数据(属性名为表/视图的字段名/别名)
-        /// </summary>
-        public IList<IDictionary<string, object>> ReadDictionaryData(string sql, bool? needSaveLog, params ParamValue[] paramValues)
-        {
-            return ReadDictionaryData(sql, CommandBehavior.Default, needSaveLog, paramValues);
+            return ReadDictionaryData(sql, CommandBehavior.Default, paramValues);
         }
 
         /// <summary>
@@ -2375,15 +2300,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
         /// </summary>
         public IList<IDictionary<string, object>> ReadDictionaryData(string sql, CommandBehavior behavior, params ParamValue[] paramValues)
         {
-            return ReadDictionaryData(sql, behavior, null, paramValues);
-        }
-
-        /// <summary>
-        /// 读取Dictionary格式数据(属性名为表/视图的字段名/别名)
-        /// </summary>
-        public IList<IDictionary<string, object>> ReadDictionaryData(string sql, CommandBehavior behavior, bool? needSaveLog, params ParamValue[] paramValues)
-        {
-            using (DataReader dataReader = CreateDataReader(sql, behavior, needSaveLog, paramValues))
+            using (DataReader dataReader = CreateDataReader(sql, behavior, paramValues))
             {
                 return dataReader.ReadDictionary(behavior == CommandBehavior.SingleRow);
             }
@@ -2395,14 +2312,6 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
         public DataSet FillDataSet(string sql, params ParamValue[] paramValues)
         {
             return ExecuteGet((Func<DbConnection, string, ParamValue[], DataSet>) DbCommandHelper.FillDataSet, sql, paramValues);
-        }
-
-        /// <summary>
-        /// 填充 DataSet
-        /// </summary>
-        public DataSet FillDataSet(string sql, bool? needSaveLog, params ParamValue[] paramValues)
-        {
-            return ExecuteGet((Func<DbConnection, string, bool?, ParamValue[], DataSet>) DbCommandHelper.FillDataSet, sql, needSaveLog, paramValues);
         }
 
         #endregion
@@ -2425,8 +2334,6 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             Execute(cycleTimedTask);
 
             _timedTasks[key] = new TimedTaskInfo(cycleTimedTask, cycleDayMultiple, cycleHourMultiple);
-
-            Task.Run(() => EventLog.Save(key));
         }
 
         /// <summary>
@@ -2475,7 +2382,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
                                 exceptionCount = exceptionCount + 1;
                                 if (exceptionCount == _timedTasks.Count)
                                     throw;
-                                Task.Run(() => EventLog.Save(kvp.Key, ex));
+                                LogHelper.Error(ex, "{@TimedTaskKey}", kvp.Key);
                             }
 
                         Thread.Sleep(1000 * 60);
@@ -2492,7 +2399,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
                             connection = null;
                         }
 
-                        Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), _timedTasks.Count.ToString(), ex));
+                        LogHelper.Error(ex, "{@TimedTasksCount}", _timedTasks.Count);
                         Thread.Sleep(1000 * 60);
                     }
             }

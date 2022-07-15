@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Globalization;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 #if PgSQL
 using Npgsql;
@@ -125,7 +125,7 @@ namespace Phenix.Core.Data.Common
         /// 执行 DbCommand
         /// </summary>
         /// <returns>执行记录数</returns>
-        public static int ExecuteNonQuery(DbCommand command, bool? needSaveLog = null)
+        public static int ExecuteNonQuery(DbCommand command)
         {
             try
             {
@@ -137,14 +137,15 @@ namespace Phenix.Core.Data.Common
                 }
                 finally
                 {
-                    if (needSaveLog.HasValue && needSaveLog.Value || !needSaveLog.HasValue && AppRun.Debugging)
-                        Task.Run(() => EventLog.Save(String.Format("{0} consume time {1} ms", PackCommandInfo(command), DateTime.Now.Subtract(dateTime).TotalMilliseconds)));
+                    if (AppRun.Debugging)
+                        LogHelper.Debug("{@Command} consume time {@TotalMilliseconds} ms",
+                            PackCommandInfo(command),
+                            DateTime.Now.Subtract(dateTime).TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
                 }
             }
             catch (Exception ex)
             {
-                if (needSaveLog.HasValue && needSaveLog.Value || !needSaveLog.HasValue && AppRun.Debugging)
-                    Task.Run(() => EventLog.Save(PackCommandInfo(command), ex));
+                LogHelper.Error(ex, "{@Command}", PackCommandInfo(command));
                 throw;
             }
         }
@@ -155,19 +156,10 @@ namespace Phenix.Core.Data.Common
         /// <returns>执行记录数</returns>
         public static int ExecuteNonQuery(DbConnection connection, string sql, params ParamValue[] paramValues)
         {
-            return ExecuteNonQuery(connection, sql, null, paramValues);
-        }
-
-        /// <summary>
-        /// 执行 DbCommand
-        /// </summary>
-        /// <returns>执行记录数</returns>
-        public static int ExecuteNonQuery(DbConnection connection, string sql, bool? needSaveLog, params ParamValue[] paramValues)
-        {
             using (DbCommand command = CreateCommand(connection, sql))
             {
                 CreateParameter(command, paramValues);
-                return ExecuteNonQuery(command, needSaveLog);
+                return ExecuteNonQuery(command);
             }
         }
 
@@ -177,19 +169,10 @@ namespace Phenix.Core.Data.Common
         /// <returns>执行记录数</returns>
         public static int ExecuteNonQuery(DbTransaction transaction, string sql, params ParamValue[] paramValues)
         {
-            return ExecuteNonQuery(transaction, sql, null, paramValues);
-        }
-
-        /// <summary>
-        /// 执行 DbCommand
-        /// </summary>
-        /// <returns>执行记录数</returns>
-        public static int ExecuteNonQuery(DbTransaction transaction, string sql, bool? needSaveLog, params ParamValue[] paramValues)
-        {
             using (DbCommand command = CreateCommand(transaction, sql))
             {
                 CreateParameter(command, paramValues);
-                return ExecuteNonQuery(command, needSaveLog);
+                return ExecuteNonQuery(command);
             }
         }
 
@@ -203,19 +186,10 @@ namespace Phenix.Core.Data.Common
         /// <returns>结果集(参数名-参数值)</returns>
         public static IDictionary<string, object> ExecuteStoredProc(DbConnection connection, string storedProcedure, params ParamValue[] paramValues)
         {
-            return ExecuteStoredProc(connection, storedProcedure, null, paramValues);
-        }
-
-        /// <summary>
-        /// 执行存储过程
-        /// </summary>
-        /// <returns>结果集(参数名-参数值)</returns>
-        public static IDictionary<string, object> ExecuteStoredProc(DbConnection connection, string storedProcedure, bool? needSaveLog, params ParamValue[] paramValues)
-        {
             using (DbCommand command = CreateStoredProc(connection, storedProcedure))
             {
                 CreateParameter(command, paramValues);
-                ExecuteNonQuery(command, needSaveLog);
+                ExecuteNonQuery(command);
                 return PickupResults(command, paramValues);
             }
         }
@@ -226,19 +200,10 @@ namespace Phenix.Core.Data.Common
         /// <returns>结果集(参数名-参数值)</returns>
         public static IDictionary<string, object> ExecuteStoredProc(DbTransaction transaction, string storedProcedure, params ParamValue[] paramValues)
         {
-            return ExecuteStoredProc(transaction, storedProcedure, null, paramValues);
-        }
-
-        /// <summary>
-        /// 执行存储过程
-        /// </summary>
-        /// <returns>结果集(参数名-参数值)</returns>
-        public static IDictionary<string, object> ExecuteStoredProc(DbTransaction transaction, string storedProcedure, bool? needSaveLog, params ParamValue[] paramValues)
-        {
             using (DbCommand command = CreateStoredProc(transaction, storedProcedure))
             {
                 CreateParameter(command, paramValues);
-                ExecuteNonQuery(command, needSaveLog);
+                ExecuteNonQuery(command);
                 return PickupResults(command, paramValues);
             }
         }
@@ -251,7 +216,7 @@ namespace Phenix.Core.Data.Common
         /// 执行查询，并返回查询所返回的结果集中第一行的第一列
         /// </summary>
         /// <returns>返回值</returns>
-        public static object ExecuteScalar(DbCommand command, bool? needSaveLog = null)
+        public static object ExecuteScalar(DbCommand command)
         {
             try
             {
@@ -264,14 +229,15 @@ namespace Phenix.Core.Data.Common
                 }
                 finally
                 {
-                    if (needSaveLog.HasValue && needSaveLog.Value || !needSaveLog.HasValue && AppRun.Debugging)
-                        Task.Run(() => EventLog.Save(String.Format("{0} consume time {1} ms", PackCommandInfo(command), DateTime.Now.Subtract(dateTime).TotalMilliseconds)));
+                    if (AppRun.Debugging)
+                        LogHelper.Debug("{@Command} consume time {@TotalMilliseconds} ms",
+                            PackCommandInfo(command),
+                            DateTime.Now.Subtract(dateTime).TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
                 }
             }
             catch (Exception ex)
             {
-                if (needSaveLog.HasValue && needSaveLog.Value || !needSaveLog.HasValue && AppRun.Debugging)
-                    Task.Run(() => EventLog.Save(PackCommandInfo(command), ex));
+                LogHelper.Error(ex, "{@Command}", PackCommandInfo(command));
                 throw;
             }
         }
@@ -282,19 +248,10 @@ namespace Phenix.Core.Data.Common
         /// <returns>返回值</returns>
         public static object ExecuteScalar(DbConnection connection, string sql, params ParamValue[] paramValues)
         {
-            return ExecuteScalar(connection, sql, null, paramValues);
-        }
-
-        /// <summary>
-        /// 执行查询，并返回查询所返回的结果集中第一行的第一列
-        /// </summary>
-        /// <returns>返回值</returns>
-        public static object ExecuteScalar(DbConnection connection, string sql, bool? needSaveLog, params ParamValue[] paramValues)
-        {
             using (DbCommand command = CreateCommand(connection, sql))
             {
                 CreateParameter(command, paramValues);
-                return ExecuteScalar(command, needSaveLog);
+                return ExecuteScalar(command);
             }
         }
 
@@ -304,19 +261,10 @@ namespace Phenix.Core.Data.Common
         /// <returns>返回值</returns>
         public static object ExecuteScalar(DbTransaction transaction, string sql, params ParamValue[] paramValues)
         {
-            return ExecuteScalar(transaction, sql, null, paramValues);
-        }
-
-        /// <summary>
-        /// 执行查询，并返回查询所返回的结果集中第一行的第一列
-        /// </summary>
-        /// <returns>返回值</returns>
-        public static object ExecuteScalar(DbTransaction transaction, string sql, bool? needSaveLog, params ParamValue[] paramValues)
-        {
             using (DbCommand command = CreateCommand(transaction, sql))
             {
                 CreateParameter(command, paramValues);
-                return ExecuteScalar(command, needSaveLog);
+                return ExecuteScalar(command);
             }
         }
 
@@ -327,15 +275,7 @@ namespace Phenix.Core.Data.Common
         /// <summary>
         /// 执行查询
         /// </summary>
-        public static DbDataReader ExecuteReader(DbCommand command, bool? needSaveLog)
-        {
-            return ExecuteReader(command, CommandBehavior.Default, needSaveLog);
-        }
-
-        /// <summary>
-        /// 执行查询
-        /// </summary>
-        public static DbDataReader ExecuteReader(DbCommand command, CommandBehavior behavior = CommandBehavior.Default, bool? needSaveLog = null)
+        public static DbDataReader ExecuteReader(DbCommand command, CommandBehavior behavior = CommandBehavior.Default)
         {
             try
             {
@@ -347,14 +287,15 @@ namespace Phenix.Core.Data.Common
                 }
                 finally
                 {
-                    if (needSaveLog.HasValue && needSaveLog.Value || !needSaveLog.HasValue && AppRun.Debugging)
-                        Task.Run(() => EventLog.Save(String.Format("{0} consume time {1} ms", PackCommandInfo(command), DateTime.Now.Subtract(dateTime).TotalMilliseconds)));
+                    if (AppRun.Debugging)
+                        LogHelper.Debug("{@Command} consume time {@TotalMilliseconds} ms",
+                            PackCommandInfo(command),
+                            DateTime.Now.Subtract(dateTime).TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
                 }
             }
             catch (Exception ex)
             {
-                if (needSaveLog.HasValue && needSaveLog.Value || !needSaveLog.HasValue && AppRun.Debugging)
-                    Task.Run(() => EventLog.Save(PackCommandInfo(command), ex));
+                LogHelper.Error(ex, "{@Command}", PackCommandInfo(command));
                 throw;
             }
         }
@@ -364,15 +305,7 @@ namespace Phenix.Core.Data.Common
         /// </summary>
         public static DbDataReader ExecuteReader(DbConnection connection, string sql, params ParamValue[] paramValues)
         {
-            return ExecuteReader(connection, sql, CommandBehavior.Default, null, paramValues);
-        }
-
-        /// <summary>
-        /// 执行查询
-        /// </summary>
-        public static DbDataReader ExecuteReader(DbConnection connection, string sql, bool? needSaveLog, params ParamValue[] paramValues)
-        {
-            return ExecuteReader(connection, sql, CommandBehavior.Default, needSaveLog, paramValues);
+            return ExecuteReader(connection, sql, CommandBehavior.Default, paramValues);
         }
 
         /// <summary>
@@ -380,18 +313,10 @@ namespace Phenix.Core.Data.Common
         /// </summary>
         public static DbDataReader ExecuteReader(DbConnection connection, string sql, CommandBehavior behavior, params ParamValue[] paramValues)
         {
-            return ExecuteReader(connection, sql, behavior, null, paramValues);
-        }
-
-        /// <summary>
-        /// 执行查询
-        /// </summary>
-        public static DbDataReader ExecuteReader(DbConnection connection, string sql, CommandBehavior behavior, bool? needSaveLog, params ParamValue[] paramValues)
-        {
             using (DbCommand command = CreateCommand(connection, sql))
             {
                 CreateParameter(command, paramValues);
-                return ExecuteReader(command, behavior, needSaveLog);
+                return ExecuteReader(command, behavior);
             }
         }
 
@@ -400,15 +325,7 @@ namespace Phenix.Core.Data.Common
         /// </summary>
         public static DbDataReader ExecuteReader(DbTransaction transaction, string sql, params ParamValue[] paramValues)
         {
-            return ExecuteReader(transaction, sql, CommandBehavior.Default, null, paramValues);
-        }
-
-        /// <summary>
-        /// 执行查询
-        /// </summary>
-        public static DbDataReader ExecuteReader(DbTransaction transaction, string sql, bool? needSaveLog, params ParamValue[] paramValues)
-        {
-            return ExecuteReader(transaction, sql, CommandBehavior.Default, needSaveLog, paramValues);
+            return ExecuteReader(transaction, sql, CommandBehavior.Default, paramValues);
         }
 
         /// <summary>
@@ -416,18 +333,10 @@ namespace Phenix.Core.Data.Common
         /// </summary>
         public static DbDataReader ExecuteReader(DbTransaction transaction, string sql, CommandBehavior behavior, params ParamValue[] paramValues)
         {
-            return ExecuteReader(transaction, sql, behavior, null, paramValues);
-        }
-
-        /// <summary>
-        /// 执行查询
-        /// </summary>
-        public static DbDataReader ExecuteReader(DbTransaction transaction, string sql, CommandBehavior behavior, bool? needSaveLog, params ParamValue[] paramValues)
-        {
             using (DbCommand command = CreateCommand(transaction, sql))
             {
                 CreateParameter(command, paramValues);
-                return ExecuteReader(command, behavior, needSaveLog);
+                return ExecuteReader(command, behavior);
             }
         }
 
@@ -439,8 +348,7 @@ namespace Phenix.Core.Data.Common
         /// 填充 DataSet
         /// </summary>
         /// <param name="command">DbCommand</param>
-        /// <param name="needSaveLog">是否记录日志</param>
-        public static DataSet FillDataSet(DbCommand command, bool? needSaveLog = null)
+        public static DataSet FillDataSet(DbCommand command)
         {
 #if PgSQL
             using (DbDataAdapter adapter = new NpgsqlDataAdapter())
@@ -455,27 +363,28 @@ namespace Phenix.Core.Data.Common
             using (DbDataAdapter adapter = new OracleDataAdapter())
 #endif
             {
-                adapter.SelectCommand = command;
-                DateTime dateTime = DateTime.Now;
                 try
                 {
+                    DateTime dateTime = DateTime.Now;
                     try
                     {
-                        DbConnectionHelper.OpenConnection(command.Connection);
                         DataSet result = new DataSet();
+                        DbConnectionHelper.OpenConnection(command.Connection);
+                        adapter.SelectCommand = command;
                         adapter.Fill(result);
                         return result;
                     }
                     finally
                     {
-                        if (needSaveLog.HasValue && needSaveLog.Value || !needSaveLog.HasValue && AppRun.Debugging)
-                            Task.Run(() => EventLog.Save(String.Format("{0} consume time {1} ms", PackCommandInfo(command), DateTime.Now.Subtract(dateTime).TotalMilliseconds)));
+                        if (AppRun.Debugging)
+                            LogHelper.Debug("{@Command} consume time {@TotalMilliseconds} ms",
+                                PackCommandInfo(command),
+                                DateTime.Now.Subtract(dateTime).TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
                     }
                 }
                 catch (Exception ex)
                 {
-                    if (needSaveLog.HasValue && needSaveLog.Value || !needSaveLog.HasValue && AppRun.Debugging)
-                        Task.Run(() => EventLog.Save(PackCommandInfo(command), ex));
+                    LogHelper.Error(ex, "{@Command}", PackCommandInfo(command));
                     throw;
                 }
             }
@@ -486,18 +395,10 @@ namespace Phenix.Core.Data.Common
         /// </summary>
         public static DataSet FillDataSet(DbConnection connection, string sql, params ParamValue[] paramValues)
         {
-            return FillDataSet(connection, sql, null, paramValues);
-        }
-
-        /// <summary>
-        /// 填充 DataSet
-        /// </summary>
-        public static DataSet FillDataSet(DbConnection connection, string sql, bool? needSaveLog, params ParamValue[] paramValues)
-        {
             using (DbCommand command = CreateCommand(connection, sql))
             {
                 CreateParameter(command, paramValues);
-                return FillDataSet(command, needSaveLog);
+                return FillDataSet(command);
             }
         }
 
@@ -506,18 +407,10 @@ namespace Phenix.Core.Data.Common
         /// </summary>
         public static DataSet FillDataSet(DbTransaction transaction, string sql, params ParamValue[] paramValues)
         {
-            return FillDataSet(transaction, sql, null, paramValues);
-        }
-
-        /// <summary>
-        /// 填充 DataSet
-        /// </summary>
-        public static DataSet FillDataSet(DbTransaction transaction, string sql, bool? needSaveLog, params ParamValue[] paramValues)
-        {
             using (DbCommand command = CreateCommand(transaction, sql))
             {
                 CreateParameter(command, paramValues);
-                return FillDataSet(command, needSaveLog);
+                return FillDataSet(command);
             }
         }
 
@@ -638,12 +531,12 @@ namespace Phenix.Core.Data.Common
         /// <summary>
         /// 构建 DbParameter
         /// </summary>
-        public static DbParameter CreateParameter(DbCommand command, string name, SqlDbType dbType,ParameterDirection direction, int? index)
+        public static DbParameter CreateParameter(DbCommand command, string name, SqlDbType dbType, ParameterDirection direction, int? index)
         {
             if (!(command is SqlCommand))
                 throw new ArgumentException("应该是 SqlCommand 类型", nameof(command));
 
-            SqlParameter result = (SqlParameter) CreateParameter(command, name, index);
+            SqlParameter result = (SqlParameter)CreateParameter(command, name, index);
             result.SqlDbType = dbType;
             result.Direction = direction;
             return result;
@@ -761,6 +654,7 @@ namespace Phenix.Core.Data.Common
         {
             if (paramValues == null || paramValues.Length == 0)
                 return;
+
             foreach (ParamValue item in paramValues)
                 if (item.Direction == ParameterDirection.Input)
                     CreateParameter(command, item.Name, item.Value);
@@ -777,6 +671,7 @@ namespace Phenix.Core.Data.Common
         {
             if (paramValues == null || paramValues.Count == 0)
                 return;
+
             foreach (KeyValuePair<string, object> kvp in paramValues)
                 CreateParameter(command, kvp.Key, kvp.Value);
         }
@@ -785,6 +680,7 @@ namespace Phenix.Core.Data.Common
         {
             if (paramValues == null || paramValues.Length == 0)
                 return null;
+
             Dictionary<string, object> result = new Dictionary<string, object>(paramValues.Length);
             foreach (ParamValue item in paramValues)
                 if (item.Direction != ParameterDirection.Input)
@@ -806,8 +702,11 @@ namespace Phenix.Core.Data.Common
         /// <returns>XML格式内容</returns>
         public static string PackCommandInfo(DbCommand command)
         {
+            if (command == null)
+                return null;
+
             StringBuilder result = new StringBuilder();
-            using (XmlWriter xmlWriter = XmlWriter.Create(result, new XmlWriterSettings {ConformanceLevel = ConformanceLevel.Fragment, CheckCharacters = false}))
+            using (XmlWriter xmlWriter = XmlWriter.Create(result, new XmlWriterSettings { ConformanceLevel = ConformanceLevel.Fragment, CheckCharacters = false }))
             {
                 xmlWriter.WriteStartElement("Command");
                 xmlWriter.WriteAttributeString("Text", command.CommandText);

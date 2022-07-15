@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Phenix.Core.Data;
 using Phenix.Core.Log;
@@ -137,7 +135,7 @@ namespace Phenix.Services.Host.Library.Message
                     }
                     catch (Exception ex)
                     {
-                        Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), _context.ToString(), ex));
+                        LogHelper.Error(ex, "{@UserMessageHubConnections}", _connectedInfos);
                         Thread.Sleep(1000 * 60);
                     }
             }

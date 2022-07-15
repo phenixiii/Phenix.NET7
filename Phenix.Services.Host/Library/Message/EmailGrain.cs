@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using MailKit.Security;
@@ -85,11 +86,12 @@ namespace Phenix.Services.Host.Library.Message
 
         /// <summary>
         /// 发送超时毫秒
+        /// 默认：120000(>=-1)
         /// </summary>
         public int SendTimeoutMilliseconds
         {
-            get { return AppSettings.GetProperty(Name, ref _sendTimeoutMilliseconds, 10000); }
-            set { AppSettings.SetProperty(Name, ref _sendTimeoutMilliseconds, value); }
+            get { return new[] { AppSettings.GetProperty(Name, ref _sendTimeoutMilliseconds, 120000), -1 }.Max(); }
+            set { AppSettings.SetProperty(Name, ref _sendTimeoutMilliseconds, new[] { value, -1 }.Max()); }
         }
 
         #endregion

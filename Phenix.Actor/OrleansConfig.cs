@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using Orleans.Configuration;
+using Phenix.Actor.Security;
 using Phenix.Core;
 using Phenix.Core.Data;
-using Phenix.Core.Security;
 
 namespace Phenix.Actor
 {
@@ -43,8 +43,8 @@ namespace Phenix.Actor
         /// </summary>
         public static int DefaultGrainCollectionAgeMinutes
         {
-            get { return new[] {AppSettings.GetLocalProperty(ref _defaultGrainCollectionAgeMinutes, Principal.RequestIdleIntervalLimitMinutes), Principal.RequestIdleIntervalLimitMinutes}.Max(); }
-            set { AppSettings.SetLocalProperty(ref _defaultGrainCollectionAgeMinutes, new[] {value, Principal.RequestIdleIntervalLimitMinutes}.Max()); }
+            get { return new[] { AppSettings.GetLocalProperty(ref _defaultGrainCollectionAgeMinutes, User.RequestIdleIntervalLimitMinutes), User.RequestIdleIntervalLimitMinutes }.Max(); }
+            set { AppSettings.SetLocalProperty(ref _defaultGrainCollectionAgeMinutes, new[] { value, User.RequestIdleIntervalLimitMinutes }.Max()); }
         }
 
         private static int? _defaultSiloPort;

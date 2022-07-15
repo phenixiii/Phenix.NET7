@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Orleans;
 using Phenix.Actor;
+using Phenix.Actor.Security;
 
 namespace Phenix.Services.Host.Library.Security.Myself
 {

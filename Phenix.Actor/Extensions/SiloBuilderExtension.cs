@@ -1,17 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 using Orleans.Configuration;
-using Orleans.Runtime;
 using Orleans.Runtime.Messaging;
 using Orleans.Serialization;
 using Orleans.Versions.Compatibility;
 using Orleans.Versions.Selector;
 using Phenix.Actor;
+using Phenix.Actor.Filters;
 using Phenix.Core.Data;
-using Phenix.Core.Log;
-using Phenix.Core.Security;
 
 namespace Orleans.Hosting
 {
@@ -151,31 +148,8 @@ namespace Orleans.Hosting
                 })
                 .AddSimpleMessageStreamProvider(ContextKeys.SimpleMessageStreamProviderName)
                 .AddMemoryGrainStorage("PubSubStore")
-                .AddIncomingGrainCallFilter(context =>
-                {
-                    Principal.CurrentIdentity = context.Grain is ISecurityContext &&
-                                                RequestContext.Get(ContextKeys.CurrentIdentityCompanyName) is string companyName &&
-                                                RequestContext.Get(ContextKeys.CurrentIdentityUserName) is string userName &&
-                                                RequestContext.Get(ContextKeys.CurrentIdentityCultureName) is string cultureName
-                        ? Principal.FetchIdentity(companyName, userName, cultureName, null)
-                        : null;
-
-                    if (context.Grain is ITraceLogContext && RequestContext.Get(ContextKeys.TraceKey) is long traceKey && RequestContext.Get(ContextKeys.TraceOrder) is int traceOrder)
-                    {
-                        Task.Run(() => EventLog.Save(context.ImplementationMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder));
-                        try
-                        {
-                            return context.Invoke();
-                        }
-                        catch (Exception ex)
-                        {
-                            Task.Run(() => EventLog.Save(context.ImplementationMethod, Phenix.Core.Reflection.Utilities.JsonSerialize(context.Arguments), traceKey, traceOrder, ex));
-                            throw;
-                        }
-                    }
-
-                    return context.Invoke();
-                });
+                .AddIncomingGrainCallFilter<IncomingGrainCallFilter>()
+                .AddOutgoingGrainCallFilter<OutgoingGrainCallFilter>();
         }
     }
 }

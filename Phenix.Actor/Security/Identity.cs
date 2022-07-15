@@ -1,8 +1,6 @@
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Phenix.Actor;
 using Phenix.Core;
 using Phenix.Core.Data;
 using Phenix.Core.Reflection;
@@ -10,7 +8,7 @@ using Phenix.Core.Security;
 using Phenix.Core.SyncCollections;
 using Phenix.Core.Threading;
 
-namespace Phenix.Services.Host.Library.Security
+namespace Phenix.Actor.Security
 {
     /// <summary>
     /// 用户身份
@@ -32,12 +30,12 @@ namespace Phenix.Services.Host.Library.Security
 
         /// <summary>
         /// 缓存丢弃间隔(小时)
-        /// 默认：1(>=1)
+        /// 默认：1
         /// </summary>
         public static int CacheDiscardIntervalHours
         {
-            get { return new[] {AppSettings.GetProperty(ref _cacheDiscardIntervalHours, 1), 1}.Max(); }
-            set { AppSettings.SetProperty(ref _cacheDiscardIntervalHours, new[] {value, 1}.Max()); }
+            get { return AppSettings.GetProperty(ref _cacheDiscardIntervalHours, 1); }
+            set { AppSettings.SetProperty(ref _cacheDiscardIntervalHours, value); }
         }
 
         #endregion
@@ -192,6 +190,13 @@ namespace Phenix.Services.Host.Library.Security
 
         #region 方法
 
+        private async Task<TValue> GetKernelPropertyValueAsync<TValue>(Expression<Func<User, TValue>> propertyLambda)
+        {
+            return await ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).GetKernelPropertyValue(propertyLambda);
+        }
+
+        #region IIdentity 成员
+
         string IIdentity.FormatPrimaryKey(string keyExtension)
         {
             return Standards.FormatCompoundKey(CompanyName, keyExtension);
@@ -222,11 +227,8 @@ namespace Phenix.Services.Host.Library.Security
             return IsCompanyAdmin ||
                    PositionId.HasValue && await ClusterClient.Default.GetGrain<IPositionGrain>(PositionId.Value).IsInRole(roles);
         }
-
-        private async Task<TValue> GetKernelPropertyValueAsync<TValue>(Expression<Func<User, TValue>> propertyLambda)
-        {
-            return await ClusterClient.Default.GetGrain<IUserGrain>(PrimaryKey).GetKernelPropertyValue(propertyLambda);
-        }
+        
+        #endregion
 
         #endregion
     }

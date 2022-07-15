@@ -227,5 +227,10 @@ Copyright © 2007, 2022 Phenixヾ Studio
 20220606
 1，完善Phenix.Actor工程
 2，重构Phenix.Services.Host工程
-3，提供Phenix.iPost.CSS.Plugin工程源码，CSS为Integrated Real-Time Scheduling System for Container Terminal系统名缩写，是一款集装箱码头设备集成实时调度系统
+3，提供Phenix.iPost.CSS.Plugin工程源码，CSS为Integrated Real-Time Scheduling System for Container Terminal系统名缩写，是一款集装箱码头资源实时调度系统
+
+
+20220713
+1，日志管理更换为Serilog+ExceptionLess
+2，升级Phenix.TPT.WebApp工程的VUE版本
 

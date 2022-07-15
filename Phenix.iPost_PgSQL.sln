@@ -96,10 +96,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.Services.Plugin_PgSQ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.iPost.CSS.Plugin_PgSQL", "Phenix.iPost.CSS.Plugin\Phenix.iPost.CSS.Plugin_PgSQL.csproj", "{C290E637-731F-409A-A192-79377293C50B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.iMetal.SSS.Plugin_PgSQL", "Phenix.iMetal.SSS.Plugin\Phenix.iMetal.SSS.Plugin_PgSQL.csproj", "{0BB81C50-92C4-4BFA-8045-E0FA2FB25071}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Phenix.iPost.BSS.Plugin_PgSQL", "Phenix.iPost.BSS.Plugin\Phenix.iPost.BSS.Plugin_PgSQL.csproj", "{4BF6F7A8-1FB3-41F6-8C08-0284C0634F50}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -158,14 +154,6 @@ Global
 		{C290E637-731F-409A-A192-79377293C50B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C290E637-731F-409A-A192-79377293C50B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C290E637-731F-409A-A192-79377293C50B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0BB81C50-92C4-4BFA-8045-E0FA2FB25071}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0BB81C50-92C4-4BFA-8045-E0FA2FB25071}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0BB81C50-92C4-4BFA-8045-E0FA2FB25071}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0BB81C50-92C4-4BFA-8045-E0FA2FB25071}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4BF6F7A8-1FB3-41F6-8C08-0284C0634F50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4BF6F7A8-1FB3-41F6-8C08-0284C0634F50}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4BF6F7A8-1FB3-41F6-8C08-0284C0634F50}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4BF6F7A8-1FB3-41F6-8C08-0284C0634F50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

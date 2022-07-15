@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Threading.Tasks;
 using Phenix.Core.Log;
 using Phenix.Core.Reflection;
 using Phenix.Core.SyncCollections;
@@ -73,7 +72,7 @@ namespace Phenix.Core.Plugin
                 }
                 catch (Exception ex)
                 {
-                    Task.Run(() => EventLog.SaveLocal(MethodBase.GetCurrentMethod(), assembly.GetName().Name, ex));
+                    LogHelper.Warning(ex.Message);
                     throw;
                 }
             });

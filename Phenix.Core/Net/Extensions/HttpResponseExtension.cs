@@ -4,7 +4,6 @@ using System.Security;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using Phenix.Core;
-using Phenix.Core.Log;
 using Phenix.Core.Reflection;
 
 namespace Microsoft.AspNetCore.Http
@@ -37,7 +36,6 @@ namespace Microsoft.AspNetCore.Http
             {
                 case ArgumentException _:
                     response.StatusCode = (int) HttpStatusCode.BadRequest; //等效于 HTTP 状态 400 -> 表示API的消费者发送到服务器的请求是错误的
-                    EventLog.Save(response.StatusCode.ToString(), error);
                     break;
                 case AuthenticationException _:
                     response.StatusCode = (int) HttpStatusCode.Unauthorized; //等效于 HTTP 状态 401 -> 表示用户没有认证，无法进行操作
@@ -58,10 +56,9 @@ namespace Microsoft.AspNetCore.Http
                     break;
                 default:
                     response.StatusCode = (int) HttpStatusCode.InternalServerError; //等效于 HTTP 状态 500 -> 服务器遇到错误，无法完成请求
-                    EventLog.Save(response.StatusCode.ToString(), error);
                     break;
             }
-
+            
             await response.WriteAsync(AppRun.GetErrorHint(error));
         }
     }

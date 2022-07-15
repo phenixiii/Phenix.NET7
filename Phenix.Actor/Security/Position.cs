@@ -1,19 +1,18 @@
 ﻿using System;
 using Phenix.Business;
-using Phenix.Mapper.Expressions;
 
-namespace Phenix.Services.Host.Library.Security
+namespace Phenix.Actor.Security
 {
     /// <summary>
-    /// 团体资料
+    /// 岗位资料
     /// </summary>
     [Serializable]
-    public class Teams : Teams<Teams>
+    public class Position : Position<Position>
     {
         /// <summary>
         /// for CreateInstance
         /// </summary>
-        protected Teams()
+        protected Position()
         {
             //禁止添加代码
         }
@@ -22,24 +21,24 @@ namespace Phenix.Services.Host.Library.Security
         /// for Newtonsoft.Json.JsonConstructor
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
-        protected Teams(string dataSourceKey, long id, long rootId, long parentId, Teams[] children, string name,
+        protected Position(string dataSourceKey, long id, string name, string[] roles,
             long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime)
-            : base(dataSourceKey, id, rootId, parentId, children, name, originator, originateTime, originateTeams, updater, updateTime)
+            : base(dataSourceKey, id, name, roles, originator, originateTime, originateTeams, updater, updateTime)
         {
         }
     }
 
     /// <summary>
-    /// 团体资料
+    /// 岗位资料
     /// </summary>
     [Serializable]
-    public abstract class Teams<T> : TreeEntityBase<Teams>
-        where T : Teams<T>
+    public abstract class Position<T> : EntityBase<T>
+        where T : Position<T>
     {
         /// <summary>
         /// for CreateInstance
         /// </summary>
-        protected Teams()
+        protected Position()
         {
             //禁止添加代码
         }
@@ -47,11 +46,13 @@ namespace Phenix.Services.Host.Library.Security
         /// <summary>
         /// for Newtonsoft.Json.JsonConstructor
         /// </summary>
-        protected Teams(string dataSourceKey, long id, long rootId, long parentId, Teams[] children, string name,
+        protected Position(string dataSourceKey, long id, string name, string[] roles, 
             long originator, DateTime originateTime, long originateTeams, long updater, DateTime updateTime)
-            : base(dataSourceKey, id, rootId, parentId, children)
+            : base(dataSourceKey)
         {
+            _id = id;
             _name = name;
+            _roles = roles;
             _originator = originator;
             _originateTime = originateTime;
             _originateTeams = originateTeams;
@@ -61,6 +62,16 @@ namespace Phenix.Services.Host.Library.Security
 
         #region 属性
 
+        private long _id;
+
+        /// <summary>
+        /// 主键
+        /// </summary>
+        public long Id
+        {
+            get { return _id; }
+        }
+
         private string _name;
 
         /// <summary>
@@ -69,6 +80,16 @@ namespace Phenix.Services.Host.Library.Security
         public string Name
         {
             get { return _name; }
+        }
+
+        private string[] _roles;
+
+        /// <summary>
+        /// 角色清单
+        /// </summary>
+        public string[] Roles
+        {
+            get { return _roles; }
         }
 
         private long _originator;
@@ -120,22 +141,6 @@ namespace Phenix.Services.Host.Library.Security
         {
             get { return _updateTime; }
         }
-
-        #endregion
-
-        #region 方法
-
-        #region DeleteSelf
-
-        /// <summary>
-        /// 为删除自己追加条件表达式
-        /// </summary>
-        protected override CriteriaExpression AppendCriteriaForDeleteSelf(CriteriaExpression criteriaExpression)
-        {
-            return criteriaExpression.NotExists<User>(p => p.TeamsId);
-        }
-
-        #endregion
 
         #endregion
     }

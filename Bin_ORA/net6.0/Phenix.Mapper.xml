@@ -4877,27 +4877,12 @@
             读取实体对象数据
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.DatabaseExtension.ReadEntityData``2(Phenix.Core.Data.Database,System.Linq.Expressions.Expression{System.Func{``1,``0}},System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
-            <summary>
-            读取实体对象数据
-            </summary>
-        </member>
         <member name="M:Phenix.Core.Data.DatabaseExtension.ReadEntityData``1(Phenix.Core.Data.Database,System.String,Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             读取实体对象数据
             </summary>
         </member>
-        <member name="M:Phenix.Core.Data.DatabaseExtension.ReadEntityData``1(Phenix.Core.Data.Database,System.String,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
-            <summary>
-            读取实体对象数据
-            </summary>
-        </member>
         <member name="M:Phenix.Core.Data.DatabaseExtension.ReadEntityData``1(Phenix.Core.Data.Database,System.String,System.Data.CommandBehavior,Phenix.Core.Data.Common.ParamValue[])">
-            <summary>
-            读取实体对象数据
-            </summary>
-        </member>
-        <member name="M:Phenix.Core.Data.DatabaseExtension.ReadEntityData``1(Phenix.Core.Data.Database,System.String,System.Data.CommandBehavior,System.Nullable{System.Boolean},Phenix.Core.Data.Common.ParamValue[])">
             <summary>
             读取实体对象数据
             </summary>

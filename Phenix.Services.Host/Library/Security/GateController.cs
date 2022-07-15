@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Phenix.Actor;
+using Phenix.Actor.Security;
 using Phenix.Core.Security;
 
 namespace Phenix.Services.Host.Library.Security
@@ -32,7 +33,7 @@ namespace Phenix.Services.Host.Library.Security
             if (String.IsNullOrEmpty(userName))
                 throw new ArgumentNullException(nameof(userName), "登录名不允许为空!");
 
-            IIdentity identity = Principal.FetchIdentity(companyName, userName, Request.GetAcceptLanguage(), null);
+            IIdentity identity = Identity.Fetch(companyName, userName, Request.GetAcceptLanguage(), null);
             return await ClusterClient.Default.GetGrain<IUserGrain>(identity.PrimaryKey).CheckIn(Request.GetRemoteAddress());
         }
         

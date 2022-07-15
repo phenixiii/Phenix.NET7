@@ -48,17 +48,32 @@ namespace Phenix.Services.Host.Mvc
             try
             {
                 await _next.Invoke(context);
+
+                if (AppRun.Debugging)
+                    LogHelper.Debug("{@Context} consume time {@TotalMilliseconds} ms",
+                        new
+                        {
+                            Path = context.Request.Path,
+                            QueryString = context.Request.QueryString,
+                            Method = context.Request.Method,
+                            ContentType = context.Request.ContentType,
+                            StatusCode = context.Response.StatusCode,
+                        },
+                        DateTime.Now.Subtract(dateTime).TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
             }
             catch (Exception ex)
             {
+                LogHelper.Error(ex, "{@Context} consume time {@TotalMilliseconds} ms",
+                    new
+                    {
+                        Path = context.Request.Path,
+                        QueryString = context.Request.QueryString,
+                        Method = context.Request.Method,
+                        ContentType = context.Request.ContentType,
+                        StatusCode = context.Response.StatusCode,
+                    },
+                    DateTime.Now.Subtract(dateTime).TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
                 await context.Response.PackAsync(ex);
-            }
-            finally
-            {
-                if (AppRun.Debugging)
-                    await Task.Run(() => EventLog.SaveLocal(String.Format("{0} {1} {2}({3}) take {4} millisecond.",
-                        context.Request.Path, context.Request.QueryString, context.Request.Method, context.Request.ContentType,
-                        DateTime.Now.Subtract(dateTime).TotalMilliseconds.ToString(CultureInfo.InvariantCulture))));
             }
         }
 
