@@ -449,13 +449,11 @@ namespace Phenix.Core.SyncCollections
         /// </summary>
         public void Clear(Action<IEnumerable<T>> doDispose)
         {
-            if (doDispose == null)
-                throw new ArgumentNullException(nameof(doDispose));
-
             _rwLock.AcquireWriterLock(Timeout.Infinite);
             try
             {
-                doDispose(new List<T>(_infos));
+                if (doDispose != null)
+                    doDispose(new List<T>(_infos));
                 _infos.Clear();
             }
             finally

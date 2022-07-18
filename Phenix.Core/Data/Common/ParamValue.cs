@@ -4,7 +4,6 @@ using System.Data;
 using NpgsqlTypes;
 #endif
 #if MsSQL
-using System.Data.SqlClient;
 #endif
 #if MySQL
 using MySql.Data.MySqlClient;

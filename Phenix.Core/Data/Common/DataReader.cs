@@ -6,11 +6,9 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 #if PgSQL
-using Npgsql;
 using NpgsqlTypes;
 #endif
 #if MsSQL
-using System.Data.SqlClient;
 #endif
 #if MySQL
 using MySql.Data.MySqlClient;
@@ -84,7 +82,7 @@ namespace Phenix.Core.Data.Common
             : this(transaction, sql, CommandBehavior.Default, paramValues)
         {
         }
-        
+
         /// <summary>
         /// 初始化
         /// </summary>
@@ -110,7 +108,7 @@ namespace Phenix.Core.Data.Common
             : this(database, sql, CommandBehavior.Default, paramValues)
         {
         }
-        
+
         /// <summary>
         /// 初始化
         /// </summary>
@@ -586,7 +584,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="name">字段名</param>
         public T GetValue<T>(string name)
         {
-            return (T) GetValue(GetOrdinal(name), typeof(T));
+            return (T)GetValue(GetOrdinal(name), typeof(T));
         }
 
         /// <summary>
@@ -595,7 +593,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="ordinal">序号</param>
         public T GetValue<T>(int ordinal)
         {
-            return (T) GetValue(ordinal, typeof(T));
+            return (T)GetValue(ordinal, typeof(T));
         }
 
         /// <summary>
@@ -847,7 +845,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="ordinal">序号</param>
         public virtual long GetInt64ForDecimal(int ordinal)
         {
-            return (long) GetDecimal(ordinal);
+            return (long)GetDecimal(ordinal);
         }
 
         /// <summary>
@@ -973,7 +971,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="ordinal">序号</param>
         public Guid? GetNullableGuid(int ordinal)
         {
-            return IsDBNull(ordinal) ? (Guid?) null : GetGuid(ordinal);
+            return IsDBNull(ordinal) ? null : GetGuid(ordinal);
         }
 
         /// <summary>
@@ -982,7 +980,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="ordinal">序号</param>
         public bool? GetNullableBoolean(int ordinal)
         {
-            return IsDBNull(ordinal) ? (bool?) null : GetBoolean(ordinal);
+            return IsDBNull(ordinal) ? null : GetBoolean(ordinal);
         }
 
         /// <summary>
@@ -991,7 +989,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="ordinal">序号</param>
         public byte? GetNullableByte(int ordinal)
         {
-            return IsDBNull(ordinal) ? (byte?) null : GetByte(ordinal);
+            return IsDBNull(ordinal) ? null : GetByte(ordinal);
         }
 
         /// <summary>
@@ -1004,7 +1002,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="length">最多读取的字符数</param>
         public long? GetNullableBytes(int ordinal, long dataOffset, byte[] buffer, int bufferOffset, int length)
         {
-            return IsDBNull(ordinal) ? (long?) null : GetBytes(ordinal, dataOffset, buffer, bufferOffset, length);
+            return IsDBNull(ordinal) ? null : GetBytes(ordinal, dataOffset, buffer, bufferOffset, length);
         }
 
         /// <summary>
@@ -1013,7 +1011,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="ordinal">序号</param>
         public char? GetNullableChar(int ordinal)
         {
-            return IsDBNull(ordinal) ? (char?) null : GetChar(ordinal);
+            return IsDBNull(ordinal) ? null : GetChar(ordinal);
         }
 
         /// <summary>
@@ -1026,7 +1024,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="length">最多读取的字符数</param>
         public long? GetNullableChars(int ordinal, long dataOffset, char[] buffer, int bufferOffset, int length)
         {
-            return IsDBNull(ordinal) ? (long?) null : GetChars(ordinal, dataOffset, buffer, bufferOffset, length);
+            return IsDBNull(ordinal) ? null : GetChars(ordinal, dataOffset, buffer, bufferOffset, length);
         }
 
         /// <summary>
@@ -1035,7 +1033,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="ordinal">序号</param>
         public DateTime? GetNullableDateTime(int ordinal)
         {
-            return IsDBNull(ordinal) ? (DateTime?) null : GetDateTime(ordinal);
+            return IsDBNull(ordinal) ? null : GetDateTime(ordinal);
         }
 
         /// <summary>
@@ -1044,7 +1042,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="ordinal">序号</param>
         public decimal? GetNullableDecimal(int ordinal)
         {
-            return IsDBNull(ordinal) ? (decimal?) null : GetDecimal(ordinal);
+            return IsDBNull(ordinal) ? null : GetDecimal(ordinal);
         }
 
         /// <summary>
@@ -1053,7 +1051,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="ordinal">序号</param>
         public long? GetNullableInt64ForDecimal(int ordinal)
         {
-            return IsDBNull(ordinal) ? (long?) null : GetInt64ForDecimal(ordinal);
+            return IsDBNull(ordinal) ? null : GetInt64ForDecimal(ordinal);
         }
 
         /// <summary>
@@ -1062,7 +1060,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="ordinal">序号</param>
         public bool? GetNullableBooleanForDecimal(int ordinal)
         {
-            return IsDBNull(ordinal) ? (bool?) null : GetBooleanForDecimal(ordinal);
+            return IsDBNull(ordinal) ? null : GetBooleanForDecimal(ordinal);
         }
 
         /// <summary>
@@ -1071,7 +1069,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="ordinal">序号</param>
         public float? GetNullableFloat(int ordinal)
         {
-            return IsDBNull(ordinal) ? (float?) null : GetFloat(ordinal);
+            return IsDBNull(ordinal) ? null : GetFloat(ordinal);
         }
 
         /// <summary>
@@ -1080,7 +1078,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="ordinal">序号</param>
         public double? GetNullableDouble(int ordinal)
         {
-            return IsDBNull(ordinal) ? (double?) null : GetDouble(ordinal);
+            return IsDBNull(ordinal) ? null : GetDouble(ordinal);
         }
 
         /// <summary>
@@ -1089,7 +1087,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="ordinal">序号</param>
         public short? GetNullableInt16(int ordinal)
         {
-            return IsDBNull(ordinal) ? (short?) null : GetInt16(ordinal);
+            return IsDBNull(ordinal) ? null : GetInt16(ordinal);
         }
 
         /// <summary>
@@ -1098,7 +1096,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="ordinal">序号</param>
         public int? GetNullableInt32(int ordinal)
         {
-            return IsDBNull(ordinal) ? (int?) null : GetInt32(ordinal);
+            return IsDBNull(ordinal) ? null : GetInt32(ordinal);
         }
 
         /// <summary>
@@ -1107,7 +1105,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="ordinal">序号</param>
         public long? GetNullableInt64(int ordinal)
         {
-            return IsDBNull(ordinal) ? (long?) null : GetInt64(ordinal);
+            return IsDBNull(ordinal) ? null : GetInt64(ordinal);
         }
 
         #endregion

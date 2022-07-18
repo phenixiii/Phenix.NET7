@@ -19,7 +19,7 @@ namespace Phenix.Core.Data.Common
             if (String.IsNullOrEmpty(script))
                 return script;
             string result = script.Trim();
-            while (result.Length >= 2 && result[0] == '(' && result[result.Length - 1] == ')')
+            while (result.Length >= 2 && result[0] == '(' && result[^1] == ')')
                 result = result.Substring(1, result.Length - 2).Trim();
             return result;
         }

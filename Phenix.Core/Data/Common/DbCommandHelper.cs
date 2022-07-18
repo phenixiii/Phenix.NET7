@@ -137,7 +137,7 @@ namespace Phenix.Core.Data.Common
                 }
                 finally
                 {
-                    if (AppRun.Debugging)
+                    if (AppRun.Debugging || DateTime.Now.Subtract(dateTime).Seconds > 3)
                         LogHelper.Debug("{@Command} consume time {@TotalMilliseconds} ms",
                             PackCommandInfo(command),
                             DateTime.Now.Subtract(dateTime).TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
@@ -229,7 +229,7 @@ namespace Phenix.Core.Data.Common
                 }
                 finally
                 {
-                    if (AppRun.Debugging)
+                    if (AppRun.Debugging || DateTime.Now.Subtract(dateTime).Seconds > 3)
                         LogHelper.Debug("{@Command} consume time {@TotalMilliseconds} ms",
                             PackCommandInfo(command),
                             DateTime.Now.Subtract(dateTime).TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
@@ -287,7 +287,7 @@ namespace Phenix.Core.Data.Common
                 }
                 finally
                 {
-                    if (AppRun.Debugging)
+                    if (AppRun.Debugging || DateTime.Now.Subtract(dateTime).Seconds > 3)
                         LogHelper.Debug("{@Command} consume time {@TotalMilliseconds} ms",
                             PackCommandInfo(command),
                             DateTime.Now.Subtract(dateTime).TotalMilliseconds.ToString(CultureInfo.InvariantCulture));
@@ -376,7 +376,7 @@ namespace Phenix.Core.Data.Common
                     }
                     finally
                     {
-                        if (AppRun.Debugging)
+                        if (AppRun.Debugging || DateTime.Now.Subtract(dateTime).Seconds > 3)
                             LogHelper.Debug("{@Command} consume time {@TotalMilliseconds} ms",
                                 PackCommandInfo(command),
                                 DateTime.Now.Subtract(dateTime).TotalMilliseconds.ToString(CultureInfo.InvariantCulture));

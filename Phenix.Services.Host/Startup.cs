@@ -135,7 +135,6 @@ namespace Phenix.Services.Host
                      * 装配Controller插件
                      * 插件程序集都应该统一采用"*.Plugin.dll"作为文件名的后缀
                      * 插件程序集都应该被部署到本服务容器的执行目录下动态加载
-                     * 除了Phenix.Services.Library被引用外其他都应该是动态加载
                      */
                     foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
                         parts.ApplicationParts.Add(new AssemblyPart(Assembly.LoadFrom(fileName)));
@@ -157,7 +156,7 @@ namespace Phenix.Services.Host
             /*
              * 配置转接头中间件（代理服务器和负载均衡器）
              * 如果设备使用 X-Forwarded-For 和 X-Forwarded-Proto 以外的其他标头名称，请设置 ForwardedForHeaderName 和 ForwardedProtoHeaderName 选项，使其与设备所用的标头名称相匹配
-             * 本配置可让 Phenix.Services.Library.AuthenticationMiddleware 为系统记录下发起访问的客户端IP地址（见 Phenix.Core.Security.IUser.RequestAddress 属性值）
+             * 本配置可让 Phenix.Services.Host.Mvc.AuthenticationMiddleware 为系统记录下发起访问的客户端IP地址（见 Phenix.Actor.Security.User.RequestAddress 属性值）
              */
             services.Configure<ForwardedHeadersOptions>(options => { options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto; });
         }

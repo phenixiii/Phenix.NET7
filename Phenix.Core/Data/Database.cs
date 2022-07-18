@@ -129,14 +129,14 @@ order by DataSourceSubIndex";
                                 try
                                 {
                                     value = new Database(dataSourceKey, dataSourceSubIndex,
-                                        reader.GetString(1), reader.IsDBNull(2) ? (int?) null : reader.GetInt32(2), reader.GetString(3), reader.GetString(4), pendingPassword != null ? pendingPassword : RSACryptoTextProvider.Decrypt(PrivateKey, reader.GetString(5)),
+                                        reader.GetString(1), reader.IsDBNull(2) ? (int?)null : reader.GetInt32(2), reader.GetString(3), reader.GetString(4), pendingPassword ?? RSACryptoTextProvider.Decrypt(PrivateKey, reader.GetString(5)),
                                         reader.IsDBNull(7) || reader.GetInt32(7) == 1, reader.IsDBNull(8) ? 0 : reader.GetInt32(8), reader.IsDBNull(9) ? 100 : reader.GetInt32(9), reader.IsDBNull(10) ? 0 : reader.GetInt32(10));
                                 }
                                 catch (SystemException) //FormatException & CryptographicException
                                 {
                                     pendingPassword = reader.GetString(5);
                                     value = new Database(dataSourceKey, dataSourceSubIndex,
-                                        reader.GetString(1), reader.IsDBNull(2) ? (int?) null : reader.GetInt32(2), reader.GetString(3), reader.GetString(4), pendingPassword,
+                                        reader.GetString(1), reader.IsDBNull(2) ? (int?)null : reader.GetInt32(2), reader.GetString(3), reader.GetString(4), pendingPassword,
                                         reader.IsDBNull(7) || reader.GetInt32(7) == 1, reader.IsDBNull(8) ? 0 : reader.GetInt32(8), reader.IsDBNull(9) ? 100 : reader.GetInt32(9), reader.IsDBNull(10) ? 0 : reader.GetInt32(10));
                                 }
                             }
@@ -161,23 +161,24 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
 
                         using (SQLiteCommand command = initConnection.CreateCommand())
                         {
+                            command.CommandText =
 #if PgSQL
-                            command.CommandText = @"
+                                @"
 select PgSQL, Caption
 from PH7_ConfigLibrary";
 #endif
 #if MsSQL
-                            command.CommandText = @"
+                                @"
 select MsSQL, Caption
 from PH7_ConfigLibrary";
 #endif
 #if MySQL
-                            command.CommandText = @"
+                                @"
 select MySQL, Caption
 from PH7_ConfigLibrary";
 #endif
 #if ORA
-                            command.CommandText = @"
+                                @"
 select ORA, Caption
 from PH7_ConfigLibrary";
 #endif
@@ -307,7 +308,7 @@ from PH7_ConfigLibrary";
         {
             get { return _dataSource; }
         }
-        
+
         private readonly int? _port;
 
         /// <summary>
@@ -395,7 +396,7 @@ from PH7_ConfigLibrary";
         /// </summary>
         public string ConnectionString
         {
-            get { return _connectionString ?? (_connectionString = DbConnectionHelper.BuildConnectionString(DataSource, Port, DatabaseName, UserId, Password, Pooling, MinPoolSize, MaxPoolSize, ConnectionLifetime)); }
+            get { return _connectionString ??= DbConnectionHelper.BuildConnectionString(DataSource, Port, DatabaseName, UserId, Password, Pooling, MinPoolSize, MaxPoolSize, ConnectionLifetime); }
         }
 
         private readonly object _lock = new object();
@@ -484,14 +485,14 @@ order by DataSourceSubIndex";
                                                 try
                                                 {
                                                     result.Add(i, new Database(DataSourceKey, dataSourceSubIndex,
-                                                        reader.GetString(1), reader.IsDBNull(2) ? (int?) null : reader.GetInt32(2), reader.GetString(3), reader.GetString(4), pendingPassword != null ? pendingPassword : RSACryptoTextProvider.Decrypt(PrivateKey, reader.GetString(5)),
+                                                        reader.GetString(1), reader.IsDBNull(2) ? (int?)null : reader.GetInt32(2), reader.GetString(3), reader.GetString(4), pendingPassword ?? RSACryptoTextProvider.Decrypt(PrivateKey, reader.GetString(5)),
                                                         reader.IsDBNull(7) || reader.GetInt32(7) == 1, reader.IsDBNull(8) ? 0 : reader.GetInt32(8), reader.IsDBNull(9) ? 100 : reader.GetInt32(9), reader.IsDBNull(10) ? 0 : reader.GetInt32(10)));
                                                 }
                                                 catch (SystemException) //FormatException & CryptographicException
                                                 {
                                                     pendingPassword = reader.GetString(5);
                                                     result.Add(i, new Database(DataSourceKey, dataSourceSubIndex,
-                                                        reader.GetString(1), reader.IsDBNull(2) ? (int?) null : reader.GetInt32(2), reader.GetString(3), reader.GetString(4), pendingPassword,
+                                                        reader.GetString(1), reader.IsDBNull(2) ? (int?)null : reader.GetInt32(2), reader.GetString(3), reader.GetString(4), pendingPassword,
                                                         reader.IsDBNull(7) || reader.GetInt32(7) == 1, reader.IsDBNull(8) ? 0 : reader.GetInt32(8), reader.IsDBNull(9) ? 100 : reader.GetInt32(9), reader.IsDBNull(10) ? 0 : reader.GetInt32(10)));
                                                 }
 
@@ -2231,7 +2232,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
         /// <returns>执行记录数</returns>
         public int ExecuteNonQuery(string sql, params ParamValue[] paramValues)
         {
-            return ExecuteGet((Func<DbConnection, string, ParamValue[], int>) DbCommandHelper.ExecuteNonQuery, sql, paramValues);
+            return ExecuteGet((Func<DbConnection, string, ParamValue[], int>)DbCommandHelper.ExecuteNonQuery, sql, paramValues);
         }
 
         /// <summary>
@@ -2240,18 +2241,18 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
         /// <returns>结果集(参数名-参数值)</returns>
         public IDictionary<string, object> ExecuteStoredProc(string storedProcedure, params ParamValue[] paramValues)
         {
-            return ExecuteGet((Func<DbConnection, string, ParamValue[], IDictionary<string, object>>) DbCommandHelper.ExecuteStoredProc, storedProcedure, paramValues);
+            return ExecuteGet((Func<DbConnection, string, ParamValue[], IDictionary<string, object>>)DbCommandHelper.ExecuteStoredProc, storedProcedure, paramValues);
         }
-        
+
         /// <summary>
         /// 执行查询，并返回查询所返回的结果集中第一行的第一列
         /// </summary>
         /// <returns>返回值</returns>
         public object ExecuteScalar(string sql, params ParamValue[] paramValues)
         {
-            return ExecuteGet((Func<DbConnection, string, ParamValue[], object>) DbCommandHelper.ExecuteScalar, sql, paramValues);
+            return ExecuteGet((Func<DbConnection, string, ParamValue[], object>)DbCommandHelper.ExecuteScalar, sql, paramValues);
         }
-        
+
         /// <summary>
         /// 构建 DataReader
         /// </summary>
@@ -2259,7 +2260,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
         {
             return CreateDataReader(sql, CommandBehavior.Default, paramValues);
         }
-        
+
         /// <summary>
         /// 构建 DataReader
         /// </summary>
@@ -2275,7 +2276,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
         {
             return ReadJsonData(sql, CommandBehavior.Default, paramValues);
         }
-        
+
         /// <summary>
         /// 读取JSON格式数据(属性名为表/视图的字段名/别名)
         /// </summary>
@@ -2311,7 +2312,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
         /// </summary>
         public DataSet FillDataSet(string sql, params ParamValue[] paramValues)
         {
-            return ExecuteGet((Func<DbConnection, string, ParamValue[], DataSet>) DbCommandHelper.FillDataSet, sql, paramValues);
+            return ExecuteGet((Func<DbConnection, string, ParamValue[], DataSet>)DbCommandHelper.FillDataSet, sql, paramValues);
         }
 
         #endregion

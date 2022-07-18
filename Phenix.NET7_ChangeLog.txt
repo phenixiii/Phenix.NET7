@@ -219,7 +219,7 @@ Copyright © 2007, 2022 Phenixヾ Studio
 
 
 20220401
-1，升级至 for .net 6，梳理解决方案，以支持 dapr
+1，升级至 for .net 6，开发工具 Visual Studio 2022，梳理解决方案，以支持 dapr
 2，从Phenix.Core拆分出Phenix.Net工程、Phenix.Mapper工程
 3，开源Phenix.Core工程、Phenix.Net工程
 
@@ -232,5 +232,5 @@ Copyright © 2007, 2022 Phenixヾ Studio
 
 20220713
 1，日志管理更换为Serilog+ExceptionLess
-2，升级Phenix.TPT.WebApp工程的VUE版本
+2，在 Visual Studio 2022上重建Phenix.TPT.WebApp工程
 

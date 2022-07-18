@@ -143,7 +143,6 @@ namespace Phenix.Core.SyncCollections
                     _rwLock.ReleaseReaderLock();
                 }
             }
-
             set
             {
                 _rwLock.AcquireWriterLock(Timeout.Infinite);
@@ -625,26 +624,6 @@ namespace Phenix.Core.SyncCollections
         }
 
         /// <summary>
-        /// 移除项
-        /// </summary>
-        /// <param name="item">项</param>
-        /// <param name="allow">是否允许的函数(null代表true)</param>
-        public bool Remove(KeyValuePair<TKey, TValue> item, Func<TValue, bool> allow)
-        {
-            _rwLock.AcquireWriterLock(Timeout.Infinite);
-            try
-            {
-                if (allow != null && !allow(item.Value))
-                    return false;
-                return ((ICollection<KeyValuePair<TKey, TValue>>) _infos).Remove(item);
-            }
-            finally
-            {
-                _rwLock.ReleaseWriterLock();
-            }
-        }
-
-        /// <summary>
         /// 移除所指定的键的值
         /// </summary>
         /// <param name="key">键</param>
@@ -719,13 +698,11 @@ namespace Phenix.Core.SyncCollections
         /// </summary>
         public void Clear(Action<IEnumerable<KeyValuePair<TKey, TValue>>> doDispose)
         {
-            if (doDispose == null)
-                throw new ArgumentNullException(nameof(doDispose));
-
             _rwLock.AcquireWriterLock(Timeout.Infinite);
             try
             {
-                doDispose(new Dictionary<TKey, TValue>(_infos));
+                if (doDispose != null)
+                    doDispose(new Dictionary<TKey, TValue>(_infos));
                 _infos.Clear();
             }
             finally
@@ -743,7 +720,8 @@ namespace Phenix.Core.SyncCollections
         /// </summary>
         /// <param name="key">键</param>
         /// <param name="doReplace">替换值的函数</param>
-        public TValue ReplaceValue(TKey key, Func<TValue, TValue> doReplace)
+        /// <param name="doSetIfNotFound">找不到时添加值</param>
+        public void ReplaceValue(TKey key, Func<TValue, TValue> doReplace, Func<TValue> doSetIfNotFound = null)
         {
             if (doReplace == null)
                 throw new ArgumentNullException(nameof(doReplace));
@@ -751,27 +729,19 @@ namespace Phenix.Core.SyncCollections
             _rwLock.AcquireReaderLock(Timeout.Infinite);
             try
             {
+                TValue result;
                 if (_infos.TryGetValue(key, out TValue value))
-                {
-                    LockCookie lockCookie = _rwLock.UpgradeToWriterLock(Timeout.Infinite);
-                    try
-                    {
-                        TValue result = doReplace(value);
-                        _infos[key] = result;
-                        return result;
-                    }
-                    finally
-                    {
-                        _rwLock.DowngradeFromWriterLock(ref lockCookie);
-                    }
-                }
+                    result = doReplace(value);
+                else if (doSetIfNotFound != null)
+                    result = doSetIfNotFound();
+                else
+                    return;
+                this[key] = result;
             }
             finally
             {
                 _rwLock.ReleaseReaderLock();
             }
-
-            throw new KeyNotFoundException();
         }
 
         #endregion

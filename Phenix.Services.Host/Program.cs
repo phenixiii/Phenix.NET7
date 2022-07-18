@@ -45,10 +45,8 @@ namespace Phenix.Services.Host
             {
                 AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) => LogHelper.Error((Exception)eventArgs.ExceptionObject, "An unhandled exception occurred in the current domain");
 
-#if DEBUG
                 LogHelper.Warning("Phenix.Core.AppRun.Debugging = {Debugging}", AppRun.Debugging);
-#else
-                LogHelper.Warning("Phenix.Core.AppRun.Debugging = {Debugging}", AppRun.Debugging);
+#if !DEBUG
                 if (AppRun.Debugging)
                     LogHelper.Warning("Please set this Phenix.Core.AppRun.Debugging parameter to false in the production environment");
 #endif

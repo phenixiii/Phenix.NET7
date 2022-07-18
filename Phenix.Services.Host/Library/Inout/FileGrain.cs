@@ -34,7 +34,7 @@ namespace Phenix.Services.Host.Library.Inout
         /// </summary>
         public string DownloadPath
         {
-            get { return AppSettings.GetProperty(PrimaryKeyString, ref _downloadPath, AppRun.TempDirectory); }
+            get { return AppSettings.GetProperty(PrimaryKeyString, ref _downloadPath, AppRun.TempDirectory) ?? AppRun.TempDirectory; }
             set { AppSettings.SetProperty(PrimaryKeyString, ref _downloadPath, value ?? AppRun.TempDirectory); }
         }
 
@@ -58,7 +58,7 @@ namespace Phenix.Services.Host.Library.Inout
         /// </summary>
         public string UploadPath
         {
-            get { return AppSettings.GetProperty(PrimaryKeyString, ref _uploadPath, AppRun.TempDirectory); }
+            get { return AppSettings.GetProperty(PrimaryKeyString, ref _uploadPath, AppRun.TempDirectory) ?? AppRun.TempDirectory; }
             set { AppSettings.SetProperty(PrimaryKeyString, ref _uploadPath, value ?? AppRun.TempDirectory); }
         }
 

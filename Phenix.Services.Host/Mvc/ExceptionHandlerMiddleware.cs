@@ -49,7 +49,7 @@ namespace Phenix.Services.Host.Mvc
             {
                 await _next.Invoke(context);
 
-                if (AppRun.Debugging)
+                if (AppRun.Debugging || DateTime.Now.Subtract(dateTime).Seconds > 3)
                     LogHelper.Debug("{@Context} consume time {@TotalMilliseconds} ms",
                         new
                         {
