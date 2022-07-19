@@ -16,15 +16,15 @@ namespace Phenix.Services.Host.Library.Message
         /// <summary>
         /// 发送
         /// </summary>
-        /// <param name="receiver">接收用户</param>
+        /// <param name="sender">发送用户</param>
         /// <param name="content">消息内容</param>
-        Task Send(string receiver, string content);
+        Task Send(string sender, string content);
 
         /// <summary>
         /// 接收（PULL）
         /// </summary>
-        /// <returns>结果集(消息ID-消息内容)</returns>
-        Task<IDictionary<long, string>> Receive();
+        /// <returns>结果集(消息ID-用户消息)</returns>
+        Task<IDictionary<long, UserMessage>> Receive();
 
         /// <summary>
         /// 确认收到

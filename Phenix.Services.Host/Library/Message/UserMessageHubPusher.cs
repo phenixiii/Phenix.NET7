@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using Microsoft.AspNetCore.SignalR;
-using Phenix.Core.Data;
+using Phenix.Actor;
 using Phenix.Core.Log;
 using Phenix.Core.Reflection;
 using Phenix.Core.SyncCollections;
@@ -101,11 +101,11 @@ namespace Phenix.Services.Host.Library.Message
                         {
                             if (connectedInfo.Value.SentDateTimes.Count == 0 && DateTime.Now.Subtract(connectedInfo.Value.LastActionTime).TotalSeconds <= 1)
                                 continue;
-                            IDictionary<long, string> messages = Database.Default.ExecuteGet(UserMessage.Receive, connectedInfo.Key);
-                            if (messages.Count > 0)
+                            IDictionary<long, UserMessage> receivedMessages = ClusterClient.Default.GetGrain<IUserMessageGrain>(connectedInfo.Key).Receive().Result;
+                            if (receivedMessages.Count > 0)
                             {
-                                Dictionary<long, string> packages = new Dictionary<long, string>(messages.Count);
-                                foreach (KeyValuePair<long, string> receivedMessage in messages)
+                                Dictionary<long, UserMessage> packages = new Dictionary<long, UserMessage>(receivedMessages.Count);
+                                foreach (KeyValuePair<long, UserMessage> receivedMessage in receivedMessages)
                                 {
                                     if (connectedInfo.Value.SentDateTimes.TryGetValue(receivedMessage.Key, out DateTime sentDateTime) && DateTime.Now.Subtract(sentDateTime).TotalMinutes <= 1)
                                         continue;

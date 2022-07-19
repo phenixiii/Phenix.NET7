@@ -21,8 +21,8 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Phenix.Actor.StreamGrainBase&lt;TEvent&gt;">
-    <Position X="0.5" Y="13.75" Width="2.5" />
+  <Class Name="Phenix.Actor.StreamGrainBase&lt;TGrainState, TEvent&gt;">
+    <Position X="2.75" Y="18.5" Width="2.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
@@ -111,6 +111,27 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>EntityGrainExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.Actor.GrainBase&lt;TGrainState&gt;">
+    <Position X="0.5" Y="18.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>EAABAAAACEAACACEgAAAAgAAQAAAAAAAAAABAABAAAA=</HashCode>
+      <FileName>GrainBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Phenix.Actor.StreamGrainBase&lt;TEvent&gt;">
+    <Position X="0.5" Y="13.75" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAEAQAAAAAAAAAFEAAAAABAAAAQBAIAAAAAAAigA=</HashCode>
+      <FileName>StreamGrainBase.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="Phenix.Actor.IEntityGrain&lt;TKernel&gt;">

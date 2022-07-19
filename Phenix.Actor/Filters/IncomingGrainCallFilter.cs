@@ -6,7 +6,10 @@ using Phenix.Core.Security;
 
 namespace Phenix.Actor.Filters
 {
-    internal class IncomingGrainCallFilter : IIncomingGrainCallFilter
+    /// <summary>
+    /// 入站消息拦截器
+    /// </summary>
+    public class IncomingGrainCallFilter : IIncomingGrainCallFilter
     {
         async Task IIncomingGrainCallFilter.Invoke(IIncomingGrainCallContext context)
         {

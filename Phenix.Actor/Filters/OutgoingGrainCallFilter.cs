@@ -10,7 +10,10 @@ using Phenix.Core.Security;
 
 namespace Phenix.Actor.Filters
 {
-    internal class OutgoingGrainCallFilter : IOutgoingGrainCallFilter
+    /// <summary>
+    /// 出站消息拦截器
+    /// </summary>
+    public class OutgoingGrainCallFilter : IOutgoingGrainCallFilter
     {
         async Task IOutgoingGrainCallFilter.Invoke(IOutgoingGrainCallContext context)
         {
@@ -33,7 +36,7 @@ namespace Phenix.Actor.Filters
             {
                 await context.Invoke();
 
-                if (AppRun.Debugging)
+                if (AppRun.Debugging || DateTime.Now.Subtract(dateTime).Seconds > 3)
                     LogHelper.Debug("{@Context} consume time {@TotalMilliseconds} ms",
                         new
                         {

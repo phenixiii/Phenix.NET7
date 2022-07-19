@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Orleans;
+using Orleans.Providers;
 using Orleans.Runtime;
 using Phenix.Actor;
 using Phenix.Core;
@@ -14,9 +15,18 @@ namespace Phenix.Services.Host.Library.Message
     /// key: CompanyName
     /// keyExtension: UserName
     /// </summary>
-    public class UserMessageGrain : GrainBase, IUserMessageGrain, IRemindable
+    [StorageProvider]
+    public class UserMessageGrain : GrainBase<IDictionary<long, UserMessage>>, IUserMessageGrain, IRemindable
     {
         #region 属性
+
+        /// <summary>
+        /// 用户复合键
+        /// </summary>
+        protected string PrimaryKey
+        {
+            get { return this.GetPrimaryKeyString(); }
+        }
 
         #region 配置项
 
@@ -38,21 +48,24 @@ namespace Phenix.Services.Host.Library.Message
 
         #region 方法
 
-        Task IUserMessageGrain.Send(string receiver, string content)
+        Task IUserMessageGrain.Send(string sender, string content)
         {
-            Database.Execute(UserMessage.Send, Database.Sequence.Value, this.GetPrimaryKeyString(), receiver, content);
-            return Task.CompletedTask;
+            State[Database.Sequence.Value] = new UserMessage(sender, PrimaryKey, content);
+            return WriteStateAsync();
         }
 
-        Task<IDictionary<long, string>> IUserMessageGrain.Receive()
+        Task<IDictionary<long, UserMessage>> IUserMessageGrain.Receive()
         {
-            return Task.FromResult(Database.ExecuteGet(UserMessage.Receive, this.GetPrimaryKeyString()));
+            return Task.FromResult(State);
         }
 
         Task IUserMessageGrain.AffirmReceived(long id, bool burn)
         {
-            Database.Execute(UserMessage.AffirmReceived, id, burn);
-            return Task.CompletedTask;
+            if (burn)
+                State.Remove(id);
+            else if (State.TryGetValue(id, out UserMessage value))
+                value.ReceivedTime = DateTime.Now;
+            return WriteStateAsync();
         }
 
         /// <summary>
@@ -60,13 +73,26 @@ namespace Phenix.Services.Host.Library.Message
         /// </summary>
         public override async Task OnActivateAsync()
         {
-            await RegisterOrUpdateReminder(this.GetPrimaryKeyString(), TimeSpan.FromDays(1), TimeSpan.FromDays(7));
+            await RegisterOrUpdateReminder(PrimaryKey, TimeSpan.FromDays(1), TimeSpan.FromDays(7));
             await base.OnActivateAsync();
         }
 
         Task IRemindable.ReceiveReminder(string reminderName, TickStatus status)
         {
-            Database.Execute(UserMessage.Clear, this.GetPrimaryKeyString(), ClearMessageDeferMonths);
+            if (State.Count > 0)
+            {
+                List<long> ids = new List<long>();
+                foreach (KeyValuePair<long, UserMessage> kvp in State)
+                    if (kvp.Value.CreateTime < DateTime.Now.AddMonths(-ClearMessageDeferMonths))
+                        ids.Add(kvp.Key);
+                if (ids.Count > 0)
+                {
+                    foreach (long item in ids)
+                        State.Remove(item);
+                    return WriteStateAsync();
+                }
+            }
+
             return Task.CompletedTask;
         }
 

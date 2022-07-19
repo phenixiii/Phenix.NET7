@@ -22,19 +22,19 @@ namespace Phenix.Services.Host.Library.Message
         [HttpPost]
         public async Task Send(string receiver)
         {
-            await ClusterClient.Default.GetGrain<IUserMessageGrain>(User.Identity.PrimaryKey).Send(receiver, await Request.ReadBodyAsStringAsync());
+            await ClusterClient.Default.GetGrain<IUserMessageGrain>(User.Identity.FormatPrimaryKey(receiver)).Send(User.Identity.PrimaryKey, await Request.ReadBodyAsStringAsync());
             //可替换为以下代码测试分组消息的推送
-            //await ClusterClient.Default.GetSimpleMessageStreamProvider().GetStream<string>(StreamConfig.GroupStreamId, receiver).OnNextAsync(await Request.ReadBodyAsStringAsync());
+            //await ClusterClient.Default.GetSimpleMessageStreamProvider().GetStream<string>( Phenix.Services.Contract.MessageStreamIds.GroupStreamId, receiver).OnNextAsync(await Request.ReadBodyAsStringAsync());
         }
 
         // phAjax.receiveMessage()
         /// <summary>
         /// 接收（PULL）
         /// </summary>
-        /// <returns>结果集(消息ID-消息内容)</returns>
+        /// <returns>结果集(消息ID-用户消息)</returns>
         [Authorize]
         [HttpGet]
-        public async Task<IDictionary<long, string>> Receive()
+        public async Task<IDictionary<long, UserMessage>> Receive()
         {
             return await ClusterClient.Default.GetGrain<IUserMessageGrain>(User.Identity.PrimaryKey).Receive();
         }
