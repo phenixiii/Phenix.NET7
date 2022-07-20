@@ -17,8 +17,8 @@ namespace Phenix.iPost.CSS.Plugin
         /// </summary>
         protected GrainBase(ILogger<T> logger, IEventBus eventBus)
         {
-            _logger = logger;
-            _eventBus = eventBus;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
         }
 
         #region 属性

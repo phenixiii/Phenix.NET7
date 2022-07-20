@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using Newtonsoft.Json;
 using Orleans.Configuration;
 using Orleans.Runtime.Messaging;
 using Orleans.Serialization;
@@ -99,6 +100,13 @@ namespace Orleans.Hosting
                 .AddAdoNetGrainStorageAsDefault(options =>
                 {
                     options.UseJsonFormat = true;
+                    options.ConfigureJsonSerializerSettings = settings =>
+                    {
+                        settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                        settings.DateFormatString = Phenix.Core.Reflection.Utilities.JsonDateFormatString;
+                        settings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
+                        settings.Formatting = Formatting.None;
+                    };
                     options.ConnectionString = connectionString;
 #if PgSQL
                     options.Invariant = "Npgsql";

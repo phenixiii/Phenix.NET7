@@ -64,13 +64,21 @@ namespace Phenix.Core.SyncCollections
 
         #region Add
 
-        internal override void DoAdd(T item)
+        /// <summary>
+        /// 将对象添加到结尾处
+        /// </summary>
+        /// <param name="item">要添加的对象. 对于引用类型, 该值可以为 null</param>
+        protected override void DoAdd(T item)
         {
             base.DoAdd(item);
             AddCache(item);
         }
 
-        internal override void DoAddRange(IEnumerable<T> collection)
+        /// <summary>
+        /// 将指定集合的元素添加到末尾
+        /// </summary>
+        /// <param name="collection">一个集合, 其元素应被添加末尾. 集合自身不允许为 null, 但它可以包含 null 的元素(如果类型 T 为引用类型)</param>
+        protected override void DoAddRange(IEnumerable<T> collection)
         {
             T[] enumerable = collection as T[] ?? collection.ToArray();
             base.DoAddRange(enumerable);
@@ -82,13 +90,23 @@ namespace Phenix.Core.SyncCollections
 
         #region Insert
 
-        internal override void DoInsert(int index, T item)
+        /// <summary>
+        /// 将元素插入集合的指定索引处
+        /// </summary>
+        /// <param name="index">从零开始的索引, 应在该位置插入 item</param>
+        /// <param name="item">要插入的对象. 对于引用类型, 该值可以为 null</param>
+        protected override void DoInsert(int index, T item)
         {
             base.DoInsert(index, item);
             AddCache(item);
         }
 
-        internal override void DoInsertRange(int index, IEnumerable<T> collection)
+        /// <summary>
+        /// 将一个集合中的某个元素插入到集合的指定索引处
+        /// </summary>
+        /// <param name="index">应在此处插入新元素的从零开始的索引</param>
+        /// <param name="collection">一个集合, 应将其元素插入到集合中. 该集合自身不允许为 null, 但它可以包含为 null 的元素(如果类型 T 为引用类型)</param>
+        protected override void DoInsertRange(int index, IEnumerable<T> collection)
         {
             T[] enumerable = collection as T[] ?? collection.ToArray();
             base.DoInsertRange(index, enumerable);
@@ -100,13 +118,21 @@ namespace Phenix.Core.SyncCollections
 
         #region Remove
 
-        internal override bool DoRemove(T item)
+        /// <summary>
+        /// 从集合中移除特定对象的第一个匹配项
+        /// </summary>
+        /// <param name="item">要从集合中移除的对象. 对于引用类型, 该值可以为 null</param>
+        protected override bool DoRemove(T item)
         {
             RemoveCache(item);
             return base.DoRemove(item);
         }
 
-        internal override int DoRemoveAll(Predicate<T> match)
+        /// <summary>
+        /// 移除与指定的谓词所定义的条件相匹配的所有元素
+        /// </summary>
+        /// <param name="match">用于定义要移除的元素应满足的条件</param>
+        protected override int DoRemoveAll(Predicate<T> match)
         {
             foreach (T item in _infos)
                 if (match(item))
@@ -114,13 +140,22 @@ namespace Phenix.Core.SyncCollections
             return base.DoRemoveAll(match);
         }
 
-        internal override void DoRemoveAt(int index)
+        /// <summary>
+        /// 移除指定索引处的元素
+        /// </summary>
+        /// <param name="index">要移除的元素的从零开始的索引</param>
+        protected override void DoRemoveAt(int index)
         {
             RemoveCache(_infos[index]);
             base.DoRemoveAt(index);
         }
 
-        internal override void DoRemoveRange(int index, int count)
+        /// <summary>
+        /// 移除一定范围的元素
+        /// </summary>
+        /// <param name="index">要移除的元素的范围从零开始的起始索引</param>
+        /// <param name="count">要移除的元素数</param>
+        protected override void DoRemoveRange(int index, int count)
         {
             for (int i = index; i < index + count; i++)
                 RemoveCache(_infos[i]);
@@ -131,7 +166,10 @@ namespace Phenix.Core.SyncCollections
 
         #region Clear
 
-        internal override void DoClear()
+        /// <summary>
+        /// 移除所有元素
+        /// </summary>
+        protected override void DoClear()
         {
             _cache.Clear();
             base.DoClear();
@@ -141,7 +179,12 @@ namespace Phenix.Core.SyncCollections
 
         #region Replace
 
-        internal override void DoReplace(int index, T item)
+        /// <summary>
+        /// 替换值
+        /// </summary>
+        /// <param name="index">索引</param>
+        /// <param name="item">要从集合中替换的对象. 对于引用类型, 该值可以为 null</param>
+        protected override void DoReplace(int index, T item)
         {
             RemoveCache(_infos[index]);
             base.DoReplace(index, item);

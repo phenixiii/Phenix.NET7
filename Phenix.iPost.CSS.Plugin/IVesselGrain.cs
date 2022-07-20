@@ -17,21 +17,23 @@ namespace Phenix.iPost.CSS.Plugin
         /// 设置进口船图
         /// </summary>
         /// <param name="voyage">航次</param>
-        /// <param name="bayPlan">贝-船图箱</param>
-        Task SetBayPlan(string voyage, IDictionary<int, BayPlanContainerProperty> bayPlan);
+        /// <param name="bayPlan">贝位-船图箱</param>
+        Task SetBayPlan(string voyage, IDictionary<int, ContainerProperty> bayPlan);
 
         /// <summary>
         /// 靠泊
         /// </summary>
+        /// <param name="terminalCode">码头代码</param>
         /// <param name="voyage">航次</param>
         /// <param name="alongSide">靠泊信息</param>
-        Task OnBerth(string voyage, VesselAlongSideProperty alongSide);
+        Task OnBerth(string terminalCode, string voyage, VesselAlongSideProperty alongSide);
 
         /// <summary>
-        /// 离港
+        /// 离泊
         /// </summary>
+        /// <param name="terminalCode">码头代码</param>
         /// <param name="voyage">航次</param>
-        Task OnDepart(string voyage);
+        Task OnDepart(string terminalCode, string voyage);
 
         #endregion
     }

@@ -262,6 +262,7 @@ namespace Phenix.Core.SyncCollections
         public IEnumerator GetEnumerator()
         {
             Queue<T> result;
+
             _rwLock.AcquireReaderLock(Timeout.Infinite);
             try
             {
@@ -281,6 +282,7 @@ namespace Phenix.Core.SyncCollections
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             Queue<T> result;
+
             _rwLock.AcquireReaderLock(Timeout.Infinite);
             try
             {
@@ -322,6 +324,7 @@ namespace Phenix.Core.SyncCollections
             try
             {
                 T[] result = _infos.ToArray();
+
                 if (clearSource)
                 {
                     LockCookie lockCookie = _rwLock.UpgradeToWriterLock(Timeout.Infinite);

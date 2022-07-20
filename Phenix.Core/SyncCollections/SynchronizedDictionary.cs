@@ -189,6 +189,7 @@ namespace Phenix.Core.SyncCollections
             get
             {
                 ICollection<TKey> result;
+
                 _rwLock.AcquireReaderLock(Timeout.Infinite);
                 try
                 {
@@ -212,6 +213,7 @@ namespace Phenix.Core.SyncCollections
             get
             {
                 ICollection<TValue> result;
+
                 _rwLock.AcquireReaderLock(Timeout.Infinite);
                 try
                 {
@@ -444,6 +446,7 @@ namespace Phenix.Core.SyncCollections
             TValue result = default;
             if (!lockCreate)
                 result = doCreate != null ? doCreate() : (TValue) Activator.CreateInstance(typeof(TValue), true);
+
             LockCookie lockCookie = _rwLock.UpgradeToWriterLock(Timeout.Infinite);
             try
             {
@@ -510,6 +513,7 @@ namespace Phenix.Core.SyncCollections
             TValue result = default;
             if (!lockCreate)
                 result = doCreate != null ? AsyncHelper.RunSync(doCreate) : (TValue) Activator.CreateInstance(typeof(TValue), true);
+
             LockCookie lockCookie = _rwLock.UpgradeToWriterLock(Timeout.Infinite);
             try
             {
@@ -678,6 +682,7 @@ namespace Phenix.Core.SyncCollections
                 {
                     if (allow != null && !allow(value))
                         return false;
+
                     LockCookie lockCookie = _rwLock.UpgradeToWriterLock(Timeout.Infinite);
                     try
                     {
@@ -778,6 +783,7 @@ namespace Phenix.Core.SyncCollections
         public IEnumerator GetEnumerator()
         {
             Dictionary<TKey, TValue> result;
+
             _rwLock.AcquireReaderLock(Timeout.Infinite);
             try
             {
@@ -798,6 +804,7 @@ namespace Phenix.Core.SyncCollections
         IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
         {
             Dictionary<TKey, TValue> result;
+
             _rwLock.AcquireReaderLock(Timeout.Infinite);
             try
             {

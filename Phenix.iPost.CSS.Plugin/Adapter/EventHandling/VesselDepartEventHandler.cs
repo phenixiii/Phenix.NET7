@@ -17,7 +17,7 @@ namespace Phenix.iPost.CSS.Plugin.Adapter.EventHandling
         /// <param name="event">事件</param>
         public async Task Handle(VesselDepartEvent @event)
         {
-            await Phenix.Actor.ClusterClient.Default.GetGrain<IVesselGrain>(@event.VesselCode).OnDepart(@event.Voyage);
+            await Phenix.Actor.ClusterClient.Default.GetGrain<IVesselGrain>(@event.VesselCode).OnDepart(@event.TerminalCode, @event.Voyage);
         }
 
         #endregion

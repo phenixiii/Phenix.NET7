@@ -120,6 +120,7 @@ namespace Phenix.Core.SyncCollections
             get
             {
                 ICollection<T> result;
+
                 _rwLock.AcquireReaderLock(Timeout.Infinite);
                 try
                 {
@@ -467,6 +468,7 @@ namespace Phenix.Core.SyncCollections
         public IEnumerator GetEnumerator()
         {
             List<T> result;
+
             _rwLock.AcquireReaderLock(Timeout.Infinite);
             try
             {
@@ -486,6 +488,7 @@ namespace Phenix.Core.SyncCollections
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             List<T> result;
+
             _rwLock.AcquireReaderLock(Timeout.Infinite);
             try
             {

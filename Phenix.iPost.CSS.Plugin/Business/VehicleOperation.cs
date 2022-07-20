@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using Phenix.iPost.CSS.Plugin.Business.Norms;
 using Phenix.iPost.CSS.Plugin.Business.Property;
 

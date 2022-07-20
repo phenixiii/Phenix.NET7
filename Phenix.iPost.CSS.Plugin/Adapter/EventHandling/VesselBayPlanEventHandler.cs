@@ -20,16 +20,16 @@ namespace Phenix.iPost.CSS.Plugin.Adapter.EventHandling
         /// <param name="event">事件</param>
         public async Task Handle(VesselBayPlanEvent @event)
         {
-            Dictionary<int, BayPlanContainerProperty> bayPlan = new Dictionary<int, BayPlanContainerProperty>(@event.BayPlan.Count);
+            Dictionary<int, ContainerProperty> bayPlan = new Dictionary<int, ContainerProperty>(@event.BayPlan.Count);
             foreach (Phenix.iPost.CSS.Plugin.Adapter.Property.BayPlanContainerProperty item in @event.BayPlan)
-                bayPlan.Add(item.Bay, new BayPlanContainerProperty(item.Bay, item.Row, item.Tier,
-                    item.ContainerNumber, item.ContainerOwner, item.LadingBillNumber,
-                    Phenix.Core.Reflection.Utilities.ChangeType<EmptyFull>(item.EmptyFull),
+                bayPlan.Add(item.BayNo, new ContainerProperty(
+                    item.ContainerNumber, item.ContainerOwner, @event.Voyage, item.LadingBillNumber,
                     Phenix.Core.Reflection.Utilities.ChangeType<ImportExport>(item.ImportExport),
                     item.LoadingPort, item.DischargingPort, item.DestinationPort, item.TransferPort,
                     item.ContainerType, item.ContainerSize, item.IsoCode, item.Weight,
                     item.OverHeight, item.OverFrontLength, item.OverBackLength, item.OverLeftWidth, item.OverRightWidth,
-                    item.Refrigerated, item.DangerousCode
+                    Phenix.Core.Reflection.Utilities.ChangeType<EmptyFull>(item.EmptyFull), item.IsRefrige, item.DangerousCode,
+                    item.BayNo, item.RowNo, item.TierNo
                 ));
             await Phenix.Actor.ClusterClient.Default.GetGrain<IVesselGrain>(@event.VesselCode).SetBayPlan(@event.Voyage, bayPlan);
         }

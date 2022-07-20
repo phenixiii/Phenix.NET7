@@ -41,12 +41,12 @@ namespace Phenix.iPost.CSS.Plugin.Business
             set { _vesselName = value; }
         }
 
-        private IDictionary<int, BayPlanContainerProperty> _bayPlan;
+        private IDictionary<int, ContainerProperty> _bayPlan;
 
         /// <summary>
-        /// 配载信息
+        /// 贝位-船图箱
         /// </summary>
-        public IDictionary<int, BayPlanContainerProperty> BayPlan
+        public IDictionary<int, ContainerProperty> BayPlan
         {
             get { return  _bayPlan; }
         }
@@ -81,8 +81,8 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// 设置进口船图
         /// </summary>
         /// <param name="voyage">航次</param>
-        /// <param name="bayPlan">贝-船图箱</param>
-        public void SetBayPlan(string voyage, IDictionary<int, BayPlanContainerProperty> bayPlan)
+        /// <param name="bayPlan">贝位-船图箱</param>
+        public void SetBayPlan(string voyage, IDictionary<int, ContainerProperty> bayPlan)
         {
             _bayPlan = bayPlan;
         }
@@ -90,19 +90,21 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// <summary>
         /// 靠泊
         /// </summary>
+        /// <param name="terminalCode">码头代码</param>
         /// <param name="voyage">航次</param>
         /// <param name="alongSide">靠泊信息</param>
-        public void OnBerth(string voyage, VesselAlongSideProperty alongSide)
+        public void OnBerth(string terminalCode, string voyage, VesselAlongSideProperty alongSide)
         {
             _vesselStatus = VesselStatus.Berthed;
             _alongSide = alongSide;
         }
 
         /// <summary>
-        /// 离港
+        /// 离泊
         /// </summary>
+        /// <param name="terminalCode">码头代码</param>
         /// <param name="voyage">航次</param>
-        public void OnDepart(string voyage)
+        public void OnDepart(string terminalCode, string voyage)
         {
             _vesselStatus = VesselStatus.Departed;
         }

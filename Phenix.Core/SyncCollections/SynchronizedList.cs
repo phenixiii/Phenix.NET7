@@ -79,7 +79,10 @@ namespace Phenix.Core.SyncCollections
         [NonSerialized]
         private readonly ReaderWriterLock _rwLock;
 
-        internal readonly List<T> _infos;
+        /// <summary>
+        /// 线程不安全的内容
+        /// </summary>
+        protected readonly List<T> _infos;
 
         /// <summary>
         /// 获取或设置该内部数据结构在不调整大小的情况下能够容纳的元素总数
@@ -98,7 +101,6 @@ namespace Phenix.Core.SyncCollections
                     _rwLock.ReleaseReaderLock();
                 }
             }
-
             set
             {
                 _rwLock.AcquireWriterLock(Timeout.Infinite);
@@ -150,7 +152,6 @@ namespace Phenix.Core.SyncCollections
                     _rwLock.ReleaseReaderLock();
                 }
             }
-
             set
             {
                 _rwLock.AcquireWriterLock(Timeout.Infinite);
@@ -675,7 +676,11 @@ namespace Phenix.Core.SyncCollections
 
         #region Add
 
-        internal virtual void DoAdd(T item)
+        /// <summary>
+        /// 将对象添加到结尾处
+        /// </summary>
+        /// <param name="item">要添加的对象. 对于引用类型, 该值可以为 null</param>
+        protected virtual void DoAdd(T item)
         {
             _infos.Add(item);
         }
@@ -728,7 +733,11 @@ namespace Phenix.Core.SyncCollections
             }
         }
 
-        internal virtual void DoAddRange(IEnumerable<T> collection)
+        /// <summary>
+        /// 将指定集合的元素添加到末尾
+        /// </summary>
+        /// <param name="collection">一个集合, 其元素应被添加末尾. 集合自身不允许为 null, 但它可以包含 null 的元素(如果类型 T 为引用类型)</param>
+        protected virtual void DoAddRange(IEnumerable<T> collection)
         {
             _infos.AddRange(collection);
         }
@@ -754,7 +763,12 @@ namespace Phenix.Core.SyncCollections
 
         #region Insert
 
-        internal virtual void DoInsert(int index, T item)
+        /// <summary>
+        /// 将元素插入集合的指定索引处
+        /// </summary>
+        /// <param name="index">从零开始的索引, 应在该位置插入 item</param>
+        /// <param name="item">要插入的对象. 对于引用类型, 该值可以为 null</param>
+        protected virtual void DoInsert(int index, T item)
         {
             _infos.Insert(index, item);
         }
@@ -777,7 +791,12 @@ namespace Phenix.Core.SyncCollections
             }
         }
 
-        internal virtual void DoInsertRange(int index, IEnumerable<T> collection)
+        /// <summary>
+        /// 将一个集合中的某个元素插入到集合的指定索引处
+        /// </summary>
+        /// <param name="index">应在此处插入新元素的从零开始的索引</param>
+        /// <param name="collection">一个集合, 应将其元素插入到集合中. 该集合自身不允许为 null, 但它可以包含为 null 的元素(如果类型 T 为引用类型)</param>
+        protected virtual void DoInsertRange(int index, IEnumerable<T> collection)
         {
             _infos.InsertRange(index, collection);
         }
@@ -804,7 +823,11 @@ namespace Phenix.Core.SyncCollections
 
         #region Remove
 
-        internal virtual bool DoRemove(T item)
+        /// <summary>
+        /// 从集合中移除特定对象的第一个匹配项
+        /// </summary>
+        /// <param name="item">要从集合中移除的对象. 对于引用类型, 该值可以为 null</param>
+        protected virtual bool DoRemove(T item)
         {
             return _infos.Remove(item);
         }
@@ -826,7 +849,11 @@ namespace Phenix.Core.SyncCollections
             }
         }
 
-        internal virtual int DoRemoveAll(Predicate<T> match)
+        /// <summary>
+        /// 移除与指定的谓词所定义的条件相匹配的所有元素
+        /// </summary>
+        /// <param name="match">用于定义要移除的元素应满足的条件</param>
+        protected virtual int DoRemoveAll(Predicate<T> match)
         {
             return _infos.RemoveAll(match);
         }
@@ -848,7 +875,11 @@ namespace Phenix.Core.SyncCollections
             }
         }
 
-        internal virtual void DoRemoveAt(int index)
+        /// <summary>
+        /// 移除指定索引处的元素
+        /// </summary>
+        /// <param name="index">要移除的元素的从零开始的索引</param>
+        protected virtual void DoRemoveAt(int index)
         {
             _infos.RemoveAt(index);
         }
@@ -870,7 +901,12 @@ namespace Phenix.Core.SyncCollections
             }
         }
 
-        internal virtual void DoRemoveRange(int index, int count)
+        /// <summary>
+        /// 移除一定范围的元素
+        /// </summary>
+        /// <param name="index">要移除的元素的范围从零开始的起始索引</param>
+        /// <param name="count">要移除的元素数</param>
+        protected virtual void DoRemoveRange(int index, int count)
         {
             _infos.RemoveRange(index, count);
         }
@@ -897,7 +933,10 @@ namespace Phenix.Core.SyncCollections
 
         #region Clear
 
-        internal virtual void DoClear()
+        /// <summary>
+        /// 移除所有元素
+        /// </summary>
+        protected virtual void DoClear()
         {
             _infos.Clear();
         }
@@ -940,7 +979,12 @@ namespace Phenix.Core.SyncCollections
 
         #region Replace
 
-        internal virtual void DoReplace(int index, T item)
+        /// <summary>
+        /// 替换值
+        /// </summary>
+        /// <param name="index">索引</param>
+        /// <param name="item">要从集合中替换的对象. 对于引用类型, 该值可以为 null</param>
+        protected virtual void DoReplace(int index, T item)
         {
             _infos[index] = item;
         }
@@ -955,6 +999,7 @@ namespace Phenix.Core.SyncCollections
         public IEnumerator GetEnumerator()
         {
             List<T> result;
+
             _rwLock.AcquireReaderLock(Timeout.Infinite);
             try
             {
@@ -974,6 +1019,7 @@ namespace Phenix.Core.SyncCollections
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             List<T> result;
+
             _rwLock.AcquireReaderLock(Timeout.Infinite);
             try
             {

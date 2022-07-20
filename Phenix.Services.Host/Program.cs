@@ -41,6 +41,7 @@ namespace Phenix.Services.Host
                     serverUrl: ExceptionlessConfig.ServerUrl,
                     apiKey: ExceptionlessConfig.ApiKey)
                 .CreateLogger();
+
             try
             {
                 AppDomain.CurrentDomain.UnhandledException += (sender, eventArgs) => LogHelper.Error((Exception)eventArgs.ExceptionObject, "An unhandled exception occurred in the current domain");

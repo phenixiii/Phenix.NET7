@@ -19,7 +19,7 @@ namespace Phenix.iPost.CSS.Plugin.Business.Norms
         Berthed,
 
         /// <summary>
-        /// 已离港
+        /// 已离泊
         /// </summary>
         Departed
     }

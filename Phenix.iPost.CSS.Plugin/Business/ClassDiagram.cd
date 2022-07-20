@@ -6,7 +6,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAgAgACAAAAAIAgAAARQAQZAAAAAAAAAAIBJAIAAgAQ=</HashCode>
+      <HashCode>AAgAgACAAAABIAgAAARQAQZAIAAAAAAAAIBJAIAAgAQ=</HashCode>
       <FileName>Business\VehicleOperation.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -42,7 +42,7 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAIggACAAAABICIEABBAAAAAIAAAQAAEIAEBQAEADAE=</HashCode>
+      <HashCode>AAIggACAAAAAACIEABBAAAAAAAAAQAAEIAEBQAEADAE=</HashCode>
       <FileName>Business\VehicleTask.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -106,6 +106,48 @@
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Business\YardCrane.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="Phenix.iPost.CSS.Plugin.Business.YardArea">
+    <Position X="0.5" Y="10.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAEAAgAAAABAAAAAEAACAAAAAIAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Business\YardArea.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Bays" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Phenix.iPost.CSS.Plugin.Business.YardBay">
+    <Position X="2.75" Y="10.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAAAgCCABSAAAAAAEAAAAAEABAAAACAAAAAAAAAAIAE=</HashCode>
+      <FileName>Business\YardBay.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Owner" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="BayRows" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Phenix.iPost.CSS.Plugin.Business.YardBayRow">
+    <Position X="5.25" Y="10.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ACAAgACAAAAAAAAAEABACABAAAAAAAAAAAAAAAAAIAE=</HashCode>
+      <FileName>Business\YardBayRow.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Owner" />
+    </ShowAsAssociation>
   </Class>
   <Font Name="Microsoft YaHei UI" Size="9" />
 </ClassDiagram>

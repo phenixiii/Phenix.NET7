@@ -472,6 +472,7 @@ namespace Phenix.Core.SyncCollections
         public IEnumerator GetEnumerator()
         {
             LinkedList<T> result;
+
             _rwLock.AcquireReaderLock(Timeout.Infinite);
             try
             {
@@ -491,6 +492,7 @@ namespace Phenix.Core.SyncCollections
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             LinkedList<T> result;
+
             _rwLock.AcquireReaderLock(Timeout.Infinite);
             try
             {

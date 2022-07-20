@@ -50,21 +50,21 @@ namespace Phenix.iPost.CSS.Plugin
 
         #region Event
 
-        public Task SetBayPlan(string voyage, IDictionary<int, BayPlanContainerProperty> bayPlan)
+        public Task SetBayPlan(string voyage, IDictionary<int, ContainerProperty> bayPlan)
         {
             Kernel.SetBayPlan(voyage, bayPlan);
             return Task.CompletedTask;
         }
 
-        Task IVesselGrain.OnBerth(string voyage, VesselAlongSideProperty alongSide)
+        Task IVesselGrain.OnBerth(string terminalCode, string voyage, VesselAlongSideProperty alongSide)
         {
-            Kernel.OnBerth(voyage, alongSide);
+            Kernel.OnBerth(terminalCode, voyage, alongSide);
             return Task.CompletedTask;
         }
 
-        Task IVesselGrain.OnDepart(string voyage)
+        Task IVesselGrain.OnDepart(string terminalCode, string voyage)
         {
-            Kernel.OnDepart(voyage);
+            Kernel.OnDepart(terminalCode, voyage);
             return Task.CompletedTask;
         }
 

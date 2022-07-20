@@ -9,6 +9,26 @@ namespace Phenix.Services.Host.Library.Message
     public class UserMessage
     {
         /// <summary>
+        /// for CreateInstance
+        /// </summary>
+        protected UserMessage()
+        {
+            //禁止添加代码
+        }
+
+        /// <summary>
+        /// for Newtonsoft.Json.JsonConstructor
+        /// </summary>
+        [Newtonsoft.Json.JsonConstructor]
+        protected UserMessage(string sender, string receiver, string content,
+            DateTime createTime, DateTime receivedTime)
+            : this(sender, receiver, content)
+        {
+            _createTime = createTime;
+            _receivedTime = receivedTime;
+        }
+
+        /// <summary>
         /// 初始化
         /// </summary>
         /// <param name="sender">发送用户</param>
@@ -23,7 +43,7 @@ namespace Phenix.Services.Host.Library.Message
         }
 
         #region 属性
-        
+
         private readonly string _sender;
 
         /// <summary>
@@ -63,7 +83,7 @@ namespace Phenix.Services.Host.Library.Message
         {
             get { return _createTime; }
         }
-        
+
         private DateTime _receivedTime;
 
         /// <summary>

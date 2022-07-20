@@ -19,7 +19,7 @@ namespace Phenix.iPost.CSS.Plugin.Adapter.EventHandling
         /// <param name="event">事件</param>
         public async Task Handle(VesselBerthEvent @event)
         {
-            await Phenix.Actor.ClusterClient.Default.GetGrain<IVesselGrain>(@event.VesselCode).OnBerth(@event.Voyage,
+            await Phenix.Actor.ClusterClient.Default.GetGrain<IVesselGrain>(@event.VesselCode).OnBerth(@event.TerminalCode, @event.Voyage,
                 new VesselAlongSideProperty(Phenix.Core.Reflection.Utilities.ChangeType<VesselAlongSide>(@event.AlongSide),
                     @event.BowBollardId, @event.BowBollardOffset, @event.SternBollardId, @event.SternBollardOffset));
         }
