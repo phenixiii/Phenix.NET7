@@ -16,7 +16,7 @@ namespace Phenix.Actor
         /// <summary>
         /// 用户身份
         /// </summary>
-        public Principal User
+        protected Principal User
         {
             get { return Principal.CurrentPrincipal; }
         }
@@ -175,7 +175,7 @@ namespace Phenix.Actor
         /// <summary>
         /// 用户身份
         /// </summary>
-        public Principal User
+        protected Principal User
         {
             get { return Principal.CurrentPrincipal; }
         }

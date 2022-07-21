@@ -153,10 +153,7 @@ namespace Phenix.iPost.CSS.Plugin.Business.Property
         /// 是否超限
         /// </summary>
         [Newtonsoft.Json.JsonIgnore]
-        public bool OverLimit
-        {
-            get { return _overLimit; }
-        }
+        public bool OverLimit => _overLimit;
 
         #endregion;
     }

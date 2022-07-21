@@ -7,5 +7,12 @@
       <FileName>Extensions\SiloBuilderExtension.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Orleans.GrainFactoryExtension">
+    <Position X="3" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extensions\GrainFactoryExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Microsoft YaHei UI" Size="9" />
 </ClassDiagram>

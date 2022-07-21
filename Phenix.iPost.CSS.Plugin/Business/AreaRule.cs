@@ -1,18 +1,17 @@
 ﻿using System;
 using Phenix.iPost.CSS.Plugin.Business.Norms;
 
-namespace Phenix.iPost.CSS.Plugin.Business.Property
+namespace Phenix.iPost.CSS.Plugin.Business
 {
     /// <summary>
-    /// 箱区属性
+    /// 箱区规范
     /// </summary>
     [Serializable]
-    public readonly record struct YardAreaProperty
+    public readonly record struct AreaRule
     {
         /// <summary>
-        /// 箱区属性
+        /// 箱区规范
         /// </summary>
-        /// <param name="areaCode">箱区代码</param>
         /// <param name="bayNumber">贝数</param>
         /// <param name="rowNumber">排数</param>
         /// <param name="tierNumber">层数</param>
@@ -20,11 +19,9 @@ namespace Phenix.iPost.CSS.Plugin.Business.Property
         /// <param name="isRefrigerant">是否冷箱</param>
         /// <param name="dangerousCode">危险品代码</param>
         [Newtonsoft.Json.JsonConstructor]
-        public YardAreaProperty(string areaCode, 
-            int bayNumber, int rowNumber, int tierNumber, 
+        public AreaRule(int bayNumber, int rowNumber, int tierNumber,
             EmptyFull emptyFull, bool isRefrigerant, string dangerousCode)
         {
-            this.AreaCode = areaCode;
             this.BayNumber = bayNumber;
             this.RowNumber = rowNumber;
             this.TierNumber = tierNumber;
@@ -32,12 +29,7 @@ namespace Phenix.iPost.CSS.Plugin.Business.Property
             this.IsRefrigerant = isRefrigerant;
             this.DangerousCode = dangerousCode;
         }
-
-        /// <summary>
-        /// 箱区代码
-        /// </summary>
-        public string AreaCode { get; }
-
+        
         /// <summary>
         /// 贝数
         /// </summary>

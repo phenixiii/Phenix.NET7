@@ -58,16 +58,16 @@ namespace Phenix.Actor.Security
             if (String.IsNullOrEmpty(userName))
                 return null;
 
-            string primaryKey = Standards.FormatCompoundKey(companyName, userName);
+            string key = Standards.FormatCompoundKey(companyName, userName);
             cacheDiscardIntervalHours = cacheDiscardIntervalHours ?? CacheDiscardIntervalHours;
-            if (cacheDiscardIntervalHours > 0 && _cache.TryGetValue(primaryKey, out CachedObject<Identity> cachedObject))
+            if (cacheDiscardIntervalHours > 0 && _cache.TryGetValue(key, out CachedObject<Identity> cachedObject))
             {
                 cachedObject.Value._cultureName = cultureName;
                 return cachedObject.Value;
             }
 
             Identity result = new Identity(companyName, userName, cultureName);
-            _cache[primaryKey] = new CachedObject<Identity>(result, DateTime.Now.AddHours(cacheDiscardIntervalHours.Value));
+            _cache[key] = new CachedObject<Identity>(result, DateTime.Now.AddHours(cacheDiscardIntervalHours.Value));
             return result;
         }
 
