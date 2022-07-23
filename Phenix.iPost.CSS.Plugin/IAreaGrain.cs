@@ -14,16 +14,16 @@ namespace Phenix.iPost.CSS.Plugin
         #region Event
 
         /// <summary>
-        /// 刷新规范
+        /// 刷新箱区规范
         /// </summary>
         /// <param name="areaRule">箱区规范</param>
-        Task OnRefreshRule(AreaRule areaRule);
+        Task OnRefreshAreaRule(AreaRule areaRule);
 
         /// <summary>
-        /// 刷新装备
+        /// 刷新装备场桥
         /// </summary>
-        /// <param name="equipYardCrane">装备场桥</param>
-        Task OnRefreshEquip(AreaEquipYardCrane equipYardCrane);
+        /// <param name="equipYardCranes">装备场桥</param>
+        Task OnRefreshEquipYardCranes(AreaEquipYardCranes equipYardCranes);
 
         #endregion
     }

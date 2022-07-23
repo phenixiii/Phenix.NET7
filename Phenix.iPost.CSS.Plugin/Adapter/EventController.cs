@@ -53,20 +53,25 @@ namespace Phenix.iPost.CSS.Plugin.Adapter
         [Topic(IntegrationEvent.PubSubName, nameof(VehicleYardActionEvent))]
         public Task VehicleYardAction(VehicleYardActionEvent @event,
             [FromServices] VehicleYardActionEventHandler handler) => handler.Handle(@event);
+
+        [HttpPost]
+        [Topic(IntegrationEvent.PubSubName, nameof(VesselBerthingEvent))]
+        public Task VesselBerthing(VesselBerthingEvent @event,
+            [FromServices] VesselBerthingEventHandler handler) => handler.Handle(@event);
+
+        [HttpPost]
+        [Topic(IntegrationEvent.PubSubName, nameof(VesselDepartedEvent))]
+        public Task VesselDeparted(VesselDepartedEvent @event,
+            [FromServices] VesselDepartedEventHandler handler) => handler.Handle(@event);
         
         [HttpPost]
-        [Topic(IntegrationEvent.PubSubName, nameof(VesselBayPlanEvent))]
-        public Task VesselBayPlan(VesselBayPlanEvent @event,
-            [FromServices] VesselBayPlanEventHandler handler) => handler.Handle(@event);
-
+        [Topic(IntegrationEvent.PubSubName, nameof(VesselImportBayPlanEvent))]
+        public Task VesselImportBayPlan(VesselImportBayPlanEvent @event,
+            [FromServices] VesselImportBayPlanEventHandler handler) => handler.Handle(@event);
+        
         [HttpPost]
-        [Topic(IntegrationEvent.PubSubName, nameof(VesselBerthEvent))]
-        public Task VesselBerth(VesselBerthEvent @event,
-            [FromServices] VesselBerthEventHandler handler) => handler.Handle(@event);
-
-        [HttpPost]
-        [Topic(IntegrationEvent.PubSubName, nameof(VesselDepartEvent))]
-        public Task VesselDepart(VesselDepartEvent @event,
-            [FromServices] VesselDepartEventHandler handler) => handler.Handle(@event);
+        [Topic(IntegrationEvent.PubSubName, nameof(VesselPreBayPlanEvent))]
+        public Task VesselPreBayPlan(VesselPreBayPlanEvent @event,
+            [FromServices] VesselPreBayPlanEventHandler handler) => handler.Handle(@event);
     }
 }

@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using Phenix.iPost.CSS.Plugin.Business.Property;
 
 namespace Phenix.iPost.CSS.Plugin.Business
 {
     /// <summary>
-    /// 箱区贝位堆存
+    /// 箱区贝位堆箱
     /// </summary>
     [Serializable]
-    public class AreaBayStack
+    public class AreaBayTieredContainers
     {
         /// <summary>
         /// for CreateInstance
         /// </summary>
-        protected internal AreaBayStack()
+        protected internal AreaBayTieredContainers()
         {
             //禁止添加代码
         }
@@ -22,21 +21,21 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// for Newtonsoft.Json.JsonConstructor
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
-        protected AreaBayStack(IDictionary<int, IList<ContainerProperty>> tieredContainers)
+        protected AreaBayTieredContainers(IDictionary<int, IList<Container>> info)
         {
-            _tieredContainers = tieredContainers;
+            _info = info;
         }
 
         #region 属性
 
-        private IDictionary<int, IList<ContainerProperty>> _tieredContainers;
+        private IDictionary<int, IList<Container>> _info;
 
         /// <summary>
         /// 排号-叠箱
         /// </summary>
-        public IDictionary<int, IList<ContainerProperty>> TieredContainers
+        public IDictionary<int, IList<Container>> Info
         {
-            get { return _tieredContainers ??= new Dictionary<int, IList<ContainerProperty>>(); }
+            get { return _info ??= new Dictionary<int, IList<Container>>(); }
         }
 
         #endregion
@@ -48,10 +47,10 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// <summary>
         /// 刷新
         /// </summary>
-        /// <param name="tieredContainers">排号-叠箱</param>
-        public void OnRefresh(IDictionary<int, IList<ContainerProperty>> tieredContainers)
+        /// <param name="info">排号-叠箱</param>
+        public void OnRefresh(IDictionary<int, IList<Container>> info)
         {
-            _tieredContainers = tieredContainers;
+            _info = info;
         }
 
         #endregion

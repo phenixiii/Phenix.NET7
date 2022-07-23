@@ -6,7 +6,7 @@ namespace Phenix.iPost.CSS.Plugin.Business.Norms
     /// 船舶靠泊方向
     /// </summary>
     [Serializable]
-    public enum VesselAlongSide
+    public enum VesselBerthingDirection
     {
         /// <summary>
         /// 右舷靠

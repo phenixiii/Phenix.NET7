@@ -28,13 +28,7 @@ namespace Phenix.Services.Host.Library.Message
             _receivedTime = receivedTime;
         }
 
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="sender">发送用户</param>
-        /// <param name="receiver">接收用户</param>
-        /// <param name="content">消息内容</param>
-        public UserMessage(string sender, string receiver, string content)
+        internal UserMessage(string sender, string receiver, string content)
         {
             _sender = sender;
             _receiver = receiver;

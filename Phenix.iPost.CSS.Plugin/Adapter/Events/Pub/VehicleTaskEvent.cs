@@ -1,5 +1,6 @@
 ﻿using System;
 using Phenix.iPost.CSS.Plugin.Adapter.Norms;
+using Phenix.iPost.CSS.Plugin.Business.Norms;
 
 namespace Phenix.iPost.CSS.Plugin.Adapter.Events.Pub
 {

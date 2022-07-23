@@ -30,6 +30,8 @@ namespace Phenix.iPost.CSS.Plugin.Business
             this.DangerousCode = dangerousCode;
         }
         
+        #region 属性
+
         /// <summary>
         /// 贝数
         /// </summary>
@@ -59,5 +61,7 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// 危险品代码
         /// </summary>
         public string DangerousCode { get; }
+
+        #endregion
     }
 }

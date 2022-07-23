@@ -20,11 +20,11 @@ namespace Phenix.iPost.CSS.Plugin
         public AreaGrain(
             [PersistentState(nameof(Phenix.iPost.CSS.Plugin.Business.AreaRule))]
             IPersistentState<AreaRule> areaRule,
-            [PersistentState(nameof(AreaEquipYardCrane))]
-            IPersistentState<AreaEquipYardCrane> equipYardCrane)
+            [PersistentState(nameof(AreaEquipYardCranes))]
+            IPersistentState<AreaEquipYardCranes> equipYardCranes)
         {
             _areaRule = areaRule;
-            _equipYardCrane = equipYardCrane;
+            _equipYardCranes = equipYardCranes;
         }
 
         #region 属性
@@ -57,21 +57,21 @@ namespace Phenix.iPost.CSS.Plugin
         /// </summary>
         protected IStorage AreaRuleStorage => _areaRule;
 
-        private readonly IPersistentState<AreaEquipYardCrane> _equipYardCrane;
+        private readonly IPersistentState<AreaEquipYardCranes> _equipYardCranes;
 
         /// <summary>
         /// 装备场桥
         /// </summary>
-        protected AreaEquipYardCrane EquipYardCrane
+        protected AreaEquipYardCranes EquipYardCranes
         {
-            get => _equipYardCrane.State;
-            set => _equipYardCrane.State = value;
+            get => _equipYardCranes.State;
+            set => _equipYardCranes.State = value;
         }
 
         /// <summary>
         /// IStorage
         /// </summary>
-        protected IStorage EquipYardCraneStorage => _equipYardCrane;
+        protected IStorage EquipYardCranesStorage => _equipYardCranes;
 
         #endregion
 
@@ -81,16 +81,16 @@ namespace Phenix.iPost.CSS.Plugin
 
         #region Event
 
-        async Task IAreaGrain.OnRefreshRule(AreaRule areaRule)
+        async Task IAreaGrain.OnRefreshAreaRule(AreaRule areaRule)
         {
             AreaRule = areaRule;
             await AreaRuleStorage.WriteStateAsync();
         }
 
-        async Task IAreaGrain.OnRefreshEquip(AreaEquipYardCrane equipYardCrane)
+        async Task IAreaGrain.OnRefreshEquipYardCranes(AreaEquipYardCranes equipYardCranes)
         {
-            EquipYardCrane = equipYardCrane;
-            await EquipYardCraneStorage.WriteStateAsync();
+            EquipYardCranes = equipYardCranes;
+            await EquipYardCranesStorage.WriteStateAsync();
         }
 
         #endregion

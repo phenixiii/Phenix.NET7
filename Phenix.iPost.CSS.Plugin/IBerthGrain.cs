@@ -14,10 +14,10 @@ namespace Phenix.iPost.CSS.Plugin
         #region Event
 
         /// <summary>
-        /// 刷新装备
+        /// 刷新装备岸桥
         /// </summary>
-        /// <param name="equipQuayCrane">装备岸桥</param>
-        Task OnRefreshEquip(BerthEquipQuayCrane equipQuayCrane);
+        /// <param name="equipQuayCranes">装备岸桥</param>
+        Task OnRefreshEquipQuayCranes(BerthEquipQuayCranes equipQuayCranes);
 
         /// <summary>
         /// 拖车作业

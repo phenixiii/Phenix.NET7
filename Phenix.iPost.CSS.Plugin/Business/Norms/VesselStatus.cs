@@ -14,9 +14,9 @@ namespace Phenix.iPost.CSS.Plugin.Business.Norms
         Unknown,
 
         /// <summary>
-        /// 已靠泊
+        /// 靠泊中
         /// </summary>
-        Berthed,
+        Berthing,
 
         /// <summary>
         /// 已离泊

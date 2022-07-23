@@ -4,7 +4,6 @@ using Orleans.Core;
 using Orleans.Providers;
 using Orleans.Runtime;
 using Phenix.iPost.CSS.Plugin.Business;
-using Phenix.iPost.CSS.Plugin.Business.Property;
 
 namespace Phenix.iPost.CSS.Plugin
 {
@@ -20,10 +19,10 @@ namespace Phenix.iPost.CSS.Plugin
         /// 初始化
         /// </summary>
         public AreaBayGrain(
-            [PersistentState(nameof(AreaBayStack))]
-            IPersistentState<AreaBayStack> stack)
+            [PersistentState(nameof(AreaBayTieredContainers))]
+            IPersistentState<AreaBayTieredContainers> tieredContainers)
         {
-            _stack = stack;
+            _tieredContainers = tieredContainers;
         }
 
         #region 属性
@@ -40,20 +39,20 @@ namespace Phenix.iPost.CSS.Plugin
 
         #region Kernel
 
-        private readonly IPersistentState<AreaBayStack> _stack;
+        private readonly IPersistentState<AreaBayTieredContainers> _tieredContainers;
 
         /// <summary>
-        /// 堆存
+        /// 堆箱
         /// </summary>
-        protected AreaBayStack Stack
+        protected AreaBayTieredContainers TieredContainers
         {
-            get { return _stack.State ??= new AreaBayStack(); }
+            get { return _tieredContainers.State ??= new AreaBayTieredContainers(); }
         }
 
         /// <summary>
         /// IStorage
         /// </summary>
-        protected IStorage StackStorage => _stack;
+        protected IStorage TieredContainersStorage => _tieredContainers;
 
         #endregion
 
@@ -63,10 +62,10 @@ namespace Phenix.iPost.CSS.Plugin
 
         #region Event
 
-        async Task IAreaBayGrain.OnRefresh(IDictionary<int, IList<ContainerProperty>> tieredContainers)
+        async Task IAreaBayGrain.OnRefreshTieredContainers(IDictionary<int, IList<Container>> info)
         {
-            Stack.OnRefresh(tieredContainers);
-            await StackStorage.WriteStateAsync();
+            TieredContainers.OnRefresh(info);
+            await TieredContainersStorage.WriteStateAsync();
         }
 
         #endregion

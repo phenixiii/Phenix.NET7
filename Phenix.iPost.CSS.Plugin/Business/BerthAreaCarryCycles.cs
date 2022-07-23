@@ -9,12 +9,12 @@ namespace Phenix.iPost.CSS.Plugin.Business
     /// 泊位到箱区载运周期
     /// </summary>
     [Serializable]
-    public class BerthAreaCarryCycle
+    public class BerthAreaCarryCycles
     {
         /// <summary>
         /// for CreateInstance
         /// </summary>
-        protected internal BerthAreaCarryCycle()
+        protected internal BerthAreaCarryCycles()
         {
             //禁止添加代码
         }
@@ -23,21 +23,21 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// for Newtonsoft.Json.JsonConstructor
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
-        protected BerthAreaCarryCycle(IDictionary<long, IDictionary<int, long>> areaCarryCycles)
+        protected BerthAreaCarryCycles(IDictionary<long, IDictionary<int, long>> info)
         {
-            _areaCarryCycles = areaCarryCycles;
+            _info = info;
         }
 
         #region 属性
 
-        private IDictionary<long, IDictionary<int, long>> _areaCarryCycles;
+        private IDictionary<long, IDictionary<int, long>> _info;
 
         /// <summary>
         /// 箱区ID-拖车从泊位到箱区载运周期(秒)-次数
         /// </summary>
-        public IDictionary<long, IDictionary<int, long>> AreasCarryCycles
+        public IDictionary<long, IDictionary<int, long>> Info
         {
-            get { return _areaCarryCycles ??= new Dictionary<long, IDictionary<int, long>>(); }
+            get { return _info ??= new Dictionary<long, IDictionary<int, long>>(); }
         }
 
         #region 配置项
@@ -67,7 +67,7 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// <returns>拖车从泊位到箱区载运周期众数(秒)</returns>
         public int? StatAreaCarryCycleMode(long areaId)
         {
-            if (AreasCarryCycles.TryGetValue(areaId, out IDictionary<int, long> value))
+            if (Info.TryGetValue(areaId, out IDictionary<int, long> value))
             {
                 int result = int.MaxValue;
                 long count = int.MinValue;
@@ -94,12 +94,12 @@ namespace Phenix.iPost.CSS.Plugin.Business
         public bool OnVehicleOperation(long areaId, int carryCycle)
         {
             int key = carryCycle / StatAreaCarryCyclePrecision * StatAreaCarryCyclePrecision;
-            IDictionary<int, long> value = AreasCarryCycles.GetValue(areaId, () => new Dictionary<int, long>());
+            IDictionary<int, long> value = Info.GetValue(areaId, () => new Dictionary<int, long>());
             value.ReplaceValue(key, i => i + 1, () => 1);
             // 留下塔尖且限于正方形内
             if (value.TryGetValue(key, out long count))
             {
-                long diff = count - AreasCarryCycles.Count;
+                long diff = count - Info.Count;
                 if (diff > 0)
                 {
                     List<int> beRemoveKeys = new List<int>();

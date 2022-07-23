@@ -1,13 +1,13 @@
 ﻿using System;
 using Phenix.iPost.CSS.Plugin.Business.Norms;
 
-namespace Phenix.iPost.CSS.Plugin.Business.Property
+namespace Phenix.iPost.CSS.Plugin.Business
 {
     /// <summary>
     /// 箱属性
     /// </summary>
     [Serializable]
-    public readonly record struct ContainerProperty
+    public readonly record struct Container
     {
         /// <summary>
         /// 箱属性
@@ -37,7 +37,7 @@ namespace Phenix.iPost.CSS.Plugin.Business.Property
         /// <param name="rowNo">排号</param>
         /// <param name="tierNo">层号</param>
         [Newtonsoft.Json.JsonConstructor]
-        public ContainerProperty(string containerNumber,
+        public Container(string containerNumber,
             string containerOwner, string voyage, string ladingBillNumber, ImportExport? importExport,
             string loadingPort, string dischargingPort, string destinationPort, string transferPort,
             string containerType, string containerSize, string isoCode,
@@ -45,85 +45,85 @@ namespace Phenix.iPost.CSS.Plugin.Business.Property
             EmptyFull emptyFull, bool isRefrigerant, string dangerousCode,
             int bayNo, int rowNo, int tierNo)
         {
-            this.ContainerNumber = containerNumber;
-            this.ContainerOwner = containerOwner;
-            this.Voyage = voyage;
-            this.LadingBillNumber = ladingBillNumber;
-            this.ImportExport = importExport;
-            this.LoadingPort = loadingPort;
-            this.DischargingPort = dischargingPort;
-            this.DestinationPort = destinationPort;
-            this.TransferPort = transferPort;
-            this.ContainerType = containerType;
-            this.ContainerSize = containerSize;
-            this.IsoCode = isoCode;
-            this.Weight = weight;
-            this.OverHeight = overHeight;
-            this.OverFrontLength = overFrontLength;
-            this.OverBackLength = overBackLength;
-            this.OverLeftWidth = overLeftWidth;
-            this.OverRightWidth = overRightWidth;
-            this.EmptyFull = emptyFull;
-            this.IsRefrigerant = isRefrigerant;
-            this.DangerousCode = dangerousCode;
-            this.BayNo = bayNo;
-            this.RowNo = rowNo;
-            this.TierNo = tierNo;
-            this._overLimit = overHeight || overFrontLength.HasValue || overBackLength.HasValue || overLeftWidth.HasValue || overRightWidth.HasValue;
+            ContainerNumber = containerNumber;
+            ContainerOwner = containerOwner;
+            Voyage = voyage;
+            LadingBillNumber = ladingBillNumber;
+            ImportExport = importExport;
+            LoadingPort = loadingPort;
+            DischargingPort = dischargingPort;
+            DestinationPort = destinationPort;
+            TransferPort = transferPort;
+            ContainerType = containerType;
+            ContainerSize = containerSize;
+            IsoCode = isoCode;
+            Weight = weight;
+            OverHeight = overHeight;
+            OverFrontLength = overFrontLength;
+            OverBackLength = overBackLength;
+            OverLeftWidth = overLeftWidth;
+            OverRightWidth = overRightWidth;
+            EmptyFull = emptyFull;
+            IsRefrigerant = isRefrigerant;
+            DangerousCode = dangerousCode;
+            BayNo = bayNo;
+            RowNo = rowNo;
+            TierNo = tierNo;
+            _overLimit = overHeight || overFrontLength.HasValue || overBackLength.HasValue || overLeftWidth.HasValue || overRightWidth.HasValue;
         }
 
         #region 属性
 
         /// <summary>箱号</summary>
-        public string ContainerNumber { get;  }
+        public string ContainerNumber { get; }
 
         /// <summary>持箱人</summary>
-        public string ContainerOwner { get;  }
+        public string ContainerOwner { get; }
 
         /// <summary>航次</summary>
         public string Voyage { get; }
 
         /// <summary>提单号</summary>
-        public string LadingBillNumber { get;  }
+        public string LadingBillNumber { get; }
 
         /// <summary>进口/出口（如为空则为过境箱）</summary>
-        public ImportExport? ImportExport { get;}
+        public ImportExport? ImportExport { get; }
 
         /// <summary>装货港</summary>
-        public string LoadingPort { get;}
+        public string LoadingPort { get; }
 
         /// <summary>卸货港</summary>
         public string DischargingPort { get; }
 
         /// <summary>目的港</summary>
-        public string DestinationPort { get;  }
+        public string DestinationPort { get; }
 
         /// <summary>转运港（如是本港则为转运箱）</summary>
-        public string TransferPort { get;  }
+        public string TransferPort { get; }
 
         /// <summary>箱型</summary>
         public string ContainerType { get; }
 
         /// <summary>箱尺寸</summary>
-        public string ContainerSize { get;  }
+        public string ContainerSize { get; }
 
         /// <summary>ISO代码</summary>
-        public string IsoCode { get;  }
+        public string IsoCode { get; }
 
         /// <summary>重量t</summary>
-        public decimal Weight { get;  }
+        public decimal Weight { get; }
 
         /// <summary>是否超高</summary>
-        public bool OverHeight { get;  }
+        public bool OverHeight { get; }
 
         /// <summary>前超长</summary>
-        public decimal? OverFrontLength { get;  }
+        public decimal? OverFrontLength { get; }
 
         /// <summary>后超长</summary>
-        public decimal? OverBackLength { get;  }
+        public decimal? OverBackLength { get; }
 
         /// <summary>左超宽</summary>
-        public decimal? OverLeftWidth { get;  }
+        public decimal? OverLeftWidth { get; }
 
         /// <summary>右超宽</summary>
         public decimal? OverRightWidth { get; }

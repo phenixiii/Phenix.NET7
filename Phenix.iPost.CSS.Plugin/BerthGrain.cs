@@ -18,13 +18,13 @@ namespace Phenix.iPost.CSS.Plugin
         /// 初始化
         /// </summary>
         public BerthGrain(
-            [PersistentState(nameof(BerthEquipQuayCrane))]
-            IPersistentState<BerthEquipQuayCrane> equipQuayCrane,
-            [PersistentState(nameof(BerthAreaCarryCycle))]
-            IPersistentState<BerthAreaCarryCycle> areaCarryCycle)
+            [PersistentState(nameof(BerthEquipQuayCranes))]
+            IPersistentState<BerthEquipQuayCranes> equipQuayCranes,
+            [PersistentState(nameof(BerthAreaCarryCycles))]
+            IPersistentState<BerthAreaCarryCycles> areaCarryCycles)
         {
-            _equipQuayCrane = equipQuayCrane;
-            _areaCarryCycle = areaCarryCycle;
+            _equipQuayCranes = equipQuayCranes;
+            _areaCarryCycles = areaCarryCycles;
         }
 
         #region 属性
@@ -41,36 +41,36 @@ namespace Phenix.iPost.CSS.Plugin
 
         #region Kernel
 
-        private readonly IPersistentState<BerthEquipQuayCrane> _equipQuayCrane;
+        private readonly IPersistentState<BerthEquipQuayCranes> _equipQuayCranes;
 
         /// <summary>
         /// 装备岸桥
         /// </summary>
-        protected BerthEquipQuayCrane EquipQuayCrane
+        protected BerthEquipQuayCranes EquipQuayCranes
         {
-            get => _equipQuayCrane.State;
-            set => _equipQuayCrane.State = value;
+            get => _equipQuayCranes.State;
+            set => _equipQuayCranes.State = value;
         }
 
         /// <summary>
         /// IStorage
         /// </summary>
-        protected IStorage EquipQuayCraneStorage => _equipQuayCrane;
+        protected IStorage EquipQuayCranesStorage => _equipQuayCranes;
 
-        private readonly IPersistentState<BerthAreaCarryCycle> _areaCarryCycle;
+        private readonly IPersistentState<BerthAreaCarryCycles> _areaCarryCycles;
 
         /// <summary>
         /// 泊位到箱区载运周期
         /// </summary>
-        protected BerthAreaCarryCycle AreaCarryCycle
+        protected BerthAreaCarryCycles AreaCarryCycles
         {
-            get { return _areaCarryCycle.State ??= new BerthAreaCarryCycle(); }
+            get { return _areaCarryCycles.State ??= new BerthAreaCarryCycles(); }
         }
 
         /// <summary>
         /// IStorage
         /// </summary>
-        protected IStorage AreaCarryCycleStorage => _areaCarryCycle;
+        protected IStorage AreaCarryCyclesStorage => _areaCarryCycles;
 
         #endregion
 
@@ -80,16 +80,16 @@ namespace Phenix.iPost.CSS.Plugin
 
         #region Event
 
-        async Task IBerthGrain.OnRefreshEquip(BerthEquipQuayCrane equipQuayCrane)
+        async Task IBerthGrain.OnRefreshEquipQuayCranes(BerthEquipQuayCranes equipQuayCranes)
         {
-            EquipQuayCrane = equipQuayCrane;
-            await EquipQuayCraneStorage.WriteStateAsync();
+            EquipQuayCranes = equipQuayCranes;
+            await EquipQuayCranesStorage.WriteStateAsync();
         }
 
         async Task IBerthGrain.OnVehicleOperation(long areaId, int carryCycle)
         {
-            if (AreaCarryCycle.OnVehicleOperation(areaId, carryCycle))
-                await AreaCarryCycleStorage.WriteStateAsync();
+            if (AreaCarryCycles.OnVehicleOperation(areaId, carryCycle))
+                await AreaCarryCyclesStorage.WriteStateAsync();
         }
 
         #endregion

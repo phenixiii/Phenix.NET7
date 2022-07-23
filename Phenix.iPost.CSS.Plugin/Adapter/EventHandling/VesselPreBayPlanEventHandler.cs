@@ -5,9 +5,9 @@ using Phenix.iPost.CSS.Plugin.Adapter.Events.Sub;
 namespace Phenix.iPost.CSS.Plugin.Adapter.EventHandling
 {
     /// <summary>
-    /// 响应船舶离泊事件处理器
+    /// 响应船舶预配船图事件处理器
     /// </summary>
-    public class VesselDepartEventHandler : IIntegrationEventHandler<VesselDepartEvent>
+    public class VesselPreBayPlanEventHandler : IIntegrationEventHandler<VesselPreBayPlanEvent>
     {
         #region 方法
 
@@ -15,9 +15,9 @@ namespace Phenix.iPost.CSS.Plugin.Adapter.EventHandling
         /// 处理事件
         /// </summary>
         /// <param name="event">事件</param>
-        public async Task Handle(VesselDepartEvent @event)
+        public async Task Handle(VesselPreBayPlanEvent @event)
         {
-            await Phenix.Actor.ClusterClient.Default.GetGrain<IVesselGrain>(@event.VesselCode).OnDepart(@event.TerminalCode, @event.Voyage);
+            await Phenix.Actor.ClusterClient.Default.GetGrain<IVesselGrain>(@event.VesselCode).OnRefreshPreBayPlan(@event.Info);
         }
 
         #endregion

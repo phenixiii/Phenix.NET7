@@ -28,20 +28,14 @@ namespace Phenix.iPost.CSS.Plugin
         /// <summary>
         /// Logger
         /// </summary>
-        protected ILogger Logger
-        {
-            get { return _logger; }
-        }
+        protected ILogger Logger => _logger;
 
-        private IEventBus _eventBus;
+        private readonly IEventBus _eventBus;
 
         /// <summary>
         /// 事件总线
         /// </summary>
-        protected IEventBus EventBus
-        {
-            get { return _eventBus; }
-        }
+        protected IEventBus EventBus => _eventBus;
 
         #region 配置项
 
