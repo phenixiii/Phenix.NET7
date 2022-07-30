@@ -23,25 +23,22 @@ namespace Phenix.Core.Event
         /// 与发布订阅topic的pubsubname保持一致
         /// </summary>
         public const string PubSubName = "pubsub";
-        
+
         /// <summary>
         /// ID
         /// </summary>
-        public string Id { get; init; }
+        public string Id { get; }
 
         /// <summary>
         /// 发生时间
         /// </summary>
-        public DateTime OccurredTime { get; init; }
+        public DateTime OccurredTime { get; }
 
         /// <summary>
         /// 事件类型
         /// 默认：类名
         /// </summary>
-        public virtual string EventName
-        {
-            get { return this.GetType().Name; }
-        }
+        public virtual string EventName => this.GetType().Name;
 
         #endregion
     }

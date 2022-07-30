@@ -48,10 +48,10 @@ namespace Phenix.Services.Host.Library.Message
 
         #region 方法
 
-        Task IUserMessageGrain.Send(string sender, string content)
+        async Task IUserMessageGrain.Send(string sender, string content)
         {
             State[Database.Sequence.Value] = new UserMessage(sender, PrimaryKey, content);
-            return WriteStateAsync();
+            await WriteStateAsync();
         }
 
         Task<IDictionary<long, UserMessage>> IUserMessageGrain.Receive()
@@ -59,13 +59,13 @@ namespace Phenix.Services.Host.Library.Message
             return Task.FromResult(State);
         }
 
-        Task IUserMessageGrain.AffirmReceived(long id, bool burn)
+        async Task IUserMessageGrain.AffirmReceived(long id, bool burn)
         {
             if (burn)
                 State.Remove(id);
             else if (State.TryGetValue(id, out UserMessage value))
                 value.ReceivedTime = DateTime.Now;
-            return WriteStateAsync();
+            await WriteStateAsync();
         }
 
         /// <summary>
@@ -73,11 +73,20 @@ namespace Phenix.Services.Host.Library.Message
         /// </summary>
         public override async Task OnActivateAsync()
         {
-            await RegisterOrUpdateReminder(PrimaryKey, TimeSpan.FromDays(1), TimeSpan.FromDays(7));
+            string reminderName = PrimaryKey;
+            IGrainReminder reminder = await GetReminder(reminderName);
+            if (reminder != null)
+            {
+                if (State.Count == 0)
+                    await UnregisterReminder(reminder);
+            }
+            else
+                await RegisterOrUpdateReminder(reminderName, TimeSpan.FromDays(1), TimeSpan.FromDays(7));
+
             await base.OnActivateAsync();
         }
 
-        Task IRemindable.ReceiveReminder(string reminderName, TickStatus status)
+        async Task IRemindable.ReceiveReminder(string reminderName, TickStatus status)
         {
             if (State.Count > 0)
             {
@@ -89,11 +98,9 @@ namespace Phenix.Services.Host.Library.Message
                 {
                     foreach (long item in ids)
                         State.Remove(item);
-                    return WriteStateAsync();
+                    await WriteStateAsync();
                 }
             }
-
-            return Task.CompletedTask;
         }
 
         #endregion

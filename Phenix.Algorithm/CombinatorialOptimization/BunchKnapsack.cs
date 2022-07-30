@@ -23,6 +23,8 @@ namespace Phenix.Algorithm.CombinatorialOptimization
         /// <param name="goodsList">一组物品(含集束)</param>
         /// <param name="knapsackSize">背包规格</param>
         /// <param name="overloadRange">超载范围</param>
+        /// <exception cref="ArgumentNullException">goodsLis不允许为空</exception>
+        /// <exception cref="ArgumentOutOfRangeException">overloadRange不允许小于0</exception>
         /// <returns>是否成功</returns>
         public static PackedBunches Pack(IList<IGoods> goodsList, int knapsackSize, int overloadRange)
         {
@@ -125,9 +127,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
                     matrixR[s] = matrixL[s];
                 }
 
-                int[] matrixT = matrixL;
-                matrixL = matrixR;
-                matrixR = matrixT;
+                (matrixL, matrixR) = (matrixR, matrixL);
                 putinSizeDictionary.Add(i, putinSizeList);
             }
 
@@ -243,9 +243,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
                     matrixR[s2][s1] = matrixL[s2][s1];
                 }
 
-                List<int[]> matrixT = matrixL;
-                matrixL = matrixR;
-                matrixR = matrixT;
+                (matrixL, matrixR) = (matrixR, matrixL);
                 putinSizeDictionary.Add(i, putinSizeList);
             }
 

@@ -22,6 +22,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
         /// </summary>
         /// <param name="goodsList">一组物品</param>
         /// <param name="knapsackSize">背包规格</param>
+        /// <exception cref="ArgumentNullException">goodsList不允许为空</exception>
         /// <returns>挑选出的子集</returns>
         public static IList<IGoods> Pack(IList<IGoods> goodsList, int knapsackSize)
         {
@@ -87,9 +88,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
                     matrixR[s] = matrixL[s];
                 }
 
-                int[] matrixT = matrixL;
-                matrixL = matrixR;
-                matrixR = matrixT;
+                (matrixL, matrixR) = (matrixR, matrixL);
                 putinSizeStack.Push(putinSizeList);
             }
 
@@ -114,6 +113,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
         /// </summary>
         /// <param name="goodsList">一组物品</param>
         /// <param name="knapsackSize">背包规格</param>
+        /// <exception cref="ArgumentNullException">goodsList不允许为空</exception>
         /// <returns>挑选出的子集</returns>
         public static IList<IGoods> PackBig(IList<IGoods> goodsList, int knapsackSize)
         {
@@ -184,9 +184,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
                     matrixR[s2][s1] = matrixL[s2][s1];
                 }
 
-                List<int[]> matrixT = matrixL;
-                matrixL = matrixR;
-                matrixR = matrixT;
+                (matrixL, matrixR) = (matrixR, matrixL);
                 putinSizeStack.Push(putinSizeList);
             }
 
@@ -213,6 +211,8 @@ namespace Phenix.Algorithm.CombinatorialOptimization
         /// <param name="knapsackSize">背包规格</param>
         /// <param name="minPackSize">最小打包规格</param>
         /// <param name="aimForMinSize">趋向最小规格且不考虑打包价值</param>
+        /// <exception cref="ArgumentNullException">goodsList不允许为空</exception>
+        /// <exception cref="ArgumentOutOfRangeException">minPackSize不允许大于knapsackSize</exception>
         /// <returns>挑选出的子集</returns>
         public static IList<IGoods> Pack(IList<IGoods> goodsList, int knapsackSize, int minPackSize, bool aimForMinSize = false)
         {
@@ -285,9 +285,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
                     matrixR[s] = matrixL[s];
                 }
 
-                int[] matrixT = matrixL;
-                matrixL = matrixR;
-                matrixR = matrixT;
+                (matrixL, matrixR) = (matrixR, matrixL);
                 putinSizeDictionary.Add(i, putinSizeList);
             }
 
@@ -357,6 +355,8 @@ namespace Phenix.Algorithm.CombinatorialOptimization
         /// <param name="knapsackSize">背包规格</param>
         /// <param name="minPackSize">最小打包规格</param>
         /// <param name="aimForMinSize">趋向最小规格且不考虑打包价值</param>
+        /// <exception cref="ArgumentNullException">goodsList不允许为空</exception>
+        /// <exception cref="ArgumentOutOfRangeException">minPackSize不允许大于knapsackSize</exception>
         /// <returns>挑选出的子集</returns>
         public static IList<IGoods> PackBig(IList<IGoods> goodsList, int knapsackSize, int minPackSize, bool aimForMinSize = false)
         {
@@ -434,9 +434,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
                     matrixR[s2][s1] = matrixL[s2][s1];
                 }
 
-                List<int[]> matrixT = matrixL;
-                matrixL = matrixR;
-                matrixR = matrixT;
+                (matrixL, matrixR) = (matrixR, matrixL);
                 putinSizeDictionary.Add(i, putinSizeList);
             }
 
@@ -507,6 +505,8 @@ namespace Phenix.Algorithm.CombinatorialOptimization
         /// <param name="minPackSize">最小打包规格</param>
         /// <param name="minPackValue">最低打包价值</param>
         /// <param name="aimForMinSize">趋向最小规格且只要满足最低打包价值</param>
+        /// <exception cref="ArgumentNullException">goodsList不允许为空</exception>
+        /// <exception cref="ArgumentOutOfRangeException">minPackSize不允许大于knapsackSize</exception>
         /// <returns>序号-挑选出的子集</returns>
         public static IDictionary<int, IList<IGoods>> Pack(IList<IGoods> goodsList, int knapsackSize, int minPackSize, int minPackValue, bool aimForMinSize = false)
         {
@@ -588,9 +588,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
                     matrixR[s] = matrixL[s];
                 }
 
-                int[] matrixT = matrixL;
-                matrixL = matrixR;
-                matrixR = matrixT;
+                (matrixL, matrixR) = (matrixR, matrixL);
                 putinSizeDictionary.Add(i, putinSizeList);
             }
 
@@ -678,6 +676,8 @@ namespace Phenix.Algorithm.CombinatorialOptimization
         /// <param name="minPackSize">最小打包规格</param>
         /// <param name="minPackValue">最低打包价值</param>
         /// <param name="aimForMinSize">趋向最小规格且只要满足最低打包价值</param>
+        /// <exception cref="ArgumentNullException">goodsList不允许为空</exception>
+        /// <exception cref="ArgumentOutOfRangeException">minPackSize不允许大于knapsackSize</exception>
         /// <returns>序号-挑选出的子集</returns>
         public static IDictionary<int, IList<IGoods>> PackBig(IList<IGoods> goodsList, int knapsackSize, int minPackSize, int minPackValue, bool aimForMinSize = false)
         {
@@ -764,9 +764,7 @@ namespace Phenix.Algorithm.CombinatorialOptimization
                     matrixR[s2][s1] = matrixL[s2][s1];
                 }
 
-                List<int[]> matrixT = matrixL;
-                matrixL = matrixR;
-                matrixR = matrixT;
+                (matrixL, matrixR) = (matrixR, matrixL);
                 putinSizeDictionary.Add(i, putinSizeList);
             }
 

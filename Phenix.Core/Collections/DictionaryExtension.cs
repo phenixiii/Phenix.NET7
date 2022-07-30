@@ -49,9 +49,6 @@ namespace System.Collections.Generic
 
         private static TValue CreateValue<TKey, TValue>(this IDictionary<TKey, TValue> infos, TKey key, Func<TValue> doCreate)
         {
-            if (infos == null)
-                throw new ArgumentNullException(nameof(infos));
-
             TValue result = doCreate != null ? doCreate() : (TValue)Activator.CreateInstance(typeof(TValue), true);
             infos[key] = result;
             return result;
@@ -85,6 +82,9 @@ namespace System.Collections.Generic
         /// <returns>如果找到该键, 便会返回与指定的键相关联的值; 否则, 则会执行 doCreate 函数构建构建 item 的值关联到键并返回</returns>
         public static TValue GetValue<TKey, TValue>(this IDictionary<TKey, TValue> infos, TKey key, Func<Task<TValue>> doCreate, Func<TValue, bool> reset)
         {
+            if (infos == null)
+                throw new ArgumentNullException(nameof(infos));
+
             if (infos.TryGetValue(key, out TValue result))
                 if (reset == null || !reset(result))
                     return result;
@@ -93,9 +93,6 @@ namespace System.Collections.Generic
 
         private static TValue CreateValue<TKey, TValue>(this IDictionary<TKey, TValue> infos, TKey key, Func<Task<TValue>> doCreate)
         {
-            if (infos == null)
-                throw new ArgumentNullException(nameof(infos));
-
             TValue result = doCreate != null ? AsyncHelper.RunSync(doCreate) : (TValue)Activator.CreateInstance(typeof(TValue), true);
             infos[key] = result;
             return result;

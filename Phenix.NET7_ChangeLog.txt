@@ -234,3 +234,9 @@ Copyright © 2007, 2022 Phenixヾ Studio
 1，日志管理更换为Serilog+ExceptionLess
 2，在 Visual Studio 2022上重建Phenix.TPT.WebApp工程
 3，继续研发Phenix.iPost.CSS系统
+
+
+20220726
+1，为Phenix.Algorithm工程添加众数重数统计算法
+2，继续研发Phenix.iPost.CSS系统
+
