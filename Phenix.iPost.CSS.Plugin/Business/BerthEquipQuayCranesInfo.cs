@@ -7,16 +7,16 @@ namespace Phenix.iPost.CSS.Plugin.Business
     /// 泊位装备岸桥
     /// </summary>
     [Serializable]
-    public readonly record struct BerthEquipQuayCranes
+    public readonly record struct BerthEquipQuayCranesInfo
     {
         /// <summary>
         /// 泊位装备岸桥
         /// </summary>
-        /// <param name="info">岸桥ID(从小到大坐标编排)</param>
+        /// <param name="value">岸桥ID(从小到大坐标编排)</param>
         [Newtonsoft.Json.JsonConstructor]
-        public BerthEquipQuayCranes(IList<long> info)
+        public BerthEquipQuayCranesInfo(IList<long> value)
         {
-            this.Info = info ??= new List<long>();
+            this.Value = value ??= new List<long>();
         }
 
         #region 属性
@@ -24,7 +24,7 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// <summary>
         /// 岸桥ID(从小到大坐标编排)
         /// </summary>
-        public IList<long> Info { get; }
+        public IList<long> Value { get; }
 
         #endregion
     }

@@ -10,32 +10,24 @@ namespace Phenix.iPost.CSS.Plugin.Business
     public class AreaBayTieredContainers
     {
         /// <summary>
-        /// for CreateInstance
-        /// </summary>
-        protected internal AreaBayTieredContainers()
-        {
-            //禁止添加代码
-        }
-
-        /// <summary>
         /// for Newtonsoft.Json.JsonConstructor
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
-        protected AreaBayTieredContainers(IDictionary<int, IList<Container>> info)
+        protected internal AreaBayTieredContainers(IDictionary<int, IList<ContainerInfo>> info = null)
         {
             _info = info;
         }
 
         #region 属性
 
-        private IDictionary<int, IList<Container>> _info;
+        private IDictionary<int, IList<ContainerInfo>> _info;
 
         /// <summary>
         /// 排号-叠箱
         /// </summary>
-        public IDictionary<int, IList<Container>> Info
+        public IDictionary<int, IList<ContainerInfo>> Info
         {
-            get { return _info ??= new Dictionary<int, IList<Container>>(); }
+            get { return _info ??= new Dictionary<int, IList<ContainerInfo>>(); }
         }
 
         #endregion
@@ -48,7 +40,7 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// 刷新
         /// </summary>
         /// <param name="info">排号-叠箱</param>
-        public void OnRefresh(IDictionary<int, IList<Container>> info)
+        public void OnRefresh(IDictionary<int, IList<ContainerInfo>> info)
         {
             _info = info;
         }

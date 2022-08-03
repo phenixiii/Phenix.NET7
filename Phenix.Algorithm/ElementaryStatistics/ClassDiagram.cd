@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Phenix.Algorithm.ElementaryStatistics.AccumulatedTimes">
-    <Position X="4" Y="0.5" Width="2.5" />
+    <Position X="4" Y="0.5" Width="1.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>

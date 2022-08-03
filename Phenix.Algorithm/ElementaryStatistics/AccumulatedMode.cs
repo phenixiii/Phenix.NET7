@@ -10,36 +10,29 @@ namespace Phenix.Algorithm.ElementaryStatistics
     public class AccumulatedMode
     {
         /// <summary>
-        /// for CreateInstance
-        /// </summary>
-        protected AccumulatedMode()
-        {
-        }
-
-        /// <summary>
         /// for Newtonsoft.Json.JsonConstructor
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
         protected AccumulatedMode(IDictionary<long, AccumulatedTimes> keyTimes, long mode, long maxTimes, DateTime lastActionTime, decimal precision)
-            : this(precision)
         {
             _keyTimes = keyTimes ?? new Dictionary<long, AccumulatedTimes>();
             _mode = mode;
             _maxTimes = maxTimes;
             _lastActionTime = lastActionTime;
+            _precision = precision != 0 ? precision : 1;
         }
 
         /// <summary>
         /// 初始化
         /// </summary>
         public AccumulatedMode(decimal precision)
+            : this(null, 0, 0, new DateTime(), precision)
         {
-            _precision = precision != 0 ? precision : 1;
         }
 
         #region 属性
 
-        private IDictionary<long, AccumulatedTimes> _keyTimes = new Dictionary<long, AccumulatedTimes>();
+        private readonly IDictionary<long, AccumulatedTimes> _keyTimes;
 
         /// <summary>
         /// 数值-规模
@@ -79,7 +72,7 @@ namespace Phenix.Algorithm.ElementaryStatistics
             get { return _lastActionTime; }
         }
 
-        private readonly decimal _precision = 1;
+        private readonly decimal _precision;
 
         /// <summary>
         /// 统计精度(Key间隔)
@@ -100,26 +93,28 @@ namespace Phenix.Algorithm.ElementaryStatistics
         /// <param name="times">规模</param>
         public bool Accumulate(long key, long times = 1)
         {
-            key = (int)Math.Round(key / Precision * Precision);
+            key = (int)Math.Round(key / _precision * _precision);
             lock (_keyTimes)
             {
                 AccumulatedTimes keyTimes = _keyTimes.GetValue(key, () => new AccumulatedTimes());
                 keyTimes.Accumulate(times);
-                // 整理内容
+                // 更换众数、重数
                 if (_maxTimes < keyTimes.Value)
                 {
-                    // 更换众数、重数
                     _mode = key;
                     _maxTimes = keyTimes.Value;
                     _lastActionTime = keyTimes.LastActionTime;
+                    return true;
                 }
-                else
+
+                // 清理对过过时的
+                long oppositeKey = _mode * 2 - key;
+                if (_keyTimes.TryGetValue(oppositeKey, out AccumulatedTimes opposite) &&
+                    opposite.Value * 2 < _maxTimes &&
+                    keyTimes.LastActionTime.Subtract(opposite.LastActionTime).TotalDays > keyTimes.LastActionTime.Subtract(_lastActionTime).TotalDays * 2)
                 {
-                    // 清理对过过时的
-                    long oppositeKey = _mode * 2 - key;
-                    if (_keyTimes.TryGetValue(oppositeKey, out AccumulatedTimes opposite) &&
-                        keyTimes.LastActionTime.Subtract(opposite.LastActionTime).TotalDays >= keyTimes.LastActionTime.Subtract(_lastActionTime).TotalDays * 2)
-                        _keyTimes.Remove(oppositeKey);
+                    _keyTimes.Remove(oppositeKey);
+                    return true;
                 }
             }
 

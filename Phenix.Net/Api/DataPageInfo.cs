@@ -14,17 +14,17 @@ namespace Phenix.Net.Api
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
         public DataPageInfo(string dataName, long dataSize, int pageNo, int pageSize, string pageBody)
-            : this(dataSize, pageNo, pageSize, pageBody)
         {
-            _dataName = dataName;
-        }
-
-        internal DataPageInfo(long dataSize, int pageNo, int pageSize, string pageBody)
-        {
+            _dataName = dataName ??= typeof(T).FullName;
             _dataSize = dataSize;
             _pageNo = pageNo;
             _pageSize = pageSize;
             _pageBody = pageBody;
+        }
+
+        internal DataPageInfo(long dataSize, int pageNo, int pageSize, string pageBody)
+            : this(null, dataSize, pageNo, pageSize, pageBody)
+        {
         }
 
         #region 属性
@@ -45,7 +45,7 @@ namespace Phenix.Net.Api
         /// </summary>
         public string DataName
         {
-            get { return _dataName ??= typeof(T).FullName; }
+            get { return _dataName; }
         }
 
         private readonly long _dataSize;

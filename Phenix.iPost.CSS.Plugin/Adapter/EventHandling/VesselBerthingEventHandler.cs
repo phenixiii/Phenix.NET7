@@ -2,7 +2,6 @@
 using Phenix.Core.Event;
 using Phenix.iPost.CSS.Plugin.Adapter.Events.Sub;
 using Phenix.iPost.CSS.Plugin.Business;
-using Phenix.iPost.CSS.Plugin.Business.Norms;
 
 namespace Phenix.iPost.CSS.Plugin.Adapter.EventHandling
 {
@@ -20,9 +19,9 @@ namespace Phenix.iPost.CSS.Plugin.Adapter.EventHandling
         public async Task Handle(VesselBerthingEvent @event)
         {
             await Phenix.Actor.ClusterClient.Default.GetGrain<IVesselGrain>(@event.VesselCode).OnBerthing(
-                new VesselBerthing(@event.TerminalCode, @event.BerthNo,
-                    Phenix.Core.Reflection.Utilities.ChangeType<VesselBerthingDirection>(@event.BerthingDirection),
-                    @event.BowBollardNo, @event.BowBollardOffset, @event.SternBollardNo, @event.SternBollardOffset));
+                new VesselBerthingInfo(@event.TerminalCode, @event.BerthNo,
+                    @event.PlanBerthingTime, @event.PlanDepartureTime,
+                    @event.BerthingDirection, @event.BowBollardNo, @event.BowBollardOffset, @event.SternBollardNo, @event.SternBollardOffset));
         }
 
         #endregion

@@ -4,10 +4,10 @@ using Phenix.iPost.CSS.Plugin.Business.Norms;
 namespace Phenix.iPost.CSS.Plugin.Business
 {
     /// <summary>
-    /// 箱属性
+    /// 箱
     /// </summary>
     [Serializable]
-    public readonly record struct Container
+    public readonly record struct ContainerInfo
     {
         /// <summary>
         /// 箱属性
@@ -37,7 +37,7 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// <param name="rowNo">排号</param>
         /// <param name="tierNo">层号</param>
         [Newtonsoft.Json.JsonConstructor]
-        public Container(string containerNumber,
+        public ContainerInfo(string containerNumber,
             string containerOwner, string voyage, string ladingBillNumber, ImportExport? importExport,
             string loadingPort, string dischargingPort, string destinationPort, string transferPort,
             string containerType, string containerSize, string isoCode,
@@ -69,92 +69,136 @@ namespace Phenix.iPost.CSS.Plugin.Business
             BayNo = bayNo;
             RowNo = rowNo;
             TierNo = tierNo;
-            _overLimit = overHeight || overFrontLength.HasValue || overBackLength.HasValue || overLeftWidth.HasValue || overRightWidth.HasValue;
         }
 
         #region 属性
 
-        /// <summary>箱号</summary>
+        /// <summary>
+        /// 箱号
+        /// </summary>
         public string ContainerNumber { get; }
 
-        /// <summary>持箱人</summary>
+        /// <summary>
+        /// 持箱人
+        /// </summary>
         public string ContainerOwner { get; }
 
-        /// <summary>航次</summary>
+        /// <summary>
+        /// 航次
+        /// </summary>
         public string Voyage { get; }
 
-        /// <summary>提单号</summary>
+        /// <summary>
+        /// 提单号
+        /// </summary>
         public string LadingBillNumber { get; }
 
-        /// <summary>进口/出口（如为空则为过境箱）</summary>
+        /// <summary>
+        /// 进口/出口（如为空则为过境箱）
+        /// </summary>
         public ImportExport? ImportExport { get; }
 
-        /// <summary>装货港</summary>
+        /// <summary>
+        /// 装货港
+        /// </summary>
         public string LoadingPort { get; }
 
-        /// <summary>卸货港</summary>
+        /// <summary>
+        /// 卸货港
+        /// </summary>
         public string DischargingPort { get; }
 
-        /// <summary>目的港</summary>
+        /// <summary>
+        /// 目的港
+        /// </summary>
         public string DestinationPort { get; }
 
-        /// <summary>转运港（如是本港则为转运箱）</summary>
+        /// <summary>
+        /// 转运港（如是本港则为转运箱）
+        /// </summary>
         public string TransferPort { get; }
 
-        /// <summary>箱型</summary>
+        /// <summary>
+        /// 箱型
+        /// </summary>
         public string ContainerType { get; }
 
-        /// <summary>箱尺寸</summary>
+        /// <summary>
+        /// 箱尺寸
+        /// </summary>
         public string ContainerSize { get; }
 
-        /// <summary>ISO代码</summary>
+        /// <summary>
+        /// ISO代码
+        /// </summary>
         public string IsoCode { get; }
 
-        /// <summary>重量t</summary>
+        /// <summary>
+        /// 重量t
+        /// </summary>
         public decimal Weight { get; }
 
-        /// <summary>是否超高</summary>
+        /// <summary>
+        /// 是否超高
+        /// </summary>
         public bool OverHeight { get; }
 
-        /// <summary>前超长</summary>
+        /// <summary>
+        /// 前超长
+        /// </summary>
         public decimal? OverFrontLength { get; }
 
-        /// <summary>后超长</summary>
+        /// <summary>
+        /// 后超长
+        /// </summary>
         public decimal? OverBackLength { get; }
 
-        /// <summary>左超宽</summary>
+        /// <summary>
+        /// 左超宽
+        /// </summary>
         public decimal? OverLeftWidth { get; }
 
-        /// <summary>右超宽</summary>
+        /// <summary>
+        /// 右超宽
+        /// </summary>
         public decimal? OverRightWidth { get; }
 
-        /// <summary>空/重</summary>
+        /// <summary>
+        /// 空/重
+        /// </summary>
         public EmptyFull EmptyFull { get; }
 
-        /// <summary>是否冷箱</summary>
+        /// <summary>
+        /// 是否冷箱
+        /// </summary>
         public bool IsRefrigerant { get; }
 
-        /// <summary>危险品代码</summary>
+        /// <summary>
+        /// 危险品代码
+        /// </summary>
         public string DangerousCode { get; }
 
-        /// <summary>贝位</summary>
+        /// <summary>
+        /// 贝位
+        /// </summary>
         public int BayNo { get; }
 
-        /// <summary>排号</summary>
+        /// <summary>
+        /// 排号
+        /// </summary>
         public int RowNo { get; }
 
-        /// <summary>层号</summary>
+        /// <summary>
+        /// 层号
+        /// </summary>
         public int TierNo { get; }
-
-        [NonSerialized]
-        private readonly bool _overLimit;
 
         /// <summary>
         /// 是否超限
         /// </summary>
         [Newtonsoft.Json.JsonIgnore]
-        public bool OverLimit => _overLimit;
+        public bool OverLimit => OverHeight || OverFrontLength.HasValue || OverBackLength.HasValue || OverLeftWidth.HasValue || OverRightWidth.HasValue;
 
-        #endregion;
+        #endregion
     }
 }

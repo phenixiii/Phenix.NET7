@@ -24,7 +24,7 @@ namespace Phenix.Services.Host.Library.Message
         {
             await ClusterClient.Default.GetGrain<IUserMessageGrain>(User.Identity.FormatPrimaryKey(receiver)).Send(User.Identity.PrimaryKey, await Request.ReadBodyAsStringAsync());
             //可替换为以下代码测试分组消息的推送
-            //await ClusterClient.Default.GetSimpleMessageStreamProvider().GetStream<string>( Phenix.Services.Contract.MessageStreamIds.GroupStreamId, receiver).OnNextAsync(await Request.ReadBodyAsStringAsync());
+            //await ClusterClient.Default.GetSimpleMessageStreamProvider().GetStream<string>(Phenix.Services.Contract.MessageStreamIds.GroupStreamId, receiver).OnNextAsync(await Request.ReadBodyAsStringAsync());
         }
 
         // phAjax.receiveMessage()

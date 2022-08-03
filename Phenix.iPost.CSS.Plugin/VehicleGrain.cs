@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+using Orleans.Core;
+using Orleans.Runtime;
 using Phenix.Core.Event;
 using Phenix.iPost.CSS.Plugin.Business;
 using Phenix.iPost.CSS.Plugin.Business.Norms;
@@ -9,26 +10,42 @@ namespace Phenix.iPost.CSS.Plugin
 {
     /// <summary>
     /// 拖车Grain
-    /// key: machineId
+    /// key: MachineId
+    /// keyExtension: TerminalCode
     /// </summary>
-    public class VehicleGrain : MachineGrain<VehicleGrain, Vehicle>, IVehicleGrain
+    public class VehicleGrain : MachineGrainBase, IVehicleGrain
     {
-        public VehicleGrain(ILogger<VehicleGrain> logger, IEventBus eventBus)
-            : base(logger, eventBus)
+        public VehicleGrain(IEventBus eventBus,
+            [PersistentState(nameof(StatusInfo))] IPersistentState<MachineStatusInfo> statusInfo,
+            [PersistentState(nameof(PowerInfo))] IPersistentState<PowerInfo> powerInfo,
+            [PersistentState(nameof(GridCellInfo))] IPersistentState<GridCellInfo> gridCellInfo,
+            [PersistentState(nameof(VehicleOperation))] IPersistentState<VehicleOperation> vehicleOperation)
+            : base(eventBus, statusInfo, powerInfo, gridCellInfo)
         {
+            _vehicleOperation = vehicleOperation;
         }
 
         #region 属性
 
-        private Vehicle _kernel;
+        #region Kernel
+
+        private readonly IPersistentState<VehicleOperation> _vehicleOperation;
 
         /// <summary>
-        /// Kernel
+        /// 拖车作业
         /// </summary>
-        protected override Vehicle Kernel
+        protected VehicleOperation VehicleOperation
         {
-            get { return _kernel ??= new Vehicle(MachineId); }
+            get => _vehicleOperation.State;
+            set => _vehicleOperation.State = value;
         }
+
+        /// <summary>
+        /// IStorage
+        /// </summary>
+        protected IStorage VehicleOperationStorage => _vehicleOperation;
+
+        #endregion
 
         #endregion
 
@@ -39,24 +56,41 @@ namespace Phenix.iPost.CSS.Plugin
             throw new NotImplementedException();
         }
 
+        private VehicleOperation NewOperation(VehicleOperationType operationType)
+        {
+            if (VehicleOperation != null && VehicleOperation.InOperation)
+                throw new InvalidOperationException($"{MachineId}({VehicleOperation.GetActivityTask().TaskStatus})当前无法新增作业需人工干预!");
+
+            VehicleOperation = new VehicleOperation(MachineId, operationType);
+            VehicleOperationStorage.WriteStateAsync();
+            return VehicleOperation;
+        }
+
         #region Event
 
-        Task IVehicleGrain.OnTaskAck(Phenix.iPost.CSS.Plugin.Business.Norms.TaskStatus taskStatus)
+        public override async Task OnMoving(SpaceTimeInfo spaceTimeInfo)
         {
-            Kernel.OnTaskAck(taskStatus);
-            return Task.CompletedTask;
+            await base.OnMoving(spaceTimeInfo);
+
+            VehicleOperation.OnMoving(spaceTimeInfo);
         }
 
-        Task IVehicleGrain.OnAction(VehicleBerthAction action)
+        async Task IVehicleGrain.OnTaskAck(Phenix.iPost.CSS.Plugin.Business.Norms.TaskStatus taskStatus)
         {
-            Kernel.OnActivity(action);
-            return Task.CompletedTask;
+            VehicleOperation.OnTaskAck(taskStatus);
+            await VehicleOperationStorage.WriteStateAsync();
         }
 
-        Task IVehicleGrain.OnAction(VehicleYardAction action)
+        async Task IVehicleGrain.OnAction(VehicleBerthAction action)
         {
-            Kernel.OnActivity(action);
-            return Task.CompletedTask;
+            VehicleOperation.OnActivity(action);
+            await VehicleOperationStorage.WriteStateAsync();
+        }
+
+        async Task IVehicleGrain.OnAction(VehicleYardAction action)
+        {
+            VehicleOperation.OnActivity(action);
+            await VehicleOperationStorage.WriteStateAsync();
         }
 
         #endregion

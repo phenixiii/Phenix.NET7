@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Phenix.Core.Event;
 using Phenix.iPost.CSS.Plugin.Adapter.Events.Sub;
-using Phenix.iPost.CSS.Plugin.Business.Norms;
 
 namespace Phenix.iPost.CSS.Plugin.Adapter.EventHandling
 {
@@ -18,8 +17,7 @@ namespace Phenix.iPost.CSS.Plugin.Adapter.EventHandling
         /// <param name="event">事件</param>
         public async Task Handle(VehicleBerthActionEvent @event)
         {
-            await Phenix.Actor.ClusterClient.Default.GetGrain<IVehicleGrain>(@event.MachineId).OnAction(
-                Phenix.Core.Reflection.Utilities.ChangeType<VehicleBerthAction>(@event.BerthAction));
+            await Phenix.Actor.ClusterClient.Default.GetGrain<IVehicleGrain>(@event.MachineId).OnAction(@event.BerthAction);
         }
 
         #endregion

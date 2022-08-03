@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Phenix.Core;
 using Phenix.Core.Event;
 
@@ -9,26 +8,17 @@ namespace Phenix.iPost.CSS.Plugin
     /// <summary>
     /// Grain基类
     /// </summary>
-    public abstract class GrainBase<T> : Phenix.Actor.GrainBase
-        where T : GrainBase<T>
+    public abstract class GrainBase : Phenix.Actor.GrainBase
     {
         /// <summary>
         /// 初始化
         /// </summary>
-        protected GrainBase(ILogger<T> logger, IEventBus eventBus)
+        protected GrainBase(IEventBus eventBus)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _eventBus = eventBus ?? throw new ArgumentNullException(nameof(eventBus));
         }
 
         #region 属性
-
-        private readonly ILogger _logger;
-
-        /// <summary>
-        /// Logger
-        /// </summary>
-        protected ILogger Logger => _logger;
 
         private readonly IEventBus _eventBus;
 
@@ -86,7 +76,7 @@ namespace Phenix.iPost.CSS.Plugin
         /// <summary>
         /// 定时TimerIntervalSeconds秒钟执行一次
         /// </summary>
-        protected abstract Task ExecuteTimerAsync(object args);
+        protected abstract Task ExecuteTimerAsync(object state);
 
         #endregion
     }

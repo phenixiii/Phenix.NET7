@@ -1,28 +1,23 @@
 ﻿using System;
-using Phenix.iPost.CSS.Plugin.Adapter.Norms;
 using Phenix.iPost.CSS.Plugin.Business.Norms;
 
-namespace Phenix.iPost.CSS.Plugin.Adapter.Events.Sub
+namespace Phenix.iPost.CSS.Plugin.Business
 {
     /// <summary>
-    /// 机械状态事件
+    /// 机械状态
     /// </summary>
     [Serializable]
-    public record MachineStatusEvent : MachineEvent
+    public readonly record struct MachineStatusInfo
     {
         /// <summary>
-        /// 机械状态事件
+        /// 机械状态属性
         /// </summary>
-        /// <param name="machineId">机械ID</param>
-        /// <param name="machineType">机械类型</param>
         /// <param name="machineStatus">机械状态</param>
         /// <param name="technicalStatus">工艺状态</param>
         [Newtonsoft.Json.JsonConstructor]
-        public MachineStatusEvent(string machineId, MachineType machineType,
-            MachineStatus machineStatus, MachineTechnicalStatus technicalStatus)
-            : base(machineId, machineType)
+        public MachineStatusInfo(MachineStatus machineStatus, MachineTechnicalStatus technicalStatus)
         {
-            this.MachineStatus = machineStatus;
+            this.MachineStatus = technicalStatus == MachineTechnicalStatus.Red ? MachineStatus.Maintenance : machineStatus;
             this.TechnicalStatus = technicalStatus;
         }
 

@@ -17,8 +17,7 @@ namespace Phenix.iPost.CSS.Plugin.Adapter.EventHandling
         /// <param name="event">事件</param>
         public async Task Handle(MachineTaskAckEvent @event)
         {
-            await Phenix.Actor.ClusterClient.Default.GetGrain<IVehicleGrain>(@event.MachineId).OnTaskAck(
-                Phenix.Core.Reflection.Utilities.ChangeType<Phenix.iPost.CSS.Plugin.Business.Norms.TaskStatus>(@event.TaskStatus));
+            await Phenix.Actor.ClusterClient.Default.GetGrain<IVehicleGrain>(@event.MachineId).OnTaskAck(@event.TaskStatus);
         }
 
         #endregion

@@ -7,8 +7,8 @@ namespace Phenix.iPost.CSS.Plugin
 {
     /// <summary>
     /// 箱区贝Grain
-    /// key: AreaId
-    /// keyExtension: BayNo
+    /// key: BayNo
+    /// keyExtension: AreaId
     /// </summary>
     public interface IAreaBayGrain : IGrainWithIntegerCompoundKey
     {
@@ -18,7 +18,7 @@ namespace Phenix.iPost.CSS.Plugin
         /// 刷新堆箱
         /// </summary>
         /// <param name="info">排号-叠箱</param>
-        Task OnRefreshTieredContainers(IDictionary<int, IList<Container>> info);
+        Task OnRefreshTieredContainers(IDictionary<int, IList<ContainerInfo>> info);
 
         #endregion
     }

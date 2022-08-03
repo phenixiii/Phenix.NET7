@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Phenix.Core.Event;
 using Phenix.iPost.CSS.Plugin.Adapter.Events.Sub;
-using Phenix.iPost.CSS.Plugin.Business.Property;
+using Phenix.iPost.CSS.Plugin.Business;
 
 namespace Phenix.iPost.CSS.Plugin.Adapter.EventHandling
 {
@@ -22,15 +22,15 @@ namespace Phenix.iPost.CSS.Plugin.Adapter.EventHandling
             {
                 case Phenix.iPost.CSS.Plugin.Adapter.Norms.MachineType.QuayCrane:
                     await Phenix.Actor.ClusterClient.Default.GetGrain<IQuayCraneGrain>(@event.MachineId).OnMoving(
-                        new SpaceTimeProperty(@event.X, @event.Y, @event.Speed, @event.Longitude, @event.Latitude, @event.Heading));
+                        new SpaceTimeInfo(@event.X, @event.Y, @event.Location, @event.Speed, @event.Longitude, @event.Latitude, @event.Heading));
                     break;
                 case Phenix.iPost.CSS.Plugin.Adapter.Norms.MachineType.YardCrane:
                     await Phenix.Actor.ClusterClient.Default.GetGrain<IYardCraneGrain>(@event.MachineId).OnMoving(
-                        new SpaceTimeProperty(@event.X, @event.Y, @event.Speed, @event.Longitude, @event.Latitude, @event.Heading));
+                        new SpaceTimeInfo(@event.X, @event.Y, @event.Location, @event.Speed, @event.Longitude, @event.Latitude, @event.Heading));
                     break;
                 case Phenix.iPost.CSS.Plugin.Adapter.Norms.MachineType.Vehicle:
                     await Phenix.Actor.ClusterClient.Default.GetGrain<IVehicleGrain>(@event.MachineId).OnMoving(
-                        new SpaceTimeProperty(@event.X, @event.Y, @event.Speed, @event.Longitude, @event.Latitude, @event.Heading));
+                        new SpaceTimeInfo(@event.X, @event.Y, @event.Location, @event.Speed, @event.Longitude, @event.Latitude, @event.Heading));
                     break;
             }
         }

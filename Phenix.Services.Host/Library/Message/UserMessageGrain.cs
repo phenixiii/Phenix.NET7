@@ -23,7 +23,7 @@ namespace Phenix.Services.Host.Library.Message
         /// <summary>
         /// 用户复合键
         /// </summary>
-        protected string PrimaryKey
+        protected string UserPrimaryKey
         {
             get { return this.GetPrimaryKeyString(); }
         }
@@ -50,7 +50,7 @@ namespace Phenix.Services.Host.Library.Message
 
         async Task IUserMessageGrain.Send(string sender, string content)
         {
-            State[Database.Sequence.Value] = new UserMessage(sender, PrimaryKey, content);
+            State[Database.Sequence.Value] = new UserMessage(sender, UserPrimaryKey, content, DateTime.Now);
             await WriteStateAsync();
         }
 
@@ -73,7 +73,7 @@ namespace Phenix.Services.Host.Library.Message
         /// </summary>
         public override async Task OnActivateAsync()
         {
-            string reminderName = PrimaryKey;
+            string reminderName = UserPrimaryKey;
             IGrainReminder reminder = await GetReminder(reminderName);
             if (reminder != null)
             {

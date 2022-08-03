@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Phenix.Core.Event;
 using Phenix.iPost.CSS.Plugin.Adapter.Events.Sub;
-using Phenix.iPost.CSS.Plugin.Business.Norms;
+using Phenix.iPost.CSS.Plugin.Adapter.Norms;
 
 namespace Phenix.iPost.CSS.Plugin.Adapter.EventHandling
 {
@@ -20,13 +20,11 @@ namespace Phenix.iPost.CSS.Plugin.Adapter.EventHandling
         {
             switch (@event.CraneType)
             {
-                case Phenix.iPost.CSS.Plugin.Adapter.Norms.CraneType.QuayCrane:
-                    await Phenix.Actor.ClusterClient.Default.GetGrain<IQuayCraneGrain>(@event.MachineId).OnAction(
-                        Phenix.Core.Reflection.Utilities.ChangeType<CraneAction>(@event.CraneAction));
+                case CraneType.QuayCrane:
+                    await Phenix.Actor.ClusterClient.Default.GetGrain<IQuayCraneGrain>(@event.MachineId).OnAction(@event.CraneAction);
                     break;
-                case Phenix.iPost.CSS.Plugin.Adapter.Norms.CraneType.YardCrane:
-                    await Phenix.Actor.ClusterClient.Default.GetGrain<IYardCraneGrain>(@event.MachineId).OnAction(
-                        Phenix.Core.Reflection.Utilities.ChangeType<CraneAction>(@event.CraneAction));
+                case CraneType.YardCrane:
+                    await Phenix.Actor.ClusterClient.Default.GetGrain<IYardCraneGrain>(@event.MachineId).OnAction(@event.CraneAction);
                     break;
             }
         }

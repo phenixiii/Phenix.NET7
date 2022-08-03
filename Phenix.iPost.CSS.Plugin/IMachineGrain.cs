@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Orleans;
-using Phenix.iPost.CSS.Plugin.Business.Property;
+using Phenix.iPost.CSS.Plugin.Business;
 
 namespace Phenix.iPost.CSS.Plugin
 {
@@ -15,20 +15,20 @@ namespace Phenix.iPost.CSS.Plugin
         /// <summary>
         /// 状态变化
         /// </summary>
-        /// <param name="status">状态</param>
-        Task OnChangeStatus(MachineStatusProperty status);
-
-        /// <summary>
-        /// 在移动
-        /// </summary>
-        /// <param name="spaceTime">时空</param>
-        Task OnMoving(SpaceTimeProperty spaceTime);
+        /// <param name="statusInfo">状态</param>
+        Task OnChangeStatus(MachineStatusInfo statusInfo);
 
         /// <summary>
         /// 动力变化
         /// </summary>
-        /// <param name="power">动力</param>
-        Task OnChangePower(PowerProperty power);
+        /// <param name="powerInfo">动力</param>
+        Task OnChangePower(PowerInfo powerInfo);
+
+        /// <summary>
+        /// 在移动
+        /// </summary>
+        /// <param name="spaceTimeInfo">时空</param>
+        Task OnMoving(SpaceTimeInfo spaceTimeInfo);
 
         #endregion
     }

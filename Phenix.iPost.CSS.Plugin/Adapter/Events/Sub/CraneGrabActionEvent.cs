@@ -7,15 +7,44 @@ namespace Phenix.iPost.CSS.Plugin.Adapter.Events.Sub
     /// <summary>
     /// 吊车抓具动作事件
     /// </summary>
-    /// <param name="MachineId">机械ID（全域唯一，即可控生产区域内各类机械之间都不允许重复）</param>
-    /// <param name="MachineType">机械类型</param>
-    /// <param name="CraneType">吊车类型</param>
-    /// <param name="GrabAction">抓具动作</param>
-    /// <param name="HoistHeight">起升高度cm</param>
     [Serializable]
-    public record CraneGrabActionEvent(string MachineId, MachineType MachineType,
-            CraneType CraneType,
-            CraneGrabAction GrabAction,
-            int HoistHeight)
-        : MachineEvent(MachineId, MachineType);
+    public record CraneGrabActionEvent : MachineEvent
+    {
+        /// <summary>
+        /// 吊车抓具动作事件
+        /// </summary>
+        /// <param name="machineId">机械ID</param>
+        /// <param name="machineType">机械类型</param>
+        /// <param name="craneType">吊车类型</param>
+        /// <param name="grabAction">抓具动作</param>
+        /// <param name="hoistHeight">起升高度cm</param>
+        [Newtonsoft.Json.JsonConstructor]
+        public CraneGrabActionEvent(string machineId, MachineType machineType,
+            CraneType craneType, CraneGrabAction grabAction, int hoistHeight)
+            : base(machineId, machineType)
+        {
+            this.CraneType = craneType;
+            this.GrabAction = grabAction;
+            this.HoistHeight = hoistHeight;
+        }
+
+        #region 属性
+
+        /// <summary>
+        /// 吊车类型
+        /// </summary>
+        public CraneType CraneType { get; }
+
+        /// <summary>
+        /// 抓具动作
+        /// </summary>
+        public CraneGrabAction GrabAction { get; }
+
+        /// <summary>
+        /// 起升高度cm
+        /// </summary>
+        public int HoistHeight { get; }
+
+        #endregion
+    }
 }

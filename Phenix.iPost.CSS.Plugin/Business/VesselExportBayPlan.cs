@@ -8,32 +8,24 @@ namespace Phenix.iPost.CSS.Plugin.Business
     public class VesselExportBayPlan
     {
         /// <summary>
-        /// for CreateInstance
-        /// </summary>
-        protected internal VesselExportBayPlan()
-        {
-            //禁止添加代码
-        }
-
-        /// <summary>
         /// for Newtonsoft.Json.JsonConstructor
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
-        protected VesselExportBayPlan(IDictionary<int, IDictionary<int, IList<Container>>> info)
+        protected internal VesselExportBayPlan(IDictionary<int, IDictionary<int, IList<ContainerInfo>>> info = null)
         {
             _info = info;
         }
 
         #region 属性
 
-        private IDictionary<int, IDictionary<int, IList<Container>>> _info;
+        private IDictionary<int, IDictionary<int, IList<ContainerInfo>>> _info;
 
         /// <summary>
         /// 贝位-排号-叠箱
         /// </summary>
-        public IDictionary<int, IDictionary<int, IList<Container>>> Info
+        public IDictionary<int, IDictionary<int, IList<ContainerInfo>>> Info
         {
-            get { return _info ??= new Dictionary<int, IDictionary<int, IList<Container>>>(); }
+            get { return _info ??= new Dictionary<int, IDictionary<int, IList<ContainerInfo>>>(); }
         }
 
         #endregion
@@ -46,7 +38,7 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// 刷新
         /// </summary>
         /// <param name="info">贝位-排号-叠箱</param>
-        public void OnRefresh(IDictionary<int, IDictionary<int, IList<Container>>> info)
+        public void OnRefresh(IDictionary<int, IDictionary<int, IList<ContainerInfo>>> info)
         {
             _info = info;
         }

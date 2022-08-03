@@ -1,106 +1,86 @@
-﻿using Phenix.Core.Data;
+﻿using System;
+using Phenix.Core.Data;
 using Phenix.iPost.CSS.Plugin.Business.Norms;
-using Phenix.iPost.CSS.Plugin.Business.Property;
 
 namespace Phenix.iPost.CSS.Plugin.Business
 {
     /// <summary>
     /// 拖车任务
     /// </summary>
+    [Serializable]
     public class VehicleTask
     {
-        internal VehicleTask(VehicleOperation owner, OperationLocationProperty destination,
-            VehicleTaskType taskType, VehicleTaskPurpose taskPurpose, CarryCargoProperty? carryCargo = null)
+        /// <summary>
+        /// for Newtonsoft.Json.JsonConstructor
+        /// </summary>
+        [Newtonsoft.Json.JsonConstructor]
+        protected VehicleTask(string machineId, OperationLocationInfo destination,
+            string taskNo, VehicleTaskType taskType, VehicleTaskPurpose taskPurpose, CarryCargoInfo? carryCargo)
         {
-            _owner = owner;
-            _prevTask = owner.Tasks.Count > 0 ? owner.Tasks[^1] : null;
+            _machineId = machineId;
             _destination = destination;
+            _taskNo = taskNo;
             _taskType = taskType;
             _taskPurpose = taskPurpose;
             _carryCargo = carryCargo;
         }
 
+        internal VehicleTask(string machineId, OperationLocationInfo destination,
+            VehicleTaskType taskType, VehicleTaskPurpose taskPurpose, CarryCargoInfo? carryCargo = null)
+            : this(machineId, destination, Database.Default.Sequence.Value.ToString(), taskType, taskPurpose, carryCargo)
+        {
+        }
+
         #region 属性
-        
-        private readonly VehicleOperation _owner;
+
+        private readonly string _machineId;
 
         /// <summary>
-        /// 主人
+        /// 设备ID
         /// </summary>
-        public VehicleOperation Owner
-        {
-            get { return _owner; }
-        }
+        public string MachineId => _machineId;
 
-        private readonly VehicleTask _prevTask;
-
-        /// <summary>
-        /// 上个
-        /// </summary>
-        public VehicleTask PrevTask
-        {
-            get { return _prevTask; }
-        }
-
-        private readonly OperationLocationProperty _destination;
+        private readonly OperationLocationInfo _destination;
 
         /// <summary>
         /// 目的地
         /// </summary>
-        public OperationLocationProperty Destination
-        {
-            get { return _destination; }
-        }
+        public OperationLocationInfo Destination => _destination;
 
-        private readonly string _taskNo = Database.Default.Sequence.Value.ToString();
+        private readonly string _taskNo;
 
         /// <summary>
         /// 任务号
         /// </summary>
-        public string TaskNo
-        {
-            get { return _taskNo; }
-        }
+        public string TaskNo => _taskNo;
 
-        private VehicleTaskType _taskType;
+        private readonly VehicleTaskType _taskType;
 
         /// <summary>
         /// 任务类型
         /// </summary>
-        public VehicleTaskType TaskType
-        {
-            get { return _taskType; }
-        }
+        public VehicleTaskType TaskType => _taskType;
 
-        private VehicleTaskPurpose _taskPurpose;
+        private readonly VehicleTaskPurpose _taskPurpose;
 
         /// <summary>
         /// 任务目的
         /// </summary>
-        public VehicleTaskPurpose TaskPurpose
-        {
-            get { return _taskPurpose; }
-        }
+        public VehicleTaskPurpose TaskPurpose => _taskPurpose;
 
         private TaskStatus _taskStatus;
 
         /// <summary>
         /// 任务状态
         /// </summary>
-        public TaskStatus TaskStatus
-        {
-            get { return _taskStatus; }
-        }
+        public TaskStatus TaskStatus => _taskStatus;
 
-        private readonly CarryCargoProperty? _carryCargo;
+        private CarryCargoInfo? _carryCargo;
 
         /// <summary>
         /// 载货
         /// </summary>
-        public CarryCargoProperty? CarryCargo
-        {
-            get { return _carryCargo; }
-        }
+        public CarryCargoInfo? CarryCargo => _carryCargo;
 
         #endregion
 

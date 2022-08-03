@@ -18,13 +18,11 @@ namespace Phenix.iPost.CSS.Plugin
         /// 初始化
         /// </summary>
         public AreaGrain(
-            [PersistentState(nameof(Phenix.iPost.CSS.Plugin.Business.AreaRule))]
-            IPersistentState<AreaRule> areaRule,
-            [PersistentState(nameof(AreaEquipYardCranes))]
-            IPersistentState<AreaEquipYardCranes> equipYardCranes)
+            [PersistentState(nameof(AreaRuleInfo))] IPersistentState<AreaRuleInfo> areaRuleInfo,
+            [PersistentState(nameof(EquipYardCranesInfo))] IPersistentState<AreaEquipYardCranesInfo> equipYardCranesInfo)
         {
-            _areaRule = areaRule;
-            _equipYardCranes = equipYardCranes;
+            _areaRuleInfo = areaRuleInfo;
+            _equipYardCranesInfo = equipYardCranesInfo;
         }
 
         #region 属性
@@ -32,7 +30,7 @@ namespace Phenix.iPost.CSS.Plugin
         /// <summary>
         /// 箱区Id
         /// </summary>
-        protected long AreaId => PrimaryKeyLong;
+        protected string AreaId => PrimaryKeyString;
 
         /// <summary>
         /// 码头代码
@@ -41,37 +39,37 @@ namespace Phenix.iPost.CSS.Plugin
 
         #region Kernel
 
-        private readonly IPersistentState<AreaRule> _areaRule;
+        private readonly IPersistentState<AreaRuleInfo> _areaRuleInfo;
 
         /// <summary>
         /// 箱区规范
         /// </summary>
-        protected AreaRule AreaRule
+        protected AreaRuleInfo AreaRuleInfo
         {
-            get => _areaRule.State;
-            set => _areaRule.State = value;
+            get => _areaRuleInfo.State;
+            set => _areaRuleInfo.State = value;
         }
 
         /// <summary>
         /// IStorage
         /// </summary>
-        protected IStorage AreaRuleStorage => _areaRule;
+        protected IStorage AreaRuleInfoStorage => _areaRuleInfo;
 
-        private readonly IPersistentState<AreaEquipYardCranes> _equipYardCranes;
+        private readonly IPersistentState<AreaEquipYardCranesInfo> _equipYardCranesInfo;
 
         /// <summary>
         /// 装备场桥
         /// </summary>
-        protected AreaEquipYardCranes EquipYardCranes
+        protected AreaEquipYardCranesInfo EquipYardCranesInfo
         {
-            get => _equipYardCranes.State;
-            set => _equipYardCranes.State = value;
+            get => _equipYardCranesInfo.State;
+            set => _equipYardCranesInfo.State = value;
         }
 
         /// <summary>
         /// IStorage
         /// </summary>
-        protected IStorage EquipYardCranesStorage => _equipYardCranes;
+        protected IStorage EquipYardCranesInfoStorage => _equipYardCranesInfo;
 
         #endregion
 
@@ -81,16 +79,19 @@ namespace Phenix.iPost.CSS.Plugin
 
         #region Event
 
-        async Task IAreaGrain.OnRefreshAreaRule(AreaRule areaRule)
+        async Task IAreaGrain.OnRefreshAreaRule(AreaRuleInfo areaRuleInfo)
         {
-            AreaRule = areaRule;
-            await AreaRuleStorage.WriteStateAsync();
+            if (AreaRuleInfo != areaRuleInfo)
+            {
+                AreaRuleInfo = areaRuleInfo;
+                await AreaRuleInfoStorage.WriteStateAsync();
+            }
         }
 
-        async Task IAreaGrain.OnRefreshEquipYardCranes(AreaEquipYardCranes equipYardCranes)
+        async Task IAreaGrain.OnRefreshEquipYardCranes(AreaEquipYardCranesInfo equipYardCranesInfo)
         {
-            EquipYardCranes = equipYardCranes;
-            await EquipYardCranesStorage.WriteStateAsync();
+            EquipYardCranesInfo = equipYardCranesInfo;
+            await EquipYardCranesInfoStorage.WriteStateAsync();
         }
 
         #endregion

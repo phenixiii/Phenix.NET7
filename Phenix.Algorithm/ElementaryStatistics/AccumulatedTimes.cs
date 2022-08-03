@@ -9,17 +9,10 @@ namespace Phenix.Algorithm.ElementaryStatistics
     public class AccumulatedTimes
     {
         /// <summary>
-        /// for CreateInstance
-        /// </summary>
-        protected internal AccumulatedTimes()
-        {
-        }
-
-        /// <summary>
         /// for Newtonsoft.Json.JsonConstructor
         /// </summary>
         [Newtonsoft.Json.JsonConstructor]
-        protected AccumulatedTimes(long value, DateTime lastActionTime)
+        protected internal AccumulatedTimes(long value = 0, DateTime lastActionTime = new DateTime())
         {
             _value = value;
             _lastActionTime = lastActionTime;

@@ -9,8 +9,8 @@ namespace Phenix.iPost.CSS.Plugin
 {
     /// <summary>
     /// 箱区贝Grain
-    /// key: AreaId
-    /// keyExtension: BayNo
+    /// key: BayNo
+    /// keyExtension: AreaId
     /// </summary>
     [StorageProvider]
     public class AreaBayGrain : Phenix.Actor.GrainBase, IAreaBayGrain
@@ -19,8 +19,7 @@ namespace Phenix.iPost.CSS.Plugin
         /// 初始化
         /// </summary>
         public AreaBayGrain(
-            [PersistentState(nameof(AreaBayTieredContainers))]
-            IPersistentState<AreaBayTieredContainers> tieredContainers)
+            [PersistentState(nameof(TieredContainers))] IPersistentState<AreaBayTieredContainers> tieredContainers)
         {
             _tieredContainers = tieredContainers;
         }
@@ -28,14 +27,14 @@ namespace Phenix.iPost.CSS.Plugin
         #region 属性
 
         /// <summary>
-        /// 箱区Id
-        /// </summary>
-        protected long AreaId => PrimaryKeyLong;
-
-        /// <summary>
         /// 贝位
         /// </summary>
-        protected int BayNo => int.Parse(PrimaryKeyExtension);
+        protected long BayNo => PrimaryKeyLong;
+
+        /// <summary>
+        /// 箱区Id
+        /// </summary>
+        protected string AreaId => PrimaryKeyExtension;
 
         #region Kernel
 
@@ -62,7 +61,7 @@ namespace Phenix.iPost.CSS.Plugin
 
         #region Event
 
-        async Task IAreaBayGrain.OnRefreshTieredContainers(IDictionary<int, IList<Container>> info)
+        async Task IAreaBayGrain.OnRefreshTieredContainers(IDictionary<int, IList<ContainerInfo>> info)
         {
             TieredContainers.OnRefresh(info);
             await TieredContainersStorage.WriteStateAsync();

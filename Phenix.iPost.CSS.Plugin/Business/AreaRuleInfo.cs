@@ -7,7 +7,7 @@ namespace Phenix.iPost.CSS.Plugin.Business
     /// 箱区规范
     /// </summary>
     [Serializable]
-    public readonly record struct AreaRule
+    public readonly record struct AreaRuleInfo
     {
         /// <summary>
         /// 箱区规范
@@ -19,7 +19,7 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// <param name="isRefrigerant">是否冷箱</param>
         /// <param name="dangerousCode">危险品代码</param>
         [Newtonsoft.Json.JsonConstructor]
-        public AreaRule(int bayNumber, int rowNumber, int tierNumber,
+        public AreaRuleInfo(int bayNumber, int rowNumber, int tierNumber,
             EmptyFull emptyFull, bool isRefrigerant, string dangerousCode)
         {
             this.BayNumber = bayNumber;

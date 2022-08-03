@@ -1,39 +1,34 @@
 ﻿using System;
-using Phenix.iPost.CSS.Plugin.Adapter.Norms;
 
-namespace Phenix.iPost.CSS.Plugin.Adapter.Events.Sub
+namespace Phenix.iPost.CSS.Plugin.Business
 {
     /// <summary>
-    /// 机械时空事件
+    /// 时空属性
     /// </summary>
     [Serializable]
-    public record MachineSpaceTimeEvent : MachineEvent
+    public readonly record struct SpaceTimeInfo
     {
         /// <summary>
-        /// 机械时空事件
+        /// 时空属性
         /// </summary>
-        /// <param name="machineId">机械ID</param>
-        /// <param name="machineType">机械类型</param>
         /// <param name="x">位置X坐标</param>
         /// <param name="y">位置Y坐标</param>
-        /// <param name="location">所在位置</param>
+        /// <param name="location"></param>
         /// <param name="speed">速度m/s</param>
         /// <param name="longitude">经度E</param>
         /// <param name="latitude">纬度S</param>
         /// <param name="heading">航向角</param>
         [Newtonsoft.Json.JsonConstructor]
-        public MachineSpaceTimeEvent(string machineId, MachineType machineType,
-            float x, float y, string location,
-            float? speed, string longitude, string latitude, float? heading)
-            : base(machineId, machineType)
+        public SpaceTimeInfo(float x, float y, string location,
+            float? speed = null, string longitude = null, string latitude = null, float? heading = null)
         {
-            this.X = x;
-            this.Y = y;
-            this.Location = location;
-            this.Speed = speed;
-            this.Longitude = longitude;
-            this.Latitude = latitude;
-            this.Heading = heading;
+            X = x;
+            Y = y;
+            Location = location;
+            Speed = speed;
+            Longitude = longitude;
+            Latitude = latitude;
+            Heading = heading;
         }
 
         #region 属性

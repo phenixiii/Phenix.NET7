@@ -1,53 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using Phenix.iPost.CSS.Plugin.Business.Norms;
-using Phenix.iPost.CSS.Plugin.Business.Property;
 
 namespace Phenix.iPost.CSS.Plugin.Business
 {
     /// <summary>
     /// 拖车作业
     /// </summary>
+    [Serializable]
     public class VehicleOperation
     {
-        internal VehicleOperation(Vehicle owner, VehicleOperationType operationType)
+        /// <summary>
+        /// for Newtonsoft.Json.JsonConstructor
+        /// </summary>
+        [Newtonsoft.Json.JsonConstructor]
+        protected internal VehicleOperation(string machineId, VehicleOperationType operationType, IList<VehicleTask> tasks = null)
         {
-            _owner = owner;
+            _machineId = machineId;
             _operationType = operationType;
+            _tasks = tasks ?? new List<VehicleTask>();
         }
 
         #region 属性
 
-        private readonly Vehicle _owner;
+        private readonly string _machineId;
 
         /// <summary>
-        /// 主人
+        /// 设备ID
         /// </summary>
-        public Vehicle Owner
-        {
-            get { return _owner; }
-        }
+        public string MachineId => _machineId;
 
         private readonly VehicleOperationType _operationType;
 
         /// <summary>
         /// 作业类型
         /// </summary>
-        public VehicleOperationType OperationType
-        {
-            get { return _operationType; }
-        }
+        public VehicleOperationType OperationType => _operationType;
 
-        private readonly List<VehicleTask> _tasks = new List<VehicleTask>();
+        private readonly IList<VehicleTask> _tasks;
 
-        internal IList<VehicleTask> Tasks
-        {
-            get { return _tasks; }
-        }
+        /// <summary>
+        /// 拖车任务
+        /// </summary>
+        public IList<VehicleTask> Tasks => _tasks;
 
         /// <summary>
         /// 接货中
         /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
         public bool Receiving
         {
             get
@@ -60,6 +60,7 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// <summary>
         /// 待送货
         /// </summary>
+        [Newtonsoft.Json.JsonIgnore]
         public bool Deliverable
         {
             get
@@ -72,7 +73,8 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// <summary>
         /// 送货中
         /// </summary>
-        public virtual bool Delivering
+        [Newtonsoft.Json.JsonIgnore]
+        public bool Delivering
         {
             get
             {
@@ -84,20 +86,16 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// <summary>
         /// 作业中
         /// </summary>
-        public bool InOperation
-        {
-            get { return Receiving || Deliverable || Delivering; }
-        }
+        [Newtonsoft.Json.JsonIgnore]
+        public bool InOperation => Receiving || Deliverable || Delivering;
 
-        private List<SpaceTimeProperty> _spaceTimes = new List<SpaceTimeProperty>();
+        private readonly List<SpaceTimeInfo> _spaceTimes = new List<SpaceTimeInfo>();
 
         /// <summary>
         /// 时空轨迹
         /// </summary>
-        public IList<SpaceTimeProperty> SpaceTimes
-        {
-            get { return _spaceTimes; }
-        }
+        [Newtonsoft.Json.JsonIgnore]
+        public IList<SpaceTimeInfo> SpaceTimes => _spaceTimes;
 
         #endregion
 
@@ -150,7 +148,7 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// <param name="taskType">任务类型</param>
         /// <param name="taskPurpose">任务目的</param>
         /// <param name="carryCargo">载货</param>
-        public VehicleTask NewTask(OperationLocationProperty destination, VehicleTaskType taskType, VehicleTaskPurpose taskPurpose, CarryCargoProperty? carryCargo = null)
+        public VehicleTask NewTask(OperationLocationInfo destination, VehicleTaskType taskType, VehicleTaskPurpose taskPurpose, CarryCargoInfo? carryCargo = null)
         {
             VehicleTask result;
             switch (taskType)
@@ -158,15 +156,15 @@ namespace Phenix.iPost.CSS.Plugin.Business
                 case VehicleTaskType.Berth:
                     if (!carryCargo.HasValue)
                         throw new ArgumentNullException(nameof(carryCargo));
-                    result = new VehicleBerthTask(this, destination, taskPurpose, carryCargo.Value);
+                    result = new VehicleBerthTask(_machineId, destination, taskPurpose, carryCargo.Value);
                     break;
                 case VehicleTaskType.Yard:
                     if (!carryCargo.HasValue)
                         throw new ArgumentNullException(nameof(carryCargo));
-                    result = new VehicleYardTask(this, destination, taskPurpose, carryCargo.Value);
+                    result = new VehicleYardTask(_machineId, destination, taskPurpose, carryCargo.Value);
                     break;
                 default:
-                    result = new VehicleTask(this, destination, taskType, taskPurpose);
+                    result = new VehicleTask(_machineId, destination, taskType, taskPurpose);
                     break;
             }
 
@@ -253,7 +251,7 @@ namespace Phenix.iPost.CSS.Plugin.Business
         {
             VehicleBerthTask berthTask = GetActivityCarryCargoTask() as VehicleBerthTask;
             if (berthTask == null)
-                throw new InvalidOperationException($"{Owner.Operation.Owner.MachineId}({OperationType})当前无泊位载货任务, 不应该有{action}动作!");
+                throw new InvalidOperationException($"{MachineId}({OperationType})当前无泊位载货任务, 不应该有{action}动作!");
 
             berthTask.OnActivity(action);
         }
@@ -266,7 +264,7 @@ namespace Phenix.iPost.CSS.Plugin.Business
         {
             VehicleYardTask yardTask = GetActivityCarryCargoTask() as VehicleYardTask;
             if (yardTask == null)
-                throw new InvalidOperationException($"{Owner.Operation.Owner.MachineId}({OperationType})当前无堆场载货任务, 不应该有{action}动作!");
+                throw new InvalidOperationException($"{MachineId}({OperationType})当前无堆场载货任务, 不应该有{action}动作!");
 
             yardTask.OnActivity(action);
         }
@@ -275,7 +273,7 @@ namespace Phenix.iPost.CSS.Plugin.Business
         /// 在移动
         /// </summary>
         /// <param name="spaceTime">时空</param>
-        public void OnMoving(SpaceTimeProperty spaceTime)
+        public void OnMoving(SpaceTimeInfo spaceTime)
         {
             _spaceTimes.Add(spaceTime);
         }

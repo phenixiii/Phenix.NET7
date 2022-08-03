@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Phenix.Core.Event;
 using Phenix.iPost.CSS.Plugin.Adapter.Events.Sub;
-using Phenix.iPost.CSS.Plugin.Business.Norms;
-using Phenix.iPost.CSS.Plugin.Business.Property;
+using Phenix.iPost.CSS.Plugin.Adapter.Norms;
+using Phenix.iPost.CSS.Plugin.Business;
 
 namespace Phenix.iPost.CSS.Plugin.Adapter.EventHandling
 {
@@ -21,23 +21,17 @@ namespace Phenix.iPost.CSS.Plugin.Adapter.EventHandling
         {
             switch (@event.MachineType)
             {
-                case Phenix.iPost.CSS.Plugin.Adapter.Norms.MachineType.QuayCrane:
+                case MachineType.QuayCrane:
                     await Phenix.Actor.ClusterClient.Default.GetGrain<IQuayCraneGrain>(@event.MachineId).OnChangePower(
-                        new PowerProperty(Phenix.Core.Reflection.Utilities.ChangeType<PowerType>(@event.PowerStatus),
-                            Phenix.Core.Reflection.Utilities.ChangeType<PowerStatus>(@event.PowerStatus),
-                            @event.SurplusCapacityPercent));
+                        new PowerInfo(@event.PowerType, @event.PowerStatus, @event.SurplusCapacityPercent));
                     break;
-                case Phenix.iPost.CSS.Plugin.Adapter.Norms.MachineType.YardCrane:
+                case MachineType.YardCrane:
                     await Phenix.Actor.ClusterClient.Default.GetGrain<IYardCraneGrain>(@event.MachineId).OnChangePower(
-                        new PowerProperty(Phenix.Core.Reflection.Utilities.ChangeType<PowerType>(@event.PowerStatus),
-                            Phenix.Core.Reflection.Utilities.ChangeType<PowerStatus>(@event.PowerStatus),
-                            @event.SurplusCapacityPercent));
+                        new PowerInfo(@event.PowerType, @event.PowerStatus, @event.SurplusCapacityPercent));
                     break;
-                case Phenix.iPost.CSS.Plugin.Adapter.Norms.MachineType.Vehicle:
+                case MachineType.Vehicle:
                     await Phenix.Actor.ClusterClient.Default.GetGrain<IVehicleGrain>(@event.MachineId).OnChangePower(
-                        new PowerProperty(Phenix.Core.Reflection.Utilities.ChangeType<PowerType>(@event.PowerStatus),
-                            Phenix.Core.Reflection.Utilities.ChangeType<PowerStatus>(@event.PowerStatus),
-                            @event.SurplusCapacityPercent));
+                        new PowerInfo(@event.PowerType, @event.PowerStatus, @event.SurplusCapacityPercent));
                     break;
             }
         }

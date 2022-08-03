@@ -16,8 +16,9 @@ namespace Phenix.iPost.CSS.Plugin.Adapter.Events.Sub
         /// </summary>
         /// <param name="vesselCode">船舶代码</param>
         /// <param name="info">贝位-排号-叠箱</param>
+        [Newtonsoft.Json.JsonConstructor]
         public VesselPreBayPlanEvent(string vesselCode,
-            IDictionary<int, IDictionary<int, IList<Container>>> info)
+            IDictionary<int, IDictionary<int, IList<ContainerInfo>>> info)
         {
             this.VesselCode = vesselCode;
             this.Info = info;
@@ -33,7 +34,7 @@ namespace Phenix.iPost.CSS.Plugin.Adapter.Events.Sub
         /// <summary>
         /// 贝位-排号-叠箱
         /// </summary>
-        public IDictionary<int, IDictionary<int, IList<Container>>> Info { get; }
+        public IDictionary<int, IDictionary<int, IList<ContainerInfo>>> Info { get; }
 
         #endregion
     }

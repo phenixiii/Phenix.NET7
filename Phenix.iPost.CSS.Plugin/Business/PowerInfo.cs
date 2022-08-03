@@ -1,27 +1,22 @@
 ﻿using System;
-using Phenix.iPost.CSS.Plugin.Adapter.Norms;
 using Phenix.iPost.CSS.Plugin.Business.Norms;
 
-namespace Phenix.iPost.CSS.Plugin.Adapter.Events.Sub
+namespace Phenix.iPost.CSS.Plugin.Business
 {
     /// <summary>
-    /// 机械动力事件
+    /// 动力
     /// </summary>
     [Serializable]
-    public record MachinePowerEvent : MachineEvent
+    public readonly record struct PowerInfo
     {
         /// <summary>
-        /// 机械动力事件
+        /// 动力
         /// </summary>
-        /// <param name="machineId">机械ID</param>
-        /// <param name="machineType">机械类型</param>
         /// <param name="powerType">动力类型</param>
         /// <param name="powerStatus">动力状态</param>
         /// <param name="surplusCapacityPercent">剩余容量百分比</param>
         [Newtonsoft.Json.JsonConstructor]
-        public MachinePowerEvent(string machineId, MachineType machineType,
-            PowerType powerType, PowerStatus powerStatus, int? surplusCapacityPercent)
-            : base(machineId, machineType)
+        public PowerInfo(PowerType powerType, PowerStatus powerStatus, int? surplusCapacityPercent)
         {
             this.PowerType = powerType;
             this.PowerStatus = powerStatus;
