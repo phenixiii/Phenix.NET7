@@ -227,16 +227,17 @@ Copyright © 2007, 2022 Phenixヾ Studio
 20220606
 1，完善Phenix.Actor工程
 2，重构Phenix.Services.Host工程
-3，提供Phenix.iPort.CSS.Plugin工程源码，CSS为Integrated Real-Time Scheduling System for Container Terminal系统名缩写，是一款集装箱码头资源实时调度系统
+
 
 
 20220713
 1，日志管理更换为Serilog+ExceptionLess
 2，在 Visual Studio 2022上重建Phenix.TPT.WebApp工程
-3，继续研发Phenix.iPort.CSS系统
 
 
 20220726
 1，为Phenix.Algorithm工程添加众数重数统计算法
-2，继续研发Phenix.iPort.CSS系统
+2，完善Phenix.Core工程
+3，完善Phenix.Services.Host工程
+4，提供Phenix.iDryPort.MDS.Plugin工程源码，MDS为IiDryPort - Mobile machinery intelligent dispatching command system management platform 1.0系统名缩写，是一款无水港流动机械智能调度指挥系统管理平台
 

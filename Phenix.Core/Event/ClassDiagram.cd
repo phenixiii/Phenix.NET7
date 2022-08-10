@@ -21,5 +21,12 @@
       <FileName>Event\IIntegrationEventHandler.cs</FileName>
     </TypeIdentifier>
   </Interface>
+  <Enum Name="Phenix.Core.Event.EventLevel">
+    <Position X="0.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAQAAAAAAABAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Event\EventLevel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Microsoft YaHei UI" Size="9" />
 </ClassDiagram>
