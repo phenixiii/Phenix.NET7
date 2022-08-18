@@ -1,15 +1,18 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Orleans.Configuration;
 using Orleans.Runtime.Messaging;
 using Orleans.Serialization;
+using Orleans.Services;
 using Orleans.Versions.Compatibility;
 using Orleans.Versions.Selector;
 using Phenix.Actor;
 using Phenix.Actor.Filters;
 using Phenix.Core.Data;
+using Phenix.Core.DependencyInjection;
 
 namespace Orleans.Hosting
 {
@@ -153,6 +156,22 @@ namespace Orleans.Hosting
                         parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
                     foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
                         parts.AddApplicationPart(Assembly.LoadFrom(fileName)).WithReferences().WithCodeGeneration();
+                })
+                .ConfigureServices(services =>
+                {
+                    /*
+                     * 装配Grain服务
+                     * 插件程序集都应该统一采用"*.Plugin.dll"作为文件名的后缀
+                     * 插件程序集都应该被部署到本服务容器的执行目录下动态加载
+                     * Grain服务类需标记ServiceAttribute
+                     */
+                    foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
+                    foreach (Type classType in Phenix.Core.Reflection.Utilities.LoadExportedClassTypes(fileName, false))
+                    {
+                        ServiceAttribute serviceAttribute = (ServiceAttribute)Attribute.GetCustomAttribute(classType, typeof(ServiceAttribute));
+                        if (serviceAttribute != null && (typeof(IGrainService).IsAssignableFrom(classType) || typeof(IGrainServiceClient<>).IsAssignableFrom(classType)))
+                            services.Add(new ServiceDescriptor(serviceAttribute.InterfaceType ?? classType, classType, serviceAttribute.Lifetime));
+                    }
                 })
                 .AddSimpleMessageStreamProvider(ContextKeys.SimpleMessageStreamProviderName)
                 .AddMemoryGrainStorage("PubSubStore")
