@@ -52,7 +52,7 @@ namespace Phenix.Services.Host.Library
                         if (args.Count != parameterInfos.Length)
                             continue;
                         ControllerRole controllerRole = ControllerRole.Fetch(commandType.GetTypeInfo(), methodInfo);
-                        await controllerRole.CheckValidityAsync(User.Identity, Request.HttpContext);
+                        await controllerRole.CheckValidityAsync(User.Identity, HttpContext);
                         return controllerRole.MethodInfo.Invoke(null, args.ToArray());
                     }
                 }

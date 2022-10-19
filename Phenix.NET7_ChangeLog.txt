@@ -234,5 +234,10 @@ Copyright © 2007, 2022 Phenixヾ Studio
 2，为Phenix.Actor工程添加自动注册Grain服务及其客户端代理的功能，这些类需打上ServiceAttribute标签
 3，完善Phenix.Core工程
 4，完善Phenix.Services.Host工程
-5，提供Phenix.iDryPort.MDS.Plugin工程源码，MDS为IiDryPort - Mobile machinery intelligent dispatching command system management platform 1.0系统名缩写，是一款无水港流动机械智能调度指挥系统管理平台
+
+
+20221019
+1，使用 Phenix.Core.Net.HttpContext.Current 静态属性可获取 HttpContextAccessor 服务
+2，提供Phenix.iDryPort.MDS.Plugin工程源码，MDS为IiDryPort - Mobile machinery intelligent dispatching command system management platform 1.0系统名缩写，是一款无水港流动机械智能调度指挥系统管理平台
+
 

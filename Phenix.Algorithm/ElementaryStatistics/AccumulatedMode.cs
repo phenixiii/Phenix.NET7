@@ -25,7 +25,7 @@ namespace Phenix.Algorithm.ElementaryStatistics
         /// <summary>
         /// 初始化
         /// </summary>
-        public AccumulatedMode(decimal precision)
+        public AccumulatedMode(decimal precision = 1)
             : this(null, 0, 0, new DateTime(), precision)
         {
         }

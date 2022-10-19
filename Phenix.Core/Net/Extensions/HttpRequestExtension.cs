@@ -29,7 +29,7 @@ namespace Microsoft.AspNetCore.Mvc
                 throw new ArgumentNullException(nameof(request));
 
             string result = request.Headers["X-Forwarded-For"].FirstOrDefault() ?? request.Headers["X-Forwarded-Proto"].FirstOrDefault();
-            if (String.IsNullOrEmpty(result))
+            if (String.IsNullOrEmpty(result) && request.HttpContext.Connection.RemoteIpAddress != null)
                 result = request.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             return result;
         }

@@ -6,7 +6,6 @@ using System.Security;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Phenix.Business;
 using Phenix.Core.Data;
 using Phenix.Core.Net.Filters;
@@ -185,9 +184,14 @@ namespace Phenix.Services.Host.Mvc.Filters
         /// 检查有效性
         /// </summary>
         /// <param name="identity">用户身份</param>
-        /// <param name="context">HttpContext</param>
-        public async Task CheckValidityAsync(IIdentity identity, HttpContext context)
+        /// <param name="context">HTTP上下文</param>
+        public async Task CheckValidityAsync(IIdentity identity = null, Microsoft.AspNetCore.Http.HttpContext context = null)
         {
+            if (identity == null && Principal.CurrentPrincipal != null)
+                identity = Principal.CurrentPrincipal.Identity;
+            if (context == null && Phenix.Core.Net.HttpContext.Current != null)
+                context = Phenix.Core.Net.HttpContext.Current;
+
             if (_roles != null && _roles.Length > 0)
             {
                 if (identity == null)

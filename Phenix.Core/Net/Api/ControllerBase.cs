@@ -33,7 +33,7 @@ namespace Phenix.Core.Net.Api
         /// <param name="sourceData">需加密的对象/字符串</param>
         protected async Task<string> EncryptAsync(object sourceData)
         {
-            if (User.Identity == null)
+            if (User == null || User.Identity == null)
                 throw new AuthenticationException();
 
             return await User.Identity.Encrypt(sourceData);

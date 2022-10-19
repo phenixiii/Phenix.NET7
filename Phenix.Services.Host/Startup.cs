@@ -48,19 +48,24 @@ namespace Phenix.Services.Host
             });
 
             /*
-             * 开启SignalR服务
+             * 注入 HttpContextAccessor 服务
+             */
+            services.AddHttpContextAccessor();
+
+            /*
+             * 开启 SignalR 服务
              */
             services.AddSignalR(options => { options.MaximumReceiveMessageSize = Int16.MaxValue; }).AddMessagePackProtocol();
 
             /*
-             * 装配DaprClient
+             * 装配 DaprClient
              */
             services.AddDaprClient(builder => builder
                 .UseHttpEndpoint($"http://localhost:{Environment.GetEnvironmentVariable("DAPR_HTTP_PORT") ?? DaprClientConfig.HttpPort}")
                 .UseGrpcEndpoint($"http://localhost:{Environment.GetEnvironmentVariable("DAPR_GRPC_PORT") ?? DaprClientConfig.GrpcPort}"));
 
             /*
-             * 注入Dapr事件总线
+             * 注入 Dapr 事件总线
              */
             services.AddScoped<IEventBus, DaprEventBus>();
 
@@ -68,8 +73,8 @@ namespace Phenix.Services.Host
              * 装配事件处理器/扩展服务
              * 插件程序集都应该统一采用"*.Plugin.dll"作为文件名的后缀
              * 插件程序集都应该被部署到本服务容器的执行目录下动态加载
-             * 事件处理器需实现IIntegrationEventHandler
-             * 扩展服务类需标记ServiceAttribute
+             * 事件处理器需实现 IIntegrationEventHandler
+             * 扩展服务类需标记 ServiceAttribute
              */
             foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
             foreach (Type classType in Utilities.LoadExportedClassTypes(fileName, false))
@@ -78,7 +83,7 @@ namespace Phenix.Services.Host
                 if (typeof(IIntegrationEventHandler).IsAssignableFrom(classType))
                     services.Add(new ServiceDescriptor(classType, serviceAttribute != null ? serviceAttribute.Lifetime : ServiceLifetime.Scoped));
                 else if (serviceAttribute != null)
-                    services.Add(new ServiceDescriptor(serviceAttribute.InterfaceType != null ? serviceAttribute.InterfaceType : classType, classType, serviceAttribute.Lifetime));
+                    services.Add(new ServiceDescriptor(serviceAttribute.InterfaceType ?? classType, classType, serviceAttribute.Lifetime));
             }
 
             /*
@@ -88,7 +93,7 @@ namespace Phenix.Services.Host
             services.AddSingleton<UserMessageHub>();
 
             /*
-             * 配置Controller策略
+             * 配置 Controller 策略
              */
             services.AddControllers(options =>
                 {
@@ -191,9 +196,14 @@ namespace Phenix.Services.Host
                 context.Request.EnableBuffering();
                 return next();
             });
+            
+            /*
+             * 使用 Phenix.Core.Net.HttpContext.Current 静态属性获取 HttpContextAccessor 服务
+             */
+            app.UseStaticHttpContext();
 
             /*
-             * 使用CloudEvents中间件
+             * 使用 CloudEvents 中间件
              * 将解包使用 CloudEvents 结构化格式的请求，以便接收方法可以直接读取事件负载
              */
             app.UseCloudEvents();
