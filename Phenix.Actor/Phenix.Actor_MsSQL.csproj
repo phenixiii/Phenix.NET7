@@ -38,7 +38,7 @@
 		<PackageReference Include="Microsoft.Orleans.Reminders.AdoNet" Version="3.6.5" />
 		<PackageReference Include="Microsoft.Orleans.Serialization.Bond" Version="3.6.5" />
 		<PackageReference Include="Microsoft.Orleans.Server" Version="3.6.5" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>
