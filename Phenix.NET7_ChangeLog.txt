@@ -219,9 +219,10 @@ Copyright © 2007, 2022 Phenixヾ Studio
 
 
 20220401
-1，升级至 for .net 6，开发工具 Visual Studio 2022，梳理解决方案，以支持 dapr
-2，从Phenix.Core拆分出Phenix.Net工程、Phenix.Mapper工程
-3，开源Phenix.Core工程、Phenix.Net工程
+1，升级至 for .net 6，开发工具 Visual Studio 2022
+2，梳理解决方案，以支持 dapr
+3，从Phenix.Core拆分出Phenix.Net工程、Phenix.Mapper工程
+4，开源Phenix.Core工程、Phenix.Net工程
 
 
 20220713
@@ -229,15 +230,14 @@ Copyright © 2007, 2022 Phenixヾ Studio
 2，在 Visual Studio 2022上重建Phenix.TPT.WebApp工程
 
 
-20220726
+20221019
 1，为Phenix.Algorithm工程添加众数重数统计算法
 2，为Phenix.Actor工程添加自动注册Grain服务及其客户端代理的功能，这些类需打上ServiceAttribute标签
 3，完善Phenix.Core工程
 4，完善Phenix.Services.Host工程
+5，使用 Phenix.Core.Net.HttpContext.Current 静态属性可获取 HttpContextAccessor 服务
 
 
-20221019
-1，使用 Phenix.Core.Net.HttpContext.Current 静态属性可获取 HttpContextAccessor 服务
-2，提供Phenix.iDryPort.MDS.Plugin工程源码，MDS为IiDryPort - Mobile machinery intelligent dispatching command system management platform 1.0系统名缩写，是一款无水港流动机械智能调度指挥系统管理平台
-
+20231019
+AppSettings存取的配置值，向前兼容不了的时候可以通过升版本的方法覆盖掉旧版数据，避免因逻辑错乱造成新版系统发布失败的发生，只需在使用配置的属性上/属性所在类上/枚举属性的类型上/存取配置值的函数，打上AppSettingVersionAttribute标签，一旦有不能向前兼容的情况发生，就将版本号改为全新的即可
 

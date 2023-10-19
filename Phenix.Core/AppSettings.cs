@@ -64,12 +64,32 @@ namespace Phenix.Core
             return String.CompareOrdinal(fieldString, newValueString) == 0;
         }
 
-        private static string FormatCompoundKey(MethodBase method, string key = null)
+        private static string FormatCompoundKey(MethodBase method, string key, AppSettingVersionAttribute classVersion, AppSettingVersionAttribute methodVersion, AppSettingVersionAttribute methodTypeVersion)
         {
-            foreach (PropertyInfo item in method.DeclaringType.GetProperties())
-                if (item.SetMethod == method || item.GetMethod == method)
-                    return String.Format("{0}.{1}.{2}", method.DeclaringType.FullName, item.Name, key);
-            return String.Format("{0}.{1}.{2}", method.DeclaringType.FullName, method.Name, key);
+            return String.Format("{0}.{1}.{2}{3}{4}{5}",
+                method.ReflectedType.FullName, method.MemberType == MemberTypes.Property ? method.Name.Substring(4) : method.Name, key,
+                classVersion != null ? String.Format(".{0}", classVersion.VersionNumber) : null,
+                methodVersion != null ? String.Format(".{0}", methodVersion.VersionNumber) : null,
+                methodTypeVersion != null ? String.Format(".{0}", methodTypeVersion.VersionNumber) : null);
+        }
+
+        private static string FormatCompoundKey<TValue>(MethodBase method, string key = null)
+        {
+            return FormatCompoundKey(method, key,
+                (AppSettingVersionAttribute)Attribute.GetCustomAttribute(Utilities.GetUnderlyingType(method.ReflectedType), typeof(AppSettingVersionAttribute)) ??
+                (AppSettingVersionAttribute)Attribute.GetCustomAttribute(Utilities.GetUnderlyingType(method.DeclaringType), typeof(AppSettingVersionAttribute)),
+                (AppSettingVersionAttribute)Attribute.GetCustomAttribute(method, typeof(AppSettingVersionAttribute)),
+                (AppSettingVersionAttribute)Attribute.GetCustomAttribute(Utilities.GetUnderlyingType(typeof(TValue)), typeof(AppSettingVersionAttribute)));
+        }
+
+        private static string FormatCompoundKey<TField, TValue>(MethodBase method, string key = null)
+        {
+            return FormatCompoundKey(method, key,
+                (AppSettingVersionAttribute)Attribute.GetCustomAttribute(Utilities.GetUnderlyingType(method.ReflectedType), typeof(AppSettingVersionAttribute)) ??
+                (AppSettingVersionAttribute)Attribute.GetCustomAttribute(Utilities.GetUnderlyingType(method.DeclaringType), typeof(AppSettingVersionAttribute)),
+                (AppSettingVersionAttribute)Attribute.GetCustomAttribute(method, typeof(AppSettingVersionAttribute)),
+                (AppSettingVersionAttribute)Attribute.GetCustomAttribute(Utilities.GetUnderlyingType(typeof(TField)), typeof(AppSettingVersionAttribute)) ??
+                (AppSettingVersionAttribute)Attribute.GetCustomAttribute(Utilities.GetUnderlyingType(typeof(TValue)), typeof(AppSettingVersionAttribute)));
         }
 
         /// <summary>
@@ -264,7 +284,7 @@ where AS_Key = :AS_Key",
         public static TValue GetValue<TValue>(TValue defaultValue, bool inEncrypt = false)
         {
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod();
-            return DoGetValue(FormatCompoundKey(method), defaultValue, inEncrypt);
+            return DoGetValue(FormatCompoundKey<TValue>(method), defaultValue, inEncrypt);
         }
 
         /// <summary>
@@ -276,7 +296,7 @@ where AS_Key = :AS_Key",
         public static TValue GetValue<TValue>(string key, TValue defaultValue, bool inEncrypt = false)
         {
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod();
-            return DoGetValue(FormatCompoundKey(method, key), defaultValue, inEncrypt);
+            return DoGetValue(FormatCompoundKey<TValue>(method, key), defaultValue, inEncrypt);
         }
 
         private static TValue DoGetValue<TValue>(string key, TValue defaultValue, bool inEncrypt = false)
@@ -310,7 +330,7 @@ where AS_Key = :AS_Key",
                 return;
 
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod();
-            field = DoSetProperty<TField, TValue>(FormatCompoundKey(method), newValue, inEncrypt, allowSave);
+            field = DoSetProperty<TField, TValue>(FormatCompoundKey<TField, TValue>(method), newValue, inEncrypt, allowSave);
         }
 
         /// <summary>
@@ -327,7 +347,7 @@ where AS_Key = :AS_Key",
                 return;
 
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod();
-            field = DoSetProperty<TField, TValue>(FormatCompoundKey(method, key), newValue, inEncrypt, allowSave);
+            field = DoSetProperty<TField, TValue>(FormatCompoundKey<TField, TValue>(method, key), newValue, inEncrypt, allowSave);
         }
 
         private static TField DoSetProperty<TField, TValue>(string key, TValue newValue, bool inEncrypt, bool allowSave)
@@ -358,7 +378,7 @@ where AS_Key = :AS_Key",
                 }
 
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod();
-            return DoGetProperty(FormatCompoundKey(method), ref field, defaultValue, inEncrypt, allowSave);
+            return DoGetProperty(FormatCompoundKey<TField, TValue>(method), ref field, defaultValue, inEncrypt, allowSave);
         }
 
         /// <summary>
@@ -382,7 +402,7 @@ where AS_Key = :AS_Key",
                 }
 
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod();
-            return DoGetProperty(FormatCompoundKey(method, key), ref field, defaultValue, inEncrypt, allowSave);
+            return DoGetProperty(FormatCompoundKey<TField, TValue>(method, key), ref field, defaultValue, inEncrypt, allowSave);
         }
 
         private static TValue DoGetProperty<TField, TValue>(string key, ref TField field, TValue defaultValue, bool inEncrypt, bool allowSave)
@@ -529,7 +549,7 @@ where Key = @Key";
         public static TValue GetLocalValue<TValue>(TValue defaultValue, bool inEncrypt = false)
         {
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod();
-            return DoGetLocalValue(FormatCompoundKey(method), defaultValue, inEncrypt);
+            return DoGetLocalValue(FormatCompoundKey<TValue>(method), defaultValue, inEncrypt);
         }
 
         /// <summary>
@@ -541,7 +561,7 @@ where Key = @Key";
         public static TValue GetLocalValue<TValue>(string key, TValue defaultValue, bool inEncrypt = false)
         {
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod();
-            return DoGetLocalValue(FormatCompoundKey(method, key), defaultValue, inEncrypt);
+            return DoGetLocalValue(FormatCompoundKey<TValue>(method, key), defaultValue, inEncrypt);
         }
 
         private static TValue DoGetLocalValue<TValue>(string key, TValue defaultValue, bool inEncrypt = false)
@@ -575,7 +595,7 @@ where Key = @Key";
                 return;
 
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod();
-            field = DoSetLocalProperty<TField, TValue>(FormatCompoundKey(method), newValue, inEncrypt, allowSave);
+            field = DoSetLocalProperty<TField, TValue>(FormatCompoundKey<TField, TValue>(method), newValue, inEncrypt, allowSave);
         }
 
         /// <summary>
@@ -592,7 +612,7 @@ where Key = @Key";
                 return;
 
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod();
-            field = DoSetLocalProperty<TField, TValue>(FormatCompoundKey(method, key), newValue, inEncrypt, allowSave);
+            field = DoSetLocalProperty<TField, TValue>(FormatCompoundKey<TField, TValue>(method, key), newValue, inEncrypt, allowSave);
         }
 
         private static TField DoSetLocalProperty<TField, TValue>(string key, TValue newValue, bool inEncrypt, bool allowSave)
@@ -623,7 +643,7 @@ where Key = @Key";
                 }
 
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod();
-            return DoGetLocalProperty(FormatCompoundKey(method), ref field, defaultValue, inEncrypt, allowSave);
+            return DoGetLocalProperty(FormatCompoundKey<TField, TValue>(method), ref field, defaultValue, inEncrypt, allowSave);
         }
 
         /// <summary>
@@ -647,7 +667,7 @@ where Key = @Key";
                 }
 
             MethodBase method = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod();
-            return DoGetLocalProperty(FormatCompoundKey(method, key), ref field, defaultValue, inEncrypt, allowSave);
+            return DoGetLocalProperty(FormatCompoundKey<TField, TValue>(method, key), ref field, defaultValue, inEncrypt, allowSave);
         }
 
         private static TValue DoGetLocalProperty<TField, TValue>(string key, ref TField field, TValue defaultValue, bool inEncrypt, bool allowSave)
