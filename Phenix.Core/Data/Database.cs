@@ -809,7 +809,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                doExecute(connection);
+                DbConnectionHelper.Execute(connection, doExecute);
                 PutConnection(connection);
             }
             catch (Exception ex)
@@ -831,7 +831,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                doExecute(connection, in1);
+                DbConnectionHelper.Execute(connection, doExecute, in1);
                 PutConnection(connection);
             }
             catch (Exception ex)
@@ -854,7 +854,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                doExecute(connection, in1, in2);
+                DbConnectionHelper.Execute(connection, doExecute, in1, in2);
                 PutConnection(connection);
             }
             catch (Exception ex)
@@ -878,7 +878,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                doExecute(connection, in1, in2, in3);
+                DbConnectionHelper.Execute(connection, doExecute, in1, in2, in3);
                 PutConnection(connection);
             }
             catch (Exception ex)
@@ -903,7 +903,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                doExecute(connection, in1, in2, in3, in4);
+                DbConnectionHelper.Execute(connection, doExecute, in1, in2, in3, in4);
                 PutConnection(connection);
             }
             catch (Exception ex)
@@ -929,7 +929,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                doExecute(connection, in1, in2, in3, in4, in5);
+                DbConnectionHelper.Execute(connection, doExecute, in1, in2, in3, in4, in5);
                 PutConnection(connection);
             }
             catch (Exception ex)
@@ -956,7 +956,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                doExecute(connection, in1, in2, in3, in4, in5, in6);
+                DbConnectionHelper.Execute(connection, doExecute, in1, in2, in3, in4, in5, in6);
                 PutConnection(connection);
             }
             catch (Exception ex)
@@ -984,7 +984,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                doExecute(connection, in1, in2, in3, in4, in5, in6, in7);
+                DbConnectionHelper.Execute(connection, doExecute, in1, in2, in3, in4, in5, in6, in7);
                 PutConnection(connection);
             }
             catch (Exception ex)
@@ -1013,7 +1013,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                doExecute(connection, in1, in2, in3, in4, in5, in6, in7, in8);
+                DbConnectionHelper.Execute(connection, doExecute, in1, in2, in3, in4, in5, in6, in7, in8);
                 PutConnection(connection);
             }
             catch (Exception ex)
@@ -1043,7 +1043,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                doExecute(connection, in1, in2, in3, in4, in5, in6, in7, in8, in9);
+                DbConnectionHelper.Execute(connection, doExecute, in1, in2, in3, in4, in5, in6, in7, in8, in9);
                 PutConnection(connection);
             }
             catch (Exception ex)
@@ -1074,7 +1074,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                doExecute(connection, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10);
+                DbConnectionHelper.Execute(connection, doExecute, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10);
                 PutConnection(connection);
             }
             catch (Exception ex)
@@ -1106,7 +1106,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                doExecute(connection, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11);
+                DbConnectionHelper.Execute(connection, doExecute, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11);
                 PutConnection(connection);
             }
             catch (Exception ex)
@@ -1139,7 +1139,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                doExecute(connection, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12);
+                DbConnectionHelper.Execute(connection, doExecute, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12);
                 PutConnection(connection);
             }
             catch (Exception ex)
@@ -1159,7 +1159,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                TResult result = doExecuteGet(connection);
+                TResult result = DbConnectionHelper.ExecuteGet(connection, doExecuteGet);
                 PutConnection(connection);
                 return result;
             }
@@ -1182,7 +1182,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                TResult result = doExecuteGet(connection, in1);
+                TResult result = DbConnectionHelper.ExecuteGet(connection, doExecuteGet, in1);
                 PutConnection(connection);
                 return result;
             }
@@ -1206,7 +1206,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                TResult result = doExecuteGet(connection, in1, in2);
+                TResult result = DbConnectionHelper.ExecuteGet(connection, doExecuteGet, in1, in2);
                 PutConnection(connection);
                 return result;
             }
@@ -1231,7 +1231,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                TResult result = doExecuteGet(connection, in1, in2, in3);
+                TResult result = DbConnectionHelper.ExecuteGet(connection, doExecuteGet, in1, in2, in3);
                 PutConnection(connection);
                 return result;
             }
@@ -1257,7 +1257,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                TResult result = doExecuteGet(connection, in1, in2, in3, in4);
+                TResult result = DbConnectionHelper.ExecuteGet(connection, doExecuteGet, in1, in2, in3, in4);
                 PutConnection(connection);
                 return result;
             }
@@ -1284,7 +1284,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                TResult result = doExecuteGet(connection, in1, in2, in3, in4, in5);
+                TResult result = DbConnectionHelper.ExecuteGet(connection, doExecuteGet, in1, in2, in3, in4, in5);
                 PutConnection(connection);
                 return result;
             }
@@ -1312,7 +1312,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                TResult result = doExecuteGet(connection, in1, in2, in3, in4, in5, in6);
+                TResult result = DbConnectionHelper.ExecuteGet(connection, doExecuteGet, in1, in2, in3, in4, in5, in6);
                 PutConnection(connection);
                 return result;
             }
@@ -1341,7 +1341,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                TResult result = doExecuteGet(connection, in1, in2, in3, in4, in5, in6, in7);
+                TResult result = DbConnectionHelper.ExecuteGet(connection, doExecuteGet, in1, in2, in3, in4, in5, in6, in7);
                 PutConnection(connection);
                 return result;
             }
@@ -1371,7 +1371,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                TResult result = doExecuteGet(connection, in1, in2, in3, in4, in5, in6, in7, in8);
+                TResult result = DbConnectionHelper.ExecuteGet(connection, doExecuteGet, in1, in2, in3, in4, in5, in6, in7, in8);
                 PutConnection(connection);
                 return result;
             }
@@ -1402,7 +1402,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                TResult result = doExecuteGet(connection, in1, in2, in3, in4, in5, in6, in7, in8, in9);
+                TResult result = DbConnectionHelper.ExecuteGet(connection, doExecuteGet, in1, in2, in3, in4, in5, in6, in7, in8, in9);
                 PutConnection(connection);
                 return result;
             }
@@ -1434,7 +1434,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                TResult result = doExecuteGet(connection, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10);
+                TResult result = DbConnectionHelper.ExecuteGet(connection, doExecuteGet, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10);
                 PutConnection(connection);
                 return result;
             }
@@ -1467,7 +1467,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                TResult result = doExecuteGet(connection, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11);
+                TResult result = DbConnectionHelper.ExecuteGet(connection, doExecuteGet, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11);
                 PutConnection(connection);
                 return result;
             }
@@ -1501,7 +1501,7 @@ where DataSourceKey = @DataSourceKey and DataSourceSubIndex = @DataSourceSubInde
             DbConnection connection = GetConnection();
             try
             {
-                TResult result = doExecuteGet(connection, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12);
+                TResult result = DbConnectionHelper.ExecuteGet(connection, doExecuteGet, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12);
                 PutConnection(connection);
                 return result;
             }

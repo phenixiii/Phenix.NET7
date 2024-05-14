@@ -2,15 +2,15 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<Version>7.6.57</Version>
-		<AssemblyVersion>7.6.57.0606</AssemblyVersion>
-		<FileVersion>7.6.57.0606</FileVersion>
+		<Version>7.6.61</Version>
+		<AssemblyVersion>7.6.61.0514</AssemblyVersion>
+		<FileVersion>7.6.61.0514</FileVersion>
 		<Description>Teamwork Project Tracker 2.0</Description>
 		<Authors>ming</Authors>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<AssemblyName>Phenix.TPT.Plugin</AssemblyName>
 		<RootNamespace>Phenix.TPT.Plugin</RootNamespace>
-		<Copyright>Copyright © 2007, 2022 Phenixヾ Studio</Copyright>
+		<Copyright>Copyright © 2007, 2024 Phenixヾ Studio</Copyright>
 		<Company />
 	</PropertyGroup>
 
@@ -24,8 +24,8 @@
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="Microsoft.Orleans.Client" Version="3.6.2" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="Microsoft.Orleans.Client" Version="3.6.5" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -30,7 +30,7 @@ namespace Phenix.Services.Host
         }
 
         public IConfiguration Configuration { get; }
-        
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -79,7 +79,7 @@ namespace Phenix.Services.Host
             foreach (string fileName in Directory.GetFiles(Phenix.Core.AppRun.BaseDirectory, "*.Plugin.dll"))
             foreach (Type classType in Utilities.LoadExportedClassTypes(fileName, false))
             {
-                ServiceAttribute serviceAttribute = (ServiceAttribute) Attribute.GetCustomAttribute(classType, typeof(ServiceAttribute));
+                ServiceAttribute serviceAttribute = (ServiceAttribute)Attribute.GetCustomAttribute(classType, typeof(ServiceAttribute));
                 if (typeof(IIntegrationEventHandler).IsAssignableFrom(classType))
                     services.Add(new ServiceDescriptor(classType, serviceAttribute != null ? serviceAttribute.Lifetime : ServiceLifetime.Scoped));
                 else if (serviceAttribute != null)
@@ -196,7 +196,7 @@ namespace Phenix.Services.Host
                 context.Request.EnableBuffering();
                 return next();
             });
-            
+
             /*
              * 使用 Phenix.Core.Net.HttpContext.Current 静态属性获取 HttpContextAccessor 服务
              */

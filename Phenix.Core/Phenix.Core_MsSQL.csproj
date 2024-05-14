@@ -2,16 +2,16 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<Version>7.6.60</Version>
-		<AssemblyVersion>7.6.60.1019</AssemblyVersion>
-		<FileVersion>7.6.60.1019</FileVersion>
+		<Version>7.6.61</Version>
+		<AssemblyVersion>7.6.61.0514</AssemblyVersion>
+		<FileVersion>7.6.61.0514</FileVersion>
 		<Description>Phenix Framework 7.6 for .NET 6</Description>
 		<Authors>ming</Authors>
 		<DefineConstants>TRACE;MsSQL</DefineConstants>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<AssemblyName>Phenix.Core</AssemblyName>
 		<RootNamespace>Phenix.Core</RootNamespace>
-		<Copyright>Copyright © 2007, 2022 Phenixヾ Studio</Copyright>
+		<Copyright>Copyright © 2007, 2024 Phenixヾ Studio</Copyright>
 		<Company />
 	</PropertyGroup>
 
@@ -27,10 +27,10 @@
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
-		<PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
-		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+		<PackageReference Include="System.Data.SQLite.Core" Version="1.0.118" />
 	</ItemGroup>
 
 	<ItemGroup>

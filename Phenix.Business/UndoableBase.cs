@@ -53,7 +53,7 @@ namespace Phenix.Business
             if (source == null)
                 throw new ArgumentNullException(nameof(source));
 
-            T result = (T) source.MemberwiseClone();
+            T result = (T)source.MemberwiseClone();
             result.InitializeSelf();
             return result;
         }
@@ -161,7 +161,7 @@ namespace Phenix.Business
         /// </summary>
         public IDictionary<string, bool?> DirtyPropertyNames
         {
-            get { return _dirtyPropertyNames ?? (_dirtyPropertyNames = new Dictionary<string, bool?>(StringComparer.Ordinal)); }
+            get { return _dirtyPropertyNames ??= new Dictionary<string, bool?>(StringComparer.Ordinal); }
         }
 
         #endregion
@@ -362,7 +362,7 @@ namespace Phenix.Business
         /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException）</param>
         public int SaveSelf(bool checkTimestamp = true)
         {
-            return Database.ExecuteGet((Func<DbTransaction, bool, int>) SaveSelf, checkTimestamp);
+            return Database.ExecuteGet((Func<DbTransaction, bool, int>)SaveSelf, checkTimestamp);
         }
 
         /// <summary>
@@ -372,7 +372,7 @@ namespace Phenix.Business
         /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException）</param>
         public int SaveSelf(DbConnection connection, bool checkTimestamp = true)
         {
-            return DbConnectionHelper.ExecuteGet(connection, SaveSelf, checkTimestamp);
+            return DbConnectionHelper.ExecuteGet(connection, (Func<DbTransaction, bool, int>)SaveSelf, checkTimestamp);
         }
 
         /// <summary>

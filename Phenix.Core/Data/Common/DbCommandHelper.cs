@@ -132,7 +132,7 @@ namespace Phenix.Core.Data.Common
                 DateTime dateTime = DateTime.Now;
                 try
                 {
-                    DbConnectionHelper.OpenConnection(command.Connection);
+                    DbConnectionHelper.TryOpenConnection(command.Connection);
                     return command.ExecuteNonQuery();
                 }
                 finally
@@ -223,7 +223,7 @@ namespace Phenix.Core.Data.Common
                 DateTime dateTime = DateTime.Now;
                 try
                 {
-                    DbConnectionHelper.OpenConnection(command.Connection);
+                    DbConnectionHelper.TryOpenConnection(command.Connection);
                     object result = command.ExecuteScalar();
                     return result == null || DBNull.Value.Equals(result) ? null : result;
                 }
@@ -282,7 +282,7 @@ namespace Phenix.Core.Data.Common
                 DateTime dateTime = DateTime.Now;
                 try
                 {
-                    DbConnectionHelper.OpenConnection(command.Connection);
+                    DbConnectionHelper.TryOpenConnection(command.Connection);
                     return command.ExecuteReader(behavior);
                 }
                 finally
@@ -369,7 +369,7 @@ namespace Phenix.Core.Data.Common
                     try
                     {
                         DataSet result = new DataSet();
-                        DbConnectionHelper.OpenConnection(command.Connection);
+                        DbConnectionHelper.TryOpenConnection(command.Connection);
                         adapter.SelectCommand = command;
                         adapter.Fill(result);
                         return result;

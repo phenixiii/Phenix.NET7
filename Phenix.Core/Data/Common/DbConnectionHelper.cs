@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Data.Common;
+using System.Transactions;
+
 #if PgSQL
 using Npgsql;
 #endif
@@ -75,7 +77,6 @@ namespace Phenix.Core.Data.Common
 
         #region Connection
 
-
         /// <summary>
         /// 构建 DbConnection
         /// </summary>
@@ -146,9 +147,9 @@ namespace Phenix.Core.Data.Common
         }
 
         /// <summary>
-        /// 打开连接
+        /// 尝试打开连接（保持当下连接）
         /// </summary>
-        public static void OpenConnection(DbConnection connection)
+        public static void TryOpenConnection(DbConnection connection)
         {
             try
             {
@@ -180,7 +181,7 @@ namespace Phenix.Core.Data.Common
         /// <param name="connection">DbConnection</param>
         public static DbTransaction BeginTransaction(DbConnection connection)
         {
-            OpenConnection(connection);
+            TryOpenConnection(connection);
             return connection.BeginTransaction();
         }
 
@@ -193,19 +194,392 @@ namespace Phenix.Core.Data.Common
         /// </summary>
         /// <param name="connection">DbConnection</param>
         /// <param name="doExecute">执行数据库操作处理函数</param>
+        public static void Execute(DbConnection connection, Action doExecute)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                doExecute();
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecute">执行数据库操作处理函数</param>
+        public static void Execute(DbConnection connection, Action<DbConnection> doExecute)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                doExecute(connection);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecute">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        public static void Execute<TIn1>(DbConnection connection, Action<DbConnection, TIn1> doExecute,
+            TIn1 in1)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                doExecute(connection, in1);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecute">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        public static void Execute<TIn1, TIn2>(DbConnection connection, Action<DbConnection, TIn1, TIn2> doExecute,
+            TIn1 in1, TIn2 in2)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                doExecute(connection, in1, in2);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecute">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        public static void Execute<TIn1, TIn2, TIn3>(DbConnection connection, Action<DbConnection, TIn1, TIn2, TIn3> doExecute,
+            TIn1 in1, TIn2 in2, TIn3 in3)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                doExecute(connection, in1, in2, in3);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecute">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        public static void Execute<TIn1, TIn2, TIn3, TIn4>(DbConnection connection, Action<DbConnection, TIn1, TIn2, TIn3, TIn4> doExecute,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                doExecute(connection, in1, in2, in3, in4);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecute">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        /// <param name="in5">in参数5</param>
+        public static void Execute<TIn1, TIn2, TIn3, TIn4, TIn5>(DbConnection connection, Action<DbConnection, TIn1, TIn2, TIn3, TIn4, TIn5> doExecute,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                doExecute(connection, in1, in2, in3, in4, in5);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecute">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        /// <param name="in5">in参数5</param>
+        /// <param name="in6">in参数6</param>
+        public static void Execute<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6>(DbConnection connection, Action<DbConnection, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6> doExecute,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                doExecute(connection, in1, in2, in3, in4, in5, in6);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecute">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        /// <param name="in5">in参数5</param>
+        /// <param name="in6">in参数6</param>
+        /// <param name="in7">in参数7</param>
+        public static void Execute<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7>(DbConnection connection, Action<DbConnection, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7> doExecute,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                doExecute(connection, in1, in2, in3, in4, in5, in6, in7);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecute">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        /// <param name="in5">in参数5</param>
+        /// <param name="in6">in参数6</param>
+        /// <param name="in7">in参数7</param>
+        /// <param name="in8">in参数8</param>
+        public static void Execute<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8>(DbConnection connection, Action<DbConnection, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8> doExecute,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                doExecute(connection, in1, in2, in3, in4, in5, in6, in7, in8);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecute">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        /// <param name="in5">in参数5</param>
+        /// <param name="in6">in参数6</param>
+        /// <param name="in7">in参数7</param>
+        /// <param name="in8">in参数8</param>
+        /// <param name="in9">in参数9</param>
+        public static void Execute<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9>(DbConnection connection, Action<DbConnection, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9> doExecute,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8, TIn9 in9)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                doExecute(connection, in1, in2, in3, in4, in5, in6, in7, in8, in9);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecute">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        /// <param name="in5">in参数5</param>
+        /// <param name="in6">in参数6</param>
+        /// <param name="in7">in参数7</param>
+        /// <param name="in8">in参数8</param>
+        /// <param name="in9">in参数9</param>
+        /// <param name="in10">in参数10</param>
+        public static void Execute<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10>(DbConnection connection, Action<DbConnection, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10> doExecute,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8, TIn9 in9, TIn10 in10)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                doExecute(connection, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecute">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        /// <param name="in5">in参数5</param>
+        /// <param name="in6">in参数6</param>
+        /// <param name="in7">in参数7</param>
+        /// <param name="in8">in参数8</param>
+        /// <param name="in9">in参数9</param>
+        /// <param name="in10">in参数10</param>
+        /// <param name="in11">in参数11</param>
+        public static void Execute<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TIn11>(DbConnection connection, Action<DbConnection, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TIn11> doExecute,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8, TIn9 in9, TIn10 in10, TIn11 in11)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                doExecute(connection, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecute">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        /// <param name="in5">in参数5</param>
+        /// <param name="in6">in参数6</param>
+        /// <param name="in7">in参数7</param>
+        /// <param name="in8">in参数8</param>
+        /// <param name="in9">in参数9</param>
+        /// <param name="in10">in参数10</param>
+        /// <param name="in11">in参数11</param>
+        /// <param name="in12">in参数12</param>
+        public static void Execute<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TIn11, TIn12>(DbConnection connection, Action<DbConnection, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TIn11, TIn12> doExecute,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8, TIn9 in9, TIn10 in10, TIn11 in11, TIn12 in12)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                doExecute(connection, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecute">执行数据库操作处理函数</param>
         public static void Execute(DbConnection connection, Action<DbTransaction> doExecute)
         {
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    doExecute(transaction);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            Execute(connection, () =>
+            {
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        doExecute(transaction);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+            });
         }
 
         /// <summary>
@@ -217,17 +591,20 @@ namespace Phenix.Core.Data.Common
         public static void Execute<TIn1>(DbConnection connection, Action<DbTransaction, TIn1> doExecute,
             TIn1 in1)
         {
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    doExecute(transaction, in1);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            Execute(connection, () =>
+            {
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        doExecute(transaction, in1);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+            });
         }
 
         /// <summary>
@@ -240,17 +617,20 @@ namespace Phenix.Core.Data.Common
         public static void Execute<TIn1, TIn2>(DbConnection connection, Action<DbTransaction, TIn1, TIn2> doExecute,
             TIn1 in1, TIn2 in2)
         {
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    doExecute(transaction, in1, in2);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            Execute(connection, () =>
+            {
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        doExecute(transaction, in1, in2);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+            });
         }
 
         /// <summary>
@@ -264,17 +644,20 @@ namespace Phenix.Core.Data.Common
         public static void Execute<TIn1, TIn2, TIn3>(DbConnection connection, Action<DbTransaction, TIn1, TIn2, TIn3> doExecute,
             TIn1 in1, TIn2 in2, TIn3 in3)
         {
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    doExecute(transaction, in1, in2, in3);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            Execute(connection, () =>
+            {
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        doExecute(transaction, in1, in2, in3);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+            });
         }
 
         /// <summary>
@@ -289,17 +672,20 @@ namespace Phenix.Core.Data.Common
         public static void Execute<TIn1, TIn2, TIn3, TIn4>(DbConnection connection, Action<DbTransaction, TIn1, TIn2, TIn3, TIn4> doExecute,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4)
         {
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    doExecute(transaction, in1, in2, in3, in4);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            Execute(connection, () =>
+            {
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        doExecute(transaction, in1, in2, in3, in4);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+            });
         }
 
         /// <summary>
@@ -315,17 +701,20 @@ namespace Phenix.Core.Data.Common
         public static void Execute<TIn1, TIn2, TIn3, TIn4, TIn5>(DbConnection connection, Action<DbTransaction, TIn1, TIn2, TIn3, TIn4, TIn5> doExecute,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5)
         {
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    doExecute(transaction, in1, in2, in3, in4, in5);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            Execute(connection, () =>
+            {
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        doExecute(transaction, in1, in2, in3, in4, in5);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+            });
         }
 
         /// <summary>
@@ -342,17 +731,20 @@ namespace Phenix.Core.Data.Common
         public static void Execute<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6>(DbConnection connection, Action<DbTransaction, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6> doExecute,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6)
         {
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    doExecute(transaction, in1, in2, in3, in4, in5, in6);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            Execute(connection, () =>
+            {
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        doExecute(transaction, in1, in2, in3, in4, in5, in6);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+            });
         }
 
         /// <summary>
@@ -370,17 +762,20 @@ namespace Phenix.Core.Data.Common
         public static void Execute<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7>(DbConnection connection, Action<DbTransaction, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7> doExecute,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7)
         {
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    doExecute(transaction, in1, in2, in3, in4, in5, in6, in7);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            Execute(connection, () =>
+            {
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        doExecute(transaction, in1, in2, in3, in4, in5, in6, in7);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+            });
         }
 
         /// <summary>
@@ -399,17 +794,20 @@ namespace Phenix.Core.Data.Common
         public static void Execute<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8>(DbConnection connection, Action<DbTransaction, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8> doExecute,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8)
         {
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    doExecute(transaction, in1, in2, in3, in4, in5, in6, in7, in8);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            Execute(connection, () =>
+            {
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        doExecute(transaction, in1, in2, in3, in4, in5, in6, in7, in8);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+            });
         }
 
         /// <summary>
@@ -429,17 +827,20 @@ namespace Phenix.Core.Data.Common
         public static void Execute<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9>(DbConnection connection, Action<DbTransaction, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9> doExecute,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8, TIn9 in9)
         {
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    doExecute(transaction, in1, in2, in3, in4, in5, in6, in7, in8, in9);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            Execute(connection, () =>
+            {
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        doExecute(transaction, in1, in2, in3, in4, in5, in6, in7, in8, in9);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+            });
         }
 
         /// <summary>
@@ -460,17 +861,20 @@ namespace Phenix.Core.Data.Common
         public static void Execute<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10>(DbConnection connection, Action<DbTransaction, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10> doExecute,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8, TIn9 in9, TIn10 in10)
         {
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    doExecute(transaction, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            Execute(connection, () =>
+            {
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        doExecute(transaction, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+            });
         }
 
         /// <summary>
@@ -492,17 +896,20 @@ namespace Phenix.Core.Data.Common
         public static void Execute<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TIn11>(DbConnection connection, Action<DbTransaction, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TIn11> doExecute,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8, TIn9 in9, TIn10 in10, TIn11 in11)
         {
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    doExecute(transaction, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            Execute(connection, () =>
+            {
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        doExecute(transaction, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+            });
         }
 
         /// <summary>
@@ -525,17 +932,390 @@ namespace Phenix.Core.Data.Common
         public static void Execute<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TIn11, TIn12>(DbConnection connection, Action<DbTransaction, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TIn11, TIn12> doExecute,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8, TIn9 in9, TIn10 in10, TIn11 in11, TIn12 in12)
         {
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    doExecute(transaction, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            Execute(connection, () =>
+            {
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        doExecute(transaction, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+            });
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">IDbConnection</param>
+        /// <param name="doExecuteGet">执行数据库操作处理函数</param>
+        public static TResult ExecuteGet<TResult>(DbConnection connection, Func<TResult> doExecuteGet)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                return doExecuteGet();
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecuteGet">执行数据库操作处理函数</param>
+        public static TResult ExecuteGet<TResult>(DbConnection connection, Func<DbConnection, TResult> doExecuteGet)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                return doExecuteGet(connection);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecuteGet">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        public static TResult ExecuteGet<TIn1, TResult>(DbConnection connection, Func<DbConnection, TIn1, TResult> doExecuteGet,
+            TIn1 in1)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                return doExecuteGet(connection, in1);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecuteGet">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        public static TResult ExecuteGet<TIn1, TIn2, TResult>(DbConnection connection, Func<DbConnection, TIn1, TIn2, TResult> doExecuteGet,
+            TIn1 in1, TIn2 in2)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                return doExecuteGet(connection, in1, in2);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecuteGet">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        public static TResult ExecuteGet<TIn1, TIn2, TIn3, TResult>(DbConnection connection, Func<DbConnection, TIn1, TIn2, TIn3, TResult> doExecuteGet,
+            TIn1 in1, TIn2 in2, TIn3 in3)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                return doExecuteGet(connection, in1, in2, in3);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecuteGet">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TResult>(DbConnection connection, Func<DbConnection, TIn1, TIn2, TIn3, TIn4, TResult> doExecuteGet,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                return doExecuteGet(connection, in1, in2, in3, in4);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecuteGet">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        /// <param name="in5">in参数5</param>
+        public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TIn5, TResult>(DbConnection connection, Func<DbConnection, TIn1, TIn2, TIn3, TIn4, TIn5, TResult> doExecuteGet,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                return doExecuteGet(connection, in1, in2, in3, in4, in5);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecuteGet">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        /// <param name="in5">in参数5</param>
+        /// <param name="in6">in参数6</param>
+        public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TResult>(DbConnection connection, Func<DbConnection, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TResult> doExecuteGet,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                return doExecuteGet(connection, in1, in2, in3, in4, in5, in6);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecuteGet">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        /// <param name="in5">in参数5</param>
+        /// <param name="in6">in参数6</param>
+        /// <param name="in7">in参数7</param>
+        public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TResult>(DbConnection connection, Func<DbConnection, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TResult> doExecuteGet,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                return doExecuteGet(connection, in1, in2, in3, in4, in5, in6, in7);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecuteGet">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        /// <param name="in5">in参数5</param>
+        /// <param name="in6">in参数6</param>
+        /// <param name="in7">in参数7</param>
+        /// <param name="in8">in参数8</param>
+        public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TResult>(DbConnection connection, Func<DbConnection, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TResult> doExecuteGet,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                return doExecuteGet(connection, in1, in2, in3, in4, in5, in6, in7, in8);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecuteGet">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        /// <param name="in5">in参数5</param>
+        /// <param name="in6">in参数6</param>
+        /// <param name="in7">in参数7</param>
+        /// <param name="in8">in参数8</param>
+        /// <param name="in9">in参数9</param>
+        public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TResult>(DbConnection connection, Func<DbConnection, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TResult> doExecuteGet,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8, TIn9 in9)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                return doExecuteGet(connection, in1, in2, in3, in4, in5, in6, in7, in8, in9);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecuteGet">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        /// <param name="in5">in参数5</param>
+        /// <param name="in6">in参数6</param>
+        /// <param name="in7">in参数7</param>
+        /// <param name="in8">in参数8</param>
+        /// <param name="in9">in参数9</param>
+        /// <param name="in10">in参数10</param>
+        public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TResult>(DbConnection connection, Func<DbConnection, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TResult> doExecuteGet,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8, TIn9 in9, TIn10 in10)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                return doExecuteGet(connection, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecuteGet">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        /// <param name="in5">in参数5</param>
+        /// <param name="in6">in参数6</param>
+        /// <param name="in7">in参数7</param>
+        /// <param name="in8">in参数8</param>
+        /// <param name="in9">in参数9</param>
+        /// <param name="in10">in参数10</param>
+        /// <param name="in11">in参数11</param>
+        public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TIn11, TResult>(DbConnection connection, Func<DbConnection, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TIn11, TResult> doExecuteGet,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8, TIn9 in9, TIn10 in10, TIn11 in11)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                return doExecuteGet(connection, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
+        }
+
+        /// <summary>
+        /// 执行数据库操作
+        /// </summary>
+        /// <param name="connection">DbConnection</param>
+        /// <param name="doExecuteGet">执行数据库操作处理函数</param>
+        /// <param name="in1">in参数1</param>
+        /// <param name="in2">in参数2</param>
+        /// <param name="in3">in参数3</param>
+        /// <param name="in4">in参数4</param>
+        /// <param name="in5">in参数5</param>
+        /// <param name="in6">in参数6</param>
+        /// <param name="in7">in参数7</param>
+        /// <param name="in8">in参数8</param>
+        /// <param name="in9">in参数9</param>
+        /// <param name="in10">in参数10</param>
+        /// <param name="in11">in参数11</param>
+        /// <param name="in12">in参数12</param>
+        public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TIn11, TIn12, TResult>(DbConnection connection, Func<DbConnection, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TIn11, TIn12, TResult> doExecuteGet,
+            TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8, TIn9 in9, TIn10 in10, TIn11 in11, TIn12 in12)
+        {
+            bool needClose = connection.State == ConnectionState.Closed;
+            TryOpenConnection(connection);
+            try
+            {
+                return doExecuteGet(connection, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12);
+            }
+            finally
+            {
+                if (needClose)
+                    connection.Close();
+            }
         }
 
         /// <summary>
@@ -545,20 +1325,23 @@ namespace Phenix.Core.Data.Common
         /// <param name="doExecuteGet">执行数据库操作处理函数</param>
         public static TResult ExecuteGet<TResult>(DbConnection connection, Func<DbTransaction, TResult> doExecuteGet)
         {
-            TResult result;
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    result = doExecuteGet(transaction);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            return ExecuteGet(connection, () =>
+            {
+                TResult result;
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        result = doExecuteGet(transaction);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
 
-            return result;
+                return result;
+            });
         }
 
         /// <summary>
@@ -570,20 +1353,23 @@ namespace Phenix.Core.Data.Common
         public static TResult ExecuteGet<TIn1, TResult>(DbConnection connection, Func<DbTransaction, TIn1, TResult> doExecuteGet,
             TIn1 in1)
         {
-            TResult result;
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    result = doExecuteGet(transaction, in1);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            return ExecuteGet(connection, () =>
+            {
+                TResult result;
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        result = doExecuteGet(transaction, in1);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
 
-            return result;
+                return result;
+            });
         }
 
         /// <summary>
@@ -596,20 +1382,23 @@ namespace Phenix.Core.Data.Common
         public static TResult ExecuteGet<TIn1, TIn2, TResult>(DbConnection connection, Func<DbTransaction, TIn1, TIn2, TResult> doExecuteGet,
             TIn1 in1, TIn2 in2)
         {
-            TResult result;
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    result = doExecuteGet(transaction, in1, in2);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            return ExecuteGet(connection, () =>
+            {
+                TResult result;
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        result = doExecuteGet(transaction, in1, in2);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
 
-            return result;
+                return result;
+            });
         }
 
         /// <summary>
@@ -623,20 +1412,23 @@ namespace Phenix.Core.Data.Common
         public static TResult ExecuteGet<TIn1, TIn2, TIn3, TResult>(DbConnection connection, Func<DbTransaction, TIn1, TIn2, TIn3, TResult> doExecuteGet,
             TIn1 in1, TIn2 in2, TIn3 in3)
         {
-            TResult result;
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    result = doExecuteGet(transaction, in1, in2, in3);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            return ExecuteGet(connection, () =>
+            {
+                TResult result;
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        result = doExecuteGet(transaction, in1, in2, in3);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
 
-            return result;
+                return result;
+            });
         }
 
         /// <summary>
@@ -651,20 +1443,23 @@ namespace Phenix.Core.Data.Common
         public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TResult>(DbConnection connection, Func<DbTransaction, TIn1, TIn2, TIn3, TIn4, TResult> doExecuteGet,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4)
         {
-            TResult result;
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    result = doExecuteGet(transaction, in1, in2, in3, in4);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            return ExecuteGet(connection, () =>
+            {
+                TResult result;
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        result = doExecuteGet(transaction, in1, in2, in3, in4);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
 
-            return result;
+                return result;
+            });
         }
 
         /// <summary>
@@ -680,20 +1475,23 @@ namespace Phenix.Core.Data.Common
         public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TIn5, TResult>(DbConnection connection, Func<DbTransaction, TIn1, TIn2, TIn3, TIn4, TIn5, TResult> doExecuteGet,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5)
         {
-            TResult result;
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    result = doExecuteGet(transaction, in1, in2, in3, in4, in5);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            return ExecuteGet(connection, () =>
+            {
+                TResult result;
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        result = doExecuteGet(transaction, in1, in2, in3, in4, in5);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
 
-            return result;
+                return result;
+            });
         }
 
         /// <summary>
@@ -710,20 +1508,23 @@ namespace Phenix.Core.Data.Common
         public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TResult>(DbConnection connection, Func<DbTransaction, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TResult> doExecuteGet,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6)
         {
-            TResult result;
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    result = doExecuteGet(transaction, in1, in2, in3, in4, in5, in6);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            return ExecuteGet(connection, () =>
+            {
+                TResult result;
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        result = doExecuteGet(transaction, in1, in2, in3, in4, in5, in6);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
 
-            return result;
+                return result;
+            });
         }
 
         /// <summary>
@@ -741,20 +1542,23 @@ namespace Phenix.Core.Data.Common
         public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TResult>(DbConnection connection, Func<DbTransaction, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TResult> doExecuteGet,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7)
         {
-            TResult result;
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    result = doExecuteGet(transaction, in1, in2, in3, in4, in5, in6, in7);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            return ExecuteGet(connection, () =>
+            {
+                TResult result;
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        result = doExecuteGet(transaction, in1, in2, in3, in4, in5, in6, in7);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
 
-            return result;
+                return result;
+            });
         }
 
         /// <summary>
@@ -773,20 +1577,23 @@ namespace Phenix.Core.Data.Common
         public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TResult>(DbConnection connection, Func<DbTransaction, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TResult> doExecuteGet,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8)
         {
-            TResult result;
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    result = doExecuteGet(transaction, in1, in2, in3, in4, in5, in6, in7, in8);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            return ExecuteGet(connection, () =>
+            {
+                TResult result;
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        result = doExecuteGet(transaction, in1, in2, in3, in4, in5, in6, in7, in8);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
 
-            return result;
+                return result;
+            });
         }
 
         /// <summary>
@@ -806,20 +1613,23 @@ namespace Phenix.Core.Data.Common
         public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TResult>(DbConnection connection, Func<DbTransaction, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TResult> doExecuteGet,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8, TIn9 in9)
         {
-            TResult result;
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    result = doExecuteGet(transaction, in1, in2, in3, in4, in5, in6, in7, in8, in9);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            return ExecuteGet(connection, () =>
+            {
+                TResult result;
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        result = doExecuteGet(transaction, in1, in2, in3, in4, in5, in6, in7, in8, in9);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
 
-            return result;
+                return result;
+            });
         }
 
         /// <summary>
@@ -840,20 +1650,23 @@ namespace Phenix.Core.Data.Common
         public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TResult>(DbConnection connection, Func<DbTransaction, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TResult> doExecuteGet,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8, TIn9 in9, TIn10 in10)
         {
-            TResult result;
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    result = doExecuteGet(transaction, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            return ExecuteGet(connection, () =>
+            {
+                TResult result;
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        result = doExecuteGet(transaction, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
 
-            return result;
+                return result;
+            });
         }
 
         /// <summary>
@@ -875,20 +1688,23 @@ namespace Phenix.Core.Data.Common
         public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TIn11, TResult>(DbConnection connection, Func<DbTransaction, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TIn11, TResult> doExecuteGet,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8, TIn9 in9, TIn10 in10, TIn11 in11)
         {
-            TResult result;
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    result = doExecuteGet(transaction, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            return ExecuteGet(connection, () =>
+            {
+                TResult result;
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        result = doExecuteGet(transaction, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
 
-            return result;
+                return result;
+            });
         }
 
         /// <summary>
@@ -911,20 +1727,23 @@ namespace Phenix.Core.Data.Common
         public static TResult ExecuteGet<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TIn11, TIn12, TResult>(DbConnection connection, Func<DbTransaction, TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TIn9, TIn10, TIn11, TIn12, TResult> doExecuteGet,
             TIn1 in1, TIn2 in2, TIn3 in3, TIn4 in4, TIn5 in5, TIn6 in6, TIn7 in7, TIn8 in8, TIn9 in9, TIn10 in10, TIn11 in11, TIn12 in12)
         {
-            TResult result;
-            using (DbTransaction transaction = BeginTransaction(connection))
-                try
-                {
-                    result = doExecuteGet(transaction, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12);
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
+            return ExecuteGet(connection, () =>
+            {
+                TResult result;
+                using (DbTransaction transaction = BeginTransaction(connection))
+                    try
+                    {
+                        result = doExecuteGet(transaction, in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12);
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
 
-            return result;
+                return result;
+            });
         }
 
         #endregion

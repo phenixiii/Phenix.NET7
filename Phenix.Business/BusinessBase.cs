@@ -5,8 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using Phenix.Core.Data;
 using Phenix.Core.Data.Common;
-using Phenix.Mapper.Expressions;
 using Phenix.Core.SyncCollections;
+using Phenix.Mapper.Expressions;
 
 namespace Phenix.Business
 {
@@ -110,7 +110,7 @@ namespace Phenix.Business
             {
                 List<TDetail> result = new List<TDetail>(detail.Count);
                 foreach (IBusiness item in detail)
-                    result.Add((TDetail) item);
+                    result.Add((TDetail)item);
                 return result.ToArray();
             }
 
@@ -326,7 +326,7 @@ namespace Phenix.Business
         /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException）</param>
         public void SaveDepth(bool checkTimestamp = true)
         {
-            Database.Execute((Action<DbTransaction, bool>) SaveDepth, checkTimestamp);
+            Database.Execute((Action<DbTransaction, bool>)SaveDepth, checkTimestamp);
         }
 
         /// <summary>
@@ -336,7 +336,7 @@ namespace Phenix.Business
         /// <param name="checkTimestamp">是否检查时间戳（不一致时抛出Phenix.Core.Data.Rule.OutdatedDataException）</param>
         public void SaveDepth(DbConnection connection, bool checkTimestamp = true)
         {
-            DbConnectionHelper.Execute(connection, SaveDepth, checkTimestamp);
+            DbConnectionHelper.Execute(connection, (Action<DbTransaction, bool>)SaveDepth, checkTimestamp);
         }
 
         /// <summary>
@@ -370,25 +370,25 @@ namespace Phenix.Business
                     InsertSelf(transaction);
                     foreach (KeyValuePair<Type, List<IBusiness>> kvp in _details)
                     foreach (IBusiness item in kvp.Value)
-                        ((IRefinedBusiness) item).SaveDepth(transaction, ExecuteAction.Insert, checkTimestamp);
+                        ((IRefinedBusiness)item).SaveDepth(transaction, ExecuteAction.Insert, checkTimestamp);
                     break;
                 case ExecuteAction.Delete:
                     if (IsNew)
                         break;
                     foreach (KeyValuePair<Type, List<IBusiness>> kvp in _details)
                     foreach (IBusiness item in kvp.Value)
-                        ((IRefinedBusiness) item).SaveDepth(transaction, ExecuteAction.Delete, checkTimestamp);
+                        ((IRefinedBusiness)item).SaveDepth(transaction, ExecuteAction.Delete, checkTimestamp);
                     DeleteSelf(transaction, true);
                     break;
                 case ExecuteAction.Update:
                     foreach (KeyValuePair<Type, List<IBusiness>> kvp in _details)
                     foreach (IBusiness item in kvp.Value)
                         if (item.IsNew)
-                            ((IRefinedBusiness) item).SaveDepth(transaction, ExecuteAction.Insert, checkTimestamp);
+                            ((IRefinedBusiness)item).SaveDepth(transaction, ExecuteAction.Insert, checkTimestamp);
                         else if (IsSelfDeleted)
-                            ((IRefinedBusiness) item).SaveDepth(transaction, ExecuteAction.Delete, checkTimestamp);
+                            ((IRefinedBusiness)item).SaveDepth(transaction, ExecuteAction.Delete, checkTimestamp);
                         else
-                            ((IRefinedBusiness) item).SaveDepth(transaction, ExecuteAction.Update, checkTimestamp);
+                            ((IRefinedBusiness)item).SaveDepth(transaction, ExecuteAction.Update, checkTimestamp);
                     if (IsSelfDirty)
                         UpdateSelf(transaction, GetDirtValues(), checkTimestamp);
                     break;

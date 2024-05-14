@@ -2,15 +2,15 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<Version>7.6.56</Version>
-		<AssemblyVersion>7.6.56.0401</AssemblyVersion>
-		<FileVersion>7.6.56.0401</FileVersion>
+		<Version>7.6.61</Version>
+		<AssemblyVersion>7.6.61.0514</AssemblyVersion>
+		<FileVersion>7.6.61.0514</FileVersion>
 		<Description>Phenix Framework 7.6 for .NET 6</Description>
 		<Authors>ming</Authors>
 		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 		<AssemblyName>Phenix.Business</AssemblyName>
 		<RootNamespace>Phenix.Business</RootNamespace>
-		<Copyright>Copyright © 2007, 2022 Phenixヾ Studio</Copyright>
+		<Copyright>Copyright © 2007, 2024 Phenixヾ Studio</Copyright>
 		<Company />
 	</PropertyGroup>
 
@@ -25,7 +25,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 	
 	<ItemGroup>
