@@ -25,7 +25,7 @@ namespace Phenix.Core
                     lock (_defaultLock)
                         if (_default == null)
                         {
-                            _default = DynamicInstanceFactory.Create<T>();
+                            _default = (T)InstanceInfo.Fetch<T>().Create();
                         }
 
                 return _default;

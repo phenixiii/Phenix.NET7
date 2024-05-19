@@ -2,9 +2,9 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<Version>7.6.61</Version>
-		<AssemblyVersion>7.6.61.0514</AssemblyVersion>
-		<FileVersion>7.6.61.0514</FileVersion>
+		<Version>7.6.62</Version>
+		<AssemblyVersion>7.6.62.0518</AssemblyVersion>
+		<FileVersion>7.6.62.0518</FileVersion>
 		<Description>Phenix Framework 7.6 for .NET 6</Description>
 		<Authors>ming</Authors>
 		<DefineConstants>TRACE;ORA</DefineConstants>

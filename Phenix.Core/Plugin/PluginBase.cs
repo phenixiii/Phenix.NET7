@@ -14,7 +14,7 @@ namespace Phenix.Core.Plugin
 
         internal static PluginBase New(Assembly assembly, PluginHost owner, Func<IPlugin, object, object> onMessage)
         {
-            PluginBase result = (PluginBase) DynamicInstanceFactory.Create(FindPluginType(assembly, true));
+            PluginBase result = (PluginBase)InstanceInfo.Fetch(FindPluginType(assembly, true)).Create();
             result._owner = owner;
             result._onMessage = onMessage;
             return result;

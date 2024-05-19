@@ -249,7 +249,7 @@ namespace Phenix.Core.Reflection
         /// <param name="type">类</param>
         public static Type GetUnderlyingType(Type type)
         {
-            if (type != null && type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(Nullable<>)))
+            if (type != null && type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
                 return Nullable.GetUnderlyingType(type);
             return type;
         }

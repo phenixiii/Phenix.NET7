@@ -245,3 +245,8 @@ AppSettings存取的配置值，向前兼容不了的时候可以通过升版本
 20240514
 增补Phenix.Core工程的DbConnectionHelper、Database的数据库操作函数
 
+
+20240518
+新增Phenix.Core.Reflection的InstanceInfo类，缓存DynamicInstanceFactory生成的委托函数
+
+

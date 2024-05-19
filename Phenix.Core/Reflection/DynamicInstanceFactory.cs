@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Reflection;
-using Phenix.Core.SyncCollections;
 
 namespace Phenix.Core.Reflection
 {
@@ -30,34 +29,7 @@ namespace Phenix.Core.Reflection
     /// </summary>
     public static class DynamicInstanceFactory
     {
-        #region 属性
-
-        private static readonly SynchronizedDictionary<string, DynamicCtorDelegate> _classCtorCache =
-            new SynchronizedDictionary<string, DynamicCtorDelegate>(StringComparer.Ordinal);
-
-        #endregion
-
         #region 方法
-
-        /// <summary>
-        /// 构造对象
-        /// </summary>
-        public static T Create<T>()
-            where T : class
-        {
-            return (T) GetConstructor(typeof(T))();
-        }
-
-        /// <summary>
-        /// 构造对象
-        /// </summary>
-        public static object Create(Type objectType)
-        {
-            if (objectType == null)
-                throw new ArgumentNullException(nameof(objectType));
-
-            return GetConstructor(objectType)();
-        }
 
         /// <summary>
         /// 构造动态执行构建函数
@@ -67,13 +39,11 @@ namespace Phenix.Core.Reflection
             if (objectType == null)
                 throw new ArgumentNullException(nameof(objectType));
 
-            return _classCtorCache.GetValue(objectType.FullName, () =>
-            {
-                ConstructorInfo constructor = objectType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
-                if (constructor == null)
-                    throw new NotSupportedException(String.Format("不支持多参数的 {0} 构建函数", objectType.FullName));
-                return CreateConstructor(constructor);
-            });
+            ConstructorInfo constructor = objectType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
+            if (constructor == null)
+                throw new NotSupportedException(String.Format("不支持多参数的 {0} 构建函数", objectType.FullName));
+
+            return CreateConstructor(constructor);
         }
 
         /// <summary>

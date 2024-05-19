@@ -42,6 +42,8 @@ namespace Phenix.Business
 
         #region New
 
+        private static readonly DynamicCtorDelegate _create = InstanceInfo.Fetch<T>().Create;
+
         /// <summary>
         /// 新增实体对象(自动填充主键和保留字段)
         /// </summary>
@@ -64,7 +66,7 @@ namespace Phenix.Business
             if (database == null)
                 throw new ArgumentNullException(nameof(database));
 
-            T result = DynamicInstanceFactory.Create<T>();
+            T result = (T)_create();
             result.Database = database;
             result.Apply(result.SelfSheet.FillReservedProperties(result.GetType(), propertyValues, ExecuteAction.Insert));
             result.InitializeSelf();
