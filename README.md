@@ -1,4 +1,4 @@
-迁移到：https://github.com/phenixiii/Phenix.iTOS/tree/master/src/Phenix.Core
+迁移到：https://github.com/phenixiii/Phenix.CTOS/tree/master/src/Phenix.Core
 Phenix.NET7 是一款基于.NET6的企业级分布式应用软件开发框架。
 本版本重写了持久层引擎的底层实现，仍然支持对数据库（Oracle、SQLServer、MySQL、PostgreSQL）的LINQ（CRUD）操作，并支持多库。
 本版本整合了Orleans分布式框架和Dapr分布式运行时，可以很好地支持高并发、分布式技术应用场景。
